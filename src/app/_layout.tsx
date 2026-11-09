@@ -7,14 +7,15 @@ import {
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import * as SplashScreen from 'expo-splash-screen';
+import { SQLiteProvider } from 'expo-sqlite';
 import { useColorScheme } from 'react-native';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import { DATABASE_NAME, initDatabase } from '@/db/init';
 
 SplashScreen.preventAutoHideAsync();
 
-// Root Stack: it holds the tab bar and the two bottom sheets
-// ("Aggiungi un documento" and "Invia") that slide up above the tabs.
+// Root Stack: it holds the tab bar and the screens that slide up above the tabs.
 export default function RootLayout() {
   const colorScheme = useColorScheme();
 
@@ -28,30 +29,37 @@ export default function RootLayout() {
     return null;
   }
 
+  // SQLiteProvider opens the database, runs initDatabase (pragmas, migrations, files folder)
+  // and only then renders its children, so every screen finds the database ready.
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <AnimatedSplashOverlay />
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen
-          name="add-document"
-          options={{
-            presentation: 'formSheet',
-            headerShown: false,
-            sheetGrabberVisible: true,
-            sheetAllowedDetents: 'fitToContents',
-          }}
-        />
-        <Stack.Screen
-          name="send-document/[id]"
-          options={{
-            presentation: 'formSheet',
-            headerShown: false,
-            sheetGrabberVisible: true,
-            sheetAllowedDetents: 'fitToContents',
-          }}
-        />
-      </Stack>
-    </ThemeProvider>
+    <SQLiteProvider
+      databaseName={DATABASE_NAME}
+      onInit={initDatabase}
+      options={{ enableChangeListener: true }}>
+      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        <AnimatedSplashOverlay />
+        <Stack>
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          <Stack.Screen
+            name="add-document"
+            options={{
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              sheetAllowedDetents: 'fitToContents',
+            }}
+          />
+          <Stack.Screen
+            name="send-document/[id]"
+            options={{
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              sheetAllowedDetents: 'fitToContents',
+            }}
+          />
+        </Stack>
+      </ThemeProvider>
+    </SQLiteProvider>
   );
 }

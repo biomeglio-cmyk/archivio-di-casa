@@ -78,3 +78,12 @@ export type PersonWithCount = Person & { documentCount: number };
 export type CategoryWithCount = Category & { documentCount: number };
 export type DocumentListItem = FamilyDocument & { category: Category };
 export type DocumentDetail = DocumentListItem & { person: Person | null };
+
+export type DocumentFileRecord = {
+  id: number;
+  document_id: number;
+  path: string;
+  side: 'front' | 'back' | null;
+  kind: 'image' | 'pdf';
+  created_at: string;
+};

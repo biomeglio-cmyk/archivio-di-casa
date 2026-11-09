@@ -1,7 +1,15 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { CATEGORY_JOIN_COLUMNS, mapCategory } from '@/db/categories';
-import type { DocumentDetail, DocumentListItem, DocumentRecord } from '@/db/types';
+import type {
+  DocumentDetail,
+  DocumentFile,
+  DocumentFileRecord,
+  DocumentListItem,
+  DocumentRecord,
+} from '@/db/types';
+import { deleteStoredFile, storePendingFile } from '@/storage/document-files';
+import type { PendingFile } from '@/storage/pending-files';
 
 type DocumentWithCategoryRecord = DocumentRecord & Record<string, unknown>;
 
@@ -73,14 +81,62 @@ export type NewDocument = {
   expiresAt: string | null; // 'YYYY-MM-DD'
 };
 
-// Returns the id of the new document
-export async function insertDocument(db: SQLiteDatabase, doc: NewDocument): Promise<number> {
-  const result = await db.runAsync(
-    'INSERT INTO documents (title, category_id, person_id, expires_at) VALUES (?, ?, ?, ?)',
-    doc.title.trim(),
-    doc.categoryId,
-    doc.personId,
-    doc.expiresAt,
+// Saves the document and its files; returns the id of the new document.
+// 1. copy the files into documents/ (outside the transaction: copying can be slow)
+// 2. insert the document and its document_files rows in ONE transaction (all or nothing)
+// 3. if the database part fails, delete the copied files so nothing is left behind
+export async function insertDocument(
+  db: SQLiteDatabase,
+  doc: NewDocument,
+  files: PendingFile[] = [],
+): Promise<number> {
+  const stored: { path: string; file: PendingFile }[] = [];
+  try {
+    for (const file of files) {
+      stored.push({ path: await storePendingFile(file), file });
+    }
+
+    let documentId = 0;
+    await db.withTransactionAsync(async () => {
+      const result = await db.runAsync(
+        'INSERT INTO documents (title, category_id, person_id, expires_at) VALUES (?, ?, ?, ?)',
+        doc.title.trim(),
+        doc.categoryId,
+        doc.personId,
+        doc.expiresAt,
+      );
+      documentId = result.lastInsertRowId;
+
+      for (const { path, file } of stored) {
+        await db.runAsync(
+          'INSERT INTO document_files (document_id, path, side, kind) VALUES (?, ?, ?, ?)',
+          documentId,
+          path,
+          file.side,
+          file.kind,
+        );
+      }
+    });
+    return documentId;
+  } catch (error) {
+    stored.forEach(({ path }) => deleteStoredFile(path));
+    throw error;
+  }
+}
+
+// Files of a document: front before back, then the others
+export async function listDocumentFiles(db: SQLiteDatabase, documentId: number): Promise<DocumentFile[]> {
+  const rows = await db.getAllAsync<DocumentFileRecord>(
+    `SELECT * FROM document_files WHERE document_id = ?
+     ORDER BY CASE side WHEN 'front' THEN 0 WHEN 'back' THEN 1 ELSE 2 END, id`,
+    documentId,
   );
-  return result.lastInsertRowId;
+  return rows.map((row) => ({
+    id: row.id,
+    documentId: row.document_id,
+    path: row.path,
+    side: row.side,
+    kind: row.kind,
+    createdAt: row.created_at,
+  }));
 }

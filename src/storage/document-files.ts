@@ -1,6 +1,8 @@
 import { Directory, File, Paths } from 'expo-file-system';
 
-// Photos and PDFs live in <app documents>/documents/ (from phase 5).
+import type { PendingFile } from '@/storage/pending-files';
+
+// Photos and PDFs live in <app documents>/documents/.
 // Paths.document is backed up and never cleared by iOS, unlike Paths.cache.
 const FOLDER = 'documents';
 
@@ -24,4 +26,26 @@ export function relativePathFor(fileName: string): string {
 
 export function resolveDocumentFile(relativePath: string): File {
   return new File(Paths.document, relativePath);
+}
+
+// Copies a temporary file into documents/ with a unique name and returns its relative path
+export async function storePendingFile(pending: PendingFile): Promise<string> {
+  ensureDocumentsDirectory();
+  const source = new File(pending.uri);
+  const extension = source.extension || (pending.kind === 'pdf' ? '.pdf' : '.jpg');
+  const unique = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+  const fileName = `${unique}-${pending.side ?? 'file'}${extension.toLowerCase()}`;
+
+  await source.copy(new File(getDocumentsDirectory(), fileName));
+  return relativePathFor(fileName);
+}
+
+// Best-effort cleanup (e.g. when saving the document fails after the copy)
+export function deleteStoredFile(relativePath: string): void {
+  try {
+    const file = resolveDocumentFile(relativePath);
+    if (file.exists) file.delete();
+  } catch {
+    // nothing else to do: an orphan file is harmless
+  }
 }

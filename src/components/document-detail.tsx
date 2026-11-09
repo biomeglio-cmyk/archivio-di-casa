@@ -4,6 +4,7 @@ import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { DocumentFilesView } from '@/components/document-files-view';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
@@ -50,6 +51,8 @@ export default function DocumentDetail() {
         <SymbolView name={category.symbol} tintColor={category.colors.text} size={40} />
         <Text style={[styles.title, { color: category.colors.text }]}>{document.title}</Text>
       </LinearGradient>
+
+      <DocumentFilesView documentId={document.id} />
 
       <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
         {details.map((d, index) => (

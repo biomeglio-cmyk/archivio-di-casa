@@ -51,6 +51,15 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="category-form"
+            options={{
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              sheetAllowedDetents: [0.9],
+            }}
+          />
+          <Stack.Screen
             name="person-form"
             options={{
               presentation: 'formSheet',

@@ -1,6 +1,7 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 import { Alert } from 'react-native';
 
+import { countDocumentsInCategory, deleteCategory } from '@/db/categories';
 import { deleteDocument } from '@/db/documents';
 import { deletePerson } from '@/db/people';
 
@@ -40,6 +41,36 @@ export function confirmDeletePerson(db: SQLiteDatabase, person: { id: number; na
       style: 'destructive',
       onPress: () => {
         deletePerson(db, person.id).then(() => onDeleted?.(), showError);
+      },
+    },
+  ]);
+}
+
+// Custom categories only, and only when empty (checked again here, right before deleting)
+export async function confirmDeleteCategory(
+  db: SQLiteDatabase,
+  category: { id: number; name: string; isBuiltin: boolean },
+  onDeleted?: () => void,
+) {
+  if (category.isBuiltin) {
+    Alert.alert('Categoria di base', 'Le categorie di base si possono rinominare ma non eliminare.');
+    return;
+  }
+  const count = await countDocumentsInCategory(db, category.id);
+  if (count > 0) {
+    Alert.alert(
+      'Categoria non vuota',
+      `"${category.name}" contiene ${count === 1 ? '1 documento' : `${count} documenti`}. Spostali in un'altra categoria prima di eliminarla.`,
+    );
+    return;
+  }
+  Alert.alert(`Eliminare "${category.name}"?`, 'La categoria è vuota.', [
+    { text: 'Annulla', style: 'cancel' },
+    {
+      text: 'Elimina',
+      style: 'destructive',
+      onPress: () => {
+        deleteCategory(db, category.id).then(() => onDeleted?.(), showError);
       },
     },
   ]);

@@ -1,4 +1,5 @@
-import { Alert, ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
+import { router } from 'expo-router';
+import { ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
 
 import { CategoryTile } from '@/components/category-tile';
 import { NewCategoryTile } from '@/components/new-category-tile';
@@ -31,7 +32,7 @@ export default function ArchiveScreen() {
       {categories && (
         <NewCategoryTile
           size={tileSize}
-          onPress={() => Alert.alert('Nuova categoria', 'Disponibile più avanti.')}
+          onPress={() => router.push('/category-form')}
         />
       )}
     </ScrollView>

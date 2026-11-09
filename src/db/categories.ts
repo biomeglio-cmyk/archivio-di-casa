@@ -1,7 +1,7 @@
 import type { SFSymbol } from 'expo-symbols';
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import type { Category, CategoryRecord, CategoryWithCount } from '@/db/types';
+import type { Category, CategoryColors, CategoryRecord, CategoryWithCount } from '@/db/types';
 
 // Converts a SQL row (snake_case) into the app shape (camelCase).
 // `prefix` lets document queries reuse it for JOINed columns named like c_name, c_symbol…
@@ -45,4 +45,58 @@ export async function listCategoriesWithCounts(db: SQLiteDatabase): Promise<Cate
 export async function getCategory(db: SQLiteDatabase, id: number): Promise<Category | null> {
   const row = await db.getFirstAsync<CategoryRecord>('SELECT * FROM categories WHERE id = ?', id);
   return row ? mapCategory(row) : null;
+}
+
+export type CategoryInput = {
+  name: string;
+  symbol: SFSymbol;
+  colors: CategoryColors;
+};
+
+// New custom categories go after all the others
+export async function insertCategory(db: SQLiteDatabase, input: CategoryInput): Promise<number> {
+  const result = await db.runAsync(
+    `INSERT INTO categories (name, symbol, color_top, color_bottom, color_text, is_builtin, sort_order)
+     VALUES (?, ?, ?, ?, ?, 0, (SELECT COALESCE(MAX(sort_order), -1) + 1 FROM categories))`,
+    input.name.trim(),
+    input.symbol,
+    input.colors.top,
+    input.colors.bottom,
+    input.colors.text,
+  );
+  return result.lastInsertRowId;
+}
+
+// Built-in categories can only be renamed; custom ones can also change icon and color
+export async function updateCategory(db: SQLiteDatabase, id: number, input: CategoryInput): Promise<void> {
+  await db.runAsync(
+    `UPDATE categories
+     SET name = ?,
+         symbol = CASE WHEN is_builtin = 1 THEN symbol ELSE ? END,
+         color_top = CASE WHEN is_builtin = 1 THEN color_top ELSE ? END,
+         color_bottom = CASE WHEN is_builtin = 1 THEN color_bottom ELSE ? END,
+         color_text = CASE WHEN is_builtin = 1 THEN color_text ELSE ? END,
+         updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+     WHERE id = ?`,
+    input.name.trim(),
+    input.symbol,
+    input.colors.top,
+    input.colors.bottom,
+    input.colors.text,
+    id,
+  );
+}
+
+export async function countDocumentsInCategory(db: SQLiteDatabase, id: number): Promise<number> {
+  const row = await db.getFirstAsync<{ count: number }>('SELECT COUNT(*) AS count FROM documents WHERE category_id = ?', id);
+  return row?.count ?? 0;
+}
+
+// Only custom categories without documents. The database enforces it too:
+// documents.category_id has ON DELETE RESTRICT.
+export async function deleteCategory(db: SQLiteDatabase, id: number): Promise<void> {
+  const result = await db.runAsync('DELETE FROM categories WHERE id = ? AND is_builtin = 0', id);
+  if (result.changes === 0) {
+    throw new Error('Le categorie di base non si possono eliminare.');
+  }
 }

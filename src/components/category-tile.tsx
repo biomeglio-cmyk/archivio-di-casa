@@ -4,7 +4,7 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
 import { FONTS } from '@/constants/brand';
-import type { Category } from '@/constants/categories';
+import type { Category } from '@/db/types';
 
 type Props = {
   category: Category;
@@ -17,7 +17,7 @@ export function CategoryTile({ category, documentCount, size }: Props) {
   const { colors } = category;
 
   return (
-    <Link href={{ pathname: '/category/[id]', params: { id: category.id } }} asChild>
+    <Link href={{ pathname: '/category/[id]', params: { id: String(category.id) } }} asChild>
       <Pressable style={({ pressed }) => [size, pressed && styles.pressed]}>
         <LinearGradient colors={[colors.top, colors.bottom]} style={styles.tile}>
           <SymbolView name={category.symbol} tintColor={colors.text} size={28} />

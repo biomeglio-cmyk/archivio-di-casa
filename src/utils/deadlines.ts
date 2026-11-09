@@ -1,9 +1,10 @@
-import type { FamilyDocument } from '@/data/documents';
 import { parseISODate } from '@/utils/dates';
 
-export type DeadlineSection = {
+type WithExpiry = { expiresAt: string | null };
+
+export type DeadlineSection<T> = {
   title: string;
-  documents: FamilyDocument[];
+  documents: T[];
 };
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -19,12 +20,12 @@ export function daysUntil(iso: string, today: Date = new Date()): number {
 // - "Questo mese": within 30 days
 // - "Più avanti": everything else
 // Documents without expiry are left out. Empty sections are dropped.
-export function groupByDeadline(documents: FamilyDocument[], today: Date = new Date()): DeadlineSection[] {
+export function groupByDeadline<T extends WithExpiry>(documents: T[], today: Date = new Date()): DeadlineSection<T>[] {
   const withDate = documents
-    .filter((d): d is FamilyDocument & { expiresAt: string } => Boolean(d.expiresAt))
+    .filter((d): d is T & { expiresAt: string } => d.expiresAt !== null)
     .sort((a, b) => a.expiresAt.localeCompare(b.expiresAt)); // ISO strings sort like dates
 
-  const sections: DeadlineSection[] = [
+  const sections: DeadlineSection<T>[] = [
     { title: 'Questa settimana', documents: [] },
     { title: 'Questo mese', documents: [] },
     { title: 'Più avanti', documents: [] },

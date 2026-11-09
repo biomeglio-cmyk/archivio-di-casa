@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
-import type { Person } from '@/data/people';
+import type { Person } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
 
 type Props = {
@@ -17,13 +17,13 @@ export function PersonRow({ person, documentCount }: Props) {
   const theme = useTheme();
 
   return (
-    <Link href={{ pathname: '/person/[id]', params: { id: person.id } }} asChild>
+    <Link href={{ pathname: '/person/[id]', params: { id: String(person.id) } }} asChild>
       <Pressable
         style={({ pressed }) => [
           styles.row,
           { backgroundColor: pressed ? theme.backgroundSelected : theme.backgroundElement },
         ]}>
-        <SymbolView name={person.symbol} tintColor={BRAND_COLOR} size={40} />
+        <SymbolView name="person.crop.circle" tintColor={BRAND_COLOR} size={40} />
         <View style={styles.texts}>
           <ThemedText>{person.name}</ThemedText>
           <ThemedText type="small" themeColor="textSecondary">

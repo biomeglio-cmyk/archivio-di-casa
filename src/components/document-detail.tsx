@@ -7,9 +7,8 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
-import { getCategory } from '@/constants/categories';
-import { getDocument } from '@/data/documents';
-import { getPerson } from '@/data/people';
+import { getDocumentDetail } from '@/db/documents';
+import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/utils/dates';
 
@@ -17,9 +16,14 @@ import { formatDate } from '@/utils/dates';
 export default function DocumentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const theme = useTheme();
-  const document = getDocument(id);
+  const { data: document } = useDbQuery((db) => getDocumentDetail(db, Number(id)), [id]);
 
-  if (!document) {
+  // undefined = still loading (a few milliseconds), null = not in the database
+  if (document === undefined) {
+    return <Stack.Screen options={{ title: '' }} />;
+  }
+
+  if (document === null) {
     return (
       <View style={styles.missing}>
         <Stack.Screen options={{ title: '' }} />
@@ -28,12 +32,11 @@ export default function DocumentDetail() {
     );
   }
 
-  const category = getCategory(document.categoryId);
-  const person = document.personId ? getPerson(document.personId) : undefined;
+  const { category, person } = document;
 
   // Label/value pairs shown under the header; missing values are skipped
   const details = [
-    { label: 'Categoria', value: category?.name },
+    { label: 'Categoria', value: category.name },
     { label: 'Persona', value: person?.name },
     { label: 'Scadenza', value: document.expiresAt ? formatDate(document.expiresAt) : 'Nessuna' },
     { label: 'Note', value: document.notes },
@@ -43,12 +46,10 @@ export default function DocumentDetail() {
     <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
       <Stack.Screen options={{ title: '' }} />
 
-      {category && (
-        <LinearGradient colors={[category.colors.top, category.colors.bottom]} style={styles.header}>
-          <SymbolView name={category.symbol} tintColor={category.colors.text} size={40} />
-          <Text style={[styles.title, { color: category.colors.text }]}>{document.title}</Text>
-        </LinearGradient>
-      )}
+      <LinearGradient colors={[category.colors.top, category.colors.bottom]} style={styles.header}>
+        <SymbolView name={category.symbol} tintColor={category.colors.text} size={40} />
+        <Text style={[styles.title, { color: category.colors.text }]}>{document.title}</Text>
+      </LinearGradient>
 
       <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
         {details.map((d, index) => (
@@ -67,7 +68,7 @@ export default function DocumentDetail() {
       <GradientButton
         label="Invia"
         symbol="paperplane.fill"
-        onPress={() => router.push({ pathname: '/send-document/[id]', params: { id: document.id } })}
+        onPress={() => router.push({ pathname: '/send-document/[id]', params: { id: String(document.id) } })}
       />
     </ScrollView>
   );

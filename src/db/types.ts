@@ -46,9 +46,9 @@ export type DocumentFile = {
 
 // ---- Raw rows as returned by SQLite ----
 
-export type PersonRow = { id: number; name: string };
+export type PersonRecord = { id: number; name: string };
 
-export type CategoryRow = {
+export type CategoryRecord = {
   id: number;
   name: string;
   symbol: string;
@@ -59,7 +59,7 @@ export type CategoryRow = {
   is_builtin: number;
 };
 
-export type DocumentRow = {
+export type DocumentRecord = {
   id: number;
   title: string;
   category_id: number;
@@ -71,3 +71,10 @@ export type DocumentRow = {
   created_at: string;
   updated_at: string;
 };
+
+// ---- Shapes returned by list queries ----
+
+export type PersonWithCount = Person & { documentCount: number };
+export type CategoryWithCount = Category & { documentCount: number };
+export type DocumentListItem = FamilyDocument & { category: Category };
+export type DocumentDetail = DocumentListItem & { person: Person | null };

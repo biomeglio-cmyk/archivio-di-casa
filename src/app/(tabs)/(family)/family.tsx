@@ -1,16 +1,27 @@
 import { ScrollView, StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
+import { PersonRow } from '@/components/person-row';
+import { getDocumentsByPerson } from '@/data/documents';
+import { PEOPLE } from '@/data/people';
 
-// "/family" route. Step, Mamma and Papà arrive in step 6.
+// "/family": the family members
 export default function FamilyScreen() {
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-      <ThemedText themeColor="textSecondary">Qui arriveranno Step, Mamma e Papà.</ThemedText>
+    <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.list}>
+      {PEOPLE.map((person) => (
+        <PersonRow
+          key={person.id}
+          person={person}
+          documentCount={getDocumentsByPerson(person.id).length}
+        />
+      ))}
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  content: { padding: 16 },
+  list: {
+    padding: 16,
+    gap: 10,
+  },
 });

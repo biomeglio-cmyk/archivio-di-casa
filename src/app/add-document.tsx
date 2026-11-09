@@ -1,20 +1,35 @@
 import { router } from 'expo-router';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 
+import { pickPdf, pickPhotos } from '@/capture/pick-files';
 import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
+import { encodePendingFiles, type PendingFile } from '@/storage/pending-files';
 
 // Bottom sheet "Aggiungi un documento", opened by the "+" tab.
-// "Inserisci a mano" opens the new document form; camera, photo library and file import come later.
+// Every option ends on "Nuovo documento", with the captured files already attached.
 export default function AddDocumentSheet() {
+  // Runs a picker; if the user chose something, this sheet is replaced by the form.
+  // replace (not push): after saving, the form closes and we are back on the tab, not on this sheet.
+  async function attach(pick: () => Promise<PendingFile[] | null>) {
+    try {
+      const files = await pick();
+      if (files) {
+        router.replace({ pathname: '/new-document', params: { files: encodePendingFiles(files) } });
+      }
+    } catch (error) {
+      Alert.alert('Impossibile aprire il file', String(error));
+    }
+  }
+
   return (
     <View style={styles.container}>
       <ThemedText style={styles.title}>Aggiungi un documento</ThemedText>
       <View style={styles.options}>
         <SheetOption symbol="camera" label="Fotografa" onPress={() => router.back()} />
-        <SheetOption symbol="photo.on.rectangle" label="Scegli dalle foto" onPress={() => router.back()} />
-        <SheetOption symbol="doc" label="Importa file" onPress={() => router.back()} />
+        <SheetOption symbol="photo.on.rectangle" label="Scegli dalle foto" onPress={() => attach(pickPhotos)} />
+        <SheetOption symbol="doc" label="Importa file" onPress={() => attach(pickPdf)} />
         <SheetOption
           symbol="square.and.pencil"
           label="Inserisci a mano"

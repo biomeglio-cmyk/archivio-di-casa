@@ -4,7 +4,7 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { confirmDeleteDocument } from '@/actions/delete-actions';
-import { SwipeableRow } from '@/components/swipeable-row';
+import { RowIconButton } from '@/components/row-icon-button';
 import { ThemedText } from '@/components/themed-text';
 import type { DocumentListItem } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
@@ -17,8 +17,8 @@ type Props = {
   href: Href;
 };
 
-// A document in a list: category icon, title, expiry date.
-// Swipe left or long-press for "Modifica" and "Elimina".
+// A document in a list, on one line: category icon | title + expiry | pencil, bin.
+// Tapping the left part opens the detail; long-pressing it shows the same actions in a menu.
 export function DocumentRow({ document, href }: Props) {
   const theme = useTheme();
   const db = useSQLiteContext();
@@ -28,26 +28,24 @@ export function DocumentRow({ document, href }: Props) {
   const remove = () => confirmDeleteDocument(db, document);
 
   return (
-    <SwipeableRow onEdit={edit} onDelete={remove}>
+    <View style={[styles.row, { backgroundColor: theme.backgroundElement }]}>
       <Link href={href} asChild>
         <Link.Trigger>
-          <Pressable
-            style={({ pressed }) => [
-              styles.row,
-              { backgroundColor: pressed ? theme.backgroundSelected : theme.backgroundElement },
-            ]}>
-            <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
-              <SymbolView name={category.symbol} tintColor={category.colors.text} size={20} />
+          {/* Static style here: the horizontal layout lives in the inner View */}
+          <Pressable style={styles.main} accessibilityRole="link">
+            <View style={styles.content}>
+              <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
+                <SymbolView name={category.symbol} tintColor={category.colors.text} size={20} />
+              </View>
+              <View style={styles.texts}>
+                <ThemedText numberOfLines={1}>{document.title}</ThemedText>
+                <ThemedText type="small" themeColor="textSecondary" numberOfLines={1}>
+                  {document.expiresAt
+                    ? `${daysUntil(document.expiresAt) < 0 ? 'Scaduto il' : 'Scade il'} ${formatDate(document.expiresAt)}`
+                    : 'Nessuna scadenza'}
+                </ThemedText>
+              </View>
             </View>
-            <View style={styles.texts}>
-              <ThemedText numberOfLines={1}>{document.title}</ThemedText>
-              <ThemedText type="small" themeColor="textSecondary">
-                {document.expiresAt
-                  ? `${daysUntil(document.expiresAt) < 0 ? 'Scaduto il' : 'Scade il'} ${formatDate(document.expiresAt)}`
-                  : 'Nessuna scadenza'}
-              </ThemedText>
-            </View>
-            <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />
           </Pressable>
         </Link.Trigger>
         {/* Native iOS context menu on long press */}
@@ -56,7 +54,10 @@ export function DocumentRow({ document, href }: Props) {
           <Link.MenuAction title="Elimina" icon="trash" destructive onPress={remove} />
         </Link.Menu>
       </Link>
-    </SwipeableRow>
+
+      <RowIconButton symbol="pencil" label={`Modifica ${document.title}`} onPress={edit} />
+      <RowIconButton symbol="trash" label={`Elimina ${document.title}`} onPress={remove} />
+    </View>
   );
 }
 
@@ -64,10 +65,19 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    padding: 12,
+    paddingRight: 4,
     borderRadius: 14,
     borderCurve: 'continuous',
+  },
+  main: {
+    flex: 1,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 12,
+    paddingLeft: 12,
   },
   icon: {
     width: 40,

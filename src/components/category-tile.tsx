@@ -23,7 +23,8 @@ export function CategoryTile({ category, documentCount, size }: Props) {
   return (
     <Link href={{ pathname: '/category/[id]', params: { id: String(category.id) } }} asChild>
       <Link.Trigger>
-        <Pressable style={({ pressed }) => [size, pressed && styles.pressed]}>
+        {/* Static style: a function style would be dropped when Link merges its props */}
+        <Pressable style={size}>
           <LinearGradient colors={[colors.top, colors.bottom]} style={styles.tile}>
             <SymbolView name={category.symbol} tintColor={colors.text} size={28} />
             <Text style={[styles.name, { color: colors.text }]} numberOfLines={2}>
@@ -55,9 +56,6 @@ export function CategoryTile({ category, documentCount, size }: Props) {
 }
 
 const styles = StyleSheet.create({
-  pressed: {
-    opacity: 0.8,
-  },
   tile: {
     flex: 1,
     padding: 14,

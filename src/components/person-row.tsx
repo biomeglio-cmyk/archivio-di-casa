@@ -4,7 +4,7 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { confirmDeletePerson } from '@/actions/delete-actions';
-import { SwipeableRow } from '@/components/swipeable-row';
+import { RowIconButton } from '@/components/row-icon-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import type { Person } from '@/db/types';
@@ -15,8 +15,8 @@ type Props = {
   documentCount: number;
 };
 
-// A family member in the list: avatar, name, number of documents.
-// Swipe left or long-press for "Modifica" and "Elimina".
+// A family member, on one line: avatar | name + documents | pencil, bin.
+// Tapping the left part opens the person; long-pressing it shows the same actions in a menu.
 export function PersonRow({ person, documentCount }: Props) {
   const theme = useTheme();
   const db = useSQLiteContext();
@@ -25,22 +25,20 @@ export function PersonRow({ person, documentCount }: Props) {
   const remove = () => confirmDeletePerson(db, person);
 
   return (
-    <SwipeableRow onEdit={edit} onDelete={remove}>
+    <View style={[styles.row, { backgroundColor: theme.backgroundElement }]}>
       <Link href={{ pathname: '/person/[id]', params: { id: String(person.id) } }} asChild>
         <Link.Trigger>
-          <Pressable
-            style={({ pressed }) => [
-              styles.row,
-              { backgroundColor: pressed ? theme.backgroundSelected : theme.backgroundElement },
-            ]}>
-            <SymbolView name="person.crop.circle" tintColor={BRAND_COLOR} size={40} />
-            <View style={styles.texts}>
-              <ThemedText>{person.name}</ThemedText>
-              <ThemedText type="small" themeColor="textSecondary">
-                {documentCount === 1 ? '1 documento' : `${documentCount} documenti`}
-              </ThemedText>
+          {/* Static style here: the horizontal layout lives in the inner View */}
+          <Pressable style={styles.main} accessibilityRole="link">
+            <View style={styles.content}>
+              <SymbolView name="person.crop.circle" tintColor={BRAND_COLOR} size={40} />
+              <View style={styles.texts}>
+                <ThemedText numberOfLines={1}>{person.name}</ThemedText>
+                <ThemedText type="small" themeColor="textSecondary">
+                  {documentCount === 1 ? '1 documento' : `${documentCount} documenti`}
+                </ThemedText>
+              </View>
             </View>
-            <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />
           </Pressable>
         </Link.Trigger>
         {/* Native iOS context menu on long press */}
@@ -49,7 +47,10 @@ export function PersonRow({ person, documentCount }: Props) {
           <Link.MenuAction title="Elimina" icon="trash" destructive onPress={remove} />
         </Link.Menu>
       </Link>
-    </SwipeableRow>
+
+      <RowIconButton symbol="pencil" label={`Modifica ${person.name}`} onPress={edit} />
+      <RowIconButton symbol="trash" label={`Elimina ${person.name}`} onPress={remove} />
+    </View>
   );
 }
 
@@ -57,10 +58,19 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    padding: 12,
+    paddingRight: 4,
     borderRadius: 14,
     borderCurve: 'continuous',
+  },
+  main: {
+    flex: 1,
+  },
+  content: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    paddingVertical: 12,
+    paddingLeft: 12,
   },
   texts: {
     flex: 1,

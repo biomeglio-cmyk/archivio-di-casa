@@ -7,6 +7,7 @@ import { getCategory } from '@/constants/categories';
 import type { FamilyDocument } from '@/data/documents';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/utils/dates';
+import { daysUntil } from '@/utils/deadlines';
 
 type Props = {
   document: FamilyDocument;
@@ -36,7 +37,9 @@ export function DocumentRow({ document, href }: Props) {
         <View style={styles.texts}>
           <ThemedText numberOfLines={1}>{document.title}</ThemedText>
           <ThemedText type="small" themeColor="textSecondary">
-            {document.expiresAt ? `Scade il ${formatDate(document.expiresAt)}` : 'Nessuna scadenza'}
+            {document.expiresAt
+              ? `${daysUntil(document.expiresAt) < 0 ? 'Scaduto il' : 'Scade il'} ${formatDate(document.expiresAt)}`
+              : 'Nessuna scadenza'}
           </ThemedText>
         </View>
         <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />

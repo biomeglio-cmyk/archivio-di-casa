@@ -51,7 +51,7 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
-            name="new-person"
+            name="person-form"
             options={{
               presentation: 'formSheet',
               headerShown: false,

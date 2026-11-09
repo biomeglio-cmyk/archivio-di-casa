@@ -26,7 +26,7 @@ export default function FamilyScreen() {
 
       {/* Native "+" button on the right of the header, like Contacts or Reminders */}
       <Stack.Toolbar placement="right">
-        <Stack.Toolbar.Button icon="plus" onPress={() => router.push('/new-person')} />
+        <Stack.Toolbar.Button icon="plus" onPress={() => router.push('/person-form')} />
       </Stack.Toolbar>
     </>
   );

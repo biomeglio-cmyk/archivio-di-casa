@@ -1,8 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { router, useLocalSearchParams, useNavigation } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
-import { useEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { DocumentActions } from '@/components/document-actions';
@@ -11,6 +10,7 @@ import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
 import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/utils/dates';
 
@@ -22,18 +22,8 @@ export default function DocumentDetail() {
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, Number(id)), [id]);
   const hasFiles = files !== undefined && files.length > 0;
 
-  // If the document is deleted while this screen is open (from "Modifica documento"),
-  // leave the screen. goBack() of THIS stack's navigation pops the detail from its own tab,
-  // even while the edit modal is still on top.
-  const navigation = useNavigation();
-  const wasLoaded = useRef(false);
-  useEffect(() => {
-    if (document) {
-      wasLoaded.current = true;
-    } else if (document === null && wasLoaded.current && navigation.canGoBack()) {
-      navigation.goBack();
-    }
-  }, [document, navigation]);
+  // Deleted from "Modifica documento" → leave this screen too
+  useLeaveWhenDeleted(document);
 
   // undefined = still loading (a few milliseconds), null = not in the database
   if (document === undefined) {

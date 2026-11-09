@@ -2,6 +2,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 import { Alert } from 'react-native';
 
 import { deleteDocument } from '@/db/documents';
+import { deletePerson } from '@/db/people';
 
 // Confirmation dialogs for destructive actions, shared by detail screens, swipe actions and menus.
 // `onDeleted` runs only if the user confirmed and the deletion succeeded.
@@ -29,4 +30,17 @@ export function confirmDeleteDocument(
       },
     ],
   );
+}
+
+export function confirmDeletePerson(db: SQLiteDatabase, person: { id: number; name: string }, onDeleted?: () => void) {
+  Alert.alert(`Eliminare ${person.name}?`, 'I suoi documenti restano in archivio, senza persona.', [
+    { text: 'Annulla', style: 'cancel' },
+    {
+      text: 'Elimina',
+      style: 'destructive',
+      onPress: () => {
+        deletePerson(db, person.id).then(() => onDeleted?.(), showError);
+      },
+    },
+  ]);
 }

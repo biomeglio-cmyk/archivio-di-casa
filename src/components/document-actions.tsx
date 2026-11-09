@@ -5,8 +5,10 @@ import { Alert, StyleSheet, View } from 'react-native';
 
 import { FrontBackComposer, type FrontBackComposerHandle } from '@/components/front-back-composer';
 import { GradientButton } from '@/components/gradient-button';
+import { SecondaryButton } from '@/components/secondary-button';
 import type { DocumentFile } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
+import { previewDocumentFiles } from '@/storage/preview-files';
 import { namedCopy } from '@/storage/share-copies';
 
 type Props = {
@@ -22,6 +24,16 @@ export function DocumentActions({ title, files }: Props) {
   const pdf = files.find((f) => f.kind === 'pdf');
   const front = files.find((f) => f.kind === 'image' && f.side !== 'back');
   const back = files.find((f) => f.kind === 'image' && f.side === 'back');
+
+  // "Visualizza documento": PDF, or the photos (front first) full screen with zoom
+  async function view() {
+    const shown = pdf ? [pdf] : [front, back].filter((f): f is DocumentFile => f !== undefined);
+    try {
+      await previewDocumentFiles(title, shown);
+    } catch (error) {
+      Alert.alert('Impossibile aprire il documento', error instanceof Error ? error.message : String(error));
+    }
+  }
 
   // "Invia": opens the iOS share sheet (WhatsApp, Mail, Messaggi, AirDrop, Salva su File…)
   async function send() {
@@ -47,6 +59,7 @@ export function DocumentActions({ title, files }: Props) {
 
   return (
     <View style={styles.container}>
+      <SecondaryButton label="Visualizza documento" symbol="eye" onPress={view} />
       <GradientButton
         label={sending ? 'Preparazione…' : 'Invia'}
         symbol="square.and.arrow.up"

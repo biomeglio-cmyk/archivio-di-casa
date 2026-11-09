@@ -6,35 +6,37 @@ import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import { fileLabel } from '@/components/attachment-strip';
-import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import type { DocumentFile } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
+import { previewDocumentFiles } from '@/storage/preview-files';
 
 type Props = {
+  title: string;
   files: DocumentFile[];
 };
 
-// Opens the file full screen with iOS Quick Look (zoom, share, PDF pages…)
-async function openFullScreen(file: DocumentFile) {
-  try {
-    await resolveDocumentFile(file.path).preview();
-  } catch (error) {
-    Alert.alert('Impossibile aprire il file', String(error));
-  }
-}
-
 // Photos (with a Fronte/Retro switch) and PDFs attached to a document
-export function DocumentFilesView({ files }: Props) {
+export function DocumentFilesView({ title, files }: Props) {
   const [imageIndex, setImageIndex] = useState(0);
 
   if (files.length === 0) return null;
 
   const images = files.filter((f) => f.kind === 'image');
   const pdfs = files.filter((f) => f.kind === 'pdf');
-  const shownImage = images[Math.min(imageIndex, images.length - 1)];
+  const shownIndex = Math.min(imageIndex, images.length - 1);
+  const shownImage = images[shownIndex];
+
+  // Tapping the photo opens all faces full screen, starting from the one on screen
+  async function openImages() {
+    try {
+      await previewDocumentFiles(title, images, shownIndex);
+    } catch (error) {
+      Alert.alert('Impossibile aprire il documento', error instanceof Error ? error.message : String(error));
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -46,7 +48,7 @@ export function DocumentFilesView({ files }: Props) {
         />
       )}
 
-      {shownImage && <ImageFile file={shownImage} />}
+      {shownImage && <ImageFile file={shownImage} onPress={openImages} />}
 
       {pdfs.map((pdf) => (
         <PdfFile key={pdf.id} file={pdf} />
@@ -55,14 +57,14 @@ export function DocumentFilesView({ files }: Props) {
   );
 }
 
-function ImageFile({ file }: { file: DocumentFile }) {
+function ImageFile({ file, onPress }: { file: DocumentFile; onPress: () => void }) {
   const theme = useTheme();
   const stored = resolveDocumentFile(file.path);
 
   if (!stored.exists) return <MissingFile />;
 
   return (
-    <Pressable onPress={() => openFullScreen(file)} accessibilityLabel={`${fileLabel(file)}, apri a schermo intero`}>
+    <Pressable onPress={onPress} accessibilityLabel={`${fileLabel(file)}, apri a schermo intero`}>
       <Image
         source={{ uri: stored.uri }}
         style={[styles.image, { backgroundColor: theme.backgroundElement }]}
@@ -80,17 +82,14 @@ function PdfFile({ file }: { file: DocumentFile }) {
   if (!stored.exists) return <MissingFile />;
 
   return (
-    <View style={styles.pdfBlock}>
-      {/* WKWebView renders PDFs natively; it may only read files inside our documents folder */}
-      <View style={[styles.pdfFrame, { borderColor: theme.backgroundSelected }]}>
-        <WebView
-          source={{ uri: stored.uri }}
-          originWhitelist={['*']}
-          allowingReadAccessToURL={getDocumentsDirectory().uri}
-          style={styles.pdf}
-        />
-      </View>
-      <SheetOption symbol="arrow.up.left.and.arrow.down.right" label="Apri a schermo intero" onPress={() => openFullScreen(file)} />
+    // WKWebView renders PDFs natively; it may only read files inside our documents folder
+    <View style={[styles.pdfFrame, { borderColor: theme.backgroundSelected }]}>
+      <WebView
+        source={{ uri: stored.uri }}
+        originWhitelist={['*']}
+        allowingReadAccessToURL={getDocumentsDirectory().uri}
+        style={styles.pdf}
+      />
     </View>
   );
 }
@@ -114,9 +113,6 @@ const styles = StyleSheet.create({
     aspectRatio: CARD_ASPECT_RATIO,
     borderRadius: 16,
     borderCurve: 'continuous',
-  },
-  pdfBlock: {
-    gap: 10,
   },
   pdfFrame: {
     height: 440,

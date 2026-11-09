@@ -96,6 +96,16 @@ function normalize(doc: DocumentInput) {
   };
 }
 
+function insertFileRow(db: SQLiteDatabase, documentId: number, path: string, file: PendingFile) {
+  return db.runAsync(
+    'INSERT INTO document_files (document_id, path, side, kind) VALUES (?, ?, ?, ?)',
+    documentId,
+    path,
+    file.side,
+    file.kind,
+  );
+}
+
 // Saves the document and its files; returns the id of the new document.
 // 1. copy the files into documents/ (outside the transaction: copying can be slow)
 // 2. insert the document and its document_files rows in ONE transaction (all or nothing)
@@ -128,13 +138,7 @@ export async function insertDocument(
       documentId = result.lastInsertRowId;
 
       for (const { path, file } of stored) {
-        await db.runAsync(
-          'INSERT INTO document_files (document_id, path, side, kind) VALUES (?, ?, ?, ?)',
-          documentId,
-          path,
-          file.side,
-          file.kind,
-        );
+        await insertFileRow(db, documentId, path, file);
       }
     });
     return documentId;
@@ -186,4 +190,35 @@ export async function deleteDocument(db: SQLiteDatabase, id: number): Promise<vo
   const files = await db.getAllAsync<{ path: string }>('SELECT path FROM document_files WHERE document_id = ?', id);
   await db.runAsync('DELETE FROM documents WHERE id = ?', id);
   files.forEach((file) => deleteStoredFile(file.path));
+}
+
+// Saves the edit form: fields plus file changes (removed files, new or replacement files).
+// Same safety rules as insertDocument; the old files are deleted from the phone only
+// after the transaction succeeded, so a failure never loses a photo.
+export async function saveDocumentEdits(
+  db: SQLiteDatabase,
+  id: number,
+  input: DocumentInput,
+  removedFiles: DocumentFile[],
+  addedFiles: PendingFile[],
+): Promise<void> {
+  const stored: { path: string; file: PendingFile }[] = [];
+  try {
+    for (const file of addedFiles) {
+      stored.push({ path: await storePendingFile(file), file });
+    }
+    await db.withTransactionAsync(async () => {
+      await updateDocument(db, id, input);
+      for (const file of removedFiles) {
+        await db.runAsync('DELETE FROM document_files WHERE id = ?', file.id);
+      }
+      for (const { path, file } of stored) {
+        await insertFileRow(db, id, path, file);
+      }
+    });
+  } catch (error) {
+    stored.forEach(({ path }) => deleteStoredFile(path));
+    throw error;
+  }
+  removedFiles.forEach((file) => deleteStoredFile(file.path));
 }

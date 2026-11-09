@@ -1,3 +1,4 @@
+import { router } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
 
 import { BRAND_COLOR } from '@/constants/brand';
@@ -16,7 +17,12 @@ export default function TabsLayout() {
         <NativeTabs.Trigger.Label>Archivio</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="add">
+      {/* "+" tab: disabled, so it is never selected. The press event still arrives,
+          and we use it to open the "Aggiungi un documento" sheet instead. */}
+      <NativeTabs.Trigger
+        name="add"
+        disabled
+        listeners={{ tabPress: () => router.push('/add-document') }}>
         <NativeTabs.Trigger.Icon sf="plus.circle.fill" md="add_circle" />
         <NativeTabs.Trigger.Label>Aggiungi</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>

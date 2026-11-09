@@ -16,6 +16,15 @@ export default function RootLayout() {
       <AnimatedSplashOverlay />
       <Stack>
         <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack.Screen
+          name="add-document"
+          options={{
+            presentation: 'formSheet',
+            headerShown: false,
+            sheetGrabberVisible: true,
+            sheetAllowedDetents: 'fitToContents',
+          }}
+        />
       </Stack>
     </ThemeProvider>
   );

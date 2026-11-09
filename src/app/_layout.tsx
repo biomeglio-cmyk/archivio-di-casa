@@ -50,6 +50,15 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="new-person"
+            options={{
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              sheetAllowedDetents: 'fitToContents',
+            }}
+          />
+          <Stack.Screen
             name="send-document/[id]"
             options={{
               presentation: 'formSheet',

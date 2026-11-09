@@ -5,6 +5,8 @@ export default function ArchiveLayout() {
   return (
     <Stack screenOptions={{ headerLargeTitleEnabled: true }}>
       <Stack.Screen name="archive" options={{ title: 'Archivio' }} />
+      <Stack.Screen name="category/[id]" />
+      <Stack.Screen name="document/[id]" options={{ headerLargeTitleEnabled: false }} />
     </Stack>
   );
 }

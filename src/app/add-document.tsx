@@ -27,7 +27,7 @@ export default function AddDocumentSheet() {
     <View style={styles.container}>
       <ThemedText style={styles.title}>Aggiungi un documento</ThemedText>
       <View style={styles.options}>
-        <SheetOption symbol="camera" label="Fotografa" onPress={() => router.back()} />
+        <SheetOption symbol="camera" label="Fotografa" onPress={() => router.replace('/capture')} />
         <SheetOption symbol="photo.on.rectangle" label="Scegli dalle foto" onPress={() => attach(pickPhotos)} />
         <SheetOption symbol="doc" label="Importa file" onPress={() => attach(pickPdf)} />
         <SheetOption

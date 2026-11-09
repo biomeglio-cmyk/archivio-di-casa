@@ -60,6 +60,10 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="capture"
+            options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
+          />
+          <Stack.Screen
             name="new-document"
             options={{
               presentation: 'modal',

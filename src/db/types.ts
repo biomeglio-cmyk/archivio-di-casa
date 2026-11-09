@@ -5,6 +5,7 @@ import type { SFSymbol } from 'expo-symbols';
 export type Person = {
   id: number;
   name: string;
+  photoPath: string | null; // relative to Paths.document; null = initial in a circle
 };
 
 export type CategoryColors = {
@@ -46,7 +47,7 @@ export type DocumentFile = {
 
 // ---- Raw rows as returned by SQLite ----
 
-export type PersonRecord = { id: number; name: string };
+export type PersonRecord = { id: number; name: string; photo_path: string | null };
 
 export type CategoryRecord = {
   id: number;

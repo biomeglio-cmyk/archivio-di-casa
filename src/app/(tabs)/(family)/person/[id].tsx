@@ -1,8 +1,9 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
-import { ScrollView, StyleSheet } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { DocumentRow } from '@/components/document-row';
+import { PersonAvatar } from '@/components/person-avatar';
 import { ThemedText } from '@/components/themed-text';
 import { listDocumentsByPerson } from '@/db/documents';
 import { getPerson } from '@/db/people';
@@ -23,6 +24,12 @@ export default function PersonScreen() {
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.list}>
         <Stack.Screen options={{ title: person?.name ?? '' }} />
+
+        {person && (
+          <View style={styles.header}>
+            <PersonAvatar name={person.name} photoPath={person.photoPath} size={96} />
+          </View>
+        )}
 
         {documents?.length === 0 && (
           <ThemedText themeColor="textSecondary">Nessun documento per questa persona.</ThemedText>
@@ -52,5 +59,9 @@ const styles = StyleSheet.create({
   list: {
     padding: 16,
     gap: 10,
+  },
+  header: {
+    alignItems: 'center',
+    paddingBottom: 8,
   },
 });

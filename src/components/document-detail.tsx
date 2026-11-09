@@ -6,6 +6,7 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
+import { PersonAvatar } from '@/components/person-avatar';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
 import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
@@ -80,7 +81,14 @@ export default function DocumentDetail() {
                 index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected },
               ]}>
               <ThemedText themeColor="textSecondary">{d.label}</ThemedText>
-              <ThemedText style={styles.detailValue}>{d.value}</ThemedText>
+              {d.label === 'Persona' && person ? (
+                <View style={styles.personValue}>
+                  <PersonAvatar name={person.name} photoPath={person.photoPath} size={28} />
+                  <ThemedText style={styles.detailValue}>{d.value}</ThemedText>
+                </View>
+              ) : (
+                <ThemedText style={styles.detailValue}>{d.value}</ThemedText>
+              )}
             </View>
           ))}
         </View>
@@ -126,9 +134,16 @@ const styles = StyleSheet.create({
   },
   detailRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     gap: 16,
     paddingVertical: 14,
+  },
+  personValue: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    flexShrink: 1,
   },
   detailValue: {
     flexShrink: 1,

@@ -1,5 +1,6 @@
 import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
+import { ActionSheetIOS } from 'react-native';
 
 import type { PendingFile } from '@/storage/pending-files';
 
@@ -44,4 +45,39 @@ export async function pickPdf(): Promise<PendingFile[] | null> {
 
   const asset = result.assets[0];
   return [{ uri: asset.uri, kind: 'pdf', side: null, name: asset.name }];
+}
+
+// Person photo: native iOS action sheet (take / choose / remove), then the native square crop.
+// Returns the URI of the square photo, 'remove', or null if cancelled.
+export async function pickPersonPhoto(hasPhoto: boolean): Promise<string | 'remove' | null> {
+  const options = ['Scatta una foto', 'Scegli dalle foto', ...(hasPhoto ? ['Rimuovi foto'] : []), 'Annulla'];
+  const index = await new Promise<number>((resolve) =>
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        options,
+        cancelButtonIndex: options.length - 1,
+        destructiveButtonIndex: hasPhoto ? 2 : undefined,
+      },
+      resolve,
+    ),
+  );
+
+  if (index === 0) {
+    const permission = await ImagePicker.requestCameraPermissionsAsync();
+    if (!permission.granted) return null;
+    // allowsEditing shows the iOS crop screen, which is always square
+    const result = await ImagePicker.launchCameraAsync({ allowsEditing: true, aspect: [1, 1], quality: 0.85 });
+    return result.canceled ? null : result.assets[0].uri;
+  }
+  if (index === 1) {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ['images'],
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.85,
+    });
+    return result.canceled ? null : result.assets[0].uri;
+  }
+  if (hasPhoto && index === 2) return 'remove';
+  return null;
 }

@@ -60,8 +60,8 @@ export function listDocumentsByPerson(db: SQLiteDatabase, personId: number): Pro
 }
 
 export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise<DocumentDetail | null> {
-  const row = await db.getFirstAsync<DocumentWithCategoryRecord & { p_name: string | null }>(
-    `SELECT d.*, ${CATEGORY_JOIN_COLUMNS}, p.name AS p_name
+  const row = await db.getFirstAsync<DocumentWithCategoryRecord & { p_name: string | null; p_photo_path: string | null }>(
+    `SELECT d.*, ${CATEGORY_JOIN_COLUMNS}, p.name AS p_name, p.photo_path AS p_photo_path
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      LEFT JOIN people p ON p.id = d.person_id
@@ -70,7 +70,10 @@ export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise
   );
   if (!row) return null;
   const document = mapDocument(row);
-  const person = row.person_id !== null && row.p_name !== null ? { id: row.person_id, name: row.p_name } : null;
+  const person =
+    row.person_id !== null && row.p_name !== null
+      ? { id: row.person_id, name: row.p_name, photoPath: row.p_photo_path }
+      : null;
   return { ...document, person };
 }
 

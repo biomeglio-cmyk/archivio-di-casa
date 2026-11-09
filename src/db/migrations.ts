@@ -98,6 +98,14 @@ const MIGRATIONS: Migration[] = [
       }
     },
   },
+  {
+    version: 3,
+    name: 'person photo',
+    up: async (db) => {
+      // Relative to Paths.document, like document files (e.g. 'people/1731…-a1b2c3.jpg'); NULL = no photo
+      await db.execAsync('ALTER TABLE people ADD COLUMN photo_path TEXT');
+    },
+  },
 ];
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase): Promise<void> {

@@ -1,12 +1,11 @@
 import { Link, router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { confirmDeletePerson } from '@/actions/delete-actions';
+import { PersonAvatar } from '@/components/person-avatar';
 import { RowIconButton } from '@/components/row-icon-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR } from '@/constants/brand';
 import type { Person } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -31,7 +30,7 @@ export function PersonRow({ person, documentCount }: Props) {
           {/* Static style here: the horizontal layout lives in the inner View */}
           <Pressable style={styles.main} accessibilityRole="link">
             <View style={styles.content}>
-              <SymbolView name="person.crop.circle" tintColor={BRAND_COLOR} size={40} />
+              <PersonAvatar name={person.name} photoPath={person.photoPath} size={40} />
               <View style={styles.texts}>
                 <ThemedText numberOfLines={1}>{person.name}</ThemedText>
                 <ThemedText type="small" themeColor="textSecondary">

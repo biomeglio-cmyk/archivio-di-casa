@@ -3,6 +3,7 @@ import { Link } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
+import { FONTS } from '@/constants/brand';
 import type { Category } from '@/constants/categories';
 
 type Props = {
@@ -45,7 +46,7 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     lineHeight: 20,
-    fontWeight: 700,
+    fontFamily: FONTS.titleSemiBold,
     marginTop: 'auto', // pushes name and count to the bottom of the tile
   },
   count: {

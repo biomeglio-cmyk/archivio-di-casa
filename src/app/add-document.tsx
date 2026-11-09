@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
+import { FONTS } from '@/constants/brand';
 
 // Bottom sheet "Aggiungi un documento", opened by the "+" tab.
 // For now every option just closes the sheet: camera, photo library and file import come later.
@@ -29,7 +30,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontWeight: 700,
+    fontFamily: FONTS.titleBold,
   },
   options: {
     gap: 10,

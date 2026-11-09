@@ -3,6 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
+import { FONTS } from '@/constants/brand';
 import { getDocument } from '@/data/documents';
 
 // Bottom sheet "Invia", opened from the document detail. Placeholder for now.
@@ -34,6 +35,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontWeight: 700,
+    fontFamily: FONTS.titleBold,
   },
 });

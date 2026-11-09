@@ -1,0 +1,53 @@
+import { LinearGradient } from 'expo-linear-gradient';
+import { SymbolView, type SFSymbol } from 'expo-symbols';
+import { Pressable, StyleSheet, Text } from 'react-native';
+
+import { BRAND_GRADIENT, FONTS } from '@/constants/brand';
+
+type Props = {
+  label: string;
+  symbol?: SFSymbol;
+  onPress: () => void;
+};
+
+// Primary button with the logo gradient (left → right)
+export function GradientButton({ label, symbol, onPress }: Props) {
+  return (
+    <Pressable
+      accessibilityRole="button"
+      onPress={onPress}
+      style={({ pressed }) => [styles.pressable, pressed && styles.pressed]}>
+      <LinearGradient
+        colors={BRAND_GRADIENT}
+        start={{ x: 0, y: 0.5 }}
+        end={{ x: 1, y: 0.5 }}
+        style={styles.gradient}>
+        {symbol && <SymbolView name={symbol} tintColor="#FFFFFF" size={18} />}
+        <Text style={styles.label}>{label}</Text>
+      </LinearGradient>
+    </Pressable>
+  );
+}
+
+const styles = StyleSheet.create({
+  pressable: {
+    borderRadius: 16,
+    borderCurve: 'continuous',
+    overflow: 'hidden',
+  },
+  pressed: {
+    opacity: 0.85,
+  },
+  gradient: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingVertical: 16,
+  },
+  label: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontFamily: FONTS.titleSemiBold,
+  },
+});

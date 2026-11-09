@@ -2,10 +2,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/brand';
 import { getCategory } from '@/constants/categories';
 import { getDocument } from '@/data/documents';
 import { getPerson } from '@/data/people';
@@ -63,14 +64,11 @@ export default function DocumentDetail() {
         ))}
       </View>
 
-      {/* Plain button for now: it becomes the gradient button in step 7 */}
-      <Pressable
-        accessibilityRole="button"
+      <GradientButton
+        label="Invia"
+        symbol="paperplane.fill"
         onPress={() => router.push({ pathname: '/send-document/[id]', params: { id: document.id } })}
-        style={({ pressed }) => [styles.sendButton, pressed && { opacity: 0.8 }]}>
-        <SymbolView name="paperplane.fill" tintColor="#FFFFFF" size={18} />
-        <Text style={styles.sendLabel}>Invia</Text>
-      </Pressable>
+      />
     </ScrollView>
   );
 }
@@ -95,7 +93,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     lineHeight: 32,
-    fontWeight: 700,
+    fontFamily: FONTS.titleBold,
   },
   card: {
     borderRadius: 16,
@@ -111,20 +109,5 @@ const styles = StyleSheet.create({
   detailValue: {
     flexShrink: 1,
     textAlign: 'right',
-  },
-  sendButton: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-    paddingVertical: 16,
-    borderRadius: 16,
-    borderCurve: 'continuous',
-    backgroundColor: BRAND_COLOR,
-  },
-  sendLabel: {
-    color: '#FFFFFF',
-    fontSize: 17,
-    fontWeight: 600,
   },
 });

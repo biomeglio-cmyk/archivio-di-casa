@@ -74,12 +74,27 @@ export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise
   return { ...document, person };
 }
 
-export type NewDocument = {
+// What the form edits (the same shape for a new document and for an existing one)
+export type DocumentInput = {
   title: string;
   categoryId: number;
   personId: number | null;
+  number: string | null;
   expiresAt: string | null; // 'YYYY-MM-DD'
+  reminderDays: number | null; // only meaningful with an expiry date
+  notes: string | null;
 };
+
+// Empty strings become NULL, and no reminder without an expiry date
+function normalize(doc: DocumentInput) {
+  const text = (value: string | null) => (value && value.trim() ? value.trim() : null);
+  return {
+    title: doc.title.trim(),
+    number: text(doc.number),
+    notes: text(doc.notes),
+    reminderDays: doc.expiresAt ? doc.reminderDays : null,
+  };
+}
 
 // Saves the document and its files; returns the id of the new document.
 // 1. copy the files into documents/ (outside the transaction: copying can be slow)
@@ -87,7 +102,7 @@ export type NewDocument = {
 // 3. if the database part fails, delete the copied files so nothing is left behind
 export async function insertDocument(
   db: SQLiteDatabase,
-  doc: NewDocument,
+  doc: DocumentInput,
   files: PendingFile[] = [],
 ): Promise<number> {
   const stored: { path: string; file: PendingFile }[] = [];
@@ -98,12 +113,17 @@ export async function insertDocument(
 
     let documentId = 0;
     await db.withTransactionAsync(async () => {
+      const clean = normalize(doc);
       const result = await db.runAsync(
-        'INSERT INTO documents (title, category_id, person_id, expires_at) VALUES (?, ?, ?, ?)',
-        doc.title.trim(),
+        `INSERT INTO documents (title, category_id, person_id, number, expires_at, reminder_days, notes)
+         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        clean.title,
         doc.categoryId,
         doc.personId,
+        clean.number,
         doc.expiresAt,
+        clean.reminderDays,
+        clean.notes,
       );
       documentId = result.lastInsertRowId;
 
@@ -139,4 +159,31 @@ export async function listDocumentFiles(db: SQLiteDatabase, documentId: number):
     kind: row.kind,
     createdAt: row.created_at,
   }));
+}
+
+// Updates the document fields (files are handled separately)
+export async function updateDocument(db: SQLiteDatabase, id: number, doc: DocumentInput): Promise<void> {
+  const clean = normalize(doc);
+  await db.runAsync(
+    `UPDATE documents
+     SET title = ?, category_id = ?, person_id = ?, number = ?, expires_at = ?, reminder_days = ?, notes = ?,
+         updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+     WHERE id = ?`,
+    clean.title,
+    doc.categoryId,
+    doc.personId,
+    clean.number,
+    doc.expiresAt,
+    clean.reminderDays,
+    clean.notes,
+    id,
+  );
+}
+
+// Deletes the document; its document_files rows go with it (ON DELETE CASCADE),
+// then the photos/PDFs are removed from the phone.
+export async function deleteDocument(db: SQLiteDatabase, id: number): Promise<void> {
+  const files = await db.getAllAsync<{ path: string }>('SELECT path FROM document_files WHERE document_id = ?', id);
+  await db.runAsync('DELETE FROM documents WHERE id = ?', id);
+  files.forEach((file) => deleteStoredFile(file.path));
 }

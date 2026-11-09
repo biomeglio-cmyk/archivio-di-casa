@@ -64,6 +64,14 @@ export default function RootLayout() {
             options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
           />
           <Stack.Screen
+            name="edit-document/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Modifica documento',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
+          <Stack.Screen
             name="new-document"
             options={{
               presentation: 'modal',

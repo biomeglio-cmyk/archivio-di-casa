@@ -1,7 +1,8 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { useLocalSearchParams } from 'expo-router';
+import { router, useLocalSearchParams, useNavigation } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
+import { useEffect, useRef } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { DocumentActions } from '@/components/document-actions';
@@ -20,6 +21,19 @@ export default function DocumentDetail() {
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, Number(id)), [id]);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, Number(id)), [id]);
   const hasFiles = files !== undefined && files.length > 0;
+
+  // If the document is deleted while this screen is open (from "Modifica documento"),
+  // leave the screen. goBack() of THIS stack's navigation pops the detail from its own tab,
+  // even while the edit modal is still on top.
+  const navigation = useNavigation();
+  const wasLoaded = useRef(false);
+  useEffect(() => {
+    if (document) {
+      wasLoaded.current = true;
+    } else if (document === null && wasLoaded.current && navigation.canGoBack()) {
+      navigation.goBack();
+    }
+  }, [document, navigation]);
 
   // undefined = still loading (a few milliseconds), null = not in the database
   if (document === undefined) {
@@ -41,41 +55,55 @@ export default function DocumentDetail() {
   const details = [
     { label: 'Categoria', value: category.name },
     { label: 'Persona', value: person?.name },
+    { label: 'Numero', value: document.number },
     { label: 'Scadenza', value: document.expiresAt ? formatDate(document.expiresAt) : 'Nessuna' },
+    {
+      label: 'Promemoria',
+      value: document.expiresAt && document.reminderDays ? `${document.reminderDays} giorni prima` : null,
+    },
     { label: 'Note', value: document.notes },
   ].filter((d) => d.value);
 
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-      <Stack.Screen options={{ title: '' }} />
+    <>
+      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
+        <Stack.Screen options={{ title: '' }} />
 
-      <LinearGradient colors={[category.colors.top, category.colors.bottom]} style={styles.header}>
-        <SymbolView name={category.symbol} tintColor={category.colors.text} size={40} />
-        <Text style={[styles.title, { color: category.colors.text }]}>{document.title}</Text>
-      </LinearGradient>
+        <LinearGradient colors={[category.colors.top, category.colors.bottom]} style={styles.header}>
+          <SymbolView name={category.symbol} tintColor={category.colors.text} size={40} />
+          <Text style={[styles.title, { color: category.colors.text }]}>{document.title}</Text>
+        </LinearGradient>
 
-      {hasFiles && (
-        <>
-          <DocumentFilesView title={document.title} files={files} />
-          <DocumentActions title={document.title} files={files} />
-        </>
-      )}
+        {hasFiles && (
+          <>
+            <DocumentFilesView title={document.title} files={files} />
+            <DocumentActions title={document.title} files={files} />
+          </>
+        )}
 
-      <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
-        {details.map((d, index) => (
-          <View
-            key={d.label}
-            style={[
-              styles.detailRow,
-              index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected },
-            ]}>
-            <ThemedText themeColor="textSecondary">{d.label}</ThemedText>
-            <ThemedText style={styles.detailValue}>{d.value}</ThemedText>
-          </View>
-        ))}
-      </View>
+        <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
+          {details.map((d, index) => (
+            <View
+              key={d.label}
+              style={[
+                styles.detailRow,
+                index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected },
+              ]}>
+              <ThemedText themeColor="textSecondary">{d.label}</ThemedText>
+              <ThemedText style={styles.detailValue}>{d.value}</ThemedText>
+            </View>
+          ))}
+        </View>
+      </ScrollView>
 
-    </ScrollView>
+      {/* Pencil on the right of the header: opens the same form as "Nuovo documento", filled in */}
+      <Stack.Toolbar placement="right">
+        <Stack.Toolbar.Button
+          icon="pencil"
+          onPress={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
+        />
+      </Stack.Toolbar>
+    </>
   );
 }
 

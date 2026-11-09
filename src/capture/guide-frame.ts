@@ -16,3 +16,34 @@ export function guideFrameRect(screenWidth: number, screenHeight: number): Frame
     height,
   };
 }
+
+// Extra room kept around the frame when cropping, so the card edges are never cut off
+const CROP_MARGIN = 0.04;
+
+// The camera preview fills the screen ("aspect fill"): the photo is scaled until it covers
+// the whole screen and the overflowing part is hidden. To crop the photo exactly where the
+// frame was, we undo that scaling and offset.
+export function frameToPhotoCrop(
+  frame: FrameRect,
+  screen: { width: number; height: number },
+  photo: { width: number; height: number },
+): { originX: number; originY: number; width: number; height: number } {
+  const scale = Math.max(screen.width / photo.width, screen.height / photo.height);
+  const offsetX = (photo.width * scale - screen.width) / 2;
+  const offsetY = (photo.height * scale - screen.height) / 2;
+
+  const marginX = frame.width * CROP_MARGIN;
+  const marginY = frame.height * CROP_MARGIN;
+
+  const left = Math.max(0, (frame.x - marginX + offsetX) / scale);
+  const top = Math.max(0, (frame.y - marginY + offsetY) / scale);
+  const right = Math.min(photo.width, (frame.x + frame.width + marginX + offsetX) / scale);
+  const bottom = Math.min(photo.height, (frame.y + frame.height + marginY + offsetY) / scale);
+
+  return {
+    originX: Math.round(left),
+    originY: Math.round(top),
+    width: Math.round(right - left),
+    height: Math.round(bottom - top),
+  };
+}

@@ -6,6 +6,7 @@ import { useRef, useState } from 'react';
 import { Linking, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { cropToGuideFrame } from '@/capture/crop-photo';
 import { guideFrameRect } from '@/capture/guide-frame';
 import { GradientButton } from '@/components/gradient-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
@@ -44,8 +45,9 @@ export default function CaptureScreen() {
     if (!cameraRef.current || !ready || busy) return;
     setBusy(true);
     try {
-      const photo = await cameraRef.current.takePictureAsync({ quality: 0.85 });
-      setPreviewUri(photo.uri);
+      // quality 1 here: the crop below re-compresses once, avoiding a double JPEG loss
+      const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
+      setPreviewUri(await cropToGuideFrame(photo, frame, { width, height }));
     } finally {
       setBusy(false);
     }

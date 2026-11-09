@@ -1,3 +1,4 @@
+import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
@@ -16,7 +17,7 @@ export function CategoryCard({ category, selected = false, onPress }: Props) {
       <ThemedView
         type="backgroundElement"
         style={[styles.card, selected && styles.selected]}>
-        <ThemedText style={styles.icon}>{category.icon}</ThemedText>
+        <SymbolView name={category.symbol} tintColor={category.colors.text} size={28} />
         <View style={styles.texts}>
           <ThemedText>{category.name}</ThemedText>
           <ThemedText type="small">{category.examples}</ThemedText>
@@ -38,9 +39,6 @@ const styles = StyleSheet.create({
   },
   selected: {
     borderColor: '#208AEF',
-  },
-  icon: {
-    fontSize: 28,
   },
   texts: {
     flex: 1,

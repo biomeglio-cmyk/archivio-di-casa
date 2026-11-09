@@ -1,9 +1,7 @@
 import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, Text } from 'react-native';
 
-import { FONTS } from '@/constants/brand';
-
-const DANGER = '#E5383B'; // iOS-like destructive red
+import { DANGER_COLOR as DANGER, FONTS } from '@/constants/brand';
 
 type Props = {
   label: string;

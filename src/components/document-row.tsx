@@ -3,9 +3,10 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
+import { DANGER_COLOR } from '@/constants/brand';
 import type { DocumentListItem } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
-import { formatDate } from '@/utils/dates';
+import { describeDistance, formatShortDate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
 type Props = {
@@ -19,6 +20,8 @@ type Props = {
 export function DocumentRow({ document, href }: Props) {
   const theme = useTheme();
   const { category } = document;
+  const days = document.expiresAt ? daysUntil(document.expiresAt) : null;
+  const expired = days !== null && days < 0;
 
   return (
     <Link href={href} asChild>
@@ -32,9 +35,14 @@ export function DocumentRow({ document, href }: Props) {
         </View>
         <View style={styles.texts}>
           <ThemedText numberOfLines={1}>{document.title}</ThemedText>
-          <ThemedText type="small" themeColor="textSecondary" numberOfLines={1}>
-            {document.expiresAt
-              ? `${daysUntil(document.expiresAt) < 0 ? 'Scaduto il' : 'Scade il'} ${formatDate(document.expiresAt)}`
+          {/* "lun 9 nov · oggi", "gio 12 nov · tra 3 giorni"; expired dates in red */}
+          <ThemedText
+            type="small"
+            themeColor="textSecondary"
+            numberOfLines={1}
+            style={expired && { color: DANGER_COLOR }}>
+            {document.expiresAt && days !== null
+              ? `${formatShortDate(document.expiresAt)} · ${describeDistance(days)}`
               : 'Nessuna scadenza'}
           </ThemedText>
         </View>

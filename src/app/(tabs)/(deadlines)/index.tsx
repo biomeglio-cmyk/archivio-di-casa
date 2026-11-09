@@ -19,8 +19,11 @@ export default function DeadlinesScreen() {
 
       {sections.map((section) => (
         <View key={section.title} style={styles.section}>
-          <ThemedText type="smallBold" themeColor="textSecondary" style={styles.sectionTitle}>
-            {section.title}
+          <ThemedText type="small" themeColor="textSecondary" style={styles.sectionTitle}>
+            <ThemedText type="smallBold" themeColor="textSecondary">
+              {section.title}
+            </ThemedText>
+            {` · ${section.range}`}
           </ThemedText>
           {section.documents.map((doc) => (
             <DocumentRow
@@ -44,8 +47,6 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   sectionTitle: {
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
     paddingHorizontal: 4,
   },
 });

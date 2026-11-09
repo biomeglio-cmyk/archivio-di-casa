@@ -1,14 +1,14 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { router, useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
-import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
-import { getDocumentDetail } from '@/db/documents';
+import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/utils/dates';
@@ -18,6 +18,8 @@ export default function DocumentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const theme = useTheme();
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, Number(id)), [id]);
+  const { data: files } = useDbQuery((db) => listDocumentFiles(db, Number(id)), [id]);
+  const hasFiles = files !== undefined && files.length > 0;
 
   // undefined = still loading (a few milliseconds), null = not in the database
   if (document === undefined) {
@@ -52,7 +54,12 @@ export default function DocumentDetail() {
         <Text style={[styles.title, { color: category.colors.text }]}>{document.title}</Text>
       </LinearGradient>
 
-      <DocumentFilesView documentId={document.id} />
+      {hasFiles && (
+        <>
+          <DocumentFilesView files={files} />
+          <DocumentActions title={document.title} files={files} />
+        </>
+      )}
 
       <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
         {details.map((d, index) => (
@@ -68,11 +75,6 @@ export default function DocumentDetail() {
         ))}
       </View>
 
-      <GradientButton
-        label="Invia"
-        symbol="paperplane.fill"
-        onPress={() => router.push({ pathname: '/send-document/[id]', params: { id: String(document.id) } })}
-      />
     </ScrollView>
   );
 }

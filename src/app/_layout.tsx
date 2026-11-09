@@ -71,15 +71,6 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
-          <Stack.Screen
-            name="send-document/[id]"
-            options={{
-              presentation: 'formSheet',
-              headerShown: false,
-              sheetGrabberVisible: true,
-              sheetAllowedDetents: 'fitToContents',
-            }}
-          />
         </Stack>
       </ThemeProvider>
     </SQLiteProvider>

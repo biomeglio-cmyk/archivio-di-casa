@@ -9,14 +9,12 @@ import { fileLabel } from '@/components/attachment-strip';
 import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
-import { listDocumentFiles } from '@/db/documents';
 import type { DocumentFile } from '@/db/types';
-import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
 
 type Props = {
-  documentId: number;
+  files: DocumentFile[];
 };
 
 // Opens the file full screen with iOS Quick Look (zoom, share, PDF pages…)
@@ -29,11 +27,10 @@ async function openFullScreen(file: DocumentFile) {
 }
 
 // Photos (with a Fronte/Retro switch) and PDFs attached to a document
-export function DocumentFilesView({ documentId }: Props) {
-  const { data: files } = useDbQuery((db) => listDocumentFiles(db, documentId), [documentId]);
+export function DocumentFilesView({ files }: Props) {
   const [imageIndex, setImageIndex] = useState(0);
 
-  if (!files || files.length === 0) return null;
+  if (files.length === 0) return null;
 
   const images = files.filter((f) => f.kind === 'image');
   const pdfs = files.filter((f) => f.kind === 'pdf');

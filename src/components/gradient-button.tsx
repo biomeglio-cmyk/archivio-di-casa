@@ -7,16 +7,19 @@ import { BRAND_GRADIENT, FONTS } from '@/constants/brand';
 type Props = {
   label: string;
   symbol?: SFSymbol;
+  disabled?: boolean;
   onPress: () => void;
 };
 
 // Primary button with the logo gradient (left → right)
-export function GradientButton({ label, symbol, onPress }: Props) {
+export function GradientButton({ label, symbol, disabled = false, onPress }: Props) {
   return (
     <Pressable
       accessibilityRole="button"
+      accessibilityState={{ disabled }}
+      disabled={disabled}
       onPress={onPress}
-      style={({ pressed }) => [styles.pressable, pressed && styles.pressed]}>
+      style={({ pressed }) => [styles.pressable, pressed && styles.pressed, disabled && styles.disabled]}>
       <LinearGradient
         colors={BRAND_GRADIENT}
         start={{ x: 0, y: 0.5 }}
@@ -37,6 +40,9 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.85,
+  },
+  disabled: {
+    opacity: 0.4,
   },
   gradient: {
     flexDirection: 'row',

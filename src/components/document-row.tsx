@@ -3,14 +3,13 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { getCategory } from '@/constants/categories';
-import type { FamilyDocument } from '@/data/documents';
+import type { DocumentListItem } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
 type Props = {
-  document: FamilyDocument;
+  document: DocumentListItem; // includes its category
   // Each tab has its own copy of the document screen, so the caller decides where to go
   href: Href;
 };
@@ -18,7 +17,7 @@ type Props = {
 // A document in a list: category icon, title, expiry date
 export function DocumentRow({ document, href }: Props) {
   const theme = useTheme();
-  const category = getCategory(document.categoryId);
+  const { category } = document;
 
   return (
     <Link href={href} asChild>
@@ -27,12 +26,8 @@ export function DocumentRow({ document, href }: Props) {
           styles.row,
           { backgroundColor: pressed ? theme.backgroundSelected : theme.backgroundElement },
         ]}>
-        <View style={[styles.icon, { backgroundColor: category?.colors.bottom }]}>
-          <SymbolView
-            name={category?.symbol ?? 'doc'}
-            tintColor={category?.colors.text ?? theme.text}
-            size={20}
-          />
+        <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
+          <SymbolView name={category.symbol} tintColor={category.colors.text} size={20} />
         </View>
         <View style={styles.texts}>
           <ThemedText numberOfLines={1}>{document.title}</ThemedText>

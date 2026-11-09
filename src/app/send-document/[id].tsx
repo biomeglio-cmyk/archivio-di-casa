@@ -4,12 +4,13 @@ import { StyleSheet, View } from 'react-native';
 import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
-import { getDocument } from '@/data/documents';
+import { getDocumentDetail } from '@/db/documents';
+import { useDbQuery } from '@/hooks/use-db-query';
 
 // Bottom sheet "Invia", opened from the document detail. Placeholder for now.
 export default function SendDocumentSheet() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  const document = getDocument(id);
+  const { data: document } = useDbQuery((db) => getDocumentDetail(db, Number(id)), [id]);
 
   return (
     <View style={styles.container}>

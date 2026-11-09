@@ -6,7 +6,7 @@ import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
 
 // Bottom sheet "Aggiungi un documento", opened by the "+" tab.
-// For now every option just closes the sheet: camera, photo library and file import come later.
+// "Inserisci a mano" opens the new document form; camera, photo library and file import come later.
 export default function AddDocumentSheet() {
   return (
     <View style={styles.container}>
@@ -15,6 +15,11 @@ export default function AddDocumentSheet() {
         <SheetOption symbol="camera" label="Fotografa" onPress={() => router.back()} />
         <SheetOption symbol="photo.on.rectangle" label="Scegli dalle foto" onPress={() => router.back()} />
         <SheetOption symbol="doc" label="Importa file" onPress={() => router.back()} />
+        <SheetOption
+          symbol="square.and.pencil"
+          label="Inserisci a mano"
+          onPress={() => router.replace('/new-document')}
+        />
       </View>
     </View>
   );

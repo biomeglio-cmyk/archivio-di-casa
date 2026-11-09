@@ -13,3 +13,10 @@ export function formatDate(iso: string): string {
     year: 'numeric',
   });
 }
+
+// Local Date → 'YYYY-MM-DD' (toISOString would use UTC and could shift the day)
+export function toISODate(date: Date): string {
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${date.getFullYear()}-${month}-${day}`;
+}

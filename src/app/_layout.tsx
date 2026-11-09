@@ -11,6 +11,7 @@ import { SQLiteProvider } from 'expo-sqlite';
 import { useColorScheme } from 'react-native';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import { FONTS } from '@/constants/brand';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
 
 SplashScreen.preventAutoHideAsync();
@@ -56,6 +57,14 @@ export default function RootLayout() {
               headerShown: false,
               sheetGrabberVisible: true,
               sheetAllowedDetents: 'fitToContents',
+            }}
+          />
+          <Stack.Screen
+            name="new-document"
+            options={{
+              presentation: 'modal',
+              title: 'Nuovo documento',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
           <Stack.Screen

@@ -11,11 +11,13 @@ import type { Category } from '@/db/types';
 type Props = {
   category: Category;
   documentCount: number;
-  size: { width: number; height: number }; // decided by the grid, so all tiles match
+  // Exact cell size from the grid: the native menu wrapper around the tile doesn't stretch by itself
+  size: { width: number; height: number };
 };
 
 // Pastel tile of the archive grid: lighter at the top, darker at the bottom.
 // Long-press for "Modifica" and, for custom categories, "Elimina".
+// Its size is decided by the grid, never by the content.
 export function CategoryTile({ category, documentCount, size }: Props) {
   const db = useSQLiteContext();
   const { colors } = category;

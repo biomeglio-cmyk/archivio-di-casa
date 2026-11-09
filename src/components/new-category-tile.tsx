@@ -5,12 +5,12 @@ import { ThemedText } from '@/components/themed-text';
 import { useTheme } from '@/hooks/use-theme';
 
 type Props = {
-  size: { width: number; height: number }; // same size as the category tiles
   onPress: () => void;
 };
 
 // Dashed tile at the end of the archive grid
-export function NewCategoryTile({ size, onPress }: Props) {
+// It fills its grid cell, like the category tiles
+export function NewCategoryTile({ onPress }: Props) {
   const theme = useTheme();
 
   return (
@@ -19,7 +19,6 @@ export function NewCategoryTile({ size, onPress }: Props) {
       accessibilityRole="button"
       style={({ pressed }) => [
         styles.tile,
-        size,
         { borderColor: theme.textSecondary },
         pressed && { backgroundColor: theme.backgroundElement },
       ]}>
@@ -33,6 +32,7 @@ export function NewCategoryTile({ size, onPress }: Props) {
 
 const styles = StyleSheet.create({
   tile: {
+    flex: 1,
     borderRadius: 20,
     borderCurve: 'continuous',
     borderWidth: 1.5,

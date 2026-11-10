@@ -41,7 +41,7 @@ export function DayCell({ iso, isToday, isSelected, dots, onSelect }: DayCellPro
   const day = Number(iso.slice(8));
   // Today always keeps its brand circle; another selected day gets a dark one
   const circleColor = isToday ? BRAND_COLOR : isSelected ? theme.text : 'transparent';
-  const numberColor = isToday ? '#FFFFFF' : isSelected ? theme.background : theme.text;
+  const numberColor = isToday ? '#FFFFFF' : isSelected ? theme.surface : theme.text;
 
   return (
     <Pressable
@@ -104,7 +104,7 @@ export function CalendarHeader({ title, previousLabel, nextLabel, onPrevious, on
 
 export const calendarStyles = StyleSheet.create({
   card: {
-    borderRadius: 20,
+    borderRadius: 12,
     borderCurve: 'continuous',
     paddingHorizontal: 8,
     paddingTop: 8,

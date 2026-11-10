@@ -154,7 +154,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       </View>
 
       {single && twoFaces && (
-        <View style={[styles.card, styles.switchRow, { backgroundColor: theme.backgroundElement }]}>
+        <View style={[styles.card, styles.switchRow, { backgroundColor: theme.surface }]}>
           <ThemedText style={styles.flex}>
             {format === 'pdf' ? 'Fronte e retro su una pagina' : "Fronte e retro in un'immagine"}
           </ThemedText>
@@ -182,7 +182,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       </View>
 
       {/* Preview of what will be sent */}
-      <View style={[styles.card, styles.preview, { backgroundColor: theme.backgroundElement }]}>
+      <View style={[styles.card, styles.preview, { backgroundColor: theme.surface }]}>
         {busy && (
           <View style={styles.previewRow}>
             <ActivityIndicator />
@@ -274,7 +274,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
   },
   card: {
-    borderRadius: 16,
+    borderRadius: 12,
     borderCurve: 'continuous',
     paddingHorizontal: 16,
   },

@@ -10,7 +10,6 @@ import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
 import { listDocumentsWithExpiry } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useTheme } from '@/hooks/use-theme';
 import { addDaysIso, formatShortDate, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 import { groupDeadlines, type DeadlineSection } from '@/utils/deadlines';
@@ -22,10 +21,8 @@ type Section = DeadlineSection<DocumentListItem>;
 // "Mese" opens the month grid.
 export default function DeadlinesScreen() {
   const theme = useTheme();
-  // iOS grouped list: grey background with white blocks (dark: black background, dark grey blocks)
-  const dark = useColorScheme() === 'dark';
-  const groupedBackground = dark ? theme.background : theme.backgroundElement;
-  const cardColor = dark ? theme.backgroundElement : theme.background;
+  // iOS grouped list: page background with surface-colored blocks (theme tokens)
+  const cardColor = theme.surface;
   const { data: documents } = useDbQuery(listDocumentsWithExpiry, []);
   const listRef = useRef<SectionList<DocumentListItem, Section>>(null);
 
@@ -97,7 +94,7 @@ export default function DeadlinesScreen() {
         sections={sections}
         keyExtractor={(item) => String(item.id)}
         contentInsetAdjustmentBehavior="automatic"
-        style={{ backgroundColor: groupedBackground }}
+        style={{ backgroundColor: theme.background }}
         contentContainerStyle={styles.content}
         stickySectionHeadersEnabled={false}
         initialNumToRender={500} // a household has few deadlines: render them all, so jumps always work

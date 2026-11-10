@@ -3,7 +3,6 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, ScrollView, SectionList, StyleSheet, Text, View } from 'react-native';
 
 import { BRAND_COLOR } from '@/constants/brand';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
 import { applyFilter, chipsFor, type SearchFilter, type SearchHit, type SearchResults } from '@/search/search-documents';
@@ -23,9 +22,7 @@ type Section = { key: 'documents' | 'notes'; title: string; data: SearchHit[] };
 // as iOS grouped blocks, with the matched word in bold
 export function SearchResultsList({ query, results, filter, onFilterChange }: Props) {
   const theme = useTheme();
-  const dark = useColorScheme() === 'dark';
-  const cardColor = dark ? theme.backgroundElement : theme.background;
-  const groupedBackground = dark ? theme.background : theme.backgroundElement; // white blocks on grey
+  const cardColor = theme.surface; // grouped blocks on the page background
   const chips = chipsFor(results);
 
   const documents = applyFilter(results.documents, filter);
@@ -42,7 +39,7 @@ export function SearchResultsList({ query, results, filter, onFilterChange }: Pr
       keyboardShouldPersistTaps="handled"
       keyboardDismissMode="on-drag"
       contentInsetAdjustmentBehavior="automatic"
-      style={{ backgroundColor: groupedBackground }}
+      style={{ backgroundColor: theme.background }}
       contentContainerStyle={styles.content}
       stickySectionHeadersEnabled={false}
       ListHeaderComponent={
@@ -56,7 +53,7 @@ export function SearchResultsList({ query, results, filter, onFilterChange }: Pr
                   onPress={() => onFilterChange(chip.filter)}
                   accessibilityRole="button"
                   accessibilityState={{ selected }}
-                  style={[styles.chip, { backgroundColor: selected ? BRAND_COLOR : theme.backgroundElement }]}>
+                  style={[styles.chip, { backgroundColor: selected ? BRAND_COLOR : theme.surface }]}>
                   <Text style={[styles.chipLabel, { color: selected ? '#FFFFFF' : theme.text }]}>{chip.label}</Text>
                 </Pressable>
               );

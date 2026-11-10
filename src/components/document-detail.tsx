@@ -85,7 +85,7 @@ export default function DocumentDetail() {
           </>
         )}
 
-        <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
+        <View style={[styles.card, { backgroundColor: theme.surface }]}>
           {details.map((d, index) => (
             <View
               key={d.label}
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.titleBold,
   },
   card: {
-    borderRadius: 16,
+    borderRadius: 12,
     borderCurve: 'continuous',
     paddingHorizontal: 16,
   },

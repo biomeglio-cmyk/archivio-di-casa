@@ -91,7 +91,7 @@ export default function OnboardingScreen() {
               {p.text}
             </ThemedText>
             {p.illustration.kind === 'logo' && (
-              <View style={[styles.privacy, { backgroundColor: theme.backgroundElement }]}>
+              <View style={[styles.privacy, { backgroundColor: theme.surface }]}>
                 <SymbolView name="lock.shield" tintColor={BRAND_COLOR} size={20} />
                 <ThemedText type="small" style={styles.privacyText}>
                   Restano sul tuo telefono e funzionano anche senza internet

@@ -45,7 +45,7 @@ export function MonthCalendar(props: Props) {
   const swipe = useHorizontalSwipe(onPrevMonth, onNextMonth); // swipe between months
 
   return (
-    <View style={[calendarStyles.card, { backgroundColor: theme.backgroundElement }]} {...swipe}>
+    <View style={[calendarStyles.card, { backgroundColor: theme.surface }]} {...swipe}>
       <CalendarHeader
         title={formatMonthTitle(year, month)}
         previousLabel="Mese precedente"

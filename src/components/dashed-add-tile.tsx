@@ -26,7 +26,7 @@ export function DashedAddTile({ label, size, onPress }: Props) {
         size,
         styles.tile,
         { borderColor: theme.textSecondary },
-        pressed && { backgroundColor: theme.backgroundElement },
+        pressed && { backgroundColor: theme.surface },
       ]}>
       <SymbolView name="plus" tintColor={theme.textSecondary} size={24} />
       <ThemedText themeColor="textSecondary" style={styles.label} numberOfLines={2}>

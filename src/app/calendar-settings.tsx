@@ -129,7 +129,7 @@ export default function CalendarSettingsSheet() {
           <ThemedText type="smallBold" themeColor="textSecondary" style={styles.sectionTitle}>
             Scegli il calendario
           </ThemedText>
-          <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
+          <View style={[styles.card, { backgroundColor: theme.surface }]}>
             {calendars.length === 0 && (
               <ThemedText themeColor="textSecondary" style={styles.empty}>
                 Nessun calendario modificabile su questo iPhone.
@@ -160,7 +160,7 @@ export default function CalendarSettingsSheet() {
             ))}
           </View>
 
-          <View style={[styles.card, styles.switchRow, { backgroundColor: theme.backgroundElement }]}>
+          <View style={[styles.card, styles.switchRow, { backgroundColor: theme.surface }]}>
             <ThemedText style={styles.switchLabel}>Aggiungi le scadenze al calendario</ThemedText>
             <Host matchContents>
               <Switch value={settings.enabled} onValueChange={toggle} disabled={busy || !settings.calendarId} />
@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     marginBottom: -8,
   },
   card: {
-    borderRadius: 16,
+    borderRadius: 12,
     borderCurve: 'continuous',
     paddingHorizontal: 16,
   },

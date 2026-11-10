@@ -30,7 +30,7 @@ export function SearchBar({ value, onChangeText, placeholder }: Props) {
     <View style={styles.row}>
       <Pressable
         onPress={() => inputRef.current?.focus()}
-        style={[styles.field, { backgroundColor: theme.backgroundElement }]}>
+        style={[styles.field, { backgroundColor: theme.surface }]}>
         <SymbolView name="magnifyingglass" tintColor={theme.textSecondary} size={16} />
         <TextInput
           ref={inputRef}

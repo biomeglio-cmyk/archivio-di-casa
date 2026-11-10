@@ -146,7 +146,7 @@ function Group({ title, footer, children }: { title?: string; footer?: string; c
           {title.toUpperCase()}
         </ThemedText>
       )}
-      <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>{children}</View>
+      <View style={[styles.card, { backgroundColor: theme.surface }]}>{children}</View>
       {footer && (
         <ThemedText type="small" themeColor="textSecondary" style={styles.footer}>
           {footer}
@@ -208,7 +208,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   card: {
-    borderRadius: 16,
+    borderRadius: 12,
     borderCurve: 'continuous',
     paddingHorizontal: 16,
   },

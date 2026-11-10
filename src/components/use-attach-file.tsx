@@ -6,12 +6,12 @@ import { pickPdf, pickPhoto, pickPhotos } from '@/capture/pick-files';
 import { CameraCapture } from '@/components/camera-capture';
 import { replaceDocumentFiles } from '@/db/documents';
 import type { Category, DocumentFile } from '@/db/types';
-import type { PendingFile } from '@/storage/pending-files';
+import { pagesToFiles, type PendingFile } from '@/storage/pending-files';
 import { chooseAction } from '@/utils/action-sheet';
 import { usesFrontBack } from '@/utils/page-labels';
 
 type Side = 'front' | 'back';
-type CameraMode = { only?: Side } | null; // {} = front then back, { only } = one face
+type CameraMode = { only?: Side } | null; // {} = all the pages, { only } = one face
 
 // "Aggiungi documento" in the document detail: attaches a file to THIS document.
 // No files yet → Fotografa / Scegli dalle foto / Importa PDF.
@@ -96,10 +96,16 @@ export function useAttachFile(
     <Modal visible={camera !== null} animationType="slide" presentationStyle="fullScreen">
       {camera && (
         <CameraCapture
-          only={camera.only}
-          onDone={(captured) => {
+          single={camera.only !== undefined}
+          onDone={(uris) => {
+            const only = camera.only;
             setCamera(null);
-            save(captured);
+            // One face replaced, or all the pages of a document that had none
+            save(
+              only
+                ? [{ uri: uris[0], kind: 'image', side: only, page: only === 'back' ? 2 : 1 }]
+                : pagesToFiles(uris),
+            );
           }}
           onCancel={() => setCamera(null)}
         />

@@ -2,25 +2,21 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import { ActionSheetIOS } from 'react-native';
 
-import type { PendingFile } from '@/storage/pending-files';
+import { pagesToFiles, type PendingFile } from '@/storage/pending-files';
 
-// "Scegli dalle foto": one or two images. The first chosen is the front, the second the back.
-// Returns null if the user cancels.
+// "Scegli dalle foto": any number of images, as pages in the order they were tapped
+// (1 = front, 2 = back, then only the page number). Returns null if the user cancels.
 export async function pickPhotos(): Promise<PendingFile[] | null> {
   const result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ['images'],
     allowsMultipleSelection: true,
-    selectionLimit: 2,
-    orderedSelection: true, // numbers the photos 1, 2 in the order they are tapped
+    selectionLimit: 0, // no limit
+    orderedSelection: true, // numbers the photos 1, 2, 3… in the order they are tapped
     quality: 0.85, // below 1 iOS also converts HEIC photos to JPEG
   });
   if (result.canceled || result.assets.length === 0) return null;
 
-  return result.assets.slice(0, 2).map((asset, index) => ({
-    uri: asset.uri,
-    kind: 'image',
-    side: index === 0 ? 'front' : 'back',
-  }));
+  return pagesToFiles(result.assets.map((asset) => asset.uri));
 }
 
 // One photo for a specific face (used when editing: replace the front, add the back…)

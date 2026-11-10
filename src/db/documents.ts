@@ -9,6 +9,7 @@ import type {
   DocumentFileRecord,
   DocumentListItem,
   DocumentRecord,
+  FileSide,
 } from '@/db/types';
 import { deleteStoredFile, storePendingFile } from '@/storage/document-files';
 import type { PendingFile } from '@/storage/pending-files';
@@ -254,8 +255,14 @@ export async function saveDocumentEdits(
   input: DocumentInput,
   removedFiles: DocumentFile[],
   addedFiles: PendingFile[],
+  movedFiles: { id: number; page: number; side: FileSide | null }[] = [], // saved pages in a new position
 ): Promise<void> {
-  await changeFiles(db, id, removedFiles, addedFiles, () => updateDocument(db, id, input));
+  await changeFiles(db, id, removedFiles, addedFiles, async () => {
+    await updateDocument(db, id, input);
+    for (const file of movedFiles) {
+      await db.runAsync('UPDATE document_files SET page = ?, side = ? WHERE id = ? AND document_id = ?', file.page, file.side, file.id, id);
+    }
+  });
   // New title, expiry or reminder → update the calendar event (or remove it if the expiry is gone)
   await syncDocumentEvent(db, id);
   await rescheduleReminders(db);

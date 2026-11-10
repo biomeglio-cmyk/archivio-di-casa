@@ -2,8 +2,8 @@ import { router } from 'expo-router';
 import { Alert } from 'react-native';
 
 import { pickPdf, pickPhotos } from '@/capture/pick-files';
-import { scanDocument, scannedPagesToFiles } from '@/capture/scan-document';
-import { encodePendingFiles, type PendingFile } from '@/storage/pending-files';
+import { scanDocument } from '@/capture/scan-document';
+import { encodePendingFiles, pagesToFiles, type PendingFile } from '@/storage/pending-files';
 
 // The ways to add a document, shared by the "+" sheet and the Menu. Both are sheets, so they are
 // REPLACED by "Nuovo documento": after saving, the form closes straight back to the tab.
@@ -16,10 +16,10 @@ export async function addByScan(): Promise<void> {
     router.replace('/capture');
     return;
   }
-  openNewDocument(scannedPagesToFiles(result.pages));
+  openNewDocument(pagesToFiles(result.pages));
 }
 
-// "Scegli dalle foto"
+// "Scegli dalle foto": any number of photos, as pages in the order they were picked
 export function addFromPhotos(): Promise<void> {
   return attach(pickPhotos);
 }

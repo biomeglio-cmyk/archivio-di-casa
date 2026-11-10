@@ -17,14 +17,19 @@ function suggestTitle(files: PendingFile[]): string {
 // Modal "Nuovo documento": the shared form, plus the files captured before (if any)
 export default function NewDocumentScreen() {
   const db = useSQLiteContext();
-  // Files arrive as a JSON route param from the "+" sheet or from the camera
-  const params = useLocalSearchParams<{ files?: string }>();
+  // Files arrive as a JSON route param from the "+" sheet or from the camera.
+  // personId / categoryId preselect the person or the category ("Aggiungi documento" in their screens).
+  const params = useLocalSearchParams<{ files?: string; personId?: string; categoryId?: string }>();
   const [files] = useState(() => decodePendingFiles(params.files));
 
   return (
     <>
       <DocumentForm
-        initial={{ title: suggestTitle(files) }}
+        initial={{
+          title: suggestTitle(files),
+          personId: params.personId ? Number(params.personId) : null,
+          categoryId: params.categoryId ? Number(params.categoryId) : undefined,
+        }}
         files={files.length > 0 ? <AttachmentStrip files={files} /> : undefined}
         autoFocusTitle={files.length === 0}
         onSubmit={async (input) => {

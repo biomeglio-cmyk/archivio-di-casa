@@ -32,12 +32,11 @@ type Props = {
   files?: ReactNode; // attachments area shown at the top
   autoFocusTitle?: boolean;
   onSubmit: (input: DocumentInput) => Promise<void>;
-  footer?: ReactNode; // e.g. "Elimina documento" when editing
 };
 
 // The document form, shared by "Nuovo documento" and "Modifica documento".
 // Required: title and category. Everything else is optional.
-export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit, footer }: Props) {
+export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit }: Props) {
   const theme = useTheme();
   const { data: categories } = useDbQuery(listCategories, []);
   const { data: people } = useDbQuery(listPeople, []);
@@ -176,7 +175,6 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit,
         </ThemedText>
       </View>
 
-      {footer}
     </ScrollView>
   );
 }

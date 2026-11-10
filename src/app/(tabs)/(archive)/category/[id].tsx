@@ -1,7 +1,10 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
-import { ScrollView, StyleSheet } from 'react-native';
+import { useSQLiteContext } from 'expo-sqlite';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { confirmDeleteCategory } from '@/actions/delete-actions';
+import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentRow } from '@/components/document-row';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
@@ -18,8 +21,9 @@ export default function CategoryScreen() {
   const { data: category } = useDbQuery((db) => getCategory(db, categoryId), [categoryId]);
   const { data: documents } = useDbQuery((db) => listDocumentsByCategory(db, categoryId), [categoryId]);
   const selection = useDocumentSelection();
+  const db = useSQLiteContext();
 
-  // Deleted from "Modifica categoria" → back to Archivio
+  // Deleted with "Cancella" → back to Archivio
   useLeaveWhenDeleted(category);
 
   // Selected documents in list order, so the PDF pages follow the list
@@ -55,22 +59,31 @@ export default function CategoryScreen() {
             }
           />
         ))}
+
+        {/* Pushes the buttons to the bottom when the list is short; hidden while selecting.
+            Built-in categories can't be edited or deleted; custom ones only deleted when empty. */}
+        <View style={styles.spacer} />
+        {category && documents && !selection.selecting && (
+          <DetailActionBar
+            onAdd={() => router.push({ pathname: '/new-document', params: { categoryId: String(categoryId) } })}
+            onEdit={
+              category.isBuiltin
+                ? null
+                : () => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })
+            }
+            onDelete={!category.isBuiltin && documents.length === 0 ? () => confirmDeleteCategory(db, category) : null}
+          />
+        )}
       </ScrollView>
 
-      {/* Header: "Seleziona" and the pencil, or "Annulla" while selecting */}
+      {/* Header: "Seleziona", or "Annulla" while selecting */}
       <Stack.Toolbar placement="right">
         {selection.selecting ? (
           <Stack.Toolbar.Button onPress={selection.cancel}>Annulla</Stack.Toolbar.Button>
         ) : (
-          <>
-            <Stack.Toolbar.Button onPress={selection.start} disabled={!documents?.length}>
-              Seleziona
-            </Stack.Toolbar.Button>
-            <Stack.Toolbar.Button
-              icon="pencil"
-              onPress={() => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })}
-            />
-          </>
+          <Stack.Toolbar.Button onPress={selection.start} disabled={!documents?.length}>
+            Seleziona
+          </Stack.Toolbar.Button>
         )}
       </Stack.Toolbar>
 
@@ -91,7 +104,11 @@ export default function CategoryScreen() {
 
 const styles = StyleSheet.create({
   list: {
+    flexGrow: 1, // lets the spacer push the action bar to the bottom
     padding: 16,
     gap: 10,
+  },
+  spacer: {
+    flex: 1,
   },
 });

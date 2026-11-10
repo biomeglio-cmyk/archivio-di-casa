@@ -1,7 +1,10 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
+import { useSQLiteContext } from 'expo-sqlite';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { confirmDeletePerson } from '@/actions/delete-actions';
+import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentRow } from '@/components/document-row';
 import { PersonAvatar } from '@/components/person-avatar';
 import { ThemedText } from '@/components/themed-text';
@@ -19,8 +22,9 @@ export default function PersonScreen() {
   const { data: person } = useDbQuery((db) => getPerson(db, personId), [personId]);
   const { data: documents } = useDbQuery((db) => listDocumentsByPerson(db, personId), [personId]);
   const selection = useDocumentSelection();
+  const db = useSQLiteContext();
 
-  // Deleted from "Modifica persona" → back to Famiglia
+  // Deleted with "Cancella" → back to Famiglia
   useLeaveWhenDeleted(person);
 
   // Selected documents in list order, so the PDF pages follow the list
@@ -62,22 +66,26 @@ export default function PersonScreen() {
             }
           />
         ))}
+
+        {/* Pushes the buttons to the bottom when the list is short; hidden while selecting */}
+        <View style={styles.spacer} />
+        {person && !selection.selecting && (
+          <DetailActionBar
+            onAdd={() => router.push({ pathname: '/new-document', params: { personId: String(personId) } })}
+            onEdit={() => router.push({ pathname: '/person-form', params: { id: String(personId) } })}
+            onDelete={() => confirmDeletePerson(db, person)}
+          />
+        )}
       </ScrollView>
 
-      {/* Header: "Seleziona" and the pencil, or "Annulla" while selecting */}
+      {/* Header: "Seleziona", or "Annulla" while selecting */}
       <Stack.Toolbar placement="right">
         {selection.selecting ? (
           <Stack.Toolbar.Button onPress={selection.cancel}>Annulla</Stack.Toolbar.Button>
         ) : (
-          <>
-            <Stack.Toolbar.Button onPress={selection.start} disabled={!documents?.length}>
-              Seleziona
-            </Stack.Toolbar.Button>
-            <Stack.Toolbar.Button
-              icon="pencil"
-              onPress={() => router.push({ pathname: '/person-form', params: { id: String(personId) } })}
-            />
-          </>
+          <Stack.Toolbar.Button onPress={selection.start} disabled={!documents?.length}>
+            Seleziona
+          </Stack.Toolbar.Button>
         )}
       </Stack.Toolbar>
 
@@ -98,8 +106,12 @@ export default function PersonScreen() {
 
 const styles = StyleSheet.create({
   list: {
+    flexGrow: 1, // lets the spacer push the action bar to the bottom
     padding: 16,
     gap: 10,
+  },
+  spacer: {
+    flex: 1,
   },
   header: {
     alignItems: 'center',

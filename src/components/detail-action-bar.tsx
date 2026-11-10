@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { BRAND_GRADIENT, FONTS } from '@/constants/brand';
 import { usePressed } from '@/hooks/use-pressed';
@@ -10,7 +10,7 @@ const RADIUS = 12;
 const MIN_HEIGHT = 48;
 const DELETE_BACKGROUND = '#FDE3E6';
 const DELETE_TEXT = '#C8283D';
-const SECONDARY_BASIS = 130; // starting width of Modifica / Cancella at normal text size
+const MAX_FONT_SCALE = 1.2; // labels grow a little with Dynamic Type, then stop so the row always fits
 
 type Props = {
   onAdd: (() => void) | null; // null = the button is not shown
@@ -19,14 +19,11 @@ type Props = {
 };
 
 // Buttons at the end of the detail screens (layout B of the mockup):
-// "Aggiungi documento" full width with the logo gradient, then "Modifica" and "Cancella" side by side.
+// "Aggiungi documento" full width with the logo gradient, then "Modifica" and "Cancella" always
+// side by side, at any text size.
 // They sit in the scroll content, right after the data, and scroll with the page.
 export function DetailActionBar({ onAdd, onEdit, onDelete }: Props) {
   const theme = useTheme();
-  // Both secondary buttons start from the same width, scaled with Dynamic Type; when two don't fit
-  // in the row, flexWrap puts the second below and each grows to full width: stacked, never cut.
-  const { fontScale } = useWindowDimensions();
-  const basis = SECONDARY_BASIS * fontScale;
 
   if (!onAdd && !onEdit && !onDelete) return null;
 
@@ -41,7 +38,7 @@ export function DetailActionBar({ onAdd, onEdit, onDelete }: Props) {
               symbol="pencil"
               variant="secondary"
               onPress={onEdit}
-              style={{ flexBasis: basis, backgroundColor: theme.backgroundSelected }}
+              style={{ backgroundColor: theme.backgroundSelected }}
               color={theme.text}
             />
           )}
@@ -51,7 +48,7 @@ export function DetailActionBar({ onAdd, onEdit, onDelete }: Props) {
               symbol="trash"
               variant="secondary"
               onPress={onDelete}
-              style={{ flexBasis: basis, backgroundColor: DELETE_BACKGROUND }}
+              style={{ backgroundColor: DELETE_BACKGROUND }}
               color={DELETE_TEXT}
             />
           )}
@@ -75,8 +72,16 @@ function ActionButton({ label, symbol, variant, onPress, style, color = '#FFFFFF
   const content = (
     <>
       <SymbolView name={symbol} tintColor={color} size={17} />
-      {/* No numberOfLines: with very large text the label wraps instead of ending in "…" */}
-      <Text style={[styles.label, { color }]}>{label}</Text>
+      {/* One line, capped at 1.2× Dynamic Type; if still too wide it shrinks (down to 80%)
+          instead of being cut with "…" */}
+      <Text
+        style={[styles.label, { color }]}
+        numberOfLines={1}
+        adjustsFontSizeToFit
+        minimumFontScale={0.8}
+        maxFontSizeMultiplier={MAX_FONT_SCALE}>
+        {label}
+      </Text>
     </>
   );
 
@@ -102,8 +107,7 @@ const styles = StyleSheet.create({
     gap: 8,
   },
   row: {
-    flexDirection: 'row',
-    flexWrap: 'wrap', // stacks the two buttons when they don't fit side by side
+    flexDirection: 'row', // Modifica and Cancella always side by side
     gap: 8,
   },
   button: {
@@ -113,8 +117,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   secondary: {
-    flexGrow: 1, // same basis + same grow = equal widths when they share the row
-    flexShrink: 0,
+    flex: 1, // two equal halves of the row
   },
   inner: {
     flexGrow: 1,
@@ -131,7 +134,7 @@ const styles = StyleSheet.create({
   },
   label: {
     flexShrink: 1,
-    fontSize: 17,
+    fontSize: 17, // 17 pt semibold
     textAlign: 'center',
     fontFamily: FONTS.titleSemiBold,
   },

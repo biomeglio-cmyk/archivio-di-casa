@@ -1,15 +1,16 @@
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
-import { StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
 import type { PendingFile } from '@/storage/pending-files';
 
-// "Fronte", "Retro" or "PDF" under each thumbnail
-export function fileLabel(file: Pick<PendingFile, 'kind' | 'side'>): string {
+// "Fronte", "Retro" or "PDF" under each thumbnail; "Pagina 3" when a scan has more than 2 pages
+export function fileLabel(file: { kind: PendingFile['kind']; side: PendingFile['side']; page?: number | null }, imageCount: number): string {
   if (file.kind === 'pdf') return 'PDF';
+  if (imageCount > 2) return `Pagina ${file.page ?? 1}`;
   if (file.side === 'back') return 'Retro';
   return 'Fronte';
 }
@@ -18,12 +19,14 @@ type Props = {
   files: PendingFile[];
 };
 
-// Thumbnails of the files attached to a document that is being created
+// Thumbnails of the files attached to a document that is being created (all scanned pages, in order)
 export function AttachmentStrip({ files }: Props) {
   const theme = useTheme();
+  const imageCount = files.filter((f) => f.kind === 'image').length;
 
   return (
-    <View style={styles.strip}>
+    // Scrolls sideways when a scan has many pages
+    <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.strip}>
       {files.map((file) => (
         <View key={file.uri} style={styles.item}>
           {file.kind === 'image' ? (
@@ -39,11 +42,11 @@ export function AttachmentStrip({ files }: Props) {
             </View>
           )}
           <ThemedText type="smallBold" themeColor="textSecondary">
-            {fileLabel(file)}
+            {fileLabel(file, imageCount)}
           </ThemedText>
         </View>
       ))}
-    </View>
+    </ScrollView>
   );
 }
 

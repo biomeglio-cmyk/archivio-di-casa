@@ -6,6 +6,7 @@ export type PendingFile = {
   uri: string;
   kind: DocumentFile['kind'];
   side: DocumentFile['side'];
+  page?: number; // scanned pages: 1, 2, 3… (front and back photos get 1 and 2 on save)
   name?: string; // original file name, used to suggest the title of a PDF
 };
 

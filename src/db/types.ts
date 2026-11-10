@@ -44,7 +44,7 @@ export type FamilyDocument = {
 };
 
 // What a photo is: front/back of a document, front of a card, photo of a card's barcode.
-// null for PDFs.
+// null for PDFs and for the pages after the second one of a scan (see `page`).
 export type FileSide = 'front' | 'back' | 'card_front' | 'barcode';
 
 export type DocumentFile = {
@@ -53,6 +53,7 @@ export type DocumentFile = {
   path: string; // relative to Paths.document, e.g. 'documents/42-front.jpg'
   side: FileSide | null;
   kind: 'image' | 'pdf';
+  page: number | null; // position of a photo among the pages (1 = front, 2 = back, 3…); null for PDFs and barcodes
   createdAt: string;
 };
 
@@ -112,5 +113,6 @@ export type DocumentFileRecord = {
   path: string;
   side: FileSide | null;
   kind: 'image' | 'pdf';
+  page: number | null;
   created_at: string;
 };

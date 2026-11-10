@@ -42,7 +42,7 @@ export function DocumentFilesView({ title, files }: Props) {
     <View style={styles.container}>
       {images.length > 1 && (
         <SegmentedControl
-          values={images.map(fileLabel)}
+          values={images.map((image) => fileLabel(image, images.length))}
           selectedIndex={imageIndex}
           onChange={(event) => setImageIndex(event.nativeEvent.selectedSegmentIndex)}
         />
@@ -64,7 +64,7 @@ function ImageFile({ file, onPress }: { file: DocumentFile; onPress: () => void 
   if (!stored.exists) return <MissingFile />;
 
   return (
-    <Pressable onPress={onPress} accessibilityLabel={`${fileLabel(file)}, apri a schermo intero`}>
+    <Pressable onPress={onPress} accessibilityLabel={`${fileLabel(file, 1)}, apri a schermo intero`}>
       <Image
         source={{ uri: stored.uri }}
         style={[styles.image, { backgroundColor: theme.surface }]}

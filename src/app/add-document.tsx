@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { Alert, StyleSheet, View } from 'react-native';
 
 import { pickPdf, pickPhotos } from '@/capture/pick-files';
+import { scanDocument, scannedPagesToFiles } from '@/capture/scan-document';
 import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
@@ -23,11 +24,21 @@ export default function AddDocumentSheet() {
     }
   }
 
+  // "Scansiona": the iOS scanner; if it isn't there or nothing comes back, the app camera as before
+  async function scan() {
+    const result = await scanDocument();
+    if (typeof result === 'object') {
+      router.replace({ pathname: '/new-document', params: { files: encodePendingFiles(scannedPagesToFiles(result.pages)) } });
+    } else {
+      router.replace('/capture');
+    }
+  }
+
   return (
     <View style={styles.container}>
       <ThemedText style={styles.title}>Aggiungi un documento</ThemedText>
       <View style={styles.options}>
-        <SheetOption symbol="camera" label="Fotografa" onPress={() => router.replace('/capture')} />
+        <SheetOption symbol="doc.viewfinder" label="Scansiona" onPress={scan} />
         <SheetOption symbol="photo.on.rectangle" label="Scegli dalle foto" onPress={() => attach(pickPhotos)} />
         <SheetOption symbol="doc" label="Importa file" onPress={() => attach(pickPdf)} />
         <SheetOption symbol="creditcard" label="Aggiungi una carta" onPress={() => router.replace('/add-card')} />

@@ -153,6 +153,19 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 6,
+    name: 'page order of scanned documents',
+    up: async (db) => {
+      await db.execAsync(`
+        -- A scan can have any number of pages: page 1 is still the 'front', page 2 the 'back',
+        -- page 3 and later have side NULL. "page" keeps them in order (NULL for PDFs and barcodes).
+        ALTER TABLE document_files ADD COLUMN page INTEGER;
+        UPDATE document_files SET page = 1 WHERE kind = 'image' AND side IN ('front', 'card_front');
+        UPDATE document_files SET page = 2 WHERE kind = 'image' AND side = 'back';
+      `);
+    },
+  },
 ];
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase): Promise<void> {

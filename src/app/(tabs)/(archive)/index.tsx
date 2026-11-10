@@ -11,7 +11,7 @@ import { TILE_COLUMNS, tileGridStyles, useTileSize } from '@/hooks/use-tile-size
 // The grid items: every category, then the dashed "Nuova categoria" tile
 type GridItem = { kind: 'category'; category: CategoryWithCount } | { kind: 'new' };
 
-// "/archive": two-column grid of categories, plus the dashed "Nuova categoria" tile
+// "/" route, the app opens here: two-column grid of categories, plus the dashed "Nuova categoria" tile
 export default function ArchiveScreen() {
   const size = useTileSize();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);

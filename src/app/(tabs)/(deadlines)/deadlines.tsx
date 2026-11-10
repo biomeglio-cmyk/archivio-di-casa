@@ -20,7 +20,7 @@ type CalendarView = 'week' | 'month';
 const VIEW_KEY = 'deadlines.view';
 const VIEW_LABELS = ['Settimana', 'Mese'];
 
-// "/" route, the app opens here: a week strip or a month grid like the iPhone calendar, the deadlines of the
+// "/deadlines": a week strip or a month grid like the iPhone calendar, the deadlines of the
 // selected day (today at launch) and, below, the expired documents to sort out.
 export default function DeadlinesScreen() {
   const { data: documents } = useDbQuery(listDocumentsWithExpiry, []);

@@ -4,17 +4,18 @@ import { NativeTabs } from 'expo-router/native-tabs';
 import { BRAND_COLOR } from '@/constants/brand';
 
 // Native iOS tab bar. Each trigger name matches a route (or route group) in this folder.
+// Archivio is first and owns "/" (its index.tsx), so the app opens there.
 export default function TabsLayout() {
   return (
     <NativeTabs tintColor={BRAND_COLOR}>
-      <NativeTabs.Trigger name="(deadlines)">
-        <NativeTabs.Trigger.Icon sf="calendar" md="event" />
-        <NativeTabs.Trigger.Label>Scadenze</NativeTabs.Trigger.Label>
-      </NativeTabs.Trigger>
-
       <NativeTabs.Trigger name="(archive)">
         <NativeTabs.Trigger.Icon sf={{ default: 'archivebox', selected: 'archivebox.fill' }} md="inventory_2" />
         <NativeTabs.Trigger.Label>Archivio</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+
+      <NativeTabs.Trigger name="(deadlines)">
+        <NativeTabs.Trigger.Icon sf="calendar" md="event" />
+        <NativeTabs.Trigger.Label>Scadenze</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
       {/* "+" tab: disabled, so it is never selected. The press event still arrives,

@@ -58,6 +58,11 @@ async function listDocumentsWhere(
   return rows.map(mapDocument);
 }
 
+// Every document with category and person, for the search in Archivio (filtered in JS)
+export function listAllDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
+  return listDocumentsWhere(db, '', []);
+}
+
 export function listDocumentsWithExpiry(db: SQLiteDatabase): Promise<DocumentListItem[]> {
   return listDocumentsWhere(db, 'WHERE d.expires_at IS NOT NULL', []);
 }

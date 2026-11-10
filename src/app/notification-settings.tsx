@@ -7,6 +7,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useCallback, useState } from 'react';
 import { Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 
+import { resyncCalendarAlarms } from '@/calendar/calendar-sync';
 import { Group, Row } from '@/components/grouped-list';
 import { BRAND_COLOR } from '@/constants/brand';
 import { rescheduleReminders, updateAppBadge } from '@/notifications/reminders';
@@ -54,6 +55,8 @@ export default function NotificationSettingsScreen() {
       }
     }
     update({ remindersEnabled: enabled });
+    // Calendar events: no alarm while the app reminds, the 9:00 alarm when it doesn't
+    resyncCalendarAlarms(db);
   }
 
   const reminderTime = new Date(2000, 0, 1, preferences.reminderHour, preferences.reminderMinute);

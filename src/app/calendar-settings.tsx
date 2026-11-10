@@ -109,8 +109,9 @@ export default function CalendarSettingsSheet() {
     <ScrollView contentContainerStyle={styles.container}>
       <ThemedText style={styles.title}>Calendario</ThemedText>
       <ThemedText themeColor="textSecondary">
-        Ogni scadenza diventa un evento di tutto il giorno «Scade: titolo», con un avviso alle 9 se il documento ha un
-        promemoria. Nel calendario non finisce nessun altro dato del documento.
+        Ogni scadenza diventa un evento di tutto il giorno «Scade: titolo». Se i promemoria di sottomano sono spenti,
+        l&apos;evento ha un avviso alle 9 nel giorno del promemoria; se sono accesi avvisa solo l&apos;app, così non ricevi
+        due avvisi. Nel calendario non finisce nessun altro dato del documento.
       </ThemedText>
 
       {permission === 'ask' && <GradientButton label="Consenti accesso al Calendario" onPress={askPermission} />}

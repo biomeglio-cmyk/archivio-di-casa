@@ -14,6 +14,9 @@ import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/brand';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
 
+// The root Stack starts on the tabs; sheets and modals are pushed on top of them
+export const unstable_settings = { anchor: '(tabs)' };
+
 SplashScreen.preventAutoHideAsync();
 
 // Root Stack: it holds the tab bar and the screens that slide up above the tabs.

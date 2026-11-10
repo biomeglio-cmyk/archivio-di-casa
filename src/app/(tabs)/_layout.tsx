@@ -3,6 +3,9 @@ import { NativeTabs } from 'expo-router/native-tabs';
 
 import { BRAND_COLOR } from '@/constants/brand';
 
+// Archivio is the tab the app starts on, at every launch and for every deep link into the tabs
+export const unstable_settings = { anchor: '(archive)' };
+
 // Native iOS tab bar. Each trigger name matches a route (or route group) in this folder.
 // Archivio is first and owns "/" (its index.tsx), so the app opens there.
 export default function TabsLayout() {

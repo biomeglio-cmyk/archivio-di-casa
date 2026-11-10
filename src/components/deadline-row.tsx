@@ -1,8 +1,7 @@
 import { router, type Href } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
@@ -10,45 +9,58 @@ import { useTheme } from '@/hooks/use-theme';
 import { describeDistance, formatShortDate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
+const RADIUS = 12;
+const ICON = 28;
+const INSET = 16 + ICON + 12; // separators start after the icon, like iOS lists
+
 type Props = {
   document: DocumentListItem; // includes category and person name
   href: Href;
+  cardColor: string; // background of the grouped block
+  first: boolean; // first row of its section: rounded top corners
+  last: boolean; // last row: rounded bottom corners
   highlighted?: boolean; // its day is selected in the week strip
 };
 
-// One deadline: category icon on a rounded square, "Title · Person", and
-// "gio 12 nov · tra 2 giorni" (red "scaduto da N giorni" when overdue). Nothing is truncated:
-// with large Dynamic Type the lines wrap and the row grows.
-export function DeadlineRow({ document, href, highlighted = false }: Props) {
+// One row of an inset grouped list (iOS Settings style): 28 pt category icon, "Title · Person",
+// the date on a footnote line (red when overdue), chevron. System font sizes, so Dynamic Type scales.
+export function DeadlineRow({ document, href, cardColor, first, last, highlighted = false }: Props) {
   const theme = useTheme();
   const { pressed, handlers } = usePressed();
   const { category } = document;
   const days = document.expiresAt ? daysUntil(document.expiresAt) : null;
   const overdue = days !== null && days < 0;
 
-  const background = pressed ? theme.backgroundSelected : highlighted ? `${BRAND_COLOR}1F` : theme.backgroundElement;
+  const background = pressed ? theme.backgroundSelected : highlighted ? `${BRAND_COLOR}24` : cardColor;
 
   return (
     <Pressable
       {...handlers}
       onPress={() => router.push(href)}
       accessibilityRole="button"
-      style={[styles.row, { backgroundColor: background }, highlighted && { borderColor: BRAND_COLOR }]}>
+      style={[
+        styles.row,
+        { backgroundColor: background },
+        first && styles.first,
+        last && styles.last,
+      ]}>
       <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
-        <SymbolView name={category.symbol} tintColor={category.colors.text} size={20} />
+        <SymbolView name={category.symbol} tintColor={category.colors.text} size={15} />
       </View>
-      <View style={styles.texts}>
-        <ThemedText>
-          {document.title}
-          {document.personName ? <ThemedText themeColor="textSecondary"> · {document.personName}</ThemedText> : null}
-        </ThemedText>
-        {document.expiresAt && days !== null && (
-          <ThemedText type="small" themeColor="textSecondary" style={overdue && { color: DANGER_COLOR }}>
-            {formatShortDate(document.expiresAt)} · {describeDistance(days)}
-          </ThemedText>
-        )}
+      <View style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected }]}>
+        <View style={styles.texts}>
+          <Text style={[styles.title, { color: theme.text }]}>
+            {document.title}
+            {document.personName ? <Text style={{ color: theme.textSecondary }}> · {document.personName}</Text> : null}
+          </Text>
+          {document.expiresAt && days !== null && (
+            <Text style={[styles.date, { color: overdue ? DANGER_COLOR : theme.textSecondary }]}>
+              {formatShortDate(document.expiresAt)} · {describeDistance(days)}
+            </Text>
+          )}
+        </View>
+        <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={13} />
       </View>
-      <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />
     </Pressable>
   );
 }
@@ -57,23 +69,43 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 12,
-    padding: 12,
-    borderRadius: 14,
-    borderCurve: 'continuous',
-    borderWidth: 1.5,
-    borderColor: 'transparent', // becomes the brand color when highlighted
+    paddingLeft: 16,
+  },
+  first: {
+    borderTopLeftRadius: RADIUS,
+    borderTopRightRadius: RADIUS,
+  },
+  last: {
+    borderBottomLeftRadius: RADIUS,
+    borderBottomRightRadius: RADIUS,
   },
   icon: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: ICON,
+    height: ICON,
+    borderRadius: 7,
     borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
   },
+  // Text and chevron; its top hairline is the separator, so it starts after the icon
+  body: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginLeft: INSET - 16 - ICON,
+    paddingVertical: 10,
+    paddingRight: 16,
+  },
   texts: {
     flex: 1,
-    gap: 2,
+  },
+  title: {
+    fontSize: 17, // iOS body
+    lineHeight: 22,
+  },
+  date: {
+    fontSize: 13, // iOS footnote
+    lineHeight: 18,
   },
 });

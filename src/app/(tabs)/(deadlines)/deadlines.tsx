@@ -1,4 +1,3 @@
-import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
 import { useRef, useState } from 'react';
 import { Modal, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
@@ -11,6 +10,7 @@ import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
 import { listDocumentsWithExpiry } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useTheme } from '@/hooks/use-theme';
 import { addDaysIso, formatShortDate, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 import { groupDeadlines, type DeadlineSection } from '@/utils/deadlines';
@@ -22,6 +22,10 @@ type Section = DeadlineSection<DocumentListItem>;
 // "Mese" opens the month grid.
 export default function DeadlinesScreen() {
   const theme = useTheme();
+  // iOS grouped list: grey background with white blocks (dark: black background, dark grey blocks)
+  const dark = useColorScheme() === 'dark';
+  const groupedBackground = dark ? theme.background : theme.backgroundElement;
+  const cardColor = dark ? theme.backgroundElement : theme.background;
   const { data: documents } = useDbQuery(listDocumentsWithExpiry, []);
   const listRef = useRef<SectionList<DocumentListItem, Section>>(null);
 
@@ -79,6 +83,12 @@ export default function DeadlinesScreen() {
   }
 
   const selectedIsEmpty = selected !== null && !markers.has(selected);
+  const onCurrentWeek = weekStart === mondayOfIso(todayIso);
+
+  function openMonth() {
+    setVisibleMonth(monthOf(selected ?? weekStart));
+    setMonthOpen(true);
+  }
 
   return (
     <>
@@ -87,12 +97,26 @@ export default function DeadlinesScreen() {
         sections={sections}
         keyExtractor={(item) => String(item.id)}
         contentInsetAdjustmentBehavior="automatic"
+        style={{ backgroundColor: groupedBackground }}
         contentContainerStyle={styles.content}
         stickySectionHeadersEnabled={false}
         initialNumToRender={500} // a household has few deadlines: render them all, so jumps always work
         onScrollToIndexFailed={() => undefined}
         ListHeaderComponent={
           <View style={styles.header}>
+            {/* Title and "Mese" on the same line, as in the approved mockup */}
+            <View style={styles.titleRow}>
+              <Text style={[styles.title, { color: theme.text }]}>Scadenze</Text>
+              <Pressable onPress={openMonth} hitSlop={10} accessibilityRole="button">
+                <Text style={styles.link}>Mese</Text>
+              </Pressable>
+            </View>
+            {/* "Oggi" only when another week is shown */}
+            {!onCurrentWeek && (
+              <Pressable onPress={goToToday} hitSlop={10} accessibilityRole="button" style={styles.todayLink}>
+                <Text style={styles.smallLink}>Oggi</Text>
+              </Pressable>
+            )}
             <WeekStrip
               weekStartIso={weekStart}
               todayIso={todayIso}
@@ -101,7 +125,6 @@ export default function DeadlinesScreen() {
               onSelect={tapDay}
               onPrevWeek={() => setWeekStart(addDaysIso(weekStart, -7))}
               onNextWeek={() => setWeekStart(addDaysIso(weekStart, 7))}
-              onToday={goToToday}
             />
             {selectedIsEmpty && (
               <ThemedText themeColor="textSecondary" style={styles.note}>
@@ -111,19 +134,22 @@ export default function DeadlinesScreen() {
           </View>
         }
         renderSectionHeader={({ section }) => (
-          <ThemedText style={[styles.sectionTitle, section.key === 'overdue' && { color: DANGER_COLOR }]}>
+          // iOS grouped header: footnote, uppercase, grey ("DA SISTEMARE" is red)
+          <Text
+            style={[styles.sectionTitle, { color: section.key === 'overdue' ? DANGER_COLOR : theme.textSecondary }]}>
             {section.title}
-          </ThemedText>
+          </Text>
         )}
-        renderItem={({ item }) => (
+        renderItem={({ item, index, section }) => (
           <DeadlineRow
             document={item}
             href={{ pathname: '/(tabs)/(deadlines)/document/[id]', params: { id: String(item.id) } }}
+            cardColor={cardColor}
+            first={index === 0}
+            last={index === section.data.length - 1}
             highlighted={item.expiresAt === selected}
           />
         )}
-        ItemSeparatorComponent={RowGap}
-        SectionSeparatorComponent={RowGap}
         ListEmptyComponent={
           documents ? (
             <View style={styles.empty}>
@@ -136,17 +162,6 @@ export default function DeadlinesScreen() {
           ) : undefined
         }
       />
-
-      {/* "Mese": the month grid, like the iPhone Calendar */}
-      <Stack.Toolbar placement="right">
-        <Stack.Toolbar.Button
-          onPress={() => {
-            setVisibleMonth(monthOf(selected ?? weekStart));
-            setMonthOpen(true);
-          }}>
-          Mese
-        </Stack.Toolbar.Button>
-      </Stack.Toolbar>
 
       <Modal
         visible={monthOpen}
@@ -176,10 +191,6 @@ export default function DeadlinesScreen() {
   );
 }
 
-function RowGap() {
-  return <View style={styles.gap} />;
-}
-
 function monthOf(iso: string) {
   const date = parseISODate(iso);
   return { year: date.getFullYear(), month: date.getMonth() };
@@ -198,21 +209,42 @@ const styles = StyleSheet.create({
   },
   header: {
     gap: 8,
-    marginBottom: 8,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    gap: 12,
+    paddingHorizontal: 4,
+  },
+  title: {
+    flexShrink: 1,
+    fontSize: 34,
+    lineHeight: 41,
+    fontFamily: FONTS.titleBold,
+  },
+  link: {
+    color: BRAND_COLOR,
+    fontSize: 17, // plain text button, no pill
+  },
+  todayLink: {
+    alignSelf: 'flex-end',
+    paddingHorizontal: 4,
+  },
+  smallLink: {
+    color: BRAND_COLOR,
+    fontSize: 15,
   },
   note: {
     paddingHorizontal: 4,
   },
   sectionTitle: {
-    fontSize: 18,
-    lineHeight: 24,
-    fontFamily: FONTS.titleSemiBold,
-    paddingHorizontal: 4,
-    paddingTop: 16,
-    paddingBottom: 2,
-  },
-  gap: {
-    height: 10,
+    fontSize: 13, // iOS footnote, system font
+    lineHeight: 18,
+    textTransform: 'uppercase',
+    paddingHorizontal: 16,
+    paddingTop: 22,
+    paddingBottom: 6,
   },
   empty: {
     alignItems: 'center',

@@ -10,9 +10,12 @@ import * as SplashScreen from 'expo-splash-screen';
 import { SQLiteProvider } from 'expo-sqlite';
 import { useColorScheme } from 'react-native';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/brand';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
+
+// The root Stack starts on the tabs; sheets and modals are pushed on top of them
+export const unstable_settings = { anchor: '(tabs)' };
 
 SplashScreen.preventAutoHideAsync();
 
@@ -38,7 +41,6 @@ export default function RootLayout() {
       onInit={initDatabase}
       options={{ enableChangeListener: true }}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <AnimatedSplashOverlay />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
@@ -48,6 +50,19 @@ export default function RootLayout() {
               headerShown: false,
               sheetGrabberVisible: true,
               sheetAllowedDetents: 'fitToContents',
+            }}
+          />
+          <Stack.Screen
+            name="onboarding"
+            options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'fade' }}
+          />
+          <Stack.Screen
+            name="send"
+            options={{
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              sheetAllowedDetents: [0.85, 1.0],
             }}
           />
           <Stack.Screen
@@ -98,6 +113,8 @@ export default function RootLayout() {
             }}
           />
         </Stack>
+        {/* After the Stack, so it is drawn on top of the first screen while it fades */}
+        <SplashOverlay />
       </ThemeProvider>
     </SQLiteProvider>
   );

@@ -2,10 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
 
-import { confirmDeleteDocument } from '@/actions/delete-actions';
-import { DangerButton } from '@/components/danger-button';
 import { DocumentForm } from '@/components/document-form';
 import { FilesEditor, fromExisting, type EditableFile } from '@/components/files-editor';
 import { getDocumentDetail, listDocumentFiles, saveDocumentEdits } from '@/db/documents';
@@ -48,17 +45,6 @@ function EditDocumentContent({ document, savedFiles }: { document: DocumentDetai
         await saveDocumentEdits(db, document.id, input, removed, added);
         router.back();
       }}
-      footer={
-        <View style={styles.delete}>
-          <DangerButton label="Elimina documento" onPress={() => confirmDeleteDocument(db, document, () => router.back())} />
-        </View>
-      }
     />
   );
 }
-
-const styles = StyleSheet.create({
-  delete: {
-    marginTop: 12,
-  },
-});

@@ -28,6 +28,8 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
+    imageCount: Number(row.image_count ?? 0),
+    firstImagePath: (row.first_image_path as string | null | undefined) ?? null,
   };
 }
 
@@ -39,7 +41,10 @@ async function listDocumentsWhere(
   params: (string | number)[],
 ): Promise<DocumentListItem[]> {
   const rows = await db.getAllAsync<DocumentWithCategoryRecord>(
-    `SELECT d.*, ${CATEGORY_JOIN_COLUMNS}
+    `SELECT d.*, ${CATEGORY_JOIN_COLUMNS},
+            (SELECT COUNT(*) FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image') AS image_count,
+            (SELECT f.path FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image'
+             ORDER BY CASE f.side WHEN 'back' THEN 1 ELSE 0 END, f.id LIMIT 1) AS first_image_path
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      ${where}
@@ -214,13 +219,37 @@ export async function saveDocumentEdits(
   removedFiles: DocumentFile[],
   addedFiles: PendingFile[],
 ): Promise<void> {
+  await changeFiles(db, id, removedFiles, addedFiles, () => updateDocument(db, id, input));
+  // New title, expiry or reminder → update the calendar event (or remove it if the expiry is gone)
+  await syncDocumentEvent(db, id);
+}
+
+// Only the files: attach new ones, replacing the given ones ("Aggiungi documento" in the detail)
+export async function replaceDocumentFiles(
+  db: SQLiteDatabase,
+  id: number,
+  removedFiles: DocumentFile[],
+  addedFiles: PendingFile[],
+): Promise<void> {
+  await changeFiles(db, id, removedFiles, addedFiles);
+}
+
+// Copies the new files first, then changes the rows (and the fields, if `alsoInTransaction` is
+// given) in one transaction; old files leave the phone only after it succeeded.
+async function changeFiles(
+  db: SQLiteDatabase,
+  id: number,
+  removedFiles: DocumentFile[],
+  addedFiles: PendingFile[],
+  alsoInTransaction?: () => Promise<void>,
+): Promise<void> {
   const stored: { path: string; file: PendingFile }[] = [];
   try {
     for (const file of addedFiles) {
       stored.push({ path: await storePendingFile(file), file });
     }
     await db.withTransactionAsync(async () => {
-      await updateDocument(db, id, input);
+      await alsoInTransaction?.();
       for (const file of removedFiles) {
         await db.runAsync('DELETE FROM document_files WHERE id = ?', file.id);
       }
@@ -233,6 +262,4 @@ export async function saveDocumentEdits(
     throw error;
   }
   removedFiles.forEach((file) => deleteStoredFile(file.path));
-  // New title, expiry or reminder → update the calendar event (or remove it if the expiry is gone)
-  await syncDocumentEvent(db, id);
 }

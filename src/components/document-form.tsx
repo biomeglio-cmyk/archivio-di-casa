@@ -1,18 +1,18 @@
 import { Host, Picker, Switch } from '@expo/ui';
 import { DateTimePicker } from '@expo/ui/community/datetime-picker';
 import { useState, type ReactNode } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { FieldLabel, FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR } from '@/constants/brand';
+import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { listCategories } from '@/db/categories';
 import type { DocumentInput } from '@/db/documents';
 import { listPeople } from '@/db/people';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
-import { parseISODate, toISODate } from '@/utils/dates';
+import { formatShortDate, parseISODate, toISODate } from '@/utils/dates';
 
 // Picker values must be string | number, so 0 stands for "nothing chosen" (ids start at 1)
 const NONE = 0;
@@ -32,12 +32,11 @@ type Props = {
   files?: ReactNode; // attachments area shown at the top
   autoFocusTitle?: boolean;
   onSubmit: (input: DocumentInput) => Promise<void>;
-  footer?: ReactNode; // e.g. "Elimina documento" when editing
 };
 
 // The document form, shared by "Nuovo documento" and "Modifica documento".
 // Required: title and category. Everything else is optional.
-export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit, footer }: Props) {
+export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit }: Props) {
   const theme = useTheme();
   const { data: categories } = useDbQuery(listCategories, []);
   const { data: people } = useDbQuery(listPeople, []);
@@ -50,6 +49,7 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit,
   const [expiryDate, setExpiryDate] = useState(() =>
     initial?.expiresAt ? parseISODate(initial.expiresAt) : new Date(),
   );
+  const [calendarOpen, setCalendarOpen] = useState(false);
   const [reminderDays, setReminderDays] = useState(initial?.reminderDays ?? NONE);
   const [notes, setNotes] = useState(initial?.notes ?? '');
   const [saving, setSaving] = useState(false);
@@ -128,20 +128,38 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit,
             </FormRow>
 
             <FormRow label="Aggiungi una scadenza" separator={line}>
-              <Switch value={hasExpiry} onValueChange={setHasExpiry} />
+              <Switch
+                value={hasExpiry}
+                onValueChange={(value) => {
+                  setHasExpiry(value);
+                  setCalendarOpen(value); // turning it on shows the calendar straight away
+                }}
+              />
             </FormRow>
 
             {hasExpiry && (
               <>
-                <FormRow label="Data di scadenza" separator={line}>
+                {/* The date as text on the right (always inside the margins); tapping it opens
+                    the native calendar below, full width inside the card */}
+                <Pressable
+                  onPress={() => setCalendarOpen((open) => !open)}
+                  accessibilityRole="button"
+                  accessibilityState={{ expanded: calendarOpen }}
+                  style={[styles.row, { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: line }]}>
+                  <FieldLabel label="Data di scadenza" />
+                  <Text style={styles.dateValue}>{formatShortDate(toISODate(expiryDate))}</Text>
+                </Pressable>
+                {calendarOpen && (
+                  // Not inside another Host: this component creates its own, sized to the card
                   <DateTimePicker
                     value={expiryDate}
                     onValueChange={(_, date) => setExpiryDate(date)}
                     mode="date"
-                    display="compact"
+                    display="inline"
                     accentColor={BRAND_COLOR}
+                    style={styles.calendar}
                   />
-                </FormRow>
+                )}
                 <FormRow label="Promemoria" separator={line}>
                   <Picker selectedValue={reminderDays} onValueChange={setReminderDays}>
                     {REMINDER_OPTIONS.map((o) => (
@@ -176,7 +194,6 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit,
         </ThemedText>
       </View>
 
-      {footer}
     </ScrollView>
   );
 }
@@ -192,9 +209,14 @@ type FormRowProps = {
 function FormRow({ label, required, separator, children }: FormRowProps) {
   return (
     <View style={[styles.row, separator && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: separator }]}>
-      <FieldLabel label={label} required={required} />
-      {/* Host is the bridge between React Native and the native SwiftUI controls */}
-      <Host matchContents>{children}</Host>
+      <View style={styles.rowLabel}>
+        <FieldLabel label={label} required={required} />
+      </View>
+      {/* Host is the bridge between React Native and the native SwiftUI controls.
+          The wrapper keeps it inside the card even with a long value. */}
+      <View style={styles.rowControl}>
+        <Host matchContents>{children}</Host>
+      </View>
     </View>
   );
 }
@@ -223,6 +245,24 @@ const styles = StyleSheet.create({
     gap: 12,
     minHeight: 52,
     paddingVertical: 8,
+  },
+  rowLabel: {
+    flexShrink: 1, // a long label wraps instead of pushing the control out
+  },
+  rowControl: {
+    flexShrink: 1,
+    maxWidth: '65%',
+    alignItems: 'flex-end',
+    overflow: 'hidden',
+  },
+  dateValue: {
+    color: BRAND_COLOR,
+    fontSize: 17,
+    fontFamily: FONTS.titleMedium,
+  },
+  calendar: {
+    alignSelf: 'stretch', // full width of the card, never past its margins
+    marginBottom: 8,
   },
   notes: {
     minHeight: 96,

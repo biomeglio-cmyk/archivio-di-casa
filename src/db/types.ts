@@ -82,7 +82,11 @@ export type PersonWithCount = Person & {
   expiringCount: number; // documents expiring from today to 30 days from now
 };
 export type CategoryWithCount = Category & { documentCount: number };
-export type DocumentListItem = FamilyDocument & { category: Category };
+export type DocumentListItem = FamilyDocument & {
+  category: Category;
+  imageCount: number; // photos attached (0 = no photos: can't go into a combined PDF)
+  firstImagePath: string | null; // the front (or the first photo), for thumbnails
+};
 export type DocumentDetail = DocumentListItem & { person: Person | null };
 
 export type DocumentFileRecord = {

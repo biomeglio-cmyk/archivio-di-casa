@@ -2,13 +2,17 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
+import { useSQLiteContext } from 'expo-sqlite';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { getCalendarSettings } from '@/calendar/calendar-settings';
+import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
 import { PersonAvatar } from '@/components/person-avatar';
 import { ThemedText } from '@/components/themed-text';
+import { useAttachFile } from '@/components/use-attach-file';
 import { FONTS } from '@/constants/brand';
 import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -23,8 +27,11 @@ export default function DocumentDetail() {
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, Number(id)), [id]);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, Number(id)), [id]);
   const hasFiles = files !== undefined && files.length > 0;
+  const db = useSQLiteContext();
+  // "Aggiungi documento": attach a photo or a PDF to this document (hooks go before any return)
+  const { attach, cameraModal } = useAttachFile(Number(id), files ?? []);
 
-  // Deleted from "Modifica documento" → leave this screen too
+  // Deleted with "Cancella" → leave this screen
   useLeaveWhenDeleted(document);
 
   // undefined = still loading (a few milliseconds), null = not in the database
@@ -74,7 +81,7 @@ export default function DocumentDetail() {
         {hasFiles && (
           <>
             <DocumentFilesView title={document.title} files={files} />
-            <DocumentActions title={document.title} files={files} />
+            <DocumentActions documentId={document.id} title={document.title} files={files} />
           </>
         )}
 
@@ -98,15 +105,16 @@ export default function DocumentDetail() {
             </View>
           ))}
         </View>
+
+        {/* Actions right after the data; they scroll with the page */}
+        <DetailActionBar
+          onAdd={attach}
+          onEdit={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
+          onDelete={() => confirmDeleteDocument(db, document)}
+        />
       </ScrollView>
 
-      {/* Pencil on the right of the header: opens the same form as "Nuovo documento", filled in */}
-      <Stack.Toolbar placement="right">
-        <Stack.Toolbar.Button
-          icon="pencil"
-          onPress={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
-        />
-      </Stack.Toolbar>
+      {cameraModal}
     </>
   );
 }
@@ -114,6 +122,7 @@ export default function DocumentDetail() {
 const styles = StyleSheet.create({
   content: {
     padding: 16,
+    paddingBottom: 48, // room at the end, so nothing ends up under the tab bar
     gap: 16,
   },
   missing: {

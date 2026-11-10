@@ -3,9 +3,7 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { confirmDeletePerson } from '@/actions/delete-actions';
 import { pickPersonPhoto } from '@/capture/pick-files';
-import { DangerButton } from '@/components/danger-button';
 import { FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { PersonAvatar } from '@/components/person-avatar';
@@ -102,10 +100,6 @@ function PersonForm({ person }: { person: Person | null }) {
       </FormField>
 
       <GradientButton label="Salva" disabled={!canSave} onPress={save} />
-
-      {person && (
-        <DangerButton label="Elimina persona" onPress={() => confirmDeletePerson(db, person, () => router.back())} />
-      )}
     </View>
   );
 }

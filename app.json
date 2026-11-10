@@ -4,11 +4,11 @@
     "slug": "archivio-di-casa",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/logo-icon.png",
     "scheme": "archiviodicasa",
     "userInterfaceStyle": "automatic",
     "ios": {
-      "icon": "./assets/expo.icon"
+      "icon": "./assets/images/logo-icon.png"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,9 +28,9 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#208AEF",
-          "image": "./assets/images/splash-icon.png",
-          "imageWidth": 76
+          "backgroundColor": "#FF4F64",
+          "image": "./assets/images/logo-glyph.png",
+          "imageWidth": 120
         }
       ],
       "expo-sqlite",

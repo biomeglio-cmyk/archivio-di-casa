@@ -5,8 +5,6 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { confirmDeleteCategory } from '@/actions/delete-actions';
-import { DangerButton } from '@/components/danger-button';
 import { FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
@@ -124,13 +122,6 @@ function CategoryForm({ category }: { category: Category | null }) {
       )}
 
       <GradientButton label="Salva" disabled={!canSave} onPress={save} />
-
-      {category && !category.isBuiltin && (
-        <DangerButton
-          label="Elimina categoria"
-          onPress={() => confirmDeleteCategory(db, category, () => router.back())}
-        />
-      )}
     </ScrollView>
   );
 }

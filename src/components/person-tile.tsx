@@ -7,10 +7,11 @@ import { DANGER_COLOR } from '@/constants/brand';
 import type { PersonWithCount } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
+import type { TileSize } from '@/hooks/use-tile-size';
 
 type Props = {
   person: PersonWithCount;
-  size: { width: number; height: number }; // exact cell size from the grid
+  size: TileSize; // width from the grid, minimum height (taller with large text)
 };
 
 // Family grid tile: big avatar in the middle, name, and "N documenti" or "N in scadenza" in red
@@ -30,14 +31,13 @@ export function PersonTile({ person, size }: Props) {
         { backgroundColor: pressed ? theme.backgroundSelected : theme.backgroundElement },
       ]}>
       <PersonAvatar name={person.name} photoPath={person.photoPath} size={52} />
-      <ThemedText numberOfLines={1} style={styles.name}>
+      <ThemedText numberOfLines={2} style={styles.name}>
         {person.name}
       </ThemedText>
       <ThemedText
         type="small"
         themeColor="textSecondary"
-        numberOfLines={1}
-        style={expiring && { color: DANGER_COLOR }}>
+        style={[styles.count, expiring && { color: DANGER_COLOR }]}>
         {expiring
           ? `${person.expiringCount} in scadenza`
           : person.documentCount === 1
@@ -59,6 +59,9 @@ const styles = StyleSheet.create({
   },
   name: {
     marginTop: 4,
+    textAlign: 'center',
+  },
+  count: {
     textAlign: 'center',
   },
 });

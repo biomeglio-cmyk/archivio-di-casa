@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
+import { useEffect } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import { CategoryTile } from '@/components/category-tile';
@@ -10,6 +11,9 @@ import { listCategoriesWithCounts } from '@/db/categories';
 import type { CategoryWithCount } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { TILE_COLUMNS, tileGridStyles, useTileSize } from '@/hooks/use-tile-size';
+import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
+
+const AFTER_SPLASH_MS = 1100; // the opening screen lasts about one second
 
 // The grid items: every category, then the dashed "Nuova categoria" tile
 type GridItem = { kind: 'category'; category: CategoryWithCount } | { kind: 'new' };
@@ -25,6 +29,13 @@ export default function ArchiveScreen() {
     ? [...categories.map((category) => ({ kind: 'category' as const, category })), { kind: 'new' }]
     : [];
   const total = categories?.reduce((sum, c) => sum + c.documentCount, 0) ?? 0;
+
+  // First launch only: show the "Consigli iniziali" once the opening screen has faded
+  useEffect(() => {
+    if (hasSeenOnboarding()) return;
+    const timer = setTimeout(() => router.push('/onboarding'), AFTER_SPLASH_MS);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <FlatList

@@ -1,4 +1,5 @@
 import { router } from 'expo-router';
+import { Stack } from 'expo-router/stack';
 import { FlatList } from 'react-native';
 
 import { DashedAddTile } from '@/components/dashed-add-tile';
@@ -22,20 +23,31 @@ export default function FamilyScreen() {
     : [];
 
   return (
-    <FlatList
-      data={items}
-      numColumns={TILE_COLUMNS}
-      keyExtractor={(item) => (item.kind === 'person' ? String(item.person.id) : 'add')}
-      contentInsetAdjustmentBehavior="automatic"
-      contentContainerStyle={tileGridStyles.content}
-      columnWrapperStyle={tileGridStyles.row}
-      renderItem={({ item }) =>
-        item.kind === 'person' ? (
-          <PersonTile person={item.person} size={size} />
-        ) : (
-          <DashedAddTile label="Aggiungi persona" size={size} onPress={() => router.push('/person-form')} />
-        )
-      }
-    />
+    <>
+      <FlatList
+        data={items}
+        numColumns={TILE_COLUMNS}
+        keyExtractor={(item) => (item.kind === 'person' ? String(item.person.id) : 'add')}
+        contentInsetAdjustmentBehavior="automatic"
+        contentContainerStyle={tileGridStyles.content}
+        columnWrapperStyle={tileGridStyles.row}
+        renderItem={({ item }) =>
+          item.kind === 'person' ? (
+            <PersonTile person={item.person} size={size} />
+          ) : (
+            <DashedAddTile label="Aggiungi persona" size={size} onPress={() => router.push('/person-form')} />
+          )
+        }
+      />
+
+      {/* Gear: app menu. "Aiuto" opens the "Consigli iniziali" again */}
+      <Stack.Toolbar placement="right">
+        <Stack.Toolbar.Menu icon="gearshape">
+          <Stack.Toolbar.MenuAction icon="questionmark.circle" onPress={() => router.push('/onboarding')}>
+            Aiuto
+          </Stack.Toolbar.MenuAction>
+        </Stack.Toolbar.Menu>
+      </Stack.Toolbar>
+    </>
   );
 }

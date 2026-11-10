@@ -1,11 +1,13 @@
+import { SegmentedControl } from '@expo/ui/community/segmented-control';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { StatusBar } from 'expo-status-bar';
 import { SymbolView } from 'expo-symbols';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { SvgXml } from 'react-native-svg';
 
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { CardFace } from '@/components/card-face';
@@ -17,10 +19,12 @@ import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useMaxBrightness } from '@/hooks/use-max-brightness';
 import { useTheme } from '@/hooks/use-theme';
 import { resolveDocumentFile } from '@/storage/document-files';
+import { generateBarcode, type GeneratedBarcode } from '@/utils/barcode';
 
 // White behind the barcode in light and dark mode: scanners need dark bars on white
 const BARCODE_BACKGROUND = '#FFFFFF';
 const BARCODE_TEXT = '#000000';
+const CODE_MAX_HEIGHT = 200; // a 1D code is wide and low; a 2D code is at most this tall
 
 type Props = {
   card: DocumentDetail;
@@ -39,6 +43,11 @@ export function CardDetail({ card, files, pin }: Props) {
 
   const barcode = files.find((f) => f.kind === 'image' && f.side === 'barcode');
   const barcodeUri = barcode ? resolveDocumentFile(barcode.path).uri : null;
+  // The code drawn from the value read by the camera; null = unknown format or typed by hand
+  const generated = useMemo(() => generateBarcode(card.barcodeValue, card.barcodeType), [card.barcodeValue, card.barcodeType]);
+  const [view, setView] = useState<'code' | 'photo'>('code'); // "Codice" / "Foto"
+  const showCode = generated !== null && (view === 'code' || !barcodeUri);
+  const codeWidth = width - 64; // screen - page padding - white box padding
 
   return (
     <>
@@ -49,13 +58,26 @@ export function CardDetail({ card, files, pin }: Props) {
         </View>
 
         <View style={styles.barcodeCard}>
-          {barcodeUri ? (
+          {/* Both available: choose between the generated code and the photo */}
+          {generated && barcodeUri && (
+            <SegmentedControl
+              values={['Codice', 'Foto']}
+              selectedIndex={view === 'code' ? 0 : 1}
+              onChange={(event) => setView(event.nativeEvent.selectedSegmentIndex === 0 ? 'code' : 'photo')}
+            />
+          )}
+
+          {showCode || barcodeUri ? (
             <Pressable
               onPress={() => setFullScreen(true)}
               accessibilityRole="button"
-              accessibilityLabel="Codice a barre"
-              accessibilityHint="Apre il codice a tutto schermo, in orizzontale">
-              <Image source={{ uri: barcodeUri }} style={styles.barcode} contentFit="contain" accessibilityIgnoresInvertColors />
+              accessibilityLabel={showCode ? 'Codice a barre' : 'Foto del codice a barre'}
+              accessibilityHint="Apre il codice a tutto schermo">
+              {showCode ? (
+                <GeneratedCode barcode={generated!} maxWidth={codeWidth} maxHeight={CODE_MAX_HEIGHT} />
+              ) : (
+                <Image source={{ uri: barcodeUri! }} style={styles.barcode} contentFit="contain" accessibilityIgnoresInvertColors />
+              )}
             </Pressable>
           ) : (
             !card.barcodeValue && (
@@ -67,7 +89,7 @@ export function CardDetail({ card, files, pin }: Props) {
               {card.barcodeValue}
             </Text>
           )}
-          {barcodeUri && <Text style={styles.tapHint}>Tocca il codice per ingrandirlo</Text>}
+          {(showCode || barcodeUri) && <Text style={styles.tapHint}>Tocca il codice per ingrandirlo</Text>}
         </View>
 
         {card.person && (
@@ -91,25 +113,56 @@ export function CardDetail({ card, files, pin }: Props) {
       </ScrollView>
 
       <PinHeart {...pin} />
-      {barcodeUri && (
-        <BarcodeFullScreen uri={barcodeUri} value={card.barcodeValue} visible={fullScreen} onClose={() => setFullScreen(false)} />
+      {(showCode || barcodeUri) && (
+        <BarcodeFullScreen
+          barcode={showCode ? generated : null}
+          uri={barcodeUri}
+          value={card.barcodeValue}
+          visible={fullScreen}
+          onClose={() => setFullScreen(false)}
+        />
       )}
     </>
   );
 }
 
-// The barcode photo turned sideways over the whole screen (landscape without rotating the
-// app: the phone is simply turned). Tap anywhere to close.
-function BarcodeFullScreen({ uri, value, visible, onClose }: { uri: string; value: string | null; visible: boolean; onClose: () => void }) {
+// The generated code, as large as fits the box, never stretched
+function GeneratedCode({ barcode, maxWidth, maxHeight }: { barcode: GeneratedBarcode; maxWidth: number; maxHeight: number }) {
+  const width = Math.min(maxWidth, maxHeight * barcode.aspect);
+  return (
+    <View style={styles.codeBox} accessibilityIgnoresInvertColors>
+      <SvgXml xml={barcode.xml} width={width} height={width / barcode.aspect} />
+    </View>
+  );
+}
+
+type FullScreenProps = {
+  barcode: GeneratedBarcode | null; // the generated code, or null to show the photo
+  uri: string | null;
+  value: string | null;
+  visible: boolean;
+  onClose: () => void;
+};
+
+// The code over the whole screen, on white. A 1D code (and the photo) is turned sideways, so it
+// uses the long side (landscape without rotating the app: the phone is simply turned);
+// a QR / PDF417 / DataMatrix stays upright. Tap anywhere to close.
+function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: FullScreenProps) {
   const { width, height } = useWindowDimensions();
+  const sideways = !barcode?.twoD;
+  // The box: as long as the screen is tall when sideways
+  const box = sideways ? { width: height, height: width } : { width, height };
 
   return (
     <Modal visible={visible} animationType="fade" presentationStyle="fullScreen" onRequestClose={onClose}>
       <StatusBar hidden />
       <Pressable style={styles.fullScreen} onPress={onClose} accessibilityRole="button" accessibilityLabel="Chiudi il codice">
-        {/* A box as long as the screen is tall, rotated 90°: the barcode fills the long side */}
-        <View style={[styles.rotated, { width: height, height: width, transform: [{ rotate: '90deg' }] }]}>
-          <Image source={{ uri }} style={styles.fullImage} contentFit="contain" />
+        <View style={[styles.rotated, box, sideways && { transform: [{ rotate: '90deg' }] }]}>
+          {barcode ? (
+            <GeneratedCode barcode={barcode} maxWidth={box.width - 48} maxHeight={box.height - 120} />
+          ) : (
+            uri && <Image source={{ uri }} style={styles.fullImage} contentFit="contain" />
+          )}
           {value && (
             <Text style={styles.fullNumber} maxFontSizeMultiplier={1.5}>
               {value}
@@ -145,6 +198,11 @@ const styles = StyleSheet.create({
   barcode: {
     width: '100%',
     height: 200,
+  },
+  codeBox: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: BARCODE_BACKGROUND,
   },
   number: {
     color: BARCODE_TEXT,

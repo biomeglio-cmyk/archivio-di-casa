@@ -1,4 +1,6 @@
 import { SegmentedControl } from '@expo/ui/community/segmented-control';
+import { router } from 'expo-router';
+import { Stack } from 'expo-router/stack';
 import Storage from 'expo-sqlite/kv-store';
 import { useState } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
@@ -68,60 +70,49 @@ export default function DeadlinesScreen() {
   }
 
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-      <SegmentedControl
-        values={VIEW_LABELS}
-        selectedIndex={view === 'week' ? 0 : 1}
-        onChange={(event) => changeView(event.nativeEvent.selectedSegmentIndex === 0 ? 'week' : 'month')}
-      />
-
-      {/* Week: the week of the selected day; arrows and swipe move the selection by 7 days */}
-      {view === 'week' ? (
-        <WeekStrip
-          weekStartIso={mondayOfIso(selectedIso)}
-          todayIso={todayIso}
-          selectedIso={selectedIso}
-          markers={markers}
-          onSelect={setSelectedIso}
-          onPrevWeek={() => setSelectedIso(addDaysIso(selectedIso, -7))}
-          onNextWeek={() => setSelectedIso(addDaysIso(selectedIso, 7))}
-          onToday={goToToday}
+    <>
+      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
+        <SegmentedControl
+          values={VIEW_LABELS}
+          selectedIndex={view === 'week' ? 0 : 1}
+          onChange={(event) => changeView(event.nativeEvent.selectedSegmentIndex === 0 ? 'week' : 'month')}
         />
-      ) : (
-        <MonthCalendar
-          year={visible.year}
-          month={visible.month}
-          todayIso={todayIso}
-          selectedIso={selectedIso}
-          markers={markers}
-          onSelect={setSelectedIso}
-          onPrevMonth={() => moveMonth(-1)}
-          onNextMonth={() => moveMonth(1)}
-          onToday={goToToday}
-        />
-      )}
 
-      {/* "Giovedì 12 novembre · tra 2 giorni" and the deadlines of that day */}
-      <View style={styles.section}>
-        <ThemedText style={styles.dayTitle}>
-          {formatLongDay(selectedIso)} · {describeDayDistance(daysUntil(selectedIso))}
-        </ThemedText>
-        {documents && dayDocuments.length === 0 && (
-          <ThemedText themeColor="textSecondary">Nessuna scadenza</ThemedText>
-        )}
-        {dayDocuments.map((doc) => (
-          <DocumentRow
-            key={doc.id}
-            document={doc}
-            href={{ pathname: '/(tabs)/(deadlines)/document/[id]', params: { id: String(doc.id) } }}
+        {/* Week: the week of the selected day; arrows and swipe move the selection by 7 days */}
+        {view === 'week' ? (
+          <WeekStrip
+            weekStartIso={mondayOfIso(selectedIso)}
+            todayIso={todayIso}
+            selectedIso={selectedIso}
+            markers={markers}
+            onSelect={setSelectedIso}
+            onPrevWeek={() => setSelectedIso(addDaysIso(selectedIso, -7))}
+            onNextWeek={() => setSelectedIso(addDaysIso(selectedIso, 7))}
+            onToday={goToToday}
           />
-        ))}
-      </View>
+        ) : (
+          <MonthCalendar
+            year={visible.year}
+            month={visible.month}
+            todayIso={todayIso}
+            selectedIso={selectedIso}
+            markers={markers}
+            onSelect={setSelectedIso}
+            onPrevMonth={() => moveMonth(-1)}
+            onNextMonth={() => moveMonth(1)}
+            onToday={goToToday}
+          />
+        )}
 
-      {expired.length > 0 && (
+        {/* "Giovedì 12 novembre · tra 2 giorni" and the deadlines of that day */}
         <View style={styles.section}>
-          <ThemedText style={[styles.dayTitle, { color: DANGER_COLOR }]}>Da sistemare</ThemedText>
-          {expired.map((doc) => (
+          <ThemedText style={styles.dayTitle}>
+            {formatLongDay(selectedIso)} · {describeDayDistance(daysUntil(selectedIso))}
+          </ThemedText>
+          {documents && dayDocuments.length === 0 && (
+            <ThemedText themeColor="textSecondary">Nessuna scadenza</ThemedText>
+          )}
+          {dayDocuments.map((doc) => (
             <DocumentRow
               key={doc.id}
               document={doc}
@@ -129,8 +120,28 @@ export default function DeadlinesScreen() {
             />
           ))}
         </View>
-      )}
-    </ScrollView>
+
+        {expired.length > 0 && (
+          <View style={styles.section}>
+            <ThemedText style={[styles.dayTitle, { color: DANGER_COLOR }]}>Da sistemare</ThemedText>
+            {expired.map((doc) => (
+              <DocumentRow
+                key={doc.id}
+                document={doc}
+                href={{ pathname: '/(tabs)/(deadlines)/document/[id]', params: { id: String(doc.id) } }}
+              />
+            ))}
+          </View>
+        )}
+      </ScrollView>
+
+      {/* Opens the iOS Calendar sync settings */}
+      <Stack.Toolbar placement="right">
+        <Stack.Toolbar.Button icon="calendar.badge.plus" onPress={() => router.push('/calendar-settings')}>
+          Calendario
+        </Stack.Toolbar.Button>
+      </Stack.Toolbar>
+    </>
   );
 }
 

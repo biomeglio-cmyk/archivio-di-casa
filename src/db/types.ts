@@ -32,6 +32,7 @@ export type FamilyDocument = {
   expiresAt: string | null; // 'YYYY-MM-DD', null = never expires
   reminderDays: number | null;
   notes: string | null;
+  calendarEventId: string | null; // iOS Calendar event of the expiry, when sync is on
   createdAt: string;
   updatedAt: string;
 };
@@ -69,6 +70,7 @@ export type DocumentRecord = {
   expires_at: string | null;
   reminder_days: number | null;
   notes: string | null;
+  calendar_event_id: string | null;
   created_at: string;
   updated_at: string;
 };

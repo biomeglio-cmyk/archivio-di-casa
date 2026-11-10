@@ -106,6 +106,14 @@ const MIGRATIONS: Migration[] = [
       await db.execAsync('ALTER TABLE people ADD COLUMN photo_path TEXT');
     },
   },
+  {
+    version: 4,
+    name: 'calendar event of a document',
+    up: async (db) => {
+      // Identifier of the iOS Calendar event created for the expiry; NULL = no event
+      await db.execAsync('ALTER TABLE documents ADD COLUMN calendar_event_id TEXT');
+    },
+  },
 ];
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase): Promise<void> {

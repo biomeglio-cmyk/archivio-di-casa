@@ -4,6 +4,7 @@ import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
 import { PersonAvatar } from '@/components/person-avatar';
@@ -41,6 +42,7 @@ export default function DocumentDetail() {
   }
 
   const { category, person } = document;
+  const calendar = getCalendarSettings();
 
   // Label/value pairs shown under the header; missing values are skipped
   const details = [
@@ -53,6 +55,10 @@ export default function DocumentDetail() {
       value: document.expiresAt && document.reminderDays ? `${document.reminderDays} giorni prima` : null,
     },
     { label: 'Note', value: document.notes },
+    {
+      label: 'Nel calendario',
+      value: calendar.enabled && document.calendarEventId ? calendar.calendarTitle : null,
+    },
   ].filter((d) => d.value);
 
   return (

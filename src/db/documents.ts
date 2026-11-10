@@ -1,5 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
+import { removeCalendarEvent, syncDocumentEvent } from '@/calendar/calendar-sync';
 import { CATEGORY_JOIN_COLUMNS, mapCategory } from '@/db/categories';
 import type {
   DocumentDetail,
@@ -23,6 +24,7 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     expiresAt: row.expires_at,
     reminderDays: row.reminder_days,
     notes: row.notes,
+    calendarEventId: row.calendar_event_id,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
@@ -119,12 +121,12 @@ export async function insertDocument(
   files: PendingFile[] = [],
 ): Promise<number> {
   const stored: { path: string; file: PendingFile }[] = [];
+  let documentId = 0;
   try {
     for (const file of files) {
       stored.push({ path: await storePendingFile(file), file });
     }
 
-    let documentId = 0;
     await db.withTransactionAsync(async () => {
       const clean = normalize(doc);
       const result = await db.runAsync(
@@ -144,11 +146,13 @@ export async function insertDocument(
         await insertFileRow(db, documentId, path, file);
       }
     });
-    return documentId;
   } catch (error) {
     stored.forEach(({ path }) => deleteStoredFile(path));
     throw error;
   }
+  // Calendar event of the expiry, if sync is on (after the save: it never makes the save fail)
+  await syncDocumentEvent(db, documentId);
+  return documentId;
 }
 
 // Files of a document: front before back, then the others
@@ -191,8 +195,13 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
 // then the photos/PDFs are removed from the phone.
 export async function deleteDocument(db: SQLiteDatabase, id: number): Promise<void> {
   const files = await db.getAllAsync<{ path: string }>('SELECT path FROM document_files WHERE document_id = ?', id);
+  const event = await db.getFirstAsync<{ calendar_event_id: string | null }>(
+    'SELECT calendar_event_id FROM documents WHERE id = ?',
+    id,
+  );
   await db.runAsync('DELETE FROM documents WHERE id = ?', id);
   files.forEach((file) => deleteStoredFile(file.path));
+  await removeCalendarEvent(event?.calendar_event_id ?? null);
 }
 
 // Saves the edit form: fields plus file changes (removed files, new or replacement files).
@@ -224,4 +233,6 @@ export async function saveDocumentEdits(
     throw error;
   }
   removedFiles.forEach((file) => deleteStoredFile(file.path));
+  // New title, expiry or reminder → update the calendar event (or remove it if the expiry is gone)
+  await syncDocumentEvent(db, id);
 }

@@ -10,10 +10,11 @@ type Props = {
   label: string; // "Nuova categoria", "Aggiungi persona"
   size: TileSize; // same width as the other tiles; the row stretches it to their height
   onPress: () => void;
+  radius?: number; // 20 like the other tiles; 12 for card-shaped tiles
 };
 
 // Dashed tile at the end of a grid, to add a new item
-export function DashedAddTile({ label, size, onPress }: Props) {
+export function DashedAddTile({ label, size, onPress, radius = 20 }: Props) {
   const theme = useTheme();
   const { pressed, handlers } = usePressed();
 
@@ -25,7 +26,7 @@ export function DashedAddTile({ label, size, onPress }: Props) {
       style={[
         size,
         styles.tile,
-        { borderColor: theme.textSecondary },
+        { borderColor: theme.textSecondary, borderRadius: radius },
         pressed && { backgroundColor: theme.surface },
       ]}>
       <SymbolView name="plus" tintColor={theme.textSecondary} size={24} />
@@ -38,7 +39,6 @@ export function DashedAddTile({ label, size, onPress }: Props) {
 
 const styles = StyleSheet.create({
   tile: {
-    borderRadius: 20,
     borderCurve: 'continuous',
     borderWidth: 1.5,
     borderStyle: 'dashed',

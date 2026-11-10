@@ -128,6 +128,27 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
+          {/* Cards: camera (front + barcode), then the card form */}
+          <Stack.Screen
+            name="add-card"
+            options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
+          />
+          <Stack.Screen
+            name="new-card"
+            options={{
+              presentation: 'modal',
+              title: 'Nuova carta',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
+          <Stack.Screen
+            name="edit-card/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Modifica carta',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
         </Stack>
         {/* After the Stack, so it is drawn on top of the first screen while it fades */}
         <SplashOverlay />

@@ -81,3 +81,13 @@ export async function pickPersonPhoto(hasPhoto: boolean): Promise<string | 'remo
   if (hasPhoto && index === 2) return 'remove';
   return null;
 }
+
+// One photo from the library, any use (cards: front or barcode). null if cancelled.
+export async function pickImageUri(): Promise<string | null> {
+  const result = await ImagePicker.launchImageLibraryAsync({
+    mediaTypes: ['images'],
+    allowsMultipleSelection: false,
+    quality: 0.9,
+  });
+  return result.canceled || result.assets.length === 0 ? null : result.assets[0].uri;
+}

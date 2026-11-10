@@ -54,7 +54,8 @@ async function listDocumentsWhere(
   const rows = await db.getAllAsync<DocumentWithCategoryRecord>(
     `SELECT d.*, ${CATEGORY_JOIN_COLUMNS},
             (SELECT COUNT(*) FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image') AS image_count,
-            (SELECT f.path FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image'
+            (SELECT f.path FROM document_files f
+             WHERE f.document_id = d.id AND f.kind = 'image' AND f.side IS NOT 'barcode'
              ORDER BY ${FILE_ORDER}, f.id LIMIT 1) AS first_image_path,
             pp.name AS person_name
      FROM documents d
@@ -83,11 +84,6 @@ export function listDocumentsByCategory(db: SQLiteDatabase, categoryId: number):
 // "Sottomano" on Archivio, in the order chosen by the user
 export function listPinnedDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
   return listDocumentsWhere(db, 'WHERE d.is_pinned = 1', [], 'd.pin_order, d.id');
-}
-
-// Cards in the "Tessere e card" grid: in the order they were added
-export function listCards(db: SQLiteDatabase, categoryId: number): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.category_id = ?', [categoryId], 'd.created_at, d.id');
 }
 
 export function listDocumentsByPerson(db: SQLiteDatabase, personId: number): Promise<DocumentListItem[]> {

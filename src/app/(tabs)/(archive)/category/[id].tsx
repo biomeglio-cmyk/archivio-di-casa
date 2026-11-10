@@ -3,6 +3,7 @@ import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 
 import { confirmDeleteCategory } from '@/actions/delete-actions';
+import { CardGrid } from '@/components/card-grid';
 import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentGrid } from '@/components/document-grid';
 import { BRAND_COLOR } from '@/constants/brand';
@@ -30,6 +31,19 @@ export default function CategoryScreen() {
   function sendTogether() {
     router.push({ pathname: '/send', params: { ids: selectedIds.join(','), label: category?.name ?? '' } });
     selection.cancel();
+  }
+
+  // "Tessere e card": a wallet of card-shaped tiles (built-in, so no Modifica/Cancella here)
+  if (category?.isCards) {
+    return (
+      <>
+        <Stack.Screen options={{ title: category.name }} />
+        <CardGrid
+          cards={documents}
+          hrefFor={(card) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(card.id) } })}
+        />
+      </>
+    );
   }
 
   return (

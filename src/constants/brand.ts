@@ -16,3 +16,6 @@ export const FONTS = {
   titleSemiBold: 'Outfit_600SemiBold',
   titleBold: 'Outfit_700Bold',
 } as const;
+
+// "Sottomano" star (iOS system orange)
+export const PIN_COLOR = '#FF9F0A';

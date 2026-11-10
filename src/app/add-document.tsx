@@ -30,6 +30,7 @@ export default function AddDocumentSheet() {
         <SheetOption symbol="camera" label="Fotografa" onPress={() => router.replace('/capture')} />
         <SheetOption symbol="photo.on.rectangle" label="Scegli dalle foto" onPress={() => attach(pickPhotos)} />
         <SheetOption symbol="doc" label="Importa file" onPress={() => attach(pickPdf)} />
+        <SheetOption symbol="creditcard" label="Aggiungi una carta" onPress={() => router.replace('/add-card')} />
         <SheetOption
           symbol="square.and.pencil"
           label="Inserisci a mano"

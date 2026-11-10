@@ -101,3 +101,9 @@ export async function deleteCategory(db: SQLiteDatabase, id: number): Promise<vo
     throw new Error('Le categorie di base non si possono eliminare.');
   }
 }
+
+// The "Tessere e card" category (marked kind = 'cards' by migration V5)
+export async function getCardsCategory(db: SQLiteDatabase): Promise<Category | null> {
+  const row = await db.getFirstAsync<CategoryRecord>("SELECT * FROM categories WHERE kind = 'cards' LIMIT 1");
+  return row ? mapCategory(row) : null;
+}

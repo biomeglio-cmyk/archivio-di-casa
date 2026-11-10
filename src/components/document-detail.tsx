@@ -74,7 +74,7 @@ export default function DocumentDetail() {
         {hasFiles && (
           <>
             <DocumentFilesView title={document.title} files={files} />
-            <DocumentActions title={document.title} files={files} />
+            <DocumentActions documentId={document.id} title={document.title} files={files} />
           </>
         )}
 

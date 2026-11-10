@@ -51,6 +51,15 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="send"
+            options={{
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              sheetAllowedDetents: [0.85, 1.0],
+            }}
+          />
+          <Stack.Screen
             name="calendar-settings"
             options={{
               presentation: 'formSheet',

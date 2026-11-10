@@ -110,7 +110,7 @@ export default function CalendarSettingsSheet() {
       <ThemedText style={styles.title}>Calendario</ThemedText>
       <ThemedText themeColor="textSecondary">
         Ogni scadenza diventa un evento di tutto il giorno «Scade: titolo». Se i promemoria di sottomano sono spenti,
-        l&apos;evento ha un avviso alle 9 nel giorno del promemoria; se sono accesi avvisa solo l&apos;app, così non ricevi
+        l&apos;evento ha un avviso alle 9 nel giorno del promemoria (quello del documento, altrimenti «Avvisa prima di»); se sono accesi avvisa solo l&apos;app, così non ricevi
         due avvisi. Nel calendario non finisce nessun altro dato del documento.
       </ThemedText>
 

@@ -3,7 +3,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 import Storage from 'expo-sqlite/kv-store';
 
 import { countUrgentDeadlines } from '@/db/urgent-count';
-import { getPreferences } from '@/settings/preferences';
+import { getPreferences, reminderDaysFor, type Preferences } from '@/settings/preferences';
 import { addDaysIso, describeDistance, formatShortDate, parseISODate, toISODate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
@@ -62,9 +62,10 @@ export async function afterDocumentSaved(db: SQLiteDatabase, expiresAt: string |
 }
 
 // When the reminder for this document should ring (local time), or null if it can't anymore
-function reminderDate(doc: ReminderSource, defaultDays: number, hour: number, minute: number, now: Date): Date | null {
+function reminderDate(doc: ReminderSource, preferences: Preferences, now: Date): Date | null {
+  const { reminderHour: hour, reminderMinute: minute } = preferences;
   const expiry = parseISODate(doc.expires_at);
-  const days = doc.reminder_days ?? defaultDays;
+  const days = reminderDaysFor(doc.reminder_days, preferences);
   const at = new Date(expiry.getFullYear(), expiry.getMonth(), expiry.getDate() - days, hour, minute);
   if (at > now) return at;
   // The reminder day has passed but the deadline hasn't: remind on the expiry day itself
@@ -118,7 +119,7 @@ export async function rescheduleReminders(db: SQLiteDatabase): Promise<void> {
     const planned = docs
       .map((doc) => ({
         doc,
-        at: reminderDate(doc, preferences.defaultReminderDays, preferences.reminderHour, preferences.reminderMinute, now),
+        at: reminderDate(doc, preferences, now),
       }))
       .filter((r): r is { doc: ReminderSource; at: Date } => r.at !== null)
       .sort((a, b) => a.at.getTime() - b.at.getTime())

@@ -61,3 +61,10 @@ function subscribe(listener: () => void) {
 export function usePreferences(): Preferences {
   return useSyncExternalStore(subscribe, getPreferences);
 }
+
+// How many days before its expiry a document reminds: its own value, otherwise the default
+// "Avvisa prima di" from Notifiche. The ONE rule shared by the app notifications and the
+// alarms of the calendar events.
+export function reminderDaysFor(documentDays: number | null, preferences: Preferences = getPreferences()): number {
+  return documentDays ?? preferences.defaultReminderDays;
+}

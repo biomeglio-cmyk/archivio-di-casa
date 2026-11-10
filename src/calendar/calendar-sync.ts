@@ -3,7 +3,7 @@ import * as Calendar from 'expo-calendar/legacy';
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { getCalendarSettings } from '@/calendar/calendar-settings';
-import { getPreferences } from '@/settings/preferences';
+import { getPreferences, reminderDaysFor } from '@/settings/preferences';
 import { parseISODate } from '@/utils/dates';
 
 // Every document with an expiry becomes an all-day event "Scade: <title>" in the chosen calendar
@@ -14,7 +14,8 @@ const REMINDER_HOUR = 9; // the alarm rings at 9:00, N days before
 
 // Alarms: only ONE reminder per deadline. When the app's own reminders ("Notifiche") are on,
 // the app notifies, so the calendar events have no alarm; when they are off, the calendar
-// event rings at 9:00, N days before (N = the document's reminder).
+// event rings at 9:00, N days before. N follows the same rule as the app notifications
+// (reminderDaysFor): the document's own value, otherwise the default from Notifiche.
 
 type EventSource = {
   id: number;
@@ -33,8 +34,9 @@ function eventDetails(doc: EventSource & { expires_at: string }) {
   const day = parseISODate(doc.expires_at); // local midnight
   // relativeOffset is in minutes from the start of the event (midnight of the expiry day).
   // An empty list also REMOVES the alarm of an existing event when it is updated.
-  const withAlarm = !getPreferences().remindersEnabled && doc.reminder_days;
-  const alarms = withAlarm ? [{ relativeOffset: -doc.reminder_days! * 24 * 60 + REMINDER_HOUR * 60 }] : [];
+  const preferences = getPreferences();
+  const days = reminderDaysFor(doc.reminder_days, preferences);
+  const alarms = preferences.remindersEnabled ? [] : [{ relativeOffset: -days * 24 * 60 + REMINDER_HOUR * 60 }];
   return { title: `Scade: ${doc.title}`, startDate: day, endDate: day, allDay: true, alarms };
 }
 

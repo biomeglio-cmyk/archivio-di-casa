@@ -11,10 +11,11 @@ import { SearchBar } from '@/components/search-bar';
 import { SearchResultsList } from '@/components/search-results';
 import { ThemedText } from '@/components/themed-text';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { FONTS } from '@/constants/brand';
 import { listCategoriesWithCounts } from '@/db/categories';
 import { listAllDocuments } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useTheme } from '@/hooks/use-theme';
 import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
 import { searchDocuments, type SearchFilter } from '@/search/search-documents';
 import { usePreferences } from '@/settings/preferences';
@@ -26,6 +27,7 @@ const SEARCH_DEBOUNCE_MS = 200;
 // two-column grid of categories with the dashed "Nuova categoria" tile, or the search results while searching
 export default function ArchiveScreen() {
   const insets = useSafeAreaInsets();
+  const theme = useTheme();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: allDocuments } = useDbQuery(listAllDocuments, []);
   const { showPinned } = usePreferences(); // "Mostra in Archivio" in the Preferiti screen
@@ -67,7 +69,10 @@ export default function ArchiveScreen() {
               accessibilityLabel="Menu"
               hitSlop={8}
               style={styles.menuButton}>
-              <SymbolView name="line.3.horizontal" tintColor={BRAND_COLOR} size={24} />
+              {/* "Candy box": the grid icon in a round chip (white in light mode, dark grey in dark mode) */}
+              <View style={[styles.menuChip, { backgroundColor: theme.surface }]}>
+                <SymbolView name="circle.grid.3x3.fill" tintColor={theme.text} size={16} />
+              </View>
             </Pressable>
           </View>
           <ThemedText themeColor="textSecondary">
@@ -126,6 +131,13 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 10,
     borderCurve: 'continuous',
+  },
+  menuChip: {
+    width: 32,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   menuButton: {
     marginLeft: 'auto', // pushed to the right edge

@@ -33,9 +33,12 @@ export default function MenuSheet() {
   const cardsId = counts?.cardsCategoryId;
 
   return (
-    <View style={styles.screen}>
-      <View style={styles.header}>
-        <ThemedText style={styles.title} accessibilityRole="header">
+    <View style={[styles.screen, { backgroundColor: theme.background }]}>
+      {/* Fixed header: it never scrolls, and the list starts BELOW it (normal column layout,
+          no absolute positioning), so it can't cover the first section at any text size.
+          The system grabber is drawn by iOS in the top padding. */}
+      <View style={[styles.header, { backgroundColor: theme.background, borderBottomColor: theme.backgroundSelected }]}>
+        <ThemedText style={styles.title} accessibilityRole="header" maxFontSizeMultiplier={1.6}>
           Menu
         </ThemedText>
         <Pressable
@@ -48,7 +51,11 @@ export default function MenuSheet() {
         </Pressable>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        style={styles.list}
+        contentInsetAdjustmentBehavior="never" // no automatic inset: the content starts right under the header
+        automaticallyAdjustContentInsets={false}
+        contentContainerStyle={styles.content}>
         <Group title="Documenti">
           <Row label="Archivio" symbol="archivebox" count={counts?.documents} first onPress={() => goToTab('/')} />
           <Row label="Preferiti" symbol="heart" count={counts?.pinned} onPress={() => router.replace('/pinned-edit')} />
@@ -93,14 +100,19 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
+    flexShrink: 0, // keeps its full height; the list below takes what is left
+    zIndex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 12,
     paddingHorizontal: 20,
-    paddingTop: 24,
-    paddingBottom: 8,
+    paddingTop: 22, // room for the grabber
+    paddingBottom: 12,
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   title: {
+    flexShrink: 1,
     fontSize: 28,
     lineHeight: 34,
     fontFamily: FONTS.titleBold,
@@ -112,8 +124,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  list: {
+    flex: 1,
+  },
   content: {
     padding: 16,
+    paddingTop: 20, // the first section title is never under the header line
     paddingBottom: 48,
     gap: 24,
   },

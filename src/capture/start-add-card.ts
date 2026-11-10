@@ -8,7 +8,7 @@ import { scanDocument } from '@/capture/scan-document';
 // in at the same time. No scanner → the app camera does the front too.
 // "Annulla" in the scanner opens nothing: the user stays where they were.
 export async function startAddCard(navigation: 'push' | 'replace'): Promise<void> {
-  const result = await scanDocument();
+  const result = await scanDocument({ tip: false });
   if (result === 'cancelled') return;
   if (result === 'unavailable') {
     router[navigation]('/add-card');

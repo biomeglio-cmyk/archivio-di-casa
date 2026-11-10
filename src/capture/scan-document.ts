@@ -1,6 +1,7 @@
 import { CameraView } from 'expo-camera';
+import Storage from 'expo-sqlite/kv-store';
+import { Alert } from 'react-native';
 
-import type { PendingFile } from '@/storage/pending-files';
 
 // iOS document scanner (VisionKit, the same as Note and WhatsApp): finds the edges of the paper,
 // straightens it and lets the user shoot several pages. Pages arrive as JPEGs in the cache;
@@ -17,8 +18,27 @@ export function isScannerAvailable(): boolean {
   return CameraView.isDocumentScannerAvailable === true && typeof CameraView.scanDocumentAsync === 'function';
 }
 
-export async function scanDocument(): Promise<ScanResult> {
+const TIP_KEY = 'scanner.tipShown';
+
+// Shown once, the first time the scanner opens for a document: the iOS scanner keeps going
+// page after page, but that isn't obvious
+function showTipOnce(): Promise<void> {
+  if (Storage.getItemSync(TIP_KEY) === '1') return Promise.resolve();
+  Storage.setItemSync(TIP_KEY, '1');
+  return new Promise((resolve) => {
+    Alert.alert(
+      'Più pagine',
+      'Puoi scansionare più pagine di fila: inquadra la pagina successiva prima di toccare Salva.',
+      [{ text: 'Ho capito', onPress: () => resolve() }],
+      { cancelable: false },
+    );
+  });
+}
+
+// `tip: false` for cards (one side, no multi-page tip)
+export async function scanDocument({ tip = true }: { tip?: boolean } = {}): Promise<ScanResult> {
   if (!isScannerAvailable()) return 'unavailable';
+  if (tip) await showTipOnce();
   try {
     const result = await CameraView.scanDocumentAsync({ quality: PAGE_QUALITY });
     if (!result || result.pages.length === 0) return 'cancelled';
@@ -27,14 +47,4 @@ export async function scanDocument(): Promise<ScanResult> {
     // On iOS a missing scanner throws instead of returning null: the camera takes over
     return 'unavailable';
   }
-}
-
-// Scanned pages as files of a new document: page 1 = front, page 2 = back, then only the page number
-export function scannedPagesToFiles(pages: string[]): PendingFile[] {
-  return pages.map((uri, index) => ({
-    uri,
-    kind: 'image',
-    side: index === 0 ? 'front' : index === 1 ? 'back' : null,
-    page: index + 1,
-  }));
 }

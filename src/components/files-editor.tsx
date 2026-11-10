@@ -1,28 +1,26 @@
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { ActionSheetIOS, Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { pickPdf, pickPhoto } from '@/capture/pick-files';
-import { isScannerAvailable, scanDocument, scannedPagesToFiles } from '@/capture/scan-document';
+import { pickPdf, pickPhotos } from '@/capture/pick-files';
+import { isScannerAvailable, scanDocument } from '@/capture/scan-document';
 import { CameraCapture } from '@/components/camera-capture';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
-import type { Category, DocumentFile } from '@/db/types';
+import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import type { Category, DocumentFile, FileSide } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
 import { resolveDocumentFile } from '@/storage/document-files';
-import type { PendingFile } from '@/storage/pending-files';
+import { pagesToFiles, type PendingFile } from '@/storage/pending-files';
+import { chooseAction } from '@/utils/action-sheet';
 import { pageLabel, usesFrontBack } from '@/utils/page-labels';
 
-type Side = 'front' | 'back';
-
-// A file in the edit form: either already saved (existing) or just captured (pending)
+// A file in the form: either already saved (existing) or just captured (pending).
+// The photos are kept in page order: their position in the list IS the page number.
 export type EditableFile = {
   key: string;
   kind: DocumentFile['kind'];
-  side: DocumentFile['side'];
-  page: number | null; // order of the photos (1 = front, 2 = back, 3…)
   uri: string;
   name?: string;
   existing?: DocumentFile;
@@ -30,29 +28,40 @@ export type EditableFile = {
 };
 
 export function fromExisting(file: DocumentFile): EditableFile {
-  return {
-    key: `saved-${file.id}`,
-    kind: file.kind,
-    side: file.side,
-    page: file.page,
-    uri: resolveDocumentFile(file.path).uri,
-    existing: file,
-  };
+  return { key: `saved-${file.id}`, kind: file.kind, uri: resolveDocumentFile(file.path).uri, existing: file };
 }
 
-function fromPending(file: PendingFile): EditableFile {
-  const page = file.kind === 'image' ? (file.page ?? (file.side === 'back' ? 2 : 1)) : null;
-  return { key: `new-${file.uri}`, kind: file.kind, side: file.side, page, uri: file.uri, name: file.name, pending: file };
+export function fromPending(file: PendingFile): EditableFile {
+  return { key: `new-${file.uri}`, kind: file.kind, uri: file.uri, name: file.name, pending: file };
 }
 
-// Native iOS action sheet: take a photo or choose one
-function askPhotoSource(title: string): Promise<'camera' | 'library' | null> {
-  return new Promise((resolve) => {
-    ActionSheetIOS.showActionSheetWithOptions(
-      { title, options: ['Fotografa', 'Scegli dalle foto', 'Annulla'], cancelButtonIndex: 2 },
-      (index) => resolve(index === 0 ? 'camera' : index === 1 ? 'library' : null),
-    );
-  });
+// Where each photo ends up when the form is saved: page = position + 1, side front/back for the
+// first two (labels are decided elsewhere, by page-labels.ts)
+function placementAt(index: number): { page: number; side: FileSide | null } {
+  return { page: index + 1, side: index === 0 ? 'front' : index === 1 ? 'back' : null };
+}
+
+export type FilePlacement = { id: number; page: number; side: FileSide | null };
+
+// What to write on save: new files with their page, and saved photos whose page changed
+// (moved with the arrows, or shifted because another page was removed)
+export function filesToSave(files: EditableFile[]): { added: PendingFile[]; moved: FilePlacement[] } {
+  const added: PendingFile[] = [];
+  const moved: FilePlacement[] = [];
+  let index = 0;
+  for (const file of files) {
+    if (file.kind !== 'image') {
+      if (file.pending) added.push(file.pending);
+      continue;
+    }
+    const place = placementAt(index++);
+    if (file.pending) {
+      added.push({ ...file.pending, ...place });
+    } else if (file.existing && (file.existing.page !== place.page || file.existing.side !== place.side)) {
+      moved.push({ id: file.existing.id, ...place });
+    }
+  }
+  return { added, moved };
 }
 
 type Props = {
@@ -61,44 +70,59 @@ type Props = {
   onChange: (files: EditableFile[]) => void;
 };
 
-// Files section of "Modifica documento": replace or retake the front, add or remove the back,
-// "Riscansiona" all the pages, replace the PDF, or attach files to a document that has none.
+// Pages of a document in "Nuovo documento" and "Modifica": thumbnails in order, each with ✕ to
+// remove it and arrows to move it, then ALWAYS the big "+ Aggiungi pagina" (scanner or photos).
+// A document with an imported PDF shows the PDF instead.
 export function FilesEditor({ files, category, onChange }: Props) {
-  const [cameraSide, setCameraSide] = useState<Side | null>(null);
+  const [camera, setCamera] = useState(false); // app camera, when the scanner isn't available
   const canScan = isScannerAvailable();
 
   const pdf = files.find((f) => f.kind === 'pdf');
-  const images = files.filter((f) => f.kind === 'image').sort((a, b) => (a.page ?? 1) - (b.page ?? 1));
-  const front = images.find((f) => f.side !== 'back');
-  const back = images.find((f) => f.side === 'back');
-  const manyPages = images.length > 2; // a scan with 3+ pages: shown as pages, replaced all together
+  const images = files.filter((f) => f.kind === 'image');
+  const others = files.filter((f) => f.kind !== 'image');
   const frontBack = usesFrontBack(category, images.length);
-  const cardLike = usesFrontBack(category, 2); // an ID or a card: the second photo is its back
-  const labelAt = (index: number) => pageLabel(index, images.length, frontBack);
-  const secondName = cardLike ? 'Retro' : 'Pagina 2';
+  const cardLike = usesFrontBack(category, 2); // an ID or a card: its second page is the back
+  const addLabel = cardLike && images.length === 1 ? 'Aggiungi il retro' : 'Aggiungi pagina';
 
-  // A new scan replaces ALL the photos (the saved ones are deleted only when the form is saved)
-  async function rescan() {
-    const result = await scanDocument();
-    if (result === 'unavailable') {
-      Alert.alert('Scanner non disponibile', 'Usa «Sostituisci» per fotografare le pagine.');
-    } else if (result !== 'cancelled') {
-      onChange([...files.filter((f) => f.kind !== 'image'), ...scannedPagesToFiles(result.pages).map(fromPending)]);
+  function setImages(next: EditableFile[]) {
+    onChange([...others, ...next]);
+  }
+
+  function append(pages: PendingFile[]) {
+    setImages([...images, ...pages.map(fromPending)]);
+  }
+
+  function remove(key: string) {
+    setImages(images.filter((f) => f.key !== key));
+  }
+
+  function move(index: number, delta: number) {
+    const next = [...images];
+    const [page] = next.splice(index, 1);
+    next.splice(index + delta, 0, page);
+    setImages(next);
+  }
+
+  // "+ Aggiungi pagina": scanner (or camera) or photos; the new pages go at the end
+  async function addPages() {
+    const choice = await chooseAction(addLabel, [canScan ? 'Scansiona' : 'Fotografa', 'Dalle foto']);
+    if (choice === 0) {
+      const result = canScan ? await scanDocument() : 'unavailable';
+      if (result === 'unavailable') setCamera(true);
+      else if (result !== 'cancelled') append(pagesToFiles(result.pages));
+    } else if (choice === 1) {
+      const picked = await pickPhotos().catch(showError);
+      if (picked) append(picked);
     }
   }
 
-  // Puts a new photo on a face, replacing whatever was there
-  function setFace(file: PendingFile) {
-    onChange([...files.filter((f) => !(f.kind === 'image' && (f.side ?? 'front') === file.side)), fromPending(file)]);
-  }
-
-  async function changeFace(side: Side) {
-    const source = await askPhotoSource(side === 'front' ? (cardLike ? 'Fronte' : 'Pagina 1') : secondName);
-    if (source === 'camera') {
-      setCameraSide(side);
-    } else if (source === 'library') {
-      const photo = await pickPhoto(side).catch(showError);
-      if (photo) setFace(photo);
+  // "Riscansiona tutto": a new scan replaces ALL the pages (saved ones are deleted only on save)
+  async function rescan() {
+    const result = await scanDocument();
+    if (result === 'unavailable') {
+      Alert.alert('Scanner non disponibile', 'Togli le pagine con ✕ e aggiungine di nuove.');
+    } else if (result !== 'cancelled') {
+      setImages(pagesToFiles(result.pages).map(fromPending));
     }
   }
 
@@ -107,68 +131,51 @@ export function FilesEditor({ files, category, onChange }: Props) {
     if (picked) onChange([...files.filter((f) => f.kind !== 'pdf'), fromPending(picked[0])]);
   }
 
-  function removeBack() {
-    onChange(files.filter((f) => f !== back));
+  if (pdf) {
+    return (
+      <View style={styles.pdfRow}>
+        <PageThumb file={pdf} label="PDF" />
+        <SecondaryButton label="Sostituisci PDF" symbol="doc" onPress={changePdf} />
+      </View>
+    );
   }
 
   return (
     <View style={styles.container}>
-      {pdf && (
-        <View style={styles.slots}>
-          <Slot label="PDF" file={pdf} actions={[{ label: 'Sostituisci PDF', onPress: changePdf }]} />
-        </View>
-      )}
-
-      {!pdf && manyPages && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.pages}>
-          {images.map((page, index) => (
-            <View key={page.key} style={styles.page}>
-              <Slot label={labelAt(index)} file={page} actions={[]} />
-            </View>
+      {images.length > 0 && (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.strip}>
+          {images.map((file, index) => (
+            <PageThumb
+              key={file.key}
+              file={file}
+              label={pageLabel(index, images.length, frontBack)}
+              onRemove={() => remove(file.key)}
+              onMoveLeft={index > 0 ? () => move(index, -1) : undefined}
+              onMoveRight={index < images.length - 1 ? () => move(index, 1) : undefined}
+            />
           ))}
         </ScrollView>
       )}
 
-      {!pdf && front && !manyPages && (
-        <View style={styles.slots}>
-          <Slot label={labelAt(0)} file={front} actions={[{ label: 'Sostituisci', onPress: () => changeFace('front') }]} />
-          {back ? (
-            <Slot
-              label={labelAt(1)}
-              file={back}
-              actions={[
-                { label: 'Sostituisci', onPress: () => changeFace('back') },
-                { label: 'Rimuovi', onPress: removeBack, destructive: true },
-              ]}
-            />
-          ) : (
-            <AddSlot label={cardLike ? 'Aggiungi retro' : 'Aggiungi pagina'} onPress={() => changeFace('back')} />
-          )}
-        </View>
+      <SecondaryButton label={`+ ${addLabel}`} onPress={addPages} />
+
+      {images.length === 0 && <SecondaryButton label="Importa un PDF" symbol="doc" onPress={changePdf} />}
+
+      {images.length > 0 && canScan && (
+        <Pressable onPress={rescan} hitSlop={8} accessibilityRole="button" style={styles.rescan}>
+          <Text style={styles.link}>Riscansiona tutto</Text>
+        </Pressable>
       )}
 
-      {!pdf && front && canScan && (
-        <SecondaryButton label="Riscansiona" symbol="doc.viewfinder" onPress={rescan} />
-      )}
-
-      {!pdf && !front && (
-        <View style={styles.addButtons}>
-          {canScan && <SecondaryButton label="Scansiona" symbol="doc.viewfinder" onPress={rescan} />}
-          <SecondaryButton label="Aggiungi foto" symbol="camera" onPress={() => changeFace('front')} />
-          <SecondaryButton label="Aggiungi PDF" symbol="doc" onPress={changePdf} />
-        </View>
-      )}
-
-      {/* Full-screen camera for a single face, above the edit form */}
-      <Modal visible={cameraSide !== null} animationType="slide" presentationStyle="fullScreen">
-        {cameraSide && (
+      {/* Full-screen camera above the form, when there is no scanner */}
+      <Modal visible={camera} animationType="slide" presentationStyle="fullScreen">
+        {camera && (
           <CameraCapture
-            only={cameraSide}
-            onDone={(captured) => {
-              setFace(captured[0]);
-              setCameraSide(null);
+            onDone={(uris) => {
+              setCamera(false);
+              append(pagesToFiles(uris));
             }}
-            onCancel={() => setCameraSide(null)}
+            onCancel={() => setCamera(false)}
           />
         )}
       </Modal>
@@ -181,50 +188,70 @@ function showError(error: unknown): null {
   return null;
 }
 
-type SlotAction = { label: string; onPress: () => void; destructive?: boolean };
+type ThumbProps = {
+  file: EditableFile;
+  label: string | null; // null = a single page: no label
+  onRemove?: () => void;
+  onMoveLeft?: () => void; // undefined = first page
+  onMoveRight?: () => void; // undefined = last page
+};
 
-function Slot({ label, file, actions }: { label: string | null; file: EditableFile; actions: SlotAction[] }) {
+// One page: thumbnail with ✕, its label, and ‹ › to move it (also for VoiceOver)
+function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProps) {
   const theme = useTheme();
+  const name = label ?? 'Pagina';
+  const canMove = Boolean(onMoveLeft || onMoveRight);
+
   return (
-    <View style={styles.slot}>
-      {file.kind === 'image' ? (
-        <Image source={{ uri: file.uri }} style={[styles.thumb, { backgroundColor: theme.surface }]} contentFit="cover" />
-      ) : (
-        <View style={[styles.thumb, styles.pdf, { backgroundColor: theme.surface }]}>
-          <SymbolView name="doc.richtext" tintColor={BRAND_COLOR} size={32} />
-        </View>
-      )}
-      {/* A single photo has no label: it is just "the document" */}
+    <View style={styles.page}>
+      <View>
+        {file.kind === 'image' ? (
+          <Image source={{ uri: file.uri }} style={[styles.thumb, { backgroundColor: theme.surface }]} contentFit="cover" />
+        ) : (
+          <View style={[styles.thumb, styles.pdfThumb, { backgroundColor: theme.surface }]}>
+            <SymbolView name="doc.richtext" tintColor={BRAND_COLOR} size={32} />
+          </View>
+        )}
+        {onRemove && (
+          <Pressable
+            onPress={onRemove}
+            hitSlop={10}
+            accessibilityRole="button"
+            accessibilityLabel={`Togli ${name}`}
+            style={styles.remove}>
+            <SymbolView name="xmark.circle.fill" tintColor="#FFFFFF" size={26} />
+          </Pressable>
+        )}
+      </View>
+
       {(label || file.pending) && (
-        <ThemedText type="smallBold" themeColor="textSecondary">
-          {[label, file.pending ? 'nuovo' : null].filter(Boolean).join(' · ')}
+        <ThemedText type="smallBold" themeColor="textSecondary" numberOfLines={1}>
+          {[label, file.pending && file.kind === 'image' ? 'nuova' : null].filter(Boolean).join(' · ')}
         </ThemedText>
       )}
-      <View style={styles.actions}>
-        {actions.map((action) => (
-          <Pressable key={action.label} onPress={action.onPress} hitSlop={8}>
-            <Text style={[styles.action, action.destructive && styles.destructive]}>{action.label}</Text>
-          </Pressable>
-        ))}
-      </View>
+
+      {canMove && (
+        <View style={styles.arrows}>
+          <Arrow symbol="chevron.left" label={`Sposta ${name} prima`} onPress={onMoveLeft} />
+          <Arrow symbol="chevron.right" label={`Sposta ${name} dopo`} onPress={onMoveRight} />
+        </View>
+      )}
     </View>
   );
 }
 
-function AddSlot({ label, onPress }: { label: string; onPress: () => void }) {
+function Arrow({ symbol, label, onPress }: { symbol: 'chevron.left' | 'chevron.right'; label: string; onPress?: () => void }) {
   const theme = useTheme();
   return (
-    <View style={styles.slot}>
-      <Pressable
-        onPress={onPress}
-        accessibilityRole="button"
-        style={[styles.thumb, styles.addThumb, { borderColor: theme.textSecondary }]}>
-        <SymbolView name="plus" tintColor={theme.textSecondary} size={24} />
-      </Pressable>
-      <ThemedText type="smallBold" themeColor="textSecondary">
-        {label}
-      </ThemedText>
-    </View>
+    <Pressable
+      onPress={onPress}
+      disabled={!onPress}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      accessibilityState={{ disabled: !onPress }}
+      style={[styles.arrow, { backgroundColor: theme.backgroundSelected }, !onPress && styles.arrowDisabled]}>
+      <SymbolView name={symbol} tintColor={theme.text} size={14} weight="semibold" />
+    </Pressable>
   );
 }
 
@@ -232,50 +259,56 @@ const styles = StyleSheet.create({
   container: {
     gap: 12,
   },
-  slots: {
-    flexDirection: 'row',
+  strip: {
     gap: 12,
   },
-  pages: {
+  pdfRow: {
     gap: 12,
+    alignItems: 'flex-start',
   },
   page: {
-    width: 140,
-  },
-  slot: {
-    flex: 1,
+    width: 120,
     alignItems: 'center',
     gap: 6,
   },
   thumb: {
-    width: '100%',
-    aspectRatio: 1.45,
-    borderRadius: 12,
+    width: 120,
+    height: 150, // portrait sheet
+    borderRadius: 10,
     borderCurve: 'continuous',
   },
-  pdf: {
+  pdfThumb: {
     alignItems: 'center',
     justifyContent: 'center',
   },
-  addThumb: {
-    borderWidth: 1.5,
-    borderStyle: 'dashed',
-    alignItems: 'center',
-    justifyContent: 'center',
+  remove: {
+    position: 'absolute',
+    top: 4,
+    right: 4,
+    borderRadius: 13,
+    backgroundColor: 'rgba(0, 0, 0, 0.45)', // the white ✕ is readable on any photo
   },
-  actions: {
+  arrows: {
     flexDirection: 'row',
-    gap: 16,
+    gap: 8,
   },
-  action: {
+  arrow: {
+    width: 44,
+    height: 32,
+    borderRadius: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  arrowDisabled: {
+    opacity: 0.35,
+  },
+  rescan: {
+    alignSelf: 'center',
+    paddingVertical: 4,
+  },
+  link: {
     color: BRAND_COLOR,
     fontSize: 15,
     fontFamily: FONTS.titleSemiBold,
-  },
-  destructive: {
-    color: DANGER_COLOR,
-  },
-  addButtons: {
-    gap: 10,
   },
 });

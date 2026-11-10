@@ -24,3 +24,13 @@ export function decodePendingFiles(param: string | undefined): PendingFile[] {
     return [];
   }
 }
+
+// Photos as the pages of a document, in order: page 1 = front, page 2 = back, then only the number
+export function pagesToFiles(uris: string[]): PendingFile[] {
+  return uris.map((uri, index) => ({
+    uri,
+    kind: 'image',
+    side: index === 0 ? 'front' : index === 1 ? 'back' : null,
+    page: index + 1,
+  }));
+}

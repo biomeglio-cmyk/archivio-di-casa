@@ -10,44 +10,27 @@ import { guideFrameRect } from '@/capture/guide-frame';
 import { GradientButton } from '@/components/gradient-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/brand';
-import type { PendingFile } from '@/storage/pending-files';
-
-type Side = 'front' | 'back';
 
 type Props = {
-  // Omitted: front, then back (optional). Set: shoot only that face (e.g. "Rifai il fronte").
-  only?: Side;
-  onDone: (files: PendingFile[]) => void;
+  single?: boolean; // one photo only (e.g. to replace one page): "Usa" instead of "Aggiungi pagina / Fine"
+  onDone: (uris: string[]) => void; // the photos in the order they were taken
   onCancel: () => void;
 };
 
-// Neutral words: this camera doesn't know the category, and a second photo is optional
-function instruction(side: Side, only: Side | undefined): string {
-  if (side === 'front') return 'Inquadra il documento';
-  return only ? 'Inquadra la seconda pagina' : 'Inquadra la seconda pagina (es. il retro)';
-}
-
-// Full-screen camera with the guide frame; every shot gets a "Rifai / Usa" preview.
-// One photo is enough: "Usa" saves it; "Aggiungi un'altra pagina" takes a second one.
-// Used by the /capture screen and by "Modifica documento" (inside a full-screen Modal).
-export function CameraCapture({ only, onDone, onCancel }: Props) {
+// Full-screen camera with the guide frame, used when the iOS scanner is not available.
+// A document is N pages: after every shot "Rifai", "Aggiungi pagina" (keep it, shoot the next)
+// or "Fine" (keep it and stop). One page is enough.
+export function CameraCapture({ single = false, onDone, onCancel }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
   const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
   const frame = guideFrameRect(width, height);
 
-  const [side, setSide] = useState<Side>(only ?? 'front');
-  const [frontUri, setFrontUri] = useState<string | null>(null);
-  const [previewUri, setPreviewUri] = useState<string | null>(null); // photo waiting for Rifai/Usa
+  const [pages, setPages] = useState<string[]>([]); // photos already accepted
+  const [previewUri, setPreviewUri] = useState<string | null>(null); // photo waiting for a choice
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
-
-  function finish(front: string, back: string | null) {
-    const files: PendingFile[] = [{ uri: front, kind: 'image', side: 'front' }];
-    if (back) files.push({ uri: back, kind: 'image', side: 'back' });
-    onDone(files);
-  }
 
   async function shoot() {
     if (!cameraRef.current || !ready || busy) return;
@@ -61,25 +44,20 @@ export function CameraCapture({ only, onDone, onCancel }: Props) {
     }
   }
 
-  // "Usa": done, with this photo (and the first one, if this is the second)
-  function acceptPhoto() {
+  // "Aggiungi pagina": keep this photo and go back to the camera for the next one
+  function addPage() {
     if (!previewUri) return;
-    if (only) {
-      onDone([{ uri: previewUri, kind: 'image', side: only }]);
-    } else if (side === 'front') {
-      finish(previewUri, null);
-    } else if (frontUri) {
-      finish(frontUri, previewUri);
-    }
+    setPages([...pages, previewUri]);
+    setPreviewUri(null);
   }
 
-  // "Aggiungi un'altra pagina": keep the first photo and shoot the second
-  function addSecondPage() {
+  // "Fine" / "Usa": keep this photo and finish
+  function finish() {
     if (!previewUri) return;
-    setFrontUri(previewUri);
-    setPreviewUri(null);
-    setSide('back');
+    onDone([...pages, previewUri]);
   }
+
+  const pageNumber = pages.length + 1;
 
   // ---- Permission states ----
 
@@ -108,26 +86,28 @@ export function CameraCapture({ only, onDone, onCancel }: Props) {
     );
   }
 
-  // ---- Preview: Rifai / Usa ----
+  // ---- Preview: Rifai / Aggiungi pagina / Fine ----
 
   if (previewUri) {
     return (
       <View style={styles.screen}>
         <Image source={{ uri: previewUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
         <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
-          <Text style={styles.instruction}>Si legge bene?</Text>
+          <Text style={styles.instruction}>
+            {single || pageNumber === 1 ? 'Si legge bene?' : `Pagina ${pageNumber}: si legge bene?`}
+          </Text>
         </View>
         <View style={[styles.previewBar, { paddingBottom: insets.bottom + 16 }]}>
-          {!only && side === 'front' && (
-            <Pressable onPress={addSecondPage} hitSlop={8} accessibilityRole="button" style={styles.addPage}>
-              <Text style={styles.link}>Aggiungi un&apos;altra pagina</Text>
-            </Pressable>
-          )}
-          <Pressable style={styles.secondaryButton} onPress={() => setPreviewUri(null)}>
+          <Pressable style={styles.secondaryButton} onPress={() => setPreviewUri(null)} accessibilityRole="button">
             <Text style={styles.secondaryLabel}>Rifai</Text>
           </Pressable>
+          {!single && (
+            <Pressable style={styles.secondaryButton} onPress={addPage} accessibilityRole="button">
+              <Text style={styles.secondaryLabel}>Aggiungi pagina</Text>
+            </Pressable>
+          )}
           <View style={styles.flex}>
-            <GradientButton label="Usa" onPress={acceptPhoto} />
+            <GradientButton label={single ? 'Usa' : 'Fine'} onPress={finish} />
           </View>
         </View>
       </View>
@@ -154,7 +134,7 @@ export function CameraCapture({ only, onDone, onCancel }: Props) {
       </View>
 
       <Text style={[styles.instruction, styles.instructionOverFrame, { top: frame.y - 56 }]}>
-        {instruction(side, only)}
+        {pageNumber === 1 ? 'Inquadra il documento' : `Inquadra la pagina ${pageNumber}`}
       </Text>
 
       <View style={[styles.cameraBar, { paddingBottom: insets.bottom + 24 }]}>
@@ -167,8 +147,9 @@ export function CameraCapture({ only, onDone, onCancel }: Props) {
           <View style={styles.shutterInner} />
         </Pressable>
         <View style={styles.sideSlot}>
-          {!only && side === 'back' && frontUri && (
-            <Pressable onPress={() => finish(frontUri, null)} hitSlop={12} accessibilityLabel="Fine, solo la prima pagina">
+          {/* Changed idea after "Aggiungi pagina": finish with the pages already taken */}
+          {pages.length > 0 && (
+            <Pressable onPress={() => onDone(pages)} hitSlop={12} accessibilityLabel={`Fine, ${pages.length} pagine`}>
               <Text style={styles.link}>Fine</Text>
             </Pressable>
           )}
@@ -250,7 +231,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     flexDirection: 'row',
-    flexWrap: 'wrap', // "Aggiungi un'altra pagina" on its own line, then Rifai / Usa
     gap: 12,
     paddingHorizontal: 20,
     paddingTop: 16,
@@ -260,6 +240,8 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 6,
+    paddingVertical: 8,
     borderRadius: 16,
     borderCurve: 'continuous',
     backgroundColor: 'rgba(255, 255, 255, 0.18)',
@@ -267,12 +249,8 @@ const styles = StyleSheet.create({
   secondaryLabel: {
     color: '#FFFFFF',
     fontSize: 17,
+    textAlign: 'center', // \"Aggiungi pagina\" wraps on two lines with large text
     fontFamily: FONTS.titleSemiBold,
-  },
-  addPage: {
-    width: '100%', // its own line above Rifai / Usa
-    alignItems: 'center',
-    paddingVertical: 4,
   },
   link: {
     color: '#FFFFFF',

@@ -6,7 +6,8 @@ import type { PendingFile } from '@/storage/pending-files';
 // straightens it and lets the user shoot several pages. Pages arrive as JPEGs in the cache;
 // they are copied into documents/ only when the document is saved, like the camera photos.
 
-// 'unavailable' = no scanner here (simulator, old device, or an app without it): use the camera
+// 'cancelled' = the user tapped Annulla: go back where they were, open nothing else.
+// 'unavailable' = no scanner here (simulator, old device, or the call failed): use the app camera
 export type ScanResult = { pages: string[] } | 'cancelled' | 'unavailable';
 
 const PAGE_QUALITY = 0.85; // same as the photos chosen from the library

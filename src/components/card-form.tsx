@@ -68,15 +68,17 @@ export function CardForm({ initial, onSubmit }: Props) {
     }
   }
 
-  // The front: iOS scanner first (straight, clean crop); without it, the app camera
+  // The front: iOS scanner first (straight, clean crop); without it, the app camera.
+  // "Annulla" in the scanner leaves the form as it was.
   async function retakeFront() {
     const result = await scanDocument();
-    if (typeof result === 'object') {
-      setFrontUri(result.pages[0]);
-      setChanged((c) => ({ ...c, front: true }));
-    } else {
+    if (result === 'cancelled') return;
+    if (result === 'unavailable') {
       setRetake('front');
+      return;
     }
+    setFrontUri(result.pages[0]);
+    setChanged((c) => ({ ...c, front: true }));
   }
 
   async function submit() {

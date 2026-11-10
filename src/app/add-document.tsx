@@ -25,14 +25,16 @@ export default function AddDocumentSheet() {
     }
   }
 
-  // "Scansiona": the iOS scanner; if it isn't there or nothing comes back, the app camera as before
+  // "Scansiona": the iOS scanner; without it, the app camera as before.
+  // "Annulla" in the scanner leaves the user here, on this sheet.
   async function scan() {
     const result = await scanDocument();
-    if (typeof result === 'object') {
-      router.replace({ pathname: '/new-document', params: { files: encodePendingFiles(scannedPagesToFiles(result.pages)) } });
-    } else {
+    if (result === 'cancelled') return;
+    if (result === 'unavailable') {
       router.replace('/capture');
+      return;
     }
+    router.replace({ pathname: '/new-document', params: { files: encodePendingFiles(scannedPagesToFiles(result.pages)) } });
   }
 
   return (

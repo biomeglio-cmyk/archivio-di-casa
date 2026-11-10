@@ -1,12 +1,13 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useEffect } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { SymbolView } from 'expo-symbols';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 import { CategoryTile } from '@/components/category-tile';
 import { DashedAddTile } from '@/components/dashed-add-tile';
 import { ThemedText } from '@/components/themed-text';
-import { FONTS } from '@/constants/brand';
+import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { listCategoriesWithCounts } from '@/db/categories';
 import type { CategoryWithCount } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -51,6 +52,14 @@ export default function ArchiveScreen() {
           <View style={styles.brand}>
             <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />
             <ThemedText style={styles.name}>sottomano</ThemedText>
+            <Pressable
+              onPress={() => router.push('/settings')}
+              accessibilityRole="button"
+              accessibilityLabel="Impostazioni"
+              hitSlop={8}
+              style={styles.gear}>
+              <SymbolView name="gearshape" tintColor={BRAND_COLOR} size={24} />
+            </Pressable>
           </View>
           <ThemedText themeColor="textSecondary">
             Archivio · {total === 1 ? '1 documento' : `${total} documenti`}
@@ -84,6 +93,13 @@ const styles = StyleSheet.create({
     height: 40,
     borderRadius: 10,
     borderCurve: 'continuous',
+  },
+  gear: {
+    marginLeft: 'auto', // pushed to the right edge
+    width: 44,
+    height: 44,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   name: {
     fontSize: 30,

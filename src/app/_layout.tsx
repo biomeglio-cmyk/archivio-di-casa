@@ -56,6 +56,14 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="settings"
+            options={{
+              presentation: 'modal',
+              title: 'Impostazioni',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
+          <Stack.Screen
             name="onboarding"
             options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'fade' }}
           />

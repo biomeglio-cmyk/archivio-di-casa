@@ -128,6 +128,23 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
+          {/* Opened from the Menu */}
+          <Stack.Screen
+            name="notification-settings"
+            options={{
+              presentation: 'modal',
+              title: 'Notifiche',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
+          <Stack.Screen
+            name="about"
+            options={{
+              presentation: 'modal',
+              title: 'Info e privacy',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
           {/* Cards: camera (front + barcode), then the card form */}
           <Stack.Screen
             name="add-card"

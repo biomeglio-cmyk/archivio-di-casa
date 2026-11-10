@@ -28,7 +28,7 @@ export default function ArchiveScreen() {
   const insets = useSafeAreaInsets();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: allDocuments } = useDbQuery(listAllDocuments, []);
-  const { showPinned } = usePreferences(); // "Mostra Preferiti in Archivio" in Impostazioni
+  const { showPinned } = usePreferences(); // "Mostra in Archivio" in the Preferiti screen
 
   const [query, setQuery] = useState(''); // what is typed
   const [searched, setSearched] = useState(''); // what is searched, ~200 ms after the last key
@@ -62,12 +62,12 @@ export default function ArchiveScreen() {
             <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />
             <ThemedText style={styles.name}>sottomano</ThemedText>
             <Pressable
-              onPress={() => router.push('/settings')}
+              onPress={() => router.push('/menu')}
               accessibilityRole="button"
-              accessibilityLabel="Impostazioni"
+              accessibilityLabel="Menu"
               hitSlop={8}
-              style={styles.gear}>
-              <SymbolView name="gearshape" tintColor={BRAND_COLOR} size={24} />
+              style={styles.menuButton}>
+              <SymbolView name="line.3.horizontal" tintColor={BRAND_COLOR} size={24} />
             </Pressable>
           </View>
           <ThemedText themeColor="textSecondary">
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderCurve: 'continuous',
   },
-  gear: {
+  menuButton: {
     marginLeft: 'auto', // pushed to the right edge
     width: 44,
     height: 44,

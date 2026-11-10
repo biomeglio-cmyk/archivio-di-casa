@@ -60,12 +60,16 @@ export default function RootLayout() {
               sheetAllowedDetents: 'fitToContents',
             }}
           />
+          {/* "Menu" from the ≡ in the Archivio header: 90% of the screen, closes by dragging down */}
           <Stack.Screen
-            name="settings"
+            name="menu"
             options={{
-              presentation: 'modal',
-              title: 'Impostazioni',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              sheetAllowedDetents: [0.9],
+              sheetCornerRadius: 24,
+              contentStyle: { backgroundColor: colorScheme === 'dark' ? Colors.dark.background : Colors.light.background },
             }}
           />
           <Stack.Screen

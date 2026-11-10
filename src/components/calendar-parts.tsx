@@ -1,5 +1,6 @@
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useMemo } from 'react';
+import { PanResponder, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
@@ -7,6 +8,24 @@ import { useTheme } from '@/hooks/use-theme';
 // Pieces shared by the month grid and the week strip of Scadenze
 
 const MAX_DOTS = 3;
+const SWIPE_DISTANCE = 50; // points of horizontal movement needed to change week or month
+const DAY_MAX_FONT_SCALE = 1.5; // day numbers grow with Dynamic Type, but 7 columns must still fit
+
+// Horizontal swipe on a calendar card: left = next, right = previous. Only clearly horizontal
+// moves are taken, so taps on the days and the vertical scroll keep working.
+export function useHorizontalSwipe(onPrevious: () => void, onNext: () => void) {
+  return useMemo(
+    () =>
+      PanResponder.create({
+        onMoveShouldSetPanResponder: (_, g) => Math.abs(g.dx) > 12 && Math.abs(g.dx) > Math.abs(g.dy) * 1.5,
+        onPanResponderRelease: (_, g) => {
+          if (g.dx <= -SWIPE_DISTANCE) onNext();
+          else if (g.dx >= SWIPE_DISTANCE) onPrevious();
+        },
+      }),
+    [onPrevious, onNext],
+  ).panHandlers;
+}
 
 type DayCellProps = {
   iso: string;
@@ -32,7 +51,11 @@ export function DayCell({ iso, isToday, isSelected, dots, onSelect }: DayCellPro
       accessibilityLabel={`${day}${dots.length ? ', con scadenze' : ''}`}
       style={styles.day}>
       <View style={[styles.circle, { backgroundColor: circleColor }]}>
-        <Text style={[styles.number, { color: numberColor }, (isToday || isSelected) && styles.numberBold]}>{day}</Text>
+        <Text
+          maxFontSizeMultiplier={DAY_MAX_FONT_SCALE}
+          style={[styles.number, { color: numberColor }, (isToday || isSelected) && styles.numberBold]}>
+          {day}
+        </Text>
       </View>
       <View style={styles.dots}>
         {dots.slice(0, MAX_DOTS).map((color, i) => (
@@ -132,14 +155,15 @@ const styles = StyleSheet.create({
   },
   day: {
     flex: 1, // 7 equal columns
-    height: 48,
+    minHeight: 48, // grows with large text instead of cutting the number
     alignItems: 'center',
     paddingTop: 2,
   },
   circle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
+    minWidth: 34,
+    minHeight: 34,
+    paddingHorizontal: 4,
+    borderRadius: 999, // a circle, or a pill when the number is larger
     alignItems: 'center',
     justifyContent: 'center',
   },

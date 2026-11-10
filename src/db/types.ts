@@ -86,6 +86,7 @@ export type DocumentListItem = FamilyDocument & {
   category: Category;
   imageCount: number; // photos attached (0 = no photos: can't go into a combined PDF)
   firstImagePath: string | null; // the front (or the first photo), for thumbnails
+  personName: string | null;
 };
 export type DocumentDetail = DocumentListItem & { person: Person | null };
 

@@ -3,7 +3,7 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { DANGER_COLOR } from '@/constants/brand';
+import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
@@ -11,41 +11,42 @@ import { describeDistance, formatShortDate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
 type Props = {
-  document: DocumentListItem; // includes its category
-  // Each tab has its own copy of the document screen, so the caller decides where to go
+  document: DocumentListItem; // includes category and person name
   href: Href;
+  highlighted?: boolean; // its day is selected in the week strip
 };
 
-// A document in a list, on one line: category icon | title + expiry | chevron.
-// Editing and deleting happen from the detail (pencil at the top right), like in Contacts.
-export function DocumentRow({ document, href }: Props) {
+// One deadline: category icon on a rounded square, "Title · Person", and
+// "gio 12 nov · tra 2 giorni" (red "scaduto da N giorni" when overdue). Nothing is truncated:
+// with large Dynamic Type the lines wrap and the row grows.
+export function DeadlineRow({ document, href, highlighted = false }: Props) {
   const theme = useTheme();
   const { pressed, handlers } = usePressed();
   const { category } = document;
   const days = document.expiresAt ? daysUntil(document.expiresAt) : null;
-  const expired = days !== null && days < 0;
+  const overdue = days !== null && days < 0;
+
+  const background = pressed ? theme.backgroundSelected : highlighted ? `${BRAND_COLOR}1F` : theme.backgroundElement;
 
   return (
     <Pressable
       {...handlers}
       onPress={() => router.push(href)}
       accessibilityRole="button"
-      style={[styles.row, { backgroundColor: pressed ? theme.backgroundSelected : theme.backgroundElement }]}>
+      style={[styles.row, { backgroundColor: background }, highlighted && { borderColor: BRAND_COLOR }]}>
       <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
         <SymbolView name={category.symbol} tintColor={category.colors.text} size={20} />
       </View>
       <View style={styles.texts}>
-        <ThemedText numberOfLines={1}>{document.title}</ThemedText>
-        {/* "lun 9 nov · oggi", "gio 12 nov · tra 3 giorni"; expired dates in red */}
-        <ThemedText
-          type="small"
-          themeColor="textSecondary"
-          numberOfLines={1}
-          style={expired && { color: DANGER_COLOR }}>
-          {document.expiresAt && days !== null
-            ? `${formatShortDate(document.expiresAt)} · ${describeDistance(days)}`
-            : 'Nessuna scadenza'}
+        <ThemedText>
+          {document.title}
+          {document.personName ? <ThemedText themeColor="textSecondary"> · {document.personName}</ThemedText> : null}
         </ThemedText>
+        {document.expiresAt && days !== null && (
+          <ThemedText type="small" themeColor="textSecondary" style={overdue && { color: DANGER_COLOR }}>
+            {formatShortDate(document.expiresAt)} · {describeDistance(days)}
+          </ThemedText>
+        )}
       </View>
       <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />
     </Pressable>
@@ -60,6 +61,8 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 14,
     borderCurve: 'continuous',
+    borderWidth: 1.5,
+    borderColor: 'transparent', // becomes the brand color when highlighted
   },
   icon: {
     width: 40,
@@ -71,5 +74,6 @@ const styles = StyleSheet.create({
   },
   texts: {
     flex: 1,
+    gap: 2,
   },
 });

@@ -6,7 +6,7 @@ import type { SendDocument } from '@/send/prepare';
 export type SendItem = SendDocument & {
   id: number;
   personName: string | null;
-  faces: number; // photos (front, back)
+  faces: number; // photos: front, back, or all the pages of a scan
   hasPdf: boolean;
 };
 

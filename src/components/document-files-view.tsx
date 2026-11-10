@@ -2,7 +2,7 @@ import { SegmentedControl } from '@expo/ui/community/segmented-control';
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import { fileLabel } from '@/components/attachment-strip';
@@ -18,9 +18,13 @@ type Props = {
   files: DocumentFile[];
 };
 
-// Photos (with a Fronte/Retro switch) and PDFs attached to a document
+const PAGE_ASPECT_RATIO = 3 / 4; // scanned pages are usually portrait sheets
+
+// Photos (with a Fronte/Retro switch, or swiped page by page for a scan of 3+ pages)
+// and PDFs attached to a document
 export function DocumentFilesView({ title, files }: Props) {
   const [imageIndex, setImageIndex] = useState(0);
+  const [pagerWidth, setPagerWidth] = useState(0);
 
   if (files.length === 0) return null;
 
@@ -38,9 +42,34 @@ export function DocumentFilesView({ title, files }: Props) {
     }
   }
 
+  const manyPages = images.length > 2;
+
   return (
     <View style={styles.container}>
-      {images.length > 1 && (
+      {manyPages && (
+        <View onLayout={(event) => setPagerWidth(event.nativeEvent.layout.width)}>
+          {pagerWidth > 0 && (
+            <ScrollView
+              horizontal
+              pagingEnabled
+              showsHorizontalScrollIndicator={false}
+              onMomentumScrollEnd={(event) =>
+                setImageIndex(Math.round(event.nativeEvent.contentOffset.x / pagerWidth))
+              }>
+              {images.map((image) => (
+                <View key={image.id} style={{ width: pagerWidth }}>
+                  <ImageFile file={image} label={fileLabel(image, images.length)} aspectRatio={PAGE_ASPECT_RATIO} onPress={openImages} />
+                </View>
+              ))}
+            </ScrollView>
+          )}
+          <ThemedText type="small" themeColor="textSecondary" style={styles.pageCount}>
+            {`Pagina ${shownIndex + 1} di ${images.length} · scorri per sfogliare`}
+          </ThemedText>
+        </View>
+      )}
+
+      {images.length === 2 && (
         <SegmentedControl
           values={images.map((image) => fileLabel(image, images.length))}
           selectedIndex={imageIndex}
@@ -48,7 +77,9 @@ export function DocumentFilesView({ title, files }: Props) {
         />
       )}
 
-      {shownImage && <ImageFile file={shownImage} onPress={openImages} />}
+      {shownImage && !manyPages && (
+        <ImageFile file={shownImage} label={fileLabel(shownImage, images.length)} aspectRatio={CARD_ASPECT_RATIO} onPress={openImages} />
+      )}
 
       {pdfs.map((pdf) => (
         <PdfFile key={pdf.id} file={pdf} />
@@ -57,17 +88,19 @@ export function DocumentFilesView({ title, files }: Props) {
   );
 }
 
-function ImageFile({ file, onPress }: { file: DocumentFile; onPress: () => void }) {
+type ImageFileProps = { file: DocumentFile; label: string; aspectRatio: number; onPress: () => void };
+
+function ImageFile({ file, label, aspectRatio, onPress }: ImageFileProps) {
   const theme = useTheme();
   const stored = resolveDocumentFile(file.path);
 
   if (!stored.exists) return <MissingFile />;
 
   return (
-    <Pressable onPress={onPress} accessibilityLabel={`${fileLabel(file, 1)}, apri a schermo intero`}>
+    <Pressable onPress={onPress} accessibilityLabel={`${label}, apri a schermo intero`}>
       <Image
         source={{ uri: stored.uri }}
-        style={[styles.image, { backgroundColor: theme.surface }]}
+        style={[styles.image, { aspectRatio, backgroundColor: theme.surface }]}
         contentFit="contain"
         transition={150}
       />
@@ -110,9 +143,12 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    aspectRatio: CARD_ASPECT_RATIO,
     borderRadius: 16,
     borderCurve: 'continuous',
+  },
+  pageCount: {
+    textAlign: 'center',
+    marginTop: 8,
   },
   pdfFrame: {
     height: 440,

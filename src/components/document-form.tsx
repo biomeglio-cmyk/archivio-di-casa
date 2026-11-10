@@ -9,6 +9,7 @@ import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { listCategories } from '@/db/categories';
 import type { DocumentInput } from '@/db/documents';
+import type { Category } from '@/db/types';
 import { listPeople } from '@/db/people';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
@@ -29,7 +30,8 @@ const REMINDER_OPTIONS = [
 
 type Props = {
   initial?: Partial<DocumentInput>; // empty for a new document, the saved values when editing
-  files?: ReactNode; // attachments area shown at the top
+  // Attachments area shown at the top; gets the chosen category (labels depend on it)
+  files?: (category: Category | undefined) => ReactNode;
   autoFocusTitle?: boolean;
   onSubmit: (input: DocumentInput) => Promise<void>;
 };
@@ -87,7 +89,7 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit 
       keyboardShouldPersistTaps="handled"
       automaticallyAdjustKeyboardInsets
       contentContainerStyle={styles.content}>
-      {files}
+      {files?.(categories?.find((c) => c.id === categoryId))}
 
       <FormField label="Titolo" required>
         <TextField

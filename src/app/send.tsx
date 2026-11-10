@@ -12,6 +12,7 @@ import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
+import { usesFrontBack } from '@/utils/page-labels';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { saveToFiles, shareFiles } from '@/send/deliver';
 import { fileBaseName } from '@/send/file-name';
@@ -52,7 +53,8 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
   const single = items.length === 1 ? items[0] : null;
   const importedPdf = Boolean(single?.hasPdf);
   const multi = items.length > 1;
-  const twoFaces = single?.faces === 2;
+  // "Fronte e retro" exists only for an ID or a card with exactly 2 photos; anything else is pages
+  const twoFaces = Boolean(single && usesFrontBack(single.category, single.faces));
   const skipped = multi ? items.filter((i) => i.faces === 0).length : 0;
 
   // What the sheet actually allows for these documents
@@ -148,7 +150,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
         />
         {multi && (
           <ThemedText type="small" themeColor="textSecondary">
-            Un unico PDF: ogni documento su una pagina, fronte e retro insieme.
+            Un unico PDF: i documenti uno dopo l&apos;altro, fronte e retro di documenti d&apos;identità e tessere sulla stessa pagina.
           </ThemedText>
         )}
       </View>

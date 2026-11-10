@@ -21,12 +21,14 @@ type Props = {
   onCancel: () => void;
 };
 
+// Neutral words: this camera doesn't know the category, and a second photo is optional
 function instruction(side: Side, only: Side | undefined): string {
-  if (side === 'front') return 'Inquadra il fronte del documento';
-  return only ? 'Inquadra il retro del documento' : 'Ora gira il documento e inquadra il retro';
+  if (side === 'front') return 'Inquadra il documento';
+  return only ? 'Inquadra la seconda pagina' : 'Inquadra la seconda pagina (es. il retro)';
 }
 
 // Full-screen camera with the guide frame; every shot gets a "Rifai / Usa" preview.
+// One photo is enough: "Usa" saves it; "Aggiungi un'altra pagina" takes a second one.
 // Used by the /capture screen and by "Modifica documento" (inside a full-screen Modal).
 export function CameraCapture({ only, onDone, onCancel }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
@@ -59,17 +61,24 @@ export function CameraCapture({ only, onDone, onCancel }: Props) {
     }
   }
 
+  // "Usa": done, with this photo (and the first one, if this is the second)
   function acceptPhoto() {
     if (!previewUri) return;
     if (only) {
       onDone([{ uri: previewUri, kind: 'image', side: only }]);
     } else if (side === 'front') {
-      setFrontUri(previewUri);
-      setPreviewUri(null);
-      setSide('back');
+      finish(previewUri, null);
     } else if (frontUri) {
       finish(frontUri, previewUri);
     }
+  }
+
+  // "Aggiungi un'altra pagina": keep the first photo and shoot the second
+  function addSecondPage() {
+    if (!previewUri) return;
+    setFrontUri(previewUri);
+    setPreviewUri(null);
+    setSide('back');
   }
 
   // ---- Permission states ----
@@ -106,9 +115,14 @@ export function CameraCapture({ only, onDone, onCancel }: Props) {
       <View style={styles.screen}>
         <Image source={{ uri: previewUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
         <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
-          <Text style={styles.instruction}>{side === 'front' ? 'Fronte' : 'Retro'}: si legge bene?</Text>
+          <Text style={styles.instruction}>Si legge bene?</Text>
         </View>
         <View style={[styles.previewBar, { paddingBottom: insets.bottom + 16 }]}>
+          {!only && side === 'front' && (
+            <Pressable onPress={addSecondPage} hitSlop={8} accessibilityRole="button" style={styles.addPage}>
+              <Text style={styles.link}>Aggiungi un&apos;altra pagina</Text>
+            </Pressable>
+          )}
           <Pressable style={styles.secondaryButton} onPress={() => setPreviewUri(null)}>
             <Text style={styles.secondaryLabel}>Rifai</Text>
           </Pressable>
@@ -154,8 +168,8 @@ export function CameraCapture({ only, onDone, onCancel }: Props) {
         </Pressable>
         <View style={styles.sideSlot}>
           {!only && side === 'back' && frontUri && (
-            <Pressable onPress={() => finish(frontUri, null)} hitSlop={12}>
-              <Text style={styles.link}>Salta</Text>
+            <Pressable onPress={() => finish(frontUri, null)} hitSlop={12} accessibilityLabel="Fine, solo la prima pagina">
+              <Text style={styles.link}>Fine</Text>
             </Pressable>
           )}
         </View>
@@ -236,6 +250,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     flexDirection: 'row',
+    flexWrap: 'wrap', // "Aggiungi un'altra pagina" on its own line, then Rifai / Usa
     gap: 12,
     paddingHorizontal: 20,
     paddingTop: 16,
@@ -253,6 +268,11 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 17,
     fontFamily: FONTS.titleSemiBold,
+  },
+  addPage: {
+    width: '100%', // its own line above Rifai / Usa
+    alignItems: 'center',
+    paddingVertical: 4,
   },
   link: {
     color: '#FFFFFF',

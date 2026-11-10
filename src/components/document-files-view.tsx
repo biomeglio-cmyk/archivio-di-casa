@@ -5,24 +5,25 @@ import { useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
-import { fileLabel } from '@/components/attachment-strip';
 import { ThemedText } from '@/components/themed-text';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
-import type { DocumentFile } from '@/db/types';
+import type { Category, DocumentFile } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
 import { previewDocumentFiles } from '@/storage/preview-files';
+import { pageLabel, usesFrontBack } from '@/utils/page-labels';
 
 type Props = {
   title: string;
+  category: Pick<Category, 'isBuiltin' | 'symbol'>; // "Fronte/Retro" only for IDs and cards
   files: DocumentFile[];
 };
 
 const PAGE_ASPECT_RATIO = 3 / 4; // scanned pages are usually portrait sheets
 
-// Photos (with a Fronte/Retro switch, or swiped page by page for a scan of 3+ pages)
-// and PDFs attached to a document
-export function DocumentFilesView({ title, files }: Props) {
+// Photos and PDFs attached to a document: one photo alone (no label, no selector), two with a
+// switch ("Fronte/Retro" for IDs and cards, else "Pagina 1/2"), 3+ swiped page by page
+export function DocumentFilesView({ title, category, files }: Props) {
   const [imageIndex, setImageIndex] = useState(0);
   const [pagerWidth, setPagerWidth] = useState(0);
 
@@ -32,11 +33,13 @@ export function DocumentFilesView({ title, files }: Props) {
   const pdfs = files.filter((f) => f.kind === 'pdf');
   const shownIndex = Math.min(imageIndex, images.length - 1);
   const shownImage = images[shownIndex];
+  const frontBack = usesFrontBack(category, images.length);
+  const labelAt = (index: number) => pageLabel(index, images.length, frontBack) ?? 'Documento';
 
   // Tapping the photo opens all faces full screen, starting from the one on screen
   async function openImages() {
     try {
-      await previewDocumentFiles(title, images, shownIndex);
+      await previewDocumentFiles(title, category, images, shownIndex);
     } catch (error) {
       Alert.alert('Impossibile aprire il documento', error instanceof Error ? error.message : String(error));
     }
@@ -56,9 +59,9 @@ export function DocumentFilesView({ title, files }: Props) {
               onMomentumScrollEnd={(event) =>
                 setImageIndex(Math.round(event.nativeEvent.contentOffset.x / pagerWidth))
               }>
-              {images.map((image) => (
+              {images.map((image, index) => (
                 <View key={image.id} style={{ width: pagerWidth }}>
-                  <ImageFile file={image} label={fileLabel(image, images.length)} aspectRatio={PAGE_ASPECT_RATIO} onPress={openImages} />
+                  <ImageFile file={image} label={labelAt(index)} aspectRatio={PAGE_ASPECT_RATIO} onPress={openImages} />
                 </View>
               ))}
             </ScrollView>
@@ -71,14 +74,14 @@ export function DocumentFilesView({ title, files }: Props) {
 
       {images.length === 2 && (
         <SegmentedControl
-          values={images.map((image) => fileLabel(image, images.length))}
+          values={images.map((_, index) => labelAt(index))}
           selectedIndex={imageIndex}
           onChange={(event) => setImageIndex(event.nativeEvent.selectedSegmentIndex)}
         />
       )}
 
       {shownImage && !manyPages && (
-        <ImageFile file={shownImage} label={fileLabel(shownImage, images.length)} aspectRatio={CARD_ASPECT_RATIO} onPress={openImages} />
+        <ImageFile file={shownImage} label={labelAt(shownIndex)} aspectRatio={CARD_ASPECT_RATIO} onPress={openImages} />
       )}
 
       {pdfs.map((pdf) => (

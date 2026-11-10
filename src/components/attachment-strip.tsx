@@ -5,24 +5,23 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
+import type { Category } from '@/db/types';
 import type { PendingFile } from '@/storage/pending-files';
+import { pageLabel, usesFrontBack } from '@/utils/page-labels';
 
-// "Fronte", "Retro" or "PDF" under each thumbnail; "Pagina 3" when a scan has more than 2 pages
-export function fileLabel(file: { kind: PendingFile['kind']; side: PendingFile['side']; page?: number | null }, imageCount: number): string {
-  if (file.kind === 'pdf') return 'PDF';
-  if (imageCount > 2) return `Pagina ${file.page ?? 1}`;
-  if (file.side === 'back') return 'Retro';
-  return 'Fronte';
-}
 
 type Props = {
   files: PendingFile[];
+  category: Pick<Category, 'isBuiltin' | 'symbol'> | undefined; // decides "Fronte/Retro" or "Pagina N"
 };
 
 // Thumbnails of the files attached to a document that is being created (all scanned pages, in order)
-export function AttachmentStrip({ files }: Props) {
+export function AttachmentStrip({ files, category }: Props) {
   const theme = useTheme();
-  const imageCount = files.filter((f) => f.kind === 'image').length;
+  const images = files.filter((f) => f.kind === 'image');
+  const frontBack = usesFrontBack(category, images.length);
+  const labelOf = (file: PendingFile) =>
+    file.kind === 'pdf' ? 'PDF' : pageLabel(images.indexOf(file), images.length, frontBack);
 
   return (
     // Scrolls sideways when a scan has many pages
@@ -41,9 +40,11 @@ export function AttachmentStrip({ files }: Props) {
               )}
             </View>
           )}
-          <ThemedText type="smallBold" themeColor="textSecondary">
-            {fileLabel(file, imageCount)}
-          </ThemedText>
+          {labelOf(file) && (
+            <ThemedText type="smallBold" themeColor="textSecondary">
+              {labelOf(file)}
+            </ThemedText>
+          )}
         </View>
       ))}
     </ScrollView>

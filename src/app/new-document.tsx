@@ -31,7 +31,7 @@ export default function NewDocumentScreen() {
           personId: params.personId ? Number(params.personId) : null,
           categoryId: params.categoryId ? Number(params.categoryId) : undefined,
         }}
-        files={files.length > 0 ? <AttachmentStrip files={files} /> : undefined}
+        files={files.length > 0 ? (category) => <AttachmentStrip files={files} category={category} /> : undefined}
         autoFocusTitle={files.length === 0}
         onSubmit={async (input) => {
           await insertDocument(db, input, files);

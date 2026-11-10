@@ -5,9 +5,10 @@ import { Alert, Modal } from 'react-native';
 import { pickPdf, pickPhoto, pickPhotos } from '@/capture/pick-files';
 import { CameraCapture } from '@/components/camera-capture';
 import { replaceDocumentFiles } from '@/db/documents';
-import type { DocumentFile } from '@/db/types';
+import type { Category, DocumentFile } from '@/db/types';
 import type { PendingFile } from '@/storage/pending-files';
 import { chooseAction } from '@/utils/action-sheet';
+import { usesFrontBack } from '@/utils/page-labels';
 
 type Side = 'front' | 'back';
 type CameraMode = { only?: Side } | null; // {} = front then back, { only } = one face
@@ -16,13 +17,20 @@ type CameraMode = { only?: Side } | null; // {} = front then back, { only } = on
 // No files yet → Fotografa / Scegli dalle foto / Importa PDF.
 // Front already there → add the back, or replace a face. PDF → replace it.
 // Returns the function to call and the full-screen camera to render in the screen.
-export function useAttachFile(documentId: number, files: DocumentFile[]) {
+export function useAttachFile(
+  documentId: number,
+  files: DocumentFile[],
+  category: Pick<Category, 'isBuiltin' | 'symbol'> | undefined,
+) {
   const db = useSQLiteContext();
   const [camera, setCamera] = useState<CameraMode>(null);
 
   const pdf = files.find((f) => f.kind === 'pdf');
   const front = files.find((f) => f.kind === 'image' && f.side !== 'back');
   const back = files.find((f) => f.kind === 'image' && f.side === 'back');
+  // Names of the two photos: "fronte/retro" for IDs and cards, else "pagina 1/2"
+  const cardLike = usesFrontBack(category, 2);
+  const names = cardLike ? { front: 'il fronte', back: 'il retro' } : { front: 'la pagina 1', back: 'la pagina 2' };
 
   // New files replace the saved ones with the same role (same face, or the PDF)
   async function save(added: PendingFile[]) {
@@ -39,7 +47,8 @@ export function useAttachFile(documentId: number, files: DocumentFile[]) {
   }
 
   async function pickFace(side: Side) {
-    const source = await chooseAction(side === 'front' ? 'Fronte' : 'Retro', ['Fotografa', 'Scegli dalle foto']);
+    const title = cardLike ? (side === 'front' ? 'Fronte' : 'Retro') : side === 'front' ? 'Pagina 1' : 'Pagina 2';
+    const source = await chooseAction(title, ['Fotografa', 'Scegli dalle foto']);
     if (source === 0) setCamera({ only: side });
     if (source === 1) {
       const photo = await pickPhoto(side);
@@ -71,7 +80,9 @@ export function useAttachFile(documentId: number, files: DocumentFile[]) {
         return;
       }
 
-      const options = back ? ['Sostituisci il fronte', 'Sostituisci il retro'] : ['Aggiungi il retro', 'Sostituisci il fronte'];
+      const options = back
+        ? [`Sostituisci ${names.front}`, `Sostituisci ${names.back}`]
+        : [cardLike ? 'Aggiungi il retro' : 'Aggiungi una pagina', `Sostituisci ${names.front}`];
       const choice = await chooseAction('Aggiungi documento', options);
       if (choice === null) return;
       const side: Side = back ? (choice === 0 ? 'front' : 'back') : choice === 0 ? 'back' : 'front';

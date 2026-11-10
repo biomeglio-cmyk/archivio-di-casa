@@ -40,11 +40,6 @@ const MONTHS = [
   'dicembre',
 ];
 
-// In Italian the first day of the month is written "1º"
-function dayNumber(date: Date): string {
-  return date.getDate() === 1 ? '1º' : String(date.getDate());
-}
-
 // "lun 9 nov"; the year is added only when it isn't the current one: "mer 14 lug 2027"
 export function formatShortDate(iso: string, today: Date = new Date()): string {
   const date = parseISODate(iso);
@@ -52,35 +47,47 @@ export function formatShortDate(iso: string, today: Date = new Date()): string {
   return date.getFullYear() === today.getFullYear() ? base : `${base} ${date.getFullYear()}`;
 }
 
-// "30 novembre", "1º dicembre" (+ year if it isn't the current one)
-export function formatDayMonth(date: Date, today: Date = new Date()): string {
-  const base = `${dayNumber(date)} ${MONTHS[date.getMonth()]}`;
-  return date.getFullYear() === today.getFullYear() ? base : `${base} ${date.getFullYear()}`;
-}
-
-// "9–15 novembre" or, across two months, "28 novembre – 4 dicembre"
-export function formatDayRange(start: Date, end: Date, today: Date = new Date()): string {
-  if (start.getMonth() === end.getMonth() && start.getFullYear() === end.getFullYear()) {
-    return `${dayNumber(start)}–${formatDayMonth(end, today)}`;
-  }
-  return `${formatDayMonth(start, today)} – ${formatDayMonth(end, today)}`;
-}
-
 function plural(count: number, one: string, many: string): string {
   return count === 1 ? `1 ${one}` : `${count} ${many}`;
 }
 
-// How far a date is: "oggi", "domani", "tra 3 giorni", "tra 2 mesi", "tra 1 anno",
-// and for past dates "scaduto ieri", "scaduto da 2 giorni"…
-export function describeDistance(days: number): string {
-  const amount = Math.abs(days);
-  let span: string;
-  if (amount <= 45) span = plural(amount, 'giorno', 'giorni');
-  else if (amount < 365) span = plural(Math.round(amount / 30.44), 'mese', 'mesi');
-  else span = plural(Math.round(amount / 365.25), 'anno', 'anni');
+// "3 giorni", "2 mesi", "1 anno": days up to 45, then months, then years
+function span(amount: number): string {
+  if (amount <= 45) return plural(amount, 'giorno', 'giorni');
+  if (amount < 365) return plural(Math.round(amount / 30.44), 'mese', 'mesi');
+  return plural(Math.round(amount / 365.25), 'anno', 'anni');
+}
 
+// For a document's expiry: "oggi", "domani", "tra 3 giorni", "scaduto ieri", "scaduto da 2 giorni"
+export function describeDistance(days: number): string {
   if (days === 0) return 'oggi';
   if (days === 1) return 'domani';
   if (days === -1) return 'scaduto ieri';
-  return days > 0 ? `tra ${span}` : `scaduto da ${span}`;
+  return days > 0 ? `tra ${span(days)}` : `scaduto da ${span(-days)}`;
+}
+
+// For a calendar day: "oggi", "domani", "ieri", "tra 2 giorni", "3 giorni fa"
+export function describeDayDistance(days: number): string {
+  if (days === 0) return 'oggi';
+  if (days === 1) return 'domani';
+  if (days === -1) return 'ieri';
+  return days > 0 ? `tra ${span(days)}` : `${span(-days)} fa`;
+}
+
+const WEEKDAYS = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
+
+function capitalize(text: string): string {
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+// "Giovedì 12 novembre" (+ year if it isn't the current one)
+export function formatLongDay(iso: string, today: Date = new Date()): string {
+  const date = parseISODate(iso);
+  const base = `${capitalize(WEEKDAYS[date.getDay()])} ${date.getDate()} ${MONTHS[date.getMonth()]}`;
+  return date.getFullYear() === today.getFullYear() ? base : `${base} ${date.getFullYear()}`;
+}
+
+// "Novembre 2026"
+export function formatMonthTitle(year: number, month: number): string {
+  return `${capitalize(MONTHS[month])} ${year}`;
 }

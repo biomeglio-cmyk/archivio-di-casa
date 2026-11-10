@@ -5,6 +5,7 @@ import type { SFSymbol } from 'expo-symbols';
 export type Person = {
   id: number;
   name: string;
+  photoPath: string | null; // relative to Paths.document; null = initial in a circle
 };
 
 export type CategoryColors = {
@@ -31,6 +32,7 @@ export type FamilyDocument = {
   expiresAt: string | null; // 'YYYY-MM-DD', null = never expires
   reminderDays: number | null;
   notes: string | null;
+  calendarEventId: string | null; // iOS Calendar event of the expiry, when sync is on
   createdAt: string;
   updatedAt: string;
 };
@@ -46,7 +48,7 @@ export type DocumentFile = {
 
 // ---- Raw rows as returned by SQLite ----
 
-export type PersonRecord = { id: number; name: string };
+export type PersonRecord = { id: number; name: string; photo_path: string | null };
 
 export type CategoryRecord = {
   id: number;
@@ -68,13 +70,26 @@ export type DocumentRecord = {
   expires_at: string | null;
   reminder_days: number | null;
   notes: string | null;
+  calendar_event_id: string | null;
   created_at: string;
   updated_at: string;
 };
 
 // ---- Shapes returned by list queries ----
 
-export type PersonWithCount = Person & { documentCount: number };
+export type PersonWithCount = Person & {
+  documentCount: number;
+  expiringCount: number; // documents expiring from today to 30 days from now
+};
 export type CategoryWithCount = Category & { documentCount: number };
 export type DocumentListItem = FamilyDocument & { category: Category };
 export type DocumentDetail = DocumentListItem & { person: Person | null };
+
+export type DocumentFileRecord = {
+  id: number;
+  document_id: number;
+  path: string;
+  side: 'front' | 'back' | null;
+  kind: 'image' | 'pdf';
+  created_at: string;
+};

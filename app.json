@@ -33,7 +33,31 @@
           "imageWidth": 76
         }
       ],
-      "expo-sqlite"
+      "expo-sqlite",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Sottomano usa la fotocamera per fotografare i tuoi documenti.",
+          "microphonePermission": false,
+          "recordAudioAndroid": false
+        }
+      ],
+      [
+        "expo-image-picker",
+        {
+          "photosPermission": "Sottomano accede alle foto per importare i tuoi documenti.",
+          "cameraPermission": false,
+          "microphonePermission": false
+        }
+      ],
+      "expo-sharing",
+      [
+        "expo-calendar",
+        {
+          "calendarPermission": "Sottomano aggiunge le scadenze dei tuoi documenti al calendario che scegli.",
+          "remindersPermission": false
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

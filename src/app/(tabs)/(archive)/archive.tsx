@@ -1,48 +1,41 @@
-import { Alert, ScrollView, StyleSheet, useWindowDimensions } from 'react-native';
+import { router } from 'expo-router';
+import { FlatList } from 'react-native';
 
 import { CategoryTile } from '@/components/category-tile';
-import { NewCategoryTile } from '@/components/new-category-tile';
+import { DashedAddTile } from '@/components/dashed-add-tile';
 import { listCategoriesWithCounts } from '@/db/categories';
+import type { CategoryWithCount } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { TILE_COLUMNS, tileGridStyles, useTileSize } from '@/hooks/use-tile-size';
 
-const PADDING = 16; // space between the grid and the screen edges
-const GAP = 12; // space between tiles, both horizontal and vertical
-const TILE_HEIGHT = 128;
+// The grid items: every category, then the dashed "Nuova categoria" tile
+type GridItem = { kind: 'category'; category: CategoryWithCount } | { kind: 'new' };
 
 // "/archive": two-column grid of categories, plus the dashed "Nuova categoria" tile
 export default function ArchiveScreen() {
-  // Every tile gets the same exact size: half of the usable width, minus half of the gap.
-  // Math.floor avoids sub-pixel rounding that could push the second tile to a new row.
-  const { width } = useWindowDimensions();
+  const size = useTileSize();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
-  const tileSize = { width: Math.floor((width - PADDING * 2 - GAP) / 2), height: TILE_HEIGHT };
+
+  // "Nuova categoria" appears together with the categories, so it doesn't flash alone while loading
+  const items: GridItem[] = categories
+    ? [...categories.map((category) => ({ kind: 'category' as const, category })), { kind: 'new' }]
+    : [];
 
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.grid}>
-      {categories?.map((category) => (
-        <CategoryTile
-          key={category.id}
-          category={category}
-          documentCount={category.documentCount}
-          size={tileSize}
-        />
-      ))}
-      {/* Shown with the categories, so it doesn't flash alone while they load */}
-      {categories && (
-        <NewCategoryTile
-          size={tileSize}
-          onPress={() => Alert.alert('Nuova categoria', 'Disponibile più avanti.')}
-        />
-      )}
-    </ScrollView>
+    <FlatList
+      data={items}
+      numColumns={TILE_COLUMNS}
+      keyExtractor={(item) => (item.kind === 'category' ? String(item.category.id) : 'new')}
+      contentInsetAdjustmentBehavior="automatic"
+      contentContainerStyle={tileGridStyles.content}
+      columnWrapperStyle={tileGridStyles.row}
+      renderItem={({ item }) =>
+        item.kind === 'category' ? (
+          <CategoryTile category={item.category} documentCount={item.category.documentCount} size={size} />
+        ) : (
+          <DashedAddTile label="Nuova categoria" size={size} onPress={() => router.push('/category-form')} />
+        )
+      }
+    />
   );
 }
-
-const styles = StyleSheet.create({
-  grid: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: GAP,
-    padding: PADDING,
-  },
-});

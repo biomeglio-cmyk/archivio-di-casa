@@ -4,11 +4,15 @@ import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { GradientButton } from '@/components/gradient-button';
+import { getCalendarSettings } from '@/calendar/calendar-settings';
+import { DocumentActions } from '@/components/document-actions';
+import { DocumentFilesView } from '@/components/document-files-view';
+import { PersonAvatar } from '@/components/person-avatar';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
-import { getDocumentDetail } from '@/db/documents';
+import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/utils/dates';
 
@@ -17,6 +21,11 @@ export default function DocumentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const theme = useTheme();
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, Number(id)), [id]);
+  const { data: files } = useDbQuery((db) => listDocumentFiles(db, Number(id)), [id]);
+  const hasFiles = files !== undefined && files.length > 0;
+
+  // Deleted from "Modifica documento" → leave this screen too
+  useLeaveWhenDeleted(document);
 
   // undefined = still loading (a few milliseconds), null = not in the database
   if (document === undefined) {
@@ -33,44 +42,72 @@ export default function DocumentDetail() {
   }
 
   const { category, person } = document;
+  const calendar = getCalendarSettings();
 
   // Label/value pairs shown under the header; missing values are skipped
   const details = [
     { label: 'Categoria', value: category.name },
     { label: 'Persona', value: person?.name },
+    { label: 'Numero', value: document.number },
     { label: 'Scadenza', value: document.expiresAt ? formatDate(document.expiresAt) : 'Nessuna' },
+    {
+      label: 'Promemoria',
+      value: document.expiresAt && document.reminderDays ? `${document.reminderDays} giorni prima` : null,
+    },
     { label: 'Note', value: document.notes },
+    {
+      label: 'Nel calendario',
+      value: calendar.enabled && document.calendarEventId ? calendar.calendarTitle : null,
+    },
   ].filter((d) => d.value);
 
   return (
-    <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-      <Stack.Screen options={{ title: '' }} />
+    <>
+      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
+        <Stack.Screen options={{ title: '' }} />
 
-      <LinearGradient colors={[category.colors.top, category.colors.bottom]} style={styles.header}>
-        <SymbolView name={category.symbol} tintColor={category.colors.text} size={40} />
-        <Text style={[styles.title, { color: category.colors.text }]}>{document.title}</Text>
-      </LinearGradient>
+        <LinearGradient colors={[category.colors.top, category.colors.bottom]} style={styles.header}>
+          <SymbolView name={category.symbol} tintColor={category.colors.text} size={40} />
+          <Text style={[styles.title, { color: category.colors.text }]}>{document.title}</Text>
+        </LinearGradient>
 
-      <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
-        {details.map((d, index) => (
-          <View
-            key={d.label}
-            style={[
-              styles.detailRow,
-              index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected },
-            ]}>
-            <ThemedText themeColor="textSecondary">{d.label}</ThemedText>
-            <ThemedText style={styles.detailValue}>{d.value}</ThemedText>
-          </View>
-        ))}
-      </View>
+        {hasFiles && (
+          <>
+            <DocumentFilesView title={document.title} files={files} />
+            <DocumentActions title={document.title} files={files} />
+          </>
+        )}
 
-      <GradientButton
-        label="Invia"
-        symbol="paperplane.fill"
-        onPress={() => router.push({ pathname: '/send-document/[id]', params: { id: String(document.id) } })}
-      />
-    </ScrollView>
+        <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
+          {details.map((d, index) => (
+            <View
+              key={d.label}
+              style={[
+                styles.detailRow,
+                index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected },
+              ]}>
+              <ThemedText themeColor="textSecondary">{d.label}</ThemedText>
+              {d.label === 'Persona' && person ? (
+                <View style={styles.personValue}>
+                  <PersonAvatar name={person.name} photoPath={person.photoPath} size={28} />
+                  <ThemedText style={styles.detailValue}>{d.value}</ThemedText>
+                </View>
+              ) : (
+                <ThemedText style={styles.detailValue}>{d.value}</ThemedText>
+              )}
+            </View>
+          ))}
+        </View>
+      </ScrollView>
+
+      {/* Pencil on the right of the header: opens the same form as "Nuovo documento", filled in */}
+      <Stack.Toolbar placement="right">
+        <Stack.Toolbar.Button
+          icon="pencil"
+          onPress={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
+        />
+      </Stack.Toolbar>
+    </>
   );
 }
 
@@ -103,9 +140,16 @@ const styles = StyleSheet.create({
   },
   detailRow: {
     flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'space-between',
     gap: 16,
     paddingVertical: 14,
+  },
+  personValue: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    flexShrink: 1,
   },
   detailValue: {
     flexShrink: 1,

@@ -51,12 +51,42 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
-            name="new-person"
+            name="calendar-settings"
+            options={{
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              sheetAllowedDetents: [0.75, 1.0],
+            }}
+          />
+          <Stack.Screen
+            name="category-form"
+            options={{
+              presentation: 'formSheet',
+              headerShown: false,
+              sheetGrabberVisible: true,
+              sheetAllowedDetents: [0.9],
+            }}
+          />
+          <Stack.Screen
+            name="person-form"
             options={{
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
               sheetAllowedDetents: 'fitToContents',
+            }}
+          />
+          <Stack.Screen
+            name="capture"
+            options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
+          />
+          <Stack.Screen
+            name="edit-document/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Modifica documento',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
           <Stack.Screen
@@ -65,15 +95,6 @@ export default function RootLayout() {
               presentation: 'modal',
               title: 'Nuovo documento',
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
-            }}
-          />
-          <Stack.Screen
-            name="send-document/[id]"
-            options={{
-              presentation: 'formSheet',
-              headerShown: false,
-              sheetGrabberVisible: true,
-              sheetAllowedDetents: 'fitToContents',
             }}
           />
         </Stack>

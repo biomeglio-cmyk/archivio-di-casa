@@ -25,6 +25,7 @@ export function searchDocuments(all: DocumentListItem[], query: string): SearchR
     const elsewhere =
       titleMatch ||
       findMatch(document.number, q) ||
+      findMatch(document.barcodeValue, q) ||
       findMatch(document.category.name, q) ||
       findMatch(document.personName, q);
     if (elsewhere) {

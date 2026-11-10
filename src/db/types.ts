@@ -21,6 +21,7 @@ export type Category = {
   examples: string | null;
   colors: CategoryColors;
   isBuiltin: boolean;
+  isCards: boolean; // "Tessere e card": shown as a wallet of cards
 };
 
 export type FamilyDocument = {
@@ -33,15 +34,24 @@ export type FamilyDocument = {
   reminderDays: number | null;
   notes: string | null;
   calendarEventId: string | null; // iOS Calendar event of the expiry, when sync is on
+  isPinned: boolean; // shown in "Sottomano" on Archivio
+  pinOrder: number;
+  barcodeValue: string | null; // cards: the code read by the camera or typed by hand
+  barcodeType: string | null; // cards: its format, e.g. 'ean13' (null = typed by hand)
+  cardColor: string | null; // cards: background when there is no photo of the front
   createdAt: string;
   updatedAt: string;
 };
+
+// What a photo is: front/back of a document, front of a card, photo of a card's barcode.
+// null for PDFs.
+export type FileSide = 'front' | 'back' | 'card_front' | 'barcode';
 
 export type DocumentFile = {
   id: number;
   documentId: number;
   path: string; // relative to Paths.document, e.g. 'documents/42-front.jpg'
-  side: 'front' | 'back' | null;
+  side: FileSide | null;
   kind: 'image' | 'pdf';
   createdAt: string;
 };
@@ -59,6 +69,7 @@ export type CategoryRecord = {
   color_bottom: string;
   color_text: string;
   is_builtin: number;
+  kind: string | null;
 };
 
 export type DocumentRecord = {
@@ -71,6 +82,11 @@ export type DocumentRecord = {
   reminder_days: number | null;
   notes: string | null;
   calendar_event_id: string | null;
+  is_pinned: number;
+  pin_order: number;
+  barcode_value: string | null;
+  barcode_type: string | null;
+  card_color: string | null;
   created_at: string;
   updated_at: string;
 };
@@ -94,7 +110,7 @@ export type DocumentFileRecord = {
   id: number;
   document_id: number;
   path: string;
-  side: 'front' | 'back' | null;
+  side: FileSide | null;
   kind: 'image' | 'pdf';
   created_at: string;
 };

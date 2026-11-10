@@ -18,6 +18,7 @@ export function mapCategory(row: Record<string, unknown>, prefix = ''): Category
       text: r('color_text') as string,
     },
     isBuiltin: r('is_builtin') === 1,
+    isCards: r('kind') === 'cards',
   };
 }
 
@@ -25,7 +26,7 @@ export function mapCategory(row: Record<string, unknown>, prefix = ''): Category
 export const CATEGORY_JOIN_COLUMNS = `
   c.id AS c_id, c.name AS c_name, c.symbol AS c_symbol, c.examples AS c_examples,
   c.color_top AS c_color_top, c.color_bottom AS c_color_bottom, c.color_text AS c_color_text,
-  c.is_builtin AS c_is_builtin`;
+  c.is_builtin AS c_is_builtin, c.kind AS c_kind`;
 
 export async function listCategories(db: SQLiteDatabase): Promise<Category[]> {
   const rows = await db.getAllAsync<CategoryRecord>('SELECT * FROM categories ORDER BY sort_order, name');

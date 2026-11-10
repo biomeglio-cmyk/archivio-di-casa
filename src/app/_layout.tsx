@@ -10,7 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { SQLiteProvider } from 'expo-sqlite';
 import { useColorScheme } from 'react-native';
 
-import { AnimatedSplashOverlay } from '@/components/animated-icon';
+import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/brand';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
 
@@ -38,7 +38,6 @@ export default function RootLayout() {
       onInit={initDatabase}
       options={{ enableChangeListener: true }}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-        <AnimatedSplashOverlay />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
@@ -107,6 +106,8 @@ export default function RootLayout() {
             }}
           />
         </Stack>
+        {/* After the Stack, so it is drawn on top of the first screen while it fades */}
+        <SplashOverlay />
       </ThemeProvider>
     </SQLiteProvider>
   );

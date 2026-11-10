@@ -2,6 +2,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { removeCalendarEvent, syncDocumentEvent } from '@/calendar/calendar-sync';
 import { CATEGORY_JOIN_COLUMNS, mapCategory } from '@/db/categories';
+import { rescheduleReminders } from '@/notifications/reminders';
 import type {
   DocumentDetail,
   DocumentFile,
@@ -30,6 +31,7 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     category: mapCategory(row, 'c_'),
     imageCount: Number(row.image_count ?? 0),
     firstImagePath: (row.first_image_path as string | null | undefined) ?? null,
+    personName: (row.person_name as string | null | undefined) ?? null,
   };
 }
 
@@ -44,14 +46,21 @@ async function listDocumentsWhere(
     `SELECT d.*, ${CATEGORY_JOIN_COLUMNS},
             (SELECT COUNT(*) FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image') AS image_count,
             (SELECT f.path FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image'
-             ORDER BY CASE f.side WHEN 'back' THEN 1 ELSE 0 END, f.id LIMIT 1) AS first_image_path
+             ORDER BY CASE f.side WHEN 'back' THEN 1 ELSE 0 END, f.id LIMIT 1) AS first_image_path,
+            pp.name AS person_name
      FROM documents d
      JOIN categories c ON c.id = d.category_id
+     LEFT JOIN people pp ON pp.id = d.person_id
      ${where}
      ORDER BY d.expires_at IS NULL, d.expires_at, d.title`,
     params,
   );
   return rows.map(mapDocument);
+}
+
+// Every document with category and person, for the search in Archivio (filtered in JS)
+export function listAllDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
+  return listDocumentsWhere(db, '', []);
 }
 
 export function listDocumentsWithExpiry(db: SQLiteDatabase): Promise<DocumentListItem[]> {
@@ -157,6 +166,7 @@ export async function insertDocument(
   }
   // Calendar event of the expiry, if sync is on (after the save: it never makes the save fail)
   await syncDocumentEvent(db, documentId);
+  await rescheduleReminders(db);
   return documentId;
 }
 
@@ -207,6 +217,7 @@ export async function deleteDocument(db: SQLiteDatabase, id: number): Promise<vo
   await db.runAsync('DELETE FROM documents WHERE id = ?', id);
   files.forEach((file) => deleteStoredFile(file.path));
   await removeCalendarEvent(event?.calendar_event_id ?? null);
+  await rescheduleReminders(db);
 }
 
 // Saves the edit form: fields plus file changes (removed files, new or replacement files).
@@ -222,6 +233,7 @@ export async function saveDocumentEdits(
   await changeFiles(db, id, removedFiles, addedFiles, () => updateDocument(db, id, input));
   // New title, expiry or reminder → update the calendar event (or remove it if the expiry is gone)
   await syncDocumentEvent(db, id);
+  await rescheduleReminders(db);
 }
 
 // Only the files: attach new ones, replacing the given ones ("Aggiungi documento" in the detail)

@@ -102,7 +102,7 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit 
       {/* The pickers need the lists from the database, so they appear once loaded */}
       {categories && people && (
         <>
-          <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
+          <View style={[styles.card, { backgroundColor: theme.surface }]}>
             <FormRow label="Categoria" required>
               <Picker selectedValue={categoryId} onValueChange={setCategoryId}>
                 {/* "Scegli…" disappears once a category is chosen */}
@@ -117,7 +117,7 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit 
           <ThemedText type="smallBold" themeColor="textSecondary" style={styles.sectionTitle}>
             Facoltativi
           </ThemedText>
-          <View style={[styles.card, { backgroundColor: theme.backgroundElement }]}>
+          <View style={[styles.card, { backgroundColor: theme.surface }]}>
             <FormRow label="Persona">
               <Picker selectedValue={personId} onValueChange={setPersonId}>
                 <Picker.Item label="Nessuna" value={NONE} />
@@ -234,7 +234,7 @@ const styles = StyleSheet.create({
     marginBottom: -12, // closer to its card than to the card above
   },
   card: {
-    borderRadius: 16,
+    borderRadius: 12,
     borderCurve: 'continuous',
     paddingHorizontal: 16,
   },

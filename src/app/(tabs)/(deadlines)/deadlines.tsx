@@ -1,162 +1,276 @@
-import { SegmentedControl } from '@expo/ui/community/segmented-control';
-import { router } from 'expo-router';
-import { Stack } from 'expo-router/stack';
-import Storage from 'expo-sqlite/kv-store';
-import { useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { SymbolView } from 'expo-symbols';
+import { useRef, useState } from 'react';
+import { Modal, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
 
-import { DocumentRow } from '@/components/document-row';
+import { DeadlineRow } from '@/components/deadline-row';
 import { MonthCalendar } from '@/components/month-calendar';
-import { WeekStrip } from '@/components/week-strip';
 import { ThemedText } from '@/components/themed-text';
-import { DANGER_COLOR, FONTS } from '@/constants/brand';
+import { WeekStrip } from '@/components/week-strip';
+import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
 import { listDocumentsWithExpiry } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { addDaysIso, describeDayDistance, formatLongDay, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
-import { daysUntil } from '@/utils/deadlines';
+import { useTheme } from '@/hooks/use-theme';
+import { addDaysIso, formatShortDate, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
+import { groupDeadlines, type DeadlineSection } from '@/utils/deadlines';
 
-type CalendarView = 'week' | 'month';
-const VIEW_KEY = 'deadlines.view';
-const VIEW_LABELS = ['Settimana', 'Mese'];
+type Section = DeadlineSection<DocumentListItem>;
 
-// "/deadlines": a week strip or a month grid like the iPhone calendar, the deadlines of the
-// selected day (today at launch) and, below, the expired documents to sort out.
+// "/deadlines", list first: a compact week strip, then every deadline in sections
+// ("Da sistemare", "Questa settimana", "Questo mese", "Più avanti"). Tapping a day jumps to it;
+// "Mese" opens the month grid.
 export default function DeadlinesScreen() {
+  const theme = useTheme();
+  // iOS grouped list: page background with surface-colored blocks (theme tokens)
+  const cardColor = theme.surface;
   const { data: documents } = useDbQuery(listDocumentsWithExpiry, []);
+  const listRef = useRef<SectionList<DocumentListItem, Section>>(null);
 
-  const today = new Date();
-  const todayIso = toISODate(today);
-  const [selectedIso, setSelectedIso] = useState(todayIso);
-  const [visible, setVisible] = useState({ year: today.getFullYear(), month: today.getMonth() });
-  // Week by default; the last choice is remembered on the phone
-  const [view, setView] = useState<CalendarView>(() => (Storage.getItemSync(VIEW_KEY) === 'month' ? 'month' : 'week'));
+  const todayIso = toISODate(new Date());
+  const [weekStart, setWeekStart] = useState(() => mondayOfIso(todayIso));
+  const [selected, setSelected] = useState<string | null>(null); // day highlighted in the list
+  const [monthOpen, setMonthOpen] = useState(false);
+  const [visibleMonth, setVisibleMonth] = useState(() => monthOf(todayIso));
 
-  function changeView(next: CalendarView) {
-    Storage.setItemSync(VIEW_KEY, next);
-    if (next === 'month') {
-      // Open the month of the selected day
-      const selected = parseISODate(selectedIso);
-      setVisible({ year: selected.getFullYear(), month: selected.getMonth() });
-    }
-    setView(next);
-  }
+  const sections = groupDeadlines(documents ?? []);
 
-  // Documents grouped by expiry day, and the dots for the calendar
-  const byDay = new Map<string, DocumentListItem[]>();
+  // One dot per category color on each day with deadlines; red for days already passed
+  const markers = new Map<string, string[]>();
   for (const doc of documents ?? []) {
     if (!doc.expiresAt) continue;
-    byDay.set(doc.expiresAt, [...(byDay.get(doc.expiresAt) ?? []), doc]);
-  }
-  const markers = new Map<string, string[]>();
-  for (const [iso, docs] of byDay) {
-    // Category text color; red for days already passed. One dot per color.
-    const colors = docs.map((d) => (iso < todayIso ? DANGER_COLOR : d.category.colors.text));
-    markers.set(iso, [...new Set(colors)]);
+    const color = doc.expiresAt < todayIso ? DANGER_COLOR : doc.category.colors.text;
+    const colors = markers.get(doc.expiresAt) ?? [];
+    if (!colors.includes(color)) markers.set(doc.expiresAt, [...colors, color]);
   }
 
-  const dayDocuments = byDay.get(selectedIso) ?? [];
-  const expired = (documents ?? []).filter((d) => d.expiresAt !== null && d.expiresAt < todayIso);
+  // Scrolls the list to the first deadline of that day (all rows are rendered, see initialNumToRender)
+  function scrollToDay(iso: string) {
+    for (const [sectionIndex, section] of sections.entries()) {
+      const itemIndex = section.data.findIndex((d) => d.expiresAt === iso);
+      if (itemIndex >= 0) {
+        listRef.current?.scrollToLocation({ sectionIndex, itemIndex, viewOffset: 12, viewPosition: 0 });
+        return;
+      }
+    }
+  }
 
-  // Month arrows: new Date(year, 12) is January of the next year, so no special cases
-  function moveMonth(delta: number) {
-    const first = new Date(visible.year, visible.month + delta, 1);
-    setVisible({ year: first.getFullYear(), month: first.getMonth() });
+  // First tap selects and jumps to the day; a second tap on the same day clears the highlight
+  function tapDay(iso: string) {
+    if (iso === selected) {
+      setSelected(null);
+      return;
+    }
+    setSelected(iso);
+    scrollToDay(iso);
+  }
+
+  // A day chosen in the month grid: close it, show its week and jump to it
+  function pickFromMonth(iso: string) {
+    setMonthOpen(false);
+    setWeekStart(mondayOfIso(iso));
+    setSelected(iso);
+    // Wait for the sheet to close before scrolling
+    setTimeout(() => scrollToDay(iso), 350);
   }
 
   function goToToday() {
-    setVisible({ year: today.getFullYear(), month: today.getMonth() });
-    setSelectedIso(todayIso);
+    setWeekStart(mondayOfIso(todayIso));
+    setSelected(null);
+    listRef.current?.scrollToLocation({ sectionIndex: 0, itemIndex: 0, viewOffset: 400, viewPosition: 0 });
+  }
+
+  const selectedIsEmpty = selected !== null && !markers.has(selected);
+  const onCurrentWeek = weekStart === mondayOfIso(todayIso);
+
+  function openMonth() {
+    setVisibleMonth(monthOf(selected ?? weekStart));
+    setMonthOpen(true);
   }
 
   return (
     <>
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-        <SegmentedControl
-          values={VIEW_LABELS}
-          selectedIndex={view === 'week' ? 0 : 1}
-          onChange={(event) => changeView(event.nativeEvent.selectedSegmentIndex === 0 ? 'week' : 'month')}
-        />
-
-        {/* Week: the week of the selected day; arrows and swipe move the selection by 7 days */}
-        {view === 'week' ? (
-          <WeekStrip
-            weekStartIso={mondayOfIso(selectedIso)}
-            todayIso={todayIso}
-            selectedIso={selectedIso}
-            markers={markers}
-            onSelect={setSelectedIso}
-            onPrevWeek={() => setSelectedIso(addDaysIso(selectedIso, -7))}
-            onNextWeek={() => setSelectedIso(addDaysIso(selectedIso, 7))}
-            onToday={goToToday}
-          />
-        ) : (
-          <MonthCalendar
-            year={visible.year}
-            month={visible.month}
-            todayIso={todayIso}
-            selectedIso={selectedIso}
-            markers={markers}
-            onSelect={setSelectedIso}
-            onPrevMonth={() => moveMonth(-1)}
-            onNextMonth={() => moveMonth(1)}
-            onToday={goToToday}
-          />
-        )}
-
-        {/* "Giovedì 12 novembre · tra 2 giorni" and the deadlines of that day */}
-        <View style={styles.section}>
-          <ThemedText style={styles.dayTitle}>
-            {formatLongDay(selectedIso)} · {describeDayDistance(daysUntil(selectedIso))}
-          </ThemedText>
-          {documents && dayDocuments.length === 0 && (
-            <ThemedText themeColor="textSecondary">Nessuna scadenza</ThemedText>
-          )}
-          {dayDocuments.map((doc) => (
-            <DocumentRow
-              key={doc.id}
-              document={doc}
-              href={{ pathname: '/(tabs)/(deadlines)/document/[id]', params: { id: String(doc.id) } }}
+      <SectionList
+        ref={listRef}
+        sections={sections}
+        keyExtractor={(item) => String(item.id)}
+        contentInsetAdjustmentBehavior="automatic"
+        style={{ backgroundColor: theme.background }}
+        contentContainerStyle={styles.content}
+        stickySectionHeadersEnabled={false}
+        initialNumToRender={500} // a household has few deadlines: render them all, so jumps always work
+        onScrollToIndexFailed={() => undefined}
+        ListHeaderComponent={
+          <View style={styles.header}>
+            {/* Title and "Mese" on the same line, as in the approved mockup */}
+            <View style={styles.titleRow}>
+              <Text style={[styles.title, { color: theme.text }]}>Scadenze</Text>
+              <Pressable onPress={openMonth} hitSlop={10} accessibilityRole="button">
+                <Text style={styles.link}>Mese</Text>
+              </Pressable>
+            </View>
+            {/* "Oggi" only when another week is shown */}
+            {!onCurrentWeek && (
+              <Pressable onPress={goToToday} hitSlop={10} accessibilityRole="button" style={styles.todayLink}>
+                <Text style={styles.smallLink}>Oggi</Text>
+              </Pressable>
+            )}
+            <WeekStrip
+              weekStartIso={weekStart}
+              todayIso={todayIso}
+              selectedIso={selected}
+              markers={markers}
+              onSelect={tapDay}
+              onPrevWeek={() => setWeekStart(addDaysIso(weekStart, -7))}
+              onNextWeek={() => setWeekStart(addDaysIso(weekStart, 7))}
             />
-          ))}
-        </View>
-
-        {expired.length > 0 && (
-          <View style={styles.section}>
-            <ThemedText style={[styles.dayTitle, { color: DANGER_COLOR }]}>Da sistemare</ThemedText>
-            {expired.map((doc) => (
-              <DocumentRow
-                key={doc.id}
-                document={doc}
-                href={{ pathname: '/(tabs)/(deadlines)/document/[id]', params: { id: String(doc.id) } }}
-              />
-            ))}
+            {selectedIsEmpty && (
+              <ThemedText themeColor="textSecondary" style={styles.note}>
+                Nessuna scadenza per {formatShortDate(selected)}
+              </ThemedText>
+            )}
           </View>
+        }
+        renderSectionHeader={({ section }) => (
+          // iOS grouped header: footnote, uppercase, grey ("DA SISTEMARE" is red)
+          <Text
+            style={[styles.sectionTitle, { color: section.key === 'overdue' ? DANGER_COLOR : theme.textSecondary }]}>
+            {section.title}
+          </Text>
         )}
-      </ScrollView>
+        renderItem={({ item, index, section }) => (
+          <DeadlineRow
+            document={item}
+            href={{ pathname: '/(tabs)/(deadlines)/document/[id]', params: { id: String(item.id) } }}
+            cardColor={cardColor}
+            first={index === 0}
+            last={index === section.data.length - 1}
+            highlighted={item.expiresAt === selected}
+          />
+        )}
+        ListEmptyComponent={
+          documents ? (
+            <View style={styles.empty}>
+              <SymbolView name="calendar.badge.checkmark" tintColor={theme.textSecondary} size={44} />
+              <ThemedText style={styles.emptyTitle}>Nessuna scadenza in vista</ThemedText>
+              <ThemedText themeColor="textSecondary" style={styles.emptyText}>
+                Aggiungi un documento con una data di scadenza dal pulsante +: comparirà qui.
+              </ThemedText>
+            </View>
+          ) : undefined
+        }
+      />
 
-      {/* Opens the iOS Calendar sync settings */}
-      <Stack.Toolbar placement="right">
-        <Stack.Toolbar.Button icon="calendar.badge.plus" onPress={() => router.push('/calendar-settings')}>
-          Calendario
-        </Stack.Toolbar.Button>
-      </Stack.Toolbar>
+      <Modal
+        visible={monthOpen}
+        animationType="slide"
+        presentationStyle="pageSheet"
+        onRequestClose={() => setMonthOpen(false)}>
+        <View style={[styles.sheet, { backgroundColor: theme.background }]}>
+          <View style={styles.sheetBar}>
+            <Pressable onPress={() => setMonthOpen(false)} hitSlop={12} accessibilityRole="button">
+              <Text style={styles.close}>Chiudi</Text>
+            </Pressable>
+          </View>
+          <MonthCalendar
+            year={visibleMonth.year}
+            month={visibleMonth.month}
+            todayIso={todayIso}
+            selectedIso={selected}
+            markers={markers}
+            onSelect={pickFromMonth}
+            onPrevMonth={() => setVisibleMonth(shiftMonth(visibleMonth, -1))}
+            onNextMonth={() => setVisibleMonth(shiftMonth(visibleMonth, 1))}
+            onToday={() => setVisibleMonth(monthOf(todayIso))}
+          />
+        </View>
+      </Modal>
     </>
   );
+}
+
+function monthOf(iso: string) {
+  const date = parseISODate(iso);
+  return { year: date.getFullYear(), month: date.getMonth() };
+}
+
+// new Date(year, 12) is January of the next year, so no special cases
+function shiftMonth(current: { year: number; month: number }, delta: number) {
+  const first = new Date(current.year, current.month + delta, 1);
+  return { year: first.getFullYear(), month: first.getMonth() };
 }
 
 const styles = StyleSheet.create({
   content: {
     padding: 16,
-    gap: 24,
+    paddingBottom: 48,
   },
-  section: {
-    gap: 10,
+  header: {
+    gap: 8,
   },
-  dayTitle: {
-    fontSize: 18,
-    lineHeight: 24,
-    fontFamily: FONTS.titleSemiBold,
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    justifyContent: 'space-between',
+    gap: 12,
     paddingHorizontal: 4,
+  },
+  title: {
+    flexShrink: 1,
+    fontSize: 34,
+    lineHeight: 41,
+    fontFamily: FONTS.titleBold,
+  },
+  link: {
+    color: BRAND_COLOR,
+    fontSize: 17, // plain text button, no pill
+  },
+  todayLink: {
+    alignSelf: 'flex-end',
+    paddingHorizontal: 4,
+  },
+  smallLink: {
+    color: BRAND_COLOR,
+    fontSize: 15,
+  },
+  note: {
+    paddingHorizontal: 4,
+  },
+  sectionTitle: {
+    fontSize: 13, // iOS footnote, system font
+    lineHeight: 18,
+    textTransform: 'uppercase',
+    paddingHorizontal: 16,
+    paddingTop: 22,
+    paddingBottom: 6,
+  },
+  empty: {
+    alignItems: 'center',
+    gap: 10,
+    paddingTop: 48,
+    paddingHorizontal: 24,
+  },
+  emptyTitle: {
+    fontSize: 20,
+    lineHeight: 26,
+    textAlign: 'center',
+    fontFamily: FONTS.titleSemiBold,
+  },
+  emptyText: {
+    textAlign: 'center',
+  },
+  sheet: {
+    flex: 1,
+    padding: 16,
+    gap: 12,
+  },
+  sheetBar: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingTop: 4,
+  },
+  close: {
+    color: BRAND_COLOR,
+    fontSize: 17,
+    fontFamily: FONTS.titleSemiBold,
   },
 });

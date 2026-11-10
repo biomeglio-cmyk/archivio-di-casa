@@ -20,7 +20,7 @@ export function SheetOption({ symbol, label, onPress, destructive = false, group
   const theme = useTheme();
   const { pressed, handlers } = usePressed();
   const color = destructive ? DANGER_COLOR : BRAND_COLOR;
-  const background = pressed ? theme.backgroundSelected : grouped ? 'transparent' : theme.backgroundElement;
+  const background = pressed ? theme.backgroundSelected : grouped ? 'transparent' : theme.surface;
 
   return (
     <Pressable
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   rounded: {
-    borderRadius: 14,
+    borderRadius: 12,
     borderCurve: 'continuous',
   },
   icon: {

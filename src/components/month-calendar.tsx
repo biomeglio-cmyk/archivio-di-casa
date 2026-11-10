@@ -1,6 +1,6 @@
 import { View } from 'react-native';
 
-import { CalendarHeader, calendarStyles, DayCell, EmptyDayCell } from '@/components/calendar-parts';
+import { CalendarHeader, calendarStyles, DayCell, EmptyDayCell, useHorizontalSwipe } from '@/components/calendar-parts';
 import { ThemedText } from '@/components/themed-text';
 import { useTheme } from '@/hooks/use-theme';
 import { formatMonthTitle, toISODate } from '@/utils/dates';
@@ -11,7 +11,7 @@ type Props = {
   year: number;
   month: number; // 0 = January
   todayIso: string;
-  selectedIso: string;
+  selectedIso: string | null; // null = no day selected
   // Dot colors for each day with deadlines ('YYYY-MM-DD' → colors)
   markers: Map<string, string[]>;
   onSelect: (iso: string) => void;
@@ -42,9 +42,10 @@ function monthWeeks(year: number, month: number): (string | null)[][] {
 export function MonthCalendar(props: Props) {
   const { year, month, todayIso, selectedIso, markers, onSelect, onPrevMonth, onNextMonth, onToday } = props;
   const theme = useTheme();
+  const swipe = useHorizontalSwipe(onPrevMonth, onNextMonth); // swipe between months
 
   return (
-    <View style={[calendarStyles.card, { backgroundColor: theme.backgroundElement }]}>
+    <View style={[calendarStyles.card, { backgroundColor: theme.surface }]} {...swipe}>
       <CalendarHeader
         title={formatMonthTitle(year, month)}
         previousLabel="Mese precedente"

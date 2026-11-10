@@ -28,7 +28,7 @@ export function PersonTile({ person, size }: Props) {
       style={[
         size,
         styles.tile,
-        { backgroundColor: pressed ? theme.backgroundSelected : theme.backgroundElement },
+        { backgroundColor: pressed ? theme.backgroundSelected : theme.surface },
       ]}>
       <PersonAvatar name={person.name} photoPath={person.photoPath} size={52} />
       <ThemedText numberOfLines={2} style={styles.name}>

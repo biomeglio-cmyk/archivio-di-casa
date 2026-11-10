@@ -8,6 +8,7 @@ import { FilesEditor, fromExisting, type EditableFile } from '@/components/files
 import { getDocumentDetail, listDocumentFiles, saveDocumentEdits } from '@/db/documents';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { afterDocumentSaved } from '@/notifications/reminders';
 import type { PendingFile } from '@/storage/pending-files';
 
 // Modal "Modifica documento": the same form as "Nuovo documento", already filled in
@@ -43,6 +44,7 @@ function EditDocumentContent({ document, savedFiles }: { document: DocumentDetai
         const removed = savedFiles.filter((f) => !kept.has(f.id));
         const added = files.flatMap((f): PendingFile[] => (f.pending ? [f.pending] : []));
         await saveDocumentEdits(db, document.id, input, removed, added);
+        await afterDocumentSaved(db, input.expiresAt);
         router.back();
       }}
     />

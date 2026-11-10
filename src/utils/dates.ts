@@ -103,14 +103,3 @@ export function mondayOfIso(iso: string): string {
   const offset = (parseISODate(iso).getDay() + 6) % 7; // Monday = 0 … Sunday = 6
   return addDaysIso(iso, -offset);
 }
-
-// "9–15 novembre", "30 novembre – 6 dicembre", and the year when it isn't the current one
-export function formatWeekRange(mondayIso: string, today: Date = new Date()): string {
-  const start = parseISODate(mondayIso);
-  const end = parseISODate(addDaysIso(mondayIso, 6));
-  const year = end.getFullYear() !== today.getFullYear() ? ` ${end.getFullYear()}` : '';
-  const endText = `${end.getDate()} ${MONTHS[end.getMonth()]}${year}`;
-  return start.getMonth() === end.getMonth()
-    ? `${start.getDate()}–${endText}`
-    : `${start.getDate()} ${MONTHS[start.getMonth()]} – ${endText}`;
-}

@@ -12,7 +12,13 @@ import { useColorScheme } from 'react-native';
 
 import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/brand';
+import { Colors } from '@/constants/theme';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
+import { AppNotifications } from '@/notifications/app-notifications';
+
+// Navigation themes with the app page color (iOS systemGroupedBackground) behind every screen
+const LIGHT_THEME = { ...DefaultTheme, colors: { ...DefaultTheme.colors, background: Colors.light.background, card: Colors.light.surface } };
+const DARK_THEME = { ...DarkTheme, colors: { ...DarkTheme.colors, background: Colors.dark.background, card: Colors.dark.surface } };
 
 // The root Stack starts on the tabs; sheets and modals are pushed on top of them
 export const unstable_settings = { anchor: '(tabs)' };
@@ -40,7 +46,9 @@ export default function RootLayout() {
       databaseName={DATABASE_NAME}
       onInit={initDatabase}
       options={{ enableChangeListener: true }}>
-      <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <ThemeProvider value={colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME}>
+        {/* Reminders: scheduled at start, tapping one opens its document */}
+        <AppNotifications />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
@@ -50,6 +58,14 @@ export default function RootLayout() {
               headerShown: false,
               sheetGrabberVisible: true,
               sheetAllowedDetents: 'fitToContents',
+            }}
+          />
+          <Stack.Screen
+            name="settings"
+            options={{
+              presentation: 'modal',
+              title: 'Impostazioni',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
           <Stack.Screen

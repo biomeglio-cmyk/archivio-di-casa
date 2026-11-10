@@ -10,16 +10,16 @@ import { Platform } from 'react-native';
 export const Colors = {
   light: {
     text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
+    background: '#F2F2F7', // page: iOS systemGroupedBackground
+    surface: '#FFFFFF', // grouped blocks, fields, tiles: iOS secondarySystemGroupedBackground
+    backgroundSelected: '#E0E1E6', // pressed rows, hairline separators
     textSecondary: '#60646C',
   },
   dark: {
     text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
+    background: '#000000', // page: iOS systemGroupedBackground (dark)
+    surface: '#1C1C1E', // grouped blocks, fields, tiles: secondarySystemGroupedBackground (dark)
+    backgroundSelected: '#38383A', // pressed rows, hairline separators
     textSecondary: '#B0B4BA',
   },
 } as const;

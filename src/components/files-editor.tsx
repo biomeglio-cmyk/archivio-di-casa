@@ -7,7 +7,7 @@ import { pickPdf, pickPhoto } from '@/capture/pick-files';
 import { CameraCapture } from '@/components/camera-capture';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
 import type { DocumentFile } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
 import { resolveDocumentFile } from '@/storage/document-files';
@@ -150,9 +150,9 @@ function Slot({ label, file, actions }: { label: string; file: EditableFile; act
   return (
     <View style={styles.slot}>
       {file.kind === 'image' ? (
-        <Image source={{ uri: file.uri }} style={[styles.thumb, { backgroundColor: theme.backgroundElement }]} contentFit="cover" />
+        <Image source={{ uri: file.uri }} style={[styles.thumb, { backgroundColor: theme.surface }]} contentFit="cover" />
       ) : (
-        <View style={[styles.thumb, styles.pdf, { backgroundColor: theme.backgroundElement }]}>
+        <View style={[styles.thumb, styles.pdf, { backgroundColor: theme.surface }]}>
           <SymbolView name="doc.richtext" tintColor={BRAND_COLOR} size={32} />
         </View>
       )}
@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.titleSemiBold,
   },
   destructive: {
-    color: '#E5383B',
+    color: DANGER_COLOR,
   },
   addButtons: {
     gap: 10,

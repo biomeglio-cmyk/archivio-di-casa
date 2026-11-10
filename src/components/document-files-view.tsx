@@ -67,7 +67,7 @@ function ImageFile({ file, onPress }: { file: DocumentFile; onPress: () => void 
     <Pressable onPress={onPress} accessibilityLabel={`${fileLabel(file)}, apri a schermo intero`}>
       <Image
         source={{ uri: stored.uri }}
-        style={[styles.image, { backgroundColor: theme.backgroundElement }]}
+        style={[styles.image, { backgroundColor: theme.surface }]}
         contentFit="contain"
         transition={150}
       />
@@ -97,7 +97,7 @@ function PdfFile({ file }: { file: DocumentFile }) {
 function MissingFile() {
   const theme = useTheme();
   return (
-    <View style={[styles.missing, { backgroundColor: theme.backgroundElement }]}>
+    <View style={[styles.missing, { backgroundColor: theme.surface }]}>
       <SymbolView name="exclamationmark.triangle" tintColor={theme.textSecondary} size={24} />
       <ThemedText themeColor="textSecondary">File non trovato sul telefono.</ThemedText>
     </View>

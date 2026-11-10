@@ -29,7 +29,7 @@ export function AttachmentStrip({ files }: Props) {
           {file.kind === 'image' ? (
             <Image source={{ uri: file.uri }} style={styles.thumb} contentFit="cover" />
           ) : (
-            <View style={[styles.thumb, styles.pdf, { backgroundColor: theme.backgroundElement }]}>
+            <View style={[styles.thumb, styles.pdf, { backgroundColor: theme.surface }]}>
               <SymbolView name="doc.richtext" tintColor={BRAND_COLOR} size={32} />
               {file.name && (
                 <ThemedText type="small" numberOfLines={2} style={styles.pdfName}>

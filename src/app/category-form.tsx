@@ -88,7 +88,7 @@ function CategoryForm({ category }: { category: Category | null }) {
                     accessibilityState={{ selected }}
                     style={[
                       styles.iconCell,
-                      { backgroundColor: selected ? colors.bottom : theme.backgroundElement },
+                      { backgroundColor: selected ? colors.bottom : theme.surface },
                     ]}>
                     <SymbolView name={s} tintColor={selected ? colors.text : theme.textSecondary} size={22} />
                   </Pressable>

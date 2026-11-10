@@ -44,6 +44,8 @@ export default function CategoryScreen() {
         footer={
           // Built-in categories can't be edited or deleted; custom ones only deleted when empty
           category && documents && !selection.selecting ? (
+            // Adding is the dashed tile in the grid; here only Modifica and Cancella.
+            // Built-in categories have neither, so DetailActionBar renders nothing for them.
             <DetailActionBar
               onAdd={null}
               onEdit={

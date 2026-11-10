@@ -12,7 +12,7 @@ import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
 import { PersonAvatar } from '@/components/person-avatar';
-import { PinStar } from '@/components/pin-star';
+import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
 import { useAttachFile } from '@/components/use-attach-file';
 import { FONTS } from '@/constants/brand';
@@ -50,7 +50,7 @@ export default function DocumentDetail() {
     );
   }
 
-  // Star and "Tieni sottomano": the lists update by themselves (useDbQuery listens to changes)
+  // Heart and "Aggiungi ai preferiti": the lists update by themselves (useDbQuery listens to changes)
   const pin = { pinned: document.isPinned, onToggle: () => setPinned(db, document.id, !document.isPinned) };
 
   // Cards have their own screen: the card, its barcode on white, full brightness
@@ -125,7 +125,7 @@ export default function DocumentDetail() {
         />
       </ScrollView>
 
-      <PinStar {...pin} />
+      <PinHeart {...pin} />
       {cameraModal}
     </>
   );

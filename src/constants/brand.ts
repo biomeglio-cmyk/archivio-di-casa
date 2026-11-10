@@ -17,5 +17,5 @@ export const FONTS = {
   titleBold: 'Outfit_700Bold',
 } as const;
 
-// "Sottomano" star (iOS system orange)
-export const PIN_COLOR = '#FF9F0A';
+// "Preferiti" heart (the brand red)
+export const PIN_COLOR = '#FF4F64';

@@ -11,7 +11,7 @@ import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { CardFace } from '@/components/card-face';
 import { DetailActionBar } from '@/components/detail-action-bar';
 import { PersonAvatar } from '@/components/person-avatar';
-import { PinStar } from '@/components/pin-star';
+import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useMaxBrightness } from '@/hooks/use-max-brightness';
@@ -25,7 +25,7 @@ const BARCODE_TEXT = '#000000';
 type Props = {
   card: DocumentDetail;
   files: DocumentFile[];
-  pin: { pinned: boolean; onToggle: () => void }; // star and "Tieni sottomano"
+  pin: { pinned: boolean; onToggle: () => void }; // heart and "Aggiungi ai preferiti"
 };
 
 // Detail of a card ("Tessere e card"): the card on top, then the barcode photo on white,
@@ -90,7 +90,7 @@ export function CardDetail({ card, files, pin }: Props) {
         </View>
       </ScrollView>
 
-      <PinStar {...pin} />
+      <PinHeart {...pin} />
       {barcodeUri && (
         <BarcodeFullScreen uri={barcodeUri} value={card.barcodeValue} visible={fullScreen} onClose={() => setFullScreen(false)} />
       )}

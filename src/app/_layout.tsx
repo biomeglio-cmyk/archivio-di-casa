@@ -149,12 +149,12 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
-          {/* "Modifica" of the Sottomano section: reorder and remove pinned items */}
+          {/* "Modifica" of the Preferiti section: reorder and remove pinned items */}
           <Stack.Screen
             name="pinned-edit"
             options={{
               presentation: 'modal',
-              title: 'Sottomano',
+              title: 'Preferiti',
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />

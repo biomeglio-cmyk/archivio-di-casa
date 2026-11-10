@@ -81,7 +81,7 @@ export function listDocumentsByCategory(db: SQLiteDatabase, categoryId: number):
   return listDocumentsWhere(db, 'WHERE d.category_id = ?', [categoryId]);
 }
 
-// "Sottomano" on Archivio, in the order chosen by the user
+// "Preferiti" on Archivio, in the order chosen by the user
 export function listPinnedDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
   return listDocumentsWhere(db, 'WHERE d.is_pinned = 1', [], 'd.pin_order, d.id');
 }
@@ -291,9 +291,9 @@ async function changeFiles(
   removedFiles.forEach((file) => deleteStoredFile(file.path));
 }
 
-// ---- "Sottomano" ----
+// ---- "Preferiti" (pins) ----
 
-// Star on/off. A new pin goes to the end of the row.
+// Heart on/off. A new pin goes to the end of the row.
 export async function setPinned(db: SQLiteDatabase, id: number, pinned: boolean): Promise<void> {
   await db.runAsync(
     `UPDATE documents

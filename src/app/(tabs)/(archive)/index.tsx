@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CategoryTile } from '@/components/category-tile';
 import { DashedAddTile } from '@/components/dashed-add-tile';
-import { PinnedStrip } from '@/components/pinned-strip';
+import { FavoritesSection, SectionHeader } from '@/components/favorites-section';
 import { SearchBar } from '@/components/search-bar';
 import { SearchResultsList } from '@/components/search-results';
 import { ThemedText } from '@/components/themed-text';
@@ -27,14 +27,14 @@ const SEARCH_DEBOUNCE_MS = 200;
 // The grid items: every category, then the dashed "Nuova categoria" tile
 type GridItem = { kind: 'category'; category: CategoryWithCount } | { kind: 'new' };
 
-// "/" route, the app opens here: brand header and search bar (fixed), then "Sottomano" and the
+// "/" route, the app opens here: brand header and search bar (fixed), then "Preferiti", "Categorie" and the
 // two-column grid of categories with the dashed "Nuova categoria" tile, or the search results while searching
 export default function ArchiveScreen() {
   const size = useTileSize();
   const insets = useSafeAreaInsets();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: allDocuments } = useDbQuery(listAllDocuments, []);
-  const { showPinned } = usePreferences(); // "Mostra Sottomano in Archivio" in Impostazioni
+  const { showPinned } = usePreferences(); // "Mostra Preferiti in Archivio" in Impostazioni
 
   const [query, setQuery] = useState(''); // what is typed
   const [searched, setSearched] = useState(''); // what is searched, ~200 ms after the last key
@@ -105,7 +105,12 @@ export default function ArchiveScreen() {
           contentInsetAdjustmentBehavior="automatic" // keeps the last row above the tab bar
           contentContainerStyle={tileGridStyles.content}
           columnWrapperStyle={tileGridStyles.row}
-          ListHeaderComponent={showPinned ? <PinnedStrip /> : undefined}
+          ListHeaderComponent={
+            <>
+              {showPinned && <FavoritesSection />}
+              <SectionHeader title="Categorie" />
+            </>
+          }
           renderItem={({ item }) =>
             item.kind === 'category' ? (
               <CategoryTile category={item.category} documentCount={item.category.documentCount} size={size} />

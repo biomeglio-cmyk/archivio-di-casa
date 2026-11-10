@@ -7,14 +7,14 @@ type Props = {
   onToggle: () => void;
 };
 
-// Star in the top-right corner of a document or card: filled orange = in "Sottomano"
-export function PinStar({ pinned, onToggle }: Props) {
+// Heart in the top-right corner of a document or card: filled red = in "Preferiti"
+export function PinHeart({ pinned, onToggle }: Props) {
   return (
     <Stack.Toolbar placement="right">
       <Stack.Toolbar.Button
-        icon={pinned ? 'star.fill' : 'star'}
+        icon={pinned ? 'heart.fill' : 'heart'}
         tintColor={PIN_COLOR}
-        accessibilityLabel={pinned ? 'Togli da Sottomano' : 'Tieni sottomano'}
+        accessibilityLabel={pinned ? 'Togli dai preferiti' : 'Aggiungi ai preferiti'}
         onPress={onToggle}
       />
     </Stack.Toolbar>

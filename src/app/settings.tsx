@@ -113,8 +113,8 @@ export default function SettingsScreen() {
           </Row>
         </Group>
 
-        <Group title="Archivio" footer="Le carte e i documenti con la stellina, in cima all'Archivio.">
-          <Row label="Mostra Sottomano in Archivio" symbol="star">
+        <Group title="Archivio" footer="Le carte e i documenti con il cuore, in cima all'Archivio.">
+          <Row label="Mostra Preferiti in Archivio" symbol="heart">
             <Host matchContents>
               <Switch value={preferences.showPinned} onValueChange={(value) => update({ showPinned: value })} />
             </Host>

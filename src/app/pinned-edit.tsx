@@ -30,7 +30,7 @@ const MAX_FONT_SCALE = 2; // rows have a fixed height: text grows up to 2×, the
 // Position of every row: document id → index in the list
 type Positions = Record<number, number>;
 
-// Modal "Sottomano" (from "Modifica" in Archivio): drag ≡ to reorder, red − to remove.
+// Modal "Preferiti" (from "Modifica" in Archivio): drag ≡ to reorder, red − to remove.
 // Nothing is saved until "Fine"; "Annulla" leaves everything as it was.
 export default function PinnedEditScreen() {
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
@@ -101,7 +101,7 @@ function PinnedEditor({ initial }: { initial: DocumentListItem[] }) {
         <ThemedText type="small" themeColor="textSecondary" style={styles.hint}>
           {items.length > 0
             ? 'Trascina ≡ per cambiare l’ordine. Tocca − per togliere.'
-            : 'Non resta niente: tocca Fine per svuotare Sottomano.'}
+            : 'Non resta niente: tocca Fine per svuotare i Preferiti.'}
         </ThemedText>
         <View style={{ height: items.length * rowHeight }}>
           {items.map((document) => (
@@ -207,7 +207,7 @@ function DraggableRow({ document, positions, count, rowHeight, onRemove, onMove 
       accessibilityActions={[
         { name: 'up', label: 'Sposta su' },
         { name: 'down', label: 'Sposta giù' },
-        { name: 'remove', label: 'Togli da Sottomano' },
+        { name: 'remove', label: 'Togli dai preferiti' },
       ]}
       onAccessibilityAction={(event) => {
         if (event.nativeEvent.actionName === 'up') onMove(-1);

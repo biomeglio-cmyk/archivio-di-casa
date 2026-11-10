@@ -10,18 +10,18 @@ const RADIUS = 12;
 const MIN_HEIGHT = 48;
 const DELETE_BACKGROUND = '#FDE3E6';
 const DELETE_TEXT = '#C8283D';
-const PIN_TINT = `${PIN_COLOR}33`; // the star color at 20%: "Tenuta sottomano" stands out
+const PIN_TINT = `${PIN_COLOR}33`; // the heart color at 20%: "Nei preferiti" stands out
 const MAX_FONT_SCALE = 1.2; // labels grow a little with Dynamic Type, then stop so the row always fits
 
 type Props = {
   onAdd: (() => void) | null; // null = the button is not shown
   onEdit: (() => void) | null;
   onDelete: (() => void) | null; // the caller shows the confirmation alert
-  pin?: { pinned: boolean; onToggle: () => void }; // "Tieni sottomano" / "Tenuta sottomano"
+  pin?: { pinned: boolean; onToggle: () => void }; // "Aggiungi ai preferiti" / "Nei preferiti"
 };
 
 // Buttons at the end of the detail screens (layout B of the mockup):
-// "Aggiungi documento" full width with the logo gradient, "Tieni sottomano" full width, then
+// "Aggiungi documento" full width with the logo gradient, "Aggiungi ai preferiti" full width, then
 // "Modifica" and "Cancella" always side by side, at any text size.
 // They sit in the scroll content, right after the data, and scroll with the page.
 export function DetailActionBar({ onAdd, onEdit, onDelete, pin }: Props) {
@@ -34,8 +34,8 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin }: Props) {
       {onAdd && <ActionButton label="Aggiungi documento" symbol="plus" variant="primary" onPress={onAdd} />}
       {pin && (
         <ActionButton
-          label={pin.pinned ? 'Tenuta sottomano' : 'Tieni sottomano'}
-          symbol={pin.pinned ? 'star.fill' : 'star'}
+          label={pin.pinned ? 'Nei preferiti' : 'Aggiungi ai preferiti'}
+          symbol={pin.pinned ? 'heart.fill' : 'heart'}
           symbolColor={PIN_COLOR}
           variant="wide"
           onPress={pin.onToggle}

@@ -33,10 +33,17 @@ export default function MenuSheet() {
   const cardsId = counts?.cardsCategoryId;
 
   return (
-    <View style={[styles.screen, { backgroundColor: theme.background }]}>
-      {/* Fixed header: it never scrolls, and the list starts BELOW it (normal column layout,
-          no absolute positioning), so it can't cover the first section at any text size.
-          The system grabber is drawn by iOS in the top padding. */}
+    // ONE ScrollView is the whole sheet: a formSheet gives its root a height only through the
+    // scroll view, so a View with a ScrollView inside can collapse to zero. The header is the
+    // first child and stays pinned on top (stickyHeaderIndices), the sections scroll under it.
+    <ScrollView
+      style={[styles.screen, { backgroundColor: theme.background }]}
+      stickyHeaderIndices={[0]}
+      contentInsetAdjustmentBehavior="never"
+      automaticallyAdjustContentInsets={false}
+      contentContainerStyle={styles.content}>
+      {/* Pinned header with the sheet background, so the rows never show through it.
+          The system grabber is drawn by iOS in its top padding. */}
       <View style={[styles.header, { backgroundColor: theme.background, borderBottomColor: theme.backgroundSelected }]}>
         <ThemedText style={styles.title} accessibilityRole="header" maxFontSizeMultiplier={1.6}>
           Menu
@@ -51,11 +58,7 @@ export default function MenuSheet() {
         </Pressable>
       </View>
 
-      <ScrollView
-        style={styles.list}
-        contentInsetAdjustmentBehavior="never" // no automatic inset: the content starts right under the header
-        automaticallyAdjustContentInsets={false}
-        contentContainerStyle={styles.content}>
+      <View style={styles.sections}>
         <Group title="Documenti">
           <Row label="Archivio" symbol="archivebox" count={counts?.documents} first onPress={() => goToTab('/')} />
           <Row label="Preferiti" symbol="heart" count={counts?.pinned} onPress={() => router.replace('/pinned-edit')} />
@@ -90,8 +93,8 @@ export default function MenuSheet() {
           <Row label="Aiuto" symbol="questionmark.circle" first onPress={() => router.replace('/onboarding')} />
           <Row label="Info e privacy" symbol="info.circle" onPress={() => router.replace('/about')} />
         </Group>
-      </ScrollView>
-    </View>
+      </View>
+    </ScrollView>
   );
 }
 
@@ -100,8 +103,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   header: {
-    flexShrink: 0, // keeps its full height; the list below takes what is left
-    zIndex: 1,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -124,13 +125,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  list: {
-    flex: 1,
-  },
   content: {
+    paddingBottom: 48, // the last row can scroll clear of the bottom edge
+  },
+  sections: {
     padding: 16,
-    paddingTop: 20, // the first section title is never under the header line
-    paddingBottom: 48,
+    paddingTop: 20, // the first section title starts below the header line, never under it
     gap: 24,
   },
 });

@@ -3,6 +3,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 
 import { pickPdf, pickPhotos } from '@/capture/pick-files';
 import { scanDocument, scannedPagesToFiles } from '@/capture/scan-document';
+import { startAddCard } from '@/capture/start-add-card';
 import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
@@ -41,7 +42,7 @@ export default function AddDocumentSheet() {
         <SheetOption symbol="doc.viewfinder" label="Scansiona" onPress={scan} />
         <SheetOption symbol="photo.on.rectangle" label="Scegli dalle foto" onPress={() => attach(pickPhotos)} />
         <SheetOption symbol="doc" label="Importa file" onPress={() => attach(pickPdf)} />
-        <SheetOption symbol="creditcard" label="Aggiungi una carta" onPress={() => router.replace('/add-card')} />
+        <SheetOption symbol="creditcard" label="Aggiungi una carta" onPress={() => startAddCard('replace')} />
         <SheetOption
           symbol="square.and.pencil"
           label="Inserisci a mano"

@@ -1,6 +1,7 @@
 import { router, type Href } from 'expo-router';
 import { Pressable, StyleSheet } from 'react-native';
 
+import { startAddCard } from '@/capture/start-add-card';
 import { CardFace } from '@/components/card-face';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import type { DocumentListItem } from '@/db/types';
@@ -20,7 +21,7 @@ export function CardGrid({ cards, hrefFor }: Props) {
         items={cards}
         keyFor={(card) => card.id}
         cardShaped
-        add={{ label: 'Aggiungi carta', onPress: () => router.push('/add-card') }}
+        add={{ label: 'Aggiungi carta', onPress: () => startAddCard('push') }}
         renderTile={(card, size) => <CardTile card={card} size={size} href={hrefFor(card)} />}
       />
     </TileScrollView>

@@ -1,9 +1,10 @@
 import * as Notifications from 'expo-notifications';
 import { router, type Href } from 'expo-router';
-import { useSQLiteContext } from 'expo-sqlite';
+import { addDatabaseChangeListener, useSQLiteContext } from 'expo-sqlite';
 import { useEffect } from 'react';
+import { AppState } from 'react-native';
 
-import { configureNotificationHandler, rescheduleReminders } from '@/notifications/reminders';
+import { configureNotificationHandler, rescheduleReminders, updateAppBadge } from '@/notifications/reminders';
 
 function openFrom(response: Notifications.NotificationResponse | null) {
   const url = response?.notification.request.content.data?.url;
@@ -12,8 +13,9 @@ function openFrom(response: Notifications.NotificationResponse | null) {
   }
 }
 
-// Mounted once inside SQLiteProvider: sets up notifications at app start and opens the
-// document when a reminder is tapped (also when the tap launched the app).
+// Mounted once inside SQLiteProvider: sets up notifications at app start, keeps the number on
+// the app icon up to date, and opens the document when a reminder is tapped (also when the tap
+// launched the app).
 export function AppNotifications() {
   const db = useSQLiteContext();
 
@@ -34,6 +36,20 @@ export function AppNotifications() {
       Notifications.clearLastNotificationResponse();
     });
     return () => subscription.remove();
+  }, [db]);
+
+  // Number on the app icon: at start, when the app comes back to the foreground (the day may
+  // have changed), and after every change in the database
+  useEffect(() => {
+    updateAppBadge(db);
+    const appState = AppState.addEventListener('change', (state) => {
+      if (state === 'active') updateAppBadge(db);
+    });
+    const dbChanges = addDatabaseChangeListener(() => updateAppBadge(db));
+    return () => {
+      appState.remove();
+      dbChanges.remove();
+    };
   }, [db]);
 
   return null;

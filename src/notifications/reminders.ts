@@ -2,8 +2,9 @@ import * as Notifications from 'expo-notifications';
 import type { SQLiteDatabase } from 'expo-sqlite';
 import Storage from 'expo-sqlite/kv-store';
 
+import { countUrgentDeadlines } from '@/db/urgent-count';
 import { getPreferences } from '@/settings/preferences';
-import { describeDistance, formatShortDate, parseISODate, toISODate } from '@/utils/dates';
+import { addDaysIso, describeDistance, formatShortDate, parseISODate, toISODate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
 // Local reminders for the deadlines (no server, no push): one notification per document,
@@ -71,6 +72,23 @@ function reminderDate(doc: ReminderSource, defaultDays: number, hour: number, mi
   return onTheDay > now ? onTheDay : null;
 }
 
+// The number on the app icon (same rule as the Scadenze tab), or 0 when switched off in Settings.
+// Without the badge permission iOS ignores it, so this never fails.
+export async function updateAppBadge(db: SQLiteDatabase): Promise<void> {
+  try {
+    const count = getPreferences().iconBadgeEnabled ? await countUrgentDeadlines(db) : 0;
+    await Notifications.setBadgeCountAsync(count);
+  } catch {
+    // no permission or not supported: nothing to show
+  }
+}
+
+// The icon number as it will be on a given day: deadlines up to a week after it (overdue included)
+function urgentCountOn(day: Date, expiryDates: string[]): number {
+  const weekLater = addDaysIso(toISODate(day), 7);
+  return expiryDates.filter((iso) => iso <= weekLater).length;
+}
+
 // "Carta d'identità · Step scade gio 12 nov (tra 2 giorni)"
 function reminderBody(doc: ReminderSource, at: Date): string {
   const who = doc.person_name ? ` · ${doc.person_name}` : '';
@@ -86,6 +104,9 @@ export async function rescheduleReminders(db: SQLiteDatabase): Promise<void> {
     if (!preferences.remindersEnabled || !(await canNotify())) return;
 
     const now = new Date();
+    const allExpiries = (
+      await db.getAllAsync<{ expires_at: string }>('SELECT expires_at FROM documents WHERE expires_at IS NOT NULL')
+    ).map((row) => row.expires_at);
     const docs = await db.getAllAsync<ReminderSource>(
       `SELECT d.id, d.title, d.expires_at, d.reminder_days, p.name AS person_name
        FROM documents d LEFT JOIN people p ON p.id = d.person_id
@@ -110,6 +131,8 @@ export async function rescheduleReminders(db: SQLiteDatabase): Promise<void> {
           title: 'Scadenza in arrivo',
           body: reminderBody(doc, at),
           sound: 'default',
+          // The app icon shows the right number when this reminder arrives
+          ...(preferences.iconBadgeEnabled ? { badge: urgentCountOn(at, allExpiries) } : {}),
           // Tapping the notification opens this document (see useNotificationTaps)
           data: { url: `/(tabs)/(deadlines)/document/${doc.id}` },
         },

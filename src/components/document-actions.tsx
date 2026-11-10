@@ -3,26 +3,26 @@ import { Alert, StyleSheet, View } from 'react-native';
 
 import { GradientButton } from '@/components/gradient-button';
 import { SecondaryButton } from '@/components/secondary-button';
-import type { DocumentFile } from '@/db/types';
+import type { Category, DocumentFile } from '@/db/types';
 import { previewDocumentFiles } from '@/storage/preview-files';
 
 type Props = {
   documentId: number;
   title: string;
+  category: Pick<Category, 'isBuiltin' | 'symbol'>;
   files: DocumentFile[]; // never empty: the detail shows these buttons only when there are files
 };
 
 // Buttons under the document files
-export function DocumentActions({ documentId, title, files }: Props) {
+export function DocumentActions({ documentId, title, category, files }: Props) {
   const pdf = files.find((f) => f.kind === 'pdf');
-  const front = files.find((f) => f.kind === 'image' && f.side !== 'back');
-  const back = files.find((f) => f.kind === 'image' && f.side === 'back');
+  const images = files.filter((f) => f.kind === 'image'); // already in page order
 
-  // "Visualizza documento": PDF, or the photos (front first) full screen with zoom
+  // "Visualizza documento": PDF, or all the photos (front first, then the pages) full screen with zoom
   async function view() {
-    const shown = pdf ? [pdf] : [front, back].filter((f): f is DocumentFile => f !== undefined);
+    const shown: DocumentFile[] = pdf ? [pdf] : images;
     try {
-      await previewDocumentFiles(title, shown);
+      await previewDocumentFiles(title, category, shown);
     } catch (error) {
       Alert.alert('Impossibile aprire il documento', error instanceof Error ? error.message : String(error));
     }

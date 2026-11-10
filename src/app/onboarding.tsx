@@ -27,7 +27,7 @@ const PAGES: Page[] = [
   },
   {
     title: 'Fotografa una volta',
-    text: 'Scatta fronte e retro con la cornice guida, oppure importa foto e PDF. Li ritrovi divisi per categoria e per persona.',
+    text: 'Scansiona i documenti, di una o più pagine, oppure importa foto e PDF. Li ritrovi divisi per categoria e per persona.',
     illustration: { kind: 'symbol', symbol: 'camera.viewfinder', palette: 0 },
   },
   {

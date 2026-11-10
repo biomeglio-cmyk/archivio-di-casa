@@ -4,6 +4,7 @@ import { SymbolView } from 'expo-symbols';
 import { useState, type ReactNode } from 'react';
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { scanDocument } from '@/capture/scan-document';
 import { CardCapture, type CardCaptureResult, type CardStep } from '@/components/card-capture';
 import { CardFace } from '@/components/card-face';
 import { FieldLabel, FormField, TextField } from '@/components/form-field';
@@ -67,6 +68,19 @@ export function CardForm({ initial, onSubmit }: Props) {
     }
   }
 
+  // The front: iOS scanner first (straight, clean crop); without it, the app camera.
+  // "Annulla" in the scanner leaves the form as it was.
+  async function retakeFront() {
+    const result = await scanDocument();
+    if (result === 'cancelled') return;
+    if (result === 'unavailable') {
+      setRetake('front');
+      return;
+    }
+    setFrontUri(result.pages[0]);
+    setChanged((c) => ({ ...c, front: true }));
+  }
+
   async function submit() {
     if (!canSave) return;
     setSaving(true);
@@ -100,7 +114,7 @@ export function CardForm({ initial, onSubmit }: Props) {
         contentContainerStyle={styles.content}>
         {/* The two photos, side by side: the card as it will look, and the barcode */}
         <View style={styles.photos}>
-          <PhotoSlot label="Fronte" onPress={() => setRetake('front')} action={frontUri ? 'Rifai' : 'Fotografa'}>
+          <PhotoSlot label="Fronte" onPress={retakeFront} action={frontUri ? 'Rifai' : 'Fotografa'}>
             <CardFace card={{ title: title || 'Nuova carta', firstImagePath: null, cardColor, personName: null }} width={150} />
             {frontUri && <Image source={{ uri: frontUri }} style={styles.photoOver} contentFit="cover" />}
           </PhotoSlot>

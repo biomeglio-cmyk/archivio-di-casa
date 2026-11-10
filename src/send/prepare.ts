@@ -15,7 +15,7 @@ export type SendFormat = 'pdf' | 'jpeg';
 
 export type SendOptions = {
   format: SendFormat;
-  together: boolean; // PDF: front and back on one page · JPEG: one combined image
+  together: boolean; // IDs and cards with 2 photos: front and back on one PDF page / in one JPEG
   limitBytes: number | null; // null = "Originale"
 };
 
@@ -43,16 +43,20 @@ const OUTPUT_FOLDER = 'invio';
 type Face = { uri: string; side: 'front' | 'back'; aspect: number };
 
 async function facesOf(doc: SendDocument): Promise<Face[]> {
-  const images = doc.files
-    .filter((f) => f.kind === 'image')
-    .sort((a, b) => (a.side === 'back' ? 1 : 0) - (b.side === 'back' ? 1 : 0));
+  // listDocumentFiles already gives the photos in page order (front, back, page 3…)
+  const images = doc.files.filter((f) => f.kind === 'image');
   const faces: Face[] = [];
-  for (const file of images) {
+  for (const [index, file] of images.entries()) {
     const uri = resolveDocumentFile(file.path).uri;
     const size = await imageSize(uri);
-    faces.push({ uri, side: file.side === 'back' ? 'back' : 'front', aspect: size.width / size.height });
+    faces.push({ uri, side: index === 1 ? 'back' : 'front', aspect: size.width / size.height });
   }
   return faces;
+}
+
+// Same rule as usesFrontBack (utils/page-labels): an ID or a card with exactly two photos
+function isFrontBack(format: PrintFormat, faces: Face[]): boolean {
+  return format === 'card' && faces.length === 2;
 }
 
 // Copies a result into Paths.cache/invio/ with its readable name (replacing an older copy)
@@ -81,7 +85,8 @@ async function renderPdf(
   const pages: PdfPage[] = [];
   let ppi = Infinity;
   for (const doc of docs) {
-    const shared = together && doc.faces.length > 1;
+    // Only the front and back of an ID or a card share a page; any other scan keeps one page per page
+    const shared = together && isFrontBack(doc.format, doc.faces);
     const rendered: PdfFace[] = [];
     for (const face of doc.faces) {
       const printed = printedSizeMm(doc.format, face.aspect, shared);
@@ -113,7 +118,7 @@ async function renderJpeg(
   step: LadderStep | null,
   composer: Composer | null,
 ): Promise<Rendered<JpegResult>> {
-  if (together && faces.length > 1) {
+  if (together && isFrontBack(format, faces)) {
     if (!composer) throw new Error('Impossibile unire fronte e retro in questo momento.');
     // The combined image is as wide as one face printed at its size
     const printedWidth = printedSizeMm(format, faces[0].aspect, false).width;
@@ -190,8 +195,13 @@ export async function prepareSend(
     warnings = result.warnings;
   }
 
+  // One file: just the name. An ID or a card: -fronte / -retro. Anything else: -pagina-1, -pagina-2…
   const names =
-    output.uris.length === 1 ? [`${baseName}.jpg`] : [`${baseName}-fronte.jpg`, `${baseName}-retro.jpg`];
+    output.uris.length === 1
+      ? [`${baseName}.jpg`]
+      : isFrontBack(printFormat, faces)
+        ? [`${baseName}-fronte.jpg`, `${baseName}-retro.jpg`]
+        : output.uris.map((_, index) => `${baseName}-pagina-${index + 1}.jpg`);
   const files: PreparedFile[] = [];
   for (const [index, uri] of output.uris.entries()) {
     files.push(await toOutput(uri, names[index]));

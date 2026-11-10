@@ -1,3 +1,4 @@
+import { Host, Switch } from '@expo/ui';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -15,6 +16,7 @@ import Animated, {
   type SharedValue,
 } from 'react-native-reanimated';
 
+import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
 import { DANGER_COLOR } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
@@ -22,6 +24,7 @@ import { listPinnedDocuments, savePinnedOrder } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
+import { savePreferences, usePreferences } from '@/settings/preferences';
 import { resolveDocumentFile } from '@/storage/document-files';
 
 const GAP = 8; // space between rows, part of the row slot
@@ -30,8 +33,9 @@ const MAX_FONT_SCALE = 2; // rows have a fixed height: text grows up to 2×, the
 // Position of every row: document id → index in the list
 type Positions = Record<number, number>;
 
-// Modal "Preferiti" (from "Modifica" in Archivio): drag ≡ to reorder, red − to remove.
-// Nothing is saved until "Fine"; "Annulla" leaves everything as it was.
+// Modal "Preferiti" (from "Modifica" in Archivio, or from the Menu): drag ≡ to reorder, red − to remove.
+// The order and removals are saved only with "Fine"; "Annulla" leaves them as they were.
+// The "Mostra in Archivio" switch applies at once.
 export default function PinnedEditScreen() {
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
 
@@ -58,6 +62,7 @@ function PinnedEditor({ initial }: { initial: DocumentListItem[] }) {
   // Fixed slot per row (needed to know where a dragged row lands), taller with large text
   const rowHeight = Math.round(Math.max(64, 22 + 40 * scale)) + GAP;
 
+  const { showPinned } = usePreferences();
   const [items, setItems] = useState(initial); // what is still in the list (any order)
   const positions = useSharedValue<Positions>(indexPositions(initial.map((d) => d.id)));
   const count = useSharedValue(initial.length);
@@ -98,10 +103,19 @@ function PinnedEditor({ initial }: { initial: DocumentListItem[] }) {
   return (
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
+        <Group footer="I preferiti in cima all'Archivio. Si applica subito.">
+          <Row label="Mostra in Archivio" symbol="heart" first>
+            <Host matchContents>
+              <Switch value={showPinned} onValueChange={(value) => savePreferences({ showPinned: value })} />
+            </Host>
+          </Row>
+        </Group>
         <ThemedText type="small" themeColor="textSecondary" style={styles.hint}>
-          {items.length > 0
-            ? 'Trascina ≡ per cambiare l’ordine. Tocca − per togliere.'
-            : 'Non resta niente: tocca Fine per svuotare i Preferiti.'}
+          {initial.length === 0
+            ? 'Nessun preferito. Tocca il cuore su una carta o un documento per aggiungerlo.'
+            : items.length > 0
+              ? 'Trascina ≡ per cambiare l’ordine. Tocca − per togliere.'
+              : 'Non resta niente: tocca Fine per svuotare i Preferiti.'}
         </ThemedText>
         <View style={{ height: items.length * rowHeight }}>
           {items.map((document) => (

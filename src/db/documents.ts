@@ -16,7 +16,9 @@ import type { PendingFile } from '@/storage/pending-files';
 type DocumentWithCategoryRecord = DocumentRecord & Record<string, unknown>;
 
 // Order of the photos of a document: the card or the front first, then the back, the barcode last
-const FILE_ORDER = `CASE f.side WHEN 'card_front' THEN 0 WHEN 'front' THEN 0 WHEN 'back' THEN 1 WHEN 'barcode' THEN 2 ELSE 1 END`;
+// Photos in page order (front 1, back 2, then the other scanned pages); the barcode last.
+// The fallback on side is only a safety net: every photo saved since V6 has a page.
+const FILE_ORDER = `CASE WHEN f.side = 'barcode' THEN 1000 ELSE COALESCE(f.page, CASE f.side WHEN 'back' THEN 2 ELSE 1 END) END`;
 
 function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
   return {
@@ -130,13 +132,20 @@ function normalize(doc: DocumentInput) {
   };
 }
 
+// Page of a new photo: the scanned page, or 1 for a front and 2 for a back; null for PDFs and barcodes
+function pageOf(file: PendingFile): number | null {
+  if (file.kind !== 'image' || file.side === 'barcode') return null;
+  return file.page ?? (file.side === 'back' ? 2 : 1);
+}
+
 function insertFileRow(db: SQLiteDatabase, documentId: number, path: string, file: PendingFile) {
   return db.runAsync(
-    'INSERT INTO document_files (document_id, path, side, kind) VALUES (?, ?, ?, ?)',
+    'INSERT INTO document_files (document_id, path, side, kind, page) VALUES (?, ?, ?, ?, ?)',
     documentId,
     path,
     file.side,
     file.kind,
+    pageOf(file),
   );
 }
 
@@ -185,11 +194,11 @@ export async function insertDocument(
   return documentId;
 }
 
-// Files of a document: front before back, then the others
+// Files of a document: the photos in page order (front, back, other pages), then the barcode, then PDFs
 export async function listDocumentFiles(db: SQLiteDatabase, documentId: number): Promise<DocumentFile[]> {
   const rows = await db.getAllAsync<DocumentFileRecord>(
     `SELECT * FROM document_files f WHERE f.document_id = ?
-     ORDER BY CASE WHEN f.kind = 'pdf' THEN 3 ELSE ${FILE_ORDER} END, f.id`,
+     ORDER BY CASE WHEN f.kind = 'pdf' THEN 2000 ELSE ${FILE_ORDER} END, f.id`,
     documentId,
   );
   return rows.map((row) => ({
@@ -198,6 +207,7 @@ export async function listDocumentFiles(db: SQLiteDatabase, documentId: number):
     path: row.path,
     side: row.side,
     kind: row.kind,
+    page: row.page,
     createdAt: row.created_at,
   }));
 }

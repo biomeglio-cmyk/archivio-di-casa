@@ -37,7 +37,7 @@ function EditDocumentContent({ document, savedFiles }: { document: DocumentDetai
   return (
     <DocumentForm
       initial={document}
-      files={<FilesEditor files={files} onChange={setFiles} />}
+      files={(category) => <FilesEditor files={files} category={category} onChange={setFiles} />}
       onSubmit={async (input) => {
         // Compare with what is saved: files no longer in the list are removed, new ones are added
         const kept = new Set(files.flatMap((f) => (f.existing ? [f.existing.id] : [])));

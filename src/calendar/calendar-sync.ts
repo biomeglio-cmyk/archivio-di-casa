@@ -3,6 +3,7 @@ import * as Calendar from 'expo-calendar/legacy';
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { getCalendarSettings } from '@/calendar/calendar-settings';
+import { getPreferences } from '@/settings/preferences';
 import { parseISODate } from '@/utils/dates';
 
 // Every document with an expiry becomes an all-day event "Scade: <title>" in the chosen calendar
@@ -10,6 +11,10 @@ import { parseISODate } from '@/utils/dates';
 // document (number, notes, person, files) is written to the calendar.
 
 const REMINDER_HOUR = 9; // the alarm rings at 9:00, N days before
+
+// Alarms: only ONE reminder per deadline. When the app's own reminders ("Notifiche") are on,
+// the app notifies, so the calendar events have no alarm; when they are off, the calendar
+// event rings at 9:00, N days before (N = the document's reminder).
 
 type EventSource = {
   id: number;
@@ -26,8 +31,10 @@ async function canWrite(): Promise<boolean> {
 
 function eventDetails(doc: EventSource & { expires_at: string }) {
   const day = parseISODate(doc.expires_at); // local midnight
-  // relativeOffset is in minutes from the start of the event (midnight of the expiry day)
-  const alarms = doc.reminder_days ? [{ relativeOffset: -doc.reminder_days * 24 * 60 + REMINDER_HOUR * 60 }] : [];
+  // relativeOffset is in minutes from the start of the event (midnight of the expiry day).
+  // An empty list also REMOVES the alarm of an existing event when it is updated.
+  const withAlarm = !getPreferences().remindersEnabled && doc.reminder_days;
+  const alarms = withAlarm ? [{ relativeOffset: -doc.reminder_days! * 24 * 60 + REMINDER_HOUR * 60 }] : [];
   return { title: `Scade: ${doc.title}`, startDate: day, endDate: day, allDay: true, alarms };
 }
 
@@ -95,6 +102,18 @@ export async function syncAllEvents(db: SQLiteDatabase, calendarId: string): Pro
     await syncOne(db, doc, calendarId);
   }
   return docs.filter((d) => d.expires_at).length;
+}
+
+// "Promemoria scadenze" switched on or off: rewrite the existing events with or without their
+// alarm. Never throws: the switch is already saved, a calendar problem must not undo it.
+export async function resyncCalendarAlarms(db: SQLiteDatabase): Promise<void> {
+  try {
+    const { enabled, calendarId } = getCalendarSettings();
+    if (!enabled || !calendarId || !(await canWrite())) return;
+    await syncAllEvents(db, calendarId);
+  } catch (error) {
+    console.warn('Calendar alarms sync failed', error);
+  }
 }
 
 // Switch turned off (or calendar changed): removes every event created by the app

@@ -31,7 +31,7 @@ export default function DocumentDetail() {
   const hasFiles = files !== undefined && files.length > 0;
   const db = useSQLiteContext();
   // "Aggiungi documento": attach a photo or a PDF to this document (hooks go before any return)
-  const { attach, cameraModal } = useAttachFile(Number(id), files ?? []);
+  const { attach, cameraModal } = useAttachFile(Number(id), files ?? [], document?.category);
 
   // Deleted with "Cancella" → leave this screen
   useLeaveWhenDeleted(document);
@@ -90,8 +90,8 @@ export default function DocumentDetail() {
 
         {hasFiles && (
           <>
-            <DocumentFilesView title={document.title} files={files} />
-            <DocumentActions documentId={document.id} title={document.title} files={files} />
+            <DocumentFilesView title={document.title} category={category} files={files} />
+            <DocumentActions documentId={document.id} title={document.title} category={category} files={files} />
           </>
         )}
 

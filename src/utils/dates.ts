@@ -91,3 +91,26 @@ export function formatLongDay(iso: string, today: Date = new Date()): string {
 export function formatMonthTitle(year: number, month: number): string {
   return `${capitalize(MONTHS[month])} ${year}`;
 }
+
+// 'YYYY-MM-DD' moved by n days (local calendar, so daylight saving changes don't matter)
+export function addDaysIso(iso: string, days: number): string {
+  const date = parseISODate(iso);
+  return toISODate(new Date(date.getFullYear(), date.getMonth(), date.getDate() + days));
+}
+
+// Monday of the week that contains the given day
+export function mondayOfIso(iso: string): string {
+  const offset = (parseISODate(iso).getDay() + 6) % 7; // Monday = 0 … Sunday = 6
+  return addDaysIso(iso, -offset);
+}
+
+// "9–15 novembre", "30 novembre – 6 dicembre", and the year when it isn't the current one
+export function formatWeekRange(mondayIso: string, today: Date = new Date()): string {
+  const start = parseISODate(mondayIso);
+  const end = parseISODate(addDaysIso(mondayIso, 6));
+  const year = end.getFullYear() !== today.getFullYear() ? ` ${end.getFullYear()}` : '';
+  const endText = `${end.getDate()} ${MONTHS[end.getMonth()]}${year}`;
+  return start.getMonth() === end.getMonth()
+    ? `${start.getDate()}–${endText}`
+    : `${start.getDate()} ${MONTHS[start.getMonth()]} – ${endText}`;
+}

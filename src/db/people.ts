@@ -13,13 +13,20 @@ export async function listPeople(db: SQLiteDatabase): Promise<Person[]> {
 }
 
 export async function listPeopleWithCounts(db: SQLiteDatabase): Promise<PersonWithCount[]> {
-  const rows = await db.getAllAsync<PersonRecord & { document_count: number }>(`
-    SELECT p.id, p.name, p.photo_path, COUNT(d.id) AS document_count
+  // date('now', 'localtime') is today on the phone, as 'YYYY-MM-DD' like expires_at
+  const rows = await db.getAllAsync<PersonRecord & { document_count: number; expiring_count: number }>(`
+    SELECT p.id, p.name, p.photo_path, COUNT(d.id) AS document_count,
+           SUM(CASE WHEN d.expires_at BETWEEN date('now', 'localtime') AND date('now', 'localtime', '+30 days')
+                    THEN 1 ELSE 0 END) AS expiring_count
     FROM people p
     LEFT JOIN documents d ON d.person_id = p.id
     GROUP BY p.id
     ORDER BY p.created_at, p.id`);
-  return rows.map((row) => ({ ...mapPerson(row), documentCount: row.document_count }));
+  return rows.map((row) => ({
+    ...mapPerson(row),
+    documentCount: row.document_count,
+    expiringCount: row.expiring_count ?? 0, // SUM is NULL when the person has no documents
+  }));
 }
 
 export async function getPerson(db: SQLiteDatabase, id: number): Promise<Person | null> {

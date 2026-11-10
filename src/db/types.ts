@@ -75,7 +75,10 @@ export type DocumentRecord = {
 
 // ---- Shapes returned by list queries ----
 
-export type PersonWithCount = Person & { documentCount: number };
+export type PersonWithCount = Person & {
+  documentCount: number;
+  expiringCount: number; // documents expiring from today to 30 days from now
+};
 export type CategoryWithCount = Category & { documentCount: number };
 export type DocumentListItem = FamilyDocument & { category: Category };
 export type DocumentDetail = DocumentListItem & { person: Person | null };

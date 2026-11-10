@@ -1,104 +1,53 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Fragment } from 'react';
+import { StyleSheet, View } from 'react-native';
 
-import { BRAND_COLOR, BRAND_GRADIENT, DANGER_COLOR, FONTS } from '@/constants/brand';
-import { usePressed } from '@/hooks/use-pressed';
+import { SheetOption } from '@/components/sheet-option';
+import { useTheme } from '@/hooks/use-theme';
 
 type Props = {
   onAdd: () => void;
-  onEdit: (() => void) | null; // null = the button is not shown
+  onEdit: (() => void) | null; // null = the row is not shown
   onDelete: (() => void) | null;
 };
 
-// Bottom row of the detail screens: "Aggiungi documento" (logo gradient), "Modifica", "Cancella" (red).
-// Put it as the last child of a ScrollView whose content grows (flexGrow: 1) after a flexible
-// spacer: short pages get it at the bottom, long pages after the data, always above the tab bar.
+// Actions at the end of the detail screens, like the rows of the "+" sheet:
+// one rounded group with full-width rows "Aggiungi documento", "Modifica", "Cancella" (red).
+// It sits in the scroll content, right after the data, and scrolls with the page.
 export function DetailActionBar({ onAdd, onEdit, onDelete }: Props) {
+  const theme = useTheme();
+  const rows = [
+    { key: 'add', label: 'Aggiungi documento', symbol: 'plus.circle' as const, onPress: onAdd, destructive: false },
+    onEdit && { key: 'edit', label: 'Modifica', symbol: 'pencil' as const, onPress: onEdit, destructive: false },
+    onDelete && { key: 'delete', label: 'Cancella', symbol: 'trash' as const, onPress: onDelete, destructive: true },
+  ].filter((row) => Boolean(row)) as {
+    key: string;
+    label: string;
+    symbol: 'plus.circle' | 'pencil' | 'trash';
+    onPress: () => void;
+    destructive: boolean;
+  }[];
+
   return (
-    <View style={styles.bar}>
-      <ActionButton label="Aggiungi documento" symbol="plus" variant="gradient" onPress={onAdd} />
-      {onEdit && <ActionButton label="Modifica" symbol="pencil" variant="secondary" onPress={onEdit} />}
-      {onDelete && <ActionButton label="Cancella" symbol="trash" variant="danger" onPress={onDelete} />}
+    <View style={[styles.group, { backgroundColor: theme.backgroundElement }]}>
+      {rows.map((row, index) => (
+        <Fragment key={row.key}>
+          {/* Hairline between rows, indented like iOS lists (after the icon) */}
+          {index > 0 && <View style={[styles.separator, { backgroundColor: theme.backgroundSelected }]} />}
+          <SheetOption grouped symbol={row.symbol} label={row.label} onPress={row.onPress} destructive={row.destructive} />
+        </Fragment>
+      ))}
     </View>
   );
 }
 
-type ActionButtonProps = {
-  label: string;
-  symbol: SFSymbol;
-  variant: 'gradient' | 'secondary' | 'danger';
-  onPress: () => void;
-};
-
-// Compact button: icon above a short label, so three fit side by side
-function ActionButton({ label, symbol, variant, onPress }: ActionButtonProps) {
-  const { pressed, handlers } = usePressed();
-  const color = variant === 'gradient' ? '#FFFFFF' : variant === 'danger' ? DANGER_COLOR : BRAND_COLOR;
-  const content = (
-    <>
-      <SymbolView name={symbol} tintColor={color} size={20} />
-      <Text style={[styles.label, { color }]} numberOfLines={2}>
-        {label}
-      </Text>
-    </>
-  );
-
-  return (
-    <Pressable
-      {...handlers}
-      onPress={onPress}
-      accessibilityRole="button"
-      style={[styles.button, variant !== 'gradient' && styles[variant], pressed && styles.pressed]}>
-      {variant === 'gradient' ? (
-        <LinearGradient colors={BRAND_GRADIENT} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.fill}>
-          {content}
-        </LinearGradient>
-      ) : (
-        content
-      )}
-    </Pressable>
-  );
-}
-
 const styles = StyleSheet.create({
-  bar: {
-    flexDirection: 'row',
-    gap: 10,
-    paddingTop: 8,
-  },
-  button: {
-    flex: 1, // three equal columns
-    height: 68,
+  group: {
     borderRadius: 16,
     borderCurve: 'continuous',
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 4,
-    paddingHorizontal: 6,
+    overflow: 'hidden', // the pressed highlight of the rows follows the rounded corners
   },
-  fill: {
-    alignSelf: 'stretch',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 4,
-    paddingHorizontal: 6,
-  },
-  secondary: {
-    backgroundColor: `${BRAND_COLOR}1F`,
-  },
-  danger: {
-    backgroundColor: `${DANGER_COLOR}1A`,
-  },
-  pressed: {
-    opacity: 0.75,
-  },
-  label: {
-    fontSize: 13,
-    lineHeight: 16,
-    textAlign: 'center',
-    fontFamily: FONTS.titleSemiBold,
+  separator: {
+    height: StyleSheet.hairlineWidth,
+    marginLeft: 56, // 16 padding + 28 icon + 12 gap
   },
 });

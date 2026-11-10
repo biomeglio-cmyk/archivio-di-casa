@@ -67,8 +67,7 @@ export default function PersonScreen() {
           />
         ))}
 
-        {/* Pushes the buttons to the bottom when the list is short; hidden while selecting */}
-        <View style={styles.spacer} />
+        {/* Actions right after the documents; they scroll with the page. Hidden while selecting */}
         {person && !selection.selecting && (
           <DetailActionBar
             onAdd={() => router.push({ pathname: '/new-document', params: { personId: String(personId) } })}
@@ -106,12 +105,9 @@ export default function PersonScreen() {
 
 const styles = StyleSheet.create({
   list: {
-    flexGrow: 1, // lets the spacer push the action bar to the bottom
     padding: 16,
+    paddingBottom: 48, // room at the end, so nothing ends up under the tab bar
     gap: 10,
-  },
-  spacer: {
-    flex: 1,
   },
   header: {
     alignItems: 'center',

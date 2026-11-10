@@ -106,8 +106,7 @@ export default function DocumentDetail() {
           ))}
         </View>
 
-        {/* Pushes the buttons to the bottom when the page is short */}
-        <View style={styles.spacer} />
+        {/* Actions right after the data; they scroll with the page */}
         <DetailActionBar
           onAdd={attach}
           onEdit={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
@@ -122,12 +121,9 @@ export default function DocumentDetail() {
 
 const styles = StyleSheet.create({
   content: {
-    flexGrow: 1, // lets the spacer push the action bar to the bottom
     padding: 16,
+    paddingBottom: 48, // room at the end, so nothing ends up under the tab bar
     gap: 16,
-  },
-  spacer: {
-    flex: 1,
   },
   missing: {
     flex: 1,

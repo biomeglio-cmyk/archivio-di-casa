@@ -1,7 +1,7 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { ScrollView, StyleSheet } from 'react-native';
 
 import { confirmDeleteCategory } from '@/actions/delete-actions';
 import { DetailActionBar } from '@/components/detail-action-bar';
@@ -60,9 +60,8 @@ export default function CategoryScreen() {
           />
         ))}
 
-        {/* Pushes the buttons to the bottom when the list is short; hidden while selecting.
+        {/* Actions right after the documents; they scroll with the page. Hidden while selecting.
             Built-in categories can't be edited or deleted; custom ones only deleted when empty. */}
-        <View style={styles.spacer} />
         {category && documents && !selection.selecting && (
           <DetailActionBar
             onAdd={() => router.push({ pathname: '/new-document', params: { categoryId: String(categoryId) } })}
@@ -104,11 +103,8 @@ export default function CategoryScreen() {
 
 const styles = StyleSheet.create({
   list: {
-    flexGrow: 1, // lets the spacer push the action bar to the bottom
     padding: 16,
+    paddingBottom: 48, // room at the end, so nothing ends up under the tab bar
     gap: 10,
-  },
-  spacer: {
-    flex: 1,
   },
 });

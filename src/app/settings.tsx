@@ -113,6 +113,14 @@ export default function SettingsScreen() {
           </Row>
         </Group>
 
+        <Group title="Archivio" footer="Le carte e i documenti con la stellina, in cima all'Archivio.">
+          <Row label="Mostra Sottomano in Archivio" symbol="star">
+            <Host matchContents>
+              <Switch value={preferences.showPinned} onValueChange={(value) => update({ showPinned: value })} />
+            </Host>
+          </Row>
+        </Group>
+
         <Group title="Calendario">
           <Row
             label="Calendario dell'iPhone"

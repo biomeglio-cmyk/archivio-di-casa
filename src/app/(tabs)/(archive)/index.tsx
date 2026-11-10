@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CategoryTile } from '@/components/category-tile';
 import { DashedAddTile } from '@/components/dashed-add-tile';
+import { PinnedStrip } from '@/components/pinned-strip';
 import { SearchBar } from '@/components/search-bar';
 import { SearchResultsList } from '@/components/search-results';
 import { ThemedText } from '@/components/themed-text';
@@ -18,6 +19,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { TILE_COLUMNS, tileGridStyles, useTileSize } from '@/hooks/use-tile-size';
 import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
 import { searchDocuments, type SearchFilter } from '@/search/search-documents';
+import { usePreferences } from '@/settings/preferences';
 
 const AFTER_SPLASH_MS = 1100; // the opening screen lasts about one second
 const SEARCH_DEBOUNCE_MS = 200;
@@ -25,13 +27,14 @@ const SEARCH_DEBOUNCE_MS = 200;
 // The grid items: every category, then the dashed "Nuova categoria" tile
 type GridItem = { kind: 'category'; category: CategoryWithCount } | { kind: 'new' };
 
-// "/" route, the app opens here: brand header and search bar (fixed), then the two-column grid
-// of categories with the dashed "Nuova categoria" tile, or the search results while searching
+// "/" route, the app opens here: brand header and search bar (fixed), then "Sottomano" and the
+// two-column grid of categories with the dashed "Nuova categoria" tile, or the search results while searching
 export default function ArchiveScreen() {
   const size = useTileSize();
   const insets = useSafeAreaInsets();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: allDocuments } = useDbQuery(listAllDocuments, []);
+  const { showPinned } = usePreferences(); // "Mostra Sottomano in Archivio" in Impostazioni
 
   const [query, setQuery] = useState(''); // what is typed
   const [searched, setSearched] = useState(''); // what is searched, ~200 ms after the last key
@@ -102,6 +105,7 @@ export default function ArchiveScreen() {
           contentInsetAdjustmentBehavior="automatic" // keeps the last row above the tab bar
           contentContainerStyle={tileGridStyles.content}
           columnWrapperStyle={tileGridStyles.row}
+          ListHeaderComponent={showPinned ? <PinnedStrip /> : undefined}
           renderItem={({ item }) =>
             item.kind === 'category' ? (
               <CategoryTile category={item.category} documentCount={item.category.documentCount} size={size} />

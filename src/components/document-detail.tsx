@@ -12,10 +12,11 @@ import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
 import { PersonAvatar } from '@/components/person-avatar';
+import { PinStar } from '@/components/pin-star';
 import { ThemedText } from '@/components/themed-text';
 import { useAttachFile } from '@/components/use-attach-file';
 import { FONTS } from '@/constants/brand';
-import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
+import { getDocumentDetail, listDocumentFiles, setPinned } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { useTheme } from '@/hooks/use-theme';
@@ -49,9 +50,12 @@ export default function DocumentDetail() {
     );
   }
 
+  // Star and "Tieni sottomano": the lists update by themselves (useDbQuery listens to changes)
+  const pin = { pinned: document.isPinned, onToggle: () => setPinned(db, document.id, !document.isPinned) };
+
   // Cards have their own screen: the card, its barcode on white, full brightness
   if (document.category.isCards) {
-    return files ? <CardDetail card={document} files={files} /> : <Stack.Screen options={{ title: '' }} />;
+    return files ? <CardDetail card={document} files={files} pin={pin} /> : <Stack.Screen options={{ title: '' }} />;
   }
 
   const { category, person } = document;
@@ -114,12 +118,14 @@ export default function DocumentDetail() {
 
         {/* Actions right after the data; they scroll with the page */}
         <DetailActionBar
+          pin={pin}
           onAdd={attach}
           onEdit={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
           onDelete={() => confirmDeleteDocument(db, document)}
         />
       </ScrollView>
 
+      <PinStar {...pin} />
       {cameraModal}
     </>
   );

@@ -149,6 +149,15 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
+          {/* "Modifica" of the Sottomano section: reorder and remove pinned items */}
+          <Stack.Screen
+            name="pinned-edit"
+            options={{
+              presentation: 'modal',
+              title: 'Sottomano',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
         </Stack>
         {/* After the Stack, so it is drawn on top of the first screen while it fades */}
         <SplashOverlay />

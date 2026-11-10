@@ -4,13 +4,14 @@ import { Stack } from 'expo-router/stack';
 import { StatusBar } from 'expo-status-bar';
 import { SymbolView } from 'expo-symbols';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useState, type ReactNode } from 'react';
+import { useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { CardFace } from '@/components/card-face';
 import { DetailActionBar } from '@/components/detail-action-bar';
 import { PersonAvatar } from '@/components/person-avatar';
+import { PinStar } from '@/components/pin-star';
 import { ThemedText } from '@/components/themed-text';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useMaxBrightness } from '@/hooks/use-max-brightness';
@@ -24,12 +25,12 @@ const BARCODE_TEXT = '#000000';
 type Props = {
   card: DocumentDetail;
   files: DocumentFile[];
-  pinControls?: ReactNode; // "Tieni sottomano" button, from the document screen
+  pin: { pinned: boolean; onToggle: () => void }; // star and "Tieni sottomano"
 };
 
 // Detail of a card ("Tessere e card"): the card on top, then the barcode photo on white,
 // ready to be shown at the checkout with the screen at full brightness
-export function CardDetail({ card, files, pinControls }: Props) {
+export function CardDetail({ card, files, pin }: Props) {
   const theme = useTheme();
   const db = useSQLiteContext();
   const { width } = useWindowDimensions();
@@ -80,8 +81,8 @@ export function CardDetail({ card, files, pinControls }: Props) {
         )}
 
         <View style={styles.actions}>
-          {pinControls}
           <DetailActionBar
+            pin={pin}
             onAdd={null}
             onEdit={() => router.push({ pathname: '/edit-card/[id]', params: { id: String(card.id) } })}
             onDelete={() => confirmDeleteDocument(db, card)}
@@ -89,6 +90,7 @@ export function CardDetail({ card, files, pinControls }: Props) {
         </View>
       </ScrollView>
 
+      <PinStar {...pin} />
       {barcodeUri && (
         <BarcodeFullScreen uri={barcodeUri} value={card.barcodeValue} visible={fullScreen} onClose={() => setFullScreen(false)} />
       )}

@@ -6,15 +6,17 @@ import { Pressable, StyleSheet, Text } from 'react-native';
 import { FONTS } from '@/constants/brand';
 import type { Category } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
+import type { TileSize } from '@/hooks/use-tile-size';
 
 type Props = {
   category: Category;
   documentCount: number;
-  size: { width: number; height: number }; // exact cell size from the grid
+  size: TileSize; // width from the grid, minimum height (taller with large text)
 };
 
 // Pastel tile of the archive grid: lighter at the top, darker at the bottom.
-// The fixed size sits on the outermost element, so nothing can stretch or squash it.
+// Fixed width and minimum height on the outermost element; with large Dynamic Type the tile grows
+// and the grid row stretches its neighbour to the same height.
 export function CategoryTile({ category, documentCount, size }: Props) {
   const { colors } = category;
   const { pressed, handlers } = usePressed();
@@ -25,12 +27,12 @@ export function CategoryTile({ category, documentCount, size }: Props) {
       onPress={() => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
       accessibilityRole="button"
       style={[size, pressed && styles.pressed]}>
-      <LinearGradient colors={[colors.top, colors.bottom]} style={[size, styles.tile]}>
+      <LinearGradient colors={[colors.top, colors.bottom]} style={styles.tile}>
         <SymbolView name={category.symbol} tintColor={colors.text} size={28} />
         <Text style={[styles.name, { color: colors.text }]} numberOfLines={2}>
           {category.name}
         </Text>
-        <Text style={[styles.count, { color: colors.text }]} numberOfLines={1}>
+        <Text style={[styles.count, { color: colors.text }]}>
           {documentCount === 1 ? '1 documento' : `${documentCount} documenti`}
         </Text>
       </LinearGradient>
@@ -43,6 +45,7 @@ const styles = StyleSheet.create({
     opacity: 0.8,
   },
   tile: {
+    flex: 1, // fills the (possibly stretched) tile
     padding: 14,
     borderRadius: 20,
     borderCurve: 'continuous',

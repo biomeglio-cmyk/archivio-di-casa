@@ -4,10 +4,11 @@ import { Pressable, StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
+import type { TileSize } from '@/hooks/use-tile-size';
 
 type Props = {
   label: string; // "Nuova categoria", "Aggiungi persona"
-  size: { width: number; height: number }; // same size as the other tiles of the grid
+  size: TileSize; // same width as the other tiles; the row stretches it to their height
   onPress: () => void;
 };
 

@@ -7,13 +7,14 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
+import type { TileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { describeDistance, formatShortDate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
 type Props = {
   document: DocumentListItem; // includes its category and its first photo
-  size: { width: number; height: number }; // exact cell size from the grid
+  size: TileSize; // width from the grid, minimum height (taller with large text)
   href: Href; // each tab has its own copy of the document screen
   // "Seleziona" mode: tick circle in the top-right corner; tapping toggles instead of opening
   selection?: { selected: boolean; disabled: boolean; onToggle: () => void };
@@ -37,7 +38,7 @@ export function DocumentTile({ document, size, href, selection }: Props) {
       accessibilityState={selection ? { checked: selection.selected, disabled: selection.disabled } : undefined}
       accessibilityLabel={document.title}
       style={[size, pressed && styles.pressed, selection?.disabled && styles.disabled]}>
-      <LinearGradient colors={[colors.top, colors.bottom]} style={[size, styles.tile]}>
+      <LinearGradient colors={[colors.top, colors.bottom]} style={styles.tile}>
         {document.firstImagePath ? (
           <Image
             source={{ uri: resolveDocumentFile(document.firstImagePath).uri }}
@@ -54,11 +55,21 @@ export function DocumentTile({ document, size, href, selection }: Props) {
         <Text style={[styles.title, { color: colors.text }]} numberOfLines={2}>
           {document.title}
         </Text>
-        <Text style={[styles.expiry, { color: expired ? DANGER_COLOR : colors.text }]} numberOfLines={1}>
-          {document.expiresAt && days !== null
-            ? `${formatShortDate(document.expiresAt)} · ${describeDistance(days)}`
-            : 'Nessuna scadenza'}
-        </Text>
+        {/* Two short lines, "gio 12 nov" and "tra 2 giorni", so nothing gets cut with large text */}
+        <View style={styles.expiry}>
+          {document.expiresAt && days !== null ? (
+            <>
+              <Text style={[styles.expiryText, { color: expired ? DANGER_COLOR : colors.text }]}>
+                {formatShortDate(document.expiresAt)}
+              </Text>
+              <Text style={[styles.expiryText, { color: expired ? DANGER_COLOR : colors.text }]}>
+                {describeDistance(days)}
+              </Text>
+            </>
+          ) : (
+            <Text style={[styles.expiryText, { color: colors.text }]}>Nessuna scadenza</Text>
+          )}
+        </View>
 
         {selection && (
           <View style={styles.check}>
@@ -82,6 +93,7 @@ const styles = StyleSheet.create({
     opacity: 0.4, // documents without photos can't go into a combined PDF
   },
   tile: {
+    flex: 1, // fills the (possibly stretched) tile
     padding: 10,
     gap: 4,
     borderRadius: 20,
@@ -103,7 +115,9 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.titleSemiBold,
   },
   expiry: {
-    marginTop: 'auto', // always on the last line of the tile
+    marginTop: 'auto', // always at the bottom of the tile
+  },
+  expiryText: {
     fontSize: 12,
     lineHeight: 16,
     fontWeight: 500,

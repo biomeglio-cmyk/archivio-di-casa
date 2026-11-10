@@ -15,6 +15,9 @@ import type { PendingFile } from '@/storage/pending-files';
 
 type DocumentWithCategoryRecord = DocumentRecord & Record<string, unknown>;
 
+// Order of the photos of a document: the card or the front first, then the back, the barcode last
+const FILE_ORDER = `CASE f.side WHEN 'card_front' THEN 0 WHEN 'front' THEN 0 WHEN 'back' THEN 1 WHEN 'barcode' THEN 2 ELSE 1 END`;
+
 function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
   return {
     id: row.id,
@@ -26,6 +29,11 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     reminderDays: row.reminder_days,
     notes: row.notes,
     calendarEventId: row.calendar_event_id,
+    isPinned: row.is_pinned === 1,
+    pinOrder: row.pin_order,
+    barcodeValue: row.barcode_value,
+    barcodeType: row.barcode_type,
+    cardColor: row.card_color,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
@@ -41,18 +49,20 @@ async function listDocumentsWhere(
   db: SQLiteDatabase,
   where: string,
   params: (string | number)[],
+  orderBy = 'd.expires_at IS NULL, d.expires_at, d.title',
 ): Promise<DocumentListItem[]> {
   const rows = await db.getAllAsync<DocumentWithCategoryRecord>(
     `SELECT d.*, ${CATEGORY_JOIN_COLUMNS},
             (SELECT COUNT(*) FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image') AS image_count,
-            (SELECT f.path FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image'
-             ORDER BY CASE f.side WHEN 'back' THEN 1 ELSE 0 END, f.id LIMIT 1) AS first_image_path,
+            (SELECT f.path FROM document_files f
+             WHERE f.document_id = d.id AND f.kind = 'image' AND f.side IS NOT 'barcode'
+             ORDER BY ${FILE_ORDER}, f.id LIMIT 1) AS first_image_path,
             pp.name AS person_name
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      LEFT JOIN people pp ON pp.id = d.person_id
      ${where}
-     ORDER BY d.expires_at IS NULL, d.expires_at, d.title`,
+     ORDER BY ${orderBy}`,
     params,
   );
   return rows.map(mapDocument);
@@ -69,6 +79,11 @@ export function listDocumentsWithExpiry(db: SQLiteDatabase): Promise<DocumentLis
 
 export function listDocumentsByCategory(db: SQLiteDatabase, categoryId: number): Promise<DocumentListItem[]> {
   return listDocumentsWhere(db, 'WHERE d.category_id = ?', [categoryId]);
+}
+
+// "Preferiti" on Archivio, in the order chosen by the user
+export function listPinnedDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
+  return listDocumentsWhere(db, 'WHERE d.is_pinned = 1', [], 'd.pin_order, d.id');
 }
 
 export function listDocumentsByPerson(db: SQLiteDatabase, personId: number): Promise<DocumentListItem[]> {
@@ -173,8 +188,8 @@ export async function insertDocument(
 // Files of a document: front before back, then the others
 export async function listDocumentFiles(db: SQLiteDatabase, documentId: number): Promise<DocumentFile[]> {
   const rows = await db.getAllAsync<DocumentFileRecord>(
-    `SELECT * FROM document_files WHERE document_id = ?
-     ORDER BY CASE side WHEN 'front' THEN 0 WHEN 'back' THEN 1 ELSE 2 END, id`,
+    `SELECT * FROM document_files f WHERE f.document_id = ?
+     ORDER BY CASE WHEN f.kind = 'pdf' THEN 3 ELSE ${FILE_ORDER} END, f.id`,
     documentId,
   );
   return rows.map((row) => ({
@@ -274,4 +289,80 @@ async function changeFiles(
     throw error;
   }
   removedFiles.forEach((file) => deleteStoredFile(file.path));
+}
+
+// ---- "Preferiti" (pins) ----
+
+// Heart on/off. A new pin goes to the end of the row.
+export async function setPinned(db: SQLiteDatabase, id: number, pinned: boolean): Promise<void> {
+  await db.runAsync(
+    `UPDATE documents
+     SET is_pinned = ?,
+         pin_order = CASE WHEN ? = 1 THEN (SELECT COALESCE(MAX(pin_order), -1) + 1 FROM documents WHERE is_pinned = 1)
+                          ELSE 0 END
+     WHERE id = ?`,
+    pinned ? 1 : 0,
+    pinned ? 1 : 0,
+    id,
+  );
+}
+
+// Saves the "Modifica" sheet: the kept documents in their new order, the others are unpinned
+export async function savePinnedOrder(db: SQLiteDatabase, orderedIds: number[]): Promise<void> {
+  await db.withTransactionAsync(async () => {
+    await db.runAsync('UPDATE documents SET is_pinned = 0, pin_order = 0 WHERE is_pinned = 1');
+    for (const [index, id] of orderedIds.entries()) {
+      await db.runAsync('UPDATE documents SET is_pinned = 1, pin_order = ? WHERE id = ?', index, id);
+    }
+  });
+}
+
+// ---- Cards ----
+
+// What the card form edits
+export type CardInput = {
+  title: string;
+  categoryId: number; // the "Tessere e card" category
+  personId: number | null;
+  barcodeValue: string | null; // read by the camera or typed by hand
+  barcodeType: string | null; // null when typed by hand
+  cardColor: string;
+};
+
+// Saves a new card with its photos (card_front, barcode); same safety rules as insertDocument
+export async function insertCard(db: SQLiteDatabase, card: CardInput, files: PendingFile[]): Promise<number> {
+  const id = await insertDocument(
+    db,
+    { title: card.title, categoryId: card.categoryId, personId: card.personId, number: null, expiresAt: null, reminderDays: null, notes: null },
+    files,
+  );
+  await updateCardFields(db, id, card);
+  return id;
+}
+
+// Edits a card: fields, plus replaced photos
+export async function saveCardEdits(
+  db: SQLiteDatabase,
+  id: number,
+  card: CardInput,
+  removedFiles: DocumentFile[],
+  addedFiles: PendingFile[],
+): Promise<void> {
+  await changeFiles(db, id, removedFiles, addedFiles, () => updateCardFields(db, id, card));
+}
+
+async function updateCardFields(db: SQLiteDatabase, id: number, card: CardInput): Promise<void> {
+  const code = card.barcodeValue?.trim() || null;
+  await db.runAsync(
+    `UPDATE documents
+     SET title = ?, person_id = ?, barcode_value = ?, barcode_type = ?, card_color = ?,
+         updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+     WHERE id = ?`,
+    card.title.trim(),
+    card.personId,
+    code,
+    code ? card.barcodeType : null,
+    card.cardColor,
+    id,
+  );
 }

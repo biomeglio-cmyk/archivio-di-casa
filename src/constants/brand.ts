@@ -16,3 +16,6 @@ export const FONTS = {
   titleSemiBold: 'Outfit_600SemiBold',
   titleBold: 'Outfit_700Bold',
 } as const;
+
+// "Preferiti" heart (the brand red)
+export const PIN_COLOR = '#FF4F64';

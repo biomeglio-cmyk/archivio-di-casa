@@ -114,6 +114,45 @@ const MIGRATIONS: Migration[] = [
       await db.execAsync('ALTER TABLE documents ADD COLUMN calendar_event_id TEXT');
     },
   },
+  {
+    version: 5,
+    name: 'cards, barcodes and "Sottomano" pins',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Sottomano": pinned documents, shown in pin_order (smallest first)
+        ALTER TABLE documents ADD COLUMN is_pinned INTEGER NOT NULL DEFAULT 0;
+        ALTER TABLE documents ADD COLUMN pin_order INTEGER NOT NULL DEFAULT 0;
+        -- Cards: the code read by the camera (or typed), its format (e.g. 'ean13'), and the
+        -- background color used when the card has no photo of its front
+        ALTER TABLE documents ADD COLUMN barcode_value TEXT;
+        ALTER TABLE documents ADD COLUMN barcode_type TEXT;
+        ALTER TABLE documents ADD COLUMN card_color TEXT;
+        CREATE INDEX idx_documents_pinned ON documents(is_pinned, pin_order);
+
+        -- A stable marker for special categories: the name can be renamed, the kind cannot.
+        -- 'cards' = "Tessere e card" (the built-in category with the credit card symbol).
+        ALTER TABLE categories ADD COLUMN kind TEXT;
+        UPDATE categories SET kind = 'cards' WHERE is_builtin = 1 AND symbol = 'creditcard';
+
+        -- SQLite can't change a CHECK constraint, so document_files is rebuilt with the new roles:
+        -- 'card_front' (photo of a card) and 'barcode' (photo of its code, shown at the checkout).
+        -- Same columns and rows; nothing else references this table.
+        CREATE TABLE document_files_v5 (
+          id          INTEGER PRIMARY KEY NOT NULL,
+          document_id INTEGER NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
+          path        TEXT NOT NULL,
+          side        TEXT CHECK (side IN ('front', 'back', 'card_front', 'barcode')),
+          kind        TEXT NOT NULL CHECK (kind IN ('image', 'pdf')),
+          created_at  TEXT NOT NULL DEFAULT ${NOW}
+        );
+        INSERT INTO document_files_v5 (id, document_id, path, side, kind, created_at)
+          SELECT id, document_id, path, side, kind, created_at FROM document_files;
+        DROP TABLE document_files;
+        ALTER TABLE document_files_v5 RENAME TO document_files;
+        CREATE INDEX idx_document_files_document ON document_files(document_id);
+      `);
+    },
+  },
 ];
 
 export async function migrateDbIfNeeded(db: SQLiteDatabase): Promise<void> {

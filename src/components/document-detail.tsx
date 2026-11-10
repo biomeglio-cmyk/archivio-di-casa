@@ -7,20 +7,22 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { getCalendarSettings } from '@/calendar/calendar-settings';
+import { CardDetail } from '@/components/card-detail';
 import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
 import { PersonAvatar } from '@/components/person-avatar';
+import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
 import { useAttachFile } from '@/components/use-attach-file';
 import { FONTS } from '@/constants/brand';
-import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
+import { getDocumentDetail, listDocumentFiles, setPinned } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/utils/dates';
 
-// Detail of one document. Used by the document/[id] screen of every tab.
+// Detail of one document (or of a card). Used by the document/[id] screen of every tab.
 export default function DocumentDetail() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const theme = useTheme();
@@ -46,6 +48,14 @@ export default function DocumentDetail() {
         <ThemedText themeColor="textSecondary">Documento non trovato.</ThemedText>
       </View>
     );
+  }
+
+  // Heart and "Aggiungi ai preferiti": the lists update by themselves (useDbQuery listens to changes)
+  const pin = { pinned: document.isPinned, onToggle: () => setPinned(db, document.id, !document.isPinned) };
+
+  // Cards have their own screen: the card, its barcode on white, full brightness
+  if (document.category.isCards) {
+    return files ? <CardDetail card={document} files={files} pin={pin} /> : <Stack.Screen options={{ title: '' }} />;
   }
 
   const { category, person } = document;
@@ -108,12 +118,14 @@ export default function DocumentDetail() {
 
         {/* Actions right after the data; they scroll with the page */}
         <DetailActionBar
+          pin={pin}
           onAdd={attach}
           onEdit={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
           onDelete={() => confirmDeleteDocument(db, document)}
         />
       </ScrollView>
 
+      <PinHeart {...pin} />
       {cameraModal}
     </>
   );

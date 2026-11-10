@@ -5,6 +5,7 @@ import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
+import { TileGrid } from '@/components/tile-grid';
 import { BRAND_COLOR, FONTS, PIN_COLOR } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import { listPinnedDocuments } from '@/db/documents';
@@ -12,7 +13,7 @@ import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
-import { TILE_COLUMNS, tileGridStyles, useTileSize, type TileSize } from '@/hooks/use-tile-size';
+import type { TileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
 
 const COLLAPSED_COUNT = 6; // 3 rows of 2; the rest behind "Mostra tutti"
@@ -36,19 +37,15 @@ export function SectionHeader({ title, action }: { title: string; action?: { lab
 }
 
 // "PREFERITI" on Archivio, between the search bar and the categories: the pinned cards and
-// documents in the same two-column grid as the categories, in the order chosen with "Modifica"
+// documents in the shared TileGrid, like the categories, in the order chosen with "Modifica"
 export function FavoritesSection() {
   const theme = useTheme();
-  const size = useTileSize();
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
   const [expanded, setExpanded] = useState(false);
 
   if (!pinned) return null; // loading: a few milliseconds
 
   const visible = expanded ? pinned : pinned.slice(0, COLLAPSED_COUNT);
-  // Rows of two, so both tiles of a row get the height of the taller one (like the FlatList grid)
-  const rows: DocumentListItem[][] = [];
-  for (let i = 0; i < visible.length; i += TILE_COLUMNS) rows.push(visible.slice(i, i + TILE_COLUMNS));
 
   return (
     <View style={styles.section}>
@@ -65,15 +62,11 @@ export function FavoritesSection() {
           </Text>
         </View>
       ) : (
-        <View style={styles.grid}>
-          {rows.map((row) => (
-            <View key={row[0].id} style={tileGridStyles.row}>
-              {row.map((document) => (
-                <FavoriteTile key={document.id} document={document} size={size} />
-              ))}
-            </View>
-          ))}
-        </View>
+        <TileGrid
+          items={visible}
+          keyFor={(document) => document.id}
+          renderTile={(document, size) => <FavoriteTile document={document} size={size} />}
+        />
       )}
 
       {pinned.length > COLLAPSED_COUNT && (
@@ -145,7 +138,7 @@ function FavoriteTile({ document, size }: { document: DocumentListItem; size: Ti
 const styles = StyleSheet.create({
   section: {
     gap: 10,
-    marginBottom: 20, // room before "CATEGORIE"
+    marginBottom: 8, // a little more room before "CATEGORIE"
   },
   header: {
     flexDirection: 'row',
@@ -162,9 +155,6 @@ const styles = StyleSheet.create({
   headerAction: {
     color: BRAND_COLOR,
     fontSize: 17,
-  },
-  grid: {
-    gap: 12, // same vertical gap as the category grid
   },
   pressed: {
     opacity: 0.8,

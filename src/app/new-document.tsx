@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { AttachmentStrip } from '@/components/attachment-strip';
 import { DocumentForm } from '@/components/document-form';
 import { insertDocument } from '@/db/documents';
+import { afterDocumentSaved } from '@/notifications/reminders';
 import { decodePendingFiles, type PendingFile } from '@/storage/pending-files';
 
 // A PDF named "Polizza casa 2026.pdf" suggests the title "Polizza casa 2026"
@@ -34,6 +35,7 @@ export default function NewDocumentScreen() {
         autoFocusTitle={files.length === 0}
         onSubmit={async (input) => {
           await insertDocument(db, input, files);
+          await afterDocumentSaved(db, input.expiresAt);
           // Scadenze, Archivio and Famiglia update by themselves (useDbQuery listens to changes)
           router.back();
         }}

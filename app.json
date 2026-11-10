@@ -57,7 +57,8 @@
           "calendarPermission": "Sottomano aggiunge le scadenze dei tuoi documenti al calendario che scegli.",
           "remindersPermission": false
         }
-      ]
+      ],
+      "expo-notifications"
     ],
     "experiments": {
       "typedRoutes": true,

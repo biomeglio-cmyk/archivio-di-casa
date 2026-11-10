@@ -13,6 +13,7 @@ import { useColorScheme } from 'react-native';
 import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/brand';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
+import { AppNotifications } from '@/notifications/app-notifications';
 
 // The root Stack starts on the tabs; sheets and modals are pushed on top of them
 export const unstable_settings = { anchor: '(tabs)' };
@@ -41,6 +42,8 @@ export default function RootLayout() {
       onInit={initDatabase}
       options={{ enableChangeListener: true }}>
       <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+        {/* Reminders: scheduled at start, tapping one opens its document */}
+        <AppNotifications />
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen

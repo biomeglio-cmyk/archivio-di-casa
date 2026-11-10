@@ -2,6 +2,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { removeCalendarEvent, syncDocumentEvent } from '@/calendar/calendar-sync';
 import { CATEGORY_JOIN_COLUMNS, mapCategory } from '@/db/categories';
+import { rescheduleReminders } from '@/notifications/reminders';
 import type {
   DocumentDetail,
   DocumentFile,
@@ -160,6 +161,7 @@ export async function insertDocument(
   }
   // Calendar event of the expiry, if sync is on (after the save: it never makes the save fail)
   await syncDocumentEvent(db, documentId);
+  await rescheduleReminders(db);
   return documentId;
 }
 
@@ -210,6 +212,7 @@ export async function deleteDocument(db: SQLiteDatabase, id: number): Promise<vo
   await db.runAsync('DELETE FROM documents WHERE id = ?', id);
   files.forEach((file) => deleteStoredFile(file.path));
   await removeCalendarEvent(event?.calendar_event_id ?? null);
+  await rescheduleReminders(db);
 }
 
 // Saves the edit form: fields plus file changes (removed files, new or replacement files).
@@ -225,6 +228,7 @@ export async function saveDocumentEdits(
   await changeFiles(db, id, removedFiles, addedFiles, () => updateDocument(db, id, input));
   // New title, expiry or reminder → update the calendar event (or remove it if the expiry is gone)
   await syncDocumentEvent(db, id);
+  await rescheduleReminders(db);
 }
 
 // Only the files: attach new ones, replacing the given ones ("Aggiungi documento" in the detail)

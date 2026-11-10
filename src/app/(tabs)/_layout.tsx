@@ -2,6 +2,8 @@ import { router } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
 
 import { BRAND_COLOR } from '@/constants/brand';
+import { countUrgentDeadlines } from '@/db/urgent-count';
+import { useDbQuery } from '@/hooks/use-db-query';
 
 // Archivio is the tab the app starts on, at every launch and for every deep link into the tabs
 export const unstable_settings = { anchor: '(archive)' };
@@ -9,6 +11,9 @@ export const unstable_settings = { anchor: '(archive)' };
 // Native iOS tab bar. Each trigger name matches a route (or route group) in this folder.
 // Archivio is first and owns "/" (its index.tsx), so the app opens there.
 export default function TabsLayout() {
+  // Overdue + within 7 days, kept live by the database change listener
+  const { data: urgent } = useDbQuery(countUrgentDeadlines, []);
+
   return (
     <NativeTabs tintColor={BRAND_COLOR}>
       <NativeTabs.Trigger name="(archive)">
@@ -19,6 +24,7 @@ export default function TabsLayout() {
       <NativeTabs.Trigger name="(deadlines)">
         <NativeTabs.Trigger.Icon sf="calendar" md="event" />
         <NativeTabs.Trigger.Label>Scadenze</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Badge hidden={!urgent}>{String(urgent ?? 0)}</NativeTabs.Trigger.Badge>
       </NativeTabs.Trigger>
 
       {/* "+" tab: disabled, so it is never selected. The press event still arrives,

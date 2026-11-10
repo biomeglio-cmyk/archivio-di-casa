@@ -1,9 +1,11 @@
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { ActionSheetIOS, Alert, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
+import { ActionSheetIOS, Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { pickPdf, pickPhoto } from '@/capture/pick-files';
+import { isScannerAvailable, scanDocument, scannedPagesToFiles } from '@/capture/scan-document';
+import { fileLabel } from '@/components/attachment-strip';
 import { CameraCapture } from '@/components/camera-capture';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
@@ -20,6 +22,7 @@ export type EditableFile = {
   key: string;
   kind: DocumentFile['kind'];
   side: DocumentFile['side'];
+  page: number | null; // order of the photos (1 = front, 2 = back, 3…)
   uri: string;
   name?: string;
   existing?: DocumentFile;
@@ -31,13 +34,15 @@ export function fromExisting(file: DocumentFile): EditableFile {
     key: `saved-${file.id}`,
     kind: file.kind,
     side: file.side,
+    page: file.page,
     uri: resolveDocumentFile(file.path).uri,
     existing: file,
   };
 }
 
 function fromPending(file: PendingFile): EditableFile {
-  return { key: `new-${file.uri}`, kind: file.kind, side: file.side, uri: file.uri, name: file.name, pending: file };
+  const page = file.kind === 'image' ? (file.page ?? (file.side === 'back' ? 2 : 1)) : null;
+  return { key: `new-${file.uri}`, kind: file.kind, side: file.side, page, uri: file.uri, name: file.name, pending: file };
 }
 
 // Native iOS action sheet: take a photo or choose one
@@ -56,13 +61,26 @@ type Props = {
 };
 
 // Files section of "Modifica documento": replace or retake the front, add or remove the back,
-// replace the PDF, or attach files to a document that has none.
+// "Riscansiona" all the pages, replace the PDF, or attach files to a document that has none.
 export function FilesEditor({ files, onChange }: Props) {
   const [cameraSide, setCameraSide] = useState<Side | null>(null);
+  const canScan = isScannerAvailable();
 
   const pdf = files.find((f) => f.kind === 'pdf');
-  const front = files.find((f) => f.kind === 'image' && f.side !== 'back');
-  const back = files.find((f) => f.kind === 'image' && f.side === 'back');
+  const images = files.filter((f) => f.kind === 'image').sort((a, b) => (a.page ?? 1) - (b.page ?? 1));
+  const front = images.find((f) => f.side !== 'back');
+  const back = images.find((f) => f.side === 'back');
+  const manyPages = images.length > 2; // a scan with 3+ pages: shown as pages, replaced all together
+
+  // A new scan replaces ALL the photos (the saved ones are deleted only when the form is saved)
+  async function rescan() {
+    const result = await scanDocument();
+    if (result === 'unavailable') {
+      Alert.alert('Scanner non disponibile', 'Usa «Sostituisci» per fotografare le pagine.');
+    } else if (result !== 'cancelled') {
+      onChange([...files.filter((f) => f.kind !== 'image'), ...scannedPagesToFiles(result.pages).map(fromPending)]);
+    }
+  }
 
   // Puts a new photo on a face, replacing whatever was there
   function setFace(file: PendingFile) {
@@ -96,7 +114,17 @@ export function FilesEditor({ files, onChange }: Props) {
         </View>
       )}
 
-      {!pdf && front && (
+      {!pdf && manyPages && (
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.pages}>
+          {images.map((page) => (
+            <View key={page.key} style={styles.page}>
+              <Slot label={fileLabel(page, images.length)} file={page} actions={[]} />
+            </View>
+          ))}
+        </ScrollView>
+      )}
+
+      {!pdf && front && !manyPages && (
         <View style={styles.slots}>
           <Slot label="Fronte" file={front} actions={[{ label: 'Sostituisci', onPress: () => changeFace('front') }]} />
           {back ? (
@@ -114,8 +142,13 @@ export function FilesEditor({ files, onChange }: Props) {
         </View>
       )}
 
+      {!pdf && front && canScan && (
+        <SecondaryButton label="Riscansiona" symbol="doc.viewfinder" onPress={rescan} />
+      )}
+
       {!pdf && !front && (
         <View style={styles.addButtons}>
+          {canScan && <SecondaryButton label="Scansiona" symbol="doc.viewfinder" onPress={rescan} />}
           <SecondaryButton label="Aggiungi foto" symbol="camera" onPress={() => changeFace('front')} />
           <SecondaryButton label="Aggiungi PDF" symbol="doc" onPress={changePdf} />
         </View>
@@ -195,6 +228,12 @@ const styles = StyleSheet.create({
   slots: {
     flexDirection: 'row',
     gap: 12,
+  },
+  pages: {
+    gap: 12,
+  },
+  page: {
+    width: 140,
   },
   slot: {
     flex: 1,

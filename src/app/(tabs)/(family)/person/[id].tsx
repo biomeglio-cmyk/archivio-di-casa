@@ -53,7 +53,7 @@ export default function PersonScreen() {
         footer={
           person && !selection.selecting ? (
             <DetailActionBar
-              onAdd={null}
+              onAdd={() => router.push({ pathname: '/new-document', params: { personId: String(personId) } })}
               onEdit={() => router.push({ pathname: '/person-form', params: { id: String(personId) } })}
               onDelete={() => confirmDeletePerson(db, person)}
             />

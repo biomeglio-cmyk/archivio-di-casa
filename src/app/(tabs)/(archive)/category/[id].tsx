@@ -45,7 +45,7 @@ export default function CategoryScreen() {
           // Built-in categories can't be edited or deleted; custom ones only deleted when empty
           category && documents && !selection.selecting ? (
             <DetailActionBar
-              onAdd={null}
+              onAdd={() => router.push({ pathname: '/new-document', params: { categoryId: String(categoryId) } })}
               onEdit={
                 category.isBuiltin
                   ? null

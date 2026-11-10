@@ -1,55 +1,138 @@
-import { Fragment } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { SymbolView, type SFSymbol } from 'expo-symbols';
+import { Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
 
-import { SheetOption } from '@/components/sheet-option';
+import { BRAND_GRADIENT, FONTS } from '@/constants/brand';
+import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
 
+const RADIUS = 12;
+const MIN_HEIGHT = 48;
+const DELETE_BACKGROUND = '#FDE3E6';
+const DELETE_TEXT = '#C8283D';
+const SECONDARY_BASIS = 130; // starting width of Modifica / Cancella at normal text size
+
 type Props = {
-  onAdd: (() => void) | null; // null = the row is not shown (e.g. grids with an "Aggiungi documento" tile)
+  onAdd: (() => void) | null; // null = the button is not shown
   onEdit: (() => void) | null;
-  onDelete: (() => void) | null;
+  onDelete: (() => void) | null; // the caller shows the confirmation alert
 };
 
-// Actions at the end of the detail screens, like the rows of the "+" sheet:
-// one rounded group with full-width rows "Aggiungi documento", "Modifica", "Cancella" (red).
-// It sits in the scroll content, right after the data, and scrolls with the page.
+// Buttons at the end of the detail screens (layout B of the mockup):
+// "Aggiungi documento" full width with the logo gradient, then "Modifica" and "Cancella" side by side.
+// They sit in the scroll content, right after the data, and scroll with the page.
 export function DetailActionBar({ onAdd, onEdit, onDelete }: Props) {
   const theme = useTheme();
-  const rows = [
-    onAdd && { key: 'add', label: 'Aggiungi documento', symbol: 'plus.circle' as const, onPress: onAdd, destructive: false },
-    onEdit && { key: 'edit', label: 'Modifica', symbol: 'pencil' as const, onPress: onEdit, destructive: false },
-    onDelete && { key: 'delete', label: 'Cancella', symbol: 'trash' as const, onPress: onDelete, destructive: true },
-  ].filter((row) => Boolean(row)) as {
-    key: string;
-    label: string;
-    symbol: 'plus.circle' | 'pencil' | 'trash';
-    onPress: () => void;
-    destructive: boolean;
-  }[];
+  // Both secondary buttons start from the same width, scaled with Dynamic Type; when two don't fit
+  // in the row, flexWrap puts the second below and each grows to full width: stacked, never cut.
+  const { fontScale } = useWindowDimensions();
+  const basis = SECONDARY_BASIS * fontScale;
 
-  if (rows.length === 0) return null;
+  if (!onAdd && !onEdit && !onDelete) return null;
 
   return (
-    <View style={[styles.group, { backgroundColor: theme.backgroundElement }]}>
-      {rows.map((row, index) => (
-        <Fragment key={row.key}>
-          {/* Hairline between rows, indented like iOS lists (after the icon) */}
-          {index > 0 && <View style={[styles.separator, { backgroundColor: theme.backgroundSelected }]} />}
-          <SheetOption grouped symbol={row.symbol} label={row.label} onPress={row.onPress} destructive={row.destructive} />
-        </Fragment>
-      ))}
+    <View style={styles.container}>
+      {onAdd && <ActionButton label="Aggiungi documento" symbol="plus" variant="primary" onPress={onAdd} />}
+      {(onEdit || onDelete) && (
+        <View style={styles.row}>
+          {onEdit && (
+            <ActionButton
+              label="Modifica"
+              symbol="pencil"
+              variant="secondary"
+              onPress={onEdit}
+              style={{ flexBasis: basis, backgroundColor: theme.backgroundSelected }}
+              color={theme.text}
+            />
+          )}
+          {onDelete && (
+            <ActionButton
+              label="Cancella"
+              symbol="trash"
+              variant="secondary"
+              onPress={onDelete}
+              style={{ flexBasis: basis, backgroundColor: DELETE_BACKGROUND }}
+              color={DELETE_TEXT}
+            />
+          )}
+        </View>
+      )}
     </View>
   );
 }
 
+type ActionButtonProps = {
+  label: string;
+  symbol: SFSymbol;
+  variant: 'primary' | 'secondary';
+  onPress: () => void;
+  style?: object;
+  color?: string;
+};
+
+function ActionButton({ label, symbol, variant, onPress, style, color = '#FFFFFF' }: ActionButtonProps) {
+  const { pressed, handlers } = usePressed();
+  const content = (
+    <>
+      <SymbolView name={symbol} tintColor={color} size={17} />
+      {/* No numberOfLines: with very large text the label wraps instead of ending in "…" */}
+      <Text style={[styles.label, { color }]}>{label}</Text>
+    </>
+  );
+
+  return (
+    <Pressable
+      {...handlers}
+      onPress={onPress}
+      accessibilityRole="button"
+      style={[styles.button, variant === 'secondary' && styles.secondary, style, pressed && styles.pressed]}>
+      {variant === 'primary' ? (
+        <LinearGradient colors={BRAND_GRADIENT} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.inner}>
+          {content}
+        </LinearGradient>
+      ) : (
+        <View style={styles.inner}>{content}</View>
+      )}
+    </Pressable>
+  );
+}
+
 const styles = StyleSheet.create({
-  group: {
-    borderRadius: 16,
-    borderCurve: 'continuous',
-    overflow: 'hidden', // the pressed highlight of the rows follows the rounded corners
+  container: {
+    gap: 8,
   },
-  separator: {
-    height: StyleSheet.hairlineWidth,
-    marginLeft: 56, // 16 padding + 28 icon + 12 gap
+  row: {
+    flexDirection: 'row',
+    flexWrap: 'wrap', // stacks the two buttons when they don't fit side by side
+    gap: 8,
+  },
+  button: {
+    minHeight: MIN_HEIGHT,
+    borderRadius: RADIUS,
+    borderCurve: 'continuous',
+    overflow: 'hidden',
+  },
+  secondary: {
+    flexGrow: 1, // same basis + same grow = equal widths when they share the row
+    flexShrink: 0,
+  },
+  inner: {
+    flexGrow: 1,
+    minHeight: MIN_HEIGHT,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+  },
+  pressed: {
+    opacity: 0.8,
+  },
+  label: {
+    flexShrink: 1,
+    fontSize: 17,
+    textAlign: 'center',
+    fontFamily: FONTS.titleSemiBold,
   },
 });

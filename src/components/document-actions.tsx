@@ -58,7 +58,7 @@ export function DocumentActions({ title, files }: Props) {
         }
       } else if (front && back && composerRef.current) {
         const composed = await composerRef.current.compose();
-        const copy = await namedCopy(new File(composed), `${title} - fronte e retro`);
+        const copy = await namedCopy(new File(composed.uri), `${title} - fronte e retro`);
         await Sharing.shareAsync(copy.uri, { mimeType: 'image/jpeg', UTI: 'public.jpeg', dialogTitle: title });
       } else if (front) {
         const copy = await namedCopy(resolveDocumentFile(front.path), title);

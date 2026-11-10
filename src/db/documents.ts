@@ -29,6 +29,7 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
     imageCount: Number(row.image_count ?? 0),
+    firstImagePath: (row.first_image_path as string | null | undefined) ?? null,
   };
 }
 
@@ -41,7 +42,9 @@ async function listDocumentsWhere(
 ): Promise<DocumentListItem[]> {
   const rows = await db.getAllAsync<DocumentWithCategoryRecord>(
     `SELECT d.*, ${CATEGORY_JOIN_COLUMNS},
-            (SELECT COUNT(*) FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image') AS image_count
+            (SELECT COUNT(*) FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image') AS image_count,
+            (SELECT f.path FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image'
+             ORDER BY CASE f.side WHEN 'back' THEN 1 ELSE 0 END, f.id LIMIT 1) AS first_image_path
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      ${where}

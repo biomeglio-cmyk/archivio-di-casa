@@ -5,8 +5,8 @@ import { SheetOption } from '@/components/sheet-option';
 import { useTheme } from '@/hooks/use-theme';
 
 type Props = {
-  onAdd: () => void;
-  onEdit: (() => void) | null; // null = the row is not shown
+  onAdd: (() => void) | null; // null = the row is not shown (e.g. grids with an "Aggiungi documento" tile)
+  onEdit: (() => void) | null;
   onDelete: (() => void) | null;
 };
 
@@ -16,7 +16,7 @@ type Props = {
 export function DetailActionBar({ onAdd, onEdit, onDelete }: Props) {
   const theme = useTheme();
   const rows = [
-    { key: 'add', label: 'Aggiungi documento', symbol: 'plus.circle' as const, onPress: onAdd, destructive: false },
+    onAdd && { key: 'add', label: 'Aggiungi documento', symbol: 'plus.circle' as const, onPress: onAdd, destructive: false },
     onEdit && { key: 'edit', label: 'Modifica', symbol: 'pencil' as const, onPress: onEdit, destructive: false },
     onDelete && { key: 'delete', label: 'Cancella', symbol: 'trash' as const, onPress: onDelete, destructive: true },
   ].filter((row) => Boolean(row)) as {
@@ -26,6 +26,8 @@ export function DetailActionBar({ onAdd, onEdit, onDelete }: Props) {
     onPress: () => void;
     destructive: boolean;
   }[];
+
+  if (rows.length === 0) return null;
 
   return (
     <View style={[styles.group, { backgroundColor: theme.backgroundElement }]}>

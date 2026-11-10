@@ -3,7 +3,7 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { DANGER_COLOR } from '@/constants/brand';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
@@ -14,13 +14,11 @@ type Props = {
   document: DocumentListItem; // includes its category
   // Each tab has its own copy of the document screen, so the caller decides where to go
   href: Href;
-  // "Seleziona" mode: a tick circle on the left, and tapping toggles instead of opening
-  selection?: { selected: boolean; disabled: boolean; onToggle: () => void };
 };
 
 // A document in a list, on one line: category icon | title + expiry | chevron.
 // Editing and deleting happen from the detail (pencil at the top right), like in Contacts.
-export function DocumentRow({ document, href, selection }: Props) {
+export function DocumentRow({ document, href }: Props) {
   const theme = useTheme();
   const { pressed, handlers } = usePressed();
   const { category } = document;
@@ -30,22 +28,9 @@ export function DocumentRow({ document, href, selection }: Props) {
   return (
     <Pressable
       {...handlers}
-      onPress={() => (selection ? selection.onToggle() : router.push(href))}
-      disabled={selection?.disabled}
-      accessibilityRole={selection ? 'checkbox' : 'button'}
-      accessibilityState={selection ? { checked: selection.selected, disabled: selection.disabled } : undefined}
-      style={[
-        styles.row,
-        { backgroundColor: pressed ? theme.backgroundSelected : theme.backgroundElement },
-        selection?.disabled && styles.disabled,
-      ]}>
-      {selection && (
-        <SymbolView
-          name={selection.selected ? 'checkmark.circle.fill' : 'circle'}
-          tintColor={selection.selected ? BRAND_COLOR : theme.textSecondary}
-          size={24}
-        />
-      )}
+      onPress={() => router.push(href)}
+      accessibilityRole="button"
+      style={[styles.row, { backgroundColor: pressed ? theme.backgroundSelected : theme.backgroundElement }]}>
       <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
         <SymbolView name={category.symbol} tintColor={category.colors.text} size={20} />
       </View>
@@ -62,7 +47,7 @@ export function DocumentRow({ document, href, selection }: Props) {
             : 'Nessuna scadenza'}
         </ThemedText>
       </View>
-      {!selection && <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />}
+      <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />
     </Pressable>
   );
 }
@@ -86,8 +71,5 @@ const styles = StyleSheet.create({
   },
   texts: {
     flex: 1,
-  },
-  disabled: {
-    opacity: 0.4, // documents without photos can't go into a combined PDF
   },
 });

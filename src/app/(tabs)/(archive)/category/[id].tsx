@@ -1,12 +1,10 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
-import { ScrollView, StyleSheet } from 'react-native';
 
 import { confirmDeleteCategory } from '@/actions/delete-actions';
 import { DetailActionBar } from '@/components/detail-action-bar';
-import { DocumentRow } from '@/components/document-row';
-import { ThemedText } from '@/components/themed-text';
+import { DocumentGrid } from '@/components/document-grid';
 import { BRAND_COLOR } from '@/constants/brand';
 import { getCategory } from '@/db/categories';
 import { listDocumentsByCategory } from '@/db/documents';
@@ -14,7 +12,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 
-// "/category/[id]": documents of one category. "Seleziona" picks several to send as one PDF.
+// "/category/[id]": documents of one category as tiles. "Seleziona" picks several to send as one PDF.
 export default function CategoryScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const categoryId = Number(id);
@@ -26,7 +24,7 @@ export default function CategoryScreen() {
   // Deleted with "Cancella" → back to Archivio
   useLeaveWhenDeleted(category);
 
-  // Selected documents in list order, so the PDF pages follow the list
+  // Selected documents in list order, so the PDF pages follow the grid
   const selectedIds = (documents ?? []).filter((d) => selection.selected.has(d.id)).map((d) => d.id);
 
   function sendTogether() {
@@ -36,44 +34,28 @@ export default function CategoryScreen() {
 
   return (
     <>
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.list}>
-        <Stack.Screen options={{ title: category?.name ?? '' }} />
+      <Stack.Screen options={{ title: category?.name ?? '' }} />
 
-        {documents?.length === 0 && (
-          <ThemedText themeColor="textSecondary">Nessun documento in questa categoria.</ThemedText>
-        )}
-
-        {documents?.map((doc) => (
-          <DocumentRow
-            key={doc.id}
-            document={doc}
-            href={{ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(doc.id) } }}
-            selection={
-              selection.selecting
-                ? {
-                    selected: selection.selected.has(doc.id),
-                    disabled: doc.imageCount === 0, // only photos can go into the combined PDF
-                    onToggle: () => selection.toggle(doc.id),
-                  }
-                : undefined
-            }
-          />
-        ))}
-
-        {/* Actions right after the documents; they scroll with the page. Hidden while selecting.
-            Built-in categories can't be edited or deleted; custom ones only deleted when empty. */}
-        {category && documents && !selection.selecting && (
-          <DetailActionBar
-            onAdd={() => router.push({ pathname: '/new-document', params: { categoryId: String(categoryId) } })}
-            onEdit={
-              category.isBuiltin
-                ? null
-                : () => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })
-            }
-            onDelete={!category.isBuiltin && documents.length === 0 ? () => confirmDeleteCategory(db, category) : null}
-          />
-        )}
-      </ScrollView>
+      <DocumentGrid
+        documents={documents}
+        hrefFor={(doc) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(doc.id) } })}
+        selection={selection}
+        onAdd={() => router.push({ pathname: '/new-document', params: { categoryId: String(categoryId) } })}
+        footer={
+          // Built-in categories can't be edited or deleted; custom ones only deleted when empty
+          category && documents && !selection.selecting ? (
+            <DetailActionBar
+              onAdd={null}
+              onEdit={
+                category.isBuiltin
+                  ? null
+                  : () => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })
+              }
+              onDelete={!category.isBuiltin && documents.length === 0 ? () => confirmDeleteCategory(db, category) : null}
+            />
+          ) : null
+        }
+      />
 
       {/* Header: "Seleziona", or "Annulla" while selecting */}
       <Stack.Toolbar placement="right">
@@ -100,11 +82,3 @@ export default function CategoryScreen() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  list: {
-    padding: 16,
-    paddingBottom: 48, // room at the end, so nothing ends up under the tab bar
-    gap: 10,
-  },
-});

@@ -1,13 +1,12 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { confirmDeletePerson } from '@/actions/delete-actions';
 import { DetailActionBar } from '@/components/detail-action-bar';
-import { DocumentRow } from '@/components/document-row';
+import { DocumentGrid } from '@/components/document-grid';
 import { PersonAvatar } from '@/components/person-avatar';
-import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { listDocumentsByPerson } from '@/db/documents';
 import { getPerson } from '@/db/people';
@@ -15,7 +14,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 
-// "/person/[id]": documents of one family member. "Seleziona" picks several to send as one PDF.
+// "/person/[id]": documents of one family member as tiles. "Seleziona" picks several to send as one PDF.
 export default function PersonScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const personId = Number(id);
@@ -27,7 +26,7 @@ export default function PersonScreen() {
   // Deleted with "Cancella" → back to Famiglia
   useLeaveWhenDeleted(person);
 
-  // Selected documents in list order, so the PDF pages follow the list
+  // Selected documents in list order, so the PDF pages follow the grid
   const selectedIds = (documents ?? []).filter((d) => selection.selected.has(d.id)).map((d) => d.id);
 
   function sendTogether() {
@@ -37,45 +36,30 @@ export default function PersonScreen() {
 
   return (
     <>
-      <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.list}>
-        <Stack.Screen options={{ title: person?.name ?? '' }} />
+      <Stack.Screen options={{ title: person?.name ?? '' }} />
 
-        {person && (
-          <View style={styles.header}>
-            <PersonAvatar name={person.name} photoPath={person.photoPath} size={96} />
-          </View>
-        )}
-
-        {documents?.length === 0 && (
-          <ThemedText themeColor="textSecondary">Nessun documento per questa persona.</ThemedText>
-        )}
-
-        {documents?.map((doc) => (
-          <DocumentRow
-            key={doc.id}
-            document={doc}
-            href={{ pathname: '/(tabs)/(family)/document/[id]', params: { id: String(doc.id) } }}
-            selection={
-              selection.selecting
-                ? {
-                    selected: selection.selected.has(doc.id),
-                    disabled: doc.imageCount === 0, // only photos can go into the combined PDF
-                    onToggle: () => selection.toggle(doc.id),
-                  }
-                : undefined
-            }
-          />
-        ))}
-
-        {/* Actions right after the documents; they scroll with the page. Hidden while selecting */}
-        {person && !selection.selecting && (
-          <DetailActionBar
-            onAdd={() => router.push({ pathname: '/new-document', params: { personId: String(personId) } })}
-            onEdit={() => router.push({ pathname: '/person-form', params: { id: String(personId) } })}
-            onDelete={() => confirmDeletePerson(db, person)}
-          />
-        )}
-      </ScrollView>
+      <DocumentGrid
+        documents={documents}
+        hrefFor={(doc) => ({ pathname: '/(tabs)/(family)/document/[id]', params: { id: String(doc.id) } })}
+        selection={selection}
+        onAdd={() => router.push({ pathname: '/new-document', params: { personId: String(personId) } })}
+        header={
+          person ? (
+            <View style={styles.header}>
+              <PersonAvatar name={person.name} photoPath={person.photoPath} size={96} />
+            </View>
+          ) : null
+        }
+        footer={
+          person && !selection.selecting ? (
+            <DetailActionBar
+              onAdd={null}
+              onEdit={() => router.push({ pathname: '/person-form', params: { id: String(personId) } })}
+              onDelete={() => confirmDeletePerson(db, person)}
+            />
+          ) : null
+        }
+      />
 
       {/* Header: "Seleziona", or "Annulla" while selecting */}
       <Stack.Toolbar placement="right">
@@ -104,13 +88,7 @@ export default function PersonScreen() {
 }
 
 const styles = StyleSheet.create({
-  list: {
-    padding: 16,
-    paddingBottom: 48, // room at the end, so nothing ends up under the tab bar
-    gap: 10,
-  },
   header: {
     alignItems: 'center',
-    paddingBottom: 8,
   },
 });

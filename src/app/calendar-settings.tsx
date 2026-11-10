@@ -1,64 +1,50 @@
 import { Host, Switch } from '@expo/ui';
 import { useSQLiteContext } from 'expo-sqlite';
-import { SymbolView } from 'expo-symbols';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Linking, ScrollView, StyleSheet, View } from 'react-native';
 
-import { getCalendarSettings, saveCalendarSettings, type CalendarSettings } from '@/calendar/calendar-settings';
+import { getCalendarSettings, type CalendarSettings } from '@/calendar/calendar-settings';
 import {
+  disableCalendarSync,
+  enableCalendarSync,
   getCalendarPermission,
-  listWritableCalendars,
-  removeAllEvents,
+  migrateLegacyCalendar,
   requestCalendarPermission,
-  syncAllEvents,
-  type WritableCalendar,
 } from '@/calendar/calendar-sync';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { FONTS } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
 
 type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
 
-// Sheet "Calendario": permission, choice of a writable calendar, and the sync switch
+// Sheet "Calendario": permission and the sync switch. The deadlines go into the app's own
+// calendar "Sottomano"; turning the switch off deletes that calendar with all its events.
 export default function CalendarSettingsSheet() {
   const db = useSQLiteContext();
   const theme = useTheme();
   const [permission, setPermission] = useState<PermissionState>('unknown');
-  const [calendars, setCalendars] = useState<WritableCalendar[]>([]);
   const [settings, setSettings] = useState<CalendarSettings>(getCalendarSettings);
   const [busy, setBusy] = useState(false);
   const [status, setStatus] = useState<string | null>(null);
 
-  async function loadCalendars() {
-    setCalendars(await listWritableCalendars());
-  }
-
-  // Like ngOnInit: read the permission once when the sheet opens
+  // Like ngOnInit: read the permission once when the sheet opens (and finish the move away from
+  // a personal calendar left by an older version, now that we may have the permission)
   useEffect(() => {
-    getCalendarPermission().then((result) => {
+    getCalendarPermission().then(async (result) => {
       if (result.granted) {
         setPermission('granted');
-        listWritableCalendars().then(setCalendars, () => setCalendars([]));
+        await migrateLegacyCalendar(db);
+        setSettings(getCalendarSettings());
       } else {
         setPermission(result.canAskAgain ? 'ask' : 'denied');
       }
     });
-  }, []);
+  }, [db]);
 
   async function askPermission() {
     const result = await requestCalendarPermission();
-    if (result.granted) {
-      setPermission('granted');
-      await loadCalendars();
-    } else {
-      setPermission(result.canAskAgain ? 'ask' : 'denied');
-    }
-  }
-
-  function update(next: CalendarSettings) {
-    saveCalendarSettings(next);
-    setSettings(next);
+    setPermission(result.granted ? 'granted' : result.canAskAgain ? 'ask' : 'denied');
   }
 
   // Runs a calendar operation with a spinner and a readable error
@@ -70,48 +56,44 @@ export default function CalendarSettingsSheet() {
     } catch (error) {
       Alert.alert('Calendario', error instanceof Error ? error.message : String(error));
     } finally {
+      setSettings(getCalendarSettings());
       setBusy(false);
     }
   }
 
-  function chooseCalendar(calendar: WritableCalendar) {
-    if (calendar.id === settings.calendarId) return;
-    const next = { ...settings, calendarId: calendar.id, calendarTitle: calendar.title };
-    if (!settings.enabled) {
-      update(next);
+  function toggle(enabled: boolean) {
+    if (enabled) {
+      run(async () => {
+        const count = await enableCalendarSync(db);
+        return `${count === 1 ? '1 scadenza' : `${count} scadenze`} nel calendario «Sottomano»`;
+      });
       return;
     }
-    // Sync already on: move the events to the new calendar
-    run(async () => {
-      await removeAllEvents(db);
-      update(next);
-      const count = await syncAllEvents(db, calendar.id);
-      return `${count === 1 ? '1 scadenza' : `${count} scadenze`} in "${calendar.title}"`;
-    });
-  }
-
-  function toggle(enabled: boolean) {
-    const calendarId = settings.calendarId;
-    if (!calendarId) return;
-    run(async () => {
-      if (enabled) {
-        update({ ...settings, enabled: true });
-        const count = await syncAllEvents(db, calendarId);
-        return `${count === 1 ? '1 scadenza aggiunta' : `${count} scadenze aggiunte`} al calendario`;
-      }
-      await removeAllEvents(db);
-      update({ ...settings, enabled: false });
-      return 'Eventi rimossi dal calendario';
-    });
+    Alert.alert('Togliere il calendario Sottomano e tutte le sue scadenze dal Calendario?', undefined, [
+      { text: 'Annulla', style: 'cancel' },
+      {
+        text: 'Togli',
+        style: 'destructive',
+        onPress: () =>
+          run(async () => {
+            await disableCalendarSync(db);
+            return 'Calendario «Sottomano» cancellato';
+          }),
+      },
+    ]);
   }
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
       <ThemedText style={styles.title}>Calendario</ThemedText>
       <ThemedText themeColor="textSecondary">
-        Ogni scadenza diventa un evento di tutto il giorno «Scade: titolo». Se i promemoria di sottomano sono spenti,
-        l&apos;evento ha un avviso alle 9 nel giorno del promemoria (quello del documento, altrimenti «Avvisa prima di»); se sono accesi avvisa solo l&apos;app, così non ricevi
-        due avvisi. Nel calendario non finisce nessun altro dato del documento.
+        Le scadenze vanno in un calendario separato, «Sottomano». Puoi nasconderlo nell&apos;app Calendario; spegnendo
+        qui, viene cancellato.
+      </ThemedText>
+      <ThemedText type="small" themeColor="textSecondary">
+        Ogni scadenza è un evento di tutto il giorno «Scade: titolo», senza altri dati del documento. Se i promemoria di
+        sottomano sono spenti, l&apos;evento avvisa alle 9 nel giorno del promemoria; se sono accesi avvisa solo
+        l&apos;app, così non ricevi due avvisi.
       </ThemedText>
 
       {permission === 'ask' && <GradientButton label="Consenti accesso al Calendario" onPress={askPermission} />}
@@ -127,51 +109,12 @@ export default function CalendarSettingsSheet() {
 
       {permission === 'granted' && (
         <>
-          <ThemedText type="smallBold" themeColor="textSecondary" style={styles.sectionTitle}>
-            Scegli il calendario
-          </ThemedText>
-          <View style={[styles.card, { backgroundColor: theme.surface }]}>
-            {calendars.length === 0 && (
-              <ThemedText themeColor="textSecondary" style={styles.empty}>
-                Nessun calendario modificabile su questo iPhone.
-              </ThemedText>
-            )}
-            {calendars.map((calendar, index) => (
-              <Pressable
-                key={calendar.id}
-                onPress={() => chooseCalendar(calendar)}
-                disabled={busy}
-                accessibilityRole="button"
-                accessibilityState={{ selected: calendar.id === settings.calendarId }}
-                style={[
-                  styles.calendarRow,
-                  index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected },
-                ]}>
-                <View style={[styles.colorDot, { backgroundColor: calendar.color }]} />
-                <View style={styles.calendarTexts}>
-                  <ThemedText numberOfLines={1}>{calendar.title}</ThemedText>
-                  {calendar.source ? (
-                    <ThemedText type="small" themeColor="textSecondary" numberOfLines={1}>
-                      {calendar.source}
-                    </ThemedText>
-                  ) : null}
-                </View>
-                {calendar.id === settings.calendarId && <SymbolView name="checkmark" tintColor={BRAND_COLOR} size={18} />}
-              </Pressable>
-            ))}
-          </View>
-
           <View style={[styles.card, styles.switchRow, { backgroundColor: theme.surface }]}>
-            <ThemedText style={styles.switchLabel}>Aggiungi le scadenze al calendario</ThemedText>
+            <ThemedText style={styles.switchLabel}>Scadenze nel calendario «Sottomano»</ThemedText>
             <Host matchContents>
-              <Switch value={settings.enabled} onValueChange={toggle} disabled={busy || !settings.calendarId} />
+              <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} />
             </Host>
           </View>
-          {!settings.calendarId && (
-            <ThemedText type="small" themeColor="textSecondary">
-              Scegli prima un calendario.
-            </ThemedText>
-          )}
 
           {busy && <ActivityIndicator />}
           {status && !busy && (
@@ -197,32 +140,10 @@ const styles = StyleSheet.create({
     lineHeight: 28,
     fontFamily: FONTS.titleBold,
   },
-  sectionTitle: {
-    paddingHorizontal: 4,
-    marginBottom: -8,
-  },
   card: {
     borderRadius: 12,
     borderCurve: 'continuous',
     paddingHorizontal: 16,
-  },
-  empty: {
-    paddingVertical: 14,
-  },
-  calendarRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    minHeight: 52,
-    paddingVertical: 8,
-  },
-  colorDot: {
-    width: 12,
-    height: 12,
-    borderRadius: 6,
-  },
-  calendarTexts: {
-    flex: 1,
   },
   switchRow: {
     flexDirection: 'row',

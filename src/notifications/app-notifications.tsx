@@ -4,6 +4,7 @@ import { addDatabaseChangeListener, useSQLiteContext } from 'expo-sqlite';
 import { useEffect } from 'react';
 import { AppState } from 'react-native';
 
+import { migrateLegacyCalendar } from '@/calendar/calendar-sync';
 import { configureNotificationHandler, rescheduleReminders, updateAppBadge } from '@/notifications/reminders';
 
 function openFrom(response: Notifications.NotificationResponse | null) {
@@ -22,6 +23,8 @@ export function AppNotifications() {
   useEffect(() => {
     configureNotificationHandler();
     rescheduleReminders(db);
+    // Once, after an update: remove the events an older version put in a personal calendar
+    migrateLegacyCalendar(db);
 
     // The app was launched by tapping a notification
     const launch = Notifications.getLastNotificationResponse();

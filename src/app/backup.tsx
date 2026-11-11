@@ -20,6 +20,8 @@ import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
 
 const MIN_PASSWORD = 8;
+// While the key is derived from the password (PBKDF2, slow in pure JS): create and restore
+const KEY_LABEL = 'Protezione con la password in corso… può richiedere fino a un minuto';
 
 type Step =
   | { kind: 'idle' }
@@ -67,11 +69,11 @@ export default function BackupScreen() {
 
   async function create() {
     const chosen = password;
-    progress('Preparo la chiave…', null);
+    progress(KEY_LABEL, null);
     try {
       const file = await createBackup(db, chosen, (p) =>
         p.phase === 'key'
-          ? progress('Preparo la chiave…', null)
+          ? progress(KEY_LABEL, null)
           : progress('Creo il backup…', p.total > 0 ? p.done / p.total : null),
       );
       reset();
@@ -106,11 +108,11 @@ export default function BackupScreen() {
 
   async function openBackup(uri: string, name: string) {
     const typed = password;
-    progress('Preparo la chiave…', null);
+    progress(KEY_LABEL, null);
     let prepared;
     try {
       prepared = await prepareRestore(uri, typed, (p) => {
-        if (p.phase === 'key') progress('Preparo la chiave…', null);
+        if (p.phase === 'key') progress(KEY_LABEL, null);
         else if (p.phase === 'decrypt') progress('Apro il backup…', p.done / p.total);
         else progress('Controllo i documenti…', p.total > 0 ? p.done / p.total : null);
       });

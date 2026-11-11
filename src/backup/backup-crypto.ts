@@ -93,9 +93,30 @@ export function parseHeader(bytes: Uint8Array): BackupHeader {
   return { bytes: bytes.slice(0, HEADER_SIZE), iterations, salt, prefix, chunkSize };
 }
 
-// PBKDF2 in small slices (asyncTick), so the screen keeps spinning while it works
+// Lets React draw the "Protezione con la password in corso…" state before the long work starts:
+// one frame, then one macrotask
+function waitForPaint(): Promise<void> {
+  return new Promise((resolve) => requestAnimationFrame(() => setTimeout(resolve, 0)));
+}
+
+// PBKDF2-HMAC-SHA256, 210,000 iterations (never lower). In pure JS on Hermes it takes many seconds
+// (up to about a minute), so it runs in slices of KDF_SLICE_MS: after each slice noble yields
+// to the event loop with setTimeout(0), and the screen keeps updating.
+//
+// TODO(dev build): at the first development build, compute PBKDF2 with react-native-quick-crypto
+// (native, ~0.1 s). Same algorithm, iterations, salt and key length, so the .sottomano format and
+// every existing backup stay exactly the same; only this function changes.
+const KDF_SLICE_MS = 16; // about one frame of work between two yields
+
 export async function deriveKey(password: string, header: BackupHeader): Promise<AESEncryptionKey> {
-  const raw = await pbkdf2Async(sha256, password, header.salt, { c: header.iterations, dkLen: 32, asyncTick: 20 });
+  await waitForPaint();
+  const started = Date.now();
+  const raw = await pbkdf2Async(sha256, password, header.salt, {
+    c: header.iterations,
+    dkLen: 32,
+    asyncTick: KDF_SLICE_MS,
+  });
+  if (__DEV__) console.log(`[backup] PBKDF2-SHA256 ${header.iterations} iterations: ${Date.now() - started} ms`);
   const key = await AESEncryptionKey.import(raw);
   raw.fill(0);
   return key;

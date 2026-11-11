@@ -40,20 +40,29 @@ export async function storePendingFile(pending: PendingFile): Promise<string> {
   return relativePathFor(fileName);
 }
 
-// Files derived from a stored photo (see card-fronts.ts): the clean copy of a card front and the
-// "Usa la foto originale" marker. They share the photo's name, so they go away with it.
-const baseOf = (relativePath: string) => relativePath.replace(/\.[A-Za-z0-9]+$/, '');
-export const cleanPathFor = (relativePath: string) => `${baseOf(relativePath)}-clean.jpg`;
-export const originalMarkerFor = (relativePath: string) => `${baseOf(relativePath)}-original`;
-
-// Best-effort cleanup (e.g. when saving the document fails after the copy), derived files included
+// Best-effort cleanup (e.g. when saving the document fails after the copy)
 export function deleteStoredFile(relativePath: string): void {
-  for (const path of [relativePath, cleanPathFor(relativePath), originalMarkerFor(relativePath)]) {
-    try {
-      const file = resolveDocumentFile(path);
-      if (file.exists) file.delete();
-    } catch {
-      // nothing else to do: an orphan file is harmless
+  try {
+    const file = resolveDocumentFile(relativePath);
+    if (file.exists) file.delete();
+  } catch {
+    // nothing else to do: an orphan file is harmless
+  }
+}
+
+// Leftovers of the removed card-front enhancement: "…-clean.jpg" copies and "…-original" markers.
+// Saved files are always named "<unique>-<side>.<ext>", so these names never match a real photo.
+export function isRemovedCardFrontCopy(fileName: string): boolean {
+  return /-clean\.jpg$/.test(fileName) || /-original$/.test(fileName);
+}
+
+// At launch: deletes those leftovers (also after restoring a backup that still had them)
+export function removeCardFrontCopies(): void {
+  try {
+    for (const item of getDocumentsDirectory().list()) {
+      if (item instanceof File && isRemovedCardFrontCopy(item.name)) item.delete();
     }
+  } catch {
+    // harmless: they are only unused files
   }
 }

@@ -6,7 +6,6 @@ import { CardForm } from '@/components/card-form';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import { getCardsCategory } from '@/db/categories';
 import { insertCard } from '@/db/documents';
-import { applyCardFrontChoice } from '@/storage/card-fronts';
 import type { PendingFile } from '@/storage/pending-files';
 
 // Modal "Nuova carta": the photos and the code come from the camera as route params
@@ -26,7 +25,6 @@ export default function NewCardScreen() {
           coverMode: null,
           frontUri: params.front || null,
           barcodeUri: params.barcode || null,
-          useOriginalFront: false,
         }}
         onSubmit={async (values) => {
           const category = await getCardsCategory(db);
@@ -34,8 +32,7 @@ export default function NewCardScreen() {
           const files: PendingFile[] = [];
           if (values.frontUri) files.push({ uri: values.frontUri, kind: 'image', side: 'card_front' });
           if (values.barcodeUri) files.push({ uri: values.barcodeUri, kind: 'image', side: 'barcode' });
-          const id = await insertCard(db, { ...values, categoryId: category.id }, files);
-          void applyCardFrontChoice(db, id, values.useOriginalFront); // clean copy in the background
+          await insertCard(db, { ...values, categoryId: category.id }, files);
           router.back();
         }}
       />

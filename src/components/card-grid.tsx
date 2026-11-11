@@ -9,7 +9,6 @@ import { ThemedText } from '@/components/themed-text';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { TileScrollView } from '@/components/tile-grid';
 import type { DocumentListItem } from '@/db/types';
-import { useCardFront } from '@/hooks/use-card-front';
 import { useTileSize } from '@/hooks/use-tile-size';
 
 type Props = {
@@ -19,7 +18,7 @@ type Props = {
 };
 
 // "Tessere e card" as a wallet: card-shaped tiles, then "Aggiungi carta". Long press and drag a
-// card to reorder, like the other grids. Each card follows its "Copertina": Foto = the clean copy
+// card to reorder, like the other grids. Each card follows its "Copertina": Foto = the photo
 // of its front, edge to edge; Colore = its color with the name. The name (and the person) in
 // small text under the card.
 export function CardGrid({ cards, hrefFor, onReorder }: Props) {
@@ -48,13 +47,12 @@ export function CardGrid({ cards, hrefFor, onReorder }: Props) {
   );
 }
 
-// The card (clean front or color) and its caption: the look only, the sortable grid handles the tap
+// The card (front photo or color) and its caption: the look only, the sortable grid handles the tap
 function CardFaceWithCaption({ card, width }: { card: DocumentListItem; width: number }) {
   const showPhoto = card.coverMode !== 'color';
-  const photoUri = useCardFront(showPhoto ? card.firstImagePath : null);
   return (
     <View style={styles.cell}>
-      <CardFace card={card} width={width} showPhoto={showPhoto} photoUri={photoUri} />
+      <CardFace card={card} width={width} showPhoto={showPhoto} />
       <View>
         <ThemedText type="small" numberOfLines={1} maxFontSizeMultiplier={1.4}>
           {card.title}

@@ -7,7 +7,6 @@ import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import { getDocumentDetail, listDocumentFiles, saveCardEdits } from '@/db/documents';
 import type { DocumentDetail, DocumentFile, FileSide } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { applyCardFrontChoice, usesOriginalFront } from '@/storage/card-fronts';
 import { resolveDocumentFile } from '@/storage/document-files';
 import type { PendingFile } from '@/storage/pending-files';
 
@@ -51,7 +50,6 @@ function EditCardContent({ card, savedFiles }: { card: DocumentDetail; savedFile
         coverMode: card.coverMode,
         frontUri: front ? resolveDocumentFile(front.path).uri : null,
         barcodeUri: barcode ? resolveDocumentFile(barcode.path).uri : null,
-        useOriginalFront: front ? usesOriginalFront(front.path) : false,
       }}
       onSubmit={async (values, changed) => {
         // A retaken photo replaces the saved one with the same role
@@ -66,7 +64,6 @@ function EditCardContent({ card, savedFiles }: { card: DocumentDetail; savedFile
           added.push({ uri: values.barcodeUri, kind: 'image', side: 'barcode' });
         }
         await saveCardEdits(db, card.id, { ...values, categoryId: card.categoryId }, removed, added);
-        void applyCardFrontChoice(db, card.id, values.useOriginalFront); // clean copy in the background
         router.back();
       }}
     />

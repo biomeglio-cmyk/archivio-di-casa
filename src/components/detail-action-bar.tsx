@@ -4,16 +4,12 @@ import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import { BRAND_GRADIENT, FONTS, PIN_COLOR } from '@/constants/brand';
 import { usePressed } from '@/hooks/use-pressed';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useTheme } from '@/hooks/use-theme';
 
 const RADIUS = 12;
 const MIN_HEIGHT = 48;
-// "Cancella": soft red in light mode; in dark mode a translucent red with a lighter text
-const DELETE_COLORS = {
-  light: { background: '#FDE3E6', text: '#C8283D' },
-  dark: { background: 'rgba(229, 56, 59, 0.22)', text: '#FF7A7D' },
-};
+// "Cancella": soft red background, dark red text
+const DELETE_COLORS = { background: '#FDE3E6', text: '#C8283D' };
 const PIN_TINT = `${PIN_COLOR}33`; // the heart color at 20%: "Nei preferiti" stands out
 const MAX_FONT_SCALE = 1.2; // labels grow a little with Dynamic Type, then stop so the row always fits
 
@@ -31,7 +27,7 @@ type Props = {
 // They sit in the scroll content, right after the data, and scroll with the page.
 export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props) {
   const theme = useTheme();
-  const deleteColors = DELETE_COLORS[useColorScheme() === 'dark' ? 'dark' : 'light'];
+  const deleteColors = DELETE_COLORS;
 
   if (!onAdd && !onEdit && !onDelete && !pin) return null;
 

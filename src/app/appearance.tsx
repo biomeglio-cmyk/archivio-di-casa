@@ -1,4 +1,3 @@
-import { SegmentedControl } from '@expo/ui/community/segmented-control';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
@@ -14,23 +13,14 @@ import { BUILTIN_ORDER } from '@/db/builtin-categories';
 import { restoreBuiltinCategories } from '@/db/categories';
 import { useTheme } from '@/hooks/use-theme';
 import { setPaletteId, usePaletteId } from '@/settings/palette';
-import { setThemeMode, useThemeMode, type ThemeMode } from '@/settings/theme-mode';
-
-// "Tema": the segments, in order
-const THEME_MODES: { mode: ThemeMode; label: string }[] = [
-  { mode: 'auto', label: 'Automatico' },
-  { mode: 'light', label: 'Chiaro' },
-  { mode: 'dark', label: 'Scuro' },
-];
 
 const MINI_COLUMNS = 7; // 13 mini tiles: a row of 7 and a row of 6
 
-// "Aspetto" (Menu › Impostazioni): the "Tema" (Automatico, Chiaro, Scuro), then 6 palettes for the built-in categories, each previewed as a
+// "Aspetto" (Menu › Impostazioni): 6 palettes for the built-in categories, each previewed as a
 // mini grid of the 13 category tiles. A tap applies it at once to the whole app.
 export default function AppearanceScreen() {
   const db = useSQLiteContext();
   const selected = usePaletteId();
-  const themeMode = useThemeMode();
 
   // Brings back the deleted built-in categories (original name, icon, color), before "Altro"
   function restoreCategories() {
@@ -64,21 +54,6 @@ export default function AppearanceScreen() {
   return (
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-        {/* Applied at once to the whole app, and remembered */}
-        <View style={styles.theme}>
-          <ThemedText type="smallBold" themeColor="textSecondary" style={styles.intro} accessibilityRole="header">
-            Tema
-          </ThemedText>
-          <SegmentedControl
-            values={THEME_MODES.map((t) => t.label)}
-            selectedIndex={THEME_MODES.findIndex((t) => t.mode === themeMode)}
-            onChange={(event) => setThemeMode(THEME_MODES[event.nativeEvent.selectedSegmentIndex].mode)}
-          />
-          <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
-            {themeMode === 'auto' ? 'Segue l’impostazione dell’iPhone.' : 'Vale solo per Sottomano.'}
-          </ThemedText>
-        </View>
-
         <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
           I colori delle categorie predefinite. Le categorie create da te mantengono il loro colore.
         </ThemedText>
@@ -149,9 +124,6 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
 }
 
 const styles = StyleSheet.create({
-  theme: {
-    gap: 8,
-  },
   content: {
     padding: 16,
     paddingBottom: 48,

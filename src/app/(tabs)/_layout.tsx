@@ -3,9 +3,7 @@ import { NativeTabs } from 'expo-router/native-tabs';
 
 import { BRAND_COLOR } from '@/constants/brand';
 import { countUrgentDeadlines } from '@/db/urgent-count';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useTheme } from '@/hooks/use-theme';
 
 // Home is the tab the app starts on, at every launch and for every deep link into the tabs
 export const unstable_settings = { anchor: '(archive)' };
@@ -17,15 +15,9 @@ export const unstable_settings = { anchor: '(archive)' };
 export default function TabsLayout() {
   // Overdue + within 7 days, kept live by the database change listener
   const { data: urgent } = useDbQuery(countUrgentDeadlines, []);
-  // "Tema" of Aspetto: grey icons and (before iOS 26, where the system draws it) the bar material
-  const scheme = useColorScheme();
-  const theme = useTheme();
 
   return (
-    <NativeTabs
-      tintColor={BRAND_COLOR}
-      iconColor={{ default: theme.textSecondary, selected: BRAND_COLOR }}
-      blurEffect={scheme === 'dark' ? 'systemChromeMaterialDark' : 'systemChromeMaterialLight'}>
+    <NativeTabs tintColor={BRAND_COLOR}>
       <NativeTabs.Trigger name="(archive)" accessibilityLabel="Home">
         <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
         <NativeTabs.Trigger.Label hidden>Home</NativeTabs.Trigger.Label>

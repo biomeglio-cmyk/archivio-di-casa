@@ -1,14 +1,7 @@
-/**
- * Learn more about light and dark modes:
- * https://docs.expo.dev/guides/color-schemes/
- */
-
 import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 
+// The app colors. Sottomano is drawn in light mode only (app.json "userInterfaceStyle": "light"
+// and Appearance.setColorScheme('light') in the root layout), even when the iPhone is in dark mode.
 export function useTheme() {
-  const scheme = useColorScheme();
-  const theme = scheme === 'dark' ? 'dark' : 'light';
-
-  return Colors[theme];
+  return Colors.light;
 }

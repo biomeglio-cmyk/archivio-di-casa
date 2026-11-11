@@ -11,7 +11,6 @@ import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useTheme } from '@/hooks/use-theme';
 import { usesFrontBack } from '@/utils/page-labels';
 import { resolveDocumentFile } from '@/storage/document-files';
@@ -28,11 +27,8 @@ import {
   type SendPreferences,
 } from '@/send/send-preferences';
 
-// Warnings: soft orange in light mode, translucent orange with a lighter text in dark mode
-const WARNING_COLORS = {
-  light: { text: '#B35400', background: '#FFF1E0' },
-  dark: { text: '#FFB15C', background: 'rgba(255, 149, 0, 0.18)' },
-};
+// Warnings: soft orange box, dark orange text
+const WARNING_COLORS = { text: '#B35400', background: '#FFF1E0' };
 
 // Sheet "Invia": /send?ids=12 for one document, /send?ids=3,7,9&label=Step for several
 export default function SendSheet() {
@@ -48,7 +44,7 @@ type Result = { key: string; prepared?: PreparedSend; error?: string };
 
 function SendForm({ items, label }: { items: SendItem[]; label: string | null }) {
   const theme = useTheme();
-  const warningColors = WARNING_COLORS[useColorScheme() === 'dark' ? 'dark' : 'light'];
+  const warningColors = WARNING_COLORS;
   const WARNING_TEXT = warningColors.text;
   const warningBox = [styles.warning, { backgroundColor: warningColors.background }];
   const warningText = [styles.warningText, { color: warningColors.text }];

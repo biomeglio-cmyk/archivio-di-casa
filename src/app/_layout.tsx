@@ -4,12 +4,13 @@ import {
   Outfit_700Bold,
   useFonts,
 } from '@expo-google-fonts/outfit';
-import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
+import { DefaultTheme, ThemeProvider } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { SQLiteProvider } from 'expo-sqlite';
 import { Fragment } from 'react';
+import { Appearance } from 'react-native';
 
 import { useAppGeneration } from '@/backup/app-reload';
 import { AppLock } from '@/components/app-lock';
@@ -17,25 +18,22 @@ import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/brand';
 import { Colors } from '@/constants/theme';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
-import { useColorScheme } from '@/hooks/use-color-scheme';
 import { AppNotifications } from '@/notifications/app-notifications';
-import { applySavedThemeMode } from '@/settings/theme-mode';
 
 // Navigation themes with the app page color (iOS systemGroupedBackground) behind every screen
 const LIGHT_THEME = { ...DefaultTheme, colors: { ...DefaultTheme.colors, background: Colors.light.background, card: Colors.light.surface } };
-const DARK_THEME = { ...DarkTheme, colors: { ...DarkTheme.colors, background: Colors.dark.background, card: Colors.dark.surface } };
 
 // The root Stack starts on the tabs; sheets and modals are pushed on top of them
 export const unstable_settings = { anchor: '(tabs)' };
 
 SplashScreen.preventAutoHideAsync();
 
-// "Tema" (Aspetto): the saved Chiaro/Scuro is applied before the first screen is drawn
-applySavedThemeMode();
+// Light mode only, even when the iPhone is in dark mode: app.json says "light", and this also
+// forces the native parts (tab bar, sheets, alerts, pickers) where app.json is not applied (Expo Go)
+Appearance.setColorScheme('light');
 
 // Root Stack: it holds the tab bar and the screens that slide up above the tabs.
 export default function RootLayout() {
-  const colorScheme = useColorScheme();
   // Changes after "Ripristina backup": every screen is rebuilt from the restored data
   const generation = useAppGeneration();
 
@@ -61,10 +59,10 @@ export default function RootLayout() {
       databaseName={DATABASE_NAME}
       onInit={initDatabase}
       options={{ enableChangeListener: true }}>
-      <ThemeProvider value={colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME}>
+      <ThemeProvider value={LIGHT_THEME}>
         <Fragment key={generation}>
-        {/* Clock and battery: dark on the light theme, light on the dark one */}
-        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
+        {/* Dark clock and battery on the light screens */}
+        <StatusBar style="dark" />
         {/* Reminders: scheduled at start, tapping one opens its document */}
         <AppNotifications />
         <Stack>
@@ -87,7 +85,7 @@ export default function RootLayout() {
               sheetGrabberVisible: true,
               sheetAllowedDetents: [0.9],
               sheetCornerRadius: 24,
-              contentStyle: { backgroundColor: colorScheme === 'dark' ? Colors.dark.background : Colors.light.background },
+              contentStyle: { backgroundColor: Colors.light.background },
             }}
           />
           <Stack.Screen

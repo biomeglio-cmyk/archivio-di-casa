@@ -17,7 +17,7 @@ import { setPaletteId, usePaletteId } from '@/settings/palette';
 
 const MINI_COLUMNS = 7; // 13 mini tiles: a row of 7 and a row of 6
 
-// "Aspetto" (Menu › Impostazioni): 6 palettes for the built-in categories, each previewed as a
+// "Aspetto" (Menu › Impostazioni): 7 palettes for the built-in categories ("Sottomano" first), each previewed as a
 // mini grid of the 13 category tiles. A tap applies it at once to the whole app.
 export default function AppearanceScreen() {
   const db = useSQLiteContext();

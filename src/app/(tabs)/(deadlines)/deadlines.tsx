@@ -15,6 +15,7 @@ import { listDocumentsWithExpiry } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
+import { categoryInk } from '@/utils/colors';
 import { addDaysIso, formatShortDate, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 import { groupDeadlines, type DeadlineSection } from '@/utils/deadlines';
 
@@ -42,7 +43,7 @@ export default function DeadlinesScreen() {
   const markers = new Map<string, string[]>();
   for (const doc of documents ?? []) {
     if (!doc.expiresAt) continue;
-    const color = doc.expiresAt < todayIso ? DANGER_COLOR : doc.category.colors.text;
+    const color = doc.expiresAt < todayIso ? DANGER_COLOR : categoryInk(doc.category.colors);
     const colors = markers.get(doc.expiresAt) ?? [];
     if (!colors.includes(color)) markers.set(doc.expiresAt, [...colors, color]);
   }

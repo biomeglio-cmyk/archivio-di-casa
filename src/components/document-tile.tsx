@@ -56,20 +56,17 @@ export function DocumentTile({ document, size, href, selection }: Props) {
           {document.title}
         </Text>
         {/* Two short lines, "gio 12 nov" and "tra 2 giorni", so nothing gets cut with large text */}
-        <View style={styles.expiry}>
-          {document.expiresAt && days !== null ? (
-            <>
-              <Text style={[styles.expiryText, { color: expired ? DANGER_COLOR : colors.text }]}>
-                {formatShortDate(document.expiresAt)}
-              </Text>
-              <Text style={[styles.expiryText, { color: expired ? DANGER_COLOR : colors.text }]}>
-                {describeDistance(days)}
-              </Text>
-            </>
-          ) : (
-            <Text style={[styles.expiryText, { color: colors.text }]}>Nessuna scadenza</Text>
-          )}
-        </View>
+        {/* Only a real deadline is shown; without one, nothing */}
+        {document.expiresAt && days !== null && (
+          <View style={styles.expiry}>
+            <Text style={[styles.expiryText, { color: expired ? DANGER_COLOR : colors.text }]}>
+              {formatShortDate(document.expiresAt)}
+            </Text>
+            <Text style={[styles.expiryText, { color: expired ? DANGER_COLOR : colors.text }]}>
+              {describeDistance(days)}
+            </Text>
+          </View>
+        )}
 
         {selection && (
           <View style={styles.check}>

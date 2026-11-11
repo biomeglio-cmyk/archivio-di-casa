@@ -123,6 +123,11 @@ export function DocumentForm({
 
   const line = theme.backgroundSelected;
 
+  function toggleExpiry(value: boolean) {
+    setHasExpiry(value);
+    setCalendarOpen(value); // turning it on shows the calendar straight away
+  }
+
   return (
     <ScrollView
       contentInsetAdjustmentBehavior="automatic"
@@ -178,15 +183,10 @@ export function DocumentForm({
               </Picker>
             </FormRow>
 
-            <FormRow label="Aggiungi una scadenza" separator={line} plain>
-              <Switch
-                value={hasExpiry}
-                onValueChange={(value) => {
-                  setHasExpiry(value);
-                  setCalendarOpen(value); // turning it on shows the calendar straight away
-                }}
-                accessibilityLabel="Aggiungi una scadenza"
-              />
+            {/* Every category can have a deadline (only cards, which have their own form, don't).
+                The whole row toggles it, not just the switch. */}
+            <FormRow label="Aggiungi una scadenza" separator={line} onPress={() => toggleExpiry(!hasExpiry)}>
+              <Switch value={hasExpiry} onValueChange={toggleExpiry} accessibilityLabel="Aggiungi una scadenza" />
             </FormRow>
 
             {hasExpiry && (
@@ -300,20 +300,36 @@ type FormRowProps = {
   label: string;
   required?: boolean;
   separator?: string; // color of the line above the row (omitted on the first row)
-  plain?: boolean; // a React Native control (our Switch), not a native SwiftUI one: no Host
+  // The row holds a React Native control (our Switch), not a native SwiftUI one: no Host, never
+  // clipped, and a tap anywhere on the row runs onPress
+  onPress?: () => void;
   children: ReactNode;
 };
 
 // One row of a grouped card: label on the left, native control on the right
-function FormRow({ label, required, separator, plain = false, children }: FormRowProps) {
+function FormRow({ label, required, separator, onPress, children }: FormRowProps) {
+  const style = [styles.row, separator && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: separator }];
+  const labelView = (
+    <View style={styles.rowLabel}>
+      <FieldLabel label={label} required={required} />
+    </View>
+  );
+  if (onPress) {
+    return (
+      <Pressable onPress={onPress} accessible={false} style={style}>
+        {labelView}
+        <View style={styles.rowSwitch}>{children}</View>
+      </Pressable>
+    );
+  }
   return (
-    <View style={[styles.row, separator && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: separator }]}>
-      <View style={styles.rowLabel}>
-        <FieldLabel label={label} required={required} />
-      </View>
+    <View style={style}>
+      {labelView}
       {/* Host is the bridge between React Native and the native SwiftUI controls.
           The wrapper keeps it inside the card even with a long value. */}
-      <View style={styles.rowControl}>{plain ? children : <Host matchContents>{children}</Host>}</View>
+      <View style={styles.rowControl}>
+        <Host matchContents>{children}</Host>
+      </View>
     </View>
   );
 }
@@ -351,6 +367,9 @@ const styles = StyleSheet.create({
     maxWidth: '65%',
     alignItems: 'flex-end',
     overflow: 'hidden',
+  },
+  rowSwitch: {
+    flexShrink: 0, // the switch keeps its size and is never clipped
   },
   dateValue: {
     color: BRAND_COLOR,

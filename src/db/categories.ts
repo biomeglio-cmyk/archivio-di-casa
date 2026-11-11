@@ -93,6 +93,15 @@ export async function updateCategory(db: SQLiteDatabase, id: number, input: Cate
   );
 }
 
+// Home: order chosen by dragging the tiles. It is the order of every category list in the app.
+export async function saveCategoryOrder(db: SQLiteDatabase, orderedIds: number[]): Promise<void> {
+  await db.withTransactionAsync(async () => {
+    for (const [index, id] of orderedIds.entries()) {
+      await db.runAsync('UPDATE categories SET sort_order = ? WHERE id = ?', index, id);
+    }
+  });
+}
+
 export async function countDocumentsInCategory(db: SQLiteDatabase, id: number): Promise<number> {
   const row = await db.getFirstAsync<{ count: number }>('SELECT COUNT(*) AS count FROM documents WHERE category_id = ?', id);
   return row?.count ?? 0;

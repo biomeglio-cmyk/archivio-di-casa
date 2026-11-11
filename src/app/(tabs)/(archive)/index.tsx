@@ -1,8 +1,9 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -11,9 +12,10 @@ import { CategoryTile } from '@/components/category-tile';
 import { SearchBar } from '@/components/search-bar';
 import { SearchResultsList } from '@/components/search-results';
 import { ThemedText } from '@/components/themed-text';
-import { TileGrid, TileScrollView } from '@/components/tile-grid';
+import { SortableTileGrid } from '@/components/sortable-tile-grid';
+import { TileScrollView } from '@/components/tile-grid';
 import { FONTS } from '@/constants/brand';
-import { listCategoriesWithCounts } from '@/db/categories';
+import { listCategoriesWithCounts, saveCategoryOrder } from '@/db/categories';
 import { listAllDocuments } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
@@ -27,7 +29,8 @@ const SEARCH_DEBOUNCE_MS = 200;
 // two-column grid of categories with the dashed "Nuova categoria" tile, or the search results while searching
 export default function ArchiveScreen() {
   const insets = useSafeAreaInsets();
-  const scrollRef = useAnimatedRef<Animated.ScrollView>(); // Preferiti scroll the page while dragging
+  const db = useSQLiteContext();
+  const scrollRef = useAnimatedRef<Animated.ScrollView>(); // the page scrolls while a category is dragged
   const theme = useTheme();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: allDocuments } = useDbQuery(listAllDocuments, []);
@@ -53,7 +56,7 @@ export default function ArchiveScreen() {
   }, []);
 
   return (
-    // Gesture root for the drag and drop of the Preferiti
+    // Gesture root for the drag and drop of the categories
     <GestureHandlerRootView style={styles.screen}>
       {/* Fixed top: no navigation bar here, so the safe area is added by hand. The search field
           stays mounted while the grid below is swapped for the results, so the keyboard stays open. */}
@@ -87,14 +90,24 @@ export default function ArchiveScreen() {
         <SearchResultsList query={searched} results={results} filter={filter} onFilterChange={setFilter} />
       ) : (
         <TileScrollView ref={scrollRef} keyboardShouldPersistTaps="handled">
-          <TileGrid
-            items={categories}
-            keyFor={(category) => category.id}
-            add={{ label: 'Nuova categoria', onPress: () => router.push('/category-form') }}
-            renderTile={(category, size) => (
-              <CategoryTile category={category} documentCount={category.documentCount} size={size} />
-            )}
-          />
+          {categories && (
+            <SortableTileGrid
+              items={categories}
+              keyFor={(category) => category.id}
+              labelFor={(category) =>
+                `${category.name}, ${category.documentCount === 1 ? '1 documento' : `${category.documentCount} documenti`}`
+              }
+              renderTile={(category) => <CategoryTile category={category} documentCount={category.documentCount} />}
+              onOpen={(category) => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
+              onReorder={(ordered) =>
+                saveCategoryOrder(db, ordered.map((c) => c.id)).catch((error: unknown) =>
+                  Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error)),
+                )
+              }
+              add={{ label: 'Nuova categoria', onPress: () => router.push('/category-form') }}
+              scrollableRef={scrollRef}
+            />
+          )}
         </TileScrollView>
       )}
     </GestureHandlerRootView>

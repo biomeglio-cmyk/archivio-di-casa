@@ -12,12 +12,11 @@ type Props = {
   selection: ReturnType<typeof useDocumentSelection>;
   onAdd: () => void; // dashed "Aggiungi documento" tile
   header?: ReactElement | null;
-  footer?: ReactElement | null;
 };
 
 // Documents of a category or a person in the shared TileGrid, then the dashed
 // "Aggiungi documento" (hidden while selecting)
-export function DocumentGrid({ documents, hrefFor, selection, onAdd, header, footer }: Props) {
+export function DocumentGrid({ documents, hrefFor, selection, onAdd, header }: Props) {
   return (
     <TileScrollView>
       {header}
@@ -42,7 +41,6 @@ export function DocumentGrid({ documents, hrefFor, selection, onAdd, header, foo
           />
         )}
       />
-      {footer}
     </TileScrollView>
   );
 }

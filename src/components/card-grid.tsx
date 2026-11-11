@@ -1,5 +1,4 @@
 import { router, type Href } from 'expo-router';
-import type { ReactElement } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { startAddCard } from '@/capture/start-add-card';
@@ -14,13 +13,12 @@ import type { TileSize } from '@/hooks/use-tile-size';
 type Props = {
   cards: DocumentListItem[] | undefined;
   hrefFor: (card: DocumentListItem) => Href;
-  footer?: ReactElement | null; // after the grid
 };
 
 // "Tessere e card" as a wallet: the shared TileGrid with card-shaped tiles, then "Aggiungi carta".
 // Each card follows its "Copertina": Foto = the clean copy of its front, edge to edge;
 // Colore = its color with the name. The name (and the person) in small text under the card.
-export function CardGrid({ cards, hrefFor, footer }: Props) {
+export function CardGrid({ cards, hrefFor }: Props) {
   return (
     <TileScrollView>
       <TileGrid
@@ -30,7 +28,6 @@ export function CardGrid({ cards, hrefFor, footer }: Props) {
         add={{ label: 'Aggiungi carta', onPress: () => startAddCard('push') }}
         renderTile={(card, size) => <CardTile card={card} size={size} href={hrefFor(card)} />}
       />
-      {footer}
     </TileScrollView>
   );
 }

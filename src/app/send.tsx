@@ -11,6 +11,7 @@ import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { useTheme } from '@/hooks/use-theme';
 import { usesFrontBack } from '@/utils/page-labels';
 import { resolveDocumentFile } from '@/storage/document-files';
@@ -27,8 +28,11 @@ import {
   type SendPreferences,
 } from '@/send/send-preferences';
 
-const WARNING_TEXT = '#B35400';
-const WARNING_BACKGROUND = '#FFF1E0';
+// Warnings: soft orange in light mode, translucent orange with a lighter text in dark mode
+const WARNING_COLORS = {
+  light: { text: '#B35400', background: '#FFF1E0' },
+  dark: { text: '#FFB15C', background: 'rgba(255, 149, 0, 0.18)' },
+};
 
 // Sheet "Invia": /send?ids=12 for one document, /send?ids=3,7,9&label=Step for several
 export default function SendSheet() {
@@ -44,6 +48,10 @@ type Result = { key: string; prepared?: PreparedSend; error?: string };
 
 function SendForm({ items, label }: { items: SendItem[]; label: string | null }) {
   const theme = useTheme();
+  const warningColors = WARNING_COLORS[useColorScheme() === 'dark' ? 'dark' : 'light'];
+  const WARNING_TEXT = warningColors.text;
+  const warningBox = [styles.warning, { backgroundColor: warningColors.background }];
+  const warningText = [styles.warningText, { color: warningColors.text }];
   const composerRef = useRef<FrontBackComposerHandle>(null);
   const [preferences, setPreferences] = useState<SendPreferences>(loadSendPreferences);
   const [result, setResult] = useState<Result | null>(null);
@@ -220,15 +228,15 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       </View>
 
       {prepared?.warnings.map((warning) => (
-        <View key={warning} style={styles.warning}>
+        <View key={warning} style={warningBox}>
           <SymbolView name="exclamationmark.triangle.fill" tintColor={WARNING_TEXT} size={16} />
-          <Text style={styles.warningText}>{warning}</Text>
+          <Text style={warningText}>{warning}</Text>
         </View>
       ))}
       {skipped > 0 && (
-        <View style={styles.warning}>
+        <View style={warningBox}>
           <SymbolView name="exclamationmark.triangle.fill" tintColor={WARNING_TEXT} size={16} />
-          <Text style={styles.warningText}>
+          <Text style={warningText}>
             {skipped === 1 ? '1 documento senza foto non è incluso' : `${skipped} documenti senza foto non sono inclusi`}{' '}
             (i PDF importati non si possono ancora unire).
           </Text>
@@ -306,11 +314,9 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 12,
     borderCurve: 'continuous',
-    backgroundColor: WARNING_BACKGROUND,
   },
   warningText: {
     flex: 1,
-    color: WARNING_TEXT,
     fontSize: 14,
     lineHeight: 19,
   },

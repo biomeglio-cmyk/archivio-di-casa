@@ -1,13 +1,17 @@
 import { SymbolView } from 'expo-symbols';
 import { StyleSheet, Text, View } from 'react-native';
 
+import { isLightColor } from '@/utils/colors';
 import { daysUntil } from '@/utils/deadlines';
 
 const RED = '#C8283D';
 const RED_SOFT = '#FDE3E6';
 const AMBER = '#8A5A00';
 const AMBER_SOFT = '#FFF1D6';
-const NEUTRAL_BACKGROUND = 'rgba(255, 255, 255, 0.55)';
+// Behind the tile's own text color: translucent white under dark text (pastel tiles),
+// translucent black under light text (palette "Notte", dark cover colors)
+const NEUTRAL_ON_LIGHT = 'rgba(255, 255, 255, 0.55)';
+const NEUTRAL_ON_DARK = 'rgba(0, 0, 0, 0.28)';
 
 type Props = {
   expiresAt: string | null; // 'YYYY-MM-DD'
@@ -40,7 +44,7 @@ export function DeadlineChip({ expiresAt, neutralColor }: Props) {
         ? { background: RED_SOFT, text: RED }
         : days <= 30
           ? { background: AMBER_SOFT, text: AMBER }
-          : { background: NEUTRAL_BACKGROUND, text: neutralColor };
+          : { background: isLightColor(neutralColor) ? NEUTRAL_ON_DARK : NEUTRAL_ON_LIGHT, text: neutralColor };
   }
 
   return (

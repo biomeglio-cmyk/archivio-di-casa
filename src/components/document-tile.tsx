@@ -13,6 +13,8 @@ import { usePressed } from '@/hooks/use-pressed';
 import type { TileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
 
+const UNSELECTED_TINT = '#8E8E93';
+
 type FaceProps = {
   document: DocumentListItem; // includes its category and its first photo
   selected?: boolean; // "Seleziona": tick circle in the top-right corner
@@ -54,14 +56,14 @@ export function DocumentTileFace({ document, selected }: FaceProps) {
       </Text>
       {/* The deadline as a bell chip, only when there is one */}
       <View style={styles.expiry}>
-        <DeadlineChip expiresAt={document.expiresAt} neutralColor={category.colors.text} />
+        <DeadlineChip expiresAt={document.expiresAt} neutralColor={textColor} />
       </View>
 
       {selected !== undefined && (
         <View style={styles.check}>
           <SymbolView
             name={selected ? 'checkmark.circle.fill' : 'circle'}
-            tintColor={selected ? BRAND_COLOR : category.colors.text}
+            tintColor={selected ? BRAND_COLOR : UNSELECTED_TINT} // grey on the white chip, on any palette
             size={24}
           />
         </View>

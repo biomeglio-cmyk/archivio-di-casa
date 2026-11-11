@@ -40,12 +40,20 @@ export async function storePendingFile(pending: PendingFile): Promise<string> {
   return relativePathFor(fileName);
 }
 
-// Best-effort cleanup (e.g. when saving the document fails after the copy)
+// Files derived from a stored photo (see card-fronts.ts): the clean copy of a card front and the
+// "Usa la foto originale" marker. They share the photo's name, so they go away with it.
+const baseOf = (relativePath: string) => relativePath.replace(/\.[A-Za-z0-9]+$/, '');
+export const cleanPathFor = (relativePath: string) => `${baseOf(relativePath)}-clean.jpg`;
+export const originalMarkerFor = (relativePath: string) => `${baseOf(relativePath)}-original`;
+
+// Best-effort cleanup (e.g. when saving the document fails after the copy), derived files included
 export function deleteStoredFile(relativePath: string): void {
-  try {
-    const file = resolveDocumentFile(relativePath);
-    if (file.exists) file.delete();
-  } catch {
-    // nothing else to do: an orphan file is harmless
+  for (const path of [relativePath, cleanPathFor(relativePath), originalMarkerFor(relativePath)]) {
+    try {
+      const file = resolveDocumentFile(path);
+      if (file.exists) file.delete();
+    } catch {
+      // nothing else to do: an orphan file is harmless
+    }
   }
 }

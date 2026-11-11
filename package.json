@@ -6,6 +6,7 @@
     "@expo-google-fonts/outfit": "^0.4.3",
     "@expo/ui": "~58.0.27",
     "@noble/hashes": "^2.4.0",
+    "@shopify/react-native-skia": "2.14.0",
     "bwip-js": "^4.11.4",
     "expo": "~58.0.23",
     "expo-brightness": "~58.0.2",

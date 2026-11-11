@@ -13,18 +13,19 @@ type Props = {
   showPerson?: boolean; // person name in a small label in the bottom-left corner
   large?: boolean; // bigger title for the detail screen
   showPhoto?: boolean; // false = "Copertina: Colore": its color and name even if it has a photo
+  photoUri?: string | null; // another copy of the front to show (the clean one in the wallet)
 };
 
 // A card drawn with the proportions of a real one (85.6 × 54 mm): the photo of its front,
 // or its color with the name in white when there is no photo (or the cover is "Colore")
-export function CardFace({ card, width, showPerson = false, large = false, showPhoto = true }: Props) {
+export function CardFace({ card, width, showPerson = false, large = false, showPhoto = true, photoUri }: Props) {
   const height = Math.round(width / CARD_ASPECT_RATIO);
 
   return (
     <View style={[styles.card, { width, height, backgroundColor: card.cardColor ?? DEFAULT_CARD_COLOR }]}>
       {showPhoto && card.firstImagePath ? (
         <Image
-          source={{ uri: resolveDocumentFile(card.firstImagePath).uri }}
+          source={{ uri: photoUri ?? resolveDocumentFile(card.firstImagePath).uri }}
           style={StyleSheet.absoluteFill}
           contentFit="cover"
           transition={120}

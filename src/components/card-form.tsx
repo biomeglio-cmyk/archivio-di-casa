@@ -1,4 +1,4 @@
-import { Host, Picker } from '@expo/ui';
+import { Host, Picker, Switch } from '@expo/ui';
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useState, type ReactNode } from 'react';
@@ -28,6 +28,7 @@ export type CardFormValues = {
   coverMode: CoverMode | null; // "Copertina"; null = automatic (Foto when there is a photo)
   frontUri: string | null; // photo of the front (file:// URI)
   barcodeUri: string | null; // photo of the barcode
+  useOriginalFront: boolean; // "Usa la foto originale": no clean copy in the wallet
 };
 
 type Props = {
@@ -49,6 +50,7 @@ export function CardForm({ initial, onSubmit }: Props) {
   const [coverMode, setCoverMode] = useState<CoverMode | null>(initial.coverMode);
   const [frontUri, setFrontUri] = useState(initial.frontUri);
   const [barcodeUri, setBarcodeUri] = useState(initial.barcodeUri);
+  const [useOriginalFront, setUseOriginalFront] = useState(initial.useOriginalFront);
   const [changed, setChanged] = useState({ front: false, barcode: false });
   const [retake, setRetake] = useState<CardStep | null>(null); // full-screen camera for one photo
   const [saving, setSaving] = useState(false);
@@ -100,6 +102,7 @@ export function CardForm({ initial, onSubmit }: Props) {
           coverMode,
           frontUri,
           barcodeUri,
+          useOriginalFront,
         },
         changed,
       );
@@ -132,6 +135,27 @@ export function CardForm({ initial, onSubmit }: Props) {
             </View>
           </PhotoSlot>
         </View>
+
+        {/* The wallet shows a cleaner copy of the front (trimmed, sharper colors); the original is kept */}
+        {frontUri && (
+          <View style={styles.footer}>
+            <View style={[styles.card, { backgroundColor: theme.surface }]}>
+              <View style={styles.row}>
+                <View style={styles.rowLabel}>
+                  <FieldLabel label="Usa la foto originale" />
+                </View>
+                <Host matchContents>
+                  <Switch value={useOriginalFront} onValueChange={setUseOriginalFront} />
+                </Host>
+              </View>
+            </View>
+            <ThemedText type="small" themeColor="textSecondary" style={styles.hint}>
+              {useOriginalFront
+                ? 'In Tessere e card si vede la foto così come l’hai scattata.'
+                : 'In Tessere e card la foto è ritagliata sui bordi e un po’ più nitida e colorata.'}
+            </ThemedText>
+          </View>
+        )}
 
         <FormField label="Nome" required>
           <TextField value={title} onChangeText={setTitle} placeholder="Es. Tessera Esselunga" returnKeyType="done" />

@@ -10,6 +10,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import { SQLiteProvider } from 'expo-sqlite';
 import { useColorScheme } from 'react-native';
 
+import { AppLock } from '@/components/app-lock';
 import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/brand';
 import { Colors } from '@/constants/theme';
@@ -182,6 +183,8 @@ export default function RootLayout() {
         </Stack>
         {/* After the Stack, so it is drawn on top of the first screen while it fades */}
         <SplashOverlay />
+        {/* "Blocca con Face ID": above everything, even the open sheets and modals */}
+        <AppLock />
       </ThemeProvider>
     </SQLiteProvider>
   );

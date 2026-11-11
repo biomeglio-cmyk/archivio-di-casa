@@ -58,7 +58,13 @@
           "remindersPermission": false
         }
       ],
-      "expo-notifications"
+      "expo-notifications",
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Sottomano usa Face ID per proteggere i tuoi documenti."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,

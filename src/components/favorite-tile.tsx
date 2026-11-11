@@ -13,8 +13,12 @@ import { resolveDocumentFile } from '@/storage/document-files';
 // The look only: the sortable grid around it handles tap and drag.
 export function FavoriteTile({ document }: { document: DocumentListItem }) {
   const { category } = document;
+  // "Copertina": Foto when chosen (or automatic) and there is a photo; otherwise Colore
+  const showPhoto = document.firstImagePath !== null && document.coverMode !== 'color';
+  // A chosen color (cards always have one), else the category gradient
+  const solid = document.coverColor ?? (category.isCards ? (document.cardColor ?? DEFAULT_CARD_COLOR) : null);
 
-  if (document.firstImagePath) {
+  if (showPhoto && document.firstImagePath) {
     return (
       <View style={[styles.tile, styles.photoTile]}>
         <Image
@@ -32,10 +36,10 @@ export function FavoriteTile({ document }: { document: DocumentListItem }) {
       </View>
     );
   }
-  if (category.isCards) {
-    // A card without photo keeps its own color, as in "Tessere e card"
+  if (solid) {
+    // A color picked by the user (or the card's color): white icon and title
     return (
-      <View style={[styles.tile, styles.padded, { backgroundColor: document.cardColor ?? DEFAULT_CARD_COLOR }]}>
+      <View style={[styles.tile, styles.padded, { backgroundColor: solid }]}>
         <SymbolView name={category.symbol} tintColor="#FFFFFF" size={28} />
         <Text style={[styles.title, { color: '#FFFFFF' }]} numberOfLines={3}>
           {document.title}

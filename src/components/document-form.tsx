@@ -3,13 +3,14 @@ import { DateTimePicker } from '@expo/ui/community/datetime-picker';
 import { useState, type ReactNode } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
+import { CoverField } from '@/components/cover-field';
 import { FieldLabel, FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { listCategories } from '@/db/categories';
 import type { DocumentInput } from '@/db/documents';
-import type { Category } from '@/db/types';
+import type { Category, CoverMode } from '@/db/types';
 import { listPeople } from '@/db/people';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
@@ -37,11 +38,19 @@ type Props = {
   // It never goes into DocumentInput, so it can't reach SQLite by mistake.
   onSubmit: (input: DocumentInput, password: string | null) => Promise<void>;
   hasSavedPassword?: boolean; // editing a Password document that already has one in the Keychain
+  hasPhoto?: boolean; // the pages include a photo: "Copertina" defaults to Foto
 };
 
 // The document form, shared by "Nuovo documento" and "Modifica documento".
 // Required: title and category. Everything else is optional.
-export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit, hasSavedPassword = false }: Props) {
+export function DocumentForm({
+  initial,
+  files,
+  autoFocusTitle = false,
+  onSubmit,
+  hasSavedPassword = false,
+  hasPhoto = false,
+}: Props) {
   const theme = useTheme();
   const { data: categories } = useDbQuery(listCategories, []);
   const { data: people } = useDbQuery(listPeople, []);
@@ -59,6 +68,9 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit,
   const [notes, setNotes] = useState(initial?.notes ?? '');
   const [username, setUsername] = useState(initial?.username ?? '');
   const [password, setPassword] = useState('');
+  // null = automatic: Foto when there is a photo, else Colore (decided again at every save)
+  const [coverMode, setCoverMode] = useState<CoverMode | null>(initial?.coverMode ?? null);
+  const [coverColor, setCoverColor] = useState<string | null>(initial?.coverColor ?? null);
   const [saving, setSaving] = useState(false);
 
   const missing = [
@@ -67,7 +79,8 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit,
   ].filter((field): field is string => Boolean(field));
   const canSave = missing.length === 0 && !saving;
 
-  const isPassword = Boolean(categories?.find((c) => c.id === categoryId)?.isPassword);
+  const selectedCategory = categories?.find((c) => c.id === categoryId);
+  const isPassword = Boolean(selectedCategory?.isPassword);
 
   async function submit() {
     if (!canSave) return;
@@ -83,6 +96,8 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit,
           reminderDays: hasExpiry && reminderDays !== NONE ? reminderDays : null,
           notes,
           username: isPassword ? username : null,
+          coverMode,
+          coverColor,
         },
         isPassword && password.length > 0 ? password : null,
       );
@@ -126,6 +141,15 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit,
               </Picker>
             </FormRow>
           </View>
+
+          <CoverField
+            mode={coverMode ?? (hasPhoto ? 'photo' : 'color')}
+            onModeChange={setCoverMode}
+            color={coverColor}
+            onColorChange={setCoverColor}
+            categoryColors={selectedCategory?.colors}
+            hasPhoto={hasPhoto}
+          />
 
           <ThemedText type="smallBold" themeColor="textSecondary" style={styles.sectionTitle}>
             Facoltativi

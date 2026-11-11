@@ -47,6 +47,7 @@ function EditCardContent({ card, savedFiles }: { card: DocumentDetail; savedFile
         barcodeValue: card.barcodeValue,
         barcodeType: card.barcodeType,
         cardColor: card.cardColor ?? DEFAULT_CARD_COLOR,
+        coverMode: card.coverMode,
         frontUri: front ? resolveDocumentFile(front.path).uri : null,
         barcodeUri: barcode ? resolveDocumentFile(barcode.path).uri : null,
       }}

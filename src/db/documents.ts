@@ -4,6 +4,7 @@ import { removeCalendarEvent, syncDocumentEvent } from '@/calendar/calendar-sync
 import { CATEGORY_JOIN_COLUMNS, mapCategory } from '@/db/categories';
 import { rescheduleReminders } from '@/notifications/reminders';
 import type {
+  CoverMode,
   DocumentDetail,
   DocumentFile,
   DocumentFileRecord,
@@ -39,6 +40,8 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     barcodeType: row.barcode_type,
     cardColor: row.card_color,
     username: row.username ?? null,
+    coverMode: row.cover_mode ?? null,
+    coverColor: row.cover_color ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
@@ -123,6 +126,8 @@ export type DocumentInput = {
   reminderDays: number | null; // only meaningful with an expiry date
   notes: string | null;
   username?: string | null; // only for "Password" documents
+  coverMode?: CoverMode | null; // "Copertina"; null/absent = automatic
+  coverColor?: string | null; // null = the category color
 };
 
 // Empty strings become NULL, and no reminder without an expiry date
@@ -173,8 +178,9 @@ export async function insertDocument(
     await db.withTransactionAsync(async () => {
       const clean = normalize(doc);
       const result = await db.runAsync(
-        `INSERT INTO documents (title, category_id, person_id, number, expires_at, reminder_days, notes, username)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO documents (title, category_id, person_id, number, expires_at, reminder_days, notes, username,
+                                cover_mode, cover_color)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         clean.title,
         doc.categoryId,
         doc.personId,
@@ -183,6 +189,8 @@ export async function insertDocument(
         clean.reminderDays,
         clean.notes,
         clean.username,
+        doc.coverMode ?? null,
+        doc.coverColor ?? null,
       );
       documentId = result.lastInsertRowId;
 
@@ -224,7 +232,7 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
   await db.runAsync(
     `UPDATE documents
      SET title = ?, category_id = ?, person_id = ?, number = ?, expires_at = ?, reminder_days = ?, notes = ?,
-         username = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+         username = ?, cover_mode = ?, cover_color = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
      WHERE id = ?`,
     clean.title,
     doc.categoryId,
@@ -234,6 +242,8 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
     clean.reminderDays,
     clean.notes,
     clean.username,
+    doc.coverMode ?? null,
+    doc.coverColor ?? null,
     id,
   );
 }
@@ -357,6 +367,7 @@ export type CardInput = {
   barcodeValue: string | null; // read by the camera or typed by hand
   barcodeType: string | null; // null when typed by hand
   cardColor: string;
+  coverMode: CoverMode | null; // "Copertina"; null = automatic
 };
 
 // Saves a new card with its photos (card_front, barcode); same safety rules as insertDocument
@@ -386,13 +397,15 @@ async function updateCardFields(db: SQLiteDatabase, id: number, card: CardInput)
   await db.runAsync(
     `UPDATE documents
      SET title = ?, person_id = ?, barcode_value = ?, barcode_type = ?, card_color = ?,
-         updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+         cover_mode = ?, cover_color = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
      WHERE id = ?`,
     card.title.trim(),
     card.personId,
     code,
     code ? card.barcodeType : null,
     card.cardColor,
+    card.coverMode,
+    card.cardColor, // a card's color IS its cover color
     id,
   );
 }

@@ -36,6 +36,7 @@ export default function NewDocumentScreen() {
           categoryId: params.categoryId ? Number(params.categoryId) : undefined,
         }}
         files={(category) => <FilesEditor files={files} category={category} onChange={setFiles} />}
+        hasPhoto={files.some((f) => f.kind === 'image')}
         autoFocusTitle={captured.length === 0}
         onSubmit={async (input, password) => {
           const id = await insertDocument(db, input, filesToSave(files).added);

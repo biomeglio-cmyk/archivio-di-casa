@@ -7,12 +7,13 @@ import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'rea
 import { scanDocument } from '@/capture/scan-document';
 import { CardCapture, type CardCaptureResult, type CardStep } from '@/components/card-capture';
 import { CardFace } from '@/components/card-face';
+import { CoverField } from '@/components/cover-field';
 import { FieldLabel, FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
-import { CARD_COLORS } from '@/constants/card-colors';
 import { listPeople } from '@/db/people';
+import type { CoverMode } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -23,7 +24,8 @@ export type CardFormValues = {
   personId: number | null;
   barcodeValue: string | null;
   barcodeType: string | null; // kept only while the number is the one read by the camera
-  cardColor: string;
+  cardColor: string; // its "Colore" cover
+  coverMode: CoverMode | null; // "Copertina"; null = automatic (Foto when there is a photo)
   frontUri: string | null; // photo of the front (file:// URI)
   barcodeUri: string | null; // photo of the barcode
 };
@@ -44,6 +46,7 @@ export function CardForm({ initial, onSubmit }: Props) {
   const [number, setNumber] = useState(initial.barcodeValue ?? '');
   const [scanned, setScanned] = useState({ value: initial.barcodeValue, type: initial.barcodeType });
   const [cardColor, setCardColor] = useState(initial.cardColor);
+  const [coverMode, setCoverMode] = useState<CoverMode | null>(initial.coverMode);
   const [frontUri, setFrontUri] = useState(initial.frontUri);
   const [barcodeUri, setBarcodeUri] = useState(initial.barcodeUri);
   const [changed, setChanged] = useState({ front: false, barcode: false });
@@ -94,6 +97,7 @@ export function CardForm({ initial, onSubmit }: Props) {
           // Typed or changed by hand → the format is unknown
           barcodeType: code && code === scanned.value ? scanned.type : null,
           cardColor,
+          coverMode,
           frontUri,
           barcodeUri,
         },
@@ -168,25 +172,13 @@ export function CardForm({ initial, onSubmit }: Props) {
           </View>
         )}
 
-        <FormField label="Colore (se non c'è la foto)">
-          <View style={[styles.card, styles.colors, { backgroundColor: theme.surface }]}>
-            {CARD_COLORS.map((color) => {
-              const selected = color === cardColor;
-              return (
-                <Pressable
-                  key={color}
-                  onPress={() => setCardColor(color)}
-                  accessibilityRole="radio"
-                  accessibilityState={{ selected }}
-                  accessibilityLabel={`Colore ${CARD_COLORS.indexOf(color) + 1}`}
-                  hitSlop={4}
-                  style={[styles.swatchRing, selected && { borderColor: color }]}>
-                  <View style={[styles.swatch, { backgroundColor: color }]} />
-                </Pressable>
-              );
-            })}
-          </View>
-        </FormField>
+        <CoverField
+          mode={coverMode ?? (frontUri ? 'photo' : 'color')}
+          onModeChange={setCoverMode}
+          color={cardColor}
+          onColorChange={(color) => color && setCardColor(color)}
+          hasPhoto={Boolean(frontUri)}
+        />
 
         <View style={styles.footer}>
           <GradientButton label="Salva" disabled={!canSave} onPress={submit} />
@@ -281,26 +273,6 @@ const styles = StyleSheet.create({
     maxWidth: '65%',
     alignItems: 'flex-end',
     overflow: 'hidden',
-  },
-  colors: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-    paddingVertical: 14,
-  },
-  swatchRing: {
-    width: 44,
-    height: 44,
-    borderRadius: 22,
-    borderWidth: 3,
-    borderColor: 'transparent',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  swatch: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
   },
   footer: {
     gap: 8,

@@ -58,6 +58,7 @@ function EditDocumentContent({
       initial={document}
       files={(category) => <FilesEditor files={files} category={category} onChange={setFiles} />}
       hasSavedPassword={hasPassword}
+      hasPhoto={files.some((f) => f.kind === 'image')}
       onSubmit={async (input, password) => {
         // Compare with what is saved: files no longer in the list are removed, new ones are added
         const kept = new Set(files.flatMap((f) => (f.existing ? [f.existing.id] : [])));

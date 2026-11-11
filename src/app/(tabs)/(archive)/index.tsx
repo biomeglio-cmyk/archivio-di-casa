@@ -1,6 +1,6 @@
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
@@ -51,6 +51,10 @@ export default function ArchiveScreen() {
   const [query, setQuery] = useState(''); // what is typed
   const [searched, setSearched] = useState(''); // what is searched, ~200 ms after the last key
   const [filter, setFilter] = useState<SearchFilter>({ kind: 'all' });
+  const [reordering, setReordering] = useState(false); // "Riordina" … "Fine"
+
+  // Leaving Home ends "Riordina"
+  useFocusEffect(useCallback(() => () => setReordering(false), []));
 
   // Debounce: search only when typing pauses
   useEffect(() => {
@@ -136,13 +140,26 @@ export default function ArchiveScreen() {
             )}
 
             <View style={styles.section}>
-              <SectionHeader title="Archivio" />
+              <SectionHeader
+                title="Archivio"
+                action={
+                  categories && categories.length > 1
+                    ? reordering
+                      ? { label: 'Fine', accessibilityLabel: 'Fine riordino', onPress: () => setReordering(false) }
+                      : { label: 'Riordina', accessibilityLabel: 'Riordina le categorie', onPress: () => setReordering(true) }
+                    : undefined
+                }
+              />
+              {reordering && (
+                <Text style={styles.reorderHint}>Trascina le categorie nell’ordine che preferisci.</Text>
+              )}
               {categories && (
                 <SortableTileGrid
                   items={categories}
                   keyFor={(category) => category.id}
                   labelFor={(category) => `${category.name}, ${describeCategoryCount(category, category.documentCount)}`}
                   tileHeight={CATEGORY_TILE_HEIGHT}
+                  reordering={reordering}
                   renderTile={(category) => <CategoryTile category={category} documentCount={category.documentCount} />}
                   actionsFor={(category) => categoryQuickActions(db, category)}
                   onOpen={(category) => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
@@ -192,6 +209,11 @@ const styles = StyleSheet.create({
   section: {
     marginTop: 26,
     gap: Spacing.titleToContent,
+  },
+  reorderHint: {
+    fontSize: 14,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textOnLilac,
   },
   favorites: {
     flexDirection: 'row',

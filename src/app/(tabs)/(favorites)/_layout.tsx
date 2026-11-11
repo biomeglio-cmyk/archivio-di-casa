@@ -9,7 +9,8 @@ export const unstable_settings = { anchor: 'favorites' };
 export default function FavoritesLayout() {
   return (
     <Stack screenOptions={TAB_STACK_SCREEN_OPTIONS}>
-      <Stack.Screen name="favorites" options={{ title: 'Preferiti' }} />
+      {/* No navigation bar: the shared TabHeader. The title still names the back button. */}
+      <Stack.Screen name="favorites" options={{ title: 'Preferiti', headerShown: false }} />
       <Stack.Screen name="document/[id]" options={{ headerLargeTitleEnabled: false }} />
     </Stack>
   );

@@ -4,6 +4,7 @@ import { Modal, Pressable, SectionList, StyleSheet, Text, View } from 'react-nat
 
 import { DeadlineRow } from '@/components/deadline-row';
 import { MonthCalendar } from '@/components/month-calendar';
+import { TabHeader } from '@/components/tab-header';
 import { ThemedText } from '@/components/themed-text';
 import { WeekStrip } from '@/components/week-strip';
 import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
@@ -88,7 +89,9 @@ export default function DeadlinesScreen() {
   }
 
   return (
-    <>
+    <View style={[styles.screen, { backgroundColor: theme.background }]}>
+      {/* The shared tab header, fixed; "Mese" opens the month grid */}
+      <TabHeader title="Scadenze" action={{ label: 'Mese', onPress: openMonth }} />
       <SectionList
         ref={listRef}
         sections={sections}
@@ -101,13 +104,6 @@ export default function DeadlinesScreen() {
         onScrollToIndexFailed={() => undefined}
         ListHeaderComponent={
           <View style={styles.header}>
-            {/* Title and "Mese" on the same line, as in the approved mockup */}
-            <View style={styles.titleRow}>
-              <Text style={[styles.title, { color: theme.text }]}>Scadenze</Text>
-              <Pressable onPress={openMonth} hitSlop={10} accessibilityRole="button">
-                <Text style={styles.link}>Mese</Text>
-              </Pressable>
-            </View>
             {/* "Oggi" only when another week is shown */}
             {!onCurrentWeek && (
               <Pressable onPress={goToToday} hitSlop={10} accessibilityRole="button" style={styles.todayLink}>
@@ -184,7 +180,7 @@ export default function DeadlinesScreen() {
           />
         </View>
       </Modal>
-    </>
+    </View>
   );
 }
 
@@ -200,29 +196,15 @@ function shiftMonth(current: { year: number; month: number }, delta: number) {
 }
 
 const styles = StyleSheet.create({
+  screen: {
+    flex: 1,
+  },
   content: {
     padding: 16,
     paddingBottom: 48,
   },
   header: {
     gap: 8,
-  },
-  titleRow: {
-    flexDirection: 'row',
-    alignItems: 'baseline',
-    justifyContent: 'space-between',
-    gap: 12,
-    paddingHorizontal: 4,
-  },
-  title: {
-    flexShrink: 1,
-    fontSize: 34,
-    lineHeight: 41,
-    fontFamily: FONTS.titleBold,
-  },
-  link: {
-    color: BRAND_COLOR,
-    fontSize: 17, // plain text button, no pill
   },
   todayLink: {
     alignSelf: 'flex-end',

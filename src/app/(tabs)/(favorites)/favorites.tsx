@@ -1,5 +1,4 @@
 import { router } from 'expo-router';
-import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
 import { Alert, StyleSheet, Text, View } from 'react-native';
@@ -8,6 +7,7 @@ import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
 import { FavoriteTile } from '@/components/favorite-tile';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
+import { TabHeader } from '@/components/tab-header';
 import { TileScrollView } from '@/components/tile-grid';
 import { PIN_COLOR } from '@/constants/brand';
 import { listPinnedDocuments, savePinnedOrder } from '@/db/documents';
@@ -33,7 +33,11 @@ export default function FavoritesScreen() {
 
   return (
     // Gesture root for the drag and drop
-    <GestureHandlerRootView style={styles.flex}>
+    <GestureHandlerRootView style={[styles.flex, { backgroundColor: theme.background }]}>
+      <TabHeader
+        title="Preferiti"
+        action={pinned && pinned.length > 0 ? { label: 'Modifica', onPress: () => router.push('/pinned-edit') } : undefined}
+      />
       <TileScrollView ref={scrollRef}>
         {pinned?.length === 0 && (
           <View style={[styles.empty, { borderColor: theme.textSecondary }]}>
@@ -57,12 +61,6 @@ export default function FavoritesScreen() {
           />
         )}
       </TileScrollView>
-
-      {pinned && pinned.length > 0 && (
-        <Stack.Toolbar placement="right">
-          <Stack.Toolbar.Button onPress={() => router.push('/pinned-edit')}>Modifica</Stack.Toolbar.Button>
-        </Stack.Toolbar>
-      )}
     </GestureHandlerRootView>
   );
 }

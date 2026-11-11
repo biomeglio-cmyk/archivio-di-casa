@@ -10,7 +10,7 @@ import { reloadApp } from '@/backup/app-reload';
 import { BackupError } from '@/backup/backup-crypto';
 import { getLastBackupDate, saveLastBackupDate } from '@/backup/backup-layout';
 import { createBackup } from '@/backup/create-backup';
-import { applyRestore, discardPreparedRestore, prepareRestore } from '@/backup/restore-backup';
+import { applyRestore, discardPickedFile, discardPreparedRestore, prepareRestore } from '@/backup/restore-backup';
 import { TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { Group, Row } from '@/components/grouped-list';
@@ -45,6 +45,7 @@ export default function BackupScreen() {
   const working = step.kind === 'working';
 
   function reset() {
+    if (step.kind === 'restore') discardPickedFile(step.uri);
     setStep({ kind: 'idle' });
     setPassword('');
     setRepeat('');
@@ -129,22 +130,25 @@ export default function BackupScreen() {
         style: 'cancel',
         onPress: () => {
           discardPreparedRestore();
+          discardPickedFile(uri);
           reset();
         },
       },
-      { text: 'Ripristina', style: 'destructive', onPress: () => restore() },
+      { text: 'Ripristina', style: 'destructive', onPress: () => restore(uri) },
     ]);
   }
 
-  async function restore() {
+  async function restore(uri: string) {
     progress('Ripristino…', null);
     try {
       await applyRestore(db);
     } catch (e) {
+      discardPickedFile(uri);
       reset();
       Alert.alert('Ripristino non riuscito', `Il contenuto attuale è rimasto com'era.\n\n${e instanceof Error ? e.message : String(e)}`);
       return;
     }
+    discardPickedFile(uri);
     // Close the sheets, then rebuild every screen from the restored data (back on Archivio)
     Alert.alert('Backup ripristinato', 'I tuoi documenti sono tornati.', [
       {

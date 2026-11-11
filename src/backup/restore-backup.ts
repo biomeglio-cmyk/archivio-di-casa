@@ -32,6 +32,27 @@ export function discardPreparedRestore(): void {
   removeIfExists(zipFile());
 }
 
+// The copy of the chosen .sottomano file that the document picker put in the cache
+export function discardPickedFile(uri: string): void {
+  if (uri.startsWith(Paths.cache.uri)) removeIfExists(new File(uri));
+}
+
+// At app start: removes what an interrupted backup or restore (app closed halfway) left behind.
+// restore-work is kept if restore-old exists too: then the swap itself was interrupted, and
+// deleting either folder could lose photos, so both stay for a manual fix.
+export function cleanupBackupLeftovers(): void {
+  removeIfExists(new Directory(Paths.cache, 'backup-work'));
+  removeIfExists(zipFile());
+  try {
+    for (const item of Paths.cache.list()) {
+      if (item instanceof File && item.name.endsWith('.sottomano')) removeIfExists(item);
+    }
+  } catch {
+    // nothing else to do
+  }
+  if (!oldDirectory().exists) removeIfExists(workDirectory());
+}
+
 // Step 1, touches NOTHING of the current data: decrypt the file into a temporary zip, extract it
 // into restore-work/, then open the restored database to check it. Wrong password → BackupError.
 export async function prepareRestore(

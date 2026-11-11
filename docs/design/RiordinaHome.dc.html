@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<title>Sottomano, riordina le cartelle</title>
+<script src="./vendor/react.js"></script>
+<script src="./vendor/react-dom.js"></script>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+button,input{letter-spacing:inherit}
+a{color:#3B4FE0;text-decoration:none}a:hover{color:#2A3AB8}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: #FFFFFF; font-family: Onest, system-ui, sans-serif; letter-spacing: 0.02em; color: #1C1E2E">
+<nav aria-label="Sezioni" style="position: absolute; left: 18px; right: 18px; bottom: 22px; height: 68px; box-sizing: border-box; padding: 8px; border-radius: 34px; background: linear-gradient(180deg, rgba(255,255,255,0.72), rgba(255,255,255,0.42)); backdrop-filter: blur(22px) saturate(180%); -webkit-backdrop-filter: blur(22px) saturate(180%); border: 1px solid rgba(255,255,255,0.8); box-shadow: 0 12px 32px rgba(28,30,70,0.14), inset 0 1px 1px rgba(255,255,255,0.95), inset 0 -2px 6px rgba(255,255,255,0.35); display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 4px; align-items: center">
+<a href="Main.dc.html" aria-label="Home" aria-current="page" style="position: relative; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: #4A3FD9; background: linear-gradient(180deg, rgba(255,255,255,0.75), rgba(232,229,252,0.65)); box-shadow: inset 0 1px 0 rgba(255,255,255,0.95), 0 2px 8px rgba(74,63,217,0.14)"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"></path></svg></a>
+<a href="Preferiti.dc.html" aria-label="Preferiti" style="position: relative; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: #2A2C40"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"></path></svg></a>
+<a href="Scadenze.dc.html" aria-label="Scadenze, 2 in arrivo" style="position: relative; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: #2A2C40"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="16" rx="2.5"></rect><path d="M3 10h18M8 3v4M16 3v4"></path><path d="M8 14h.01M12 14h.01M16 14h.01M8 17.5h.01M12 17.5h.01"></path></svg><span style="position: absolute; top: 4px; right: 12px; min-width: 18px; height: 18px; padding: 0 5px; box-sizing: border-box; border-radius: 9px; background: #E5243B; color: #FFFFFF; font-size: 11px; font-weight: 700; display: flex; align-items: center; justify-content: center; border: 2px solid #FFFFFF">2</span></a>
+<a href="Utenti.dc.html" aria-label="Persone di casa" style="position: relative; height: 52px; border-radius: 26px; display: flex; align-items: center; justify-content: center; color: #2A2C40"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20c.6-3.6 3.2-5.5 6.5-5.5s5.9 1.9 6.5 5.5"></path><circle cx="17" cy="9" r="2.8"></circle><path d="M17 14.5c2.6 0 4.2 1.6 4.6 4.5"></path></svg></a>
+<a href="Aggiungi.dc.html" aria-label="Aggiungi documento" style="height: 52px; display: flex; align-items: center; justify-content: center"><span style="width: 44px; height: 44px; border-radius: 22px; background: linear-gradient(135deg, #4A5CF0, #8B6CF0); color: #FFFFFF; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 14px rgba(100,90,235,0.35), inset 0 1px 0 rgba(255,255,255,0.35)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"></path></svg></span></a>
+</nav>
+<div style="height: 844px; box-sizing: border-box; overflow-y: auto; overflow-x: hidden; scrollbar-width: none; padding: 24px 22px 130px">
+<div style="display: flex; align-items: center; justify-content: space-between">
+<span style="font-size: 17px; font-weight: 600">Riordina le cartelle</span>
+<a href="{{doneHref}}" style="height: 40px; padding: 0 20px; border-radius: 20px; background: linear-gradient(135deg, #4A5CF0, #8B6CF0); color: #FFFFFF; font-size: 15px; font-weight: 600; display: flex; align-items: center; box-shadow: 0 6px 14px rgba(100,90,235,0.28)">Fine</a>
+</div>
+<div style="margin-top: 16px; padding: 12px 14px; border-radius: 16px; background: #F7F6FE; display: flex; gap: 10px; align-items: center"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#4A3FD9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"></path></svg><p style="margin: 0; font-size: 13px; font-weight: 400; color: #4B4E63; line-height: 1.4">{{hint}}</p></div>
+
+<h2 style="margin: 0; font-size: 13px; font-weight: 400; text-transform: uppercase; letter-spacing: 0.1em; color: #6A6D80; margin-top: 24px">Archivio</h2>
+<div style="margin-top: 12px; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px">
+<sc-for list="{{items}}" as="t" hint-placeholder-count="6">
+<button type="button" aria-pressed="{{t.pressed}}" aria-label="{{t.label}}" onClick="{{t.tap}}" style="position: relative; z-index: {{t.z}}; height: 132px; border: 0; border-radius: 22px; padding: 16px; background: {{t.bg}}; color: #FFFFFF; font: inherit; text-align: left; display: flex; flex-direction: column; justify-content: space-between; cursor: grab; transform: {{t.tf}}; box-shadow: {{t.shadow}}; transition: transform 0.2s, box-shadow 0.2s">
+<span style="width: 100%; display: flex; justify-content: space-between"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="{{t.icon}}"></path></svg><svg width="20" height="20" viewBox="0 0 24 24" fill="#FFFFFF" aria-hidden="true" style="opacity: 0.85"><circle cx="9" cy="6" r="1.4"></circle><circle cx="15" cy="6" r="1.4"></circle><circle cx="9" cy="12" r="1.4"></circle><circle cx="15" cy="12" r="1.4"></circle><circle cx="9" cy="18" r="1.4"></circle><circle cx="15" cy="18" r="1.4"></circle></svg></span>
+<span style="display: flex; flex-direction: column"><span style="font-size: 17px; font-weight: 600">{{t.name}}</span><span style="font-size: 13px; font-weight: 400">{{t.sub}}</span></span>
+</button>
+</sc-for>
+</div>
+</div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { order: ["bol", "casa", "auto", "sal", "tes", "gar"], sel: 'casa' };
+}
+renderVals() {
+const g = (a, b) => 'linear-gradient(135deg, ' + a + ', ' + b + ')';
+const D = {"bol": {"name": "Bollette", "sub": "12 documenti", "a": "#FFA36E", "b": "#F5824A", "r": "245,130,74", "icon": "M6 3h8l5 5v13H6zM14 3v5h5M9 13h6M9 17h4"}, "casa": {"name": "Casa", "sub": "8 documenti", "a": "#A59AF7", "b": "#8778EE", "r": "135,120,238", "icon": "M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1z"}, "auto": {"name": "Auto", "sub": "5 documenti", "a": "#86B4F7", "b": "#6494EE", "r": "100,148,238", "icon": "M3 13l2-6a2 2 0 0 1 2-1h10a2 2 0 0 1 2 1l2 6v4H3zM7.5 17h.01M16.5 17h.01"}, "sal": {"name": "Salute", "sub": "9 documenti", "a": "#F79BBA", "b": "#EE7499", "r": "238,116,153", "icon": "M12 20s-7-4.5-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.5-7 10-7 10z"}, "tes": {"name": "Tessere", "sub": "5 tessere", "a": "#6FD3AE", "b": "#45B68E", "r": "69,182,142", "icon": "M2 7.5A2.5 2.5 0 0 1 4.5 5h15A2.5 2.5 0 0 1 22 7.5v9a2.5 2.5 0 0 1-2.5 2.5h-15A2.5 2.5 0 0 1 2 16.5zM2 10h20M6 15h4"}, "gar": {"name": "Garanzie", "sub": "4 documenti", "a": "#F5CB6B", "b": "#EBAA45", "r": "235,170,69", "icon": "M12 3 4 6v6c0 5 3.5 8 8 9 4.5-1 8-4 8-9V6zM9 12l2 2 4-4"}};
+const order = this.state.order, sel = this.state.sel;
+const tap = (id) => {
+if (sel === null) { this.setState({ sel: id }); return; }
+if (sel === id) { this.setState({ sel: null }); return; }
+const o = order.slice(); const a = o.indexOf(sel), b = o.indexOf(id); o[a] = id; o[b] = sel;
+this.setState({ order: o, sel: null });
+};
+const items = order.map((id, i) => {
+const d = D[id]; const on = id === sel;
+return Object.assign({}, d, { bg: g(d.a, d.b), shadow: on ? '0 20px 34px rgba(' + d.r + ',0.45)' : '0 8px 16px rgba(' + d.r + ',0.20)',
+tf: on ? 'scale(1.07) rotate(-3deg)' : (i % 2 ? 'rotate(1.2deg)' : 'rotate(-1.2deg)'), z: on ? 2 : 1, pressed: on ? 'true' : 'false',
+label: d.name + (on ? ', selezionata: tocca dove spostarla' : ', tocca per spostarla'), tap: () => tap(id) });
+});
+return { items: items, hint: sel === null ? 'Tocca una cartella e poi il punto dove spostarla. Sul telefono: tieni premuto e trascina.' : 'Ora tocca il punto dove vuoi spostarla.', doneHref: 'Main.dc.html' };
+}
+}
+</script>
+</body>
+</html>

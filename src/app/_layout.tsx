@@ -155,6 +155,15 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
+          {/* "Scadenza" in the detail of every document: add, change or remove the deadline */}
+          <Stack.Screen
+            name="deadline/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Scadenza',
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
+            }}
+          />
           {/* "Rinnovato" in the detail of a document with a deadline */}
           <Stack.Screen
             name="renew/[id]"

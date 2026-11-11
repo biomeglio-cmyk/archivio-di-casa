@@ -9,6 +9,7 @@ import { Text } from '@/components/text';
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { CardDetail } from '@/components/card-detail';
+import { DeadlineSection } from '@/components/deadline-section';
 import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
@@ -25,7 +26,6 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate, toISODate } from '@/utils/dates';
-import { describeRepeat } from '@/utils/recurrence';
 
 // Detail of one document (or of a card). Used by the document/[id] screen of every tab.
 export default function DocumentDetail() {
@@ -70,12 +70,6 @@ export default function DocumentDetail() {
     { label: 'Categoria', value: category.name },
     { label: 'Persona', value: person?.name },
     { label: 'Numero', value: document.number },
-    { label: 'Scadenza', value: document.expiresAt ? formatDate(document.expiresAt) : null }, // none: no row
-    { label: 'Ricorrenza', value: document.expiresAt && document.repeat ? describeRepeat(document.repeat) : null },
-    {
-      label: 'Promemoria',
-      value: document.expiresAt && document.reminderDays ? `${document.reminderDays} giorni prima` : null,
-    },
     { label: 'Note', value: document.notes },
     {
       label: 'Nel calendario',
@@ -120,6 +114,9 @@ export default function DocumentDetail() {
             </View>
           ))}
         </WhiteCard>
+
+        {/* Always here: "Aggiungi scadenza", or the deadline to change or remove */}
+        <DeadlineSection document={document} />
 
         {category.isPassword && <PasswordCard documentId={document.id} username={document.username} />}
 

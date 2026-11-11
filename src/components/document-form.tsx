@@ -11,6 +11,7 @@ import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
+import { DEFAULT_REMINDER, EVERY_OPTIONS, reminderChoices, reminderLabel } from '@/constants/deadline-options';
 import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategories } from '@/db/categories';
@@ -19,25 +20,15 @@ import type { Category, CoverMode } from '@/db/types';
 import { listPeople } from '@/db/people';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
+import { usePreferences } from '@/settings/preferences';
 import { formatShortDate, parseISODate, toISODate } from '@/utils/dates';
-import { MAX_REPEAT, REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
+import { REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
 
 // Picker values must be string | number, so 0 stands for "nothing chosen" (ids start at 1)
 const NONE = 0;
 
-const EVERY_OPTIONS = Array.from({ length: MAX_REPEAT }, (_, i) => i + 1); // 1…99
-
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
-const REMINDER_OPTIONS = [
-  { label: 'Nessuno', value: NONE },
-  { label: '1 giorno prima', value: 1 },
-  { label: '7 giorni prima', value: 7 },
-  { label: '15 giorni prima', value: 15 },
-  { label: '30 giorni prima', value: 30 },
-  { label: '60 giorni prima', value: 60 },
-  { label: '90 giorni prima', value: 90 },
-];
 
 type Props = {
   initial?: Partial<DocumentInput>; // empty for a new document, the saved values when editing
@@ -74,7 +65,8 @@ export function DocumentForm({
     initial?.expiresAt ? parseISODate(initial.expiresAt) : new Date(),
   );
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [reminderDays, setReminderDays] = useState(initial?.reminderDays ?? NONE);
+  const [reminderDays, setReminderDays] = useState(initial?.reminderDays ?? DEFAULT_REMINDER);
+  const { defaultReminderDays } = usePreferences();
   // "Si ripete": 'never' or a unit, and every how many (kept while switching back and forth)
   const [repeatUnit, setRepeatUnit] = useState<RepeatUnit | 'never'>(initial?.repeat?.unit ?? 'never');
   const [repeatEvery, setRepeatEvery] = useState(initial?.repeat?.every ?? 1);
@@ -106,7 +98,7 @@ export function DocumentForm({
           personId: personId === NONE ? null : personId,
           number,
           expiresAt: hasExpiry ? toISODate(expiryDate) : null,
-          reminderDays: hasExpiry && reminderDays !== NONE ? reminderDays : null,
+          reminderDays: hasExpiry && reminderDays !== DEFAULT_REMINDER ? reminderDays : null,
           repeat: hasExpiry && repeatUnit !== 'never' ? { every: repeatEvery, unit: repeatUnit } : null,
           notes,
           username: isPassword ? username : null,
@@ -232,8 +224,8 @@ export function DocumentForm({
                 )}
                 <FormRow label="Promemoria" separator={line}>
                   <Picker selectedValue={reminderDays} onValueChange={setReminderDays}>
-                    {REMINDER_OPTIONS.map((o) => (
-                      <Picker.Item key={o.value} label={o.label} value={o.value} />
+                    {reminderChoices(reminderDays).map((days) => (
+                      <Picker.Item key={days} label={reminderLabel(days, defaultReminderDays)} value={days} />
                     ))}
                   </Picker>
                 </FormRow>

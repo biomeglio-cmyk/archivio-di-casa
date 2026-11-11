@@ -12,6 +12,7 @@ import { Segmented } from '@/components/segmented';
 import { Text } from '@/components/text';
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { CardFace } from '@/components/card-face';
+import { DeadlineSection } from '@/components/deadline-section';
 import { DetailActionBar } from '@/components/detail-action-bar';
 import { PersonAvatar } from '@/components/person-avatar';
 import { PinHeart } from '@/components/pin-heart';
@@ -102,6 +103,9 @@ export function CardDetail({ card, files, pin }: Props) {
             </View>
           </WhiteCard>
         )}
+
+        {/* Cards too can have a deadline (e.g. a membership to renew), added from here */}
+        <DeadlineSection document={card} />
 
         <View style={styles.actions}>
           <DetailActionBar

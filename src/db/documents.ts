@@ -337,6 +337,30 @@ export async function renewDocument(
   await rescheduleReminders(db);
 }
 
+export type Deadline = {
+  expiresAt: string; // 'YYYY-MM-DD'
+  reminderDays: number | null; // null = the default of Notifiche
+  repeat: Repeat | null; // null = "Mai"
+};
+
+// "Scadenza" in the detail: adds, changes (deadline !== null) or removes (null) the deadline of
+// any document, whatever its category, kind of file or age. Calendar event and reminders follow.
+export async function saveDocumentDeadline(db: SQLiteDatabase, id: number, deadline: Deadline | null): Promise<void> {
+  await db.runAsync(
+    `UPDATE documents
+     SET expires_at = ?, reminder_days = ?, repeat_every = ?, repeat_unit = ?,
+         updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+     WHERE id = ? AND deleted_at IS NULL`,
+    deadline?.expiresAt ?? null,
+    deadline?.reminderDays ?? null,
+    deadline?.repeat?.every ?? null,
+    deadline?.repeat?.unit ?? null,
+    id,
+  );
+  await syncDocumentEvent(db, id);
+  await rescheduleReminders(db);
+}
+
 function mapFile(row: DocumentFileRecord): DocumentFile {
   return {
     id: row.id,

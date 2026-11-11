@@ -7,6 +7,7 @@ import { DocumentForm } from '@/components/document-form';
 import { FilesEditor, filesToSave, fromPending, type EditableFile } from '@/components/files-editor';
 import { insertDocument } from '@/db/documents';
 import { afterDocumentSaved } from '@/notifications/reminders';
+import { savePassword } from '@/security/password-vault';
 import { decodePendingFiles, type PendingFile } from '@/storage/pending-files';
 
 // A PDF named "Polizza casa 2026.pdf" suggests the title "Polizza casa 2026"
@@ -36,8 +37,10 @@ export default function NewDocumentScreen() {
         }}
         files={(category) => <FilesEditor files={files} category={category} onChange={setFiles} />}
         autoFocusTitle={captured.length === 0}
-        onSubmit={async (input) => {
-          await insertDocument(db, input, filesToSave(files).added);
+        onSubmit={async (input, password) => {
+          const id = await insertDocument(db, input, filesToSave(files).added);
+          // "Password" category: the password goes only to the iOS Keychain
+          if (password !== null) await savePassword(id, password);
           await afterDocumentSaved(db, input.expiresAt);
           // Scadenze, Home and Famiglia update by themselves (useDbQuery listens to changes)
           router.back();

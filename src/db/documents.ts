@@ -11,6 +11,7 @@ import type {
   DocumentRecord,
   FileSide,
 } from '@/db/types';
+import { deletePassword } from '@/security/password-vault';
 import { deleteStoredFile, storePendingFile } from '@/storage/document-files';
 import type { PendingFile } from '@/storage/pending-files';
 
@@ -37,6 +38,7 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     barcodeValue: row.barcode_value,
     barcodeType: row.barcode_type,
     cardColor: row.card_color,
+    username: row.username ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
@@ -120,6 +122,7 @@ export type DocumentInput = {
   expiresAt: string | null; // 'YYYY-MM-DD'
   reminderDays: number | null; // only meaningful with an expiry date
   notes: string | null;
+  username?: string | null; // only for "Password" documents
 };
 
 // Empty strings become NULL, and no reminder without an expiry date
@@ -129,6 +132,7 @@ function normalize(doc: DocumentInput) {
     title: doc.title.trim(),
     number: text(doc.number),
     notes: text(doc.notes),
+    username: text(doc.username ?? null),
     reminderDays: doc.expiresAt ? doc.reminderDays : null,
   };
 }
@@ -169,8 +173,8 @@ export async function insertDocument(
     await db.withTransactionAsync(async () => {
       const clean = normalize(doc);
       const result = await db.runAsync(
-        `INSERT INTO documents (title, category_id, person_id, number, expires_at, reminder_days, notes)
-         VALUES (?, ?, ?, ?, ?, ?, ?)`,
+        `INSERT INTO documents (title, category_id, person_id, number, expires_at, reminder_days, notes, username)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
         clean.title,
         doc.categoryId,
         doc.personId,
@@ -178,6 +182,7 @@ export async function insertDocument(
         doc.expiresAt,
         clean.reminderDays,
         clean.notes,
+        clean.username,
       );
       documentId = result.lastInsertRowId;
 
@@ -219,7 +224,7 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
   await db.runAsync(
     `UPDATE documents
      SET title = ?, category_id = ?, person_id = ?, number = ?, expires_at = ?, reminder_days = ?, notes = ?,
-         updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+         username = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
      WHERE id = ?`,
     clean.title,
     doc.categoryId,
@@ -228,6 +233,7 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
     doc.expiresAt,
     clean.reminderDays,
     clean.notes,
+    clean.username,
     id,
   );
 }
@@ -242,6 +248,7 @@ export async function deleteDocument(db: SQLiteDatabase, id: number): Promise<vo
   );
   await db.runAsync('DELETE FROM documents WHERE id = ?', id);
   files.forEach((file) => deleteStoredFile(file.path));
+  await deletePassword(id); // its Keychain item, if it was a "Password" document
   await removeCalendarEvent(event?.calendar_event_id ?? null);
   await rescheduleReminders(db);
 }

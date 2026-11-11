@@ -21,7 +21,10 @@ export type Category = {
   examples: string | null;
   colors: CategoryColors;
   isBuiltin: boolean;
+  builtinKey: string | null; // built-in categories: their original icon, never changes (see V9)
+  followsPalette: boolean; // built-in with the colors of "Aspetto" (not a color picked by the user)
   isCards: boolean; // "Tessere e card": shown as a wallet of cards
+  isPassword: boolean; // "Password": its documents have "Utente" and a password in the Keychain
 };
 
 export type FamilyDocument = {
@@ -39,6 +42,7 @@ export type FamilyDocument = {
   barcodeValue: string | null; // cards: the code read by the camera or typed by hand
   barcodeType: string | null; // cards: its format, e.g. 'ean13' (null = typed by hand)
   cardColor: string | null; // cards: background when there is no photo of the front
+  username: string | null; // "Password" documents: the user name (the password is in the Keychain)
   createdAt: string;
   updatedAt: string;
 };
@@ -71,6 +75,9 @@ export type CategoryRecord = {
   color_text: string;
   is_builtin: number;
   kind: string | null;
+  builtin_key: string | null;
+  hidden: number;
+  custom_colors: number;
 };
 
 export type DocumentRecord = {
@@ -88,6 +95,7 @@ export type DocumentRecord = {
   barcode_value: string | null;
   barcode_type: string | null;
   card_color: string | null;
+  username: string | null;
   created_at: string;
   updated_at: string;
 };

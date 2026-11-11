@@ -5,9 +5,14 @@ import Storage from 'expo-sqlite/kv-store';
 //   sottomano.db       the database (documents, people, categories, deadlines…)
 //   documents/…        photos and PDFs of the documents
 //   people/…           photos of the people
+//   secrets.json       passwords of the "Password" documents (from the iOS Keychain), by document id
 // The settings (notifications, calendar, Face ID lock) stay on each phone.
 export const MANIFEST_ENTRY = 'manifest.json';
 export const BACKUP_DB_ENTRY = 'sottomano.db';
+export const SECRETS_ENTRY = 'secrets.json';
+
+// secrets.json: { "<document id>": "<password>" }. Only inside the encrypted archive.
+export type BackupSecrets = Record<string, string>;
 export const BACKUP_FOLDERS = ['documents', 'people'] as const;
 
 export type BackupManifest = {
@@ -19,7 +24,7 @@ export type BackupManifest = {
 
 // Only these names are accepted when restoring: nothing can be written outside its folder
 export function isAllowedEntry(name: string): boolean {
-  if (name === MANIFEST_ENTRY || name === BACKUP_DB_ENTRY) return true;
+  if (name === MANIFEST_ENTRY || name === BACKUP_DB_ENTRY || name === SECRETS_ENTRY) return true;
   const [folder, file, ...rest] = name.split('/');
   return (
     rest.length === 0 &&

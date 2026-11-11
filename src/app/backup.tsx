@@ -10,7 +10,13 @@ import { reloadApp } from '@/backup/app-reload';
 import { BackupError } from '@/backup/backup-crypto';
 import { getLastBackupDate, saveLastBackupDate } from '@/backup/backup-layout';
 import { createBackup } from '@/backup/create-backup';
-import { applyRestore, discardPickedFile, discardPreparedRestore, prepareRestore } from '@/backup/restore-backup';
+import {
+  applyRestore,
+  discardPickedFile,
+  discardPreparedRestore,
+  prepareRestore,
+  type PreparedRestore,
+} from '@/backup/restore-backup';
 import { TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { Group, Row } from '@/components/grouped-list';
@@ -136,14 +142,14 @@ export default function BackupScreen() {
           reset();
         },
       },
-      { text: 'Ripristina', style: 'destructive', onPress: () => restore(uri) },
+      { text: 'Ripristina', style: 'destructive', onPress: () => restore(uri, prepared) },
     ]);
   }
 
-  async function restore(uri: string) {
+  async function restore(uri: string, prepared: PreparedRestore) {
     progress('Ripristino…', null);
     try {
-      await applyRestore(db);
+      await applyRestore(db, prepared);
     } catch (e) {
       discardPickedFile(uri);
       reset();

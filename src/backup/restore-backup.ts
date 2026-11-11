@@ -2,9 +2,18 @@ import { Directory, File, FileMode, Paths } from 'expo-file-system';
 import { backupDatabaseAsync, openDatabaseAsync, type SQLiteDatabase } from 'expo-sqlite';
 
 import { BackupError, HEADER_SIZE, decryptChunks, deriveKey, parseHeader } from '@/backup/backup-crypto';
-import { BACKUP_DB_ENTRY, BACKUP_FOLDERS, MANIFEST_ENTRY, isAllowedEntry, type BackupManifest } from '@/backup/backup-layout';
+import {
+  BACKUP_DB_ENTRY,
+  BACKUP_FOLDERS,
+  MANIFEST_ENTRY,
+  SECRETS_ENTRY,
+  isAllowedEntry,
+  type BackupManifest,
+  type BackupSecrets,
+} from '@/backup/backup-layout';
 import { extractEntry, listEntries } from '@/backup/zip-reader';
 import { LATEST_SCHEMA_VERSION, migrateDbIfNeeded } from '@/db/migrations';
+import { deletePassword, passwordDocumentIds, savePassword } from '@/security/password-vault';
 
 export type RestoreProgress = { phase: 'key' | 'decrypt' | 'extract'; done: number; total: number };
 
@@ -12,6 +21,7 @@ export type RestoreProgress = { phase: 'key' | 'decrypt' | 'extract'; done: numb
 export type PreparedRestore = {
   manifest: BackupManifest;
   documentCount: number;
+  secrets: BackupSecrets; // kept in memory only: the file is deleted as soon as it is read
 };
 
 // Same volume as documents/ and people/, so the final swap is a quick rename
@@ -89,6 +99,7 @@ export async function prepareRestore(
     for (const folder of BACKUP_FOLDERS) new Directory(work, folder).create();
     const archive = zip.open(FileMode.ReadOnly);
     let manifest: BackupManifest | null = null;
+    let secrets: BackupSecrets = {}; // older backups have none
     try {
       let entries;
       try {
@@ -118,6 +129,14 @@ export async function prepareRestore(
         manifest = JSON.parse(manifestFile.textSync()) as BackupManifest;
         manifestFile.delete();
       }
+      const secretsFile = new File(work, SECRETS_ENTRY);
+      if (secretsFile.exists) {
+        try {
+          secrets = JSON.parse(secretsFile.textSync()) as BackupSecrets;
+        } finally {
+          secretsFile.delete();
+        }
+      }
     } finally {
       archive.close();
       removeIfExists(zip);
@@ -142,7 +161,7 @@ export async function prepareRestore(
       await restored.closeAsync();
     }
 
-    return { manifest, documentCount };
+    return { manifest, documentCount, secrets };
   } catch (error) {
     discardPreparedRestore();
     throw error;
@@ -152,8 +171,9 @@ export async function prepareRestore(
 // Step 2, after the confirmation: swap the folders, then copy the restored database INTO the open
 // one (SQLite backup API: all pages in one transaction, the app's connection stays valid), then
 // run the migrations if the backup is older. If anything fails, the old folders are put back.
-export async function applyRestore(db: SQLiteDatabase): Promise<void> {
+export async function applyRestore(db: SQLiteDatabase, prepared: PreparedRestore): Promise<void> {
   const work = workDirectory();
+  const oldPasswordIds = await passwordDocumentIds(db); // their Keychain items go with the old data
   const old = oldDirectory();
   removeIfExists(old);
   old.create({ intermediates: true });
@@ -190,6 +210,9 @@ export async function applyRestore(db: SQLiteDatabase): Promise<void> {
 
   await db.execAsync('PRAGMA foreign_keys = ON');
   await migrateDbIfNeeded(db);
+  // Keychain: the old passwords out, the backup's in (same document ids as the restored database)
+  for (const id of oldPasswordIds) await deletePassword(id);
+  for (const [id, password] of Object.entries(prepared.secrets)) await savePassword(Number(id), password);
   removeIfExists(old);
   discardPreparedRestore();
 }

@@ -9,7 +9,7 @@ import { previewDocumentFiles } from '@/storage/preview-files';
 type Props = {
   documentId: number;
   title: string;
-  category: Pick<Category, 'isBuiltin' | 'symbol'>;
+  category: Pick<Category, 'builtinKey'>;
   files: DocumentFile[]; // never empty: the detail shows these buttons only when there are files
 };
 

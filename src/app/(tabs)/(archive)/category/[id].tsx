@@ -7,7 +7,7 @@ import { CardGrid } from '@/components/card-grid';
 import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentGrid } from '@/components/document-grid';
 import { BRAND_COLOR } from '@/constants/brand';
-import { getCategory } from '@/db/categories';
+import { getCategory, isOtherCategory } from '@/db/categories';
 import { listDocumentsByCategory } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
@@ -33,7 +33,17 @@ export default function CategoryScreen() {
     selection.cancel();
   }
 
-  // "Tessere e card": a wallet of card-shaped tiles (built-in, so no Modifica/Cancella here)
+  // Modifica and Cancella for every category, built-in too; "Altro" can't be deleted
+  const actions =
+    category && documents && !selection.selecting ? (
+      <DetailActionBar
+        onAdd={null}
+        onEdit={() => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })}
+        onDelete={isOtherCategory(category) ? null : () => confirmDeleteCategory(db, category)}
+      />
+    ) : null;
+
+  // "Tessere e card": a wallet of card-shaped tiles
   if (category?.isCards) {
     return (
       <>
@@ -41,6 +51,7 @@ export default function CategoryScreen() {
         <CardGrid
           cards={documents}
           hrefFor={(card) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(card.id) } })}
+          footer={actions}
         />
       </>
     );
@@ -55,22 +66,7 @@ export default function CategoryScreen() {
         hrefFor={(doc) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(doc.id) } })}
         selection={selection}
         onAdd={() => router.push({ pathname: '/new-document', params: { categoryId: String(categoryId) } })}
-        footer={
-          // Built-in categories can't be edited or deleted; custom ones only deleted when empty
-          category && documents && !selection.selecting ? (
-            // Adding is the dashed tile in the grid; here only Modifica and Cancella.
-            // Built-in categories have neither, so DetailActionBar renders nothing for them.
-            <DetailActionBar
-              onAdd={null}
-              onEdit={
-                category.isBuiltin
-                  ? null
-                  : () => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })
-              }
-              onDelete={!category.isBuiltin && documents.length === 0 ? () => confirmDeleteCategory(db, category) : null}
-            />
-          ) : null
-        }
+        footer={actions}
       />
 
       {/* Header: "Seleziona", or "Annulla" while selecting */}

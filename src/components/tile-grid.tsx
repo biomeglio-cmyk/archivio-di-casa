@@ -1,5 +1,6 @@
 import { Fragment, type ReactNode } from 'react';
-import { ScrollView, StyleSheet, View, type ScrollViewProps } from 'react-native';
+import { StyleSheet, View, type ScrollViewProps } from 'react-native';
+import Animated, { type AnimatedRef } from 'react-native-reanimated';
 
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import { DashedAddTile } from '@/components/dashed-add-tile';
@@ -53,10 +54,16 @@ export function TileGrid<T>({ items, keyFor, renderTile, add, cardShaped = false
 }
 
 // The scrolling page around one or more grids: the same edge padding everywhere, and room at
-// the end so the last row is never under the tab bar
-export function TileScrollView({ contentContainerStyle, ...props }: ScrollViewProps) {
+// the end so the last row is never under the tab bar. An animated scroll view, so a grid with
+// drag and drop (Preferiti) can scroll it while a tile is dragged near the edge (`ref`).
+export function TileScrollView({
+  contentContainerStyle,
+  ref,
+  ...props
+}: ScrollViewProps & { ref?: AnimatedRef<Animated.ScrollView> }) {
   return (
-    <ScrollView
+    <Animated.ScrollView
+      ref={ref}
       contentInsetAdjustmentBehavior="automatic"
       {...props}
       contentContainerStyle={[styles.page, contentContainerStyle]}

@@ -2,21 +2,54 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useSQLiteContext } from 'expo-sqlite';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { PALETTES, type Palette } from '@/constants/palettes';
-import { BUILTIN_CATEGORIES } from '@/db/builtin-categories';
+import { BUILTIN_ORDER } from '@/db/builtin-categories';
+import { restoreBuiltinCategories } from '@/db/categories';
 import { useTheme } from '@/hooks/use-theme';
 import { setPaletteId, usePaletteId } from '@/settings/palette';
 
-const MINI_COLUMNS = 6; // 11 mini tiles: a row of 6 and a row of 5
+const MINI_COLUMNS = 7; // 13 mini tiles: a row of 7 and a row of 6
 
 // "Aspetto" (Menu › Impostazioni): 6 palettes for the built-in categories, each previewed as a
-// mini grid of the 11 category tiles. A tap applies it at once to the whole app.
+// mini grid of the 13 category tiles. A tap applies it at once to the whole app.
 export default function AppearanceScreen() {
+  const db = useSQLiteContext();
   const selected = usePaletteId();
+
+  // Brings back the deleted built-in categories (original name, icon, color), before "Altro"
+  function restoreCategories() {
+    Alert.alert(
+      'Ripristinare le categorie predefinite?',
+      'Tornano quelle che hai eliminato, con nome, icona e colore originali. I documenti e le categorie create da te non cambiano.',
+      [
+        { text: 'Annulla', style: 'cancel' },
+        {
+          text: 'Ripristina',
+          onPress: async () => {
+            try {
+              const count = await restoreBuiltinCategories(db);
+              Alert.alert(
+                count === 0 ? 'Niente da ripristinare' : 'Categorie ripristinate',
+                count === 0
+                  ? 'Tutte le categorie predefinite sono già nella Home.'
+                  : count === 1
+                    ? '1 categoria è tornata nella Home, prima di «Altro».'
+                    : `${count} categorie sono tornate nella Home, prima di «Altro».`,
+              );
+            } catch (error) {
+              Alert.alert('Impossibile ripristinare', error instanceof Error ? error.message : String(error));
+            }
+          },
+        },
+      ],
+    );
+  }
 
   return (
     <>
@@ -33,6 +66,12 @@ export default function AppearanceScreen() {
               onPress={() => setPaletteId(palette.id)}
             />
           ))}
+        </View>
+        <View style={styles.restore}>
+          <SecondaryButton label="Ripristina categorie predefinite" symbol="arrow.counterclockwise" onPress={restoreCategories} />
+          <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
+            Rimette le categorie predefinite che hai eliminato.
+          </ThemedText>
         </View>
       </ScrollView>
 
@@ -68,9 +107,9 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
             {Array.from({ length: MINI_COLUMNS }, (_, column) => {
               const index = start + column;
               const colors = palette.colors[index];
-              // The 12th cell is empty, so the tiles of the second row keep the same width
+              // The last cell is empty, so the tiles of the second row keep the same width
               if (!colors) return <View key="empty" style={styles.mini} />;
-              const { symbol } = BUILTIN_CATEGORIES[index];
+              const { symbol } = BUILTIN_ORDER[index];
               return (
                 <LinearGradient key={symbol} colors={[colors.top, colors.bottom]} style={styles.mini}>
                   <SymbolView name={symbol} tintColor={colors.text} size={14} />
@@ -95,6 +134,10 @@ const styles = StyleSheet.create({
   },
   list: {
     gap: 12,
+  },
+  restore: {
+    marginTop: 12,
+    gap: 8,
   },
   card: {
     padding: 14,
@@ -123,7 +166,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   mini: {
-    flex: 1, // 6 equal tiles per row
+    flex: 1, // equal tiles in every row
     aspectRatio: 1.1,
     borderRadius: 8,
     borderCurve: 'continuous',

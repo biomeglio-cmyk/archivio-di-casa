@@ -12,6 +12,7 @@ import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
 import { PersonAvatar } from '@/components/person-avatar';
+import { PasswordCard } from '@/components/password-card';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
@@ -112,6 +113,8 @@ export default function DocumentDetail() {
             </View>
           ))}
         </View>
+
+        {category.isPassword && <PasswordCard documentId={document.id} username={document.username} />}
 
         {/* Actions right after the data; they scroll with the page */}
         <DetailActionBar

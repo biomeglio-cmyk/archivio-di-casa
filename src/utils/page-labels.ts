@@ -1,10 +1,10 @@
 import type { Category } from '@/db/types';
 import { printFormatFor } from '@/send/physical-size';
 
-type CategoryKind = Pick<Category, 'isBuiltin' | 'symbol'> | null | undefined;
+type CategoryKind = Pick<Category, 'builtinKey'> | null | undefined;
 
 // One rule for the whole app (new document, detail, Modifica, Invia):
-// "Fronte"/"Retro" only for an ID or a card (Identità, Tessere e card) with exactly 2 photos.
+// "Fronte"/"Retro" only for an ID or a card (Documenti, Tessere e card) with exactly 2 photos.
 // Everything else is just pages: a scan is N pages, never a front with a missing back.
 export function usesFrontBack(category: CategoryKind, imageCount: number): boolean {
   return Boolean(category) && printFormatFor(category!) === 'card' && imageCount === 2;

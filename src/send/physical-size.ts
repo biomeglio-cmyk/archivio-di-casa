@@ -1,5 +1,5 @@
 // Physical size of a document on paper, used to turn pixels into effective ppi.
-// ID-1 cards (Identità, Tessere e card) are 85.6 × 54 mm; everything else is placed on an A4 page.
+// ID-1 cards (Documenti, Tessere e card) are 85.6 × 54 mm; everything else is placed on an A4 page.
 
 import type { Category } from '@/db/types';
 
@@ -12,11 +12,11 @@ export const CARD_MM = { width: 85.6, height: 54 };
 
 export type PrintFormat = 'card' | 'a4';
 
-// The built-in categories can't change icon, so the icon identifies them even after a rename
-const CARD_SYMBOLS = new Set(['person.text.rectangle', 'creditcard']);
+// Built-in categories keep their key (original icon) after any rename or new icon
+const CARD_KEYS = new Set(['person.text.rectangle', 'creditcard']);
 
-export function printFormatFor(category: Pick<Category, 'isBuiltin' | 'symbol'>): PrintFormat {
-  return category.isBuiltin && CARD_SYMBOLS.has(category.symbol) ? 'card' : 'a4';
+export function printFormatFor(category: Pick<Category, 'builtinKey'>): PrintFormat {
+  return category.builtinKey !== null && CARD_KEYS.has(category.builtinKey) ? 'card' : 'a4';
 }
 
 // Box available for one face, in mm. On a shared A4 page each face gets half of the height.

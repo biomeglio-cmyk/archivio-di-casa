@@ -3,6 +3,7 @@ import { SymbolView } from 'expo-symbols';
 import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
+import { TileTitle } from '@/components/tile-title';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { Radius, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -33,9 +34,9 @@ export function CategoryTile({ category, documentCount }: Props) {
           {documentCount}
         </Text>
       </View>
-      <Text style={[styles.name, { color: colors.text }]} numberOfLines={2}>
+      <TileTitle style={[styles.name, { color: colors.text }]} containerStyle={styles.nameBox}>
         {category.name}
-      </Text>
+      </TileTitle>
     </LinearGradient>
   );
 }
@@ -57,6 +58,8 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     fontFamily: FONTS.semiBold,
+  },
+  nameBox: {
     marginTop: 'auto', // pushes the name to the bottom of the tile
   },
   count: {

@@ -5,7 +5,7 @@ import { SymbolView } from 'expo-symbols';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Text } from '@/components/text';
+import { TileTitle } from '@/components/tile-title';
 import { BRAND_COLOR } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import { DeadlineChip } from '@/components/deadline-chip';
@@ -53,9 +53,7 @@ export function DocumentTileFace({ document, selected }: FaceProps) {
         </View>
       )}
 
-      <Text style={[styles.title, { color: textColor }]} numberOfLines={2}>
-        {document.title}
-      </Text>
+      <TileTitle style={[styles.title, { color: textColor }]}>{document.title}</TileTitle>
       {/* The deadline as a bell chip, only when there is one */}
       <View style={styles.expiry}>
         <DeadlineChip expiresAt={document.expiresAt} neutralColor={textColor} />

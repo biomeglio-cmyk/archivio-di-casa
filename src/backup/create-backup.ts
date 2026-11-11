@@ -13,6 +13,7 @@ import {
 } from '@/backup/backup-layout';
 import { LATEST_SCHEMA_VERSION } from '@/db/migrations';
 import { passwordDocumentIds, readPassword } from '@/security/password-vault';
+import { isRemovedCardFrontCopy } from '@/storage/document-files';
 
 export type BackupProgress = { phase: 'key' | 'archive'; done: number; total: number };
 
@@ -32,7 +33,9 @@ function collectFiles(): { file: File; name: string }[] {
     const directory = new Directory(Paths.document, folder);
     if (!directory.exists) continue;
     for (const item of directory.list()) {
-      if (item instanceof File) out.push({ file: item, name: `${folder}/${item.name}` });
+      if (!(item instanceof File)) continue;
+      if (folder === 'documents' && isRemovedCardFrontCopy(item.name)) continue; // unused leftovers
+      out.push({ file: item, name: `${folder}/${item.name}` });
     }
   }
   return out;

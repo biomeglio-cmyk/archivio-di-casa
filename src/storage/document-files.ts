@@ -49,3 +49,20 @@ export function deleteStoredFile(relativePath: string): void {
     // nothing else to do: an orphan file is harmless
   }
 }
+
+// Leftovers of the removed card-front enhancement: "…-clean.jpg" copies and "…-original" markers.
+// Saved files are always named "<unique>-<side>.<ext>", so these names never match a real photo.
+export function isRemovedCardFrontCopy(fileName: string): boolean {
+  return /-clean\.jpg$/.test(fileName) || /-original$/.test(fileName);
+}
+
+// At launch: deletes those leftovers (also after restoring a backup that still had them)
+export function removeCardFrontCopies(): void {
+  try {
+    for (const item of getDocumentsDirectory().list()) {
+      if (item instanceof File && isRemovedCardFrontCopy(item.name)) item.delete();
+    }
+  } catch {
+    // harmless: they are only unused files
+  }
+}

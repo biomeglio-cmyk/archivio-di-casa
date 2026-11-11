@@ -2,7 +2,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { cleanupBackupLeftovers } from '@/backup/restore-backup';
 import { migrateDbIfNeeded } from '@/db/migrations';
-import { ensureDocumentsDirectory } from '@/storage/document-files';
+import { ensureDocumentsDirectory, removeCardFrontCopies } from '@/storage/document-files';
 
 export const DATABASE_NAME = 'sottomano.db';
 
@@ -13,4 +13,5 @@ export async function initDatabase(db: SQLiteDatabase): Promise<void> {
   await migrateDbIfNeeded(db);
   ensureDocumentsDirectory();
   cleanupBackupLeftovers();
+  removeCardFrontCopies();
 }

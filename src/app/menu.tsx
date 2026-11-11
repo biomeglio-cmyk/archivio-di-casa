@@ -1,8 +1,7 @@
 import { Host, Switch } from '@expo/ui';
 import { router, type Href } from 'expo-router';
-import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 
 import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
@@ -15,7 +14,8 @@ import { useTheme } from '@/hooks/use-theme';
 import { disableAppLock, enableAppLock, useAppLockEnabled } from '@/security/app-lock';
 
 // Sheet "Menu" (the ≡ in the Home header), at 90% of the screen: an iOS grouped list.
-// Drag down, the X or a tap outside closes it. Every row closes it and goes somewhere:
+// Drag down or a tap outside closes it (no close button); with VoiceOver, the escape gesture
+// (two-finger Z) or the magic tap (two-finger double tap) closes it. Every row closes it and goes somewhere:
 // - a tab (Home, Scadenze, Famiglia): close the sheet, then navigate;
 // - another sheet or modal (Notifiche, Preferiti…): the menu is REPLACED by it, so closing it
 //   brings back to Home, not to the menu.
@@ -59,21 +59,15 @@ export default function MenuSheet() {
       stickyHeaderIndices={[0]}
       contentInsetAdjustmentBehavior="never"
       automaticallyAdjustContentInsets={false}
-      contentContainerStyle={styles.content}>
+      contentContainerStyle={styles.content}
+      onAccessibilityEscape={() => router.back()}
+      onMagicTap={() => router.back()}>
       {/* Pinned header with the sheet background, so the rows never show through it.
           The system grabber is drawn by iOS in its top padding. */}
       <View style={[styles.header, { backgroundColor: theme.background, borderBottomColor: theme.backgroundSelected }]}>
         <ThemedText style={styles.title} accessibilityRole="header" maxFontSizeMultiplier={1.6}>
           Menu
         </ThemedText>
-        <Pressable
-          onPress={() => router.back()}
-          hitSlop={10}
-          accessibilityRole="button"
-          accessibilityLabel="Chiudi"
-          style={[styles.close, { backgroundColor: theme.backgroundSelected }]}>
-          <SymbolView name="xmark" tintColor={theme.textSecondary} size={14} weight="bold" />
-        </Pressable>
       </View>
 
       <View style={styles.sections}>
@@ -131,8 +125,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 12,
     paddingHorizontal: 20,
     paddingTop: 22, // room for the grabber
     paddingBottom: 12,
@@ -143,13 +135,6 @@ const styles = StyleSheet.create({
     fontSize: 28,
     lineHeight: 34,
     fontFamily: FONTS.titleBold,
-  },
-  close: {
-    width: 30,
-    height: 30,
-    borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   content: {
     paddingBottom: 48, // the last row can scroll clear of the bottom edge

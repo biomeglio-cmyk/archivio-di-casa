@@ -1,14 +1,15 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
+import { Alert } from 'react-native';
 
 import { confirmDeleteCategory } from '@/actions/delete-actions';
 import { CardGrid } from '@/components/card-grid';
-import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentGrid } from '@/components/document-grid';
 import { BRAND_COLOR } from '@/constants/brand';
 import { getCategory, isOtherCategory } from '@/db/categories';
-import { listDocumentsByCategory } from '@/db/documents';
+import { listDocumentsByCategory, saveDocumentOrder } from '@/db/documents';
+import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
@@ -28,20 +29,37 @@ export default function CategoryScreen() {
   // Selected documents in list order, so the PDF pages follow the grid
   const selectedIds = (documents ?? []).filter((d) => selection.selected.has(d.id)).map((d) => d.id);
 
+  // After a drag: the new order of this grid (the dashed tile stays last)
+  async function saveOrder(items: DocumentListItem[]) {
+    try {
+      await saveDocumentOrder(db, 'category', items.map((d) => d.id));
+    } catch (error) {
+      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
+    }
+  }
+
   function sendTogether() {
     router.push({ pathname: '/send', params: { ids: selectedIds.join(','), label: category?.name ?? '' } });
     selection.cancel();
   }
 
-  // Modifica and Cancella for every category, built-in too; "Altro" can't be deleted
-  const actions =
-    category && documents && !selection.selecting ? (
-      <DetailActionBar
-        onAdd={null}
-        onEdit={() => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })}
-        onDelete={isOtherCategory(category) ? null : () => confirmDeleteCategory(db, category)}
-      />
-    ) : null;
+  // "…" in the header: Modifica and Cancella for every category, built-in too; "Altro" can't be deleted
+  const menu = category ? (
+    <Stack.Toolbar.Menu icon="ellipsis" accessibilityLabel="Altre azioni" hidden={selection.selecting}>
+      <Stack.Toolbar.MenuAction
+        icon="pencil"
+        onPress={() => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })}>
+        Modifica categoria
+      </Stack.Toolbar.MenuAction>
+      <Stack.Toolbar.MenuAction
+        icon="trash"
+        destructive
+        hidden={isOtherCategory(category)}
+        onPress={() => confirmDeleteCategory(db, category)}>
+        Cancella categoria
+      </Stack.Toolbar.MenuAction>
+    </Stack.Toolbar.Menu>
+  ) : null;
 
   // "Tessere e card": a wallet of card-shaped tiles
   if (category?.isCards) {
@@ -51,8 +69,9 @@ export default function CategoryScreen() {
         <CardGrid
           cards={documents}
           hrefFor={(card) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(card.id) } })}
-          footer={actions}
+          onReorder={saveOrder}
         />
+        <Stack.Toolbar placement="right">{menu}</Stack.Toolbar>
       </>
     );
   }
@@ -65,11 +84,11 @@ export default function CategoryScreen() {
         documents={documents}
         hrefFor={(doc) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(doc.id) } })}
         selection={selection}
+        onReorder={saveOrder}
         onAdd={() => router.push({ pathname: '/new-document', params: { categoryId: String(categoryId) } })}
-        footer={actions}
       />
 
-      {/* Header: "Seleziona", or "Annulla" while selecting */}
+      {/* Header: "Seleziona" and "…", or "Annulla" while selecting */}
       <Stack.Toolbar placement="right">
         {selection.selecting ? (
           <Stack.Toolbar.Button onPress={selection.cancel}>Annulla</Stack.Toolbar.Button>
@@ -78,6 +97,7 @@ export default function CategoryScreen() {
             Seleziona
           </Stack.Toolbar.Button>
         )}
+        {menu}
       </Stack.Toolbar>
 
       {selection.selecting && (

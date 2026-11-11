@@ -1,53 +1,77 @@
 import { router, type Href } from 'expo-router';
-import type { ReactElement } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
 import { startAddCard } from '@/capture/start-add-card';
 import { CardFace } from '@/components/card-face';
-import { TileGrid, TileScrollView } from '@/components/tile-grid';
+import { ThemedText } from '@/components/themed-text';
+import { SortableTileGrid } from '@/components/sortable-tile-grid';
+import { TileScrollView } from '@/components/tile-grid';
 import type { DocumentListItem } from '@/db/types';
-import { usePressed } from '@/hooks/use-pressed';
-import type { TileSize } from '@/hooks/use-tile-size';
+import { useTileSize } from '@/hooks/use-tile-size';
 
 type Props = {
   cards: DocumentListItem[] | undefined;
   hrefFor: (card: DocumentListItem) => Href;
-  footer?: ReactElement | null; // after the grid (e.g. Modifica / Cancella of the category)
+  onReorder: (cards: DocumentListItem[]) => void; // after a drag, the new order to save
 };
 
-// "Tessere e card" as a wallet: the shared TileGrid with card-shaped tiles, then "Aggiungi carta".
-// Each card follows its "Copertina": Foto = the photo of its front, Colore = its color and name.
-export function CardGrid({ cards, hrefFor, footer }: Props) {
+// "Tessere e card" as a wallet: card-shaped tiles, then "Aggiungi carta". Long press and drag a
+// card to reorder, like the other grids. Each card follows its "Copertina": Foto = the photo
+// of its front, edge to edge; Colore = its color with the name. The name (and the person) in
+// small text under the card.
+export function CardGrid({ cards, hrefFor, onReorder }: Props) {
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const { width } = useTileSize();
+
   return (
-    <TileScrollView>
-      <TileGrid
-        items={cards}
-        keyFor={(card) => card.id}
-        cardShaped
-        add={{ label: 'Aggiungi carta', onPress: () => startAddCard('push') }}
-        renderTile={(card, size) => <CardTile card={card} size={size} href={hrefFor(card)} />}
-      />
-      {footer}
-    </TileScrollView>
+    // Gesture root for the drag and drop
+    <GestureHandlerRootView style={styles.flex}>
+      <TileScrollView ref={scrollRef}>
+        {cards && (
+          <SortableTileGrid
+            items={cards}
+            keyFor={(card) => card.id}
+            labelFor={(card) => (card.personName ? `${card.title}, ${card.personName}` : card.title)}
+            renderTile={(card) => <CardFaceWithCaption card={card} width={width} />}
+            onOpen={(card) => router.push(hrefFor(card))}
+            onReorder={onReorder}
+            scrollableRef={scrollRef}
+            add={{ label: 'Aggiungi carta', onPress: () => startAddCard('push') }}
+            cardShaped
+          />
+        )}
+      </TileScrollView>
+    </GestureHandlerRootView>
   );
 }
 
-function CardTile({ card, size, href }: { card: DocumentListItem; size: TileSize; href: Href }) {
-  const { pressed, handlers } = usePressed();
+// The card (front photo or color) and its caption: the look only, the sortable grid handles the tap
+function CardFaceWithCaption({ card, width }: { card: DocumentListItem; width: number }) {
+  const showPhoto = card.coverMode !== 'color';
   return (
-    <Pressable
-      {...handlers}
-      onPress={() => router.push(href)}
-      accessibilityRole="button"
-      accessibilityLabel={card.personName ? `${card.title}, ${card.personName}` : card.title}
-      style={[size, pressed && styles.pressed]}>
-      <CardFace card={card} width={size.width} showPerson showPhoto={card.coverMode !== 'color'} />
-    </Pressable>
+    <View style={styles.cell}>
+      <CardFace card={card} width={width} showPhoto={showPhoto} />
+      <View>
+        <ThemedText type="small" numberOfLines={1} maxFontSizeMultiplier={1.4}>
+          {card.title}
+        </ThemedText>
+        {card.personName && (
+          <ThemedText type="small" themeColor="textSecondary" numberOfLines={1} maxFontSizeMultiplier={1.4}>
+            {card.personName}
+          </ThemedText>
+        )}
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  pressed: {
-    opacity: 0.8,
+  flex: {
+    flex: 1,
+  },
+  cell: {
+    gap: 6,
   },
 });

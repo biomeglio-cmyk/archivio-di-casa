@@ -1,19 +1,22 @@
 import { Image } from 'expo-image';
+import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import type Animated from 'react-native-reanimated';
+import type { AnimatedRef } from 'react-native-reanimated';
+import Sortable, { type SortableGridDragEndParams } from 'react-native-sortables';
 
-import { TileGrid } from '@/components/tile-grid';
 import { BRAND_COLOR, FONTS, PIN_COLOR } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
-import { listPinnedDocuments } from '@/db/documents';
+import { listPinnedDocuments, savePinnedOrder } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
-import type { TileSize } from '@/hooks/use-tile-size';
+import { TILE_COLUMNS, TILE_GAP, useTileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
 
 const COLLAPSED_COUNT = 6; // 3 rows of 2; the rest behind "Mostra tutti"
@@ -36,16 +39,46 @@ export function SectionHeader({ title, action }: { title: string; action?: { lab
   );
 }
 
+const DRAG_DELAY_MS = 400; // long press before a tile lifts, like the iOS Home Screen
+
 // "PREFERITI" on Home, between the search bar and the categories: the pinned cards and
-// documents in the shared TileGrid, like the categories, in the order chosen with "Modifica"
-export function FavoritesSection() {
+// documents in the same 2-column grid as the categories (same tile size and gaps as TileGrid).
+// Long press (~400 ms) → light vibration, the tile lifts and follows the finger, the others make
+// room; on release the new order is saved. A tap opens the item; scrolling works as usual.
+// Collapsed (max 6) the drag reorders the visible tiles; "Mostra tutti" reorders all of them.
+// `scrollableRef`: the page scrolls by itself when a tile is dragged near its edge.
+export function FavoritesSection({ scrollableRef }: { scrollableRef?: AnimatedRef<Animated.ScrollView> }) {
   const theme = useTheme();
+  const db = useSQLiteContext();
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
   const [expanded, setExpanded] = useState(false);
 
   if (!pinned) return null; // loading: a few milliseconds
 
   const visible = expanded ? pinned : pinned.slice(0, COLLAPSED_COUNT);
+
+  // Saves the visible tiles in their new order, followed by the hidden ones (unchanged)
+  async function saveOrder(visibleIds: number[]) {
+    const hidden = pinned!.slice(visible.length).map((d) => d.id);
+    const next = [...visibleIds, ...hidden];
+    if (next.every((id, index) => id === pinned![index].id)) return; // dropped where it was
+    try {
+      await savePinnedOrder(db, next);
+    } catch (error) {
+      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
+    }
+  }
+
+  // VoiceOver: "Sposta prima" / "Sposta dopo" instead of dragging
+  function moveBy(id: number, delta: number) {
+    const ids = visible.map((d) => d.id);
+    const from = ids.indexOf(id);
+    const to = from + delta;
+    if (to < 0 || to >= ids.length) return;
+    ids.splice(from, 1);
+    ids.splice(to, 0, id);
+    saveOrder(ids);
+  }
 
   return (
     <View style={styles.section}>
@@ -62,10 +95,21 @@ export function FavoritesSection() {
           </Text>
         </View>
       ) : (
-        <TileGrid
-          items={visible}
-          keyFor={(document) => document.id}
-          renderTile={(document, size) => <FavoriteTile document={document} size={size} />}
+        <Sortable.Grid
+          data={visible}
+          keyExtractor={(document) => String(document.id)}
+          columns={TILE_COLUMNS}
+          rowGap={TILE_GAP}
+          columnGap={TILE_GAP}
+          dragActivationDelay={DRAG_DELAY_MS}
+          activeItemScale={1.05}
+          activeItemShadowOpacity={0.25}
+          inactiveItemOpacity={1}
+          scrollableRef={scrollableRef}
+          autoScrollEnabled={scrollableRef !== undefined}
+          onDragStart={() => Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)}
+          onDragEnd={({ data }: SortableGridDragEndParams<DocumentListItem>) => saveOrder(data.map((d) => d.id))}
+          renderItem={({ item }) => <FavoriteTile document={item} onMove={(delta) => moveBy(item.id, delta)} />}
         />
       )}
 
@@ -80,8 +124,8 @@ export function FavoritesSection() {
 
 // One favorite, as big as a category tile: its photo filling the tile with the title on a dark
 // bar, or (without photo) the category gradient with icon and title, like the category tiles
-function FavoriteTile({ document, size }: { document: DocumentListItem; size: TileSize }) {
-  const { pressed, handlers } = usePressed();
+function FavoriteTile({ document, onMove }: { document: DocumentListItem; onMove: (delta: number) => void }) {
+  const { minHeight } = useTileSize(); // the width comes from the grid column (same as TileGrid)
   const { category } = document;
 
   let content;
@@ -123,15 +167,28 @@ function FavoriteTile({ document, size }: { document: DocumentListItem; size: Ti
     );
   }
 
+  // Sortable.Touchable: a tap opens the item, while the long press is left to the drag
   return (
-    <Pressable
-      {...handlers}
-      onPress={() => router.push({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(document.id) } })}
+    <Sortable.Touchable
+      onTap={() => router.push({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(document.id) } })}
+      style={{ minHeight }}
+      accessible
       accessibilityRole="button"
       accessibilityLabel={document.title}
-      style={[size, pressed && styles.pressed]}>
+      accessibilityHint="Tieni premuto e trascina per spostarlo"
+      accessibilityActions={[
+        { name: 'activate' },
+        { name: 'earlier', label: 'Sposta prima' },
+        { name: 'later', label: 'Sposta dopo' },
+      ]}
+      onAccessibilityAction={(event) => {
+        const action = event.nativeEvent.actionName;
+        if (action === 'earlier') onMove(-1);
+        else if (action === 'later') onMove(1);
+        else router.push({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(document.id) } });
+      }}>
       {content}
-    </Pressable>
+    </Sortable.Touchable>
   );
 }
 
@@ -155,9 +212,6 @@ const styles = StyleSheet.create({
   headerAction: {
     color: BRAND_COLOR,
     fontSize: 17,
-  },
-  pressed: {
-    opacity: 0.8,
   },
   tile: {
     flex: 1, // fills the (possibly stretched) tile

@@ -3,6 +3,8 @@ import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CategoryTile } from '@/components/category-tile';
@@ -27,6 +29,7 @@ const SEARCH_DEBOUNCE_MS = 200;
 // two-column grid of categories with the dashed "Nuova categoria" tile, or the search results while searching
 export default function ArchiveScreen() {
   const insets = useSafeAreaInsets();
+  const scrollRef = useAnimatedRef<Animated.ScrollView>(); // Preferiti scroll the page while dragging
   const theme = useTheme();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: allDocuments } = useDbQuery(listAllDocuments, []);
@@ -55,7 +58,8 @@ export default function ArchiveScreen() {
   }, []);
 
   return (
-    <View style={styles.screen}>
+    // Gesture root for the drag and drop of the Preferiti
+    <GestureHandlerRootView style={styles.screen}>
       {/* Fixed top: no navigation bar here, so the safe area is added by hand. The search field
           stays mounted while the grid below is swapped for the results, so the keyboard stays open. */}
       <View style={[styles.top, { paddingTop: insets.top + 8 }]}>
@@ -92,8 +96,8 @@ export default function ArchiveScreen() {
       {searching && results ? (
         <SearchResultsList query={searched} results={results} filter={filter} onFilterChange={setFilter} />
       ) : (
-        <TileScrollView keyboardShouldPersistTaps="handled">
-          {showPinned && <FavoritesSection />}
+        <TileScrollView ref={scrollRef} keyboardShouldPersistTaps="handled">
+          {showPinned && <FavoritesSection scrollableRef={scrollRef} />}
           <SectionHeader title="Categorie" />
           <TileGrid
             items={categories}
@@ -105,7 +109,7 @@ export default function ArchiveScreen() {
           />
         </TileScrollView>
       )}
-    </View>
+    </GestureHandlerRootView>
   );
 }
 

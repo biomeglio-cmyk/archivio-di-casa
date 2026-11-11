@@ -153,6 +153,14 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="appearance"
+            options={{
+              presentation: 'modal',
+              title: 'Aspetto',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
+          <Stack.Screen
             name="backup"
             options={{
               presentation: 'modal',

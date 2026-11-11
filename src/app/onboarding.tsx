@@ -9,9 +9,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
-import { BUILTIN_CATEGORIES } from '@/db/builtin-categories';
 import { useTheme } from '@/hooks/use-theme';
 import { markOnboardingSeen } from '@/onboarding/onboarding-flag';
+import { getPalette } from '@/settings/palette';
 
 type Page = {
   title: string;
@@ -122,8 +122,8 @@ function Illustration({ page }: { page: Page }) {
   if (page.illustration.kind === 'logo') {
     return <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />;
   }
-  // SF Symbol on a pastel tile, in the colors of a category
-  const colors = BUILTIN_CATEGORIES[page.illustration.palette].colors;
+  // SF Symbol on a tile, in the colors of a category (from the chosen palette)
+  const colors = getPalette().colors[page.illustration.palette];
   return (
     <LinearGradient colors={[colors.top, colors.bottom]} style={styles.tile}>
       <SymbolView name={page.illustration.symbol} tintColor={colors.text} size={64} />

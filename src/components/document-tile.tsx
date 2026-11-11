@@ -5,16 +5,13 @@ import { SymbolView } from 'expo-symbols';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { DeadlineChip } from '@/components/deadline-chip';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import type { TileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
-import { describeDistance, formatShortDate } from '@/utils/dates';
-import { daysUntil } from '@/utils/deadlines';
-
-const EXPIRED_ON_DARK = '#FF9A9A'; // the danger red is too dark on a dark picked color
 
 type FaceProps = {
   document: DocumentListItem; // includes its category and its first photo
@@ -26,7 +23,7 @@ type FaceProps = {
 // - Foto: pastel gradient of its category, the photo thumbnail on top, the title;
 // - Colore: no photo; the category gradient (or the color picked by the user, with white text)
 //   and the category icon, the title.
-// The expiry appears at the bottom only when the document has one.
+// The deadline is a bell chip at the bottom, only when the document has one.
 // The look only: it fills its cell; DocumentTile below (or the sortable grid) handles the tap.
 export function DocumentTileFace({ document, selected }: FaceProps) {
   const { category } = document;
@@ -36,8 +33,6 @@ export function DocumentTileFace({ document, selected }: FaceProps) {
     ? null
     : (document.coverColor ?? (category.isCards ? (document.cardColor ?? DEFAULT_CARD_COLOR) : null));
   const textColor = solid ? '#FFFFFF' : category.colors.text;
-  const days = document.expiresAt ? daysUntil(document.expiresAt) : null;
-  const expiredColor = days !== null && days < 0 ? (solid ? EXPIRED_ON_DARK : DANGER_COLOR) : textColor;
 
   const content: ReactNode = (
     <>
@@ -57,14 +52,10 @@ export function DocumentTileFace({ document, selected }: FaceProps) {
       <Text style={[styles.title, { color: textColor }]} numberOfLines={2}>
         {document.title}
       </Text>
-      {/* Two short lines, "gio 12 nov" and "tra 2 giorni", so nothing gets cut with large text */}
-      {/* Only a real deadline is shown; without one, nothing */}
-      {document.expiresAt && days !== null && (
-        <View style={styles.expiry}>
-          <Text style={[styles.expiryText, { color: expiredColor }]}>{formatShortDate(document.expiresAt)}</Text>
-          <Text style={[styles.expiryText, { color: expiredColor }]}>{describeDistance(days)}</Text>
-        </View>
-      )}
+      {/* The deadline as a bell chip, only when there is one */}
+      <View style={styles.expiry}>
+        <DeadlineChip expiresAt={document.expiresAt} neutralColor={category.colors.text} />
+      </View>
 
       {selected !== undefined && (
         <View style={styles.check}>
@@ -145,12 +136,6 @@ const styles = StyleSheet.create({
   },
   expiry: {
     marginTop: 'auto', // always at the bottom of the tile
-  },
-  expiryText: {
-    fontSize: 12,
-    lineHeight: 16,
-    fontWeight: 500,
-    opacity: 0.85,
   },
   check: {
     position: 'absolute',

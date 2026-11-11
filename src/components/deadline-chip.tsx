@@ -1,0 +1,76 @@
+import { SymbolView } from 'expo-symbols';
+import { StyleSheet, Text, View } from 'react-native';
+
+import { daysUntil } from '@/utils/deadlines';
+
+const RED = '#C8283D';
+const RED_SOFT = '#FDE3E6';
+const AMBER = '#8A5A00';
+const AMBER_SOFT = '#FFF1D6';
+const NEUTRAL_BACKGROUND = 'rgba(255, 255, 255, 0.55)';
+
+type Props = {
+  expiresAt: string | null; // 'YYYY-MM-DD'
+  neutralColor: string; // text and bell when the deadline is far (the tile's text color)
+};
+
+// The deadline on a document tile: a bell and the days left ("-12").
+// Far (>30 days) neutral, ≤30 amber, ≤7 red, today "Oggi", past "Scaduta" in solid red.
+// Nothing when there is no deadline. The full date is on the document screen.
+export function DeadlineChip({ expiresAt, neutralColor }: Props) {
+  if (!expiresAt) return null;
+  const days = daysUntil(expiresAt);
+
+  let label: string;
+  let spoken: string;
+  let colors: { background: string; text: string };
+  if (days < 0) {
+    label = 'Scaduta';
+    spoken = 'Scaduta';
+    colors = { background: RED, text: '#FFFFFF' };
+  } else if (days === 0) {
+    label = 'Oggi';
+    spoken = 'Scade oggi';
+    colors = { background: RED_SOFT, text: RED };
+  } else {
+    label = `-${days}`;
+    spoken = days === 1 ? 'Scade tra 1 giorno' : `Scade tra ${days} giorni`;
+    colors =
+      days <= 7
+        ? { background: RED_SOFT, text: RED }
+        : days <= 30
+          ? { background: AMBER_SOFT, text: AMBER }
+          : { background: NEUTRAL_BACKGROUND, text: neutralColor };
+  }
+
+  return (
+    <View
+      style={[styles.chip, { backgroundColor: colors.background }]}
+      accessible
+      accessibilityRole="text"
+      accessibilityLabel={spoken}>
+      <SymbolView name="bell" tintColor={colors.text} size={12} />
+      <Text style={[styles.label, { color: colors.text }]} maxFontSizeMultiplier={1.6}>
+        {label}
+      </Text>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  chip: {
+    alignSelf: 'flex-start',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 999,
+  },
+  label: {
+    fontSize: 12,
+    lineHeight: 16,
+    fontWeight: 700,
+    fontVariant: ['tabular-nums'],
+  },
+});

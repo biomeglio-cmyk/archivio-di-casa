@@ -7,6 +7,7 @@ export type MenuCounts = {
   pinned: number; // Preferiti
   cardsCategoryId: number | null; // "Tessere e card" (found by kind, so a rename doesn't matter)
   cards: number;
+  trash: number; // documents in the Cestino
   urgent: number; // expired + expiring within 7 days (same number as the Scadenze tab badge)
   people: number;
 };
@@ -18,13 +19,15 @@ export async function getMenuCounts(db: SQLiteDatabase): Promise<MenuCounts> {
     pinned: number;
     cards_category_id: number | null;
     cards: number;
+    trash: number;
     people: number;
   }>(
     `SELECT
-       (SELECT COUNT(*) FROM documents) AS documents,
-       (SELECT COUNT(*) FROM documents WHERE is_pinned = 1) AS pinned,
+       (SELECT COUNT(*) FROM documents WHERE deleted_at IS NULL) AS documents,
+       (SELECT COUNT(*) FROM documents WHERE deleted_at IS NULL AND is_pinned = 1) AS pinned,
        (SELECT id FROM categories WHERE kind = 'cards' AND hidden = 0 LIMIT 1) AS cards_category_id,
-       (SELECT COUNT(*) FROM documents d JOIN categories c ON c.id = d.category_id WHERE c.kind = 'cards') AS cards,
+       (SELECT COUNT(*) FROM documents d JOIN categories c ON c.id = d.category_id WHERE c.kind = 'cards' AND d.deleted_at IS NULL) AS cards,
+       (SELECT COUNT(*) FROM documents WHERE deleted_at IS NOT NULL) AS trash,
        (SELECT COUNT(*) FROM people) AS people`,
   );
   return {
@@ -32,6 +35,7 @@ export async function getMenuCounts(db: SQLiteDatabase): Promise<MenuCounts> {
     pinned: row?.pinned ?? 0,
     cardsCategoryId: row?.cards_category_id ?? null,
     cards: row?.cards ?? 0,
+    trash: row?.trash ?? 0,
     urgent: await countUrgentDeadlines(db),
     people: row?.people ?? 0,
   };

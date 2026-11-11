@@ -106,12 +106,12 @@ export async function rescheduleReminders(db: SQLiteDatabase): Promise<void> {
 
     const now = new Date();
     const allExpiries = (
-      await db.getAllAsync<{ expires_at: string }>('SELECT expires_at FROM documents WHERE expires_at IS NOT NULL')
+      await db.getAllAsync<{ expires_at: string }>('SELECT expires_at FROM documents WHERE expires_at IS NOT NULL AND deleted_at IS NULL')
     ).map((row) => row.expires_at);
     const docs = await db.getAllAsync<ReminderSource>(
       `SELECT d.id, d.title, d.expires_at, d.reminder_days, p.name AS person_name
        FROM documents d LEFT JOIN people p ON p.id = d.person_id
-       WHERE d.expires_at IS NOT NULL AND d.expires_at >= ?`,
+       WHERE d.expires_at IS NOT NULL AND d.expires_at >= ? AND d.deleted_at IS NULL`,
       toISODate(now),
     );
 

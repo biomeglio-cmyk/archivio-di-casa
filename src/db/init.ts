@@ -2,6 +2,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { cleanupBackupLeftovers } from '@/backup/restore-backup';
 import { migrateDbIfNeeded } from '@/db/migrations';
+import { purgeOldTrash } from '@/db/trash';
 import { ensureDocumentsDirectory, removeCardFrontCopies } from '@/storage/document-files';
 
 export const DATABASE_NAME = 'sottomano.db';
@@ -14,4 +15,5 @@ export async function initDatabase(db: SQLiteDatabase): Promise<void> {
   ensureDocumentsDirectory();
   cleanupBackupLeftovers();
   removeCardFrontCopies();
+  await purgeOldTrash(db); // more than 30 days in the Cestino: deleted for good
 }

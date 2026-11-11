@@ -42,6 +42,7 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     username: row.username ?? null,
     coverMode: row.cover_mode ?? null,
     coverColor: row.cover_color ?? null,
+    deletedAt: row.deleted_at ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
@@ -51,11 +52,14 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
   };
 }
 
-// Every document with its category, filtered by an optional WHERE clause.
-// `where` is always a constant written here; values go through `?` parameters, never concatenated.
+// Only documents that are not in the "Cestino": every list of the app starts from here
+const LIVE = 'd.deleted_at IS NULL';
+
+// Every document with its category, filtered by a condition.
+// `condition` is always a constant written here; values go through `?` parameters, never concatenated.
 async function listDocumentsWhere(
   db: SQLiteDatabase,
-  where: string,
+  condition: string,
   params: (string | number)[],
   orderBy = 'd.expires_at IS NULL, d.expires_at, d.title',
 ): Promise<DocumentListItem[]> {
@@ -69,7 +73,7 @@ async function listDocumentsWhere(
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      LEFT JOIN people pp ON pp.id = d.person_id
-     ${where}
+     WHERE ${condition}
      ORDER BY ${orderBy}`,
     params,
   );
@@ -78,11 +82,11 @@ async function listDocumentsWhere(
 
 // Every document with category and person, for the search in Home (filtered in JS)
 export function listAllDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, '', []);
+  return listDocumentsWhere(db, LIVE, []);
 }
 
 export function listDocumentsWithExpiry(db: SQLiteDatabase): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.expires_at IS NOT NULL', []);
+  return listDocumentsWhere(db, `${LIVE} AND d.expires_at IS NOT NULL`, []);
 }
 
 // Fallback after the saved position (always set since V11): the old order, by deadline then title
@@ -90,17 +94,17 @@ const BY_DEADLINE = 'd.expires_at IS NULL, d.expires_at, d.title';
 
 // A category grid, in the order chosen by dragging
 export function listDocumentsByCategory(db: SQLiteDatabase, categoryId: number): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.category_id = ?', [categoryId], `d.category_order IS NULL, d.category_order, ${BY_DEADLINE}`);
+  return listDocumentsWhere(db, `${LIVE} AND d.category_id = ?`, [categoryId], `d.category_order IS NULL, d.category_order, ${BY_DEADLINE}`);
 }
 
 // "Preferiti" on Home, in the order chosen by the user
 export function listPinnedDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.is_pinned = 1', [], 'd.pin_order, d.id');
+  return listDocumentsWhere(db, `${LIVE} AND d.is_pinned = 1`, [], 'd.pin_order, d.id');
 }
 
 // A person grid, in the order chosen by dragging
 export function listDocumentsByPerson(db: SQLiteDatabase, personId: number): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.person_id = ?', [personId], `d.person_order IS NULL, d.person_order, ${BY_DEADLINE}`);
+  return listDocumentsWhere(db, `${LIVE} AND d.person_id = ?`, [personId], `d.person_order IS NULL, d.person_order, ${BY_DEADLINE}`);
 }
 
 // After a drag in a category or person grid: the documents of that grid, in their new order
@@ -125,7 +129,7 @@ export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      LEFT JOIN people p ON p.id = d.person_id
-     WHERE d.id = ?`,
+     WHERE d.id = ? AND d.deleted_at IS NULL`,
     id,
   );
   if (!row) return null;
@@ -269,9 +273,15 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
   );
 }
 
-// Deletes the document; its document_files rows go with it (ON DELETE CASCADE),
-// then the photos/PDFs are removed from the phone.
-export async function deleteDocument(db: SQLiteDatabase, id: number): Promise<void> {
+// The "Cestino", most recently deleted first
+export function listTrashedDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
+  return listDocumentsWhere(db, 'd.deleted_at IS NOT NULL', [], 'd.deleted_at DESC, d.id DESC');
+}
+
+// "Elimina definitivamente" (from the Cestino, or after 30 days there): the row goes, its
+// document_files rows with it (ON DELETE CASCADE), then the photos/PDFs, its Keychain item and
+// its calendar event. A normal "Elimina" only moves the document to the Cestino (db/trash.ts).
+export async function deleteDocumentForever(db: SQLiteDatabase, id: number): Promise<void> {
   const files = await db.getAllAsync<{ path: string }>('SELECT path FROM document_files WHERE document_id = ?', id);
   const event = await db.getFirstAsync<{ calendar_event_id: string | null }>(
     'SELECT calendar_event_id FROM documents WHERE id = ?',

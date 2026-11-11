@@ -45,6 +45,7 @@ export type FamilyDocument = {
   username: string | null; // "Password" documents: the user name (the password is in the Keychain)
   coverMode: CoverMode | null; // tile look; null = automatic (photo if there is one, else color)
   coverColor: string | null; // "Colore" cover; null = the category color (follows the palette)
+  deletedAt: string | null; // in the "Cestino" since then (ISO); null = a live document
   createdAt: string;
   updatedAt: string;
 };
@@ -103,6 +104,7 @@ export type DocumentRecord = {
   username: string | null;
   cover_mode: CoverMode | null;
   cover_color: string | null;
+  deleted_at: string | null;
   created_at: string;
   updated_at: string;
 };

@@ -178,6 +178,14 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="trash"
+            options={{
+              presentation: 'modal',
+              title: 'Cestino',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
+          <Stack.Screen
             name="about"
             options={{
               presentation: 'modal',

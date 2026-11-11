@@ -8,8 +8,8 @@ import {
   listDocumentIdsInCategory,
   moveDocumentsToOther,
 } from '@/db/categories';
-import { deleteDocument } from '@/db/documents';
 import { deletePerson } from '@/db/people';
+import { moveToTrash, TRASH_DAYS } from '@/db/trash';
 import { deletePassword } from '@/security/password-vault';
 
 // Confirmation dialogs for destructive actions, shared by detail screens, swipe actions and menus.
@@ -25,15 +25,15 @@ export function confirmDeleteDocument(
   onDeleted?: () => void,
 ) {
   Alert.alert(
-    `Eliminare "${document.title}"?`,
-    'Verranno eliminati anche le foto e i PDF collegati. Non si può annullare.',
+    `Spostare "${document.title}" nel Cestino?`,
+    `Potrai ripristinarlo da Menu › Cestino per ${TRASH_DAYS} giorni, poi verrà eliminato con foto e PDF.`,
     [
       { text: 'Annulla', style: 'cancel' },
       {
-        text: 'Elimina',
+        text: 'Sposta nel Cestino',
         style: 'destructive',
         onPress: () => {
-          deleteDocument(db, document.id).then(() => onDeleted?.(), showError);
+          moveToTrash(db, [document.id]).then(() => onDeleted?.(), showError);
         },
       },
     ],
@@ -80,6 +80,7 @@ export async function confirmDeleteCategory(
 
   const some = count === 1 ? '1 documento' : `${count} documenti`;
   const passwordsNote = category.isPassword ? ' Le password salvate verranno tolte dal Portachiavi.' : '';
+  const trashNote = `Andranno nel Cestino: potrai ripristinarli per ${TRASH_DAYS} giorni.`;
 
   // Option 1: documents to "Altro". From "Password", the passwords leave the Keychain
   // (in "Altro" there is no password field to show them).
@@ -93,11 +94,12 @@ export async function confirmDeleteCategory(
     }
   }
 
-  // Option 2: documents deleted too (files, calendar events, reminders, favorites, passwords)
+  // Option 2: documents to the Cestino too (restorable for 30 days; files and passwords stay
+  // until they are deleted for good; a restored one goes to "Altro" if the category is gone)
   function deleteAll() {
     Alert.alert(
       `Cancellare anche ${some}?`,
-      `Verranno eliminati con foto e PDF.${passwordsNote} Non si può annullare.`,
+      trashNote,
       [
         { text: 'Annulla', style: 'cancel' },
         {
@@ -105,7 +107,7 @@ export async function confirmDeleteCategory(
           style: 'destructive',
           onPress: async () => {
             try {
-              for (const id of await listDocumentIdsInCategory(db, category.id)) await deleteDocument(db, id);
+              await moveToTrash(db, await listDocumentIdsInCategory(db, category.id));
               await finish();
             } catch (error) {
               showError(error);

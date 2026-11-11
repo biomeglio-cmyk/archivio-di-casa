@@ -289,6 +289,18 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 12,
+    name: 'trash: soft delete of documents',
+    up: async (db) => {
+      await db.execAsync(`
+        -- NULL = a live document; otherwise when it was moved to the "Cestino" (ISO date and time).
+        -- Trashed documents are hidden everywhere and deleted for good after 30 days.
+        ALTER TABLE documents ADD COLUMN deleted_at TEXT;
+        CREATE INDEX documents_deleted_at ON documents (deleted_at);
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

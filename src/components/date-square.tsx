@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Radius } from '@/constants/theme';
+import { Colors } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatDate, MONTHS_SHORT, parseISODate } from '@/utils/dates';
 
@@ -31,7 +31,7 @@ export function DateSquare({ iso, highlighted = false }: Props) {
       colors={BRAND_GRADIENT}
       start={GRADIENT_START}
       end={GRADIENT_END}
-      style={styles.square}
+      style={[styles.square, styles.highlighted]}
       accessible
       accessibilityLabel={formatDate(iso)}>
       {content}
@@ -47,17 +47,20 @@ const styles = StyleSheet.create({
   square: {
     width: 46,
     height: 50,
-    borderRadius: Radius.iconSquare,
+    borderRadius: 14,
     borderCurve: 'continuous',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  highlighted: {
+    boxShadow: '0 6px 12px rgba(100, 90, 235, 0.25)',
   },
   idle: {
     backgroundColor: Colors.light.lilac,
   },
   day: {
     fontSize: 18,
-    lineHeight: 21,
+    lineHeight: 19,
     fontFamily: FONTS.bold,
   },
   month: {

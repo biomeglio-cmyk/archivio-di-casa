@@ -1,108 +1,93 @@
 import { router, useFocusEffect } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import Storage from 'expo-sqlite/kv-store';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Text } from '@/components/text';
 import { getLastBackupDate } from '@/backup/backup-layout';
-import { ThemedText } from '@/components/themed-text';
-import { WhiteCard } from '@/components/white-card';
-import { BRAND_COLOR } from '@/constants/brand';
-import { useTheme } from '@/hooks/use-theme';
+import { Text } from '@/components/text';
+import { Colors, Radius } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 
-const DAY_MS = 24 * 60 * 60 * 1000;
-const STALE_DAYS = 30; // an older backup is worth renewing
-const MIN_DOCUMENTS = 5; // never backed up: remind only when there is something to lose
-const SNOOZE_DAYS = 7; // the ✕ hides the card for a week
-const SNOOZE_KEY = 'backup.reminderSnoozedUntil';
+// ✕ hides the notice until the app is opened again (kept in memory only)
+let dismissedThisLaunch = false;
 
-function snoozedUntil(): number {
-  try {
-    return Number(Storage.getItemSync(SNOOZE_KEY) ?? 0);
-  } catch {
-    return 0;
-  }
-}
+// Notice on Home (docs/design/Main.dc.html) while NO backup exists: "Non hai ancora fatto un
+// backup", "Fai il backup" opens Backup. Checked again every time Home comes back on screen
+// (so it disappears right after the first backup).
+export function BackupReminder() {
+  const [, refresh] = useState(0);
+  useFocusEffect(useCallback(() => refresh((n) => n + 1), []));
 
-// What the card says, or null when it should not be shown
-function reminderText(documentCount: number, now = Date.now()): string | null {
-  if (now < snoozedUntil()) return null;
-  const last = getLastBackupDate();
-  if (!last) return documentCount >= MIN_DOCUMENTS ? 'Non hai ancora fatto un backup' : null;
-  const days = Math.floor((now - last.getTime()) / DAY_MS);
-  return days > STALE_DAYS ? `Ultimo backup ${days} giorni fa` : null;
-}
+  if (dismissedThisLaunch || getLastBackupDate() !== null) return null;
 
-// Discreet card on Home, above the categories: the last backup is more than 30 days old (or there
-// is none and at least 5 documents). "Fai il backup" opens Backup; ✕ hides it for 7 days.
-// Checked again every time Home comes back on screen (e.g. after making a backup).
-export function BackupReminder({ documentCount }: { documentCount: number }) {
-  const theme = useTheme();
-  const [now, setNow] = useState(() => Date.now());
-  useFocusEffect(useCallback(() => setNow(Date.now()), []));
-
-  const text = reminderText(documentCount, now);
-  if (!text) return null;
-
-  function snooze() {
-    try {
-      Storage.setItemSync(SNOOZE_KEY, String(Date.now() + SNOOZE_DAYS * DAY_MS));
-    } catch {
-      // without storage it simply comes back next time
-    }
-    setNow(Date.now());
+  function dismiss() {
+    dismissedThisLaunch = true;
+    refresh((n) => n + 1);
   }
 
   return (
-    <WhiteCard style={styles.card}>
-      <SymbolView name="externaldrive.badge.icloud" tintColor={BRAND_COLOR} size={24} />
+    <View style={styles.box}>
+      <View style={styles.icon}>
+        <SymbolView name="icloud.and.arrow.up" tintColor={Colors.light.indigo} size={20} />
+      </View>
       <View style={styles.texts}>
-        <ThemedText style={styles.title}>{text}</ThemedText>
-        <Pressable onPress={() => router.push('/backup')} accessibilityRole="button" hitSlop={8} style={styles.action}>
-          <Text style={styles.actionText}>Fai il backup</Text>
+        <Text style={styles.title}>Non hai ancora fatto un backup</Text>
+        <Pressable onPress={() => router.push('/backup')} accessibilityRole="link" hitSlop={10}>
+          <Text style={styles.link}>Fai il backup</Text>
         </Pressable>
       </View>
       <Pressable
-        onPress={snooze}
+        onPress={dismiss}
         accessibilityRole="button"
-        accessibilityLabel="Nascondi per 7 giorni"
-        hitSlop={10}
+        accessibilityLabel="Chiudi avviso"
+        hitSlop={4}
         style={styles.close}>
-        <SymbolView name="xmark" tintColor={theme.textSecondary} size={14} weight="semibold" />
+        <SymbolView name="xmark" tintColor={Colors.light.textSecondary} size={16} weight="semibold" />
       </Pressable>
-    </WhiteCard>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  card: {
+  box: {
     flexDirection: 'row',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     gap: 12,
-    padding: 14,
-    borderRadius: 16,
+    paddingVertical: 14,
+    paddingLeft: 16,
+    paddingRight: 12,
+    borderRadius: 20,
     borderCurve: 'continuous',
+    backgroundColor: Colors.light.paleLilac,
+  },
+  icon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    borderCurve: 'continuous',
+    backgroundColor: '#FFFFFF',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxShadow: '0 4px 10px rgba(28, 30, 70, 0.06)',
   },
   texts: {
     flex: 1,
     gap: 2,
   },
   title: {
-    fontWeight: 600,
+    fontSize: 14,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.text,
   },
-  action: {
-    alignSelf: 'flex-start',
-    minHeight: 32,
-    justifyContent: 'center',
-  },
-  actionText: {
-    color: BRAND_COLOR,
-    fontSize: 17,
+  link: {
+    fontSize: 14,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.accent,
   },
   close: {
-    width: 28,
-    height: 28,
+    width: 36,
+    height: 36,
+    borderRadius: Radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
   },

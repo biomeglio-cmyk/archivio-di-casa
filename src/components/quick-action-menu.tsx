@@ -65,7 +65,7 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
       {target && (
         <View style={styles.fill} accessibilityViewIsModal onAccessibilityEscape={onClose}>
           <Pressable
-            style={[StyleSheet.absoluteFill, styles.dim]}
+            style={[StyleSheet.absoluteFill, { backgroundColor: theme.scrim }]}
             onPress={onClose}
             accessibilityRole="button"
             accessibilityLabel="Chiudi menu"
@@ -110,9 +110,6 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
 const styles = StyleSheet.create({
   fill: {
     flex: 1,
-  },
-  dim: {
-    backgroundColor: 'rgba(0, 0, 0, 0.35)',
   },
   tile: {
     position: 'absolute',

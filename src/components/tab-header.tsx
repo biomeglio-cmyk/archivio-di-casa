@@ -1,9 +1,9 @@
-import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { LogoMark } from '@/components/logo-mark';
 import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
@@ -28,7 +28,7 @@ export function TabHeader({ title, action }: Props) {
 
   return (
     <View style={[styles.header, { paddingTop: insets.top + 8 }]}>
-      <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />
+      <LogoMark size={28} radius={7} />
       <Text style={[styles.title, { color: theme.text }]} numberOfLines={1} accessibilityRole="header" maxFontSizeMultiplier={1.4}>
         {title}
       </Text>
@@ -57,7 +57,7 @@ export function TabHeader({ title, action }: Props) {
           hitSlop={8}
           style={styles.iconButton}>
           {/* "Candy box": the grid icon in a round chip (white in light mode, dark grey in dark mode) */}
-          <View style={[styles.menuChip, { backgroundColor: theme.surface }]}>
+          <View style={[styles.menuChip, { backgroundColor: theme.lilac }]}>
             <SymbolView name="circle.grid.3x3.fill" tintColor={theme.text} size={16} />
           </View>
         </Pressable>
@@ -73,12 +73,6 @@ const styles = StyleSheet.create({
     gap: 10,
     paddingHorizontal: 16,
     paddingBottom: 8,
-  },
-  logo: {
-    width: 28,
-    height: 28,
-    borderRadius: 7,
-    borderCurve: 'continuous',
   },
   title: {
     flexShrink: 1,

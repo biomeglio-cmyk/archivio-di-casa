@@ -2,11 +2,12 @@ import { SymbolView } from 'expo-symbols';
 import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
+import { Colors } from '@/constants/theme';
 import { isLightColor } from '@/utils/colors';
 import { daysUntil } from '@/utils/deadlines';
 
-const RED = '#C8283D';
-const RED_SOFT = '#FDE3E6';
+const RED = Colors.light.error;
+const RED_SOFT = Colors.light.errorBackground;
 const AMBER = '#8A5A00';
 const AMBER_SOFT = '#FFF1D6';
 // Behind the tile's own text color: translucent white under dark text (pastel tiles),

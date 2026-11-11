@@ -4,7 +4,7 @@ import type { CategoryColors } from '@/db/types';
 // "Aspetto": 6 palettes for the 13 built-in categories. Each one lists [top, bottom, text] in the
 // order of BUILTIN_ORDER (documents, cards, utilities, home, insurance, warranties, car, 730,
 // colf, school, pet, password, other). Custom categories keep their own color, and the
-// brand pink #FF4F64 never changes.
+// brand indigo-lilac gradient never changes.
 
 export type PaletteId = 'pastel' | 'vivid' | 'earth' | 'sea' | 'sunset' | 'night';
 

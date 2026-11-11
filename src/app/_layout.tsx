@@ -21,7 +21,7 @@ import { Colors } from '@/constants/theme';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
 import { AppNotifications } from '@/notifications/app-notifications';
 
-// Navigation themes with the app page color (iOS systemGroupedBackground) behind every screen
+// Navigation theme with the app page color (white) behind every screen
 const LIGHT_THEME = { ...DefaultTheme, colors: { ...DefaultTheme.colors, background: Colors.light.background, card: Colors.light.surface } };
 
 // The root Stack starts on the tabs; sheets and modals are pushed on top of them

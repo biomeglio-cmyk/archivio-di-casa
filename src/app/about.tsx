@@ -1,9 +1,9 @@
 import Constants from 'expo-constants';
-import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { LogoMark } from '@/components/logo-mark';
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/typography';
@@ -16,7 +16,7 @@ export default function AboutScreen() {
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <View style={styles.brand}>
-          <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />
+          <LogoMark size={72} radius={16} />
           <ThemedText style={styles.name}>sottomano</ThemedText>
           <ThemedText themeColor="textSecondary">Versione {version}</ThemedText>
         </View>
@@ -49,12 +49,6 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     gap: 6,
     paddingTop: 8,
-  },
-  logo: {
-    width: 72,
-    height: 72,
-    borderRadius: 16,
-    borderCurve: 'continuous',
   },
   name: {
     fontSize: 28,

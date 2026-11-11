@@ -11,7 +11,7 @@ import { parseISODate } from '@/utils/dates';
 // is turned off. The user's personal calendars are never read, written or cleaned up.
 // Nothing else from the document (number, notes, person, files) is written to the calendar.
 
-const APP_CALENDAR_COLOR = '#FF4F64';
+const APP_CALENDAR_COLOR = '#4A5CF0'; // main gradient start (only for a newly created calendar)
 const REMINDER_HOUR = 9; // the alarm rings at 9:00, N days before
 
 // Alarms: only ONE reminder per deadline. When the app's own reminders ("Notifiche") are on,

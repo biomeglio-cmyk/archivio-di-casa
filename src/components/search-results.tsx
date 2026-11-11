@@ -54,7 +54,7 @@ export function SearchResultsList({ query, results, filter, onFilterChange }: Pr
                   onPress={() => onFilterChange(chip.filter)}
                   accessibilityRole="button"
                   accessibilityState={{ selected }}
-                  style={[styles.chip, { backgroundColor: selected ? BRAND_COLOR : theme.surface }]}>
+                  style={[styles.chip, { backgroundColor: selected ? BRAND_COLOR : theme.lilac }]}>
                   <Text style={[styles.chipLabel, { color: selected ? '#FFFFFF' : theme.text }]}>{chip.label}</Text>
                 </Pressable>
               );

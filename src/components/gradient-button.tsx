@@ -3,7 +3,7 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT } from '@/constants/brand';
+import { BRAND_GRADIENT, BRAND_SHADOW, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 
 type Props = {
@@ -24,8 +24,8 @@ export function GradientButton({ label, symbol, disabled = false, onPress }: Pro
       style={({ pressed }) => [styles.pressable, pressed && styles.pressed, disabled && styles.disabled]}>
       <LinearGradient
         colors={BRAND_GRADIENT}
-        start={{ x: 0, y: 0.5 }}
-        end={{ x: 1, y: 0.5 }}
+        start={GRADIENT_START}
+        end={GRADIENT_END}
         style={styles.gradient}>
         {symbol && <SymbolView name={symbol} tintColor="#FFFFFF" size={18} />}
         <Text style={styles.label}>{label}</Text>
@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderCurve: 'continuous',
     overflow: 'hidden',
+    boxShadow: BRAND_SHADOW,
   },
   pressed: {
     opacity: 0.85,

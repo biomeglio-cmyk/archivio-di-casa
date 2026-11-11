@@ -3,7 +3,8 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT, PIN_COLOR } from '@/constants/brand';
+import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START, PIN_COLOR } from '@/constants/brand';
+import { Colors } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
@@ -11,7 +12,7 @@ import { useTheme } from '@/hooks/use-theme';
 const RADIUS = 12;
 const MIN_HEIGHT = 48;
 // "Cancella": soft red background, dark red text
-const DELETE_COLORS = { background: '#FDE3E6', text: '#C8283D' };
+const DELETE_COLORS = { background: Colors.light.errorBackground, text: Colors.light.error };
 const PIN_TINT = `${PIN_COLOR}33`; // the heart color at 20%: "Nei preferiti" stands out
 const MAX_FONT_SCALE = 1.2; // labels grow a little with Dynamic Type, then stop so the row always fits
 
@@ -123,7 +124,7 @@ function ActionButton({ label, symbol, variant, onPress, style, color = '#FFFFFF
       accessibilityState={selected === undefined ? undefined : { selected }}
       style={[styles.button, variant === 'secondary' && styles.secondary, style, pressed && styles.pressed]}>
       {variant === 'primary' ? (
-        <LinearGradient colors={BRAND_GRADIENT} start={{ x: 0, y: 0.5 }} end={{ x: 1, y: 0.5 }} style={styles.inner}>
+        <LinearGradient colors={BRAND_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={styles.inner}>
           {content}
         </LinearGradient>
       ) : (

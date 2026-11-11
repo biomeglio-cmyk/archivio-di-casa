@@ -1,4 +1,3 @@
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
@@ -6,6 +5,7 @@ import { useRef, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type ScrollViewInstance } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { LogoMark } from '@/components/logo-mark';
 import { Text } from '@/components/text';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
@@ -122,7 +122,11 @@ export default function OnboardingScreen() {
 
 function Illustration({ page }: { page: Page }) {
   if (page.illustration.kind === 'logo') {
-    return <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />;
+    return (
+      <View style={styles.logo}>
+        <LogoMark size={128} radius={30} />
+      </View>
+    );
   }
   // SF Symbol on a tile, in the colors of a category (from the chosen palette)
   const colors = getPalette().colors[page.illustration.palette];
@@ -160,10 +164,6 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   logo: {
-    width: 128,
-    height: 128,
-    borderRadius: 30,
-    borderCurve: 'continuous',
     marginBottom: 8,
   },
   tile: {

@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
 
 import { BRAND_COLOR } from '@/constants/brand';
+import { Colors } from '@/constants/theme';
 import { countUrgentDeadlines } from '@/db/urgent-count';
 import { useDbQuery } from '@/hooks/use-db-query';
 
@@ -17,7 +18,7 @@ export default function TabsLayout() {
   const { data: urgent } = useDbQuery(countUrgentDeadlines, []);
 
   return (
-    <NativeTabs tintColor={BRAND_COLOR}>
+    <NativeTabs tintColor={BRAND_COLOR} badgeBackgroundColor={Colors.light.badge}>
       <NativeTabs.Trigger name="(archive)" accessibilityLabel="Home">
         <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
         <NativeTabs.Trigger.Label hidden>Home</NativeTabs.Trigger.Label>

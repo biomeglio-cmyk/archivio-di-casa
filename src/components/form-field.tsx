@@ -43,7 +43,7 @@ export function TextField(props: TextInputProps) {
     <TextInput
       placeholderTextColor={theme.textSecondary}
       {...props}
-      style={[styles.input, { backgroundColor: theme.surface, color: theme.text }, props.style]}
+      style={[styles.input, { backgroundColor: theme.lilac, color: theme.text }, props.style]}
     />
   );
 }

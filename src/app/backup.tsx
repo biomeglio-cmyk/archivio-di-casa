@@ -151,7 +151,7 @@ export default function BackupScreen() {
       return;
     }
     discardPickedFile(uri);
-    // Close the sheets, then rebuild every screen from the restored data (back on Archivio)
+    // Close the sheets, then rebuild every screen from the restored data (back on Home)
     Alert.alert('Backup ripristinato', 'I tuoi documenti sono tornati.', [
       {
         text: 'OK',

@@ -21,13 +21,13 @@ type Page = {
 
 const PAGES: Page[] = [
   {
-    title: 'Benvenuto in sottomano',
+    title: 'Benvenuto in Sottomano',
     text: "Carte d'identità, tessere, bollette, garanzie: tutti i documenti di casa in un posto solo, sempre a portata di mano.",
     illustration: { kind: 'logo' },
   },
   {
     title: 'Fotografa una volta',
-    text: 'Scansiona i documenti, di una o più pagine, oppure importa foto e PDF. Li ritrovi divisi per categoria e per persona.',
+    text: 'Scansiona i documenti, di una o più pagine, oppure importa foto e PDF. Li ritrovi nella Home, divisi per categoria e per persona.',
     illustration: { kind: 'symbol', symbol: 'camera.viewfinder', palette: 0 },
   },
   {

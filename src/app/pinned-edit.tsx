@@ -33,9 +33,9 @@ const MAX_FONT_SCALE = 2; // rows have a fixed height: text grows up to 2×, the
 // Position of every row: document id → index in the list
 type Positions = Record<number, number>;
 
-// Modal "Preferiti" (from "Modifica" in Archivio, or from the Menu): drag ≡ to reorder, red − to remove.
+// Modal "Preferiti" (from "Modifica" in Home, or from the Menu): drag ≡ to reorder, red − to remove.
 // The order and removals are saved only with "Fine"; "Annulla" leaves them as they were.
-// The "Mostra in Archivio" switch applies at once.
+// The "Mostra in Home" switch applies at once.
 export default function PinnedEditScreen() {
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
 
@@ -103,8 +103,8 @@ function PinnedEditor({ initial }: { initial: DocumentListItem[] }) {
   return (
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-        <Group footer="I preferiti in cima all'Archivio. Si applica subito.">
-          <Row label="Mostra in Archivio" symbol="heart" first>
+        <Group footer="I preferiti in cima alla Home. Si applica subito.">
+          <Row label="Mostra in Home" symbol="heart" first>
             <Host matchContents>
               <Switch value={showPinned} onValueChange={(value) => savePreferences({ showPinned: value })} />
             </Host>

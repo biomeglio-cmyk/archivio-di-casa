@@ -5,11 +5,11 @@ import { BRAND_COLOR } from '@/constants/brand';
 import { countUrgentDeadlines } from '@/db/urgent-count';
 import { useDbQuery } from '@/hooks/use-db-query';
 
-// Archivio is the tab the app starts on, at every launch and for every deep link into the tabs
+// Home is the tab the app starts on, at every launch and for every deep link into the tabs
 export const unstable_settings = { anchor: '(archive)' };
 
 // Native iOS tab bar. Each trigger name matches a route (or route group) in this folder.
-// Archivio is first and owns "/" (its index.tsx), so the app opens there.
+// Home is first and owns "/" (its index.tsx), so the app opens there.
 export default function TabsLayout() {
   // Overdue + within 7 days, kept live by the database change listener
   const { data: urgent } = useDbQuery(countUrgentDeadlines, []);
@@ -17,8 +17,8 @@ export default function TabsLayout() {
   return (
     <NativeTabs tintColor={BRAND_COLOR}>
       <NativeTabs.Trigger name="(archive)">
-        <NativeTabs.Trigger.Icon sf={{ default: 'archivebox', selected: 'archivebox.fill' }} md="inventory_2" />
-        <NativeTabs.Trigger.Label>Archivio</NativeTabs.Trigger.Label>
+        <NativeTabs.Trigger.Icon sf={{ default: 'square.grid.2x2', selected: 'square.grid.2x2.fill' }} md="home" />
+        <NativeTabs.Trigger.Label>Home</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="(deadlines)">

@@ -66,7 +66,7 @@ export default function RootLayout() {
               sheetAllowedDetents: 'fitToContents',
             }}
           />
-          {/* "Menu" from the ≡ in the Archivio header: 90% of the screen, closes by dragging down */}
+          {/* "Menu" from the ≡ in the Home header: 90% of the screen, closes by dragging down */}
           <Stack.Screen
             name="menu"
             options={{

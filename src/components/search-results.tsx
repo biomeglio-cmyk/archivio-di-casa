@@ -18,7 +18,7 @@ type Props = {
 
 type Section = { key: 'documents' | 'notes'; title: string; data: SearchHit[] };
 
-// Search results in Archivio: filter chips, then "DOCUMENTI · N" and "TROVATO NELLE NOTE · N"
+// Search results in Home: filter chips, then "DOCUMENTI · N" and "TROVATO NELLE NOTE · N"
 // as iOS grouped blocks, with the matched word in bold
 export function SearchResultsList({ query, results, filter, onFilterChange }: Props) {
   const theme = useTheme();

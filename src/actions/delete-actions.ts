@@ -34,7 +34,7 @@ export function confirmDeleteDocument(
 }
 
 export function confirmDeletePerson(db: SQLiteDatabase, person: { id: number; name: string }, onDeleted?: () => void) {
-  Alert.alert(`Eliminare ${person.name}?`, 'I suoi documenti restano in archivio, senza persona.', [
+  Alert.alert(`Eliminare ${person.name}?`, "I suoi documenti restano nell'app, senza persona.", [
     { text: 'Annulla', style: 'cancel' },
     {
       text: 'Elimina',

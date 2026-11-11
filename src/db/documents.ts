@@ -71,7 +71,7 @@ async function listDocumentsWhere(
   return rows.map(mapDocument);
 }
 
-// Every document with category and person, for the search in Archivio (filtered in JS)
+// Every document with category and person, for the search in Home (filtered in JS)
 export function listAllDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
   return listDocumentsWhere(db, '', []);
 }
@@ -84,7 +84,7 @@ export function listDocumentsByCategory(db: SQLiteDatabase, categoryId: number):
   return listDocumentsWhere(db, 'WHERE d.category_id = ?', [categoryId]);
 }
 
-// "Preferiti" on Archivio, in the order chosen by the user
+// "Preferiti" on Home, in the order chosen by the user
 export function listPinnedDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
   return listDocumentsWhere(db, 'WHERE d.is_pinned = 1', [], 'd.pin_order, d.id');
 }

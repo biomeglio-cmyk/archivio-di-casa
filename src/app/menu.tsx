@@ -14,11 +14,11 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 import { disableAppLock, enableAppLock, useAppLockEnabled } from '@/security/app-lock';
 
-// Sheet "Menu" (the ≡ in the Archivio header), at 90% of the screen: an iOS grouped list.
+// Sheet "Menu" (the ≡ in the Home header), at 90% of the screen: an iOS grouped list.
 // Drag down, the X or a tap outside closes it. Every row closes it and goes somewhere:
-// - a tab (Archivio, Scadenze, Famiglia): close the sheet, then navigate;
+// - a tab (Home, Scadenze, Famiglia): close the sheet, then navigate;
 // - another sheet or modal (Notifiche, Preferiti…): the menu is REPLACED by it, so closing it
-//   brings back to Archivio, not to the menu.
+//   brings back to Home, not to the menu.
 export default function MenuSheet() {
   const theme = useTheme();
   const { data: counts } = useDbQuery(getMenuCounts, []);
@@ -78,7 +78,7 @@ export default function MenuSheet() {
 
       <View style={styles.sections}>
         <Group title="Documenti">
-          <Row label="Archivio" symbol="archivebox" count={counts?.documents} first onPress={() => goToTab('/')} />
+          <Row label="Home" symbol="square.grid.2x2" count={counts?.documents} first onPress={() => goToTab('/')} />
           <Row label="Preferiti" symbol="heart" count={counts?.pinned} onPress={() => router.replace('/pinned-edit')} />
           {cardsId != null && (
             <Row

@@ -18,7 +18,7 @@ import { resolveDocumentFile } from '@/storage/document-files';
 
 const COLLAPSED_COUNT = 6; // 3 rows of 2; the rest behind "Mostra tutti"
 
-// Small grey uppercase title of a section of Archivio ("PREFERITI", "CATEGORIE"),
+// Small grey uppercase title of a section of Home ("PREFERITI", "CATEGORIE"),
 // with an optional link on the right
 export function SectionHeader({ title, action }: { title: string; action?: { label: string; onPress: () => void } }) {
   const theme = useTheme();
@@ -36,7 +36,7 @@ export function SectionHeader({ title, action }: { title: string; action?: { lab
   );
 }
 
-// "PREFERITI" on Archivio, between the search bar and the categories: the pinned cards and
+// "PREFERITI" on Home, between the search bar and the categories: the pinned cards and
 // documents in the shared TileGrid, like the categories, in the order chosen with "Modifica"
 export function FavoritesSection() {
   const theme = useTheme();

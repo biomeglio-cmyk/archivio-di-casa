@@ -13,9 +13,9 @@ type Props<T> = {
   cardShaped?: boolean; // "Tessere e card": tiles as tall as a real card (no minimum height)
 };
 
-// The ONE tile grid of the app (Archivio, categories, people, documents, cards):
+// The ONE tile grid of the app (Home, categories, people, documents, cards):
 // 2 columns, same gaps, width from the screen, and both tiles of a row as tall as the taller one.
-// It is a plain View (not a list): the grids are small, and Archivio can stack two of them.
+// It is a plain View (not a list): the grids are small, and Home can stack two of them.
 export function TileGrid<T>({ items, keyFor, renderTile, add, cardShaped = false }: Props<T>) {
   const tileSize = useTileSize();
   if (!items) return null;

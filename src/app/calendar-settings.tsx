@@ -13,7 +13,7 @@ import {
 } from '@/calendar/calendar-sync';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
-import { FONTS } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
 
 type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   card: {
     borderRadius: 12,

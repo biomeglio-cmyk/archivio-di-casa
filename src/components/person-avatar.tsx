@@ -1,7 +1,9 @@
 import { Image } from 'expo-image';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { Text } from '@/components/text';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { personPhotoUri } from '@/storage/person-photos';
 
 type Props = {
@@ -39,6 +41,6 @@ const styles = StyleSheet.create({
   },
   initial: {
     color: BRAND_COLOR,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
 });

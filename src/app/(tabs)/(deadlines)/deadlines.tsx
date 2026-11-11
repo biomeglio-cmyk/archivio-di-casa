@@ -1,13 +1,15 @@
 import { SymbolView } from 'expo-symbols';
 import { useRef, useState } from 'react';
-import { Modal, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, SectionList, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { DeadlineRow } from '@/components/deadline-row';
 import { MonthCalendar } from '@/components/month-calendar';
 import { TabHeader } from '@/components/tab-header';
 import { ThemedText } from '@/components/themed-text';
 import { WeekStrip } from '@/components/week-strip';
-import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { listDocumentsWithExpiry } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -235,7 +237,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 26,
     textAlign: 'center',
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   emptyText: {
     textAlign: 'center',
@@ -253,6 +255,6 @@ const styles = StyleSheet.create({
   close: {
     color: BRAND_COLOR,
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
 });

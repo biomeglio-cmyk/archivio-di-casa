@@ -3,13 +3,15 @@ import { SegmentedControl } from '@expo/ui/community/segmented-control';
 import { useLocalSearchParams } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { FrontBackComposer, type FrontBackComposerHandle } from '@/components/front-back-composer';
 import { GradientButton } from '@/components/gradient-button';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 import { usesFrontBack } from '@/utils/page-labels';
@@ -271,7 +273,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   group: {
     gap: 8,

@@ -1,7 +1,8 @@
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, ScrollView, SectionList, StyleSheet, Text, View } from 'react-native';
+import { Pressable, ScrollView, SectionList, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';

@@ -7,7 +7,8 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { PALETTES, type Palette } from '@/constants/palettes';
 import { BUILTIN_ORDER } from '@/db/builtin-categories';
 import { restoreBuiltinCategories } from '@/db/categories';
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   grid: {
     gap: 6,

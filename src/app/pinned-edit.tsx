@@ -5,8 +5,9 @@ import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { DANGER_COLOR } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';

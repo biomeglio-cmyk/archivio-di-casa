@@ -1,14 +1,16 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { pickPersonPhoto } from '@/capture/pick-files';
 import { FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { PersonAvatar } from '@/components/person-avatar';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { getPerson, insertPerson, updatePerson } from '@/db/people';
 import type { Person } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -114,7 +116,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   avatar: {
     alignItems: 'center',
@@ -123,6 +125,6 @@ const styles = StyleSheet.create({
   photoLink: {
     color: BRAND_COLOR,
     fontSize: 15,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
 });

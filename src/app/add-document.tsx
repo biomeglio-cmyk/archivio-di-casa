@@ -5,7 +5,7 @@ import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
 import { startAddCard } from '@/capture/start-add-card';
 import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
-import { FONTS } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 
 // Bottom sheet "Aggiungi un documento", opened by the "+" tab.
 // Every option ends on "Nuovo documento", with the captured files already attached.
@@ -38,7 +38,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   options: {
     gap: 10,

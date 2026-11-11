@@ -2,8 +2,9 @@ import { Host, Picker } from '@expo/ui';
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useState, type ReactNode } from 'react';
-import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { scanDocument } from '@/capture/scan-document';
 import { CardCapture, type CardCaptureResult, type CardStep } from '@/components/card-capture';
 import { CardFace } from '@/components/card-face';
@@ -11,7 +12,8 @@ import { CoverField } from '@/components/cover-field';
 import { FieldLabel, FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
 import type { CoverMode } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -247,7 +249,7 @@ const styles = StyleSheet.create({
   slotAction: {
     color: BRAND_COLOR,
     fontSize: 17,
-    fontFamily: FONTS.titleMedium,
+    fontFamily: FONTS.medium,
   },
   hint: {
     paddingHorizontal: 4,

@@ -1,7 +1,8 @@
 import * as Clipboard from 'expo-clipboard';
 import { useEffect, useState } from 'react';
-import { Alert, AppState, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, AppState, Pressable, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';

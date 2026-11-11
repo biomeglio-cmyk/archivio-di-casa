@@ -1,8 +1,10 @@
 import { SymbolView } from 'expo-symbols';
 import { useMemo } from 'react';
-import { PanResponder, Pressable, StyleSheet, Text, View } from 'react-native';
+import { PanResponder, Pressable, StyleSheet, View } from 'react-native';
 
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { Text } from '@/components/text';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
 
 // Pieces shared by the month grid and the week strip of Scadenze
@@ -130,7 +132,7 @@ const styles = StyleSheet.create({
   title: {
     flexShrink: 1,
     fontSize: 20,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   todayButton: {
     marginLeft: 10,
@@ -142,7 +144,7 @@ const styles = StyleSheet.create({
   todayLabel: {
     color: BRAND_COLOR,
     fontSize: 14,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   spacer: {
     flex: 1,

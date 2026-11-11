@@ -2,15 +2,16 @@ import { CameraView, scanFromURLAsync, useCameraPermissions, type BarcodeScannin
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useRef, useState } from 'react';
-import { Alert, Linking, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Alert, Linking, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Text } from '@/components/text';
 import { cropToGuideFrame } from '@/capture/crop-photo';
 import { guideFrameRect } from '@/capture/guide-frame';
 import { pickImageUri } from '@/capture/pick-files';
 import { GradientButton } from '@/components/gradient-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
-import { FONTS } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { CARD_BARCODE_TYPES } from '@/constants/card-colors';
 
 export type CardStep = 'front' | 'barcode';
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
   stepCount: {
     color: 'rgba(255, 255, 255, 0.8)',
     fontSize: 15,
-    fontFamily: FONTS.titleMedium,
+    fontFamily: FONTS.medium,
   },
   overFrame: {
     position: 'absolute',
@@ -256,7 +257,7 @@ const styles = StyleSheet.create({
   instruction: {
     color: '#FFFFFF',
     fontSize: 20,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
   hint: {
@@ -283,7 +284,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     color: '#FFFFFF',
     fontSize: 16,
-    fontFamily: FONTS.titleMedium,
+    fontFamily: FONTS.medium,
   },
   cameraBar: {
     position: 'absolute',
@@ -339,17 +340,17 @@ const styles = StyleSheet.create({
   secondaryLabel: {
     color: '#FFFFFF',
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   link: {
     color: '#FFFFFF',
     fontSize: 17,
-    fontFamily: FONTS.titleMedium,
+    fontFamily: FONTS.medium,
   },
   permissionTitle: {
     color: '#FFFFFF',
     fontSize: 22,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   permissionText: {
     color: 'rgba(255, 255, 255, 0.75)',

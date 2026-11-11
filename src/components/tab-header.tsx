@@ -1,10 +1,12 @@
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { Text } from '@/components/text';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
 
 export type TabHeaderAction =
@@ -17,7 +19,7 @@ type Props = {
 };
 
 // The ONE header of the four tabs (Home, Scadenze, Preferiti, Famiglia): logo, title in the
-// Fraunces Sottomano wordmark font, the page action and the "candy box" Menu button on the right.
+// Onest Bold wordmark, the page action and the "candy box" Menu button on the right.
 // Fixed at the top (the tabs hide the navigation bar), same paddings everywhere.
 // Inner screens (category, person, document) keep the standard iOS header with "back".
 export function TabHeader({ title, action }: Props) {

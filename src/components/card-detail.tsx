@@ -6,9 +6,10 @@ import { StatusBar } from 'expo-status-bar';
 import { SymbolView } from 'expo-symbols';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useMemo, useState } from 'react';
-import { Modal, Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Modal, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
+import { Text } from '@/components/text';
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { CardFace } from '@/components/card-face';
 import { DetailActionBar } from '@/components/detail-action-bar';

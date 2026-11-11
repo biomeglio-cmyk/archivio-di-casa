@@ -1,6 +1,7 @@
 import { SymbolView } from 'expo-symbols';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { isLightColor } from '@/utils/colors';
 import { daysUntil } from '@/utils/deadlines';
 

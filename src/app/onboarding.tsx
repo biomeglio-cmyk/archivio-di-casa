@@ -3,12 +3,14 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View, type ScrollViewInstance } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type ScrollViewInstance } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Text } from '@/components/text';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
 import { markOnboardingSeen } from '@/onboarding/onboarding-flag';
 import { getPalette } from '@/settings/palette';
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
   skip: {
     color: BRAND_COLOR,
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   pager: {
     flex: 1,
@@ -177,7 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     lineHeight: 32,
     textAlign: 'center',
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   text: {
     fontSize: 17,

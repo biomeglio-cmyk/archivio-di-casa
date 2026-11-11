@@ -1,8 +1,10 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
-import { BRAND_GRADIENT, FONTS, PIN_COLOR } from '@/constants/brand';
+import { Text } from '@/components/text';
+import { BRAND_GRADIENT, PIN_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -165,6 +167,6 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 17, // 17 pt semibold
     textAlign: 'center',
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
 });

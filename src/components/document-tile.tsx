@@ -3,9 +3,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router, type Href } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { Text } from '@/components/text';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { DeadlineChip } from '@/components/deadline-chip';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
@@ -134,7 +136,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     lineHeight: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   expiry: {
     marginTop: 'auto', // always at the bottom of the tile

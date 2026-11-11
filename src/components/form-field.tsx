@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
+import { StyleSheet, View, type TextInputProps } from 'react-native';
 
+import { TextInput } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';

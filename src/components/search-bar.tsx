@@ -1,7 +1,8 @@
 import { SymbolView } from 'expo-symbols';
 import { useRef, useState } from 'react';
-import { Keyboard, Pressable, StyleSheet, Text, TextInput, View, type TextInputInstance } from 'react-native';
+import { Keyboard, Pressable, StyleSheet, View, type TextInputInstance } from 'react-native';
 
+import { Text, TextInput } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
 

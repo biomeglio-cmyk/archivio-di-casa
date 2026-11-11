@@ -2,14 +2,15 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useRef, useState } from 'react';
-import { Linking, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Linking, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Text } from '@/components/text';
 import { cropToGuideFrame } from '@/capture/crop-photo';
 import { guideFrameRect } from '@/capture/guide-frame';
 import { GradientButton } from '@/components/gradient-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
-import { FONTS } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 
 type Props = {
   onDone: (uris: string[]) => void; // the photos in the order they were taken
@@ -182,7 +183,7 @@ const styles = StyleSheet.create({
   instruction: {
     color: '#FFFFFF',
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
   instructionOverFrame: {
@@ -247,17 +248,17 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 17,
     textAlign: 'center', // \"Aggiungi pagina\" wraps on two lines with large text
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   link: {
     color: '#FFFFFF',
     fontSize: 17,
-    fontFamily: FONTS.titleMedium,
+    fontFamily: FONTS.medium,
   },
   permissionTitle: {
     color: '#FFFFFF',
     fontSize: 22,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   permissionText: {
     color: 'rgba(255, 255, 255, 0.75)',

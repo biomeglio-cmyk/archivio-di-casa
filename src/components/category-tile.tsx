@@ -1,8 +1,9 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView } from 'expo-symbols';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
-import { FONTS } from '@/constants/brand';
+import { Text } from '@/components/text';
+import { FONTS } from '@/constants/typography';
 import type { Category } from '@/db/types';
 
 type Props = {
@@ -47,13 +48,13 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     lineHeight: 20,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
     marginTop: 'auto', // pushes the name to the bottom of the tile
   },
   count: {
     fontSize: 17,
     lineHeight: 28, // same height as the icon, so the number sits on its line
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
     fontVariant: ['tabular-nums'],
     opacity: 0.8,
   },

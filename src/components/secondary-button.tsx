@@ -1,7 +1,9 @@
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { Pressable, StyleSheet, Text } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { Text } from '@/components/text';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 
 type Props = {
   label: string;
@@ -45,6 +47,6 @@ const styles = StyleSheet.create({
   label: {
     color: BRAND_COLOR,
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
 });

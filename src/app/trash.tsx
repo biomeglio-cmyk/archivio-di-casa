@@ -3,10 +3,12 @@ import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { deleteDocumentForever, listTrashedDocuments } from '@/db/documents';
 import { daysLeftInTrash, emptyTrash, restoreFromTrash, TRASH_DAYS } from '@/db/trash';
 import type { DocumentListItem } from '@/db/types';
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   title: {
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   thumb: {
     width: 48,

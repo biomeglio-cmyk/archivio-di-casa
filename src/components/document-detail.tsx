@@ -3,8 +3,9 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
 import { useSQLiteContext } from 'expo-sqlite';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { CardDetail } from '@/components/card-detail';
@@ -16,7 +17,7 @@ import { PersonAvatar } from '@/components/person-avatar';
 import { PasswordCard } from '@/components/password-card';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
-import { FONTS } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { getDocumentDetail, listDocumentFiles, listDocumentVersions, setPinned } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     lineHeight: 32,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   card: {
     borderRadius: 12,

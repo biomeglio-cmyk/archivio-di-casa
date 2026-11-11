@@ -14,7 +14,7 @@ export function Group({ title, footer, children }: { title?: string; footer?: st
     <View style={styles.group}>
       {title && (
         <ThemedText type="small" themeColor="textSecondary" style={styles.groupTitle} accessibilityRole="header">
-          {title.toUpperCase()}
+          {title}
         </ThemedText>
       )}
       <View style={[styles.card, { backgroundColor: theme.surface }]}>{children}</View>
@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
   },
   groupTitle: {
     paddingHorizontal: 16,
+    textTransform: 'uppercase', // +0.1em letter spacing from the app Text
   },
   card: {
     borderRadius: 12,

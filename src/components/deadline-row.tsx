@@ -1,7 +1,8 @@
 import { router, type Href } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';

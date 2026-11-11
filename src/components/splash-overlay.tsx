@@ -2,10 +2,12 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as SplashScreen from 'expo-splash-screen';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Text } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
 
-import { BRAND_GRADIENT, FONTS } from '@/constants/brand';
+import { Text } from '@/components/text';
+import { BRAND_GRADIENT } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 
 const HOLD_MS = 700; // logo on screen…
 const FADE_MS = 300; // …then a fade into the app: about one second in total
@@ -72,6 +74,6 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.9)',
     fontSize: 15,
     textAlign: 'center',
-    fontFamily: FONTS.titleMedium,
+    fontFamily: FONTS.medium,
   },
 });

@@ -1,13 +1,15 @@
 import { Host, Picker, Switch } from '@expo/ui';
 import { DateTimePicker } from '@expo/ui/community/datetime-picker';
 import { useState, type ReactNode } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { CoverField } from '@/components/cover-field';
 import { FieldLabel, FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { listCategories } from '@/db/categories';
 import type { DocumentInput } from '@/db/documents';
 import type { Category, CoverMode } from '@/db/types';
@@ -320,8 +322,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   sectionTitle: {
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    textTransform: 'uppercase', // +0.1em letter spacing from the app Text
     paddingHorizontal: 4,
     marginBottom: -12, // closer to its card than to the card above
   },
@@ -350,7 +351,7 @@ const styles = StyleSheet.create({
   dateValue: {
     color: BRAND_COLOR,
     fontSize: 17,
-    fontFamily: FONTS.titleMedium,
+    fontFamily: FONTS.medium,
   },
   calendar: {
     alignSelf: 'stretch', // full width of the card, never past its margins

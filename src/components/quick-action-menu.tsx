@@ -1,8 +1,9 @@
 import { SymbolView } from 'expo-symbols';
 import { useRef, type ReactNode } from 'react';
-import { Modal, Pressable, StyleSheet, Text, useWindowDimensions, View } from 'react-native';
+import { Modal, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { Text } from '@/components/text';
 import type { QuickAction } from '@/actions/quick-actions';
 import { DANGER_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';

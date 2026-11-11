@@ -2,8 +2,9 @@ import { router, useFocusEffect } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import Storage from 'expo-sqlite/kv-store';
 import { useCallback, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { getLastBackupDate } from '@/backup/backup-layout';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';

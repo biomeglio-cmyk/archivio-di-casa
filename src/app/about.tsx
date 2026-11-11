@@ -6,7 +6,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
-import { FONTS } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 
 // "Info e privacy" (from the Menu): app version and what happens to the user's documents
 export default function AboutScreen() {
@@ -59,6 +59,6 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 28,
     lineHeight: 34,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
 });

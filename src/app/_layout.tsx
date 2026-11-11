@@ -7,9 +7,9 @@ import {
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import * as SplashScreen from 'expo-splash-screen';
+import { StatusBar } from 'expo-status-bar';
 import { SQLiteProvider } from 'expo-sqlite';
 import { Fragment } from 'react';
-import { useColorScheme } from 'react-native';
 
 import { useAppGeneration } from '@/backup/app-reload';
 import { AppLock } from '@/components/app-lock';
@@ -17,7 +17,9 @@ import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/brand';
 import { Colors } from '@/constants/theme';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
+import { useColorScheme } from '@/hooks/use-color-scheme';
 import { AppNotifications } from '@/notifications/app-notifications';
+import { applySavedThemeMode } from '@/settings/theme-mode';
 
 // Navigation themes with the app page color (iOS systemGroupedBackground) behind every screen
 const LIGHT_THEME = { ...DefaultTheme, colors: { ...DefaultTheme.colors, background: Colors.light.background, card: Colors.light.surface } };
@@ -27,6 +29,9 @@ const DARK_THEME = { ...DarkTheme, colors: { ...DarkTheme.colors, background: Co
 export const unstable_settings = { anchor: '(tabs)' };
 
 SplashScreen.preventAutoHideAsync();
+
+// "Tema" (Aspetto): the saved Chiaro/Scuro is applied before the first screen is drawn
+applySavedThemeMode();
 
 // Root Stack: it holds the tab bar and the screens that slide up above the tabs.
 export default function RootLayout() {
@@ -58,6 +63,8 @@ export default function RootLayout() {
       options={{ enableChangeListener: true }}>
       <ThemeProvider value={colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME}>
         <Fragment key={generation}>
+        {/* Clock and battery: dark on the light theme, light on the dark one */}
+        <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
         {/* Reminders: scheduled at start, tapping one opens its document */}
         <AppNotifications />
         <Stack>

@@ -1,7 +1,7 @@
 import type { Category } from '@/db/types';
 import { printFormatFor } from '@/send/physical-size';
 
-type CategoryKind = Pick<Category, 'isBuiltin' | 'symbol'> | null | undefined;
+type CategoryKind = Pick<Category, 'builtinKey'> | null | undefined;
 
 // One rule for the whole app (new document, detail, Modifica, Invia):
 // "Fronte"/"Retro" only for an ID or a card (Documenti, Tessere e card) with exactly 2 photos.

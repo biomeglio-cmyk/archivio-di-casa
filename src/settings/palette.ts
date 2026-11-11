@@ -1,5 +1,4 @@
 import Storage from 'expo-sqlite/kv-store';
-import type { SFSymbol } from 'expo-symbols';
 import { useSyncExternalStore } from 'react';
 
 import { DEFAULT_PALETTE, PALETTES, type Palette, type PaletteId } from '@/constants/palettes';
@@ -51,11 +50,11 @@ export function usePaletteId(): PaletteId {
   return useSyncExternalStore(subscribe, getPaletteId);
 }
 
-// A built-in category is recognized by its icon, which can never be changed (its name can)
+// A built-in category is recognized by its builtin_key: its ORIGINAL icon (name and icon can change)
 const BUILTIN_INDEX = new Map<string, number>(BUILTIN_ORDER.map((c, i) => [c.symbol, i]));
 
 // Colors of a built-in category in a palette (the chosen one by default); null for custom ones
-export function builtinColorsFor(symbol: SFSymbol, palette: Palette = getPalette()): CategoryColors | null {
-  const index = BUILTIN_INDEX.get(symbol);
+export function builtinColorsFor(builtinKey: string, palette: Palette = getPalette()): CategoryColors | null {
+  const index = BUILTIN_INDEX.get(builtinKey);
   return index === undefined ? null : palette.colors[index];
 }

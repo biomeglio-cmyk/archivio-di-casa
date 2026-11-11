@@ -5,7 +5,7 @@ import { resolveDocumentFile } from '@/storage/document-files';
 import { namedCopy } from '@/storage/share-copies';
 import { pageLabel, usesFrontBack } from '@/utils/page-labels';
 
-type CategoryKind = Pick<Category, 'isBuiltin' | 'symbol'>;
+type CategoryKind = Pick<Category, 'builtinKey'>;
 
 // Opens the document full screen with iOS Quick Look: zoom, swipe between the pages (Fronte/Retro for IDs),
 // PDF pages. Named copies make Quick Look show "Carta d'identità - Fronte" as the title.

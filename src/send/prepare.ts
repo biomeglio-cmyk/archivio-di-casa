@@ -21,7 +21,7 @@ export type SendOptions = {
 
 export type SendDocument = {
   title: string;
-  category: Pick<Category, 'isBuiltin' | 'symbol'>;
+  category: Pick<Category, 'builtinKey'>;
   files: DocumentFile[];
 };
 

@@ -209,6 +209,22 @@ const MIGRATIONS: Migration[] = [
       await db.execAsync('ALTER TABLE documents ADD COLUMN username TEXT');
     },
   },
+  {
+    version: 9,
+    name: 'built-in categories editable and hideable',
+    up: async (db) => {
+      await db.execAsync(`
+        -- Stable identity of a built-in category: its ORIGINAL icon. Icon and name can now be
+        -- changed, the rules (card size, palette colors, "Altro") follow this key instead.
+        ALTER TABLE categories ADD COLUMN builtin_key TEXT;
+        UPDATE categories SET builtin_key = symbol WHERE is_builtin = 1;
+        -- "Cancella" on a built-in category only hides it, so it can be restored
+        ALTER TABLE categories ADD COLUMN hidden INTEGER NOT NULL DEFAULT 0;
+        -- 1 = the user picked a color: the palette of "Aspetto" no longer applies to it
+        ALTER TABLE categories ADD COLUMN custom_colors INTEGER NOT NULL DEFAULT 0;
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

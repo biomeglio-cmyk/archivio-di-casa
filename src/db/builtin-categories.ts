@@ -116,3 +116,13 @@ export const BUILTIN_ORDER: BuiltinCategory[] = [
   ...V7_NEW_CATEGORIES,
   BUILTIN_CATEGORIES[BUILTIN_CATEGORIES.length - 1],
 ];
+
+// Today's defaults of every built-in category, by its key (the original icon): the V7 names.
+// "Ripristina categorie predefinite" puts these back.
+export const BUILTIN_DEFAULTS: { key: string; name: string; symbol: SFSymbol; colors: CategoryColors }[] =
+  BUILTIN_ORDER.map((c) => ({
+    key: c.symbol,
+    name: V7_RENAMES.find((r) => r.symbol === c.symbol)?.to ?? c.name,
+    symbol: c.symbol,
+    colors: c.colors,
+  }));

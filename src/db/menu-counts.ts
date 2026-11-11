@@ -23,7 +23,7 @@ export async function getMenuCounts(db: SQLiteDatabase): Promise<MenuCounts> {
     `SELECT
        (SELECT COUNT(*) FROM documents) AS documents,
        (SELECT COUNT(*) FROM documents WHERE is_pinned = 1) AS pinned,
-       (SELECT id FROM categories WHERE kind = 'cards' LIMIT 1) AS cards_category_id,
+       (SELECT id FROM categories WHERE kind = 'cards' AND hidden = 0 LIMIT 1) AS cards_category_id,
        (SELECT COUNT(*) FROM documents d JOIN categories c ON c.id = d.category_id WHERE c.kind = 'cards') AS cards,
        (SELECT COUNT(*) FROM people) AS people`,
   );

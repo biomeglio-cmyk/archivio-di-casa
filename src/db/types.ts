@@ -21,6 +21,8 @@ export type Category = {
   examples: string | null;
   colors: CategoryColors;
   isBuiltin: boolean;
+  builtinKey: string | null; // built-in categories: their original icon, never changes (see V9)
+  followsPalette: boolean; // built-in with the colors of "Aspetto" (not a color picked by the user)
   isCards: boolean; // "Tessere e card": shown as a wallet of cards
   isPassword: boolean; // "Password": its documents have "Utente" and a password in the Keychain
 };
@@ -73,6 +75,9 @@ export type CategoryRecord = {
   color_text: string;
   is_builtin: number;
   kind: string | null;
+  builtin_key: string | null;
+  hidden: number;
+  custom_colors: number;
 };
 
 export type DocumentRecord = {

@@ -15,7 +15,7 @@ import { pageLabel, usesFrontBack } from '@/utils/page-labels';
 
 type Props = {
   title: string;
-  category: Pick<Category, 'isBuiltin' | 'symbol'>; // "Fronte/Retro" only for IDs and cards
+  category: Pick<Category, 'builtinKey'>; // "Fronte/Retro" only for IDs and cards
   files: DocumentFile[];
 };
 

@@ -66,7 +66,7 @@ export function filesToSave(files: EditableFile[]): { added: PendingFile[]; move
 
 type Props = {
   files: EditableFile[];
-  category: Pick<Category, 'isBuiltin' | 'symbol'> | undefined; // "Fronte/Retro" only for IDs and cards
+  category: Pick<Category, 'builtinKey'> | undefined; // "Fronte/Retro" only for IDs and cards
   onChange: (files: EditableFile[]) => void;
   autoAdd?: boolean; // "Aggiungi pagine": the Scansiona / Dalle foto choice opens by itself, once
 };

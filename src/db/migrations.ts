@@ -312,6 +312,24 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 14,
+    name: 'previous versions of a document (Rinnovato)',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Rinnovato" with a new scan: the pages until then become a previous version
+        CREATE TABLE document_versions (
+          id          INTEGER PRIMARY KEY AUTOINCREMENT,
+          document_id INTEGER NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
+          expires_at  TEXT,  -- the deadline the document had then
+          archived_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+        );
+        CREATE INDEX document_versions_document ON document_versions (document_id);
+        -- NULL = a current page; otherwise the previous version it belongs to
+        ALTER TABLE document_files ADD COLUMN version_id INTEGER REFERENCES document_versions(id) ON DELETE CASCADE;
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

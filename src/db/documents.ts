@@ -10,6 +10,7 @@ import type {
   DocumentFileRecord,
   DocumentListItem,
   DocumentRecord,
+  DocumentVersion,
   FileSide,
 } from '@/db/types';
 import { deletePassword } from '@/security/password-vault';
@@ -67,9 +68,10 @@ async function listDocumentsWhere(
 ): Promise<DocumentListItem[]> {
   const rows = await db.getAllAsync<DocumentWithCategoryRecord>(
     `SELECT d.*, ${CATEGORY_JOIN_COLUMNS},
-            (SELECT COUNT(*) FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image') AS image_count,
+            (SELECT COUNT(*) FROM document_files f
+             WHERE f.document_id = d.id AND f.kind = 'image' AND f.version_id IS NULL) AS image_count,
             (SELECT f.path FROM document_files f
-             WHERE f.document_id = d.id AND f.kind = 'image' AND f.side IS NOT 'barcode'
+             WHERE f.document_id = d.id AND f.kind = 'image' AND f.side IS NOT 'barcode' AND f.version_id IS NULL
              ORDER BY ${FILE_ORDER}, f.id LIMIT 1) AS first_image_path,
             pp.name AS person_name
      FROM documents d
@@ -239,14 +241,104 @@ export async function insertDocument(
   return documentId;
 }
 
-// Files of a document: the photos in page order (front, back, other pages), then the barcode, then PDFs
+// Current files of a document: the photos in page order (front, back, other pages), then the
+// barcode, then PDFs. Pages of previous versions are left out (listVersionFiles).
 export async function listDocumentFiles(db: SQLiteDatabase, documentId: number): Promise<DocumentFile[]> {
   const rows = await db.getAllAsync<DocumentFileRecord>(
-    `SELECT * FROM document_files f WHERE f.document_id = ?
+    `SELECT * FROM document_files f WHERE f.document_id = ? AND f.version_id IS NULL
      ORDER BY CASE WHEN f.kind = 'pdf' THEN 2000 ELSE ${FILE_ORDER} END, f.id`,
     documentId,
   );
+  return rows.map(mapFile);
+}
+
+// The pages of one previous version, in the same order
+export async function listVersionFiles(db: SQLiteDatabase, versionId: number): Promise<DocumentFile[]> {
+  const rows = await db.getAllAsync<DocumentFileRecord>(
+    `SELECT * FROM document_files f WHERE f.version_id = ?
+     ORDER BY CASE WHEN f.kind = 'pdf' THEN 2000 ELSE ${FILE_ORDER} END, f.id`,
+    versionId,
+  );
+  return rows.map(mapFile);
+}
+
+// "Versioni precedenti" of a document, the most recent first
+export async function listDocumentVersions(db: SQLiteDatabase, documentId: number): Promise<DocumentVersion[]> {
+  const rows = await db.getAllAsync<{
+    id: number;
+    document_id: number;
+    expires_at: string | null;
+    archived_at: string;
+    page_count: number;
+  }>(
+    `SELECT v.*, (SELECT COUNT(*) FROM document_files f WHERE f.version_id = v.id) AS page_count
+     FROM document_versions v WHERE v.document_id = ? ORDER BY v.archived_at DESC, v.id DESC`,
+    documentId,
+  );
   return rows.map((row) => ({
+    id: row.id,
+    documentId: row.document_id,
+    expiresAt: row.expires_at,
+    archivedAt: row.archived_at,
+    pageCount: row.page_count,
+  }));
+}
+
+export async function getDocumentVersion(db: SQLiteDatabase, versionId: number): Promise<DocumentVersion | null> {
+  const row = await db.getFirstAsync<{ id: number; document_id: number; expires_at: string | null; archived_at: string }>(
+    'SELECT * FROM document_versions WHERE id = ?',
+    versionId,
+  );
+  return row
+    ? { id: row.id, documentId: row.document_id, expiresAt: row.expires_at, archivedAt: row.archived_at, pageCount: 0 }
+    : null;
+}
+
+// "Rinnovato": the deadline moves to `newExpiry`. With a new scan, the current pages first become
+// a "Versione precedente" (with the old deadline), then the new pages are the current ones.
+// Same safety rules as insertDocument. Calendar event, reminders and badge follow.
+export async function renewDocument(
+  db: SQLiteDatabase,
+  id: number,
+  newExpiry: string,
+  newPages: PendingFile[] | null,
+): Promise<void> {
+  const stored: { path: string; file: PendingFile }[] = [];
+  try {
+    for (const file of newPages ?? []) {
+      stored.push({ path: await storePendingFile(file), file });
+    }
+    await db.withTransactionAsync(async () => {
+      if (stored.length > 0) {
+        const current = await db.getFirstAsync<{ expires_at: string | null }>('SELECT expires_at FROM documents WHERE id = ?', id);
+        const version = await db.runAsync(
+          'INSERT INTO document_versions (document_id, expires_at) VALUES (?, ?)',
+          id,
+          current?.expires_at ?? null,
+        );
+        await db.runAsync(
+          'UPDATE document_files SET version_id = ? WHERE document_id = ? AND version_id IS NULL',
+          version.lastInsertRowId,
+          id,
+        );
+        for (const { path, file } of stored) await insertFileRow(db, id, path, file);
+      }
+      await db.runAsync(
+        `UPDATE documents SET expires_at = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
+        newExpiry,
+        id,
+      );
+    });
+  } catch (error) {
+    stored.forEach(({ path }) => deleteStoredFile(path));
+    throw error;
+  }
+  await syncDocumentEvent(db, id);
+  await rescheduleReminders(db);
+}
+
+function mapFile(row: DocumentFileRecord): DocumentFile {
+  return {
     id: row.id,
     documentId: row.document_id,
     path: row.path,
@@ -254,7 +346,7 @@ export async function listDocumentFiles(db: SQLiteDatabase, documentId: number):
     kind: row.kind,
     page: row.page,
     createdAt: row.created_at,
-  }));
+  };
 }
 
 // Updates the document fields (files are handled separately)

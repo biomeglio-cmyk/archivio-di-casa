@@ -129,6 +129,15 @@ export type DocumentListItem = FamilyDocument & {
 };
 export type DocumentDetail = DocumentListItem & { person: Person | null };
 
+// A "Versione precedente": the pages a document had before a "Rinnovato" with a new scan
+export type DocumentVersion = {
+  id: number;
+  documentId: number;
+  expiresAt: string | null; // the deadline it had then
+  archivedAt: string; // when it was replaced (ISO)
+  pageCount: number;
+};
+
 export type DocumentFileRecord = {
   id: number;
   document_id: number;

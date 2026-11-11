@@ -144,6 +144,23 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
+          {/* "Rinnovato" in the detail of a document with a deadline */}
+          <Stack.Screen
+            name="renew/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Rinnovato',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
+          <Stack.Screen
+            name="document-version/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Versione precedente',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
           <Stack.Screen
             name="new-document"
             options={{

@@ -18,13 +18,14 @@ type Props = {
   onEdit: (() => void) | null;
   onDelete: (() => void) | null; // the caller shows the confirmation alert
   pin?: { pinned: boolean; onToggle: () => void }; // "Aggiungi ai preferiti" / "Nei preferiti"
+  onRenew?: (() => void) | null; // "Rinnovato": documents with a deadline
 };
 
 // Buttons at the end of the detail screens (layout B of the mockup):
 // "Aggiungi pagine" full width with the logo gradient, "Aggiungi ai preferiti" full width, then
 // "Modifica" and "Cancella" always side by side, at any text size.
 // They sit in the scroll content, right after the data, and scroll with the page.
-export function DetailActionBar({ onAdd, onEdit, onDelete, pin }: Props) {
+export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props) {
   const theme = useTheme();
 
   if (!onAdd && !onEdit && !onDelete && !pin) return null;
@@ -42,6 +43,16 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin }: Props) {
           style={{ backgroundColor: pin.pinned ? PIN_TINT : theme.backgroundSelected }}
           color={theme.text}
           selected={pin.pinned}
+        />
+      )}
+      {onRenew && (
+        <ActionButton
+          label="Rinnovato"
+          symbol="arrow.clockwise"
+          variant="wide"
+          onPress={onRenew}
+          style={{ backgroundColor: theme.backgroundSelected }}
+          color={theme.text}
         />
       )}
       {(onEdit || onDelete) && (

@@ -36,7 +36,12 @@ export default function RootLayout() {
 
   // Load Outfit at runtime (no config plugin, so it works in Expo Go).
   // The keys become the fontFamily names listed in constants/brand.ts.
-  const [fontsLoaded, fontError] = useFonts({ Outfit_500Medium, Outfit_600SemiBold, Outfit_700Bold });
+  const [fontsLoaded, fontError] = useFonts({
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+    FrauncesSottomano_Black: require('@/assets/fonts/FrauncesSottomano-Black.ttf'),
+  });
 
   // Keep the native splash screen visible until the fonts are ready.
   // On error we go on anyway: texts fall back to the system font.
@@ -66,7 +71,7 @@ export default function RootLayout() {
               sheetAllowedDetents: 'fitToContents',
             }}
           />
-          {/* "Menu" from the ≡ in the Archivio header: 90% of the screen, closes by dragging down */}
+          {/* "Menu" from the ≡ in the Home header: 90% of the screen, closes by dragging down */}
           <Stack.Screen
             name="menu"
             options={{
@@ -130,6 +135,15 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
+          {/* "Aggiungi pagine" in the document detail: the pages editor of "Nuovo documento" */}
+          <Stack.Screen
+            name="document-pages/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Pagine',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
           <Stack.Screen
             name="new-document"
             options={{
@@ -144,6 +158,14 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Notifiche',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
+          <Stack.Screen
+            name="appearance"
+            options={{
+              presentation: 'modal',
+              title: 'Aspetto',
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />

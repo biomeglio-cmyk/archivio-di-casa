@@ -19,17 +19,6 @@ export async function pickPhotos(): Promise<PendingFile[] | null> {
   return pagesToFiles(result.assets.map((asset) => asset.uri));
 }
 
-// One photo for a specific face (used when editing: replace the front, add the back…)
-export async function pickPhoto(side: 'front' | 'back'): Promise<PendingFile | null> {
-  const result = await ImagePicker.launchImageLibraryAsync({
-    mediaTypes: ['images'],
-    allowsMultipleSelection: false,
-    quality: 0.85,
-  });
-  if (result.canceled || result.assets.length === 0) return null;
-  return { uri: result.assets[0].uri, kind: 'image', side };
-}
-
 // "Importa file": one PDF from the Files app (iCloud Drive, Downloads…)
 export async function pickPdf(): Promise<PendingFile[] | null> {
   const result = await DocumentPicker.getDocumentAsync({

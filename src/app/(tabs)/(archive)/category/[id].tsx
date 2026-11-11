@@ -22,7 +22,7 @@ export default function CategoryScreen() {
   const selection = useDocumentSelection();
   const db = useSQLiteContext();
 
-  // Deleted with "Cancella" → back to Archivio
+  // Deleted with "Cancella" → back to Home
   useLeaveWhenDeleted(category);
 
   // Selected documents in list order, so the PDF pages follow the grid

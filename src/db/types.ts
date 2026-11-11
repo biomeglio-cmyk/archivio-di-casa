@@ -34,7 +34,7 @@ export type FamilyDocument = {
   reminderDays: number | null;
   notes: string | null;
   calendarEventId: string | null; // iOS Calendar event of the expiry, when sync is on
-  isPinned: boolean; // shown in "Preferiti" on Archivio
+  isPinned: boolean; // shown in "Preferiti" on Home
   pinOrder: number;
   barcodeValue: string | null; // cards: the code read by the camera or typed by hand
   barcodeType: string | null; // cards: its format, e.g. 'ean13' (null = typed by hand)

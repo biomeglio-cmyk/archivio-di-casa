@@ -10,7 +10,7 @@ export type Preferences = {
   reminderMinute: number;
   defaultReminderDays: number; // "Avvisa prima di", for documents without their own value
   iconBadgeEnabled: boolean; // "Numero sull'icona"
-  showPinned: boolean; // "Mostra Preferiti in Archivio"
+  showPinned: boolean; // "Mostra Preferiti in Home"
 };
 
 export const DEFAULT_PREFERENCES: Preferences = {

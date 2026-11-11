@@ -39,7 +39,7 @@ export default function NewDocumentScreen() {
         onSubmit={async (input) => {
           await insertDocument(db, input, filesToSave(files).added);
           await afterDocumentSaved(db, input.expiresAt);
-          // Scadenze, Archivio and Famiglia update by themselves (useDbQuery listens to changes)
+          // Scadenze, Home and Famiglia update by themselves (useDbQuery listens to changes)
           router.back();
         }}
       />

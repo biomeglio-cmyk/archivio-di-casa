@@ -30,7 +30,7 @@ export default function ArchiveScreen() {
   const theme = useTheme();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: allDocuments } = useDbQuery(listAllDocuments, []);
-  const { showPinned } = usePreferences(); // "Mostra in Archivio" in the Preferiti screen
+  const { showPinned } = usePreferences(); // "Mostra in Home" in the Preferiti screen
 
   const [query, setQuery] = useState(''); // what is typed
   const [searched, setSearched] = useState(''); // what is searched, ~200 ms after the last key
@@ -62,7 +62,7 @@ export default function ArchiveScreen() {
         <View style={styles.header}>
           <View style={styles.brand}>
             <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />
-            <ThemedText style={styles.name}>sottomano</ThemedText>
+            <ThemedText style={styles.name}>Sottomano</ThemedText>
             <Pressable
               onPress={() => router.push('/menu')}
               accessibilityRole="button"
@@ -76,7 +76,7 @@ export default function ArchiveScreen() {
             </Pressable>
           </View>
           <ThemedText themeColor="textSecondary">
-            Archivio · {total === 1 ? '1 documento' : `${total} documenti`}
+            Home · {total === 1 ? '1 documento' : `${total} documenti`}
           </ThemedText>
         </View>
         <SearchBar
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 30,
-    lineHeight: 36,
-    fontFamily: FONTS.titleBold,
+    lineHeight: 38,
+    fontFamily: FONTS.wordmark,
   },
 });

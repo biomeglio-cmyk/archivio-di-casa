@@ -2,22 +2,27 @@ import type { SFSymbol } from 'expo-symbols';
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import type { Category, CategoryColors, CategoryRecord, CategoryWithCount } from '@/db/types';
+import { builtinColorsFor } from '@/settings/palette';
 
 // Converts a SQL row (snake_case) into the app shape (camelCase).
 // `prefix` lets document queries reuse it for JOINed columns named like c_name, c_symbol…
+// Built-in categories take their colors from the palette chosen in "Aspetto"; custom ones keep
+// the color saved in the database.
 export function mapCategory(row: Record<string, unknown>, prefix = ''): Category {
   const r = (column: string) => row[prefix + column];
+  const symbol = r('symbol') as SFSymbol;
+  const isBuiltin = r('is_builtin') === 1;
   return {
     id: r('id') as number,
     name: r('name') as string,
-    symbol: r('symbol') as SFSymbol,
+    symbol,
     examples: (r('examples') as string | null) ?? null,
-    colors: {
+    colors: (isBuiltin ? builtinColorsFor(symbol) : null) ?? {
       top: r('color_top') as string,
       bottom: r('color_bottom') as string,
       text: r('color_text') as string,
     },
-    isBuiltin: r('is_builtin') === 1,
+    isBuiltin,
     isCards: r('kind') === 'cards',
   };
 }

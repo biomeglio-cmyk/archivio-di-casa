@@ -3,7 +3,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 import { countUrgentDeadlines } from '@/db/urgent-count';
 
 export type MenuCounts = {
-  documents: number; // everything in Archivio
+  documents: number; // everything in Home
   pinned: number; // Preferiti
   cardsCategoryId: number | null; // "Tessere e card" (found by kind, so a rename doesn't matter)
   cards: number;

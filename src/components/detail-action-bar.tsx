@@ -21,7 +21,7 @@ type Props = {
 };
 
 // Buttons at the end of the detail screens (layout B of the mockup):
-// "Aggiungi documento" full width with the logo gradient, "Aggiungi ai preferiti" full width, then
+// "Aggiungi pagine" full width with the logo gradient, "Aggiungi ai preferiti" full width, then
 // "Modifica" and "Cancella" always side by side, at any text size.
 // They sit in the scroll content, right after the data, and scroll with the page.
 export function DetailActionBar({ onAdd, onEdit, onDelete, pin }: Props) {
@@ -31,7 +31,7 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin }: Props) {
 
   return (
     <View style={styles.container}>
-      {onAdd && <ActionButton label="Aggiungi documento" symbol="plus" variant="primary" onPress={onAdd} />}
+      {onAdd && <ActionButton label="Aggiungi pagine" symbol="plus" variant="primary" onPress={onAdd} />}
       {pin && (
         <ActionButton
           label={pin.pinned ? 'Nei preferiti' : 'Aggiungi ai preferiti'}

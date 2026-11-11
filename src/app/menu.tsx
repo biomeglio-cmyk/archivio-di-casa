@@ -1,7 +1,8 @@
+import { Host, Switch } from '@expo/ui';
 import { router, type Href } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
@@ -11,6 +12,7 @@ import { FONTS } from '@/constants/brand';
 import { getMenuCounts } from '@/db/menu-counts';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
+import { disableAppLock, enableAppLock, useAppLockEnabled } from '@/security/app-lock';
 
 // Sheet "Menu" (the ≡ in the Archivio header), at 90% of the screen: an iOS grouped list.
 // Drag down, the X or a tap outside closes it. Every row closes it and goes somewhere:
@@ -28,6 +30,22 @@ export default function MenuSheet() {
   function goToTab(href: Href) {
     router.back();
     router.navigate(href);
+  }
+
+  const lockEnabled = useAppLockEnabled();
+
+  async function toggleLock(value: boolean) {
+    if (!value) {
+      disableAppLock();
+      return;
+    }
+    const result = await enableAppLock();
+    if (result === 'no-passcode') {
+      Alert.alert(
+        'Blocco non disponibile',
+        'Per bloccare Sottomano serve un codice sull\'iPhone. Impostalo in Impostazioni › Face ID e codice, poi riprova.',
+      );
+    }
   }
 
   const cardsId = counts?.cardsCategoryId;
@@ -83,10 +101,17 @@ export default function MenuSheet() {
           <Row label="Importa file" symbol="doc" onPress={addFromFiles} />
         </Group>
 
-        <Group title="Impostazioni">
+        <Group
+          title="Impostazioni"
+          footer="Per aprire Sottomano servirà il tuo viso o il codice dell'iPhone. Si blocca di nuovo dopo 1 minuto fuori dall'app.">
           <Row label="Notifiche" symbol="bell.badge" first onPress={() => router.replace('/notification-settings')} />
           <Row label="Calendario" symbol="calendar.badge.plus" value={calendarLabel} onPress={() => router.replace('/calendar-settings')} />
-          <Row label="Face ID e backup" symbol="faceid" value="presto" disabled />
+          <Row label="Backup" symbol="externaldrive.badge.icloud" onPress={() => router.replace('/backup')} />
+          <Row label="Blocca con Face ID" symbol="faceid">
+            <Host matchContents>
+              <Switch value={lockEnabled} onValueChange={toggleLock} />
+            </Host>
+          </Row>
         </Group>
 
         <Group title="Altro">

@@ -1,5 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
+import { cleanupBackupLeftovers } from '@/backup/restore-backup';
 import { migrateDbIfNeeded } from '@/db/migrations';
 import { ensureDocumentsDirectory } from '@/storage/document-files';
 
@@ -11,4 +12,5 @@ export async function initDatabase(db: SQLiteDatabase): Promise<void> {
   await db.execAsync('PRAGMA journal_mode = WAL; PRAGMA foreign_keys = ON;');
   await migrateDbIfNeeded(db);
   ensureDocumentsDirectory();
+  cleanupBackupLeftovers();
 }

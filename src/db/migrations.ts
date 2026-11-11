@@ -168,6 +168,9 @@ const MIGRATIONS: Migration[] = [
   },
 ];
 
+// The database version this app writes (a backup with a higher one comes from a newer app)
+export const LATEST_SCHEMA_VERSION = MIGRATIONS[MIGRATIONS.length - 1].version;
+
 export async function migrateDbIfNeeded(db: SQLiteDatabase): Promise<void> {
   const row = await db.getFirstAsync<{ user_version: number }>('PRAGMA user_version');
   const currentVersion = row?.user_version ?? 0;

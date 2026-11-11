@@ -1,9 +1,11 @@
 import { router, type Href } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 import type { ReactElement } from 'react';
 import { StyleSheet } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
+import { documentQuickActions } from '@/actions/quick-actions';
 import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
@@ -24,6 +26,7 @@ type Props = {
 // is fixed: a tap ticks the document, and the dashed tile is hidden.
 export function DocumentGrid({ documents, hrefFor, selection, onAdd, onReorder, header }: Props) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const db = useSQLiteContext();
 
   return (
     // Gesture root for the drag and drop
@@ -54,6 +57,7 @@ export function DocumentGrid({ documents, hrefFor, selection, onAdd, onReorder, 
               keyFor={(document) => document.id}
               labelFor={(document) => document.title}
               renderTile={(document) => <DocumentTileFace document={document} />}
+              actionsFor={(document) => documentQuickActions(db, document, hrefFor(document))}
               onOpen={(document) => router.push(hrefFor(document))}
               onReorder={onReorder}
               scrollableRef={scrollRef}

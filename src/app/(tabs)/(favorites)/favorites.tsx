@@ -5,6 +5,7 @@ import { Alert, StyleSheet, Text, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
+import { documentQuickActions } from '@/actions/quick-actions';
 import { DocumentTileFace } from '@/components/document-tile';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { TabHeader } from '@/components/tab-header';
@@ -53,6 +54,12 @@ export default function FavoritesScreen() {
             keyFor={(document) => document.id}
             labelFor={(document) => document.title}
             renderTile={(document) => <DocumentTileFace document={document} />}
+            actionsFor={(document) =>
+              documentQuickActions(db, document, {
+                pathname: '/(tabs)/(favorites)/document/[id]',
+                params: { id: String(document.id) },
+              })
+            }
             onOpen={(document) =>
               router.push({ pathname: '/(tabs)/(favorites)/document/[id]', params: { id: String(document.id) } })
             }

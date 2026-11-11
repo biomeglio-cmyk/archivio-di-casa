@@ -1,8 +1,10 @@
 import { router, type Href } from 'expo-router';
+import { useSQLiteContext } from 'expo-sqlite';
 import { StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
+import { documentQuickActions } from '@/actions/quick-actions';
 import { startAddCard } from '@/capture/start-add-card';
 import { CardFace } from '@/components/card-face';
 import { ThemedText } from '@/components/themed-text';
@@ -24,6 +26,7 @@ type Props = {
 export function CardGrid({ cards, hrefFor, onReorder }: Props) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const { width } = useTileSize();
+  const db = useSQLiteContext();
 
   return (
     // Gesture root for the drag and drop
@@ -35,6 +38,7 @@ export function CardGrid({ cards, hrefFor, onReorder }: Props) {
             keyFor={(card) => card.id}
             labelFor={(card) => (card.personName ? `${card.title}, ${card.personName}` : card.title)}
             renderTile={(card) => <CardFaceWithCaption card={card} width={width} />}
+            actionsFor={(card) => documentQuickActions(db, card, hrefFor(card))}
             onOpen={(card) => router.push(hrefFor(card))}
             onReorder={onReorder}
             scrollableRef={scrollRef}

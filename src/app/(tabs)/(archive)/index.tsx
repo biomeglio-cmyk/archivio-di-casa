@@ -5,6 +5,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
+import { categoryQuickActions } from '@/actions/quick-actions';
 import { BackupReminder } from '@/components/backup-reminder';
 import { CategoryTile } from '@/components/category-tile';
 import { SearchBar } from '@/components/search-bar';
@@ -80,6 +81,7 @@ export default function ArchiveScreen() {
                 `${category.name}, ${category.documentCount === 1 ? '1 documento' : `${category.documentCount} documenti`}`
               }
               renderTile={(category) => <CategoryTile category={category} documentCount={category.documentCount} />}
+              actionsFor={(category) => categoryQuickActions(db, category)}
               onOpen={(category) => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
               onReorder={(ordered) =>
                 saveCategoryOrder(db, ordered.map((c) => c.id)).catch((error: unknown) =>

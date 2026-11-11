@@ -1,8 +1,9 @@
+import type { SQLiteDatabase } from 'expo-sqlite';
 import Storage from 'expo-sqlite/kv-store';
 import { useSyncExternalStore } from 'react';
 
 import { DEFAULT_PALETTE, PALETTES, type Palette, type PaletteId } from '@/constants/palettes';
-import { BUILTIN_ORDER } from '@/db/builtin-categories';
+import { BUILTIN_DEFAULTS, BUILTIN_ORDER } from '@/db/builtin-categories';
 import type { CategoryColors } from '@/db/types';
 
 // The palette chosen in "Aspetto", kept on the phone in the key-value store
@@ -48,6 +49,35 @@ function subscribe(listener: () => void) {
 // categories with their new colors)
 export function usePaletteId(): PaletteId {
   return useSyncExternalStore(subscribe, getPaletteId);
+}
+
+// Set once the app has moved this phone to the "Sottomano" palette (redesign, November 2026)
+const ADOPTED_KEY = 'app.palette.sottomanoAdopted';
+
+// Runs at every start (initDatabase), does its work only once per install. Phones that had
+// picked a palette in "Aspetto" before the redesign (saved "pastel"…) would keep the old look,
+// so they move to "Sottomano" once; afterwards the choice in "Aspetto" is respected again.
+// Built-in categories whose own saved color is just their original pastel default (not a real
+// choice) follow the palette again too. Never throws: it must not block the app.
+export async function adoptSottomanoPaletteOnce(db: SQLiteDatabase): Promise<void> {
+  try {
+    if (Storage.getItemSync(ADOPTED_KEY) === '1') return;
+    for (const builtin of BUILTIN_DEFAULTS) {
+      await db.runAsync(
+        `UPDATE categories SET custom_colors = 0
+         WHERE is_builtin = 1 AND builtin_key = ? AND custom_colors = 1
+           AND color_top = ? AND color_bottom = ? AND color_text = ?`,
+        builtin.key,
+        builtin.colors.top,
+        builtin.colors.bottom,
+        builtin.colors.text,
+      );
+    }
+    setPaletteId('sottomano');
+    Storage.setItemSync(ADOPTED_KEY, '1');
+  } catch (error) {
+    console.warn('Palette update failed', error);
+  }
 }
 
 // A built-in category is recognized by its builtin_key: its ORIGINAL icon (name and icon can change)

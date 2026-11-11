@@ -3,6 +3,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 import { cleanupBackupLeftovers } from '@/backup/restore-backup';
 import { migrateDbIfNeeded } from '@/db/migrations';
 import { purgeOldTrash } from '@/db/trash';
+import { adoptSottomanoPaletteOnce } from '@/settings/palette';
 import { ensureDocumentsDirectory, removeCardFrontCopies } from '@/storage/document-files';
 
 export const DATABASE_NAME = 'sottomano.db';
@@ -16,4 +17,5 @@ export async function initDatabase(db: SQLiteDatabase): Promise<void> {
   cleanupBackupLeftovers();
   removeCardFrontCopies();
   await purgeOldTrash(db); // more than 30 days in the Cestino: deleted for good
+  await adoptSottomanoPaletteOnce(db); // once: the redesign palette, even over an old saved choice
 }

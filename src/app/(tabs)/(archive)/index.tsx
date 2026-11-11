@@ -7,7 +7,7 @@ import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
 import { categoryQuickActions } from '@/actions/quick-actions';
 import { BackupReminder } from '@/components/backup-reminder';
-import { CategoryTile } from '@/components/category-tile';
+import { CATEGORY_TILE_HEIGHT, CategoryTile, describeCategoryCount } from '@/components/category-tile';
 import { SearchBar } from '@/components/search-bar';
 import { SearchResultsList } from '@/components/search-results';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
@@ -78,9 +78,8 @@ export default function ArchiveScreen() {
             <SortableTileGrid
               items={categories}
               keyFor={(category) => category.id}
-              labelFor={(category) =>
-                `${category.name}, ${category.documentCount === 1 ? '1 documento' : `${category.documentCount} documenti`}`
-              }
+              labelFor={(category) => `${category.name}, ${describeCategoryCount(category, category.documentCount)}`}
+              tileHeight={CATEGORY_TILE_HEIGHT}
               renderTile={(category) => <CategoryTile category={category} documentCount={category.documentCount} />}
               actionsFor={(category) => categoryQuickActions(db, category)}
               onOpen={(category) => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}

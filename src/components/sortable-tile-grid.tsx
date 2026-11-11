@@ -28,6 +28,7 @@ type Props<T> = {
   scrollableRef?: AnimatedRef<Animated.ScrollView>; // the page scrolls when a tile nears its edge
   add?: { label: string; onPress: () => void }; // dashed tile, always last and never draggable
   cardShaped?: boolean; // "Tessere e card": tiles as tall as a real card, as in TileGrid
+  tileHeight?: number; // minimum tile height instead of the default (Home squares: 132)
   // Long press released WITHOUT moving: the quick-action menu (also the VoiceOver actions)
   actionsFor?: (item: T) => QuickAction[];
 };
@@ -54,12 +55,13 @@ export function SortableTileGrid<T>({
   scrollableRef,
   add,
   cardShaped = false,
+  tileHeight,
   actionsFor,
 }: Props<T>) {
   const gridSize = useTileSize(); // the width comes from the grid column
   const tileSize = cardShaped
     ? { width: gridSize.width, minHeight: Math.round(gridSize.width / CARD_ASPECT_RATIO) }
-    : gridSize;
+    : { width: gridSize.width, minHeight: tileHeight ?? gridSize.minHeight };
   const { minHeight } = tileSize;
 
   const cells: Cell<T>[] = items.map((item) => ({ kind: 'item', item }));

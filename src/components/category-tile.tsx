@@ -15,9 +15,17 @@ type Props = {
   documentCount: number;
 };
 
-// Tile of a category in Home: 135° gradient in the palette colors (white text and icon in the
-// "Sottomano" palette) with a shadow of its own color. Icon top-left, number of documents
-// top-right, name bottom-left.
+export const CATEGORY_TILE_HEIGHT = 132; // Home squares of the guide
+
+// "12 documenti", "1 documento"; "5 tessere" for "Tessere e card"
+export function describeCategoryCount(category: Pick<Category, 'isCards'>, count: number): string {
+  if (category.isCards) return count === 1 ? '1 tessera' : `${count} tessere`;
+  return count === 1 ? '1 documento' : `${count} documenti`;
+}
+
+// Square of a category in Home (docs/design/Main.dc.html): 135° gradient in the palette colors
+// with a shadow of its own color; icon 28 at the top, name 17/600 (never broken inside a word)
+// and "N documenti" 13/400 at the bottom.
 // The look only: the sortable grid around it handles tap (open) and drag (reorder).
 export function CategoryTile({ category, documentCount }: Props) {
   const { colors } = category;
@@ -28,15 +36,13 @@ export function CategoryTile({ category, documentCount }: Props) {
       start={GRADIENT_START}
       end={GRADIENT_END}
       style={[styles.tile, { boxShadow: tintedShadow(categoryShadowRgb(colors)) }]}>
-      <View style={styles.topRow}>
-        <SymbolView name={category.symbol} tintColor={colors.text} size={28} />
-        <Text style={[styles.count, { color: colors.text }]} accessibilityElementsHidden>
-          {documentCount}
+      <SymbolView name={category.symbol} tintColor={colors.text} size={28} />
+      <View style={styles.bottom}>
+        <TileTitle style={[styles.name, { color: colors.text }]}>{category.name}</TileTitle>
+        <Text style={[styles.count, { color: colors.text }]} numberOfLines={1}>
+          {describeCategoryCount(category, documentCount)}
         </Text>
       </View>
-      <TileTitle style={[styles.name, { color: colors.text }]} containerStyle={styles.nameBox}>
-        {category.name}
-      </TileTitle>
     </LinearGradient>
   );
 }
@@ -45,28 +51,21 @@ const styles = StyleSheet.create({
   tile: {
     flex: 1, // fills the grid cell
     padding: 16,
+    justifyContent: 'space-between',
     borderRadius: Radius.card,
     borderCurve: 'continuous',
   },
-  topRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: 8,
+  bottom: {
+    gap: 1,
   },
   name: {
-    fontSize: 16,
-    lineHeight: 20,
+    fontSize: 17,
+    lineHeight: 21,
     fontFamily: FONTS.semiBold,
-  },
-  nameBox: {
-    marginTop: 'auto', // pushes the name to the bottom of the tile
   },
   count: {
-    fontSize: 17,
-    lineHeight: 28, // same height as the icon, so the number sits on its line
-    fontFamily: FONTS.semiBold,
-    fontVariant: ['tabular-nums'],
-    opacity: 0.8,
+    fontSize: 13,
+    lineHeight: 17,
+    fontFamily: FONTS.regular,
   },
 });

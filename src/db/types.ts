@@ -1,5 +1,7 @@
 import type { SFSymbol } from 'expo-symbols';
 
+import type { Repeat } from '@/utils/recurrence';
+
 // App-side shapes (camelCase). The row types below mirror the SQL columns (snake_case).
 
 export type Person = {
@@ -46,6 +48,7 @@ export type FamilyDocument = {
   coverMode: CoverMode | null; // tile look; null = automatic (photo if there is one, else color)
   coverColor: string | null; // "Colore" cover; null = the category color (follows the palette)
   deletedAt: string | null; // in the "Cestino" since then (ISO); null = a live document
+  repeat: Repeat | null; // "Si ripete" of the deadline; null = "Mai"
   createdAt: string;
   updatedAt: string;
 };
@@ -105,6 +108,8 @@ export type DocumentRecord = {
   cover_mode: CoverMode | null;
   cover_color: string | null;
   deleted_at: string | null;
+  repeat_every: number | null;
+  repeat_unit: string | null;
   created_at: string;
   updated_at: string;
 };

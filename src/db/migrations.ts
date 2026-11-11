@@ -301,6 +301,17 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 13,
+    name: 'recurring deadlines',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Si ripete ogni <repeat_every> <repeat_unit>"; both NULL = "Mai"
+        ALTER TABLE documents ADD COLUMN repeat_every INTEGER CHECK (repeat_every BETWEEN 1 AND 99);
+        ALTER TABLE documents ADD COLUMN repeat_unit TEXT CHECK (repeat_unit IN ('day', 'week', 'month', 'year'));
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

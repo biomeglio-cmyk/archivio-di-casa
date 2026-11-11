@@ -15,6 +15,7 @@ import type {
 import { deletePassword } from '@/security/password-vault';
 import { deleteStoredFile, storePendingFile } from '@/storage/document-files';
 import type { PendingFile } from '@/storage/pending-files';
+import { isRepeatUnit, type Repeat } from '@/utils/recurrence';
 
 type DocumentWithCategoryRecord = DocumentRecord & Record<string, unknown>;
 
@@ -43,6 +44,7 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     coverMode: row.cover_mode ?? null,
     coverColor: row.cover_color ?? null,
     deletedAt: row.deleted_at ?? null,
+    repeat: row.repeat_every && isRepeatUnit(row.repeat_unit) ? { every: row.repeat_every, unit: row.repeat_unit } : null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
@@ -153,6 +155,7 @@ export type DocumentInput = {
   username?: string | null; // only for "Password" documents
   coverMode?: CoverMode | null; // "Copertina"; null/absent = automatic
   coverColor?: string | null; // null = the category color
+  repeat?: Repeat | null; // "Si ripete"; null/absent = "Mai" (only meaningful with a deadline)
 };
 
 // Empty strings become NULL, and no reminder without an expiry date
@@ -164,6 +167,7 @@ function normalize(doc: DocumentInput) {
     notes: text(doc.notes),
     username: text(doc.username ?? null),
     reminderDays: doc.expiresAt ? doc.reminderDays : null,
+    repeat: doc.expiresAt && doc.repeat ? doc.repeat : null,
   };
 }
 
@@ -204,8 +208,8 @@ export async function insertDocument(
       const clean = normalize(doc);
       const result = await db.runAsync(
         `INSERT INTO documents (title, category_id, person_id, number, expires_at, reminder_days, notes, username,
-                                cover_mode, cover_color)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                cover_mode, cover_color, repeat_every, repeat_unit)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         clean.title,
         doc.categoryId,
         doc.personId,
@@ -216,6 +220,8 @@ export async function insertDocument(
         clean.username,
         doc.coverMode ?? null,
         doc.coverColor ?? null,
+        clean.repeat?.every ?? null,
+        clean.repeat?.unit ?? null,
       );
       documentId = result.lastInsertRowId;
 
@@ -257,7 +263,7 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
   await db.runAsync(
     `UPDATE documents
      SET title = ?, category_id = ?, person_id = ?, number = ?, expires_at = ?, reminder_days = ?, notes = ?,
-         username = ?, cover_mode = ?, cover_color = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+         username = ?, cover_mode = ?, cover_color = ?, repeat_every = ?, repeat_unit = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
      WHERE id = ?`,
     clean.title,
     doc.categoryId,
@@ -269,6 +275,8 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
     clean.username,
     doc.coverMode ?? null,
     doc.coverColor ?? null,
+    clean.repeat?.every ?? null,
+    clean.repeat?.unit ?? null,
     id,
   );
 }

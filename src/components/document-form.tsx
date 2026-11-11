@@ -15,9 +15,14 @@ import { listPeople } from '@/db/people';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 import { formatShortDate, parseISODate, toISODate } from '@/utils/dates';
+import { MAX_REPEAT, REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
 
 // Picker values must be string | number, so 0 stands for "nothing chosen" (ids start at 1)
 const NONE = 0;
+
+const EVERY_OPTIONS = Array.from({ length: MAX_REPEAT }, (_, i) => i + 1); // 1…99
+
+const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
 const REMINDER_OPTIONS = [
   { label: 'Nessuno', value: NONE },
@@ -65,6 +70,9 @@ export function DocumentForm({
   );
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [reminderDays, setReminderDays] = useState(initial?.reminderDays ?? NONE);
+  // "Si ripete": 'never' or a unit, and every how many (kept while switching back and forth)
+  const [repeatUnit, setRepeatUnit] = useState<RepeatUnit | 'never'>(initial?.repeat?.unit ?? 'never');
+  const [repeatEvery, setRepeatEvery] = useState(initial?.repeat?.every ?? 1);
   const [notes, setNotes] = useState(initial?.notes ?? '');
   const [username, setUsername] = useState(initial?.username ?? '');
   const [password, setPassword] = useState('');
@@ -94,6 +102,7 @@ export function DocumentForm({
           number,
           expiresAt: hasExpiry ? toISODate(expiryDate) : null,
           reminderDays: hasExpiry && reminderDays !== NONE ? reminderDays : null,
+          repeat: hasExpiry && repeatUnit !== 'never' ? { every: repeatEvery, unit: repeatUnit } : null,
           notes,
           username: isPassword ? username : null,
           coverMode,
@@ -196,6 +205,24 @@ export function DocumentForm({
                     accentColor={BRAND_COLOR}
                     style={styles.calendar}
                   />
+                )}
+                {/* "Si ripete": Mai, or every N (1-99) days / weeks / months / years */}
+                <FormRow label="Si ripete" separator={line}>
+                  <Picker selectedValue={repeatUnit} onValueChange={setRepeatUnit}>
+                    <Picker.Item label="Mai" value="never" />
+                    {REPEAT_UNITS.map((unit) => (
+                      <Picker.Item key={unit} label={capitalize(unitName(unit, 2))} value={unit} />
+                    ))}
+                  </Picker>
+                </FormRow>
+                {repeatUnit !== 'never' && (
+                  <FormRow label="Ogni" separator={line}>
+                    <Picker selectedValue={repeatEvery} onValueChange={setRepeatEvery}>
+                      {EVERY_OPTIONS.map((n) => (
+                        <Picker.Item key={n} label={`${n} ${unitName(repeatUnit, n)}`} value={n} />
+                      ))}
+                    </Picker>
+                  </FormRow>
                 )}
                 <FormRow label="Promemoria" separator={line}>
                   <Picker selectedValue={reminderDays} onValueChange={setReminderDays}>

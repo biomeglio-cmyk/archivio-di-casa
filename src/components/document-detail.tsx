@@ -21,6 +21,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate } from '@/utils/dates';
+import { describeRepeat } from '@/utils/recurrence';
 
 // Detail of one document (or of a card). Used by the document/[id] screen of every tab.
 export default function DocumentDetail() {
@@ -65,6 +66,7 @@ export default function DocumentDetail() {
     { label: 'Persona', value: person?.name },
     { label: 'Numero', value: document.number },
     { label: 'Scadenza', value: document.expiresAt ? formatDate(document.expiresAt) : null }, // none: no row
+    { label: 'Ricorrenza', value: document.expiresAt && document.repeat ? describeRepeat(document.repeat) : null },
     {
       label: 'Promemoria',
       value: document.expiresAt && document.reminderDays ? `${document.reminderDays} giorni prima` : null,

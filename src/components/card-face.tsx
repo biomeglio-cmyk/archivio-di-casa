@@ -12,16 +12,17 @@ type Props = {
   width: number;
   showPerson?: boolean; // person name in a small label in the bottom-left corner
   large?: boolean; // bigger title for the detail screen
+  showPhoto?: boolean; // false = "Copertina: Colore": its color and name even if it has a photo
 };
 
 // A card drawn with the proportions of a real one (85.6 × 54 mm): the photo of its front,
-// or its color with the name in white when there is no photo
-export function CardFace({ card, width, showPerson = false, large = false }: Props) {
+// or its color with the name in white when there is no photo (or the cover is "Colore")
+export function CardFace({ card, width, showPerson = false, large = false, showPhoto = true }: Props) {
   const height = Math.round(width / CARD_ASPECT_RATIO);
 
   return (
     <View style={[styles.card, { width, height, backgroundColor: card.cardColor ?? DEFAULT_CARD_COLOR }]}>
-      {card.firstImagePath ? (
+      {showPhoto && card.firstImagePath ? (
         <Image
           source={{ uri: resolveDocumentFile(card.firstImagePath).uri }}
           style={StyleSheet.absoluteFill}

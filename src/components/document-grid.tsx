@@ -1,7 +1,7 @@
 import type { Href } from 'expo-router';
 import type { ReactElement } from 'react';
 
-import { DocumentTile } from '@/components/document-cover-tile';
+import { DocumentTile } from '@/components/document-tile';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import type { DocumentListItem } from '@/db/types';
 import { useDocumentSelection } from '@/hooks/use-document-selection';

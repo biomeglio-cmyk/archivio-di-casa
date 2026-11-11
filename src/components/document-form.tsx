@@ -33,12 +33,15 @@ type Props = {
   // Attachments area shown at the top; gets the chosen category (labels depend on it)
   files?: (category: Category | undefined) => ReactNode;
   autoFocusTitle?: boolean;
-  onSubmit: (input: DocumentInput) => Promise<void>;
+  // `password`: typed in the "Password" field (only for the Password category), null = unchanged.
+  // It never goes into DocumentInput, so it can't reach SQLite by mistake.
+  onSubmit: (input: DocumentInput, password: string | null) => Promise<void>;
+  hasSavedPassword?: boolean; // editing a Password document that already has one in the Keychain
 };
 
 // The document form, shared by "Nuovo documento" and "Modifica documento".
 // Required: title and category. Everything else is optional.
-export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit }: Props) {
+export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit, hasSavedPassword = false }: Props) {
   const theme = useTheme();
   const { data: categories } = useDbQuery(listCategories, []);
   const { data: people } = useDbQuery(listPeople, []);
@@ -54,6 +57,8 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit 
   const [calendarOpen, setCalendarOpen] = useState(false);
   const [reminderDays, setReminderDays] = useState(initial?.reminderDays ?? NONE);
   const [notes, setNotes] = useState(initial?.notes ?? '');
+  const [username, setUsername] = useState(initial?.username ?? '');
+  const [password, setPassword] = useState('');
   const [saving, setSaving] = useState(false);
 
   const missing = [
@@ -62,19 +67,25 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit 
   ].filter((field): field is string => Boolean(field));
   const canSave = missing.length === 0 && !saving;
 
+  const isPassword = Boolean(categories?.find((c) => c.id === categoryId)?.isPassword);
+
   async function submit() {
     if (!canSave) return;
     setSaving(true);
     try {
-      await onSubmit({
-        title,
-        categoryId,
-        personId: personId === NONE ? null : personId,
-        number,
-        expiresAt: hasExpiry ? toISODate(expiryDate) : null,
-        reminderDays: hasExpiry && reminderDays !== NONE ? reminderDays : null,
-        notes,
-      });
+      await onSubmit(
+        {
+          title,
+          categoryId,
+          personId: personId === NONE ? null : personId,
+          number,
+          expiresAt: hasExpiry ? toISODate(expiryDate) : null,
+          reminderDays: hasExpiry && reminderDays !== NONE ? reminderDays : null,
+          notes,
+          username: isPassword ? username : null,
+        },
+        isPassword && password.length > 0 ? password : null,
+      );
     } catch (error) {
       setSaving(false);
       Alert.alert('Impossibile salvare', error instanceof Error ? error.message : String(error));
@@ -173,6 +184,35 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit 
             )}
           </View>
 
+          {isPassword && (
+            <>
+              <FormField label="Utente">
+                <TextField
+                  value={username}
+                  onChangeText={setUsername}
+                  placeholder="Es. nome@esempio.it"
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="none"
+                />
+              </FormField>
+              <FormField label="Password">
+                <TextField
+                  value={password}
+                  onChangeText={setPassword}
+                  placeholder={hasSavedPassword ? '•••••••• (lascia vuoto per non cambiarla)' : 'Password'}
+                  secureTextEntry
+                  autoCapitalize="none"
+                  autoCorrect={false}
+                  textContentType="none" // no iOS "save password" prompt: it is not this app's login
+                />
+              </FormField>
+              <ThemedText type="small" themeColor="textSecondary" style={styles.sectionTitle}>
+                La password resta solo nel Portachiavi dell&apos;iPhone.
+              </ThemedText>
+            </>
+          )}
+
           <FormField label="Numero del documento">
             <TextField value={number} onChangeText={setNumber} placeholder="Es. CA12345AB" autoCapitalize="characters" />
           </FormField>
@@ -195,7 +235,6 @@ export function DocumentForm({ initial, files, autoFocusTitle = false, onSubmit 
           {missing.length > 0 ? `Per salvare compila: ${missing.join(' e ')}.` : '* Campo obbligatorio'}
         </ThemedText>
       </View>
-
     </ScrollView>
   );
 }

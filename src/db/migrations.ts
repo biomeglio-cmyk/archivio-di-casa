@@ -201,6 +201,14 @@ const MIGRATIONS: Migration[] = [
       }
     },
   },
+  {
+    version: 8,
+    name: 'username of a password document',
+    up: async (db) => {
+      // Only the user name: the password itself is never stored in SQLite (iOS Keychain)
+      await db.execAsync('ALTER TABLE documents ADD COLUMN username TEXT');
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

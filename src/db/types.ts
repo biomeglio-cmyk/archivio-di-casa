@@ -22,6 +22,7 @@ export type Category = {
   colors: CategoryColors;
   isBuiltin: boolean;
   isCards: boolean; // "Tessere e card": shown as a wallet of cards
+  isPassword: boolean; // "Password": its documents have "Utente" and a password in the Keychain
 };
 
 export type FamilyDocument = {
@@ -39,6 +40,7 @@ export type FamilyDocument = {
   barcodeValue: string | null; // cards: the code read by the camera or typed by hand
   barcodeType: string | null; // cards: its format, e.g. 'ean13' (null = typed by hand)
   cardColor: string | null; // cards: background when there is no photo of the front
+  username: string | null; // "Password" documents: the user name (the password is in the Keychain)
   createdAt: string;
   updatedAt: string;
 };
@@ -88,6 +90,7 @@ export type DocumentRecord = {
   barcode_value: string | null;
   barcode_type: string | null;
   card_color: string | null;
+  username: string | null;
   created_at: string;
   updated_at: string;
 };

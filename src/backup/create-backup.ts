@@ -3,8 +3,16 @@ import { backupDatabaseAsync, openDatabaseAsync, type SQLiteDatabase } from 'exp
 import { Zip, ZipPassThrough } from 'fflate';
 
 import { EncryptingWriter, deriveKey, newHeader } from '@/backup/backup-crypto';
-import { BACKUP_DB_ENTRY, BACKUP_FOLDERS, MANIFEST_ENTRY, type BackupManifest } from '@/backup/backup-layout';
+import {
+  BACKUP_DB_ENTRY,
+  BACKUP_FOLDERS,
+  MANIFEST_ENTRY,
+  SECRETS_ENTRY,
+  type BackupManifest,
+  type BackupSecrets,
+} from '@/backup/backup-layout';
 import { LATEST_SCHEMA_VERSION } from '@/db/migrations';
+import { passwordDocumentIds, readPassword } from '@/security/password-vault';
 
 export type BackupProgress = { phase: 'key' | 'archive'; done: number; total: number };
 
@@ -65,6 +73,12 @@ export async function createBackup(
     const key = await deriveKey(password, header);
 
     const dbFile = await snapshotDatabase(db, work);
+    // The Keychain passwords travel only inside the encrypted archive
+    const secrets: BackupSecrets = {};
+    for (const id of await passwordDocumentIds(db)) {
+      const password = await readPassword(id);
+      if (password !== null) secrets[String(id)] = password;
+    }
     const files = collectFiles();
     const manifest: BackupManifest = {
       app: 'sottomano',
@@ -90,6 +104,10 @@ export async function createBackup(
       const manifestEntry = new ZipPassThrough(MANIFEST_ENTRY);
       zip.add(manifestEntry);
       manifestEntry.push(new TextEncoder().encode(JSON.stringify(manifest)), true);
+
+      const secretsEntry = new ZipPassThrough(SECRETS_ENTRY);
+      zip.add(secretsEntry);
+      secretsEntry.push(new TextEncoder().encode(JSON.stringify(secrets)), true);
 
       for (const source of sources) {
         const entry = new ZipPassThrough(source.name);

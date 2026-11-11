@@ -24,6 +24,7 @@ export function mapCategory(row: Record<string, unknown>, prefix = ''): Category
     },
     isBuiltin,
     isCards: r('kind') === 'cards',
+    isPassword: r('kind') === 'password',
   };
 }
 
@@ -91,6 +92,12 @@ export async function updateCategory(db: SQLiteDatabase, id: number, input: Cate
     input.colors.text,
     id,
   );
+}
+
+// Whether documents of this category have "Utente" and "Password"
+export async function isPasswordCategory(db: SQLiteDatabase, id: number): Promise<boolean> {
+  const row = await db.getFirstAsync<{ kind: string | null }>('SELECT kind FROM categories WHERE id = ?', id);
+  return row?.kind === 'password';
 }
 
 // Home: order chosen by dragging the tiles. It is the order of every category list in the app.

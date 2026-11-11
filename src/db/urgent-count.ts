@@ -6,7 +6,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 export async function countUrgentDeadlines(db: SQLiteDatabase): Promise<number> {
   const row = await db.getFirstAsync<{ count: number }>(
     `SELECT COUNT(*) AS count FROM documents
-     WHERE expires_at IS NOT NULL AND expires_at <= date('now', 'localtime', '+7 days')`,
+     WHERE deleted_at IS NULL AND expires_at IS NOT NULL AND expires_at <= date('now', 'localtime', '+7 days')`,
   );
   return row?.count ?? 0;
 }

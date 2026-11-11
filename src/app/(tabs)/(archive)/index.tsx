@@ -5,6 +5,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
+import { BackupReminder } from '@/components/backup-reminder';
 import { CategoryTile } from '@/components/category-tile';
 import { SearchBar } from '@/components/search-bar';
 import { SearchResultsList } from '@/components/search-results';
@@ -69,6 +70,8 @@ export default function ArchiveScreen() {
         <SearchResultsList query={searched} results={results} filter={filter} onFilterChange={setFilter} />
       ) : (
         <TileScrollView ref={scrollRef} keyboardShouldPersistTaps="handled">
+          {/* Discreet reminder when the last backup is old (or missing) */}
+          {allDocuments && <BackupReminder documentCount={allDocuments.length} />}
           {categories && (
             <SortableTileGrid
               items={categories}

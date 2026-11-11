@@ -195,7 +195,7 @@ export async function syncDocumentEvent(db: SQLiteDatabase, documentId: number):
     const calendarId = await ensureAppCalendar(); // recreated if the user deleted it
     saveCalendarSettings({ ...getCalendarSettings(), calendarId });
     const doc = await db.getFirstAsync<EventSource>(
-      'SELECT id, title, expires_at, reminder_days, calendar_event_id FROM documents WHERE id = ?',
+      'SELECT id, title, expires_at, reminder_days, calendar_event_id FROM documents WHERE id = ? AND deleted_at IS NULL',
       documentId,
     );
     if (doc) await syncOne(db, doc, calendarId);
@@ -208,7 +208,7 @@ export async function syncDocumentEvent(db: SQLiteDatabase, documentId: number):
 async function syncAllEvents(db: SQLiteDatabase, calendarId: string): Promise<number> {
   const docs = await db.getAllAsync<EventSource>(
     `SELECT id, title, expires_at, reminder_days, calendar_event_id FROM documents
-     WHERE expires_at IS NOT NULL OR calendar_event_id IS NOT NULL`,
+     WHERE (expires_at IS NOT NULL AND deleted_at IS NULL) OR calendar_event_id IS NOT NULL`,
   );
   for (const doc of docs) {
     await syncOne(db, doc, calendarId);

@@ -10,11 +10,13 @@ import type {
   DocumentFileRecord,
   DocumentListItem,
   DocumentRecord,
+  DocumentVersion,
   FileSide,
 } from '@/db/types';
 import { deletePassword } from '@/security/password-vault';
 import { deleteStoredFile, storePendingFile } from '@/storage/document-files';
 import type { PendingFile } from '@/storage/pending-files';
+import { isRepeatUnit, type Repeat } from '@/utils/recurrence';
 
 type DocumentWithCategoryRecord = DocumentRecord & Record<string, unknown>;
 
@@ -42,6 +44,8 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     username: row.username ?? null,
     coverMode: row.cover_mode ?? null,
     coverColor: row.cover_color ?? null,
+    deletedAt: row.deleted_at ?? null,
+    repeat: row.repeat_every && isRepeatUnit(row.repeat_unit) ? { every: row.repeat_every, unit: row.repeat_unit } : null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
@@ -51,25 +55,29 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
   };
 }
 
-// Every document with its category, filtered by an optional WHERE clause.
-// `where` is always a constant written here; values go through `?` parameters, never concatenated.
+// Only documents that are not in the "Cestino": every list of the app starts from here
+const LIVE = 'd.deleted_at IS NULL';
+
+// Every document with its category, filtered by a condition.
+// `condition` is always a constant written here; values go through `?` parameters, never concatenated.
 async function listDocumentsWhere(
   db: SQLiteDatabase,
-  where: string,
+  condition: string,
   params: (string | number)[],
   orderBy = 'd.expires_at IS NULL, d.expires_at, d.title',
 ): Promise<DocumentListItem[]> {
   const rows = await db.getAllAsync<DocumentWithCategoryRecord>(
     `SELECT d.*, ${CATEGORY_JOIN_COLUMNS},
-            (SELECT COUNT(*) FROM document_files f WHERE f.document_id = d.id AND f.kind = 'image') AS image_count,
+            (SELECT COUNT(*) FROM document_files f
+             WHERE f.document_id = d.id AND f.kind = 'image' AND f.version_id IS NULL) AS image_count,
             (SELECT f.path FROM document_files f
-             WHERE f.document_id = d.id AND f.kind = 'image' AND f.side IS NOT 'barcode'
+             WHERE f.document_id = d.id AND f.kind = 'image' AND f.side IS NOT 'barcode' AND f.version_id IS NULL
              ORDER BY ${FILE_ORDER}, f.id LIMIT 1) AS first_image_path,
             pp.name AS person_name
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      LEFT JOIN people pp ON pp.id = d.person_id
-     ${where}
+     WHERE ${condition}
      ORDER BY ${orderBy}`,
     params,
   );
@@ -78,11 +86,11 @@ async function listDocumentsWhere(
 
 // Every document with category and person, for the search in Home (filtered in JS)
 export function listAllDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, '', []);
+  return listDocumentsWhere(db, LIVE, []);
 }
 
 export function listDocumentsWithExpiry(db: SQLiteDatabase): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.expires_at IS NOT NULL', []);
+  return listDocumentsWhere(db, `${LIVE} AND d.expires_at IS NOT NULL`, []);
 }
 
 // Fallback after the saved position (always set since V11): the old order, by deadline then title
@@ -90,17 +98,17 @@ const BY_DEADLINE = 'd.expires_at IS NULL, d.expires_at, d.title';
 
 // A category grid, in the order chosen by dragging
 export function listDocumentsByCategory(db: SQLiteDatabase, categoryId: number): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.category_id = ?', [categoryId], `d.category_order IS NULL, d.category_order, ${BY_DEADLINE}`);
+  return listDocumentsWhere(db, `${LIVE} AND d.category_id = ?`, [categoryId], `d.category_order IS NULL, d.category_order, ${BY_DEADLINE}`);
 }
 
 // "Preferiti" on Home, in the order chosen by the user
 export function listPinnedDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.is_pinned = 1', [], 'd.pin_order, d.id');
+  return listDocumentsWhere(db, `${LIVE} AND d.is_pinned = 1`, [], 'd.pin_order, d.id');
 }
 
 // A person grid, in the order chosen by dragging
 export function listDocumentsByPerson(db: SQLiteDatabase, personId: number): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.person_id = ?', [personId], `d.person_order IS NULL, d.person_order, ${BY_DEADLINE}`);
+  return listDocumentsWhere(db, `${LIVE} AND d.person_id = ?`, [personId], `d.person_order IS NULL, d.person_order, ${BY_DEADLINE}`);
 }
 
 // After a drag in a category or person grid: the documents of that grid, in their new order
@@ -125,7 +133,7 @@ export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      LEFT JOIN people p ON p.id = d.person_id
-     WHERE d.id = ?`,
+     WHERE d.id = ? AND d.deleted_at IS NULL`,
     id,
   );
   if (!row) return null;
@@ -149,6 +157,7 @@ export type DocumentInput = {
   username?: string | null; // only for "Password" documents
   coverMode?: CoverMode | null; // "Copertina"; null/absent = automatic
   coverColor?: string | null; // null = the category color
+  repeat?: Repeat | null; // "Si ripete"; null/absent = "Mai" (only meaningful with a deadline)
 };
 
 // Empty strings become NULL, and no reminder without an expiry date
@@ -160,6 +169,7 @@ function normalize(doc: DocumentInput) {
     notes: text(doc.notes),
     username: text(doc.username ?? null),
     reminderDays: doc.expiresAt ? doc.reminderDays : null,
+    repeat: doc.expiresAt && doc.repeat ? doc.repeat : null,
   };
 }
 
@@ -200,8 +210,8 @@ export async function insertDocument(
       const clean = normalize(doc);
       const result = await db.runAsync(
         `INSERT INTO documents (title, category_id, person_id, number, expires_at, reminder_days, notes, username,
-                                cover_mode, cover_color)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                cover_mode, cover_color, repeat_every, repeat_unit)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         clean.title,
         doc.categoryId,
         doc.personId,
@@ -212,6 +222,8 @@ export async function insertDocument(
         clean.username,
         doc.coverMode ?? null,
         doc.coverColor ?? null,
+        clean.repeat?.every ?? null,
+        clean.repeat?.unit ?? null,
       );
       documentId = result.lastInsertRowId;
 
@@ -229,14 +241,104 @@ export async function insertDocument(
   return documentId;
 }
 
-// Files of a document: the photos in page order (front, back, other pages), then the barcode, then PDFs
+// Current files of a document: the photos in page order (front, back, other pages), then the
+// barcode, then PDFs. Pages of previous versions are left out (listVersionFiles).
 export async function listDocumentFiles(db: SQLiteDatabase, documentId: number): Promise<DocumentFile[]> {
   const rows = await db.getAllAsync<DocumentFileRecord>(
-    `SELECT * FROM document_files f WHERE f.document_id = ?
+    `SELECT * FROM document_files f WHERE f.document_id = ? AND f.version_id IS NULL
      ORDER BY CASE WHEN f.kind = 'pdf' THEN 2000 ELSE ${FILE_ORDER} END, f.id`,
     documentId,
   );
+  return rows.map(mapFile);
+}
+
+// The pages of one previous version, in the same order
+export async function listVersionFiles(db: SQLiteDatabase, versionId: number): Promise<DocumentFile[]> {
+  const rows = await db.getAllAsync<DocumentFileRecord>(
+    `SELECT * FROM document_files f WHERE f.version_id = ?
+     ORDER BY CASE WHEN f.kind = 'pdf' THEN 2000 ELSE ${FILE_ORDER} END, f.id`,
+    versionId,
+  );
+  return rows.map(mapFile);
+}
+
+// "Versioni precedenti" of a document, the most recent first
+export async function listDocumentVersions(db: SQLiteDatabase, documentId: number): Promise<DocumentVersion[]> {
+  const rows = await db.getAllAsync<{
+    id: number;
+    document_id: number;
+    expires_at: string | null;
+    archived_at: string;
+    page_count: number;
+  }>(
+    `SELECT v.*, (SELECT COUNT(*) FROM document_files f WHERE f.version_id = v.id) AS page_count
+     FROM document_versions v WHERE v.document_id = ? ORDER BY v.archived_at DESC, v.id DESC`,
+    documentId,
+  );
   return rows.map((row) => ({
+    id: row.id,
+    documentId: row.document_id,
+    expiresAt: row.expires_at,
+    archivedAt: row.archived_at,
+    pageCount: row.page_count,
+  }));
+}
+
+export async function getDocumentVersion(db: SQLiteDatabase, versionId: number): Promise<DocumentVersion | null> {
+  const row = await db.getFirstAsync<{ id: number; document_id: number; expires_at: string | null; archived_at: string }>(
+    'SELECT * FROM document_versions WHERE id = ?',
+    versionId,
+  );
+  return row
+    ? { id: row.id, documentId: row.document_id, expiresAt: row.expires_at, archivedAt: row.archived_at, pageCount: 0 }
+    : null;
+}
+
+// "Rinnovato": the deadline moves to `newExpiry`. With a new scan, the current pages first become
+// a "Versione precedente" (with the old deadline), then the new pages are the current ones.
+// Same safety rules as insertDocument. Calendar event, reminders and badge follow.
+export async function renewDocument(
+  db: SQLiteDatabase,
+  id: number,
+  newExpiry: string,
+  newPages: PendingFile[] | null,
+): Promise<void> {
+  const stored: { path: string; file: PendingFile }[] = [];
+  try {
+    for (const file of newPages ?? []) {
+      stored.push({ path: await storePendingFile(file), file });
+    }
+    await db.withTransactionAsync(async () => {
+      if (stored.length > 0) {
+        const current = await db.getFirstAsync<{ expires_at: string | null }>('SELECT expires_at FROM documents WHERE id = ?', id);
+        const version = await db.runAsync(
+          'INSERT INTO document_versions (document_id, expires_at) VALUES (?, ?)',
+          id,
+          current?.expires_at ?? null,
+        );
+        await db.runAsync(
+          'UPDATE document_files SET version_id = ? WHERE document_id = ? AND version_id IS NULL',
+          version.lastInsertRowId,
+          id,
+        );
+        for (const { path, file } of stored) await insertFileRow(db, id, path, file);
+      }
+      await db.runAsync(
+        `UPDATE documents SET expires_at = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
+        newExpiry,
+        id,
+      );
+    });
+  } catch (error) {
+    stored.forEach(({ path }) => deleteStoredFile(path));
+    throw error;
+  }
+  await syncDocumentEvent(db, id);
+  await rescheduleReminders(db);
+}
+
+function mapFile(row: DocumentFileRecord): DocumentFile {
+  return {
     id: row.id,
     documentId: row.document_id,
     path: row.path,
@@ -244,7 +346,7 @@ export async function listDocumentFiles(db: SQLiteDatabase, documentId: number):
     kind: row.kind,
     page: row.page,
     createdAt: row.created_at,
-  }));
+  };
 }
 
 // Updates the document fields (files are handled separately)
@@ -253,7 +355,7 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
   await db.runAsync(
     `UPDATE documents
      SET title = ?, category_id = ?, person_id = ?, number = ?, expires_at = ?, reminder_days = ?, notes = ?,
-         username = ?, cover_mode = ?, cover_color = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+         username = ?, cover_mode = ?, cover_color = ?, repeat_every = ?, repeat_unit = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
      WHERE id = ?`,
     clean.title,
     doc.categoryId,
@@ -265,13 +367,21 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
     clean.username,
     doc.coverMode ?? null,
     doc.coverColor ?? null,
+    clean.repeat?.every ?? null,
+    clean.repeat?.unit ?? null,
     id,
   );
 }
 
-// Deletes the document; its document_files rows go with it (ON DELETE CASCADE),
-// then the photos/PDFs are removed from the phone.
-export async function deleteDocument(db: SQLiteDatabase, id: number): Promise<void> {
+// The "Cestino", most recently deleted first
+export function listTrashedDocuments(db: SQLiteDatabase): Promise<DocumentListItem[]> {
+  return listDocumentsWhere(db, 'd.deleted_at IS NOT NULL', [], 'd.deleted_at DESC, d.id DESC');
+}
+
+// "Elimina definitivamente" (from the Cestino, or after 30 days there): the row goes, its
+// document_files rows with it (ON DELETE CASCADE), then the photos/PDFs, its Keychain item and
+// its calendar event. A normal "Elimina" only moves the document to the Cestino (db/trash.ts).
+export async function deleteDocumentForever(db: SQLiteDatabase, id: number): Promise<void> {
   const files = await db.getAllAsync<{ path: string }>('SELECT path FROM document_files WHERE document_id = ?', id);
   const event = await db.getFirstAsync<{ calendar_event_id: string | null }>(
     'SELECT calendar_event_id FROM documents WHERE id = ?',

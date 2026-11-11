@@ -8,8 +8,8 @@ import { useTheme } from '@/hooks/use-theme';
 
 const RADIUS = 12;
 const MIN_HEIGHT = 48;
-const DELETE_BACKGROUND = '#FDE3E6';
-const DELETE_TEXT = '#C8283D';
+// "Cancella": soft red background, dark red text
+const DELETE_COLORS = { background: '#FDE3E6', text: '#C8283D' };
 const PIN_TINT = `${PIN_COLOR}33`; // the heart color at 20%: "Nei preferiti" stands out
 const MAX_FONT_SCALE = 1.2; // labels grow a little with Dynamic Type, then stop so the row always fits
 
@@ -18,14 +18,16 @@ type Props = {
   onEdit: (() => void) | null;
   onDelete: (() => void) | null; // the caller shows the confirmation alert
   pin?: { pinned: boolean; onToggle: () => void }; // "Aggiungi ai preferiti" / "Nei preferiti"
+  onRenew?: (() => void) | null; // "Rinnovato": documents with a deadline
 };
 
 // Buttons at the end of the detail screens (layout B of the mockup):
 // "Aggiungi pagine" full width with the logo gradient, "Aggiungi ai preferiti" full width, then
 // "Modifica" and "Cancella" always side by side, at any text size.
 // They sit in the scroll content, right after the data, and scroll with the page.
-export function DetailActionBar({ onAdd, onEdit, onDelete, pin }: Props) {
+export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props) {
   const theme = useTheme();
+  const deleteColors = DELETE_COLORS;
 
   if (!onAdd && !onEdit && !onDelete && !pin) return null;
 
@@ -42,6 +44,16 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin }: Props) {
           style={{ backgroundColor: pin.pinned ? PIN_TINT : theme.backgroundSelected }}
           color={theme.text}
           selected={pin.pinned}
+        />
+      )}
+      {onRenew && (
+        <ActionButton
+          label="Rinnovato"
+          symbol="arrow.clockwise"
+          variant="wide"
+          onPress={onRenew}
+          style={{ backgroundColor: theme.backgroundSelected }}
+          color={theme.text}
         />
       )}
       {(onEdit || onDelete) && (
@@ -62,8 +74,8 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin }: Props) {
               symbol="trash"
               variant="secondary"
               onPress={onDelete}
-              style={{ backgroundColor: DELETE_BACKGROUND }}
-              color={DELETE_TEXT}
+              style={{ backgroundColor: deleteColors.background }}
+              color={deleteColors.text}
             />
           )}
         </View>

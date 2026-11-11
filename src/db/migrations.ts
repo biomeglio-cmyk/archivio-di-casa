@@ -289,6 +289,47 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 12,
+    name: 'trash: soft delete of documents',
+    up: async (db) => {
+      await db.execAsync(`
+        -- NULL = a live document; otherwise when it was moved to the "Cestino" (ISO date and time).
+        -- Trashed documents are hidden everywhere and deleted for good after 30 days.
+        ALTER TABLE documents ADD COLUMN deleted_at TEXT;
+        CREATE INDEX documents_deleted_at ON documents (deleted_at);
+      `);
+    },
+  },
+  {
+    version: 13,
+    name: 'recurring deadlines',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Si ripete ogni <repeat_every> <repeat_unit>"; both NULL = "Mai"
+        ALTER TABLE documents ADD COLUMN repeat_every INTEGER CHECK (repeat_every BETWEEN 1 AND 99);
+        ALTER TABLE documents ADD COLUMN repeat_unit TEXT CHECK (repeat_unit IN ('day', 'week', 'month', 'year'));
+      `);
+    },
+  },
+  {
+    version: 14,
+    name: 'previous versions of a document (Rinnovato)',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Rinnovato" with a new scan: the pages until then become a previous version
+        CREATE TABLE document_versions (
+          id          INTEGER PRIMARY KEY AUTOINCREMENT,
+          document_id INTEGER NOT NULL REFERENCES documents(id) ON DELETE CASCADE,
+          expires_at  TEXT,  -- the deadline the document had then
+          archived_at TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now'))
+        );
+        CREATE INDEX document_versions_document ON document_versions (document_id);
+        -- NULL = a current page; otherwise the previous version it belongs to
+        ALTER TABLE document_files ADD COLUMN version_id INTEGER REFERENCES document_versions(id) ON DELETE CASCADE;
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

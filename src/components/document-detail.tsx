@@ -11,16 +11,18 @@ import { CardDetail } from '@/components/card-detail';
 import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
+import { Group, Row } from '@/components/grouped-list';
 import { PersonAvatar } from '@/components/person-avatar';
 import { PasswordCard } from '@/components/password-card';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
 import { FONTS } from '@/constants/brand';
-import { getDocumentDetail, listDocumentFiles, setPinned } from '@/db/documents';
+import { getDocumentDetail, listDocumentFiles, listDocumentVersions, setPinned } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { useTheme } from '@/hooks/use-theme';
-import { formatDate } from '@/utils/dates';
+import { formatDate, toISODate } from '@/utils/dates';
+import { describeRepeat } from '@/utils/recurrence';
 
 // Detail of one document (or of a card). Used by the document/[id] screen of every tab.
 export default function DocumentDetail() {
@@ -28,6 +30,7 @@ export default function DocumentDetail() {
   const theme = useTheme();
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, Number(id)), [id]);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, Number(id)), [id]);
+  const { data: versions } = useDbQuery((db) => listDocumentVersions(db, Number(id)), [id]);
   const hasFiles = files !== undefined && files.length > 0;
   const db = useSQLiteContext();
 
@@ -65,6 +68,7 @@ export default function DocumentDetail() {
     { label: 'Persona', value: person?.name },
     { label: 'Numero', value: document.number },
     { label: 'Scadenza', value: document.expiresAt ? formatDate(document.expiresAt) : null }, // none: no row
+    { label: 'Ricorrenza', value: document.expiresAt && document.repeat ? describeRepeat(document.repeat) : null },
     {
       label: 'Promemoria',
       value: document.expiresAt && document.reminderDays ? `${document.reminderDays} giorni prima` : null,
@@ -116,10 +120,31 @@ export default function DocumentDetail() {
 
         {category.isPassword && <PasswordCard documentId={document.id} username={document.username} />}
 
+        {/* The pages it had before each "Rinnovato" with a new scan */}
+        {versions && versions.length > 0 && (
+          <Group title="Versioni precedenti">
+            {versions.map((version, index) => (
+              <Row
+                key={version.id}
+                first={index === 0}
+                symbol="clock.arrow.circlepath"
+                label={`Fino al ${formatDate(toISODate(new Date(version.archivedAt)))}`}
+                value={version.expiresAt ? `scadeva ${formatDate(version.expiresAt)}` : undefined}
+                onPress={() => router.push({ pathname: '/document-version/[id]', params: { id: String(version.id) } })}
+              />
+            ))}
+          </Group>
+        )}
+
         {/* Actions right after the data; they scroll with the page */}
         <DetailActionBar
           pin={pin}
           onAdd={() => router.push({ pathname: '/document-pages/[id]', params: { id: String(document.id) } })}
+          onRenew={
+            document.expiresAt
+              ? () => router.push({ pathname: '/renew/[id]', params: { id: String(document.id) } })
+              : null
+          }
           onEdit={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
           onDelete={() => confirmDeleteDocument(db, document)}
         />

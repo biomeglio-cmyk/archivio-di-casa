@@ -19,7 +19,7 @@ export async function listPeopleWithCounts(db: SQLiteDatabase): Promise<PersonWi
            SUM(CASE WHEN d.expires_at BETWEEN date('now', 'localtime') AND date('now', 'localtime', '+30 days')
                     THEN 1 ELSE 0 END) AS expiring_count
     FROM people p
-    LEFT JOIN documents d ON d.person_id = p.id
+    LEFT JOIN documents d ON d.person_id = p.id AND d.deleted_at IS NULL
     GROUP BY p.id
     ORDER BY p.created_at, p.id`);
   return rows.map((row) => ({

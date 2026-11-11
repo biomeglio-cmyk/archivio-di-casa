@@ -110,7 +110,8 @@ export default function MenuSheet() {
         </Group>
 
         <Group title="Altro">
-          <Row label="Aiuto" symbol="questionmark.circle" first onPress={() => router.replace('/onboarding')} />
+          <Row label="Cestino" symbol="trash" count={counts?.trash} first onPress={() => router.replace('/trash')} />
+          <Row label="Aiuto" symbol="questionmark.circle" onPress={() => router.replace('/onboarding')} />
           <Row label="Info e privacy" symbol="info.circle" onPress={() => router.replace('/about')} />
         </Group>
       </View>

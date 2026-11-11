@@ -48,7 +48,7 @@ export async function listCategoriesWithCounts(db: SQLiteDatabase): Promise<Cate
   const rows = await db.getAllAsync<CategoryRecord & { document_count: number }>(`
     SELECT c.*, COUNT(d.id) AS document_count
     FROM categories c
-    LEFT JOIN documents d ON d.category_id = c.id
+    LEFT JOIN documents d ON d.category_id = c.id AND d.deleted_at IS NULL
     WHERE c.hidden = 0
     GROUP BY c.id
     ORDER BY c.sort_order, c.name`);
@@ -107,7 +107,7 @@ export function isOtherCategory(category: Pick<Category, 'builtinKey'>): boolean
   return category.builtinKey === OTHER_KEY;
 }
 
-async function otherCategoryId(db: SQLiteDatabase): Promise<number> {
+export async function otherCategoryId(db: SQLiteDatabase): Promise<number> {
   const row = await db.getFirstAsync<{ id: number }>('SELECT id FROM categories WHERE builtin_key = ?', OTHER_KEY);
   if (!row) throw new Error('La categoria "Altro" non esiste.');
   return row.id;
@@ -144,8 +144,16 @@ export async function deleteCategory(db: SQLiteDatabase, id: number): Promise<vo
   if (row.is_builtin === 1) {
     await db.runAsync('UPDATE categories SET hidden = 1 WHERE id = ?', id);
   } else {
-    // documents.category_id has ON DELETE RESTRICT: this fails if documents are still there
-    await db.runAsync('DELETE FROM categories WHERE id = ?', id);
+    // Its documents in the Cestino move to "Altro" (still in the Cestino), so they can be restored.
+    // documents.category_id has ON DELETE RESTRICT: this fails if live documents are still there.
+    await db.withTransactionAsync(async () => {
+      await db.runAsync(
+        'UPDATE documents SET category_id = ? WHERE category_id = ? AND deleted_at IS NOT NULL',
+        await otherCategoryId(db),
+        id,
+      );
+      await db.runAsync('DELETE FROM categories WHERE id = ?', id);
+    });
   }
 }
 
@@ -207,12 +215,18 @@ export async function saveCategoryOrder(db: SQLiteDatabase, orderedIds: number[]
 }
 
 export async function listDocumentIdsInCategory(db: SQLiteDatabase, id: number): Promise<number[]> {
-  const rows = await db.getAllAsync<{ id: number }>('SELECT id FROM documents WHERE category_id = ?', id);
+  const rows = await db.getAllAsync<{ id: number }>(
+    'SELECT id FROM documents WHERE category_id = ? AND deleted_at IS NULL',
+    id,
+  );
   return rows.map((row) => row.id);
 }
 
 export async function countDocumentsInCategory(db: SQLiteDatabase, id: number): Promise<number> {
-  const row = await db.getFirstAsync<{ count: number }>('SELECT COUNT(*) AS count FROM documents WHERE category_id = ?', id);
+  const row = await db.getFirstAsync<{ count: number }>(
+    'SELECT COUNT(*) AS count FROM documents WHERE category_id = ? AND deleted_at IS NULL',
+    id,
+  );
   return row?.count ?? 0;
 }
 

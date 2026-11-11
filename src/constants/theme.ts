@@ -1,5 +1,6 @@
 /**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
+ * Below are the colors that are used in the app. Sottomano is light only (app.json
+ * userInterfaceStyle "light"), so there is one set.
  * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://unistyl.es/), etc.
  */
 
@@ -15,16 +16,9 @@ export const Colors = {
     backgroundSelected: '#E0E1E6', // pressed rows, hairline separators
     textSecondary: '#60646C',
   },
-  dark: {
-    text: '#ffffff',
-    background: '#000000', // page: iOS systemGroupedBackground (dark)
-    surface: '#1C1C1E', // grouped blocks, fields, tiles: secondarySystemGroupedBackground (dark)
-    backgroundSelected: '#38383A', // pressed rows, hairline separators
-    textSecondary: '#B0B4BA',
-  },
 } as const;
 
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
+export type ThemeColor = keyof typeof Colors.light;
 
 export const Fonts = Platform.select({
   ios: {

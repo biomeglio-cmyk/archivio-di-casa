@@ -64,7 +64,7 @@ export default function DocumentDetail() {
     { label: 'Categoria', value: category.name },
     { label: 'Persona', value: person?.name },
     { label: 'Numero', value: document.number },
-    { label: 'Scadenza', value: document.expiresAt ? formatDate(document.expiresAt) : 'Nessuna' },
+    { label: 'Scadenza', value: document.expiresAt ? formatDate(document.expiresAt) : null }, // none: no row
     {
       label: 'Promemoria',
       value: document.expiresAt && document.reminderDays ? `${document.reminderDays} giorni prima` : null,

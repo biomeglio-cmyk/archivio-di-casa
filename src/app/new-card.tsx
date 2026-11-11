@@ -22,6 +22,7 @@ export default function NewCardScreen() {
           barcodeValue: params.code || null,
           barcodeType: params.codeType || null,
           cardColor: DEFAULT_CARD_COLOR,
+          coverMode: null,
           frontUri: params.front || null,
           barcodeUri: params.barcode || null,
         }}

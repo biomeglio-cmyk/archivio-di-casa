@@ -43,9 +43,14 @@ export type FamilyDocument = {
   barcodeType: string | null; // cards: its format, e.g. 'ean13' (null = typed by hand)
   cardColor: string | null; // cards: background when there is no photo of the front
   username: string | null; // "Password" documents: the user name (the password is in the Keychain)
+  coverMode: CoverMode | null; // tile look; null = automatic (photo if there is one, else color)
+  coverColor: string | null; // "Colore" cover; null = the category color (follows the palette)
   createdAt: string;
   updatedAt: string;
 };
+
+// How a document looks in the grids: its front photo full-bleed, or a color with the title
+export type CoverMode = 'photo' | 'color';
 
 // What a photo is: front/back of a document, front of a card, photo of a card's barcode.
 // null for PDFs and for the pages after the second one of a scan (see `page`).
@@ -96,6 +101,8 @@ export type DocumentRecord = {
   barcode_type: string | null;
   card_color: string | null;
   username: string | null;
+  cover_mode: CoverMode | null;
+  cover_color: string | null;
   created_at: string;
   updated_at: string;
 };

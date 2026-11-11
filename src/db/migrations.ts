@@ -225,6 +225,20 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 10,
+    name: 'cover of a document: photo or color',
+    up: async (db) => {
+      await db.execAsync(`
+        -- NULL = automatic (the photo if there is one, else the color); 'photo' or 'color' = chosen
+        ALTER TABLE documents ADD COLUMN cover_mode TEXT CHECK (cover_mode IN ('photo', 'color'));
+        -- NULL = the category color (follows the palette); otherwise a color chosen by the user
+        ALTER TABLE documents ADD COLUMN cover_color TEXT;
+        -- Cards already had a color: it becomes their cover color, so nothing changes on screen
+        UPDATE documents SET cover_color = card_color WHERE card_color IS NOT NULL;
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

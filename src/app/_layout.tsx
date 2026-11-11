@@ -8,8 +8,10 @@ import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { SQLiteProvider } from 'expo-sqlite';
+import { Fragment } from 'react';
 import { useColorScheme } from 'react-native';
 
+import { useAppGeneration } from '@/backup/app-reload';
 import { AppLock } from '@/components/app-lock';
 import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/brand';
@@ -29,6 +31,8 @@ SplashScreen.preventAutoHideAsync();
 // Root Stack: it holds the tab bar and the screens that slide up above the tabs.
 export default function RootLayout() {
   const colorScheme = useColorScheme();
+  // Changes after "Ripristina backup": every screen is rebuilt from the restored data
+  const generation = useAppGeneration();
 
   // Load Outfit at runtime (no config plugin, so it works in Expo Go).
   // The keys become the fontFamily names listed in constants/brand.ts.
@@ -48,6 +52,7 @@ export default function RootLayout() {
       onInit={initDatabase}
       options={{ enableChangeListener: true }}>
       <ThemeProvider value={colorScheme === 'dark' ? DARK_THEME : LIGHT_THEME}>
+        <Fragment key={generation}>
         {/* Reminders: scheduled at start, tapping one opens its document */}
         <AppNotifications />
         <Stack>
@@ -143,6 +148,14 @@ export default function RootLayout() {
             }}
           />
           <Stack.Screen
+            name="backup"
+            options={{
+              presentation: 'modal',
+              title: 'Backup',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
+          <Stack.Screen
             name="about"
             options={{
               presentation: 'modal',
@@ -181,6 +194,7 @@ export default function RootLayout() {
             }}
           />
         </Stack>
+        </Fragment>
         {/* After the Stack, so it is drawn on top of the first screen while it fades */}
         <SplashOverlay />
         {/* "Blocca con Face ID": above everything, even the open sheets and modals */}

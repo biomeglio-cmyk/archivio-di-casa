@@ -106,6 +106,7 @@ export default function MenuSheet() {
           footer="Per aprire Sottomano servirà il tuo viso o il codice dell'iPhone. Si blocca di nuovo dopo 1 minuto fuori dall'app.">
           <Row label="Notifiche" symbol="bell.badge" first onPress={() => router.replace('/notification-settings')} />
           <Row label="Calendario" symbol="calendar.badge.plus" value={calendarLabel} onPress={() => router.replace('/calendar-settings')} />
+          <Row label="Backup" symbol="externaldrive.badge.icloud" onPress={() => router.replace('/backup')} />
           <Row label="Blocca con Face ID" symbol="faceid">
             <Host matchContents>
               <Switch value={lockEnabled} onValueChange={toggleLock} />

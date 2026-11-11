@@ -1,4 +1,3 @@
-import { Host, Switch } from '@expo/ui';
 import { router, type Href } from 'expo-router';
 import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet, View } from 'react-native';
@@ -6,6 +5,7 @@ import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
 import { Group, Row } from '@/components/grouped-list';
+import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -104,9 +104,7 @@ export default function MenuSheet() {
           <Row label="Aspetto" symbol="paintpalette" onPress={() => router.replace('/appearance')} />
           <Row label="Backup" symbol="externaldrive.badge.icloud" onPress={() => router.replace('/backup')} />
           <Row label="Blocca con Face ID" symbol="faceid">
-            <Host matchContents>
-              <Switch value={lockEnabled} onValueChange={toggleLock} />
-            </Host>
+            <Switch value={lockEnabled} onValueChange={toggleLock} accessibilityLabel="Blocca con Face ID" />
           </Row>
         </Group>
 
@@ -143,7 +141,6 @@ const styles = StyleSheet.create({
   },
   sections: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingTop: 20, // the first section title starts below the header line, never under it
     gap: 24,

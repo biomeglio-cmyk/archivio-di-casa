@@ -5,10 +5,12 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { IconSquare } from '@/components/icon-square';
 import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
-import { CardSurface, Spacing } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { deleteDocumentForever, listTrashedDocuments } from '@/db/documents';
 import { daysLeftInTrash, emptyTrash, restoreFromTrash, TRASH_DAYS } from '@/db/trash';
@@ -82,7 +84,7 @@ export default function TrashScreen() {
         )}
 
         {documents && documents.length > 0 && (
-          <View style={[styles.card, CardSurface]}>
+          <WhiteCard style={styles.card}>
             {documents.map((document, index) => {
               const left = document.deletedAt ? daysLeftInTrash(document.deletedAt) : TRASH_DAYS;
               return (
@@ -127,7 +129,7 @@ export default function TrashScreen() {
                 </View>
               );
             })}
-          </View>
+          </WhiteCard>
         )}
       </ScrollView>
 
@@ -153,16 +155,13 @@ function Thumbnail({ document }: { document: DocumentListItem }) {
     );
   }
   return (
-    <View style={[styles.thumb, styles.center, { backgroundColor: document.category.colors.top }]}>
-      <SymbolView name={document.category.symbol} tintColor={document.category.colors.text} size={20} />
-    </View>
+    <IconSquare symbol={document.category.symbol} colors={document.category.colors} size={48} />
   );
 }
 
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 16,
@@ -201,10 +200,6 @@ const styles = StyleSheet.create({
     height: 48,
     borderRadius: 8,
     borderCurve: 'continuous',
-  },
-  center: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   actions: {
     flexDirection: 'row',

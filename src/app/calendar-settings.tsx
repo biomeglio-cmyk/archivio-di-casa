@@ -1,7 +1,6 @@
-import { Host, Switch } from '@expo/ui';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Linking, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 
 import { getCalendarSettings, type CalendarSettings } from '@/calendar/calendar-settings';
 import {
@@ -11,9 +10,11 @@ import {
   migrateLegacyCalendar,
   requestCalendarPermission,
 } from '@/calendar/calendar-sync';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
+import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
-import { CardSurface, Spacing } from '@/constants/theme';
+import { WhiteCard } from '@/components/white-card';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
@@ -95,25 +96,23 @@ export default function CalendarSettingsSheet() {
         l&apos;app, così non ricevi due avvisi.
       </ThemedText>
 
-      {permission === 'ask' && <GradientButton label="Consenti accesso al Calendario" onPress={askPermission} />}
+      {permission === 'ask' && <PrimaryButton label="Consenti accesso al Calendario" onPress={askPermission} />}
 
       {permission === 'denied' && (
         <>
           <ThemedText themeColor="textSecondary">
             L&apos;accesso al Calendario è stato negato. Puoi attivarlo nelle Impostazioni dell&apos;iPhone.
           </ThemedText>
-          <GradientButton label="Apri Impostazioni" onPress={() => Linking.openSettings()} />
+          <PrimaryButton label="Apri Impostazioni" onPress={() => Linking.openSettings()} />
         </>
       )}
 
       {permission === 'granted' && (
         <>
-          <View style={[styles.card, styles.switchRow, CardSurface]}>
+          <WhiteCard style={[styles.card, styles.switchRow]}>
             <ThemedText style={styles.switchLabel}>Scadenze nel calendario «Sottomano»</ThemedText>
-            <Host matchContents>
-              <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} />
-            </Host>
-          </View>
+            <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} accessibilityLabel="Scadenze nel calendario «Sottomano»" />
+          </WhiteCard>
 
           {busy && <ActivityIndicator />}
           {status && !busy && (

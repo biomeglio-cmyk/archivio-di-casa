@@ -7,7 +7,7 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { FormField, TextField } from '@/components/form-field';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -146,7 +146,7 @@ function CategoryForm({ category }: { category: Category | null }) {
         )}
       </FormField>
 
-      <GradientButton label="Salva" disabled={!canSave} onPress={save} />
+      <PrimaryButton label="Salva" disabled={!canSave} onPress={save} />
     </ScrollView>
   );
 }

@@ -3,12 +3,17 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
-import { CardSurface } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
-// iOS grouped list (like the Settings app), used by the Menu and the settings screens:
-// a grey uppercase title, a rounded card of rows, an optional footer.
+const PADDING = 16; // inside the card, left and right
+const ICON = 22; // width of the icon column
+const GAP = 14; // between the icon and the text
+
+// A section of rows (Menu, settings screens): grey uppercase title, a white card of rows with
+// separators inset after the icon, an optional footer.
 export function Group({ title, footer, children }: { title?: string; footer?: string; children: ReactNode }) {
   return (
     <View style={styles.group}>
@@ -17,7 +22,7 @@ export function Group({ title, footer, children }: { title?: string; footer?: st
           {title}
         </ThemedText>
       )}
-      <View style={[styles.card, CardSurface]}>{children}</View>
+      <WhiteCard style={styles.card}>{children}</WhiteCard>
       {footer && (
         <ThemedText type="small" themeColor="textSecondary" style={styles.footer}>
           {footer}
@@ -40,32 +45,45 @@ type RowProps = {
 };
 
 // One row: icon, label (wraps with large text), then a value or count, a control, or a chevron
-export function Row({ label, symbol, value, count, alert = false, first = false, disabled = false, onPress, children }: RowProps) {
+export function Row({
+  label,
+  symbol,
+  value,
+  count,
+  alert = false,
+  first = false,
+  disabled = false,
+  onPress,
+  children,
+}: RowProps) {
   const theme = useTheme();
   const content = (
     <>
-      <SymbolView name={symbol} tintColor={disabled ? theme.textSecondary : BRAND_COLOR} size={20} />
-      <ThemedText style={[styles.label, disabled && { color: theme.textSecondary }]}>{label}</ThemedText>
-      {value !== undefined && (
-        <ThemedText themeColor="textSecondary" style={styles.value}>
-          {value}
-        </ThemedText>
-      )}
-      {count !== undefined && (
-        <ThemedText
-          themeColor="textSecondary"
-          style={[styles.value, alert && count > 0 && { color: DANGER_COLOR, fontWeight: 600 }]}>
-          {String(count)}
-        </ThemedText>
-      )}
-      {children}
-      {onPress && !disabled && <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />}
+      <View style={styles.icon}>
+        <SymbolView name={symbol} tintColor={disabled ? theme.textSecondary : BRAND_COLOR} size={20} />
+      </View>
+      {/* The separator is the top line of this part, so it starts after the icon */}
+      <View
+        style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator }]}>
+        <ThemedText style={[styles.label, disabled && { color: theme.textSecondary }]}>{label}</ThemedText>
+        {value !== undefined && (
+          <ThemedText themeColor="textSecondary" style={styles.value}>
+            {value}
+          </ThemedText>
+        )}
+        {count !== undefined && (
+          <ThemedText
+            themeColor="textSecondary"
+            style={[styles.value, alert && count > 0 && { color: DANGER_COLOR, fontWeight: 600 }]}>
+            {String(count)}
+          </ThemedText>
+        )}
+        {children}
+        {onPress && !disabled && <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />}
+      </View>
     </>
   );
-  const style = [
-    styles.row,
-    !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected },
-  ];
+  const style = styles.row;
 
   return onPress && !disabled ? (
     <Pressable
@@ -84,26 +102,40 @@ export function Row({ label, symbol, value, count, alert = false, first = false,
 
 const styles = StyleSheet.create({
   group: {
-    gap: 6,
+    gap: Spacing.titleToContent,
   },
   groupTitle: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 4,
+    fontSize: 13,
+    fontWeight: 400,
     textTransform: 'uppercase', // +0.1em letter spacing from the app Text
   },
   card: {
-    borderRadius: 12,
-    borderCurve: 'continuous',
-    paddingHorizontal: 16,
+    paddingVertical: 4,
   },
   footer: {
-    paddingHorizontal: 16,
+    paddingHorizontal: 4,
+    marginTop: -4, // closer to its card than the title gap
   },
   row: {
     flexDirection: 'row',
+    alignItems: 'stretch',
+    paddingLeft: PADDING,
+  },
+  icon: {
+    width: ICON,
+    marginRight: GAP,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  body: {
+    flex: 1,
+    flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    minHeight: 52,
+    minHeight: 60,
     paddingVertical: 10,
+    paddingRight: PADDING,
   },
   label: {
     flex: 1,

@@ -1,4 +1,4 @@
-import { Host, Picker, Switch } from '@expo/ui';
+import { Host, Picker } from '@expo/ui';
 import { DateTimePicker } from '@expo/ui/community/datetime-picker';
 import * as Notifications from 'expo-notifications';
 import { router, useFocusEffect } from 'expo-router';
@@ -9,6 +9,7 @@ import { Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 
 import { resyncCalendarAlarms } from '@/calendar/calendar-sync';
 import { Group, Row } from '@/components/grouped-list';
+import { Switch } from '@/components/switch';
 import { BRAND_COLOR } from '@/constants/brand';
 import { Spacing } from '@/constants/theme';
 import { rescheduleReminders, updateAppBadge } from '@/notifications/reminders';
@@ -67,9 +68,7 @@ export default function NotificationSettingsScreen() {
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <Group title="Promemoria" footer="«Avvisa prima di» vale per i documenti senza un promemoria proprio.">
           <Row label="Promemoria scadenze" symbol="bell.badge" first>
-            <Host matchContents>
-              <Switch value={preferences.remindersEnabled} onValueChange={toggleReminders} />
-            </Host>
+            <Switch value={preferences.remindersEnabled} onValueChange={toggleReminders} accessibilityLabel="Promemoria scadenze" />
           </Row>
           {preferences.remindersEnabled && (
             <>
@@ -107,9 +106,7 @@ export default function NotificationSettingsScreen() {
 
         <Group footer="Mostra sull'icona di sottomano quante scadenze sono già passate o arrivano entro 7 giorni.">
           <Row label="Numero sull'icona" symbol="app.badge" first>
-            <Host matchContents>
-              <Switch value={preferences.iconBadgeEnabled} onValueChange={(value) => update({ iconBadgeEnabled: value })} />
-            </Host>
+            <Switch value={preferences.iconBadgeEnabled} onValueChange={(value) => update({ iconBadgeEnabled: value })} accessibilityLabel="Numero sull'icona" />
           </Row>
         </Group>
       </ScrollView>
@@ -126,7 +123,6 @@ export default function NotificationSettingsScreen() {
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 24,

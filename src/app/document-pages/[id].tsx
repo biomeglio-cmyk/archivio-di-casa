@@ -69,7 +69,6 @@ function PagesContent({ document, savedFiles }: { document: DocumentDetail; save
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingBottom: 48,
   },

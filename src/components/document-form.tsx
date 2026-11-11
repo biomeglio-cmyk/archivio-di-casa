@@ -1,4 +1,4 @@
-import { Host, Picker, Switch } from '@expo/ui';
+import { Host, Picker } from '@expo/ui';
 import { DateTimePicker } from '@expo/ui/community/datetime-picker';
 import { useState, type ReactNode } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
@@ -6,10 +6,12 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 import { CoverField } from '@/components/cover-field';
 import { FieldLabel, FormField, TextField } from '@/components/form-field';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
+import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
-import { CardSurface, Spacing } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategories } from '@/db/categories';
 import type { DocumentInput } from '@/db/documents';
@@ -142,7 +144,7 @@ export function DocumentForm({
       {/* The pickers need the lists from the database, so they appear once loaded */}
       {categories && people && (
         <>
-          <View style={[styles.card, CardSurface]}>
+          <WhiteCard style={styles.card}>
             <FormRow label="Categoria" required>
               <Picker selectedValue={categoryId} onValueChange={setCategoryId}>
                 {/* "Scegli…" disappears once a category is chosen */}
@@ -152,7 +154,7 @@ export function DocumentForm({
                 ))}
               </Picker>
             </FormRow>
-          </View>
+          </WhiteCard>
 
           <CoverField
             mode={coverMode ?? (hasPhoto ? 'photo' : 'color')}
@@ -166,7 +168,7 @@ export function DocumentForm({
           <ThemedText type="smallBold" themeColor="textSecondary" style={styles.sectionTitle}>
             Facoltativi
           </ThemedText>
-          <View style={[styles.card, CardSurface]}>
+          <WhiteCard style={styles.card}>
             <FormRow label="Persona">
               <Picker selectedValue={personId} onValueChange={setPersonId}>
                 <Picker.Item label="Nessuna" value={NONE} />
@@ -176,13 +178,14 @@ export function DocumentForm({
               </Picker>
             </FormRow>
 
-            <FormRow label="Aggiungi una scadenza" separator={line}>
+            <FormRow label="Aggiungi una scadenza" separator={line} plain>
               <Switch
                 value={hasExpiry}
                 onValueChange={(value) => {
                   setHasExpiry(value);
                   setCalendarOpen(value); // turning it on shows the calendar straight away
                 }}
+                accessibilityLabel="Aggiungi una scadenza"
               />
             </FormRow>
 
@@ -236,7 +239,7 @@ export function DocumentForm({
                 </FormRow>
               </>
             )}
-          </View>
+          </WhiteCard>
 
           {isPassword && (
             <>
@@ -284,7 +287,7 @@ export function DocumentForm({
       )}
 
       <View style={styles.footer}>
-        <GradientButton label="Salva" disabled={!canSave} onPress={submit} />
+        <PrimaryButton label="Salva" disabled={!canSave} onPress={submit} />
         <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
           {missing.length > 0 ? `Per salvare compila: ${missing.join(' e ')}.` : '* Campo obbligatorio'}
         </ThemedText>
@@ -297,11 +300,12 @@ type FormRowProps = {
   label: string;
   required?: boolean;
   separator?: string; // color of the line above the row (omitted on the first row)
+  plain?: boolean; // a React Native control (our Switch), not a native SwiftUI one: no Host
   children: ReactNode;
 };
 
 // One row of a grouped card: label on the left, native control on the right
-function FormRow({ label, required, separator, children }: FormRowProps) {
+function FormRow({ label, required, separator, plain = false, children }: FormRowProps) {
   return (
     <View style={[styles.row, separator && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: separator }]}>
       <View style={styles.rowLabel}>
@@ -309,9 +313,7 @@ function FormRow({ label, required, separator, children }: FormRowProps) {
       </View>
       {/* Host is the bridge between React Native and the native SwiftUI controls.
           The wrapper keeps it inside the card even with a long value. */}
-      <View style={styles.rowControl}>
-        <Host matchContents>{children}</Host>
-      </View>
+      <View style={styles.rowControl}>{plain ? children : <Host matchContents>{children}</Host>}</View>
     </View>
   );
 }
@@ -319,7 +321,6 @@ function FormRow({ label, required, separator, children }: FormRowProps) {
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingBottom: 40,
     gap: 20,

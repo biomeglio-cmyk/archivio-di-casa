@@ -1,9 +1,10 @@
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, ScrollView, SectionList, StyleSheet, View } from 'react-native';
+import { Pressable, SectionList, StyleSheet, View } from 'react-native';
 
+import { Chip, ChipGroup } from '@/components/chip';
+import { IconSquare } from '@/components/icon-square';
 import { Text } from '@/components/text';
-import { BRAND_COLOR } from '@/constants/brand';
 import { cardRowEdge, Spacing } from '@/constants/theme';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
@@ -46,21 +47,18 @@ export function SearchResultsList({ query, results, filter, onFilterChange }: Pr
       stickySectionHeadersEnabled={false}
       ListHeaderComponent={
         chips.length > 1 ? (
-          <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips} keyboardShouldPersistTaps="handled">
-            {chips.map((chip) => {
-              const selected = sameFilter(chip.filter, filter);
-              return (
-                <Pressable
+          <View style={styles.chips}>
+            <ChipGroup>
+              {chips.map((chip) => (
+                <Chip
                   key={chip.key}
+                  label={chip.label}
+                  selected={sameFilter(chip.filter, filter)}
                   onPress={() => onFilterChange(chip.filter)}
-                  accessibilityRole="button"
-                  accessibilityState={{ selected }}
-                  style={[styles.chip, { backgroundColor: selected ? BRAND_COLOR : theme.lilac }]}>
-                  <Text style={[styles.chipLabel, { color: selected ? '#FFFFFF' : theme.text }]}>{chip.label}</Text>
-                </Pressable>
-              );
-            })}
-          </ScrollView>
+                />
+              ))}
+            </ChipGroup>
+          </View>
         ) : undefined
       }
       renderSectionHeader={({ section }) => (
@@ -118,9 +116,7 @@ function ResultRow({ hit, cardColor, first, last }: { hit: SearchHit; cardColor:
         { backgroundColor: pressed ? theme.backgroundSelected : cardColor },
         cardRowEdge(first, last),
       ]}>
-      <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
-        <SymbolView name={category.symbol} tintColor={category.colors.text} size={15} />
-      </View>
+      <IconSquare symbol={category.symbol} colors={category.colors} size={28} />
       <View style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator }]}>
         <View style={styles.texts}>
           <Highlighted text={document.title} match={hit.titleMatch} style={[styles.title, { color: theme.text }]} boldColor={theme.text} />
@@ -147,16 +143,7 @@ const styles = StyleSheet.create({
     paddingBottom: 48,
   },
   chips: {
-    gap: 8,
     paddingVertical: 4,
-  },
-  chip: {
-    paddingHorizontal: 14,
-    paddingVertical: 7,
-    borderRadius: 999,
-  },
-  chipLabel: {
-    fontSize: 15,
   },
   sectionTitle: {
     fontSize: 13,
@@ -170,14 +157,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 16,
-  },
-  icon: {
-    width: 28,
-    height: 28,
-    borderRadius: 7,
-    borderCurve: 'continuous',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   body: {
     flex: 1,

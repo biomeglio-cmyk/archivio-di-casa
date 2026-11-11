@@ -2,6 +2,8 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
+import { Radius } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
 import type { TileSize } from '@/hooks/use-tile-size';
@@ -10,11 +12,13 @@ type Props = {
   label: string; // "Nuova categoria", "Aggiungi persona"
   size: TileSize; // same width as the other tiles; the row stretches it to their height
   onPress: () => void;
-  radius?: number; // 20 like the other tiles; 12 for card-shaped tiles
+  radius?: number; // the radius of the tiles next to it (20; 12 for card-shaped tiles)
+  color?: string; // border, "+" and label: a section color; #C9CCDA border and grey text by default
 };
 
-// Dashed tile at the end of a grid, to add a new item
-export function DashedAddTile({ label, size, onPress, radius = 20 }: Props) {
+// Dashed tile at the end of a grid, to add a new item: same size as the items it adds,
+// 2 px dashed border, "+" and a 15/500 label
+export function DashedAddTile({ label, size, onPress, radius = Radius.tile, color }: Props) {
   const theme = useTheme();
   const { pressed, handlers } = usePressed();
 
@@ -26,11 +30,11 @@ export function DashedAddTile({ label, size, onPress, radius = 20 }: Props) {
       style={[
         size,
         styles.tile,
-        { borderColor: theme.textSecondary, borderRadius: radius },
+        { borderColor: color ?? theme.dashed, borderRadius: radius },
         pressed && { backgroundColor: theme.paleLilac },
       ]}>
-      <SymbolView name="plus" tintColor={theme.textSecondary} size={24} />
-      <ThemedText themeColor="textSecondary" style={styles.label} numberOfLines={2}>
+      <SymbolView name="plus" tintColor={color ?? theme.textSecondary} size={24} />
+      <ThemedText style={[styles.label, { color: color ?? theme.textSecondary }]} numberOfLines={2}>
         {label}
       </ThemedText>
     </Pressable>
@@ -40,7 +44,7 @@ export function DashedAddTile({ label, size, onPress, radius = 20 }: Props) {
 const styles = StyleSheet.create({
   tile: {
     borderCurve: 'continuous',
-    borderWidth: 1.5,
+    borderWidth: 2,
     borderStyle: 'dashed',
     alignItems: 'center',
     justifyContent: 'center',
@@ -49,6 +53,7 @@ const styles = StyleSheet.create({
   },
   label: {
     fontSize: 15,
+    fontFamily: FONTS.medium,
     textAlign: 'center',
   },
 });

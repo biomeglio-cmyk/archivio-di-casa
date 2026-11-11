@@ -2,6 +2,7 @@ import { router, type Href } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { IconSquare } from '@/components/icon-square';
 import { Text } from '@/components/text';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
 import { cardRowEdge } from '@/constants/theme';
@@ -44,9 +45,7 @@ export function DeadlineRow({ document, href, cardColor, first, last, highlighte
         { backgroundColor: background },
         cardRowEdge(first, last),
       ]}>
-      <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
-        <SymbolView name={category.symbol} tintColor={category.colors.text} size={15} />
-      </View>
+      <IconSquare symbol={category.symbol} colors={category.colors} size={ICON} />
       <View style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator }]}>
         <View style={styles.texts}>
           <Text style={[styles.title, { color: theme.text }]}>
@@ -70,14 +69,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 16,
-  },
-  icon: {
-    width: ICON,
-    height: ICON,
-    borderRadius: 7,
-    borderCurve: 'continuous',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   // Text and chevron; its top hairline is the separator, so it starts after the icon
   body: {

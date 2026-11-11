@@ -6,7 +6,7 @@ import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 import { pickPersonPhoto } from '@/capture/pick-files';
 import { FormField, TextField } from '@/components/form-field';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { PersonAvatar } from '@/components/person-avatar';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
@@ -102,7 +102,7 @@ function PersonForm({ person }: { person: Person | null }) {
         />
       </FormField>
 
-      <GradientButton label="Salva" disabled={!canSave} onPress={save} />
+      <PrimaryButton label="Salva" disabled={!canSave} onPress={save} />
     </View>
   );
 }

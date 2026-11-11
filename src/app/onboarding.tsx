@@ -7,10 +7,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LogoMark } from '@/components/logo-mark';
 import { Text } from '@/components/text';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
-import { CardSurface, Spacing } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
 import { markOnboardingSeen } from '@/onboarding/onboarding-flag';
@@ -94,12 +95,12 @@ export default function OnboardingScreen() {
               {p.text}
             </ThemedText>
             {p.illustration.kind === 'logo' && (
-              <View style={[styles.privacy, CardSurface]}>
+              <WhiteCard style={styles.privacy}>
                 <SymbolView name="lock.shield" tintColor={BRAND_COLOR} size={20} />
                 <ThemedText type="small" style={styles.privacyText}>
                   Restano sul tuo telefono e funzionano anche senza internet
                 </ThemedText>
-              </View>
+              </WhiteCard>
             )}
           </View>
         ))}
@@ -115,7 +116,7 @@ export default function OnboardingScreen() {
       </View>
 
       <View style={styles.footer}>
-        <GradientButton label={last ? 'Inizia' : 'Avanti'} onPress={next} />
+        <PrimaryButton label={last ? 'Inizia' : 'Avanti'} onPress={next} />
       </View>
     </View>
   );

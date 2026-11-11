@@ -50,7 +50,6 @@ export default function DocumentVersionScreen() {
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 12,

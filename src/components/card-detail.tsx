@@ -1,4 +1,3 @@
-import { SegmentedControl } from '@expo/ui/community/segmented-control';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
@@ -9,6 +8,7 @@ import { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
 
+import { Segmented } from '@/components/segmented';
 import { Text } from '@/components/text';
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { CardFace } from '@/components/card-face';
@@ -16,7 +16,8 @@ import { DetailActionBar } from '@/components/detail-action-bar';
 import { PersonAvatar } from '@/components/person-avatar';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
-import { CardSurface, Spacing } from '@/constants/theme';
+import { WhiteCard } from '@/components/white-card';
+import { Spacing } from '@/constants/theme';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useMaxBrightness } from '@/hooks/use-max-brightness';
 import { resolveDocumentFile } from '@/storage/document-files';
@@ -60,10 +61,10 @@ export function CardDetail({ card, files, pin }: Props) {
         <View style={styles.barcodeCard}>
           {/* Both available: choose between the generated code and the photo */}
           {generated && barcodeUri && (
-            <SegmentedControl
+            <Segmented
               values={['Codice', 'Foto']}
               selectedIndex={view === 'code' ? 0 : 1}
-              onChange={(event) => setView(event.nativeEvent.selectedSegmentIndex === 0 ? 'code' : 'photo')}
+              onChange={(index) => setView(index === 0 ? 'code' : 'photo')}
             />
           )}
 
@@ -93,13 +94,13 @@ export function CardDetail({ card, files, pin }: Props) {
         </View>
 
         {card.person && (
-          <View style={[styles.infoCard, CardSurface]}>
+          <WhiteCard style={styles.infoCard}>
             <ThemedText themeColor="textSecondary">Persona</ThemedText>
             <View style={styles.person}>
               <PersonAvatar name={card.person.name} photoPath={card.person.photoPath} size={28} />
               <ThemedText style={styles.personName}>{card.person.name}</ThemedText>
             </View>
-          </View>
+          </WhiteCard>
         )}
 
         <View style={styles.actions}>
@@ -180,7 +181,6 @@ function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: FullScreen
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 16,

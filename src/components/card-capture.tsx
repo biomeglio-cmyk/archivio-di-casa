@@ -9,7 +9,7 @@ import { Text } from '@/components/text';
 import { cropToGuideFrame } from '@/capture/crop-photo';
 import { guideFrameRect } from '@/capture/guide-frame';
 import { pickImageUri } from '@/capture/pick-files';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/typography';
 import { CARD_BARCODE_TYPES } from '@/constants/card-colors';
@@ -115,7 +115,7 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
           Sottomano usa la fotocamera per fotografare le tue carte e leggere il codice a barre.
         </Text>
         <View style={styles.permissionButton}>
-          <GradientButton
+          <PrimaryButton
             label={permission.canAskAgain ? 'Consenti' : 'Apri Impostazioni'}
             onPress={() => (permission.canAskAgain ? requestPermission() : Linking.openSettings())}
           />
@@ -146,7 +146,7 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
             <Text style={styles.secondaryLabel}>Rifai</Text>
           </Pressable>
           <View style={styles.flex}>
-            <GradientButton label="Usa" onPress={() => next(previewUri)} />
+            <PrimaryButton label="Usa" onPress={() => next(previewUri)} />
           </View>
         </View>
       </View>

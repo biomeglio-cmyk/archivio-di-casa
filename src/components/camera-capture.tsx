@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/text';
 import { cropToGuideFrame } from '@/capture/crop-photo';
 import { guideFrameRect } from '@/capture/guide-frame';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/typography';
 
@@ -74,7 +74,7 @@ export function CameraCapture({ onDone, onCancel }: Props) {
           Sottomano usa la fotocamera solo per fotografare i tuoi documenti.
         </Text>
         <View style={styles.permissionButton}>
-          <GradientButton
+          <PrimaryButton
             label={permission.canAskAgain ? 'Consenti' : 'Apri Impostazioni'}
             onPress={() => (permission.canAskAgain ? requestPermission() : Linking.openSettings())}
           />
@@ -105,7 +105,7 @@ export function CameraCapture({ onDone, onCancel }: Props) {
             <Text style={styles.secondaryLabel}>Aggiungi pagina</Text>
           </Pressable>
           <View style={styles.flex}>
-            <GradientButton label="Fine" onPress={finish} />
+            <PrimaryButton label="Fine" onPress={finish} />
           </View>
         </View>
       </View>

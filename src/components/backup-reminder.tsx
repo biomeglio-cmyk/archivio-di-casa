@@ -7,8 +7,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 import { getLastBackupDate } from '@/backup/backup-layout';
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
-import { CardSurface } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -55,7 +55,7 @@ export function BackupReminder({ documentCount }: { documentCount: number }) {
   }
 
   return (
-    <View style={[styles.card, CardSurface]}>
+    <WhiteCard style={styles.card}>
       <SymbolView name="externaldrive.badge.icloud" tintColor={BRAND_COLOR} size={24} />
       <View style={styles.texts}>
         <ThemedText style={styles.title}>{text}</ThemedText>
@@ -71,7 +71,7 @@ export function BackupReminder({ documentCount }: { documentCount: number }) {
         style={styles.close}>
         <SymbolView name="xmark" tintColor={theme.textSecondary} size={14} weight="semibold" />
       </Pressable>
-    </View>
+    </WhiteCard>
   );
 }
 

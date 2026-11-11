@@ -1,9 +1,10 @@
 import { router } from 'expo-router';
-import { SymbolView, type SFSymbol } from 'expo-symbols';
+import type { SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LogoMark } from '@/components/logo-mark';
+import { RoundIconButton } from '@/components/round-icon-button';
 import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { Spacing } from '@/constants/theme';
@@ -20,7 +21,7 @@ type Props = {
 };
 
 // The ONE header of the four tabs (Home, Scadenze, Preferiti, Famiglia): logo, title in the
-// Onest Bold wordmark, the page action and the "candy box" Menu button on the right.
+// Onest Bold wordmark, the page action and the round Menu button on the right.
 // Fixed at the top (the tabs hide the navigation bar), same paddings everywhere.
 // Inner screens (category, person, document) keep the standard iOS header with "back".
 export function TabHeader({ title, action }: Props) {
@@ -42,26 +43,9 @@ export function TabHeader({ title, action }: Props) {
               </Text>
             </Pressable>
           ) : (
-            <Pressable
-              onPress={action.onPress}
-              hitSlop={8}
-              accessibilityRole="button"
-              accessibilityLabel={action.accessibilityLabel}
-              style={styles.iconButton}>
-              <SymbolView name={action.symbol} tintColor={BRAND_COLOR} size={22} weight="semibold" />
-            </Pressable>
+            <RoundIconButton symbol={action.symbol} accessibilityLabel={action.accessibilityLabel} onPress={action.onPress} />
           ))}
-        <Pressable
-          onPress={() => router.push('/menu')}
-          accessibilityRole="button"
-          accessibilityLabel="Menu"
-          hitSlop={8}
-          style={styles.iconButton}>
-          {/* "Candy box": the grid icon in a round chip (white in light mode, dark grey in dark mode) */}
-          <View style={[styles.menuChip, { backgroundColor: theme.lilac }]}>
-            <SymbolView name="circle.grid.3x3.fill" tintColor={theme.text} size={16} />
-          </View>
-        </Pressable>
+        <RoundIconButton symbol="circle.grid.3x3.fill" accessibilityLabel="Menu" onPress={() => router.push('/menu')} />
       </View>
     </View>
   );
@@ -85,6 +69,7 @@ const styles = StyleSheet.create({
     marginLeft: 'auto', // pushed to the right edge
     flexDirection: 'row',
     alignItems: 'center',
+    gap: 8,
   },
   action: {
     minHeight: 44,
@@ -94,18 +79,5 @@ const styles = StyleSheet.create({
   actionLabel: {
     color: BRAND_COLOR,
     fontSize: 17,
-  },
-  iconButton: {
-    width: 44,
-    height: 44,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  menuChip: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

@@ -18,7 +18,8 @@ const InsideText = createContext(false);
 export function Text({ style, children, ...rest }: TextProps) {
   const nested = use(InsideText);
   const flat = StyleSheet.flatten(style) ?? {};
-  const inherits = nested && flat.fontWeight === undefined && flat.fontFamily === undefined && flat.fontSize === undefined;
+  const inherits =
+    nested && flat.fontWeight === undefined && flat.fontFamily === undefined && flat.fontSize === undefined;
   return (
     <NativeText {...rest} style={inherits ? flat : withOnest(flat, nested ? undefined : 17)}>
       {nested ? children : <InsideText value>{children}</InsideText>}

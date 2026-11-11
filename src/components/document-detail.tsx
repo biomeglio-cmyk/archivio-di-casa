@@ -17,7 +17,8 @@ import { PersonAvatar } from '@/components/person-avatar';
 import { PasswordCard } from '@/components/password-card';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
-import { CardSurface, Spacing } from '@/constants/theme';
+import { WhiteCard } from '@/components/white-card';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getDocumentDetail, listDocumentFiles, listDocumentVersions, setPinned } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -99,7 +100,7 @@ export default function DocumentDetail() {
           </>
         )}
 
-        <View style={[styles.card, CardSurface]}>
+        <WhiteCard style={styles.card}>
           {details.map((d, index) => (
             <View
               key={d.label}
@@ -118,7 +119,7 @@ export default function DocumentDetail() {
               )}
             </View>
           ))}
-        </View>
+        </WhiteCard>
 
         {category.isPassword && <PasswordCard documentId={document.id} username={document.username} />}
 
@@ -160,7 +161,6 @@ export default function DocumentDetail() {
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingBottom: 48, // room at the end, so nothing ends up under the tab bar
     gap: 16,

@@ -1,4 +1,3 @@
-import { Host, Switch } from '@expo/ui';
 import { DateTimePicker } from '@expo/ui/community/datetime-picker';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
@@ -8,6 +7,7 @@ import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 
 import { FilesEditor, filesToSave, type EditableFile } from '@/components/files-editor';
 import { Group, Row } from '@/components/grouped-list';
+import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { Spacing } from '@/constants/theme';
@@ -99,9 +99,7 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
               : 'Accendilo se hai il documento nuovo da scansionare.'
           }>
           <Row label="Aggiungi la nuova scansione" symbol="doc.viewfinder" first>
-            <Host matchContents>
-              <Switch value={withScan} onValueChange={setWithScan} />
-            </Host>
+            <Switch value={withScan} onValueChange={setWithScan} accessibilityLabel="Aggiungi la nuova scansione" />
           </Row>
         </Group>
 
@@ -123,7 +121,6 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 24,

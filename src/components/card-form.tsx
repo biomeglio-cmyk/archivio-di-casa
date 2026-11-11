@@ -10,10 +10,11 @@ import { CardCapture, type CardCaptureResult, type CardStep } from '@/components
 import { CardFace } from '@/components/card-face';
 import { CoverField } from '@/components/cover-field';
 import { FieldLabel, FormField, TextField } from '@/components/form-field';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
-import { CardSurface, Spacing } from '@/constants/theme';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
 import type { CoverMode } from '@/db/types';
@@ -126,13 +127,13 @@ export function CardForm({ initial, onSubmit }: Props) {
             {frontUri && <Image source={{ uri: frontUri }} style={styles.photoOver} contentFit="cover" />}
           </PhotoSlot>
           <PhotoSlot label="Codice" onPress={() => setRetake('barcode')} action={barcodeUri ? 'Rifai' : 'Fotografa'}>
-            <View style={[styles.barcodeBox, CardSurface]}>
+            <WhiteCard style={styles.barcodeBox}>
               {barcodeUri ? (
                 <Image source={{ uri: barcodeUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
               ) : (
                 <SymbolView name="barcode" tintColor={theme.textSecondary} size={36} />
               )}
-            </View>
+            </WhiteCard>
           </PhotoSlot>
         </View>
 
@@ -156,7 +157,7 @@ export function CardForm({ initial, onSubmit }: Props) {
         </FormField>
 
         {people && (
-          <View style={[styles.card, CardSurface]}>
+          <WhiteCard style={styles.card}>
             <View style={styles.row}>
               <View style={styles.rowLabel}>
                 <FieldLabel label="Persona" />
@@ -172,7 +173,7 @@ export function CardForm({ initial, onSubmit }: Props) {
                 </Host>
               </View>
             </View>
-          </View>
+          </WhiteCard>
         )}
 
         <CoverField
@@ -184,7 +185,7 @@ export function CardForm({ initial, onSubmit }: Props) {
         />
 
         <View style={styles.footer}>
-          <GradientButton label="Salva" disabled={!canSave} onPress={submit} />
+          <PrimaryButton label="Salva" disabled={!canSave} onPress={submit} />
           <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
             {title.trim() ? '* Campo obbligatorio' : 'Per salvare scrivi il nome della carta.'}
           </ThemedText>
@@ -216,7 +217,6 @@ function PhotoSlot({ label, action, onPress, children }: { label: string; action
 const styles = StyleSheet.create({
   content: {
     paddingVertical: 16,
-
     paddingHorizontal: Spacing.side,
     paddingBottom: 40,
     gap: 20,

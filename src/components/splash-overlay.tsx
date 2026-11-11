@@ -39,7 +39,7 @@ export function SplashOverlay() {
           SplashScreen.hideAsync().finally(() => setShown(true));
         }}>
         <Image source={require('@/assets/images/logo-glyph.png')} style={styles.glyph} contentFit="contain" />
-        <Text style={styles.name}>sottomano</Text>
+        <Text style={styles.name}>Sottomano</Text>
         <Text style={styles.tagline}>I documenti di casa, pronti da inviare</Text>
       </LinearGradient>
     </Animated.View>
@@ -64,7 +64,8 @@ const styles = StyleSheet.create({
   name: {
     color: '#FFFFFF',
     fontSize: 40,
-    fontFamily: FONTS.titleBold,
+    lineHeight: 50,
+    fontFamily: FONTS.wordmark,
   },
   tagline: {
     marginTop: 6,

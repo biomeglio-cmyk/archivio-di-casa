@@ -75,7 +75,7 @@ export function AppLock() {
       <View style={styles.screen}>
         <SymbolView name="lock.fill" tintColor="#FFFFFF" size={56} />
         <Text style={styles.name} maxFontSizeMultiplier={1.5}>
-          sottomano
+          Sottomano
         </Text>
         <Text style={styles.message} maxFontSizeMultiplier={2}>
           I tuoi documenti sono protetti
@@ -108,7 +108,8 @@ const styles = StyleSheet.create({
     marginTop: 16,
     color: '#FFFFFF',
     fontSize: 40,
-    fontFamily: FONTS.titleBold,
+    lineHeight: 50,
+    fontFamily: FONTS.wordmark,
   },
   message: {
     color: 'rgba(255, 255, 255, 0.9)',

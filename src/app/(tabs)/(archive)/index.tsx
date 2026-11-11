@@ -62,7 +62,7 @@ export default function ArchiveScreen() {
         <View style={styles.header}>
           <View style={styles.brand}>
             <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />
-            <ThemedText style={styles.name}>sottomano</ThemedText>
+            <ThemedText style={styles.name}>Sottomano</ThemedText>
             <Pressable
               onPress={() => router.push('/menu')}
               accessibilityRole="button"
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 30,
-    lineHeight: 36,
-    fontFamily: FONTS.titleBold,
+    lineHeight: 38,
+    fontFamily: FONTS.wordmark,
   },
 });

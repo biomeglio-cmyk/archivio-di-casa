@@ -15,6 +15,10 @@ export const FONTS = {
   titleMedium: 'Outfit_500Medium',
   titleSemiBold: 'Outfit_600SemiBold',
   titleBold: 'Outfit_700Bold',
+  // ONLY for the "Sottomano" wordmark (Home header, opening screen, lock screen). A static
+  // instance of Fraunces (SIL OFL, see assets/fonts/OFL-Fraunces.txt): wght 900, opsz 144,
+  // SOFT 100, WONK 0, renamed "Fraunces Sottomano" as the license asks for modified versions.
+  wordmark: 'FrauncesSottomano_Black',
 } as const;
 
 // "Preferiti" heart (the brand red)

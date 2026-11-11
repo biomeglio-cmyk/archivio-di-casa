@@ -36,7 +36,12 @@ export default function RootLayout() {
 
   // Load Outfit at runtime (no config plugin, so it works in Expo Go).
   // The keys become the fontFamily names listed in constants/brand.ts.
-  const [fontsLoaded, fontError] = useFonts({ Outfit_500Medium, Outfit_600SemiBold, Outfit_700Bold });
+  const [fontsLoaded, fontError] = useFonts({
+    Outfit_500Medium,
+    Outfit_600SemiBold,
+    Outfit_700Bold,
+    FrauncesSottomano_Black: require('@/assets/fonts/FrauncesSottomano-Black.ttf'),
+  });
 
   // Keep the native splash screen visible until the fonts are ready.
   // On error we go on anyway: texts fall back to the system font.

@@ -13,6 +13,7 @@ import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
+import { TAX_CATEGORY_KEY } from '@/send/tax-package';
 
 // "/category/[id]": documents of one category as tiles. "Seleziona" picks several to send as one PDF.
 export default function CategoryScreen() {
@@ -46,6 +47,12 @@ export default function CategoryScreen() {
   // "…" in the header: Modifica and Cancella for every category, built-in too; "Altro" can't be deleted
   const menu = category ? (
     <Stack.Toolbar.Menu icon="ellipsis" accessibilityLabel="Altre azioni" hidden={selection.selecting}>
+      <Stack.Toolbar.MenuAction
+        icon="doc.on.doc"
+        hidden={category.builtinKey !== TAX_CATEGORY_KEY}
+        onPress={() => router.push({ pathname: '/tax-package', params: { categoryId: String(categoryId) } })}>
+        Prepara per il commercialista
+      </Stack.Toolbar.MenuAction>
       <Stack.Toolbar.MenuAction
         icon="pencil"
         onPress={() => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })}>

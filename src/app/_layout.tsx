@@ -194,6 +194,15 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
+          {/* "Prepara per il commercialista" in the "…" menu of Spese 730 */}
+          <Stack.Screen
+            name="tax-package"
+            options={{
+              presentation: 'modal',
+              title: 'Per il commercialista',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
           <Stack.Screen
             name="trash"
             options={{

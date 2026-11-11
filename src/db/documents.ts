@@ -268,14 +268,20 @@ export async function saveDocumentEdits(
   await rescheduleReminders(db);
 }
 
-// Only the files: attach new ones, replacing the given ones ("Aggiungi documento" in the detail)
-export async function replaceDocumentFiles(
+// Only the pages ("Aggiungi pagine" in the detail): new ones added, removed ones deleted, saved
+// ones renumbered when they moved. Any number of pages.
+export async function saveDocumentPages(
   db: SQLiteDatabase,
   id: number,
   removedFiles: DocumentFile[],
   addedFiles: PendingFile[],
+  movedFiles: { id: number; page: number; side: FileSide | null }[],
 ): Promise<void> {
-  await changeFiles(db, id, removedFiles, addedFiles);
+  await changeFiles(db, id, removedFiles, addedFiles, async () => {
+    for (const file of movedFiles) {
+      await db.runAsync('UPDATE document_files SET page = ?, side = ? WHERE id = ? AND document_id = ?', file.page, file.side, file.id, id);
+    }
+  });
 }
 
 // Copies the new files first, then changes the rows (and the fields, if `alsoInTransaction` is

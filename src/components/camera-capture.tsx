@@ -12,7 +12,6 @@ import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/brand';
 
 type Props = {
-  single?: boolean; // one photo only (e.g. to replace one page): "Usa" instead of "Aggiungi pagina / Fine"
   onDone: (uris: string[]) => void; // the photos in the order they were taken
   onCancel: () => void;
 };
@@ -20,7 +19,7 @@ type Props = {
 // Full-screen camera with the guide frame, used when the iOS scanner is not available.
 // A document is N pages: after every shot "Rifai", "Aggiungi pagina" (keep it, shoot the next)
 // or "Fine" (keep it and stop). One page is enough.
-export function CameraCapture({ single = false, onDone, onCancel }: Props) {
+export function CameraCapture({ onDone, onCancel }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
   const insets = useSafeAreaInsets();
@@ -94,20 +93,18 @@ export function CameraCapture({ single = false, onDone, onCancel }: Props) {
         <Image source={{ uri: previewUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
         <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
           <Text style={styles.instruction}>
-            {single || pageNumber === 1 ? 'Si legge bene?' : `Pagina ${pageNumber}: si legge bene?`}
+            {pageNumber === 1 ? 'Si legge bene?' : `Pagina ${pageNumber}: si legge bene?`}
           </Text>
         </View>
         <View style={[styles.previewBar, { paddingBottom: insets.bottom + 16 }]}>
           <Pressable style={styles.secondaryButton} onPress={() => setPreviewUri(null)} accessibilityRole="button">
             <Text style={styles.secondaryLabel}>Rifai</Text>
           </Pressable>
-          {!single && (
-            <Pressable style={styles.secondaryButton} onPress={addPage} accessibilityRole="button">
-              <Text style={styles.secondaryLabel}>Aggiungi pagina</Text>
-            </Pressable>
-          )}
+          <Pressable style={styles.secondaryButton} onPress={addPage} accessibilityRole="button">
+            <Text style={styles.secondaryLabel}>Aggiungi pagina</Text>
+          </Pressable>
           <View style={styles.flex}>
-            <GradientButton label={single ? 'Usa' : 'Fine'} onPress={finish} />
+            <GradientButton label="Fine" onPress={finish} />
           </View>
         </View>
       </View>

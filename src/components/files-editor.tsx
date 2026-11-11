@@ -1,6 +1,6 @@
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
-import { useState } from 'react';
+import { useEffect, useEffectEvent, useState } from 'react';
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
 import { pickPdf, pickPhotos } from '@/capture/pick-files';
@@ -68,12 +68,13 @@ type Props = {
   files: EditableFile[];
   category: Pick<Category, 'isBuiltin' | 'symbol'> | undefined; // "Fronte/Retro" only for IDs and cards
   onChange: (files: EditableFile[]) => void;
+  autoAdd?: boolean; // "Aggiungi pagine": the Scansiona / Dalle foto choice opens by itself, once
 };
 
 // Pages of a document in "Nuovo documento" and "Modifica": thumbnails in order, each with ✕ to
 // remove it and arrows to move it, then ALWAYS the big "+ Aggiungi pagina" (scanner or photos).
 // A document with an imported PDF shows the PDF instead.
-export function FilesEditor({ files, category, onChange }: Props) {
+export function FilesEditor({ files, category, onChange, autoAdd = false }: Props) {
   const [camera, setCamera] = useState(false); // app camera, when the scanner isn't available
   const canScan = isScannerAvailable();
 
@@ -115,6 +116,14 @@ export function FilesEditor({ files, category, onChange }: Props) {
       if (picked) append(picked);
     }
   }
+
+  // Opened from "Aggiungi pagine": ask right away, after the modal finished sliding up
+  const addOnOpen = useEffectEvent(() => addPages());
+  useEffect(() => {
+    if (!autoAdd) return;
+    const timer = setTimeout(() => addOnOpen(), 500);
+    return () => clearTimeout(timer);
+  }, [autoAdd]);
 
   // "Riscansiona tutto": a new scan replaces ALL the pages (saved ones are deleted only on save)
   async function rescan() {

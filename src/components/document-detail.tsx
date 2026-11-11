@@ -14,7 +14,6 @@ import { DocumentFilesView } from '@/components/document-files-view';
 import { PersonAvatar } from '@/components/person-avatar';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
-import { useAttachFile } from '@/components/use-attach-file';
 import { FONTS } from '@/constants/brand';
 import { getDocumentDetail, listDocumentFiles, setPinned } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -30,8 +29,6 @@ export default function DocumentDetail() {
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, Number(id)), [id]);
   const hasFiles = files !== undefined && files.length > 0;
   const db = useSQLiteContext();
-  // "Aggiungi documento": attach a photo or a PDF to this document (hooks go before any return)
-  const { attach, cameraModal } = useAttachFile(Number(id), files ?? [], document?.category);
 
   // Deleted with "Cancella" → leave this screen
   useLeaveWhenDeleted(document);
@@ -119,14 +116,13 @@ export default function DocumentDetail() {
         {/* Actions right after the data; they scroll with the page */}
         <DetailActionBar
           pin={pin}
-          onAdd={attach}
+          onAdd={() => router.push({ pathname: '/document-pages/[id]', params: { id: String(document.id) } })}
           onEdit={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
           onDelete={() => confirmDeleteDocument(db, document)}
         />
       </ScrollView>
 
       <PinHeart {...pin} />
-      {cameraModal}
     </>
   );
 }

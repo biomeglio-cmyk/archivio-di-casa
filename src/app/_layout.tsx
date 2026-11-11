@@ -135,6 +135,15 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
             }}
           />
+          {/* "Aggiungi pagine" in the document detail: the pages editor of "Nuovo documento" */}
+          <Stack.Screen
+            name="document-pages/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Pagine',
+              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+            }}
+          />
           <Stack.Screen
             name="new-document"
             options={{

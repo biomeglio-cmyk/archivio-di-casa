@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogoMark } from '@/components/logo-mark';
 import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -71,7 +72,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 8,
   },
   title: {

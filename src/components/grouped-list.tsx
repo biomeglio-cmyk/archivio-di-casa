@@ -4,12 +4,12 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { CardSurface } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 // iOS grouped list (like the Settings app), used by the Menu and the settings screens:
 // a grey uppercase title, a rounded card of rows, an optional footer.
 export function Group({ title, footer, children }: { title?: string; footer?: string; children: ReactNode }) {
-  const theme = useTheme();
   return (
     <View style={styles.group}>
       {title && (
@@ -17,7 +17,7 @@ export function Group({ title, footer, children }: { title?: string; footer?: st
           {title}
         </ThemedText>
       )}
-      <View style={[styles.card, { backgroundColor: theme.surface }]}>{children}</View>
+      <View style={[styles.card, CardSurface]}>{children}</View>
       {footer && (
         <ThemedText type="small" themeColor="textSecondary" style={styles.footer}>
           {footer}

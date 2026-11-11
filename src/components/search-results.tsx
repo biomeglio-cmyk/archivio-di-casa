@@ -4,6 +4,7 @@ import { Pressable, ScrollView, SectionList, StyleSheet, View } from 'react-nati
 
 import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
+import { cardRowEdge, Spacing } from '@/constants/theme';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
 import { applyFilter, chipsFor, type SearchFilter, type SearchHit, type SearchResults } from '@/search/search-documents';
@@ -115,13 +116,12 @@ function ResultRow({ hit, cardColor, first, last }: { hit: SearchHit; cardColor:
       style={[
         styles.row,
         { backgroundColor: pressed ? theme.backgroundSelected : cardColor },
-        first && styles.first,
-        last && styles.last,
+        cardRowEdge(first, last),
       ]}>
       <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
         <SymbolView name={category.symbol} tintColor={category.colors.text} size={15} />
       </View>
-      <View style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected }]}>
+      <View style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator }]}>
         <View style={styles.texts}>
           <Highlighted text={document.title} match={hit.titleMatch} style={[styles.title, { color: theme.text }]} boldColor={theme.text} />
           <Text style={[styles.details, { color: theme.textSecondary }]}>{details}</Text>
@@ -142,7 +142,7 @@ function ResultRow({ hit, cardColor, first, last }: { hit: SearchHit; cardColor:
 
 const styles = StyleSheet.create({
   content: {
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.side,
     paddingTop: 10,
     paddingBottom: 48,
   },
@@ -170,14 +170,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 16,
-  },
-  first: {
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
-  last: {
-    borderBottomLeftRadius: 12,
-    borderBottomRightRadius: 12,
   },
   icon: {
     width: 28,

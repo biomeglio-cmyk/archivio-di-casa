@@ -10,6 +10,7 @@ import { GradientButton } from '@/components/gradient-button';
 import { PersonAvatar } from '@/components/person-avatar';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getPerson, insertPerson, updatePerson } from '@/db/people';
 import type { Person } from '@/db/types';
@@ -108,7 +109,7 @@ function PersonForm({ person }: { person: Person | null }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
     paddingTop: 28,
     paddingBottom: 40,
     gap: 20,

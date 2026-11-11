@@ -10,6 +10,7 @@ import { Text } from '@/components/text';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
+import { CardSurface, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
 import { markOnboardingSeen } from '@/onboarding/onboarding-flag';
@@ -93,7 +94,7 @@ export default function OnboardingScreen() {
               {p.text}
             </ThemedText>
             {p.illustration.kind === 'logo' && (
-              <View style={[styles.privacy, { backgroundColor: theme.surface }]}>
+              <View style={[styles.privacy, CardSurface]}>
                 <SymbolView name="lock.shield" tintColor={BRAND_COLOR} size={20} />
                 <ThemedText type="small" style={styles.privacyText}>
                   Restano sul tuo telefono e funzionano anche senza internet
@@ -146,7 +147,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
   },
   skip: {
     color: BRAND_COLOR,

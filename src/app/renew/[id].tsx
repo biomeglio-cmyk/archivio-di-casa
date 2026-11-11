@@ -10,6 +10,7 @@ import { FilesEditor, filesToSave, type EditableFile } from '@/components/files-
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
 import { getDocumentDetail, renewDocument } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -121,7 +122,9 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 24,
   },

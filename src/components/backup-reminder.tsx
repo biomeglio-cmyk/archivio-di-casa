@@ -8,6 +8,7 @@ import { Text } from '@/components/text';
 import { getLastBackupDate } from '@/backup/backup-layout';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
+import { CardSurface } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -54,7 +55,7 @@ export function BackupReminder({ documentCount }: { documentCount: number }) {
   }
 
   return (
-    <View style={[styles.card, { backgroundColor: theme.surface }]}>
+    <View style={[styles.card, CardSurface]}>
       <SymbolView name="externaldrive.badge.icloud" tintColor={BRAND_COLOR} size={24} />
       <View style={styles.texts}>
         <ThemedText style={styles.title}>{text}</ThemedText>

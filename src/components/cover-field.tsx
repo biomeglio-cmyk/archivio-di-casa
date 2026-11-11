@@ -6,8 +6,8 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { FormField } from '@/components/form-field';
 import { ThemedText } from '@/components/themed-text';
 import { CARD_COLORS } from '@/constants/card-colors';
+import { CardSurface } from '@/constants/theme';
 import type { CategoryColors, CoverMode } from '@/db/types';
-import { useTheme } from '@/hooks/use-theme';
 
 const MODES: CoverMode[] = ['photo', 'color'];
 
@@ -26,7 +26,6 @@ type Props = {
 // looks in the grids. Foto = its front photo, full-bleed, with the title on a dark bar.
 // Colore = a background color with the title large; the category color or one picked here.
 export function CoverField({ mode, onModeChange, color, onColorChange, categoryColors, hasPhoto }: Props) {
-  const theme = useTheme();
 
   return (
     <FormField label="Copertina">
@@ -41,7 +40,7 @@ export function CoverField({ mode, onModeChange, color, onColorChange, categoryC
         </ThemedText>
       )}
       {mode === 'color' && (
-        <View style={[styles.colors, { backgroundColor: theme.surface }]} accessibilityRole="radiogroup">
+        <View style={[styles.colors, CardSurface]} accessibilityRole="radiogroup">
           {categoryColors && (
             <Pressable
               onPress={() => onColorChange(null)}

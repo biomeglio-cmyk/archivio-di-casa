@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/text';
 import type { QuickAction } from '@/actions/quick-actions';
 import { DANGER_COLOR } from '@/constants/brand';
+import { Radius, Shadows } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 export type TileRect = { x: number; y: number; width: number; height: number }; // in the window
@@ -90,7 +91,7 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
                   accessibilityRole="menuitem"
                   style={({ pressed }) => [
                     styles.row,
-                    index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected },
+                    index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator },
                     pressed && { backgroundColor: theme.backgroundSelected },
                   ]}>
                   <Text style={[styles.label, { color }]} numberOfLines={1} maxFontSizeMultiplier={1.4}>
@@ -118,10 +119,10 @@ const styles = StyleSheet.create({
   menu: {
     position: 'absolute',
     width: MENU_WIDTH,
-    borderRadius: 14,
+    borderRadius: Radius.card,
     borderCurve: 'continuous',
     overflow: 'hidden',
-    boxShadow: '0 8px 24px rgba(0, 0, 0, 0.25)',
+    boxShadow: Shadows.dialog,
   },
   row: {
     minHeight: ROW_HEIGHT,

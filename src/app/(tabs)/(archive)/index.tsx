@@ -13,6 +13,7 @@ import { SearchResultsList } from '@/components/search-results';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { TabHeader } from '@/components/tab-header';
 import { TileScrollView } from '@/components/tile-grid';
+import { Spacing } from '@/constants/theme';
 import { listCategoriesWithCounts, saveCategoryOrder } from '@/db/categories';
 import { listAllDocuments } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -104,6 +105,6 @@ const styles = StyleSheet.create({
   },
   // The search bar under the shared header; the grid's own top padding (16) gives the same air below
   top: {
-    paddingHorizontal: 16,
+    paddingHorizontal: Spacing.side,
   },
 });

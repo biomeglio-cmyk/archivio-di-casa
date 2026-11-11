@@ -9,6 +9,7 @@ import { TabHeader } from '@/components/tab-header';
 import { ThemedText } from '@/components/themed-text';
 import { WeekStrip } from '@/components/week-strip';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listDocumentsWithExpiry } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
@@ -202,7 +203,9 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
   },
   header: {

@@ -5,6 +5,7 @@ import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
 import { startAddCard } from '@/capture/start-add-card';
 import { SheetOption } from '@/components/sheet-option';
 import { ThemedText } from '@/components/themed-text';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 // Bottom sheet "Aggiungi un documento", opened by the "+" tab.
@@ -30,7 +31,7 @@ export default function AddDocumentSheet() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
     paddingTop: 28,
     paddingBottom: 40,
     gap: 16,

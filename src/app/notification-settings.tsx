@@ -10,6 +10,7 @@ import { Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 import { resyncCalendarAlarms } from '@/calendar/calendar-sync';
 import { Group, Row } from '@/components/grouped-list';
 import { BRAND_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
 import { rescheduleReminders, updateAppBadge } from '@/notifications/reminders';
 import { getPreferences, savePreferences, type Preferences } from '@/settings/preferences';
 
@@ -124,7 +125,9 @@ export default function NotificationSettingsScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 24,
   },

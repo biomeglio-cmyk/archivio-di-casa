@@ -1,8 +1,10 @@
 import { useWindowDimensions } from 'react-native';
 
+import { Spacing } from '@/constants/theme';
+
 export const TILE_COLUMNS = 2;
-export const TILE_PADDING = 16; // space between the grid and the screen edges
-export const TILE_GAP = 12; // space between tiles, both horizontal and vertical
+export const TILE_PADDING = Spacing.side; // space between the grid and the screen edges
+export const TILE_GAP = Spacing.tileGap; // space between tiles, both horizontal and vertical
 const TILE_MIN_HEIGHT = 128;
 
 // Width is fixed by the grid; height is only a minimum, so large Dynamic Type makes tiles taller

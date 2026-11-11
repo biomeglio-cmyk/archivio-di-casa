@@ -8,9 +8,9 @@ import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-na
 import { GradientButton } from '@/components/gradient-button';
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
+import { CardSurface, Spacing } from '@/constants/theme';
 import { getCategory } from '@/db/categories';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useTheme } from '@/hooks/use-theme';
 import { shareFiles } from '@/send/deliver';
 import { formatBytes, loadSendPreferences, SIZE_LIMITS, type SizeLimit } from '@/send/send-preferences';
 import { buildTaxPackage, loadTaxItems, taxYears } from '@/send/tax-package';
@@ -20,7 +20,6 @@ import { buildTaxPackage, loadTaxItems, taxYears } from '@/send/tax-package';
 export default function TaxPackageScreen() {
   const { categoryId } = useLocalSearchParams<{ categoryId: string }>();
   const id = Number(categoryId);
-  const theme = useTheme();
   const { data: category } = useDbQuery((db) => getCategory(db, id), [id]);
   const { data: years } = useDbQuery((db) => taxYears(db, id), [id]);
   const [year, setYear] = useState(() => new Date().getFullYear() - 1);
@@ -105,7 +104,7 @@ export default function TaxPackageScreen() {
         </View>
 
         {busy ? (
-          <View style={[styles.progress, { backgroundColor: theme.surface }]}>
+          <View style={[styles.progress, CardSurface]}>
             <ActivityIndicator />
             <ThemedText themeColor="textSecondary">{progress}</ThemedText>
           </View>
@@ -130,7 +129,9 @@ export default function TaxPackageScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 24,
   },

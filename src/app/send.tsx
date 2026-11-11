@@ -11,6 +11,7 @@ import { GradientButton } from '@/components/gradient-button';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
+import { CardSurface, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
@@ -162,7 +163,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       </View>
 
       {single && twoFaces && (
-        <View style={[styles.card, styles.switchRow, { backgroundColor: theme.surface }]}>
+        <View style={[styles.card, styles.switchRow, CardSurface]}>
           <ThemedText style={styles.flex}>
             {format === 'pdf' ? 'Fronte e retro su una pagina' : "Fronte e retro in un'immagine"}
           </ThemedText>
@@ -190,7 +191,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       </View>
 
       {/* Preview of what will be sent */}
-      <View style={[styles.card, styles.preview, { backgroundColor: theme.surface }]}>
+      <View style={[styles.card, styles.preview, CardSurface]}>
         {busy && (
           <View style={styles.previewRow}>
             <ActivityIndicator />
@@ -265,7 +266,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
     paddingTop: 28,
     paddingBottom: 40,
     gap: 18,

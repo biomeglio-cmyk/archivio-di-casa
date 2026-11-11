@@ -61,6 +61,7 @@ export const Fonts = Platform.select({
   },
 });
 
+// Spacing of the guide
 export const Spacing = {
   half: 2,
   one: 4,
@@ -69,7 +70,70 @@ export const Spacing = {
   four: 24,
   five: 32,
   six: 64,
+  side: 22, // left and right margin of every page
+  section: 24, // between sections
+  titleToContent: 12, // between a section title and its content
+  tileGap: 12, // between cards and tiles
+  belowContent: 124, // free space under the content, above the bottom bar
 } as const;
+
+// Corner radii of the guide (a pill is half its height: use Radius.pill)
+export const Radius = {
+  card: 22, // white cards, big Home squares
+  tile: 20, // category and document tiles
+  iconSquare: 13, // icon in a small square
+  field: 16, // drop-down menus and boxed fields
+  sheet: 32, // top corners of a bottom sheet
+  dialog: 30, // centered confirmation
+  glassBar: 34, // the glass bottom bar
+  pill: 999,
+} as const;
+
+// Shadows of the guide (CSS boxShadow strings, React Native 0.76+)
+export const Shadows = {
+  card: '0 6px 22px rgba(28, 30, 70, 0.08)',
+  sheet: '0 -10px 30px rgba(28, 30, 70, 0.15)',
+  dialog: '0 20px 50px rgba(28, 30, 70, 0.25)',
+} as const;
+
+// Colored shadow under a gradient square (category tile), from the "r, g, b" of its color
+export function tintedShadow(rgb: string): string {
+  return `0 10px 20px rgba(${rgb}, 0.22)`;
+}
+
+// Smaller colored shadow under an icon in a square
+export function iconShadow(rgb: string): string {
+  return `0 6px 12px rgba(${rgb}, 0.22)`;
+}
+
+// A white card: white, rounded 22, soft shadow. Spread it into a style array.
+export const CardSurface = {
+  backgroundColor: Colors.light.surface,
+  borderRadius: Radius.card,
+  borderCurve: 'continuous',
+  boxShadow: Shadows.card,
+} as const;
+
+// A row of a white card drawn row by row (SectionList sections cannot have a container, so no
+// shared shadow): a thin separator-colored outline and rounded corners on the first and last row.
+export function cardRowEdge(first: boolean, last: boolean) {
+  const border = Colors.light.separator;
+  return {
+    borderLeftWidth: 1,
+    borderRightWidth: 1,
+    borderColor: border,
+    ...(first && {
+      borderTopWidth: 1,
+      borderTopLeftRadius: Radius.card,
+      borderTopRightRadius: Radius.card,
+    }),
+    ...(last && {
+      borderBottomWidth: 1,
+      borderBottomLeftRadius: Radius.card,
+      borderBottomRightRadius: Radius.card,
+    }),
+  } as const;
+}
 
 export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
 export const MaxContentWidth = 800;

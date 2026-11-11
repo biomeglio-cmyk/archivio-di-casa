@@ -5,6 +5,7 @@ import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 
 import { FilesEditor, filesToSave, fromExisting, type EditableFile } from '@/components/files-editor';
+import { Spacing } from '@/constants/theme';
 import { getDocumentDetail, listDocumentFiles, saveDocumentPages } from '@/db/documents';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -67,7 +68,9 @@ function PagesContent({ document, savedFiles }: { document: DocumentDetail; save
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
   },
 });

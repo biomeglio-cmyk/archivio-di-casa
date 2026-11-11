@@ -13,6 +13,7 @@ import { FieldLabel, FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
+import { CardSurface, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
 import type { CoverMode } from '@/db/types';
@@ -125,7 +126,7 @@ export function CardForm({ initial, onSubmit }: Props) {
             {frontUri && <Image source={{ uri: frontUri }} style={styles.photoOver} contentFit="cover" />}
           </PhotoSlot>
           <PhotoSlot label="Codice" onPress={() => setRetake('barcode')} action={barcodeUri ? 'Rifai' : 'Fotografa'}>
-            <View style={[styles.barcodeBox, { backgroundColor: theme.surface }]}>
+            <View style={[styles.barcodeBox, CardSurface]}>
               {barcodeUri ? (
                 <Image source={{ uri: barcodeUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
               ) : (
@@ -155,7 +156,7 @@ export function CardForm({ initial, onSubmit }: Props) {
         </FormField>
 
         {people && (
-          <View style={[styles.card, { backgroundColor: theme.surface }]}>
+          <View style={[styles.card, CardSurface]}>
             <View style={styles.row}>
               <View style={styles.rowLabel}>
                 <FieldLabel label="Persona" />
@@ -214,7 +215,9 @@ function PhotoSlot({ label, action, onPress, children }: { label: string; action
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 40,
     gap: 20,
   },

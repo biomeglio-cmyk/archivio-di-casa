@@ -23,6 +23,7 @@ import { Group, Row } from '@/components/grouped-list';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 const MIN_PASSWORD = 8;
@@ -304,7 +305,9 @@ export default function BackupScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 24,
   },

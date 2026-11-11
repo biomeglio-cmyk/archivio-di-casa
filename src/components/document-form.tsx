@@ -9,6 +9,7 @@ import { FieldLabel, FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
+import { CardSurface, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategories } from '@/db/categories';
 import type { DocumentInput } from '@/db/documents';
@@ -141,7 +142,7 @@ export function DocumentForm({
       {/* The pickers need the lists from the database, so they appear once loaded */}
       {categories && people && (
         <>
-          <View style={[styles.card, { backgroundColor: theme.surface }]}>
+          <View style={[styles.card, CardSurface]}>
             <FormRow label="Categoria" required>
               <Picker selectedValue={categoryId} onValueChange={setCategoryId}>
                 {/* "Scegli…" disappears once a category is chosen */}
@@ -165,7 +166,7 @@ export function DocumentForm({
           <ThemedText type="smallBold" themeColor="textSecondary" style={styles.sectionTitle}>
             Facoltativi
           </ThemedText>
-          <View style={[styles.card, { backgroundColor: theme.surface }]}>
+          <View style={[styles.card, CardSurface]}>
             <FormRow label="Persona">
               <Picker selectedValue={personId} onValueChange={setPersonId}>
                 <Picker.Item label="Nessuna" value={NONE} />
@@ -317,7 +318,9 @@ function FormRow({ label, required, separator, children }: FormRowProps) {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 40,
     gap: 20,
   },

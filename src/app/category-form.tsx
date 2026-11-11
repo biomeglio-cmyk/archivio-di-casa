@@ -9,6 +9,7 @@ import { Text } from '@/components/text';
 import { FormField, TextField } from '@/components/form-field';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { CATEGORY_PALETTES, CATEGORY_SYMBOLS } from '@/constants/category-options';
 import { getCategory, insertCategory, updateCategory } from '@/db/categories';
@@ -98,7 +99,7 @@ function CategoryForm({ category }: { category: Category | null }) {
                 onPress={() => setSymbol(s)}
                 accessibilityRole="button"
                 accessibilityState={{ selected }}
-                style={[styles.iconCell, { backgroundColor: selected ? shown.bottom : theme.surface }]}>
+                style={[styles.iconCell, { backgroundColor: selected ? shown.bottom : theme.lilac }]}>
                 <SymbolView name={s} tintColor={selected ? shown.text : theme.textSecondary} size={22} />
               </Pressable>
             );
@@ -152,7 +153,7 @@ function CategoryForm({ category }: { category: Category | null }) {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
     paddingTop: 28,
     paddingBottom: 40,
     gap: 20,

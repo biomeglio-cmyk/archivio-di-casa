@@ -8,6 +8,7 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { CardSurface, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { deleteDocumentForever, listTrashedDocuments } from '@/db/documents';
 import { daysLeftInTrash, emptyTrash, restoreFromTrash, TRASH_DAYS } from '@/db/trash';
@@ -81,7 +82,7 @@ export default function TrashScreen() {
         )}
 
         {documents && documents.length > 0 && (
-          <View style={[styles.card, { backgroundColor: theme.surface }]}>
+          <View style={[styles.card, CardSurface]}>
             {documents.map((document, index) => {
               const left = document.deletedAt ? daysLeftInTrash(document.deletedAt) : TRASH_DAYS;
               return (
@@ -160,7 +161,9 @@ function Thumbnail({ document }: { document: DocumentListItem }) {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 16,
   },

@@ -17,7 +17,7 @@ import { useAppGeneration } from '@/backup/app-reload';
 import { AppLock } from '@/components/app-lock';
 import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/typography';
-import { Colors } from '@/constants/theme';
+import { Colors, Radius } from '@/constants/theme';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
 import { AppNotifications } from '@/notifications/app-notifications';
 
@@ -74,6 +74,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: 'fitToContents',
             }}
           />
@@ -85,7 +86,7 @@ export default function RootLayout() {
               headerShown: false,
               sheetGrabberVisible: true,
               sheetAllowedDetents: [0.9],
-              sheetCornerRadius: 24,
+              sheetCornerRadius: Radius.sheet,
               contentStyle: { backgroundColor: Colors.light.background },
             }}
           />
@@ -99,6 +100,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: [0.85, 1.0],
             }}
           />
@@ -108,6 +110,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: [0.75, 1.0],
             }}
           />
@@ -117,6 +120,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: [0.9],
             }}
           />
@@ -126,6 +130,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: 'fitToContents',
             }}
           />

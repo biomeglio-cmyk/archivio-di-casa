@@ -16,9 +16,9 @@ import { DetailActionBar } from '@/components/detail-action-bar';
 import { PersonAvatar } from '@/components/person-avatar';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
+import { CardSurface, Spacing } from '@/constants/theme';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useMaxBrightness } from '@/hooks/use-max-brightness';
-import { useTheme } from '@/hooks/use-theme';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { generateBarcode, type GeneratedBarcode } from '@/utils/barcode';
 
@@ -36,7 +36,6 @@ type Props = {
 // Detail of a card ("Tessere e card"): the card on top, then the barcode photo on white,
 // ready to be shown at the checkout with the screen at full brightness
 export function CardDetail({ card, files, pin }: Props) {
-  const theme = useTheme();
   const db = useSQLiteContext();
   const { width } = useWindowDimensions();
   const [fullScreen, setFullScreen] = useState(false);
@@ -94,7 +93,7 @@ export function CardDetail({ card, files, pin }: Props) {
         </View>
 
         {card.person && (
-          <View style={[styles.infoCard, { backgroundColor: theme.surface }]}>
+          <View style={[styles.infoCard, CardSurface]}>
             <ThemedText themeColor="textSecondary">Persona</ThemedText>
             <View style={styles.person}>
               <PersonAvatar name={card.person.name} photoPath={card.person.photoPath} size={28} />
@@ -180,7 +179,9 @@ function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: FullScreen
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 16,
   },

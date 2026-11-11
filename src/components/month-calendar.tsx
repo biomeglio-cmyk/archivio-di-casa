@@ -2,7 +2,7 @@ import { View } from 'react-native';
 
 import { CalendarHeader, calendarStyles, DayCell, EmptyDayCell, useHorizontalSwipe } from '@/components/calendar-parts';
 import { ThemedText } from '@/components/themed-text';
-import { useTheme } from '@/hooks/use-theme';
+import { CardSurface } from '@/constants/theme';
 import { formatMonthTitle, toISODate } from '@/utils/dates';
 
 export const WEEKDAY_INITIALS = ['L', 'M', 'M', 'G', 'V', 'S', 'D']; // Monday first, as in Italy
@@ -41,11 +41,10 @@ function monthWeeks(year: number, month: number): (string | null)[][] {
 // dark circle, and under each day small dots in the colors of the categories expiring that day
 export function MonthCalendar(props: Props) {
   const { year, month, todayIso, selectedIso, markers, onSelect, onPrevMonth, onNextMonth, onToday } = props;
-  const theme = useTheme();
   const swipe = useHorizontalSwipe(onPrevMonth, onNextMonth); // swipe between months
 
   return (
-    <View style={[calendarStyles.card, { backgroundColor: theme.surface }]} {...swipe}>
+    <View style={[calendarStyles.card, CardSurface]} {...swipe}>
       <CalendarHeader
         title={formatMonthTitle(year, month)}
         previousLabel="Mese precedente"

@@ -13,8 +13,8 @@ import {
 } from '@/calendar/calendar-sync';
 import { GradientButton } from '@/components/gradient-button';
 import { ThemedText } from '@/components/themed-text';
+import { CardSurface, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
-import { useTheme } from '@/hooks/use-theme';
 
 type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
 
@@ -22,7 +22,6 @@ type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
 // calendar "Sottomano"; turning the switch off deletes that calendar with all its events.
 export default function CalendarSettingsSheet() {
   const db = useSQLiteContext();
-  const theme = useTheme();
   const [permission, setPermission] = useState<PermissionState>('unknown');
   const [settings, setSettings] = useState<CalendarSettings>(getCalendarSettings);
   const [busy, setBusy] = useState(false);
@@ -109,7 +108,7 @@ export default function CalendarSettingsSheet() {
 
       {permission === 'granted' && (
         <>
-          <View style={[styles.card, styles.switchRow, { backgroundColor: theme.surface }]}>
+          <View style={[styles.card, styles.switchRow, CardSurface]}>
             <ThemedText style={styles.switchLabel}>Scadenze nel calendario «Sottomano»</ThemedText>
             <Host matchContents>
               <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} />
@@ -130,7 +129,7 @@ export default function CalendarSettingsSheet() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
     paddingTop: 28,
     paddingBottom: 40,
     gap: 16,

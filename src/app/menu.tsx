@@ -7,6 +7,7 @@ import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
+import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getMenuCounts } from '@/db/menu-counts';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -141,7 +142,9 @@ const styles = StyleSheet.create({
     paddingBottom: 48, // the last row can scroll clear of the bottom edge
   },
   sections: {
-    padding: 16,
+    paddingVertical: 16,
+
+    paddingHorizontal: Spacing.side,
     paddingTop: 20, // the first section title starts below the header line, never under it
     gap: 24,
   },

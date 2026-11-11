@@ -1,10 +1,10 @@
-import { SegmentedControl } from '@expo/ui/community/segmented-control';
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
+import { Segmented } from '@/components/segmented';
 import { ThemedText } from '@/components/themed-text';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import type { Category, DocumentFile } from '@/db/types';
@@ -73,10 +73,10 @@ export function DocumentFilesView({ title, category, files }: Props) {
       )}
 
       {images.length === 2 && (
-        <SegmentedControl
+        <Segmented
           values={images.map((_, index) => labelAt(index))}
           selectedIndex={imageIndex}
-          onChange={(event) => setImageIndex(event.nativeEvent.selectedSegmentIndex)}
+          onChange={(index) => setImageIndex(index)}
         />
       )}
 

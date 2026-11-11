@@ -4,6 +4,7 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { DocumentFilesView } from '@/components/document-files-view';
 import { ThemedText } from '@/components/themed-text';
+import { Spacing } from '@/constants/theme';
 import { getDocumentDetail, getDocumentVersion, listVersionFiles } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { formatDate, toISODate } from '@/utils/dates';
@@ -48,7 +49,8 @@ export default function DocumentVersionScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 12,
   },

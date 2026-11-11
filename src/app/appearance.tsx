@@ -7,16 +7,17 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR } from '@/constants/brand';
+import { CardSurface, Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { PALETTES, type Palette } from '@/constants/palettes';
 import { BUILTIN_ORDER } from '@/db/builtin-categories';
 import { restoreBuiltinCategories } from '@/db/categories';
-import { useTheme } from '@/hooks/use-theme';
 import { setPaletteId, usePaletteId } from '@/settings/palette';
 
 const MINI_COLUMNS = 7; // 13 mini tiles: a row of 7 and a row of 6
 
-// "Aspetto" (Menu › Impostazioni): 6 palettes for the built-in categories, each previewed as a
+// "Aspetto" (Menu › Impostazioni): 7 palettes for the built-in categories ("Sottomano" first), each previewed as a
 // mini grid of the 13 category tiles. A tap applies it at once to the whole app.
 export default function AppearanceScreen() {
   const db = useSQLiteContext();
@@ -85,7 +86,6 @@ export default function AppearanceScreen() {
 }
 
 function PaletteCard({ palette, selected, onPress }: { palette: Palette; selected: boolean; onPress: () => void }) {
-  const theme = useTheme();
   return (
     <Pressable
       onPress={onPress}
@@ -94,7 +94,8 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
       accessibilityLabel={`Palette ${palette.name}`}
       style={({ pressed }) => [
         styles.card,
-        { backgroundColor: theme.surface, borderColor: selected ? BRAND_COLOR : 'transparent' },
+        CardSurface,
+        { borderColor: selected ? BRAND_COLOR : 'transparent' },
         pressed && styles.pressed,
       ]}>
       <View style={styles.cardHeader}>
@@ -125,7 +126,8 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 12,
   },
@@ -156,7 +158,7 @@ const styles = StyleSheet.create({
   },
   name: {
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   grid: {
     gap: 6,

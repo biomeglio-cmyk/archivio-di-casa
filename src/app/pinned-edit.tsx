@@ -5,11 +5,13 @@ import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { DANGER_COLOR } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
+import { CardSurface, Spacing } from '@/constants/theme';
 import { listPinnedDocuments, savePinnedOrder } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -60,7 +62,7 @@ function PinnedEditor({ initial }: { initial: DocumentListItem[] }) {
         </ThemedText>
         <View style={styles.list}>
           {items.map((document) => (
-            <View key={document.id} style={[styles.row, { backgroundColor: theme.surface }]}>
+            <View key={document.id} style={[styles.row, CardSurface]}>
               <Pressable
                 onPress={() => setItems((list) => list.filter((d) => d.id !== document.id))}
                 hitSlop={8}
@@ -112,7 +114,8 @@ function Thumb({ document }: { document: DocumentListItem }) {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 12,
   },

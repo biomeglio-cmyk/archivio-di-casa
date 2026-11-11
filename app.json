@@ -28,7 +28,7 @@
       [
         "expo-splash-screen",
         {
-          "backgroundColor": "#FF4F64",
+          "backgroundColor": "#4A5CF0",
           "image": "./assets/images/logo-glyph.png",
           "imageWidth": 120
         }

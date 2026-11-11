@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { Alert, StyleSheet, View } from 'react-native';
 
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { SecondaryButton } from '@/components/secondary-button';
 import type { Category, DocumentFile } from '@/db/types';
 import { previewDocumentFiles } from '@/storage/preview-files';
@@ -32,7 +32,7 @@ export function DocumentActions({ documentId, title, category, files }: Props) {
     <View style={styles.container}>
       <SecondaryButton label="Visualizza documento" symbol="eye" onPress={view} />
       {/* "Invia": format, size limit and preview in the send sheet, then share or save */}
-      <GradientButton
+      <PrimaryButton
         label="Invia"
         symbol="square.and.arrow.up"
         onPress={() => router.push({ pathname: '/send', params: { ids: String(documentId) } })}

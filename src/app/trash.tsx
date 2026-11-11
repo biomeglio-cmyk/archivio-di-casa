@@ -3,10 +3,15 @@ import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { IconSquare } from '@/components/icon-square';
+import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
+import { WhiteCard } from '@/components/white-card';
+import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { deleteDocumentForever, listTrashedDocuments } from '@/db/documents';
 import { daysLeftInTrash, emptyTrash, restoreFromTrash, TRASH_DAYS } from '@/db/trash';
 import type { DocumentListItem } from '@/db/types';
@@ -79,7 +84,7 @@ export default function TrashScreen() {
         )}
 
         {documents && documents.length > 0 && (
-          <View style={[styles.card, { backgroundColor: theme.surface }]}>
+          <WhiteCard style={styles.card}>
             {documents.map((document, index) => {
               const left = document.deletedAt ? daysLeftInTrash(document.deletedAt) : TRASH_DAYS;
               return (
@@ -124,7 +129,7 @@ export default function TrashScreen() {
                 </View>
               );
             })}
-          </View>
+          </WhiteCard>
         )}
       </ScrollView>
 
@@ -150,15 +155,14 @@ function Thumbnail({ document }: { document: DocumentListItem }) {
     );
   }
   return (
-    <View style={[styles.thumb, styles.center, { backgroundColor: document.category.colors.top }]}>
-      <SymbolView name={document.category.symbol} tintColor={document.category.colors.text} size={20} />
-    </View>
+    <IconSquare symbol={document.category.symbol} colors={document.category.colors} size={48} />
   );
 }
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 16,
   },
@@ -189,17 +193,13 @@ const styles = StyleSheet.create({
     gap: 2,
   },
   title: {
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   thumb: {
     width: 48,
     height: 48,
     borderRadius: 8,
     borderCurve: 'continuous',
-  },
-  center: {
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   actions: {
     flexDirection: 'row',

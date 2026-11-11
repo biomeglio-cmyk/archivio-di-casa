@@ -1,7 +1,6 @@
-import { Host, Switch } from '@expo/ui';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Linking, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Linking, ScrollView, StyleSheet } from 'react-native';
 
 import { getCalendarSettings, type CalendarSettings } from '@/calendar/calendar-settings';
 import {
@@ -11,10 +10,12 @@ import {
   migrateLegacyCalendar,
   requestCalendarPermission,
 } from '@/calendar/calendar-sync';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
+import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
-import { FONTS } from '@/constants/brand';
-import { useTheme } from '@/hooks/use-theme';
+import { WhiteCard } from '@/components/white-card';
+import { Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 
 type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
 
@@ -22,7 +23,6 @@ type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
 // calendar "Sottomano"; turning the switch off deletes that calendar with all its events.
 export default function CalendarSettingsSheet() {
   const db = useSQLiteContext();
-  const theme = useTheme();
   const [permission, setPermission] = useState<PermissionState>('unknown');
   const [settings, setSettings] = useState<CalendarSettings>(getCalendarSettings);
   const [busy, setBusy] = useState(false);
@@ -96,25 +96,23 @@ export default function CalendarSettingsSheet() {
         l&apos;app, così non ricevi due avvisi.
       </ThemedText>
 
-      {permission === 'ask' && <GradientButton label="Consenti accesso al Calendario" onPress={askPermission} />}
+      {permission === 'ask' && <PrimaryButton label="Consenti accesso al Calendario" onPress={askPermission} />}
 
       {permission === 'denied' && (
         <>
           <ThemedText themeColor="textSecondary">
             L&apos;accesso al Calendario è stato negato. Puoi attivarlo nelle Impostazioni dell&apos;iPhone.
           </ThemedText>
-          <GradientButton label="Apri Impostazioni" onPress={() => Linking.openSettings()} />
+          <PrimaryButton label="Apri Impostazioni" onPress={() => Linking.openSettings()} />
         </>
       )}
 
       {permission === 'granted' && (
         <>
-          <View style={[styles.card, styles.switchRow, { backgroundColor: theme.surface }]}>
+          <WhiteCard style={[styles.card, styles.switchRow]}>
             <ThemedText style={styles.switchLabel}>Scadenze nel calendario «Sottomano»</ThemedText>
-            <Host matchContents>
-              <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} />
-            </Host>
-          </View>
+            <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} accessibilityLabel="Scadenze nel calendario «Sottomano»" />
+          </WhiteCard>
 
           {busy && <ActivityIndicator />}
           {status && !busy && (
@@ -130,7 +128,7 @@ export default function CalendarSettingsSheet() {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
     paddingTop: 28,
     paddingBottom: 40,
     gap: 16,
@@ -138,7 +136,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   card: {
     borderRadius: 12,

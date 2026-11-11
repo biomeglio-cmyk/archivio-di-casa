@@ -3,11 +3,13 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { SymbolView } from 'expo-symbols';
 import { useSQLiteContext } from 'expo-sqlite';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { CardDetail } from '@/components/card-detail';
+import { DeadlineSection } from '@/components/deadline-section';
 import { DetailActionBar } from '@/components/detail-action-bar';
 import { DocumentActions } from '@/components/document-actions';
 import { DocumentFilesView } from '@/components/document-files-view';
@@ -16,13 +18,14 @@ import { PersonAvatar } from '@/components/person-avatar';
 import { PasswordCard } from '@/components/password-card';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
-import { FONTS } from '@/constants/brand';
+import { WhiteCard } from '@/components/white-card';
+import { Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { getDocumentDetail, listDocumentFiles, listDocumentVersions, setPinned } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate, toISODate } from '@/utils/dates';
-import { describeRepeat } from '@/utils/recurrence';
 
 // Detail of one document (or of a card). Used by the document/[id] screen of every tab.
 export default function DocumentDetail() {
@@ -67,12 +70,6 @@ export default function DocumentDetail() {
     { label: 'Categoria', value: category.name },
     { label: 'Persona', value: person?.name },
     { label: 'Numero', value: document.number },
-    { label: 'Scadenza', value: document.expiresAt ? formatDate(document.expiresAt) : null }, // none: no row
-    { label: 'Ricorrenza', value: document.expiresAt && document.repeat ? describeRepeat(document.repeat) : null },
-    {
-      label: 'Promemoria',
-      value: document.expiresAt && document.reminderDays ? `${document.reminderDays} giorni prima` : null,
-    },
     { label: 'Note', value: document.notes },
     {
       label: 'Nel calendario',
@@ -97,7 +94,7 @@ export default function DocumentDetail() {
           </>
         )}
 
-        <View style={[styles.card, { backgroundColor: theme.surface }]}>
+        <WhiteCard style={styles.card}>
           {details.map((d, index) => (
             <View
               key={d.label}
@@ -116,7 +113,10 @@ export default function DocumentDetail() {
               )}
             </View>
           ))}
-        </View>
+        </WhiteCard>
+
+        {/* Always here: "Aggiungi scadenza", or the deadline to change or remove */}
+        <DeadlineSection document={document} />
 
         {category.isPassword && <PasswordCard documentId={document.id} username={document.username} />}
 
@@ -157,7 +157,8 @@ export default function DocumentDetail() {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48, // room at the end, so nothing ends up under the tab bar
     gap: 16,
   },
@@ -176,7 +177,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 26,
     lineHeight: 32,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   card: {
     borderRadius: 12,

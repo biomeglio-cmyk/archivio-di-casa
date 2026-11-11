@@ -1,12 +1,13 @@
 import Constants from 'expo-constants';
-import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
+import { LogoMark } from '@/components/logo-mark';
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
-import { FONTS } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 
 // "Info e privacy" (from the Menu): app version and what happens to the user's documents
 export default function AboutScreen() {
@@ -16,7 +17,7 @@ export default function AboutScreen() {
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <View style={styles.brand}>
-          <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />
+          <LogoMark size={72} radius={16} />
           <ThemedText style={styles.name}>sottomano</ThemedText>
           <ThemedText themeColor="textSecondary">Versione {version}</ThemedText>
         </View>
@@ -41,7 +42,8 @@ export default function AboutScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 24,
   },
@@ -50,15 +52,9 @@ const styles = StyleSheet.create({
     gap: 6,
     paddingTop: 8,
   },
-  logo: {
-    width: 72,
-    height: 72,
-    borderRadius: 16,
-    borderCurve: 'continuous',
-  },
   name: {
     fontSize: 28,
     lineHeight: 34,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
 });

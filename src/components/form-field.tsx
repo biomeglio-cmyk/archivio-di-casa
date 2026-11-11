@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
-import { StyleSheet, TextInput, View, type TextInputProps } from 'react-native';
+import { StyleSheet, View, type TextInputProps } from 'react-native';
 
+import { TextInput } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
@@ -42,7 +43,7 @@ export function TextField(props: TextInputProps) {
     <TextInput
       placeholderTextColor={theme.textSecondary}
       {...props}
-      style={[styles.input, { backgroundColor: theme.surface, color: theme.text }, props.style]}
+      style={[styles.input, { backgroundColor: theme.lilac, color: theme.text }, props.style]}
     />
   );
 }

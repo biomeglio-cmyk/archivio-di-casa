@@ -1,8 +1,10 @@
 import { Image } from 'expo-image';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
+import { TileTitle } from '@/components/tile-title';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
-import { FONTS } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
@@ -31,13 +33,13 @@ export function CardFace({ card, width, showPerson = false, large = false, showP
           accessibilityIgnoresInvertColors
         />
       ) : (
-        <Text
+        <TileTitle
           style={[styles.title, large && styles.titleLarge]}
           numberOfLines={large ? 3 : 2}
           maxFontSizeMultiplier={1.4} // the card has a fixed shape: text grows a little, then stops
         >
           {card.title}
-        </Text>
+        </TileTitle>
       )}
       {showPerson && card.personName && (
         <View style={styles.person}>
@@ -61,12 +63,12 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     lineHeight: 20,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   titleLarge: {
     fontSize: 26,
     lineHeight: 32,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   person: {
     position: 'absolute',

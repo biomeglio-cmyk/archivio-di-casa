@@ -1,14 +1,16 @@
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useEffect, useEffectEvent, useState } from 'react';
-import { Alert, Modal, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { pickPdf, pickPhotos } from '@/capture/pick-files';
 import { isScannerAvailable, scanDocument } from '@/capture/scan-document';
 import { CameraCapture } from '@/components/camera-capture';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import type { Category, DocumentFile, FileSide } from '@/db/types';
 import { useTheme } from '@/hooks/use-theme';
 import { resolveDocumentFile } from '@/storage/document-files';
@@ -318,6 +320,6 @@ const styles = StyleSheet.create({
   link: {
     color: BRAND_COLOR,
     fontSize: 15,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
 });

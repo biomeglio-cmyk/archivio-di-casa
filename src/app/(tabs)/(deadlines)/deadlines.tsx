@@ -1,17 +1,21 @@
 import { SymbolView } from 'expo-symbols';
 import { useRef, useState } from 'react';
-import { Modal, Pressable, SectionList, StyleSheet, Text, View } from 'react-native';
+import { Modal, Pressable, SectionList, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { DeadlineRow } from '@/components/deadline-row';
 import { MonthCalendar } from '@/components/month-calendar';
 import { TabHeader } from '@/components/tab-header';
 import { ThemedText } from '@/components/themed-text';
 import { WeekStrip } from '@/components/week-strip';
-import { BRAND_COLOR, DANGER_COLOR, FONTS } from '@/constants/brand';
+import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { listDocumentsWithExpiry } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
+import { categoryInk } from '@/utils/colors';
 import { addDaysIso, formatShortDate, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 import { groupDeadlines, type DeadlineSection } from '@/utils/deadlines';
 
@@ -39,7 +43,7 @@ export default function DeadlinesScreen() {
   const markers = new Map<string, string[]>();
   for (const doc of documents ?? []) {
     if (!doc.expiresAt) continue;
-    const color = doc.expiresAt < todayIso ? DANGER_COLOR : doc.category.colors.text;
+    const color = doc.expiresAt < todayIso ? DANGER_COLOR : categoryInk(doc.category.colors);
     const colors = markers.get(doc.expiresAt) ?? [];
     if (!colors.includes(color)) markers.set(doc.expiresAt, [...colors, color]);
   }
@@ -200,7 +204,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
   },
   header: {
@@ -235,7 +240,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     lineHeight: 26,
     textAlign: 'center',
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   emptyText: {
     textAlign: 'center',
@@ -253,6 +258,6 @@ const styles = StyleSheet.create({
   close: {
     color: BRAND_COLOR,
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
 });

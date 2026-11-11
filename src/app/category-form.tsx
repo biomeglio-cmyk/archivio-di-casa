@@ -3,12 +3,14 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { FormField, TextField } from '@/components/form-field';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { ThemedText } from '@/components/themed-text';
-import { FONTS } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { CATEGORY_PALETTES, CATEGORY_SYMBOLS } from '@/constants/category-options';
 import { getCategory, insertCategory, updateCategory } from '@/db/categories';
 import type { Category, CategoryColors } from '@/db/types';
@@ -97,7 +99,7 @@ function CategoryForm({ category }: { category: Category | null }) {
                 onPress={() => setSymbol(s)}
                 accessibilityRole="button"
                 accessibilityState={{ selected }}
-                style={[styles.iconCell, { backgroundColor: selected ? shown.bottom : theme.surface }]}>
+                style={[styles.iconCell, { backgroundColor: selected ? shown.bottom : theme.lilac }]}>
                 <SymbolView name={s} tintColor={selected ? shown.text : theme.textSecondary} size={22} />
               </Pressable>
             );
@@ -144,14 +146,14 @@ function CategoryForm({ category }: { category: Category | null }) {
         )}
       </FormField>
 
-      <GradientButton label="Salva" disabled={!canSave} onPress={save} />
+      <PrimaryButton label="Salva" disabled={!canSave} onPress={save} />
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
     paddingTop: 28,
     paddingBottom: 40,
     gap: 20,
@@ -159,7 +161,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   preview: {
     height: 110,
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
   previewName: {
     fontSize: 17,
     lineHeight: 21,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   grid: {
     flexDirection: 'row',

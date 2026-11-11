@@ -1,38 +1,34 @@
-import { Host, Picker, Switch } from '@expo/ui';
+import { Host, Picker } from '@expo/ui';
 import { DateTimePicker } from '@expo/ui/community/datetime-picker';
 import { useState, type ReactNode } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { CoverField } from '@/components/cover-field';
 import { FieldLabel, FormField, TextField } from '@/components/form-field';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
+import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { WhiteCard } from '@/components/white-card';
+import { BRAND_COLOR } from '@/constants/brand';
+import { DEFAULT_REMINDER, EVERY_OPTIONS, reminderChoices, reminderLabel } from '@/constants/deadline-options';
+import { Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { listCategories } from '@/db/categories';
 import type { DocumentInput } from '@/db/documents';
 import type { Category, CoverMode } from '@/db/types';
 import { listPeople } from '@/db/people';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
+import { usePreferences } from '@/settings/preferences';
 import { formatShortDate, parseISODate, toISODate } from '@/utils/dates';
-import { MAX_REPEAT, REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
+import { REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
 
 // Picker values must be string | number, so 0 stands for "nothing chosen" (ids start at 1)
 const NONE = 0;
 
-const EVERY_OPTIONS = Array.from({ length: MAX_REPEAT }, (_, i) => i + 1); // 1…99
-
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
-const REMINDER_OPTIONS = [
-  { label: 'Nessuno', value: NONE },
-  { label: '1 giorno prima', value: 1 },
-  { label: '7 giorni prima', value: 7 },
-  { label: '15 giorni prima', value: 15 },
-  { label: '30 giorni prima', value: 30 },
-  { label: '60 giorni prima', value: 60 },
-  { label: '90 giorni prima', value: 90 },
-];
 
 type Props = {
   initial?: Partial<DocumentInput>; // empty for a new document, the saved values when editing
@@ -69,7 +65,8 @@ export function DocumentForm({
     initial?.expiresAt ? parseISODate(initial.expiresAt) : new Date(),
   );
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [reminderDays, setReminderDays] = useState(initial?.reminderDays ?? NONE);
+  const [reminderDays, setReminderDays] = useState(initial?.reminderDays ?? DEFAULT_REMINDER);
+  const { defaultReminderDays } = usePreferences();
   // "Si ripete": 'never' or a unit, and every how many (kept while switching back and forth)
   const [repeatUnit, setRepeatUnit] = useState<RepeatUnit | 'never'>(initial?.repeat?.unit ?? 'never');
   const [repeatEvery, setRepeatEvery] = useState(initial?.repeat?.every ?? 1);
@@ -101,7 +98,7 @@ export function DocumentForm({
           personId: personId === NONE ? null : personId,
           number,
           expiresAt: hasExpiry ? toISODate(expiryDate) : null,
-          reminderDays: hasExpiry && reminderDays !== NONE ? reminderDays : null,
+          reminderDays: hasExpiry && reminderDays !== DEFAULT_REMINDER ? reminderDays : null,
           repeat: hasExpiry && repeatUnit !== 'never' ? { every: repeatEvery, unit: repeatUnit } : null,
           notes,
           username: isPassword ? username : null,
@@ -117,6 +114,11 @@ export function DocumentForm({
   }
 
   const line = theme.backgroundSelected;
+
+  function toggleExpiry(value: boolean) {
+    setHasExpiry(value);
+    setCalendarOpen(value); // turning it on shows the calendar straight away
+  }
 
   return (
     <ScrollView
@@ -139,7 +141,7 @@ export function DocumentForm({
       {/* The pickers need the lists from the database, so they appear once loaded */}
       {categories && people && (
         <>
-          <View style={[styles.card, { backgroundColor: theme.surface }]}>
+          <WhiteCard style={styles.card}>
             <FormRow label="Categoria" required>
               <Picker selectedValue={categoryId} onValueChange={setCategoryId}>
                 {/* "Scegli…" disappears once a category is chosen */}
@@ -149,7 +151,7 @@ export function DocumentForm({
                 ))}
               </Picker>
             </FormRow>
-          </View>
+          </WhiteCard>
 
           <CoverField
             mode={coverMode ?? (hasPhoto ? 'photo' : 'color')}
@@ -163,7 +165,7 @@ export function DocumentForm({
           <ThemedText type="smallBold" themeColor="textSecondary" style={styles.sectionTitle}>
             Facoltativi
           </ThemedText>
-          <View style={[styles.card, { backgroundColor: theme.surface }]}>
+          <WhiteCard style={styles.card}>
             <FormRow label="Persona">
               <Picker selectedValue={personId} onValueChange={setPersonId}>
                 <Picker.Item label="Nessuna" value={NONE} />
@@ -173,14 +175,10 @@ export function DocumentForm({
               </Picker>
             </FormRow>
 
-            <FormRow label="Aggiungi una scadenza" separator={line}>
-              <Switch
-                value={hasExpiry}
-                onValueChange={(value) => {
-                  setHasExpiry(value);
-                  setCalendarOpen(value); // turning it on shows the calendar straight away
-                }}
-              />
+            {/* Every category can have a deadline (only cards, which have their own form, don't).
+                The whole row toggles it, not just the switch. */}
+            <FormRow label="Aggiungi una scadenza" separator={line} onPress={() => toggleExpiry(!hasExpiry)}>
+              <Switch value={hasExpiry} onValueChange={toggleExpiry} accessibilityLabel="Aggiungi una scadenza" />
             </FormRow>
 
             {hasExpiry && (
@@ -226,14 +224,14 @@ export function DocumentForm({
                 )}
                 <FormRow label="Promemoria" separator={line}>
                   <Picker selectedValue={reminderDays} onValueChange={setReminderDays}>
-                    {REMINDER_OPTIONS.map((o) => (
-                      <Picker.Item key={o.value} label={o.label} value={o.value} />
+                    {reminderChoices(reminderDays).map((days) => (
+                      <Picker.Item key={days} label={reminderLabel(days, defaultReminderDays)} value={days} />
                     ))}
                   </Picker>
                 </FormRow>
               </>
             )}
-          </View>
+          </WhiteCard>
 
           {isPassword && (
             <>
@@ -281,7 +279,7 @@ export function DocumentForm({
       )}
 
       <View style={styles.footer}>
-        <GradientButton label="Salva" disabled={!canSave} onPress={submit} />
+        <PrimaryButton label="Salva" disabled={!canSave} onPress={submit} />
         <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
           {missing.length > 0 ? `Per salvare compila: ${missing.join(' e ')}.` : '* Campo obbligatorio'}
         </ThemedText>
@@ -294,16 +292,31 @@ type FormRowProps = {
   label: string;
   required?: boolean;
   separator?: string; // color of the line above the row (omitted on the first row)
+  // The row holds a React Native control (our Switch), not a native SwiftUI one: no Host, never
+  // clipped, and a tap anywhere on the row runs onPress
+  onPress?: () => void;
   children: ReactNode;
 };
 
 // One row of a grouped card: label on the left, native control on the right
-function FormRow({ label, required, separator, children }: FormRowProps) {
+function FormRow({ label, required, separator, onPress, children }: FormRowProps) {
+  const style = [styles.row, separator && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: separator }];
+  const labelView = (
+    <View style={styles.rowLabel}>
+      <FieldLabel label={label} required={required} />
+    </View>
+  );
+  if (onPress) {
+    return (
+      <Pressable onPress={onPress} accessible={false} style={style}>
+        {labelView}
+        <View style={styles.rowSwitch}>{children}</View>
+      </Pressable>
+    );
+  }
   return (
-    <View style={[styles.row, separator && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: separator }]}>
-      <View style={styles.rowLabel}>
-        <FieldLabel label={label} required={required} />
-      </View>
+    <View style={style}>
+      {labelView}
       {/* Host is the bridge between React Native and the native SwiftUI controls.
           The wrapper keeps it inside the card even with a long value. */}
       <View style={styles.rowControl}>
@@ -315,13 +328,13 @@ function FormRow({ label, required, separator, children }: FormRowProps) {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 40,
     gap: 20,
   },
   sectionTitle: {
-    textTransform: 'uppercase',
-    letterSpacing: 0.5,
+    textTransform: 'uppercase', // +0.1em letter spacing from the app Text
     paddingHorizontal: 4,
     marginBottom: -12, // closer to its card than to the card above
   },
@@ -347,10 +360,13 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     overflow: 'hidden',
   },
+  rowSwitch: {
+    flexShrink: 0, // the switch keeps its size and is never clipped
+  },
   dateValue: {
     color: BRAND_COLOR,
     fontSize: 17,
-    fontFamily: FONTS.titleMedium,
+    fontFamily: FONTS.medium,
   },
   calendar: {
     alignSelf: 'stretch', // full width of the card, never past its margins

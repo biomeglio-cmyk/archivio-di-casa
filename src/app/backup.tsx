@@ -18,11 +18,12 @@ import {
   type PreparedRestore,
 } from '@/backup/restore-backup';
 import { TextField } from '@/components/form-field';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { Group, Row } from '@/components/grouped-list';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 const MIN_PASSWORD = 8;
@@ -220,7 +221,7 @@ export default function BackupScreen() {
             {passwordProblem}
           </ThemedText>
         )}
-        <GradientButton
+        <PrimaryButton
           label="Crea e salva"
           symbol="lock.doc"
           disabled={passwordProblem !== null || repeat !== password}
@@ -250,7 +251,7 @@ export default function BackupScreen() {
           onSubmitEditing={() => password.length > 0 && openBackup(step.uri, step.name)}
         />
         {error && <ThemedText style={{ color: DANGER_COLOR }}>{error}</ThemedText>}
-        <GradientButton
+        <PrimaryButton
           label="Apri backup"
           symbol="lock.open"
           disabled={password.length === 0}
@@ -273,7 +274,7 @@ export default function BackupScreen() {
           />
         </Group>
         <View style={styles.buttons}>
-          <GradientButton label="Crea backup" symbol="lock.doc" onPress={() => setStep({ kind: 'create' })} />
+          <PrimaryButton label="Crea backup" symbol="lock.doc" onPress={() => setStep({ kind: 'create' })} />
           <SecondaryButton label="Ripristina backup" symbol="arrow.counterclockwise" onPress={pickBackup} />
         </View>
       </>
@@ -304,7 +305,8 @@ export default function BackupScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 24,
   },

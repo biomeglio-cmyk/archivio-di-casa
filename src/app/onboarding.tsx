@@ -1,14 +1,18 @@
-import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useRef, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, useWindowDimensions, View, type ScrollViewInstance } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type ScrollViewInstance } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { GradientButton } from '@/components/gradient-button';
+import { LogoMark } from '@/components/logo-mark';
+import { Text } from '@/components/text';
+import { PrimaryButton } from '@/components/primary-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { WhiteCard } from '@/components/white-card';
+import { BRAND_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
 import { markOnboardingSeen } from '@/onboarding/onboarding-flag';
 import { getPalette } from '@/settings/palette';
@@ -91,12 +95,12 @@ export default function OnboardingScreen() {
               {p.text}
             </ThemedText>
             {p.illustration.kind === 'logo' && (
-              <View style={[styles.privacy, { backgroundColor: theme.surface }]}>
+              <WhiteCard style={styles.privacy}>
                 <SymbolView name="lock.shield" tintColor={BRAND_COLOR} size={20} />
                 <ThemedText type="small" style={styles.privacyText}>
                   Restano sul tuo telefono e funzionano anche senza internet
                 </ThemedText>
-              </View>
+              </WhiteCard>
             )}
           </View>
         ))}
@@ -112,7 +116,7 @@ export default function OnboardingScreen() {
       </View>
 
       <View style={styles.footer}>
-        <GradientButton label={last ? 'Inizia' : 'Avanti'} onPress={next} />
+        <PrimaryButton label={last ? 'Inizia' : 'Avanti'} onPress={next} />
       </View>
     </View>
   );
@@ -120,7 +124,11 @@ export default function OnboardingScreen() {
 
 function Illustration({ page }: { page: Page }) {
   if (page.illustration.kind === 'logo') {
-    return <Image source={require('@/assets/images/logo-icon.png')} style={styles.logo} contentFit="cover" />;
+    return (
+      <View style={styles.logo}>
+        <LogoMark size={128} radius={30} />
+      </View>
+    );
   }
   // SF Symbol on a tile, in the colors of a category (from the chosen palette)
   const colors = getPalette().colors[page.illustration.palette];
@@ -140,12 +148,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
   },
   skip: {
     color: BRAND_COLOR,
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
   },
   pager: {
     flex: 1,
@@ -158,10 +166,6 @@ const styles = StyleSheet.create({
     gap: 16,
   },
   logo: {
-    width: 128,
-    height: 128,
-    borderRadius: 30,
-    borderCurve: 'continuous',
     marginBottom: 8,
   },
   tile: {
@@ -177,7 +181,7 @@ const styles = StyleSheet.create({
     fontSize: 26,
     lineHeight: 32,
     textAlign: 'center',
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   text: {
     fontSize: 17,

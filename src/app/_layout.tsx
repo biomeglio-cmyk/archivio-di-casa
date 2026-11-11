@@ -1,9 +1,10 @@
 import {
-  Outfit_500Medium,
-  Outfit_600SemiBold,
-  Outfit_700Bold,
+  Onest_400Regular,
+  Onest_500Medium,
+  Onest_600SemiBold,
+  Onest_700Bold,
   useFonts,
-} from '@expo-google-fonts/outfit';
+} from '@expo-google-fonts/onest';
 import { DefaultTheme, ThemeProvider } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import * as SplashScreen from 'expo-splash-screen';
@@ -15,12 +16,12 @@ import { Appearance } from 'react-native';
 import { useAppGeneration } from '@/backup/app-reload';
 import { AppLock } from '@/components/app-lock';
 import { SplashOverlay } from '@/components/splash-overlay';
-import { FONTS } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
+import { Colors, Radius } from '@/constants/theme';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
 import { AppNotifications } from '@/notifications/app-notifications';
 
-// Navigation themes with the app page color (iOS systemGroupedBackground) behind every screen
+// Navigation theme with the app page color (white) behind every screen
 const LIGHT_THEME = { ...DefaultTheme, colors: { ...DefaultTheme.colors, background: Colors.light.background, card: Colors.light.surface } };
 
 // The root Stack starts on the tabs; sheets and modals are pushed on top of them
@@ -37,13 +38,13 @@ export default function RootLayout() {
   // Changes after "Ripristina backup": every screen is rebuilt from the restored data
   const generation = useAppGeneration();
 
-  // Load Outfit at runtime (no config plugin, so it works in Expo Go).
-  // The keys become the fontFamily names listed in constants/brand.ts.
+  // Load Onest at runtime (no config plugin, so it works in Expo Go).
+  // The keys become the fontFamily names listed in constants/typography.ts.
   const [fontsLoaded, fontError] = useFonts({
-    Outfit_500Medium,
-    Outfit_600SemiBold,
-    Outfit_700Bold,
-    FrauncesSottomano_Black: require('@/assets/fonts/FrauncesSottomano-Black.ttf'),
+    Onest_400Regular,
+    Onest_500Medium,
+    Onest_600SemiBold,
+    Onest_700Bold,
   });
 
   // Keep the native splash screen visible until the fonts are ready.
@@ -73,6 +74,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: 'fitToContents',
             }}
           />
@@ -84,7 +86,7 @@ export default function RootLayout() {
               headerShown: false,
               sheetGrabberVisible: true,
               sheetAllowedDetents: [0.9],
-              sheetCornerRadius: 24,
+              sheetCornerRadius: Radius.sheet,
               contentStyle: { backgroundColor: Colors.light.background },
             }}
           />
@@ -98,6 +100,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: [0.85, 1.0],
             }}
           />
@@ -107,6 +110,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: [0.75, 1.0],
             }}
           />
@@ -116,6 +120,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: [0.9],
             }}
           />
@@ -125,6 +130,7 @@ export default function RootLayout() {
               presentation: 'formSheet',
               headerShown: false,
               sheetGrabberVisible: true,
+              sheetCornerRadius: Radius.sheet,
               sheetAllowedDetents: 'fitToContents',
             }}
           />
@@ -137,7 +143,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Modifica documento',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           {/* "Aggiungi pagine" in the document detail: the pages editor of "Nuovo documento" */}
@@ -146,7 +152,16 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Pagine',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
+            }}
+          />
+          {/* "Scadenza" in the detail of every document: add, change or remove the deadline */}
+          <Stack.Screen
+            name="deadline/[id]"
+            options={{
+              presentation: 'modal',
+              title: 'Scadenza',
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           {/* "Rinnovato" in the detail of a document with a deadline */}
@@ -155,7 +170,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Rinnovato',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           <Stack.Screen
@@ -163,7 +178,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Versione precedente',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           <Stack.Screen
@@ -171,7 +186,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Nuovo documento',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           {/* Opened from the Menu */}
@@ -180,7 +195,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Notifiche',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           <Stack.Screen
@@ -188,7 +203,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Aspetto',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           <Stack.Screen
@@ -196,7 +211,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Backup',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           {/* "Prepara per il commercialista" in the "…" menu of Spese 730 */}
@@ -205,7 +220,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Per il commercialista',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           <Stack.Screen
@@ -213,7 +228,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Cestino',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           <Stack.Screen
@@ -221,7 +236,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Info e privacy',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           {/* Cards: camera (front + barcode), then the card form */}
@@ -234,7 +249,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Nuova carta',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           <Stack.Screen
@@ -242,7 +257,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Modifica carta',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           {/* "Modifica" of the Preferiti section: reorder and remove pinned items */}
@@ -251,7 +266,7 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Preferiti',
-              headerTitleStyle: { fontFamily: FONTS.titleSemiBold },
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
         </Stack>

@@ -1,12 +1,12 @@
 import { BUILTIN_ORDER } from '@/db/builtin-categories';
 import type { CategoryColors } from '@/db/types';
 
-// "Aspetto": 6 palettes for the 13 built-in categories. Each one lists [top, bottom, text] in the
-// order of BUILTIN_ORDER (documents, cards, utilities, home, insurance, warranties, car, 730,
-// colf, school, pet, password, other). Custom categories keep their own color, and the
-// brand pink #FF4F64 never changes.
+// "Aspetto": 7 palettes for the 13 built-in categories. Each one lists its colors in the order of
+// BUILTIN_ORDER (documents, cards, utilities, home, insurance, warranties, car, 730, colf, school,
+// pet, password, other). Custom categories keep their own color, and the brand indigo-lilac
+// gradient never changes. "Sottomano" (docs/design-guide.md) is the default.
 
-export type PaletteId = 'pastel' | 'vivid' | 'earth' | 'sea' | 'sunset' | 'night';
+export type PaletteId = 'sottomano' | 'pastel' | 'vivid' | 'earth' | 'sea' | 'sunset' | 'night';
 
 export type Palette = {
   id: PaletteId;
@@ -16,6 +16,33 @@ export type Palette = {
 
 type Triple = [top: string, bottom: string, text: string];
 const toColors = ([top, bottom, text]: Triple): CategoryColors => ({ top, bottom, text });
+
+// "Sottomano": 135° gradient from → to, white text and icons, colored shadow, light tint and
+// the text on it (table "Adattamento per Sottomano" of the design guide)
+type GuideRow = [from: string, to: string, shadow: string, tint: string, onTint: string];
+const SOTTOMANO: GuideRow[] = [
+  ['#8F9BF8', '#6C7BEF', '108, 123, 239', '#EEF0FE', '#3A47C2'], // Documenti
+  ['#6FD3AE', '#45B68E', '69, 182, 142', '#E6F7F0', '#1F7A5A'], // Tessere e card
+  ['#FFA36E', '#F5824A', '245, 130, 74', '#FFF0E7', '#B5541C'], // Utenze
+  ['#A59AF7', '#8778EE', '135, 120, 238', '#F1EFFD', '#5B4BD6'], // Casa
+  ['#6CCAD6', '#3FAFBF', '63, 175, 191', '#E4F6F8', '#17707C'], // Assicurazioni
+  ['#F5CB6B', '#EBAA45', '235, 170, 69', '#FDF5E2', '#8A5A0B'], // Garanzie e scontrini
+  ['#86B4F7', '#6494EE', '100, 148, 238', '#EAF2FE', '#2F62C8'], // Auto
+  ['#F79BBA', '#EE7499', '238, 116, 153', '#FDEBF1', '#B42A5A'], // Spese 730
+  ['#F2A08A', '#E07A5F', '224, 122, 95', '#FCEEE9', '#A9472C'], // Colf
+  ['#E79BD9', '#D274C2', '210, 116, 194', '#FCEDF9', '#9A2F88'], // Scuola
+  ['#A8CF6E', '#86B347', '134, 179, 71', '#F0F7E5', '#4F7420'], // Pet
+  ['#8FA3B8', '#6B8299', '107, 130, 153', '#EDF1F5', '#3E5468'], // Password
+  ['#A9AFC4', '#858CA6', '110, 118, 145', '#F0F1F5', '#4B5068'], // Altro
+];
+const fromGuide = ([top, bottom, shadow, tint, onTint]: GuideRow): CategoryColors => ({
+  top,
+  bottom,
+  text: '#FFFFFF',
+  shadow,
+  tint,
+  onTint,
+});
 
 const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [
   {
@@ -115,9 +142,10 @@ const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [
   },
 ];
 
-export const DEFAULT_PALETTE: PaletteId = 'pastel';
+export const DEFAULT_PALETTE: PaletteId = 'sottomano';
 
 export const PALETTES: Palette[] = [
+  { id: 'sottomano', name: 'Sottomano', colors: SOTTOMANO.map(fromGuide) },
   // Pastello: the original colors, the same the database was created with
   { id: 'pastel', name: 'Pastello', colors: BUILTIN_ORDER.map((c) => c.colors) },
   ...OTHER_PALETTES.map((p) => ({ id: p.id, name: p.name, colors: p.colors.map(toColors) })),

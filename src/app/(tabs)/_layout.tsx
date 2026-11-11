@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
 
-import { BRAND_COLOR } from '@/constants/brand';
+import { Colors } from '@/constants/theme';
 import { countUrgentDeadlines } from '@/db/urgent-count';
 import { useDbQuery } from '@/hooks/use-db-query';
 
@@ -17,7 +17,7 @@ export default function TabsLayout() {
   const { data: urgent } = useDbQuery(countUrgentDeadlines, []);
 
   return (
-    <NativeTabs tintColor={BRAND_COLOR}>
+    <NativeTabs tintColor={Colors.light.indigo} badgeBackgroundColor={Colors.light.badge}>
       <NativeTabs.Trigger name="(archive)" accessibilityLabel="Home">
         <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
         <NativeTabs.Trigger.Label hidden>Home</NativeTabs.Trigger.Label>
@@ -48,7 +48,9 @@ export default function TabsLayout() {
         disabled
         accessibilityLabel="Aggiungi un documento"
         listeners={{ tabPress: () => router.push('/add-document') }}>
-        <NativeTabs.Trigger.Icon sf="plus.circle.fill" md="add_circle" />
+        {/* A blue circle with a white plus (assets/images/tab-add*.png), drawn with its own colors
+            ("original"): the tab is never selected, so the tint would leave it black */}
+        <NativeTabs.Trigger.Icon src={require('@/assets/images/tab-add.png')} renderingMode="original" md="add_circle" />
         <NativeTabs.Trigger.Label hidden>Aggiungi</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
     </NativeTabs>

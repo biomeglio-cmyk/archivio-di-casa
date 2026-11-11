@@ -1,15 +1,17 @@
 import { router, type Href } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
+import { IconSquare } from '@/components/icon-square';
+import { Text } from '@/components/text';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { cardRowEdge } from '@/constants/theme';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
 import { describeDistance, formatShortDate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
-const RADIUS = 12;
 const ICON = 28;
 const INSET = 16 + ICON + 12; // separators start after the icon, like iOS lists
 
@@ -41,13 +43,10 @@ export function DeadlineRow({ document, href, cardColor, first, last, highlighte
       style={[
         styles.row,
         { backgroundColor: background },
-        first && styles.first,
-        last && styles.last,
+        cardRowEdge(first, last),
       ]}>
-      <View style={[styles.icon, { backgroundColor: category.colors.bottom }]}>
-        <SymbolView name={category.symbol} tintColor={category.colors.text} size={15} />
-      </View>
-      <View style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected }]}>
+      <IconSquare symbol={category.symbol} colors={category.colors} size={ICON} />
+      <View style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator }]}>
         <View style={styles.texts}>
           <Text style={[styles.title, { color: theme.text }]}>
             {document.title}
@@ -70,22 +69,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingLeft: 16,
-  },
-  first: {
-    borderTopLeftRadius: RADIUS,
-    borderTopRightRadius: RADIUS,
-  },
-  last: {
-    borderBottomLeftRadius: RADIUS,
-    borderBottomRightRadius: RADIUS,
-  },
-  icon: {
-    width: ICON,
-    height: ICON,
-    borderRadius: 7,
-    borderCurve: 'continuous',
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   // Text and chevron; its top hairline is the separator, so it starts after the icon
   body: {

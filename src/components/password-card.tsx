@@ -1,8 +1,10 @@
 import * as Clipboard from 'expo-clipboard';
 import { useEffect, useState } from 'react';
-import { Alert, AppState, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, AppState, Pressable, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
 import { authenticate } from '@/security/app-lock';
@@ -57,7 +59,7 @@ export function PasswordCard({ documentId, username }: Props) {
   const line = { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected };
 
   return (
-    <View style={[styles.card, { backgroundColor: theme.surface }]}>
+    <WhiteCard style={styles.card}>
       <View style={styles.row}>
         <ThemedText themeColor="textSecondary">Utente</ThemedText>
         <ThemedText style={styles.value} selectable>
@@ -80,7 +82,7 @@ export function PasswordCard({ documentId, username }: Props) {
           <Text style={styles.actionText}>Copia</Text>
         </Pressable>
       </View>
-    </View>
+    </WhiteCard>
   );
 }
 

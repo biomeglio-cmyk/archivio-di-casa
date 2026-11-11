@@ -1,13 +1,13 @@
-import { SegmentedControl } from '@expo/ui/community/segmented-control';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { FormField } from '@/components/form-field';
+import { Segmented } from '@/components/segmented';
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
 import { CARD_COLORS } from '@/constants/card-colors';
 import type { CategoryColors, CoverMode } from '@/db/types';
-import { useTheme } from '@/hooks/use-theme';
 
 const MODES: CoverMode[] = ['photo', 'color'];
 
@@ -26,14 +26,13 @@ type Props = {
 // looks in the grids. Foto = its front photo, full-bleed, with the title on a dark bar.
 // Colore = a background color with the title large; the category color or one picked here.
 export function CoverField({ mode, onModeChange, color, onColorChange, categoryColors, hasPhoto }: Props) {
-  const theme = useTheme();
 
   return (
     <FormField label="Copertina">
-      <SegmentedControl
+      <Segmented
         values={['Foto', 'Colore']}
         selectedIndex={MODES.indexOf(mode)}
-        onChange={(event) => onModeChange(MODES[event.nativeEvent.selectedSegmentIndex])}
+        onChange={(index) => onModeChange(MODES[index])}
       />
       {mode === 'photo' && !hasPhoto && (
         <ThemedText type="small" themeColor="textSecondary">
@@ -41,7 +40,7 @@ export function CoverField({ mode, onModeChange, color, onColorChange, categoryC
         </ThemedText>
       )}
       {mode === 'color' && (
-        <View style={[styles.colors, { backgroundColor: theme.surface }]} accessibilityRole="radiogroup">
+        <WhiteCard style={styles.colors} accessibilityRole="radiogroup">
           {categoryColors && (
             <Pressable
               onPress={() => onColorChange(null)}
@@ -70,7 +69,7 @@ export function CoverField({ mode, onModeChange, color, onColorChange, categoryC
               </Pressable>
             );
           })}
-        </View>
+        </WhiteCard>
       )}
     </FormField>
   );

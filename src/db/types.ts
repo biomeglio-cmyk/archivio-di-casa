@@ -11,9 +11,13 @@ export type Person = {
 };
 
 export type CategoryColors = {
-  top: string; // lighter shade, top of the gradient
-  bottom: string; // darker pastel, bottom of the gradient
-  text: string; // dark shade for text and icon
+  top: string; // start of the gradient (top-left)
+  bottom: string; // end of the gradient (bottom-right)
+  text: string; // text and icon on the gradient
+  // Only in the "Sottomano" palette (docs/design-guide.md); derived from the others when missing:
+  shadow?: string; // "r, g, b" of the colored shadow under a tile
+  tint?: string; // light tint: inactive filters and round buttons of the section
+  onTint?: string; // text and icons on the light tint
 };
 
 export type Category = {

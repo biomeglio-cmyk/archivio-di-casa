@@ -2,10 +2,12 @@ import { router, useFocusEffect } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import Storage from 'expo-sqlite/kv-store';
 import { useCallback, useState } from 'react';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
+import { Text } from '@/components/text';
 import { getLastBackupDate } from '@/backup/backup-layout';
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -53,7 +55,7 @@ export function BackupReminder({ documentCount }: { documentCount: number }) {
   }
 
   return (
-    <View style={[styles.card, { backgroundColor: theme.surface }]}>
+    <WhiteCard style={styles.card}>
       <SymbolView name="externaldrive.badge.icloud" tintColor={BRAND_COLOR} size={24} />
       <View style={styles.texts}>
         <ThemedText style={styles.title}>{text}</ThemedText>
@@ -69,7 +71,7 @@ export function BackupReminder({ documentCount }: { documentCount: number }) {
         style={styles.close}>
         <SymbolView name="xmark" tintColor={theme.textSecondary} size={14} weight="semibold" />
       </Pressable>
-    </View>
+    </WhiteCard>
   );
 }
 

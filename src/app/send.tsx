@@ -1,15 +1,19 @@
-import { Host, Switch } from '@expo/ui';
-import { SegmentedControl } from '@expo/ui/community/segmented-control';
 import { useLocalSearchParams } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
 
+import { Segmented } from '@/components/segmented';
+import { Switch } from '@/components/switch';
+import { Text } from '@/components/text';
 import { FrontBackComposer, type FrontBackComposerHandle } from '@/components/front-back-composer';
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { WhiteCard } from '@/components/white-card';
+import { BRAND_COLOR } from '@/constants/brand';
+import { Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 import { usesFrontBack } from '@/utils/page-labels';
@@ -146,11 +150,11 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
         <ThemedText type="smallBold" themeColor="textSecondary" style={styles.groupTitle}>
           Formato
         </ThemedText>
-        <SegmentedControl
+        <Segmented
           values={['PDF', 'JPEG']}
           selectedIndex={format === 'pdf' ? 0 : 1}
           enabled={!multi && !importedPdf}
-          onChange={(e) => update({ format: e.nativeEvent.selectedSegmentIndex === 0 ? 'pdf' : 'jpeg' })}
+          onChange={(index) => update({ format: index === 0 ? 'pdf' : 'jpeg' })}
         />
         {multi && (
           <ThemedText type="small" themeColor="textSecondary">
@@ -160,25 +164,27 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       </View>
 
       {single && twoFaces && (
-        <View style={[styles.card, styles.switchRow, { backgroundColor: theme.surface }]}>
+        <WhiteCard style={[styles.card, styles.switchRow]}>
           <ThemedText style={styles.flex}>
             {format === 'pdf' ? 'Fronte e retro su una pagina' : "Fronte e retro in un'immagine"}
           </ThemedText>
-          <Host matchContents>
-            <Switch value={together} onValueChange={(value) => update({ together: value })} />
-          </Host>
-        </View>
+          <Switch
+            value={together}
+            onValueChange={(value) => update({ together: value })}
+            accessibilityLabel={format === 'pdf' ? 'Fronte e retro su una pagina' : "Fronte e retro in un'immagine"}
+          />
+        </WhiteCard>
       )}
 
       <View style={styles.group}>
         <ThemedText type="smallBold" themeColor="textSecondary" style={styles.groupTitle}>
           Peso massimo
         </ThemedText>
-        <SegmentedControl
+        <Segmented
           values={SIZE_LIMITS.map((l) => l.label)}
           selectedIndex={SIZE_LIMITS.indexOf(limit)}
           enabled={!importedPdf}
-          onChange={(e) => update({ limit: SIZE_LIMITS[e.nativeEvent.selectedSegmentIndex].key })}
+          onChange={(index) => update({ limit: SIZE_LIMITS[index].key })}
         />
         {importedPdf && (
           <ThemedText type="small" themeColor="textSecondary">
@@ -188,7 +194,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       </View>
 
       {/* Preview of what will be sent */}
-      <View style={[styles.card, styles.preview, { backgroundColor: theme.surface }]}>
+      <WhiteCard style={[styles.card, styles.preview]}>
         {busy && (
           <View style={styles.previewRow}>
             <ActivityIndicator />
@@ -221,7 +227,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
             Totale {formatBytes(prepared.bytes)} · si condividono uno dopo l&apos;altro
           </ThemedText>
         )}
-      </View>
+      </WhiteCard>
 
       {prepared?.warnings.map((warning) => (
         <View key={warning} style={warningBox}>
@@ -239,7 +245,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
         </View>
       )}
 
-      <GradientButton
+      <PrimaryButton
         label="Condividi"
         symbol="square.and.arrow.up"
         disabled={!prepared || delivering}
@@ -263,7 +269,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 20,
+    paddingHorizontal: Spacing.side,
     paddingTop: 28,
     paddingBottom: 40,
     gap: 18,
@@ -271,7 +277,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 22,
     lineHeight: 28,
-    fontFamily: FONTS.titleBold,
+    fontFamily: FONTS.bold,
   },
   group: {
     gap: 8,

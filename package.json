@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "expo-router/entry",
   "dependencies": {
-    "@expo-google-fonts/outfit": "^0.4.3",
+    "@expo-google-fonts/onest": "^0.4.2",
     "@expo/ui": "~58.0.27",
     "@noble/hashes": "^2.4.0",
     "bwip-js": "^4.11.4",

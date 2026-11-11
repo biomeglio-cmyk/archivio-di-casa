@@ -9,6 +9,7 @@ import type { TileRect } from '@/components/quick-action-menu';
 import { PersonAvatar } from '@/components/person-avatar';
 import { ThemedText } from '@/components/themed-text';
 import { DANGER_COLOR } from '@/constants/brand';
+import { CardSurface, Radius } from '@/constants/theme';
 import type { PersonWithCount } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
@@ -51,7 +52,7 @@ export function PersonTile({ person, size, actions = [], onLongPress }: Props) {
       onAccessibilityAction={(event) => {
         if (!runAccessibilityAction(actions, event.nativeEvent.actionName)) open();
       }}
-      style={[size, styles.tile, { backgroundColor: pressed ? theme.backgroundSelected : theme.surface }]}>
+      style={[size, styles.tile, CardSurface, { borderRadius: Radius.tile }, pressed && { backgroundColor: theme.backgroundSelected }]}>
       <PersonAvatar name={person.name} photoPath={person.photoPath} size={52} />
       <ThemedText numberOfLines={2} style={styles.name}>
         {person.name}

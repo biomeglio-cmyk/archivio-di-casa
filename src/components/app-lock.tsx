@@ -1,9 +1,11 @@
 import { SymbolView } from 'expo-symbols';
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { AppState, Pressable, StyleSheet, Text, View } from 'react-native';
+import { AppState, Pressable, StyleSheet, View } from 'react-native';
 import { FullWindowOverlay } from 'react-native-screens';
 
-import { BRAND_COLOR, FONTS } from '@/constants/brand';
+import { Text } from '@/components/text';
+import { BRAND_COLOR } from '@/constants/brand';
+import { FONTS } from '@/constants/typography';
 import { LOCK_AFTER_MS, authenticate, isAppLockEnabled, unlockLabel, useAppLockEnabled } from '@/security/app-lock';
 
 // "Blocca con Face ID". Mounted once in the root layout, above everything.
@@ -115,7 +117,7 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.9)',
     fontSize: 17,
     textAlign: 'center',
-    fontFamily: FONTS.titleMedium,
+    fontFamily: FONTS.medium,
   },
   button: {
     marginTop: 32,
@@ -132,7 +134,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: BRAND_COLOR,
     fontSize: 17,
-    fontFamily: FONTS.titleSemiBold,
+    fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
 });

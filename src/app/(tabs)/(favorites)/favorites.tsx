@@ -1,10 +1,11 @@
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
-import { Alert, StyleSheet, Text, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
+import { Text } from '@/components/text';
 import { documentQuickActions } from '@/actions/quick-actions';
 import { DocumentTileFace } from '@/components/document-tile';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';

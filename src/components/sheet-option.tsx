@@ -3,6 +3,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
+import { CardSurface } from '@/constants/theme';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
 
@@ -27,7 +28,7 @@ export function SheetOption({ symbol, label, onPress, destructive = false, group
       {...handlers}
       onPress={onPress}
       accessibilityRole="button"
-      style={[styles.row, !grouped && styles.rounded, { backgroundColor: background }]}>
+      style={[styles.row, !grouped && CardSurface, { backgroundColor: background }]}>
       <View style={styles.icon}>
         <SymbolView name={symbol} tintColor={color} size={22} />
       </View>
@@ -45,10 +46,6 @@ const styles = StyleSheet.create({
     minHeight: 52,
     paddingVertical: 14,
     paddingHorizontal: 16,
-  },
-  rounded: {
-    borderRadius: 12,
-    borderCurve: 'continuous',
   },
   icon: {
     width: 28,

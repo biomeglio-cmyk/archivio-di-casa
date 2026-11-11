@@ -1,16 +1,17 @@
 import { Host, Picker } from '@expo/ui';
-import { SegmentedControl } from '@expo/ui/community/segmented-control';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
 
-import { GradientButton } from '@/components/gradient-button';
+import { PrimaryButton } from '@/components/primary-button';
 import { Group, Row } from '@/components/grouped-list';
+import { Segmented } from '@/components/segmented';
 import { ThemedText } from '@/components/themed-text';
+import { WhiteCard } from '@/components/white-card';
+import { Spacing } from '@/constants/theme';
 import { getCategory } from '@/db/categories';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useTheme } from '@/hooks/use-theme';
 import { shareFiles } from '@/send/deliver';
 import { formatBytes, loadSendPreferences, SIZE_LIMITS, type SizeLimit } from '@/send/send-preferences';
 import { buildTaxPackage, loadTaxItems, taxYears } from '@/send/tax-package';
@@ -20,7 +21,6 @@ import { buildTaxPackage, loadTaxItems, taxYears } from '@/send/tax-package';
 export default function TaxPackageScreen() {
   const { categoryId } = useLocalSearchParams<{ categoryId: string }>();
   const id = Number(categoryId);
-  const theme = useTheme();
   const { data: category } = useDbQuery((db) => getCategory(db, id), [id]);
   const { data: years } = useDbQuery((db) => taxYears(db, id), [id]);
   const [year, setYear] = useState(() => new Date().getFullYear() - 1);
@@ -93,11 +93,11 @@ export default function TaxPackageScreen() {
           <ThemedText type="smallBold" themeColor="textSecondary" style={styles.groupTitle}>
             Peso massimo delle foto
           </ThemedText>
-          <SegmentedControl
+          <Segmented
             values={SIZE_LIMITS.map((l) => l.label)}
             selectedIndex={SIZE_LIMITS.findIndex((l) => l.key === limit)}
             enabled={!busy}
-            onChange={(e) => setLimit(SIZE_LIMITS[e.nativeEvent.selectedSegmentIndex].key)}
+            onChange={(index) => setLimit(SIZE_LIMITS[index].key)}
           />
           <ThemedText type="small" themeColor="textSecondary">
             Le foto vengono ridotte per stare nel limite; i PDF importati restano come sono.
@@ -105,12 +105,12 @@ export default function TaxPackageScreen() {
         </View>
 
         {busy ? (
-          <View style={[styles.progress, { backgroundColor: theme.surface }]}>
+          <WhiteCard style={styles.progress}>
             <ActivityIndicator />
             <ThemedText themeColor="textSecondary">{progress}</ThemedText>
-          </View>
+          </WhiteCard>
         ) : (
-          <GradientButton
+          <PrimaryButton
             label="Prepara e condividi"
             symbol="square.and.arrow.up"
             disabled={!items?.length || !category}
@@ -130,7 +130,8 @@ export default function TaxPackageScreen() {
 
 const styles = StyleSheet.create({
   content: {
-    padding: 16,
+    paddingVertical: 16,
+    paddingHorizontal: Spacing.side,
     paddingBottom: 48,
     gap: 24,
   },

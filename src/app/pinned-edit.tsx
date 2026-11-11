@@ -1,4 +1,3 @@
-import { Host, Switch } from '@expo/ui';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
@@ -8,7 +7,6 @@ import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
 
-import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
 import { DANGER_COLOR } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
@@ -16,14 +14,12 @@ import { listPinnedDocuments, savePinnedOrder } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
-import { savePreferences, usePreferences } from '@/settings/preferences';
 import { resolveDocumentFile } from '@/storage/document-files';
 
 const MAX_FONT_SCALE = 2; // text grows up to 2×, then stops
 
-// Modal "Preferiti" (from "Modifica" in Home, or from the Menu): red − to remove.
-// The order is changed in Home itself (long press and drag a tile). Removals are saved only with
-// "Fine"; "Annulla" leaves them as they were. The "Mostra in Home" switch applies at once.
+// Modal "Modifica" of the Preferiti tab: red − to remove. The order is changed in the tab itself
+// (long press and drag a tile). Removals are saved only with "Fine"; "Annulla" leaves them as they were.
 export default function PinnedEditScreen() {
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
 
@@ -41,7 +37,6 @@ export default function PinnedEditScreen() {
 function PinnedEditor({ initial }: { initial: DocumentListItem[] }) {
   const db = useSQLiteContext();
   const theme = useTheme();
-  const { showPinned } = usePreferences();
   const [items, setItems] = useState(initial); // what is still in the list, in the saved order
 
   async function save() {
@@ -56,18 +51,11 @@ function PinnedEditor({ initial }: { initial: DocumentListItem[] }) {
   return (
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-        <Group footer="I preferiti in cima alla Home. Si applica subito.">
-          <Row label="Mostra in Home" symbol="heart" first>
-            <Host matchContents>
-              <Switch value={showPinned} onValueChange={(value) => savePreferences({ showPinned: value })} />
-            </Host>
-          </Row>
-        </Group>
         <ThemedText type="small" themeColor="textSecondary" style={styles.hint}>
           {initial.length === 0
             ? 'Nessun preferito. Tocca il cuore su una carta o un documento per aggiungerlo.'
             : items.length > 0
-              ? 'Tocca − per togliere. Per cambiare l’ordine, nella Home tieni premuto un preferito e trascinalo.'
+              ? 'Tocca − per togliere. Per cambiare l’ordine, nella griglia dei Preferiti tieni premuto un preferito e trascinalo.'
               : 'Non resta niente: tocca Fine per svuotare i Preferiti.'}
         </ThemedText>
         <View style={styles.list}>

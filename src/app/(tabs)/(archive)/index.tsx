@@ -8,7 +8,7 @@ import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CategoryTile } from '@/components/category-tile';
-import { FavoritesSection, SectionHeader } from '@/components/favorites-section';
+import { SectionHeader } from '@/components/favorites-section';
 import { SearchBar } from '@/components/search-bar';
 import { SearchResultsList } from '@/components/search-results';
 import { ThemedText } from '@/components/themed-text';
@@ -20,7 +20,6 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
 import { searchDocuments, type SearchFilter } from '@/search/search-documents';
-import { usePreferences } from '@/settings/preferences';
 
 const AFTER_SPLASH_MS = 1100; // the opening screen lasts about one second
 const SEARCH_DEBOUNCE_MS = 200;
@@ -33,7 +32,6 @@ export default function ArchiveScreen() {
   const theme = useTheme();
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: allDocuments } = useDbQuery(listAllDocuments, []);
-  const { showPinned } = usePreferences(); // "Mostra in Home" in the Preferiti screen
 
   const [query, setQuery] = useState(''); // what is typed
   const [searched, setSearched] = useState(''); // what is searched, ~200 ms after the last key
@@ -97,7 +95,6 @@ export default function ArchiveScreen() {
         <SearchResultsList query={searched} results={results} filter={filter} onFilterChange={setFilter} />
       ) : (
         <TileScrollView ref={scrollRef} keyboardShouldPersistTaps="handled">
-          {showPinned && <FavoritesSection scrollableRef={scrollRef} />}
           <SectionHeader title="Categorie" />
           <TileGrid
             items={categories}

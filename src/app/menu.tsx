@@ -79,7 +79,7 @@ export default function MenuSheet() {
       <View style={styles.sections}>
         <Group title="Documenti">
           <Row label="Home" symbol="square.grid.2x2" count={counts?.documents} first onPress={() => goToTab('/')} />
-          <Row label="Preferiti" symbol="heart" count={counts?.pinned} onPress={() => router.replace('/pinned-edit')} />
+          <Row label="Preferiti" symbol="heart" count={counts?.pinned} onPress={() => goToTab('/favorites')} />
           {cardsId != null && (
             <Row
               label="Tessere e card"

@@ -7,14 +7,14 @@ import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR, FONTS } from '@/constants/brand';
 import { PALETTES, type Palette } from '@/constants/palettes';
-import { BUILTIN_CATEGORIES } from '@/db/builtin-categories';
+import { BUILTIN_ORDER } from '@/db/builtin-categories';
 import { useTheme } from '@/hooks/use-theme';
 import { setPaletteId, usePaletteId } from '@/settings/palette';
 
-const MINI_COLUMNS = 6; // 11 mini tiles: a row of 6 and a row of 5
+const MINI_COLUMNS = 7; // 13 mini tiles: a row of 7 and a row of 6
 
 // "Aspetto" (Menu › Impostazioni): 6 palettes for the built-in categories, each previewed as a
-// mini grid of the 11 category tiles. A tap applies it at once to the whole app.
+// mini grid of the 13 category tiles. A tap applies it at once to the whole app.
 export default function AppearanceScreen() {
   const selected = usePaletteId();
 
@@ -68,9 +68,9 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
             {Array.from({ length: MINI_COLUMNS }, (_, column) => {
               const index = start + column;
               const colors = palette.colors[index];
-              // The 12th cell is empty, so the tiles of the second row keep the same width
+              // The last cell is empty, so the tiles of the second row keep the same width
               if (!colors) return <View key="empty" style={styles.mini} />;
-              const { symbol } = BUILTIN_CATEGORIES[index];
+              const { symbol } = BUILTIN_ORDER[index];
               return (
                 <LinearGradient key={symbol} colors={[colors.top, colors.bottom]} style={styles.mini}>
                   <SymbolView name={symbol} tintColor={colors.text} size={14} />
@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   mini: {
-    flex: 1, // 6 equal tiles per row
+    flex: 1, // equal tiles in every row
     aspectRatio: 1.1,
     borderRadius: 8,
     borderCurve: 'continuous',

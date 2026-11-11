@@ -1,6 +1,6 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
-import { BUILTIN_CATEGORIES } from '@/db/builtin-categories';
+import { BUILTIN_CATEGORIES, V7_NEW_CATEGORIES, V7_RENAMES } from '@/db/builtin-categories';
 import { insertDemoData } from '@/db/demo-data';
 
 // Versioned migrations, Flyway style:
@@ -164,6 +164,41 @@ const MIGRATIONS: Migration[] = [
         UPDATE document_files SET page = 1 WHERE kind = 'image' AND side IN ('front', 'card_front');
         UPDATE document_files SET page = 2 WHERE kind = 'image' AND side = 'back';
       `);
+    },
+  },
+  {
+    version: 7,
+    name: 'built-in categories renamed; Pet and Password added',
+    up: async (db) => {
+      // Renamed only if the user kept the original name (a built-in category can be renamed)
+      for (const { symbol, from, to } of V7_RENAMES) {
+        await db.runAsync('UPDATE categories SET name = ? WHERE is_builtin = 1 AND symbol = ? AND name = ?', to, symbol, from);
+      }
+      // Pet and Password go right before "Altro": everything from "Altro" on moves 2 places down
+      const other = await db.getFirstAsync<{ sort_order: number }>(
+        "SELECT sort_order FROM categories WHERE is_builtin = 1 AND symbol = 'folder'",
+      );
+      const last = await db.getFirstAsync<{ n: number | null }>('SELECT MAX(sort_order) AS n FROM categories');
+      let position = other?.sort_order ?? (last?.n ?? -1) + 1;
+      if (other) await db.runAsync('UPDATE categories SET sort_order = sort_order + 2 WHERE sort_order >= ?', other.sort_order);
+      for (const category of V7_NEW_CATEGORIES) {
+        const exists = await db.getFirstAsync('SELECT id FROM categories WHERE is_builtin = 1 AND symbol = ?', category.symbol);
+        if (!exists) {
+          await db.runAsync(
+            `INSERT INTO categories (name, symbol, examples, color_top, color_bottom, color_text, is_builtin, sort_order, kind)
+             VALUES (?, ?, ?, ?, ?, ?, 1, ?, ?)`,
+            category.name,
+            category.symbol,
+            category.examples,
+            category.colors.top,
+            category.colors.bottom,
+            category.colors.text,
+            position,
+            category.kind,
+          );
+        }
+        position++;
+      }
     },
   },
 ];

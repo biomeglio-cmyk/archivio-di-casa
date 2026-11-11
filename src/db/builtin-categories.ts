@@ -79,3 +79,40 @@ export const BUILTIN_CATEGORIES: BuiltinCategory[] = [
     colors: { top: '#F5F5F7', bottom: '#DCDCE1', text: '#4A4A52' },
   },
 ];
+
+// ---- Since migration V7 ----
+// BUILTIN_CATEGORIES above is what V1 inserted (old names, 11 categories) and must stay as it is.
+// V7 renamed five of them and added "Pet" and "Password" before "Altro".
+
+export const V7_RENAMES: { symbol: SFSymbol; from: string; to: string }[] = [
+  { symbol: 'person.text.rectangle', from: 'Identità', to: 'Documenti' },
+  { symbol: 'car', from: 'Auto e veicoli', to: 'Auto' },
+  { symbol: 'cross.case', from: 'Spese per il 730', to: 'Spese 730' },
+  { symbol: 'bubbles.and.sparkles', from: 'Lavoro domestico', to: 'Colf' },
+  { symbol: 'backpack', from: 'Scuola e famiglia', to: 'Scuola' },
+];
+
+export const V7_NEW_CATEGORIES: (BuiltinCategory & { kind: string | null })[] = [
+  {
+    name: 'Pet',
+    symbol: 'pawprint',
+    examples: 'Libretto sanitario, microchip, vaccini',
+    colors: { top: '#F4F8E6', bottom: '#DCE8B0', text: '#4F5E14' },
+    kind: null,
+  },
+  {
+    name: 'Password',
+    symbol: 'key',
+    examples: 'Wi-Fi, account, PIN',
+    colors: { top: '#EEF1F0', bottom: '#C6D2CE', text: '#2F4A43' },
+    kind: 'password', // its documents have "Utente" and "Password" (kept in the iOS Keychain)
+  },
+];
+
+// The 13 built-in categories in their default order (and the order of the palette colors):
+// the V1 ones, with Pet and Password before "Altro"
+export const BUILTIN_ORDER: BuiltinCategory[] = [
+  ...BUILTIN_CATEGORIES.slice(0, -1),
+  ...V7_NEW_CATEGORIES,
+  BUILTIN_CATEGORIES[BUILTIN_CATEGORIES.length - 1],
+];

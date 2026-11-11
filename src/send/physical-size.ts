@@ -1,5 +1,5 @@
 // Physical size of a document on paper, used to turn pixels into effective ppi.
-// ID-1 cards (Identità, Tessere e card) are 85.6 × 54 mm; everything else is placed on an A4 page.
+// ID-1 cards (Documenti, Tessere e card) are 85.6 × 54 mm; everything else is placed on an A4 page.
 
 import type { Category } from '@/db/types';
 

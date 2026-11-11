@@ -85,8 +85,12 @@ export function listDocumentsWithExpiry(db: SQLiteDatabase): Promise<DocumentLis
   return listDocumentsWhere(db, 'WHERE d.expires_at IS NOT NULL', []);
 }
 
+// Fallback after the saved position (always set since V11): the old order, by deadline then title
+const BY_DEADLINE = 'd.expires_at IS NULL, d.expires_at, d.title';
+
+// A category grid, in the order chosen by dragging
 export function listDocumentsByCategory(db: SQLiteDatabase, categoryId: number): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.category_id = ?', [categoryId]);
+  return listDocumentsWhere(db, 'WHERE d.category_id = ?', [categoryId], `d.category_order IS NULL, d.category_order, ${BY_DEADLINE}`);
 }
 
 // "Preferiti" on Home, in the order chosen by the user
@@ -94,8 +98,25 @@ export function listPinnedDocuments(db: SQLiteDatabase): Promise<DocumentListIte
   return listDocumentsWhere(db, 'WHERE d.is_pinned = 1', [], 'd.pin_order, d.id');
 }
 
+// A person grid, in the order chosen by dragging
 export function listDocumentsByPerson(db: SQLiteDatabase, personId: number): Promise<DocumentListItem[]> {
-  return listDocumentsWhere(db, 'WHERE d.person_id = ?', [personId]);
+  return listDocumentsWhere(db, 'WHERE d.person_id = ?', [personId], `d.person_order IS NULL, d.person_order, ${BY_DEADLINE}`);
+}
+
+// After a drag in a category or person grid: the documents of that grid, in their new order
+export async function saveDocumentOrder(
+  db: SQLiteDatabase,
+  grid: 'category' | 'person',
+  orderedIds: number[],
+): Promise<void> {
+  // Constant column names, never from the caller's text
+  const sql =
+    grid === 'category'
+      ? 'UPDATE documents SET category_order = ? WHERE id = ?'
+      : 'UPDATE documents SET person_order = ? WHERE id = ?';
+  await db.withTransactionAsync(async () => {
+    for (const [index, id] of orderedIds.entries()) await db.runAsync(sql, index, id);
+  });
 }
 
 export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise<DocumentDetail | null> {

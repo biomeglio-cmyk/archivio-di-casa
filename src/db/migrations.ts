@@ -239,6 +239,56 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 11,
+    name: 'order of the documents in a category and in a person',
+    up: async (db) => {
+      await db.execAsync(`
+        -- Position of the document in its category grid and in its person grid (drag and drop)
+        ALTER TABLE documents ADD COLUMN category_order INTEGER;
+        ALTER TABLE documents ADD COLUMN person_order INTEGER;
+        -- Start from the order shown until now: by deadline (none last), then by title
+        UPDATE documents SET category_order = (
+          SELECT n FROM (
+            SELECT id, ROW_NUMBER() OVER (
+              PARTITION BY category_id ORDER BY expires_at IS NULL, expires_at, title, id) - 1 AS n
+            FROM documents) r
+          WHERE r.id = documents.id);
+        UPDATE documents SET person_order = (
+          SELECT n FROM (
+            SELECT id, ROW_NUMBER() OVER (
+              PARTITION BY person_id ORDER BY expires_at IS NULL, expires_at, title, id) - 1 AS n
+            FROM documents WHERE person_id IS NOT NULL) r
+          WHERE r.id = documents.id)
+        WHERE person_id IS NOT NULL;
+
+        -- A new document goes at the end of its category and of its person, and so does a
+        -- document moved to another category or person (form, "Sposta in Altro", demo data...)
+        CREATE TRIGGER documents_order_on_insert AFTER INSERT ON documents BEGIN
+          UPDATE documents SET
+            category_order = (SELECT COALESCE(MAX(category_order), -1) + 1 FROM documents
+                              WHERE category_id = NEW.category_id AND id <> NEW.id),
+            person_order = CASE WHEN NEW.person_id IS NULL THEN NULL ELSE
+                             (SELECT COALESCE(MAX(person_order), -1) + 1 FROM documents
+                              WHERE person_id = NEW.person_id AND id <> NEW.id) END
+          WHERE id = NEW.id;
+        END;
+        CREATE TRIGGER documents_order_on_category AFTER UPDATE OF category_id ON documents
+        WHEN NEW.category_id IS NOT OLD.category_id BEGIN
+          UPDATE documents SET category_order = (SELECT COALESCE(MAX(category_order), -1) + 1 FROM documents
+                                                 WHERE category_id = NEW.category_id AND id <> NEW.id)
+          WHERE id = NEW.id;
+        END;
+        CREATE TRIGGER documents_order_on_person AFTER UPDATE OF person_id ON documents
+        WHEN NEW.person_id IS NOT OLD.person_id BEGIN
+          UPDATE documents SET person_order = CASE WHEN NEW.person_id IS NULL THEN NULL ELSE
+                                                (SELECT COALESCE(MAX(person_order), -1) + 1 FROM documents
+                                                 WHERE person_id = NEW.person_id AND id <> NEW.id) END
+          WHERE id = NEW.id;
+        END;
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

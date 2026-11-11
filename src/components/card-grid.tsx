@@ -1,53 +1,55 @@
 import { router, type Href } from 'expo-router';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
 import { startAddCard } from '@/capture/start-add-card';
 import { CardFace } from '@/components/card-face';
 import { ThemedText } from '@/components/themed-text';
-import { TileGrid, TileScrollView } from '@/components/tile-grid';
+import { SortableTileGrid } from '@/components/sortable-tile-grid';
+import { TileScrollView } from '@/components/tile-grid';
 import type { DocumentListItem } from '@/db/types';
 import { useCardFront } from '@/hooks/use-card-front';
-import { usePressed } from '@/hooks/use-pressed';
-import type { TileSize } from '@/hooks/use-tile-size';
+import { useTileSize } from '@/hooks/use-tile-size';
 
 type Props = {
   cards: DocumentListItem[] | undefined;
   hrefFor: (card: DocumentListItem) => Href;
+  onReorder: (cards: DocumentListItem[]) => void; // after a drag, the new order to save
 };
 
-// "Tessere e card" as a wallet: the shared TileGrid with card-shaped tiles, then "Aggiungi carta".
-// Each card follows its "Copertina": Foto = the clean copy of its front, edge to edge;
-// Colore = its color with the name. The name (and the person) in small text under the card.
-export function CardGrid({ cards, hrefFor }: Props) {
+// "Tessere e card" as a wallet: card-shaped tiles, then "Aggiungi carta". Long press and drag a
+// card to reorder, like the other grids. Each card follows its "Copertina": Foto = the clean copy
+// of its front, edge to edge; Colore = its color with the name. The name (and the person) in
+// small text under the card.
+export function CardGrid({ cards, hrefFor, onReorder }: Props) {
+  const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const { width } = useTileSize();
+
   return (
-    <TileScrollView>
-      <TileGrid
-        items={cards}
-        keyFor={(card) => card.id}
-        cardShaped
-        add={{ label: 'Aggiungi carta', onPress: () => startAddCard('push') }}
-        renderTile={(card, size) => <CardTile card={card} size={size} href={hrefFor(card)} />}
-      />
-    </TileScrollView>
+    // Gesture root for the drag and drop
+    <GestureHandlerRootView style={styles.flex}>
+      <TileScrollView ref={scrollRef}>
+        {cards && (
+          <SortableTileGrid
+            items={cards}
+            keyFor={(card) => card.id}
+            labelFor={(card) => (card.personName ? `${card.title}, ${card.personName}` : card.title)}
+            renderTile={(card) => <CardFaceWithCaption card={card} width={width} />}
+            onOpen={(card) => router.push(hrefFor(card))}
+            onReorder={onReorder}
+            scrollableRef={scrollRef}
+            add={{ label: 'Aggiungi carta', onPress: () => startAddCard('push') }}
+            cardShaped
+          />
+        )}
+      </TileScrollView>
+    </GestureHandlerRootView>
   );
 }
 
-function CardTile({ card, size, href }: { card: DocumentListItem; size: TileSize; href: Href }) {
-  const { pressed, handlers } = usePressed();
-  return (
-    <Pressable
-      {...handlers}
-      onPress={() => router.push(href)}
-      accessibilityRole="button"
-      accessibilityLabel={card.personName ? `${card.title}, ${card.personName}` : card.title}
-      style={[{ width: size.width }, pressed && styles.pressed]}>
-      <CardFaceWithCaption card={card} width={size.width} />
-    </Pressable>
-  );
-}
-
-// The card (clean front or color) and its caption: the look only, also used by the sortable grid
-export function CardFaceWithCaption({ card, width }: { card: DocumentListItem; width: number }) {
+// The card (clean front or color) and its caption: the look only, the sortable grid handles the tap
+function CardFaceWithCaption({ card, width }: { card: DocumentListItem; width: number }) {
   const showPhoto = card.coverMode !== 'color';
   const photoUri = useCardFront(showPhoto ? card.firstImagePath : null);
   return (
@@ -68,8 +70,8 @@ export function CardFaceWithCaption({ card, width }: { card: DocumentListItem; w
 }
 
 const styles = StyleSheet.create({
-  pressed: {
-    opacity: 0.8,
+  flex: {
+    flex: 1,
   },
   cell: {
     gap: 6,

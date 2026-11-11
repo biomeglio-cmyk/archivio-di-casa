@@ -1,13 +1,14 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
-import { StyleSheet, View } from 'react-native';
+import { Alert, StyleSheet, View } from 'react-native';
 
 import { confirmDeletePerson } from '@/actions/delete-actions';
 import { DocumentGrid } from '@/components/document-grid';
 import { PersonAvatar } from '@/components/person-avatar';
 import { BRAND_COLOR } from '@/constants/brand';
-import { listDocumentsByPerson } from '@/db/documents';
+import { listDocumentsByPerson, saveDocumentOrder } from '@/db/documents';
+import type { DocumentListItem } from '@/db/types';
 import { getPerson } from '@/db/people';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
@@ -28,6 +29,15 @@ export default function PersonScreen() {
   // Selected documents in list order, so the PDF pages follow the grid
   const selectedIds = (documents ?? []).filter((d) => selection.selected.has(d.id)).map((d) => d.id);
 
+  // After a drag: the new order of this grid (the dashed tile stays last)
+  async function saveOrder(items: DocumentListItem[]) {
+    try {
+      await saveDocumentOrder(db, 'person', items.map((d) => d.id));
+    } catch (error) {
+      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
+    }
+  }
+
   function sendTogether() {
     router.push({ pathname: '/send', params: { ids: selectedIds.join(','), label: person?.name ?? '' } });
     selection.cancel();
@@ -41,6 +51,7 @@ export default function PersonScreen() {
         documents={documents}
         hrefFor={(doc) => ({ pathname: '/(tabs)/(family)/document/[id]', params: { id: String(doc.id) } })}
         selection={selection}
+        onReorder={saveOrder}
         onAdd={() => router.push({ pathname: '/new-document', params: { personId: String(personId) } })}
         header={
           person ? (

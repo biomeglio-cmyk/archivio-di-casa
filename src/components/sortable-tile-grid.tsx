@@ -4,6 +4,7 @@ import type Animated from 'react-native-reanimated';
 import type { AnimatedRef } from 'react-native-reanimated';
 import Sortable, { type SortableGridDragEndParams } from 'react-native-sortables';
 
+import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import { DashedAddTile } from '@/components/dashed-add-tile';
 import { TILE_COLUMNS, TILE_GAP, useTileSize } from '@/hooks/use-tile-size';
 
@@ -18,12 +19,14 @@ type Props<T> = {
   onReorder: (items: T[]) => void; // after a drag that changed the order
   scrollableRef?: AnimatedRef<Animated.ScrollView>; // the page scrolls when a tile nears its edge
   add?: { label: string; onPress: () => void }; // dashed tile, always last and never draggable
+  cardShaped?: boolean; // "Tessere e card": tiles as tall as a real card, as in TileGrid
 };
 
 // What the grid shows: the items, then (optionally) the dashed "add" tile
 type Cell<T> = { kind: 'item'; item: T } | { kind: 'add' };
 
-// The tile grid with drag and drop (Preferiti, categories in Home): same 2 columns, gaps and
+// The tile grid with drag and drop (Preferiti, categories in Home, documents of a category or a
+// person, the cards): same 2 columns, gaps and
 // tile size as TileGrid. Long press (~400 ms) → light vibration, the tile lifts and follows the
 // finger, the others make room; on release onReorder gets the new order. A tap opens the item;
 // moving the finger before 400 ms scrolls the page as usual.
@@ -38,8 +41,10 @@ export function SortableTileGrid<T>({
   onReorder,
   scrollableRef,
   add,
+  cardShaped = false,
 }: Props<T>) {
-  const tileSize = useTileSize(); // the width comes from the grid column
+  const gridSize = useTileSize(); // the width comes from the grid column
+  const tileSize = cardShaped ? { width: gridSize.width, minHeight: Math.round(gridSize.width / CARD_ASPECT_RATIO) } : gridSize;
   const { minHeight } = tileSize;
 
   const cells: Cell<T>[] = items.map((item) => ({ kind: 'item', item }));
@@ -82,7 +87,7 @@ export function SortableTileGrid<T>({
           return (
             add && (
               <Sortable.Handle mode="fixed-order">
-                <DashedAddTile label={add.label} size={tileSize} onPress={add.onPress} />
+                <DashedAddTile label={add.label} size={tileSize} onPress={add.onPress} radius={cardShaped ? 12 : 20} />
               </Sortable.Handle>
             )
           );

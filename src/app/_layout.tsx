@@ -225,6 +225,10 @@ export default function RootLayout() {
           />
           {/* Delete confirmations of the design: transparent, they draw their own dimmed background */}
           <Stack.Screen
+            name="delete-document/[id]"
+            options={{ presentation: 'transparentModal', animation: 'fade', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
+          <Stack.Screen
             name="delete-category/[id]"
             options={{ presentation: 'transparentModal', animation: 'fade', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
           />

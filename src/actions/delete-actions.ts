@@ -4,7 +4,6 @@ import { Alert } from 'react-native';
 
 import { isOtherCategory } from '@/db/categories';
 import { deletePerson } from '@/db/people';
-import { moveToTrash, TRASH_DAYS } from '@/db/trash';
 
 // Confirmation dialogs for destructive actions, shared by detail screens, swipe actions and menus.
 // `onDeleted` runs only if the user confirmed and the deletion succeeded.
@@ -13,25 +12,9 @@ function showError(error: unknown) {
   Alert.alert('Impossibile eliminare', error instanceof Error ? error.message : String(error));
 }
 
-export function confirmDeleteDocument(
-  db: SQLiteDatabase,
-  document: { id: number; title: string },
-  onDeleted?: () => void,
-) {
-  Alert.alert(
-    `Spostare "${document.title}" nel Cestino?`,
-    `Potrai ripristinarlo da Menu › Cestino per ${TRASH_DAYS} giorni, poi verrà eliminato con foto e PDF.`,
-    [
-      { text: 'Annulla', style: 'cancel' },
-      {
-        text: 'Sposta nel Cestino',
-        style: 'destructive',
-        onPress: () => {
-          moveToTrash(db, [document.id]).then(() => onDeleted?.(), showError);
-        },
-      },
-    ],
-  );
+// "Cancella" on a document: the design dialog (src/app/delete-document/[id].tsx); it goes to the Cestino
+export function confirmDeleteDocument(document: { id: number }) {
+  router.push({ pathname: '/delete-document/[id]', params: { id: String(document.id) } });
 }
 
 export function confirmDeletePerson(db: SQLiteDatabase, person: { id: number; name: string }, onDeleted?: () => void) {

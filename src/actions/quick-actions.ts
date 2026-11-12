@@ -38,7 +38,7 @@ export function documentQuickActions(db: SQLiteDatabase, document: DocumentListI
       label: 'Sposta nel cestino',
       symbol: 'trash',
       destructive: true,
-      onPress: () => confirmDeleteDocument(db, document),
+      onPress: () => confirmDeleteDocument(document),
     },
   ];
 }

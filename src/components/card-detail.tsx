@@ -3,7 +3,6 @@ import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { StatusBar } from 'expo-status-bar';
 import { SymbolView } from 'expo-symbols';
-import { useSQLiteContext } from 'expo-sqlite';
 import { useMemo, useState } from 'react';
 import { Modal, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { SvgXml } from 'react-native-svg';
@@ -38,7 +37,6 @@ type Props = {
 // Detail of a card ("Tessere e card"): the card on top, then the barcode photo on white,
 // ready to be shown at the checkout with the screen at full brightness
 export function CardDetail({ card, files, pin }: Props) {
-  const db = useSQLiteContext();
   const { width } = useWindowDimensions();
   const [fullScreen, setFullScreen] = useState(false);
   useMaxBrightness();
@@ -112,7 +110,7 @@ export function CardDetail({ card, files, pin }: Props) {
             pin={pin}
             onAdd={null}
             onEdit={() => router.push({ pathname: '/edit-card/[id]', params: { id: String(card.id) } })}
-            onDelete={() => confirmDeleteDocument(db, card)}
+            onDelete={() => confirmDeleteDocument(card)}
           />
         </View>
       </ScrollView>

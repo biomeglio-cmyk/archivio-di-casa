@@ -146,7 +146,7 @@ export default function DocumentDetail() {
               : null
           }
           onEdit={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
-          onDelete={() => confirmDeleteDocument(db, document)}
+          onDelete={() => confirmDeleteDocument(document)}
         />
       </ScrollView>
 

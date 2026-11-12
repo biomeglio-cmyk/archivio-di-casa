@@ -11,16 +11,17 @@ import { confirmDeleteCategory } from '@/actions/delete-actions';
 import { documentQuickActions } from '@/actions/quick-actions';
 import { ActionSheet, type SheetAction } from '@/components/action-sheet';
 import { Chip, ChipGroup } from '@/components/chip';
-import { DocumentTileFace } from '@/components/document-tile';
+import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
 import { FOLDER_ROW_INSET, FolderRow } from '@/components/folder-row';
 import { PrimaryButton } from '@/components/primary-button';
 import { QuickActionMenu, type QuickMenuTarget } from '@/components/quick-action-menu';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { SearchBar } from '@/components/search-bar';
+import { Segmented } from '@/components/segmented';
 import { SectionHeader } from '@/components/section-header';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { Text } from '@/components/text';
-import { TileScrollView } from '@/components/tile-grid';
+import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import { WhiteCard } from '@/components/white-card';
 import { Colors, Spacing, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -30,6 +31,7 @@ import type { Category, DocumentListItem } from '@/db/types';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { searchDocuments } from '@/search/search-documents';
 import { TAX_CATEGORY_KEY } from '@/send/tax-package';
+import { getFolderView, saveFolderView, type FolderView } from '@/settings/folder-view';
 import { categoryShadowRgb, categoryTint } from '@/utils/colors';
 import { groupByMonth, newItemLabel } from '@/utils/folder';
 
@@ -49,7 +51,8 @@ function countLabel(count: number): string {
 
 // A folder (docs/design/Archivio.dc.html): round buttons and inactive chips on the category tint,
 // title and "12 documenti · 1 da pagare", chips "Tutte" + one per Tipo in the folder (they wrap),
-// documents by month in white cards, the dashed "Nuovo…" tile. "…" opens the sheet with Modifica /
+// documents by month in white cards, the dashed "Nuovo…" tile. "Elenco / Griglia" (remembered)
+// switches to our tile grid: covers, long press for the quick menu, drag to reorder. "…" opens the sheet with Modifica /
 // Cancella categoria; the search button filters this folder.
 // Our extras in the same sheet: "Prepara per il commercialista" (Spese 730), "Seleziona e invia"
 // (several documents in one PDF) and "Riordina" (the tile grid with drag and drop, which sets the
@@ -65,6 +68,12 @@ export function FolderScreen({ category, documents }: Props) {
   const [sheetOpen, setSheetOpen] = useState(false);
   const [reordering, setReordering] = useState(false);
   const [menu, setMenu] = useState<QuickMenuTarget | null>(null);
+  const [view, setView] = useState<FolderView>(getFolderView); // Elenco / Griglia, remembered
+
+  function changeView(next: FolderView) {
+    setView(next);
+    saveFolderView(next);
+  }
 
   const { tint, onTint, dashed } = categoryTint(category.colors);
   const gradient = [category.colors.top, category.colors.bottom] as const;
@@ -87,6 +96,7 @@ export function FolderScreen({ category, documents }: Props) {
     const ids = new Set([...results.documents, ...results.inNotes].map((hit) => hit.document.id));
     shown = shown.filter((d) => ids.has(d.id));
   }
+  const filtered = activeType !== null || (searchOpen && query.trim().length > 0);
   const months = groupByMonth(shown);
   const selectedIds = documents.filter((d) => selection.selected.has(d.id)).map((d) => d.id);
 
@@ -202,6 +212,18 @@ export function FolderScreen({ category, documents }: Props) {
         </Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
 
+        {!reordering && (
+          <View style={styles.viewSwitch}>
+            <Segmented
+              values={['Elenco', 'Griglia']}
+              selectedIndex={view === 'list' ? 0 : 1}
+              onChange={(index) => changeView(index === 0 ? 'list' : 'grid')}
+              tint={tint}
+              activeColor={onTint}
+            />
+          </View>
+        )}
+
         {searchOpen && !reordering && (
           <View style={styles.search}>
             <SearchBar value={query} onChangeText={setQuery} placeholder={`Cerca in ${category.name}`} />
@@ -248,58 +270,106 @@ export function FolderScreen({ category, documents }: Props) {
               </ChipGroup>
             </View>
 
-            {months.length === 0 && documents.length > 0 && <Text style={styles.empty}>Nessun documento trovato.</Text>}
-
-            {months.map((month) => (
-              <View key={month.key} style={styles.month}>
-                <SectionHeader title={month.title} />
-                <WhiteCard style={styles.card}>
-                  {month.documents.map((document, index) => (
-                    <Fragment key={document.id}>
-                      {index > 0 && <View style={styles.separator} />}
-                      <FolderRow
+            {view === 'grid' ? (
+              <View style={styles.grid}>
+                {selection.selecting || filtered ? (
+                  // Ticking documents, or a filtered folder: fixed tiles (the order is set on the whole folder)
+                  <TileGrid
+                    items={shown}
+                    keyFor={(document) => document.id}
+                    renderTile={(document, size) => (
+                      <DocumentTile
                         document={document}
-                        actions={documentQuickActions(db, document, documentHref(document))}
-                        onPress={() => {
-                          if (!selection.selecting) router.push(documentHref(document));
-                          else if (document.imageCount > 0) selection.toggle(document.id);
-                        }}
-                        onLongPress={(rect) =>
-                          setMenu({
-                            rect,
-                            tile: (
-                              <View style={styles.menuTile}>
-                                <FolderRow
-                                  document={document}
-                                  actions={[]}
-                                  onPress={() => undefined}
-                                  onLongPress={() => undefined}
-                                />
-                              </View>
-                            ),
-                            actions: documentQuickActions(db, document, documentHref(document)),
-                          })
-                        }
+                        size={size}
+                        href={documentHref(document)}
                         selection={
                           selection.selecting
-                            ? { selected: selection.selected.has(document.id), disabled: document.imageCount === 0 }
+                            ? {
+                                selected: selection.selected.has(document.id),
+                                disabled: document.imageCount === 0,
+                                onToggle: () => selection.toggle(document.id),
+                              }
                             : undefined
                         }
                       />
-                    </Fragment>
-                  ))}
-                </WhiteCard>
+                    )}
+                  />
+                ) : (
+                  <SortableTileGrid
+                    items={documents}
+                    keyFor={(document) => document.id}
+                    labelFor={(document) => document.title}
+                    renderTile={(document) => <DocumentTileFace document={document} />}
+                    actionsFor={(document) => documentQuickActions(db, document, documentHref(document))}
+                    onOpen={(document) => router.push(documentHref(document))}
+                    onReorder={saveOrder}
+                    scrollableRef={scrollRef}
+                    add={{ label: newItemLabel(category.builtinKey), onPress: addDocument }}
+                  />
+                )}
               </View>
-            ))}
+            ) : (
+              <>
+                {months.length === 0 && documents.length > 0 && (
+                  <Text style={styles.empty}>Nessun documento trovato.</Text>
+                )}
 
-            {!selection.selecting && (
-              <Pressable
-                onPress={addDocument}
-                accessibilityRole="button"
-                style={({ pressed }) => [styles.add, { borderColor: dashed }, pressed && { backgroundColor: tint }]}>
-                <SymbolView name="plus" tintColor={onTint} size={24} />
-                <Text style={[styles.addLabel, { color: onTint }]}>{newItemLabel(category.builtinKey)}</Text>
-              </Pressable>
+                {months.map((month) => (
+                  <View key={month.key} style={styles.month}>
+                    <SectionHeader title={month.title} />
+                    <WhiteCard style={styles.card}>
+                      {month.documents.map((document, index) => (
+                        <Fragment key={document.id}>
+                          {index > 0 && <View style={styles.separator} />}
+                          <FolderRow
+                            document={document}
+                            actions={documentQuickActions(db, document, documentHref(document))}
+                            onPress={() => {
+                              if (!selection.selecting) router.push(documentHref(document));
+                              else if (document.imageCount > 0) selection.toggle(document.id);
+                            }}
+                            onLongPress={(rect) =>
+                              setMenu({
+                                rect,
+                                tile: (
+                                  <View style={styles.menuTile}>
+                                    <FolderRow
+                                      document={document}
+                                      actions={[]}
+                                      onPress={() => undefined}
+                                      onLongPress={() => undefined}
+                                    />
+                                  </View>
+                                ),
+                                actions: documentQuickActions(db, document, documentHref(document)),
+                              })
+                            }
+                            selection={
+                              selection.selecting
+                                ? { selected: selection.selected.has(document.id), disabled: document.imageCount === 0 }
+                                : undefined
+                            }
+                          />
+                        </Fragment>
+                      ))}
+                    </WhiteCard>
+                  </View>
+                ))}
+
+                {!selection.selecting && (
+                  <Pressable
+                    onPress={addDocument}
+                    accessibilityRole="button"
+                    style={({ pressed }) => [
+                      styles.add,
+                      { borderColor: dashed },
+                      pressed && { backgroundColor: tint },
+                    ]}>
+                    <SymbolView name="plus" tintColor={onTint} size={24} />
+                    <Text style={[styles.addLabel, { color: onTint }]}>{newItemLabel(category.builtinKey)}</Text>
+                  </Pressable>
+                )}
+              </>
             )}
           </>
         )}
@@ -371,6 +441,9 @@ const styles = StyleSheet.create({
     color: Colors.light.textSecondary,
   },
   search: {
+    marginTop: 18,
+  },
+  viewSwitch: {
     marginTop: 18,
   },
   chips: {

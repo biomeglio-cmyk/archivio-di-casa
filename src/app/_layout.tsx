@@ -139,11 +139,7 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="edit-document/[id]"
-            options={{
-              presentation: 'modal',
-              title: 'Modifica documento',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Modifica documento' }}
           />
           {/* "Aggiungi pagine" in the document detail: the pages editor of "Nuovo documento" */}
           <Stack.Screen
@@ -182,11 +178,7 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="new-document"
-            options={{
-              presentation: 'modal',
-              title: 'Nuovo documento',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Nuovo documento' }}
           />
           {/* "Impostazioni" from the side menu: a full page with its own back button */}
           <Stack.Screen name="settings" options={{ headerShown: false }} />

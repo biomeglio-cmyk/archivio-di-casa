@@ -1,11 +1,10 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 
 import { DocumentForm } from '@/components/document-form';
 import { FilesEditor, filesToSave, fromPending, type EditableFile } from '@/components/files-editor';
-import { insertDocument } from '@/db/documents';
+import { insertDocument, setPinned } from '@/db/documents';
 import { afterDocumentSaved } from '@/notifications/reminders';
 import { savePassword } from '@/security/password-vault';
 import { decodePendingFiles, type PendingFile } from '@/storage/pending-files';
@@ -30,6 +29,7 @@ export default function NewDocumentScreen() {
   return (
     <>
       <DocumentForm
+        heading="Nuovo documento"
         initial={{
           title: suggestTitle(captured),
           personId: params.personId ? Number(params.personId) : null,
@@ -38,8 +38,9 @@ export default function NewDocumentScreen() {
         files={(category) => <FilesEditor files={files} category={category} onChange={setFiles} />}
         hasPhoto={files.some((f) => f.kind === 'image')}
         autoFocusTitle={captured.length === 0}
-        onSubmit={async (input, password) => {
+        onSubmit={async (input, password, { pinned }) => {
           const id = await insertDocument(db, input, filesToSave(files).added);
+          if (pinned) await setPinned(db, id, true);
           // "Password" category: the password goes only to the iOS Keychain
           if (password !== null) await savePassword(id, password);
           await afterDocumentSaved(db, input.expiresAt);
@@ -48,9 +49,6 @@ export default function NewDocumentScreen() {
         }}
       />
 
-      <Stack.Toolbar placement="left">
-        <Stack.Toolbar.Button onPress={() => router.back()}>Annulla</Stack.Toolbar.Button>
-      </Stack.Toolbar>
     </>
   );
 }

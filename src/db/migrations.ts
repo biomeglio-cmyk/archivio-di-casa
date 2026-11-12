@@ -375,6 +375,38 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 18,
+    name: 'password entries: type, address, guest QR and preview',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Che cosa salvi" of a Password entry; NULL for every other document
+        ALTER TABLE documents ADD COLUMN pw_type TEXT CHECK (pw_type IN ('site', 'wifi', 'pin', 'other'));
+        -- "Altro": what it is ("Allarme"), offered again among the choices next time
+        ALTER TABLE documents ADD COLUMN pw_custom_type TEXT;
+        -- "Sito o app": its address
+        ALTER TABLE documents ADD COLUMN pw_url TEXT;
+        -- Wi-Fi: "QR per gli ospiti" on (1) or off (0)
+        ALTER TABLE documents ADD COLUMN pw_wifi_qr INTEGER NOT NULL DEFAULT 0;
+        -- "Anteprima": one of the 7 colors (its key) or 'custom' with its hex, an icon key,
+        -- or an image (relative path in documents/, backed up with the other files)
+        ALTER TABLE documents ADD COLUMN preview_color TEXT;
+        ALTER TABLE documents ADD COLUMN preview_hex TEXT;
+        ALTER TABLE documents ADD COLUMN preview_icon TEXT;
+        ALTER TABLE documents ADD COLUMN preview_image_path TEXT;
+        -- The Password entries so far: "Sito o app" when the name looks like an address, else "Altro"
+        UPDATE documents
+        SET pw_type = CASE
+              WHEN lower(title) LIKE 'http%' OR lower(title) LIKE 'www.%'
+                OR (title NOT LIKE '% %' AND title LIKE '%_._%') THEN 'site'
+              ELSE 'other' END,
+            pw_url = CASE
+              WHEN lower(title) LIKE 'http%' OR lower(title) LIKE 'www.%'
+                OR (title NOT LIKE '% %' AND title LIKE '%_._%') THEN title END
+        WHERE category_id IN (SELECT id FROM categories WHERE kind = 'password');
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

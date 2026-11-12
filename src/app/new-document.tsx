@@ -3,9 +3,12 @@ import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 
 import { DocumentForm } from '@/components/document-form';
+import { PasswordForm } from '@/components/password-form';
 import { FilesEditor, filesToSave, fromPending, type EditableFile } from '@/components/files-editor';
 import { ReadNotice } from '@/components/read-notice';
+import { getCategory } from '@/db/categories';
 import { insertDocument, setPinned } from '@/db/documents';
+import { useDbQuery } from '@/hooks/use-db-query';
 import { afterDocumentSaved } from '@/notifications/reminders';
 import { savePassword } from '@/security/password-vault';
 import { decodePendingFiles, type PendingFile } from '@/storage/pending-files';
@@ -39,6 +42,19 @@ export default function NewDocumentScreen() {
   // The pages can still be added, removed and reordered before saving
   const [files, setFiles] = useState<EditableFile[]>(() => captured.map(fromPending));
   const notice = readNotice(captured);
+  // "Nuovo…" in the Password folder: the Nuova password form (docs/design/NuovaPassword.dc.html)
+  const categoryId = params.categoryId ? Number(params.categoryId) : null;
+  const { data: category } = useDbQuery((d) => (categoryId ? getCategory(d, categoryId) : Promise.resolve(null)), [categoryId]);
+  if (categoryId !== null && category === undefined) return null; // still reading the folder
+  if (category?.isPassword) {
+    return (
+      <PasswordForm
+        existing={null}
+        categoryId={category.id}
+        personId={params.personId ? Number(params.personId) : null}
+      />
+    );
+  }
 
   return (
     <DocumentForm

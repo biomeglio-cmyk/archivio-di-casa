@@ -7,6 +7,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import type { QuickAction } from '@/actions/quick-actions';
 import { accessibilityActionsOf, runAccessibilityAction } from '@/actions/quick-actions';
 import { IconSquare } from '@/components/icon-square';
+import { PasswordPreviewTile } from '@/components/password-preview';
 import type { TileRect } from '@/components/quick-action-menu';
 import { StatusBadge } from '@/components/status-badge';
 import { Text } from '@/components/text';
@@ -63,7 +64,10 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
         accessibilityActions={selection ? undefined : accessibilityActionsOf(actions)}
         onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
         style={[styles.row, pressed && styles.pressed, selection?.disabled && styles.disabled]}>
-        {showPhoto && document.firstImagePath ? (
+        {document.password ? (
+          // A Password entry: its "Anteprima" (color and icon, or its image)
+          <PasswordPreviewTile info={document.password} size={44} shadow={false} />
+        ) : showPhoto && document.firstImagePath ? (
           <Image
             source={{ uri: resolveDocumentFile(document.firstImagePath).uri }}
             style={styles.photo}

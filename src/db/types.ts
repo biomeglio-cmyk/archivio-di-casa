@@ -62,11 +62,32 @@ export type FamilyDocument = {
   paymentStatus: PaymentStatus | null; // "Da pagare" / "Pagata"; null = no status
   paidAt: string | null; // 'YYYY-MM-DD' when marked "Pagata"
   amountCents: number | null; // "Importo" in euro cents
+  password: PasswordInfo | null; // only Password entries (docs/design/NuovaPassword.dc.html)
   createdAt: string;
   updatedAt: string;
 };
 
 export type PaymentStatus = 'due' | 'paid';
+
+// "Che cosa salvi" of a Password entry
+export type PasswordType = 'site' | 'wifi' | 'pin' | 'other';
+
+// How an entry looks in the lists: a color (one of 7, or 'custom' with its hex) and an icon, or an image
+export type PasswordPreview = {
+  color: string | null; // key of PASSWORD_COLORS, 'custom', or null = the first (Acqua)
+  hex: string | null; // '#RRGGBB' when color is 'custom'
+  icon: string | null; // key of PASSWORD_ICONS; null = the icon of the type
+  imagePath: string | null; // relative to Paths.document; wins over color and icon
+};
+
+// The Password fields that live in SQLite (the password itself is ONLY in the Keychain)
+export type PasswordInfo = {
+  type: PasswordType;
+  customType: string | null; // "Altro": "Allarme", "Cassaforte"…
+  url: string | null; // "Sito o app"
+  wifiQr: boolean; // Wi-Fi: "QR per gli ospiti"
+  preview: PasswordPreview;
+};
 
 // How a document looks in the grids: its front photo full-bleed, or a color with the title
 export type CoverMode = 'photo' | 'color';
@@ -130,6 +151,14 @@ export type DocumentRecord = {
   payment_status: string | null;
   paid_at: string | null;
   amount_cents: number | null;
+  pw_type: string | null;
+  pw_custom_type: string | null;
+  pw_url: string | null;
+  pw_wifi_qr: number | null;
+  preview_color: string | null;
+  preview_hex: string | null;
+  preview_icon: string | null;
+  preview_image_path: string | null;
   created_at: string;
   updated_at: string;
 };

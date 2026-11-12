@@ -32,7 +32,7 @@ const SOTTOMANO: GuideRow[] = [
   ['#F2A08A', '#E07A5F', '224, 122, 95', '#FCEEE9', '#A9472C'], // Colf
   ['#E79BD9', '#D274C2', '210, 116, 194', '#FCEDF9', '#9A2F88'], // Scuola
   ['#A8CF6E', '#86B347', '134, 179, 71', '#F0F7E5', '#4F7420'], // Pet
-  ['#8FA3B8', '#6B8299', '107, 130, 153', '#EDF1F5', '#3E5468'], // Password
+  ['#5CC8D8', '#2FA3B8', '47, 163, 184', '#E3F6F9', '#1A6F7E'], // Password (aqua of NuovaPassword.dc.html)
   ['#A9AFC4', '#858CA6', '110, 118, 145', '#F0F1F5', '#4B5068'], // Altro
 ];
 const fromGuide = ([top, bottom, shadow, tint, onTint]: GuideRow): CategoryColors => ({

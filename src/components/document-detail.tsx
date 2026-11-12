@@ -14,6 +14,7 @@ import { DeadlineSection } from '@/components/deadline-section';
 import { Group, Row } from '@/components/grouped-list';
 import { IconSquare } from '@/components/icon-square';
 import { PasswordCard } from '@/components/password-card';
+import { PasswordDetail } from '@/components/password-detail';
 import { PersonAvatar } from '@/components/person-avatar';
 import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
@@ -75,6 +76,16 @@ export default function DocumentDetail() {
   // Cards have their own screen: the card, its barcode on white, full brightness
   if (document.category.isCards) {
     return files ? <CardDetail card={document} files={files} pin={pin} /> : <Stack.Screen options={{ title: '' }} />;
+  }
+
+  // Password entries: their own screen in the style of Nuova password
+  if (document.category.isPassword) {
+    return (
+      <>
+        <Stack.Screen options={{ title: document.title, headerShown: false }} />
+        <PasswordDetail document={document} />
+      </>
+    );
   }
 
   return (

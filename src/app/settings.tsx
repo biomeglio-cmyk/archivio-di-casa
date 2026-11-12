@@ -12,6 +12,7 @@ import { rateApp, turnOnAppLock } from '@/actions/app-actions';
 import { daysSinceLastBackup } from '@/backup/backup-layout';
 import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { resyncCalendarAlarms } from '@/calendar/calendar-sync';
+import { FitLine } from '@/components/fit-line';
 import { FreeUsageCard } from '@/components/free-usage-card';
 import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
@@ -26,6 +27,7 @@ import { PALETTES } from '@/constants/palettes';
 import { getPreferences, savePreferences, type Preferences } from '@/settings/preferences';
 import { FREE_LIMIT_ENFORCED, setLimitPreview, useLimitPreview } from '@/settings/free-limit';
 import { chooseAction } from '@/utils/action-sheet';
+import { daysBefore } from '@/constants/deadline-options';
 
 // "Avviso predefinito": how many days before a deadline, for documents without their own value
 const DAYS_OPTIONS = [1, 2, 3, 7, 15, 30, 60];
@@ -40,9 +42,7 @@ const TINTS = {
 } as const;
 type Tint = (typeof TINTS)[keyof typeof TINTS];
 
-function daysLabel(days: number): string {
-  return days === 1 ? '1 giorno prima' : `${days} giorni prima`;
-}
+const daysLabel = daysBefore; // "1 giorno prima", "7 giorni prima"…
 
 function timeLabel(hour: number, minute: number): string {
   return `${hour}:${String(minute).padStart(2, '0')}`;
@@ -350,23 +350,41 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, expanded,
       <View style={[styles.icon, { backgroundColor: tint.background }]}>
         <SymbolView name={symbol} tintColor={tint.icon} size={19} />
       </View>
-      <View style={styles.rowTexts}>
-        <Text style={styles.rowLabel}>{label}</Text>
-        {subtitle && <Text style={styles.rowSubtitle}>{subtitle}</Text>}
-      </View>
-      {trailing ?? (
+      {value !== undefined && trailing === undefined ? (
+        // Label and value on one line when they fit, else the value under the label (measured)
+        <FitLine
+          start={
+            <View>
+              <Text style={styles.rowLabel}>{label}</Text>
+              {subtitle && <Text style={styles.rowSubtitle}>{subtitle}</Text>}
+            </View>
+          }
+          end={
+            <View style={styles.rowEnd}>
+              <Text style={styles.rowValue}>{value}</Text>
+              <SymbolView
+                name={expanded ? 'chevron.down' : 'chevron.right'}
+                tintColor={Colors.light.textSecondary}
+                size={16}
+                weight="semibold"
+              />
+            </View>
+          }
+        />
+      ) : (
         <>
-          {value !== undefined && (
-            <Text style={styles.rowValue} numberOfLines={1}>
-              {value}
-            </Text>
+          <View style={styles.rowTexts}>
+            <Text style={styles.rowLabel}>{label}</Text>
+            {subtitle && <Text style={styles.rowSubtitle}>{subtitle}</Text>}
+          </View>
+          {trailing ?? (
+            <SymbolView
+              name={expanded ? 'chevron.down' : 'chevron.right'}
+              tintColor={Colors.light.textSecondary}
+              size={16}
+              weight="semibold"
+            />
           )}
-          <SymbolView
-            name={expanded ? 'chevron.down' : 'chevron.right'}
-            tintColor={Colors.light.textSecondary}
-            size={16}
-            weight="semibold"
-          />
         </>
       )}
     </Pressable>
@@ -461,9 +479,13 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: Colors.light.textSecondary,
   },
+  rowEnd: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+  },
   rowValue: {
     flexShrink: 1,
-    maxWidth: '45%',
     fontSize: 14,
     fontFamily: FONTS.regular,
     color: Colors.light.textSecondary,

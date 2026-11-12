@@ -2,6 +2,9 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { chooseAction } from '@/utils/action-sheet';
+
+import { FitLine } from '@/components/fit-line';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
@@ -65,24 +68,28 @@ export function Row({
       {/* The separator is the top line of this part, so it starts after the icon */}
       <View
         style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator }]}>
-        <ThemedText style={[styles.label, disabled && { color: theme.textSecondary }]} numberOfLines={2}>
-          {label}
-        </ThemedText>
-        {value !== undefined && (
-          <ThemedText themeColor="textSecondary" style={styles.value}>
-            {value}
-          </ThemedText>
-        )}
-        {count !== undefined && (
-          <ThemedText
-            themeColor="textSecondary"
-            style={[styles.value, alert && count > 0 && { color: DANGER_COLOR, fontWeight: 600 }]}>
-            {String(count)}
-          </ThemedText>
-        )}
-        {children !== undefined && <View style={styles.control}>{children}</View>}
-        {value === undefined && count === undefined && children === undefined && <View style={styles.spacer} />}
-        {onPress && !disabled && <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />}
+        {/* Label and value on one line when they fit, else the value under the label (measured) */}
+        <FitLine
+          start={<ThemedText style={disabled ? { color: theme.textSecondary } : undefined}>{label}</ThemedText>}
+          end={
+            <View style={styles.end}>
+              {value !== undefined && (
+                <ThemedText themeColor="textSecondary" style={styles.value}>
+                  {value}
+                </ThemedText>
+              )}
+              {count !== undefined && (
+                <ThemedText
+                  themeColor="textSecondary"
+                  style={[styles.value, alert && count > 0 && { color: DANGER_COLOR, fontWeight: 600 }]}>
+                  {String(count)}
+                </ThemedText>
+              )}
+              {children}
+              {onPress && !disabled && <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />}
+            </View>
+          }
+        />
       </View>
     </>
   );
@@ -140,22 +147,52 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingRight: PADDING,
   },
-  // The label never gives up its place to a long value (it may wrap with large text)
-  label: {
-    flexShrink: 0,
-    maxWidth: '55%',
-  },
-  spacer: {
-    flex: 1,
-  },
-  // A control (Picker, Switch…) on the right: right-aligned, on one line, never past the edge
-  control: {
-    flex: 1,
-    alignItems: 'flex-end',
-    overflow: 'hidden',
+  end: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   value: {
-    flex: 1,
-    textAlign: 'right',
+    flexShrink: 1,
+  },
+  choiceText: {
+    flexShrink: 1,
+    color: BRAND_COLOR,
+  },
+  choice: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    minHeight: 32,
   },
 });
+
+type ChoiceProps<T> = {
+  title: string; // of the iOS menu ("Promemoria")
+  value: T;
+  options: T[];
+  labelFor: (option: T) => string; // what the row shows
+  menuLabelFor?: (option: T) => string; // what the menu shows (e.g. with "(predefinito)")
+  onChange: (option: T) => void;
+};
+
+// The value of a row that opens a choice: our own text (complete, never cut by a native button)
+// with the iOS chevrons; a tap opens the native menu of the options
+export function Choice<T>({ title, value, options, labelFor, menuLabelFor = labelFor, onChange }: ChoiceProps<T>) {
+  async function open() {
+    const index = await chooseAction(title, options.map(menuLabelFor));
+    if (index !== null) onChange(options[index]);
+  }
+  const label = labelFor(value);
+  return (
+    <Pressable
+      onPress={open}
+      accessibilityRole="button"
+      accessibilityLabel={`${title}: ${label}`}
+      hitSlop={8}
+      style={({ pressed }) => [styles.choice, pressed && { opacity: 0.6 }]}>
+      <ThemedText style={styles.choiceText}>{label}</ThemedText>
+      <SymbolView name="chevron.up.chevron.down" tintColor={BRAND_COLOR} size={13} weight="semibold" />
+    </Pressable>
+  );
+}

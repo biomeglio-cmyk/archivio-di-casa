@@ -1,15 +1,21 @@
-import { Host, Picker } from '@expo/ui';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 
 import { DateCalendar } from '@/components/date-calendar';
-import { Group, Row } from '@/components/grouped-list';
+import { Choice, Group, Row } from '@/components/grouped-list';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
-import { EVERY_OPTIONS, reminderChoices, reminderPickerValue, reminderToSave, shortReminderLabel } from '@/constants/deadline-options';
+import {
+  EVERY_OPTIONS,
+  reminderChoiceLabel,
+  reminderChoices,
+  reminderLabel,
+  reminderPickerValue,
+  reminderToSave,
+} from '@/constants/deadline-options';
 import { Colors, Spacing } from '@/constants/theme';
 import { getDocumentDetail, saveDocumentDeadline } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
@@ -43,9 +49,6 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
   const db = useSQLiteContext();
   const theme = useTheme();
   const { defaultReminderDays } = usePreferences();
-  // Characters that fit right of "Promemoria" (page margins, card padding, icon, label, chevrons)
-  const { width, fontScale } = useWindowDimensions();
-  const roomChars = Math.floor((width - 2 * Spacing.side - 32 - 36 - 110 * fontScale - 40) / (8.6 * fontScale));
   const [date, setDate] = useState(() => (document.expiresAt ? parseISODate(document.expiresAt) : new Date()));
   const [repeatUnit, setRepeatUnit] = useState<RepeatUnit | 'never'>(document.repeat?.unit ?? 'never');
   const [repeatEvery, setRepeatEvery] = useState(document.repeat?.every ?? 1);
@@ -98,34 +101,34 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
 
         <Group footer="Il promemoria arriva sul telefono; con il calendario attivo la scadenza è anche in «Sottomano».">
           <Row label="Si ripete" symbol="arrow.clockwise" first>
-            <Host matchContents>
-              <Picker selectedValue={repeatUnit} onValueChange={setRepeatUnit}>
-                <Picker.Item label="Mai" value="never" />
-                {REPEAT_UNITS.map((unit) => (
-                  <Picker.Item key={unit} label={capitalize(unitName(unit, 2))} value={unit} />
-                ))}
-              </Picker>
-            </Host>
+            <Choice<RepeatUnit | 'never'>
+              title="Si ripete"
+              value={repeatUnit}
+              options={['never', ...REPEAT_UNITS]}
+              labelFor={(unit) => (unit === 'never' ? 'Mai' : capitalize(unitName(unit, 2)))}
+              onChange={setRepeatUnit}
+            />
           </Row>
           {repeatUnit !== 'never' && (
             <Row label="Ogni" symbol="number">
-              <Host matchContents>
-                <Picker selectedValue={repeatEvery} onValueChange={setRepeatEvery}>
-                  {EVERY_OPTIONS.map((n) => (
-                    <Picker.Item key={n} label={`${n} ${unitName(repeatUnit, n)}`} value={n} />
-                  ))}
-                </Picker>
-              </Host>
+              <Choice
+                title="Ogni"
+                value={repeatEvery}
+                options={EVERY_OPTIONS.slice(0, 31)}
+                labelFor={(n) => `${n} ${unitName(repeatUnit, n)}`}
+                onChange={setRepeatEvery}
+              />
             </Row>
           )}
           <Row label="Promemoria" symbol="bell">
-            <Host matchContents>
-              <Picker selectedValue={reminderDays} onValueChange={setReminderDays}>
-                {reminderChoices(reminderDays).map((days) => (
-                  <Picker.Item key={days} label={shortReminderLabel(days, defaultReminderDays, roomChars)} value={days} />
-                ))}
-              </Picker>
-            </Host>
+            <Choice
+              title="Promemoria"
+              value={reminderDays}
+              options={reminderChoices(reminderDays)}
+              labelFor={(days) => reminderLabel(days, defaultReminderDays)}
+              menuLabelFor={(days) => reminderChoiceLabel(days, defaultReminderDays)}
+              onChange={setReminderDays}
+            />
           </Row>
         </Group>
 

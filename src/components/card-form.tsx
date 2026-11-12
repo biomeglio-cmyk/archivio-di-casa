@@ -1,4 +1,3 @@
-import { Host, Picker } from '@expo/ui';
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView } from 'expo-symbols';
@@ -10,6 +9,7 @@ import { scanDocument } from '@/capture/scan-document';
 import { GeneratedCode } from '@/components/barcode-view';
 import { CardCapture, type CardCaptureResult, type CardStep } from '@/components/card-capture';
 import { CoverField } from '@/components/cover-field';
+import { Choice } from '@/components/grouped-list';
 import { PrimaryButton } from '@/components/primary-button';
 import { Segmented } from '@/components/segmented';
 import { Text, TextInput } from '@/components/text';
@@ -23,7 +23,7 @@ import type { CoverMode } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { barcodeTypeName, codeKindOf, generateBarcode, typeForKind, type CodeKind } from '@/utils/barcode';
 
-const NONE = 0; // Picker values must be numbers: 0 = no person (ids start at 1)
+const NONE = 0; // no person (ids start at 1)
 const DARK = '#12142A';
 const MINT_TINT = '#E6F7F0';
 const MINT_TEXT = '#1F7A5A';
@@ -285,14 +285,13 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
               />
             </FieldRow>
             <FieldRow label="Intestata a" last>
-              <Host matchContents>
-                <Picker selectedValue={personId} onValueChange={setPersonId}>
-                  <Picker.Item label="Nessuno" value={NONE} />
-                  {(people ?? []).map((p) => (
-                    <Picker.Item key={p.id} label={p.name} value={p.id} />
-                  ))}
-                </Picker>
-              </Host>
+              <Choice
+                title="Intestata a"
+                value={personId}
+                options={[NONE, ...(people ?? []).map((p) => p.id)]}
+                labelFor={(id) => (id === NONE ? 'Nessuno' : (people?.find((p) => p.id === id)?.name ?? 'Nessuno'))}
+                onChange={setPersonId}
+              />
             </FieldRow>
           </WhiteCard>
 

@@ -11,27 +11,23 @@ export const DEFAULT_REMINDER = -2;
 export const NO_REMINDER = -1;
 export const REMINDER_DAYS = [0, 1, 2, 7, 15, 30, 60, 90];
 
-function daysBefore(days: number): string {
+// "Il giorno stesso", "1 giorno prima", "2 giorni prima", "7 giorni prima"…
+export function daysBefore(days: number): string {
   if (days === 0) return 'Il giorno stesso';
   if (days === 1) return '1 giorno prima';
-  if (days === 7) return '1 settimana prima';
   return `${days} giorni prima`;
 }
 
+// The value shown in a row: the default is written as its days, without "(predefinito)"
 export function reminderLabel(days: number, defaultDays: number): string {
-  if (days === DEFAULT_REMINDER) return `Predefinito (${daysBefore(defaultDays).toLowerCase()})`;
-  if (days === NO_REMINDER) return 'Nessun promemoria';
+  if (days === DEFAULT_REMINDER) return daysBefore(defaultDays);
+  if (days === NO_REMINDER) return 'Nessuno';
   return daysBefore(days);
 }
 
-// Short label for a narrow row ("Promemoria" in Scadenza): "1 settimana prima", and
-// "(predefinito)" after it only when there is room for it (`roomChars`: characters that fit)
-export function shortReminderLabel(days: number, defaultDays: number, roomChars: number): string {
-  if (days === NO_REMINDER) return 'Nessuno';
-  if (days !== DEFAULT_REMINDER) return daysBefore(days);
-  const plain = daysBefore(defaultDays);
-  const marked = `${plain} (predefinito)`;
-  return marked.length <= roomChars ? marked : plain;
+// In the list of choices the default is marked, so it isn't mistaken for the same days chosen by hand
+export function reminderChoiceLabel(days: number, defaultDays: number): string {
+  return days === DEFAULT_REMINDER ? `${daysBefore(defaultDays)} (predefinito)` : reminderLabel(days, defaultDays);
 }
 
 // The saved reminder_days of a document as a picker value, and back

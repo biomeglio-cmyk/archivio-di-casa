@@ -1,11 +1,10 @@
-import { Host, Picker } from '@expo/ui';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/primary-button';
-import { Group, Row } from '@/components/grouped-list';
+import { Choice, Group, Row } from '@/components/grouped-list';
 import { Segmented } from '@/components/segmented';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
@@ -79,13 +78,7 @@ export default function TaxPackageScreen() {
               : undefined
           }>
           <Row label="Anno" symbol="calendar" first>
-            <Host matchContents>
-              <Picker selectedValue={year} onValueChange={setYear}>
-                {(years ?? [year]).map((y) => (
-                  <Picker.Item key={y} label={String(y)} value={y} />
-                ))}
-              </Picker>
-            </Host>
+            <Choice title="Anno" value={year} options={years ?? [year]} labelFor={String} onChange={setYear} />
           </Row>
         </Group>
 

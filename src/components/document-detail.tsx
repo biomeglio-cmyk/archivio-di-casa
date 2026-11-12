@@ -309,7 +309,7 @@ function DocumentScreen({
             {!document.expiresAt
               ? 'Aggiungi una scadenza per avere un promemoria'
               : reminderOn
-                ? `${reminderLabel(reminderPickerValue(document.reminderDays), defaultReminderDays).replace(/^Predefinito \((.*)\)$/, '$1')} della scadenza`
+                ? `${reminderLabel(reminderPickerValue(document.reminderDays), defaultReminderDays)} della scadenza`
                 : 'Nessun promemoria'}
           </Text>
         </View>

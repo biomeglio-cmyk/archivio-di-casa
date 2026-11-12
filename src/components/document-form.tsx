@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CoverField } from '@/components/cover-field';
 import { DateCalendar } from '@/components/date-calendar';
+import { FitLine } from '@/components/fit-line';
 import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Segmented } from '@/components/segmented';
@@ -15,6 +16,7 @@ import { WhiteCard } from '@/components/white-card';
 import {
   EVERY_OPTIONS,
   reminderChoices,
+  reminderChoiceLabel,
   reminderLabel,
   reminderPickerValue,
   reminderToSave,
@@ -286,54 +288,66 @@ export function DocumentForm({
                 <DateCalendar value={expiryDate} onChange={setExpiryDate} />
                 <View style={styles.remind}>
                   <IconBox symbol="bell" tint="#FFFFFF" color={Colors.light.indigo} />
-                  <Text style={styles.remindLabel}>Avvisami</Text>
-                  <SelectBox
-                    small
-                    value={reminderLabel(reminderDays, defaultReminderDays)}
-                    accessibilityLabel="Quando avvisarti"
-                    onPress={() =>
-                      chooseFrom(
-                        'Avvisami',
-                        reminderChoices(reminderDays),
-                        (d) => reminderLabel(d, defaultReminderDays),
-                        setReminderDays,
-                      )
+                  <FitLine
+                    start={<Text style={styles.remindLabel}>Avvisami</Text>}
+                    end={
+                      <SelectBox
+                        small
+                        value={reminderLabel(reminderDays, defaultReminderDays)}
+                        accessibilityLabel="Quando avvisarti"
+                        onPress={() =>
+                          chooseFrom(
+                            'Avvisami',
+                            reminderChoices(reminderDays),
+                            (d) => reminderChoiceLabel(d, defaultReminderDays),
+                            setReminderDays,
+                          )
+                        }
+                      />
                     }
                   />
                 </View>
                 {/* Ours: a deadline that comes back */}
                 <View style={styles.remind}>
                   <IconBox symbol="arrow.clockwise" tint="#FFFFFF" color={Colors.light.indigo} />
-                  <Text style={styles.remindLabel}>Si ripete</Text>
-                  <SelectBox
-                    small
-                    value={repeatUnit === 'never' ? 'Mai' : `Ogni ${repeatEvery} ${unitName(repeatUnit, repeatEvery)}`}
-                    accessibilityLabel="Si ripete"
-                    onPress={() =>
-                      chooseFrom<RepeatUnit | 'never'>(
-                        'Si ripete',
-                        ['never', ...REPEAT_UNITS],
-                        (unit) => (unit === 'never' ? 'Mai' : capitalize(unitName(unit, 2))),
-                        setRepeatUnit,
-                      )
+                  <FitLine
+                    start={<Text style={styles.remindLabel}>Si ripete</Text>}
+                    end={
+                      <SelectBox
+                        small
+                        value={repeatUnit === 'never' ? 'Mai' : `Ogni ${repeatEvery} ${unitName(repeatUnit, repeatEvery)}`}
+                        accessibilityLabel="Si ripete"
+                        onPress={() =>
+                          chooseFrom<RepeatUnit | 'never'>(
+                            'Si ripete',
+                            ['never', ...REPEAT_UNITS],
+                            (unit) => (unit === 'never' ? 'Mai' : capitalize(unitName(unit, 2))),
+                            setRepeatUnit,
+                          )
+                        }
+                      />
                     }
                   />
                 </View>
                 {repeatUnit !== 'never' && (
                   <View style={styles.remind}>
                     <IconBox symbol="number" tint="#FFFFFF" color={Colors.light.indigo} />
-                    <Text style={styles.remindLabel}>Ogni</Text>
-                    <SelectBox
-                      small
-                      value={`${repeatEvery} ${unitName(repeatUnit, repeatEvery)}`}
-                      accessibilityLabel="Ogni"
-                      onPress={() =>
-                        chooseFrom(
-                          'Ogni',
-                          EVERY_OPTIONS.slice(0, 31),
-                          (n) => `${n} ${unitName(repeatUnit, n)}`,
-                          setRepeatEvery,
-                        )
+                    <FitLine
+                      start={<Text style={styles.remindLabel}>Ogni</Text>}
+                      end={
+                        <SelectBox
+                          small
+                          value={`${repeatEvery} ${unitName(repeatUnit, repeatEvery)}`}
+                          accessibilityLabel="Ogni"
+                          onPress={() =>
+                            chooseFrom(
+                              'Ogni',
+                              EVERY_OPTIONS.slice(0, 31),
+                              (n) => `${n} ${unitName(repeatUnit, n)}`,
+                              setRepeatEvery,
+                            )
+                          }
+                        />
                       }
                     />
                   </View>
@@ -552,8 +566,7 @@ function SelectBox({
       accessibilityLabel={`${accessibilityLabel}, ${value}`}
       style={({ pressed }) => [small ? styles.selectSmall : styles.select, pressed && styles.pressed]}>
       <Text
-        style={[small ? styles.selectSmallText : styles.selectText, placeholder && styles.placeholder]}
-        numberOfLines={1}>
+        style={[small ? styles.selectSmallText : styles.selectText, placeholder && styles.placeholder]}>
         {value}
       </Text>
       <SymbolView name="chevron.down" tintColor={Colors.light.textSecondary} size={13} weight="semibold" />
@@ -670,7 +683,6 @@ const styles = StyleSheet.create({
   },
   selectSmall: {
     minHeight: 38,
-    maxWidth: '60%',
     paddingHorizontal: 12,
     borderRadius: 12,
     backgroundColor: '#FFFFFF',
@@ -751,7 +763,6 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.light.paleLilac,
   },
   remindLabel: {
-    flex: 1,
     fontSize: 14,
     fontFamily: FONTS.medium,
     color: Colors.light.text,

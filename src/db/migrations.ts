@@ -364,6 +364,17 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 17,
+    name: 'who a category is for',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Per chi è": the person of a category (new documents in it start with that person);
+        -- NULL = "Tutta la famiglia". Deleting the person leaves the category for everyone.
+        ALTER TABLE categories ADD COLUMN person_id INTEGER REFERENCES people(id) ON DELETE SET NULL;
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

@@ -35,6 +35,7 @@ export type Category = {
   followsPalette: boolean; // built-in with the colors of "Aspetto" (not a color picked by the user)
   isCards: boolean; // "Tessere e card": shown as a wallet of cards
   isPassword: boolean; // "Password": its documents have "Utente" and a password in the Keychain
+  personId: number | null; // "Per chi è"; null = "Tutta la famiglia"
 };
 
 export type FamilyDocument = {
@@ -101,6 +102,7 @@ export type CategoryRecord = {
   builtin_key: string | null;
   hidden: number;
   custom_colors: number;
+  person_id: number | null;
 };
 
 export type DocumentRecord = {

@@ -115,13 +115,7 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="category-form"
-            options={{
-              presentation: 'formSheet',
-              headerShown: false,
-              sheetGrabberVisible: true,
-              sheetCornerRadius: Radius.sheet,
-              sheetAllowedDetents: [0.9],
-            }}
+            options={{ presentation: 'modal', headerShown: false }}
           />
           <Stack.Screen
             name="person-form"

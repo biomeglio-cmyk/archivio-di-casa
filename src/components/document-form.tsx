@@ -84,7 +84,9 @@ export function DocumentForm({
 
   const [title, setTitle] = useState(initial?.title ?? '');
   const [categoryId, setCategoryId] = useState<number | null>(initial?.categoryId ?? null);
-  const [personId, setPersonId] = useState<number | null>(initial?.personId ?? null);
+  const [chosenPerson, setPersonId] = useState<number | null>(initial?.personId ?? null);
+  // A new document without a person follows the "Per chi è" of its category until one is chosen
+  const [personTouched, setPersonTouched] = useState(onDelete !== undefined || initial?.personId != null);
   const [docType, setDocType] = useState<string | null>(initial?.docType ?? null);
   const [number, setNumber] = useState(initial?.number ?? '');
   const [hasExpiry, setHasExpiry] = useState(Boolean(initial?.expiresAt));
@@ -107,6 +109,7 @@ export function DocumentForm({
   const [saving, setSaving] = useState(false);
 
   const selectedCategory = categories?.find((c) => c.id === categoryId);
+  const personId = personTouched ? chosenPerson : (selectedCategory?.personId ?? null);
   const { data: usedTypes } = useDbQuery(
     (db) => (categoryId === null ? Promise.resolve([]) : listDocumentTypes(db, categoryId)),
     [categoryId],
@@ -166,7 +169,9 @@ export function DocumentForm({
   async function choosePerson() {
     if (!people) return;
     const index = await chooseAction('Persona', ['Tutta la famiglia', ...people.map((p) => p.name)]);
-    if (index !== null) setPersonId(index === 0 ? null : people[index - 1].id);
+    if (index === null) return;
+    setPersonTouched(true);
+    setPersonId(index === 0 ? null : people[index - 1].id);
   }
 
   async function chooseType() {

@@ -1,5 +1,4 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 
 import { CardForm } from '@/components/card-form';
@@ -10,23 +9,15 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { resolveDocumentFile } from '@/storage/document-files';
 import type { PendingFile } from '@/storage/pending-files';
 
-// Modal "Modifica carta": the card form, already filled in
+// "Modifica tessera": the card form of the Nuova tessera design, already filled in
 export default function EditCardScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const cardId = Number(id);
   const { data: card } = useDbQuery((db) => getDocumentDetail(db, cardId), [cardId]);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, cardId), [cardId]);
 
-  return (
-    <>
-      {/* The form reads its initial values once, so it is shown only after loading */}
-      {card && files && <EditCardContent card={card} savedFiles={files} />}
-
-      <Stack.Toolbar placement="left">
-        <Stack.Toolbar.Button onPress={() => router.back()}>Annulla</Stack.Toolbar.Button>
-      </Stack.Toolbar>
-    </>
-  );
+  // The form reads its initial values once, so it is shown only after loading
+  return card && files ? <EditCardContent card={card} savedFiles={files} /> : null;
 }
 
 // The saved photo with this role; a card added with the normal form may only have a 'front'
@@ -41,8 +32,11 @@ function EditCardContent({ card, savedFiles }: { card: DocumentDetail; savedFile
 
   return (
     <CardForm
+      heading="Modifica tessera"
+      onCancel={() => router.back()}
       initial={{
         title: card.title,
+        docType: card.docType,
         personId: card.personId,
         barcodeValue: card.barcodeValue,
         barcodeType: card.barcodeType,

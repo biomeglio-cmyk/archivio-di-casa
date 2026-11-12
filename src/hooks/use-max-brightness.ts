@@ -4,13 +4,15 @@ import { useCallback } from 'react';
 import { AppState } from 'react-native';
 
 /**
- * Screen at full brightness while this screen is visible, so the cashier's scanner reads the
+ * Screen at full brightness while this screen is visible (and `enabled`: Tessere raises it only
+ * while a card is open), so the cashier's scanner reads the
  * barcode. The previous brightness comes back when leaving the screen or the app.
  * (iOS keeps a brightness set by an app until the phone is locked, so we restore it ourselves.)
  */
-export function useMaxBrightness() {
+export function useMaxBrightness(enabled = true) {
   useFocusEffect(
     useCallback(() => {
+      if (!enabled) return undefined;
       let saved: number | null = null; // brightness before we raised it
       let visible = true;
 
@@ -39,6 +41,6 @@ export function useMaxBrightness() {
         subscription.remove();
         restore();
       };
-    }, []),
+    }, [enabled]),
   );
 }

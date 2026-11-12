@@ -251,19 +251,11 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="new-card"
-            options={{
-              presentation: 'modal',
-              title: 'Nuova carta',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Nuova tessera' }}
           />
           <Stack.Screen
             name="edit-card/[id]"
-            options={{
-              presentation: 'modal',
-              title: 'Modifica carta',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Modifica tessera' }}
           />
         </Stack>
         </Fragment>

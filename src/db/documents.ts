@@ -587,6 +587,7 @@ export type CardInput = {
   barcodeType: string | null; // null when typed by hand
   cardColor: string;
   coverMode: CoverMode | null; // "Copertina"; null = automatic
+  docType?: string | null; // "Tipo" (Carta fedeltà, Abbonamento…); absent = unchanged
 };
 
 // Saves a new card with its photos (card_front, barcode); same safety rules as insertDocument
@@ -627,4 +628,7 @@ async function updateCardFields(db: SQLiteDatabase, id: number, card: CardInput)
     card.cardColor, // a card's color IS its cover color
     id,
   );
+  if (card.docType !== undefined) {
+    await db.runAsync('UPDATE documents SET doc_type = ? WHERE id = ?', card.docType?.trim() || null, id);
+  }
 }

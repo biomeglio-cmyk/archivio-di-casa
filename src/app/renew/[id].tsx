@@ -1,4 +1,3 @@
-import { DateTimePicker } from '@expo/ui/community/datetime-picker';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -9,7 +8,6 @@ import { FilesEditor, filesToSave, type EditableFile } from '@/components/files-
 import { Group, Row } from '@/components/grouped-list';
 import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR } from '@/constants/brand';
 import { Spacing } from '@/constants/theme';
 import { getDocumentDetail, renewDocument } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
@@ -17,6 +15,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme } from '@/hooks/use-theme';
 import { formatDate, parseISODate, toISODate } from '@/utils/dates';
 import { describeRepeat, nextOccurrence } from '@/utils/recurrence';
+import { DateCalendar } from '@/components/date-calendar';
 
 // Modal "Rinnovato", from the detail of a document with a deadline:
 // - recurring deadline → it moves to the next occurrence (from the old deadline, past ones skipped);
@@ -78,15 +77,10 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
           ) : (
             <View style={[styles.pickerRow, { borderTopColor: theme.backgroundSelected }]}>
               <ThemedText>Nuova scadenza</ThemedText>
-              {/* Not inside another Host: this component creates its own, sized to the card */}
-              <DateTimePicker
-                value={pickedDate}
-                onValueChange={(_, date) => setPickedDate(date)}
-                mode="date"
-                display="inline"
-                accentColor={BRAND_COLOR}
-                style={styles.calendar}
-              />
+              {/* Our calendar: Italian months, L M M G V S D, Monday first */}
+              <View style={styles.calendar}>
+                <DateCalendar value={pickedDate} onChange={setPickedDate} />
+              </View>
             </View>
           )}
         </Group>
@@ -135,7 +129,6 @@ const styles = StyleSheet.create({
     borderTopWidth: StyleSheet.hairlineWidth,
   },
   calendar: {
-    alignSelf: 'stretch', // full width of the card, never past its margins
-    marginBottom: 8,
+    paddingBottom: 12,
   },
 });

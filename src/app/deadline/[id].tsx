@@ -1,16 +1,15 @@
 import { Host, Picker } from '@expo/ui';
-import { DateTimePicker } from '@expo/ui/community/datetime-picker';
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
-import { Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 
+import { DateCalendar } from '@/components/date-calendar';
 import { Group, Row } from '@/components/grouped-list';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR } from '@/constants/brand';
-import { EVERY_OPTIONS, reminderChoices, reminderLabel, reminderPickerValue, reminderToSave } from '@/constants/deadline-options';
+import { EVERY_OPTIONS, reminderChoices, reminderPickerValue, reminderToSave, shortReminderLabel } from '@/constants/deadline-options';
 import { Colors, Spacing } from '@/constants/theme';
 import { getDocumentDetail, saveDocumentDeadline } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
@@ -44,6 +43,9 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
   const db = useSQLiteContext();
   const theme = useTheme();
   const { defaultReminderDays } = usePreferences();
+  // Characters that fit right of "Promemoria" (page margins, card padding, icon, label, chevrons)
+  const { width, fontScale } = useWindowDimensions();
+  const roomChars = Math.floor((width - 2 * Spacing.side - 32 - 36 - 110 * fontScale - 40) / (8.6 * fontScale));
   const [date, setDate] = useState(() => (document.expiresAt ? parseISODate(document.expiresAt) : new Date()));
   const [repeatUnit, setRepeatUnit] = useState<RepeatUnit | 'never'>(document.repeat?.unit ?? 'never');
   const [repeatEvery, setRepeatEvery] = useState(document.repeat?.every ?? 1);
@@ -85,19 +87,14 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <ThemedText style={styles.intro}>{document.title}</ThemedText>
 
-        <Group title="Data">
-          <View style={styles.calendarBox}>
-            {/* Not inside another Host: this component creates its own, sized to the card */}
-            <DateTimePicker
-              value={date}
-              onValueChange={(_, picked) => setDate(picked)}
-              mode="date"
-              display="inline"
-              accentColor={BRAND_COLOR}
-              style={styles.calendar}
-            />
-          </View>
-        </Group>
+        <View style={styles.dateGroup}>
+          <Group title="Data">
+            <View style={styles.calendarBox}>
+              {/* Our calendar: Italian months, L M M G V S D, Monday first, whatever the phone language */}
+              <DateCalendar value={date} onChange={setDate} />
+            </View>
+          </Group>
+        </View>
 
         <Group footer="Il promemoria arriva sul telefono; con il calendario attivo la scadenza è anche in «Sottomano».">
           <Row label="Si ripete" symbol="arrow.clockwise" first>
@@ -125,7 +122,7 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
             <Host matchContents>
               <Picker selectedValue={reminderDays} onValueChange={setReminderDays}>
                 {reminderChoices(reminderDays).map((days) => (
-                  <Picker.Item key={days} label={reminderLabel(days, defaultReminderDays)} value={days} />
+                  <Picker.Item key={days} label={shortReminderLabel(days, defaultReminderDays, roomChars)} value={days} />
                 ))}
               </Picker>
             </Host>
@@ -167,11 +164,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 4,
     fontWeight: 600,
   },
-  calendarBox: {
-    paddingHorizontal: 12,
+  // "DATA" as far from the title above as the other section titles are from their card
+  dateGroup: {
+    marginTop: 8,
   },
-  calendar: {
-    alignSelf: 'stretch', // full width of the card, never past its margins
-    marginVertical: 8,
+  calendarBox: {
+    paddingHorizontal: 14,
+    paddingVertical: 12,
   },
 });

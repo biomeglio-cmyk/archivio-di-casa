@@ -198,6 +198,7 @@ export default function SettingsScreen() {
               value={reminderTime}
               mode="time"
               display="spinner"
+              locale="it_IT"
               accentColor={BRAND_COLOR}
               onValueChange={(_, date) => update({ reminderHour: date.getHours(), reminderMinute: date.getMinutes() })}
             />

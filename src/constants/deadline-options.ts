@@ -24,6 +24,16 @@ export function reminderLabel(days: number, defaultDays: number): string {
   return daysBefore(days);
 }
 
+// Short label for a narrow row ("Promemoria" in Scadenza): "1 settimana prima", and
+// "(predefinito)" after it only when there is room for it (`roomChars`: characters that fit)
+export function shortReminderLabel(days: number, defaultDays: number, roomChars: number): string {
+  if (days === NO_REMINDER) return 'Nessuno';
+  if (days !== DEFAULT_REMINDER) return daysBefore(days);
+  const plain = daysBefore(defaultDays);
+  const marked = `${plain} (predefinito)`;
+  return marked.length <= roomChars ? marked : plain;
+}
+
 // The saved reminder_days of a document as a picker value, and back
 export const reminderPickerValue = (saved: number | null): number => saved ?? DEFAULT_REMINDER;
 export const reminderToSave = (value: number): number | null => (value === DEFAULT_REMINDER ? null : value);

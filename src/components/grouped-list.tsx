@@ -65,7 +65,9 @@ export function Row({
       {/* The separator is the top line of this part, so it starts after the icon */}
       <View
         style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator }]}>
-        <ThemedText style={[styles.label, disabled && { color: theme.textSecondary }]}>{label}</ThemedText>
+        <ThemedText style={[styles.label, disabled && { color: theme.textSecondary }]} numberOfLines={2}>
+          {label}
+        </ThemedText>
         {value !== undefined && (
           <ThemedText themeColor="textSecondary" style={styles.value}>
             {value}
@@ -78,7 +80,8 @@ export function Row({
             {String(count)}
           </ThemedText>
         )}
-        {children}
+        {children !== undefined && <View style={styles.control}>{children}</View>}
+        {value === undefined && count === undefined && children === undefined && <View style={styles.spacer} />}
         {onPress && !disabled && <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={14} />}
       </View>
     </>
@@ -137,11 +140,22 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
     paddingRight: PADDING,
   },
+  // The label never gives up its place to a long value (it may wrap with large text)
   label: {
+    flexShrink: 0,
+    maxWidth: '55%',
+  },
+  spacer: {
     flex: 1,
   },
+  // A control (Picker, Switch…) on the right: right-aligned, on one line, never past the edge
+  control: {
+    flex: 1,
+    alignItems: 'flex-end',
+    overflow: 'hidden',
+  },
   value: {
-    flexShrink: 1,
+    flex: 1,
     textAlign: 'right',
   },
 });

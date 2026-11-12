@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { DocumentForm } from '@/components/document-form';
+import { PasswordForm } from '@/components/password-form';
 import { FilesEditor, filesToSave, fromExisting, type EditableFile } from '@/components/files-editor';
 import { isPasswordCategory } from '@/db/categories';
 import { getDocumentDetail, listDocumentFiles, saveDocumentEdits, setPinned } from '@/db/documents';
@@ -33,9 +34,13 @@ export default function EditDocumentScreen() {
   return (
     <>
       {/* The form reads its initial values once, so it is shown only after loading */}
-      {document && files && hasPassword !== null && (
-        <EditDocumentContent document={document} savedFiles={files} hasPassword={hasPassword} />
-      )}
+      {document && files && hasPassword !== null &&
+        (document.category.isPassword ? (
+          // A Password entry: the Modifica password form (docs/design/NuovaPassword.dc.html)
+          <PasswordForm existing={document} categoryId={document.categoryId} hasSavedPassword={hasPassword} />
+        ) : (
+          <EditDocumentContent document={document} savedFiles={files} hasPassword={hasPassword} />
+        ))}
 
     </>
   );

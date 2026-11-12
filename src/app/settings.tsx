@@ -24,6 +24,7 @@ import { disableAppLock, useAppLockEnabled } from '@/security/app-lock';
 import { usePaletteId } from '@/settings/palette';
 import { PALETTES } from '@/constants/palettes';
 import { getPreferences, savePreferences, type Preferences } from '@/settings/preferences';
+import { FREE_LIMIT_ENFORCED, setLimitPreview, useLimitPreview } from '@/settings/free-limit';
 import { chooseAction } from '@/utils/action-sheet';
 
 // "Avviso predefinito": how many days before a deadline, for documents without their own value
@@ -67,6 +68,10 @@ export default function SettingsScreen() {
   const [notificationsBlocked, setNotificationsBlocked] = useState(false);
   const [timeOpen, setTimeOpen] = useState(false);
   const [now, setNow] = useState(() => Date.now());
+  // Hidden test switch: 5 taps on the version show "Anteprima limite gratuito"
+  const limitPreview = useLimitPreview();
+  const [versionTaps, setVersionTaps] = useState(0);
+  const showDebug = versionTaps >= 5 || limitPreview;
   const [calendarLabel, setCalendarLabel] = useState('');
 
   // Coming back from the iPhone Settings, Backup or Calendario: permission, dates and labels may have changed
@@ -277,9 +282,22 @@ export default function SettingsScreen() {
         <SettingsRow symbol="lock" tint={TINTS.info} label="Privacy" onPress={() => open('/about')} />
         <SettingsRow symbol="doc.text" tint={TINTS.info} label="Termini d’uso" onPress={() => open('/terms')} />
         <SettingsRow symbol="star" tint={TINTS.info} label="Valuta Sottomano" onPress={rateApp} />
+        {showDebug && !FREE_LIMIT_ENFORCED && (
+          <SettingsRow
+            symbol="ladybug"
+            tint={TINTS.info}
+            label="Anteprima limite gratuito"
+            subtitle="Solo per le prove: mostra il + bloccato, il pannello del limite e la scheda in Home"
+            trailing={
+              <Switch value={limitPreview} onValueChange={setLimitPreview} accessibilityLabel="Anteprima limite gratuito" />
+            }
+          />
+        )}
       </Section>
 
-      <Text style={styles.version}>Sottomano · versione {version}</Text>
+      <Pressable onPress={() => setVersionTaps((n) => n + 1)} accessibilityRole="text" hitSlop={10}>
+        <Text style={styles.version}>Sottomano · versione {version}</Text>
+      </Pressable>
     </ScrollView>
   );
 }

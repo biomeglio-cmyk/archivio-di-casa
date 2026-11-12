@@ -12,6 +12,7 @@ import { FONTS } from '@/constants/typography';
 import type { CategoryWithCount } from '@/db/types';
 import { encodePendingFiles } from '@/storage/pending-files';
 import { categoryTint } from '@/utils/colors';
+import { whenBelowLimit } from '@/settings/free-limit';
 
 // "Carica un PDF": the file picker, then Nuovo documento with the PDF attached
 async function loadPdf() {
@@ -46,8 +47,8 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
         <Text style={styles.text}>
           Una bolletta, la carta d’identità o la garanzia della lavatrice: in pochi secondi è al sicuro e sempre sottomano.
         </Text>
-        <PrimaryButton label="Fotografa un documento" symbol="camera" onPress={() => router.push('/add-document')} style={styles.button} />
-        <Pressable onPress={loadPdf} accessibilityRole="button" style={({ pressed }) => [styles.pdf, pressed && styles.pressed]}>
+        <PrimaryButton label="Fotografa un documento" symbol="camera" onPress={() => whenBelowLimit(() => router.push('/add-document'))} style={styles.button} />
+        <Pressable onPress={() => whenBelowLimit(loadPdf)} accessibilityRole="button" style={({ pressed }) => [styles.pdf, pressed && styles.pressed]}>
           <SymbolView name="doc" tintColor={Colors.light.accent} size={18} />
           <Text style={styles.pdfText}>Carica un PDF</Text>
         </Pressable>

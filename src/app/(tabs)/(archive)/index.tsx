@@ -10,6 +10,7 @@ import { BackupReminder } from '@/components/backup-reminder';
 import { CATEGORY_TILE_HEIGHT, CategoryTile, describeCategoryCount } from '@/components/category-tile';
 import { HomeEmpty } from '@/components/home-empty';
 import { HomeHeader } from '@/components/home-header';
+import { LimitCard } from '@/components/limit-card';
 import { FavoriteTile, NextDeadlineCard } from '@/components/home-sections';
 import { SearchBar } from '@/components/search-bar';
 import { SectionHeader } from '@/components/section-header';
@@ -23,7 +24,7 @@ import { listDocumentsWithExpiry, listPinnedDocuments } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
-import { getFreeUsage } from '@/settings/free-limit';
+import { useFreeLimit } from '@/settings/free-limit';
 import { toISODate } from '@/utils/dates';
 
 const AFTER_SPLASH_MS = 1100; // the opening screen lasts about one second
@@ -44,7 +45,7 @@ export default function ArchiveScreen() {
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
   const { data: withExpiry } = useDbQuery(listDocumentsWithExpiry, []);
-  const { data: usage } = useDbQuery(getFreeUsage, []);
+  const { usage, reached } = useFreeLimit();
   const empty = usage?.used === 0; // no documents or cards yet: Home vuota
 
   const [reordering, setReordering] = useState(false); // "Riordina" … "Fine"
@@ -82,7 +83,7 @@ export default function ArchiveScreen() {
             </View>
 
             <View style={styles.notice}>
-              <BackupReminder />
+              {reached && usage ? <LimitCard usage={usage} /> : <BackupReminder />}
             </View>
 
             {favorites.length > 0 && (

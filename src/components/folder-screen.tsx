@@ -34,6 +34,7 @@ import { TAX_CATEGORY_KEY } from '@/send/tax-package';
 import { getFolderView, saveFolderView, type FolderView } from '@/settings/folder-view';
 import { categoryShadowRgb, categoryTint } from '@/utils/colors';
 import { groupByMonth, newItemLabel } from '@/utils/folder';
+import { whenBelowLimit } from '@/settings/free-limit';
 
 type Props = {
   category: Category;
@@ -117,7 +118,8 @@ export function FolderScreen({ category, documents }: Props) {
     selection.cancel();
   }
 
-  const addDocument = () => router.push({ pathname: '/new-document', params: { categoryId: String(category.id) } });
+  const addDocument = () =>
+    whenBelowLimit(() => router.push({ pathname: '/new-document', params: { categoryId: String(category.id) } }));
 
   const sheetActions: SheetAction[] = [
     {

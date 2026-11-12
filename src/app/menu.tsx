@@ -25,6 +25,7 @@ import { FONTS } from '@/constants/typography';
 import { getMenuCounts } from '@/db/menu-counts';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
+import { whenBelowLimit } from '@/settings/free-limit';
 
 const OPEN_MS = 260;
 const CLOSE_MS = 200;
@@ -210,9 +211,9 @@ export default function MenuScreen() {
               onPress={() => openScreen({ pathname: '/tax-package', params: { categoryId: String(taxId) } })}
             />
           )}
-          <MenuItem label="Scansiona" symbol="doc.viewfinder" onPress={addByScan} />
-          <MenuItem label="Dalle foto" symbol="photo.on.rectangle" onPress={addFromPhotos} />
-          <MenuItem label="Importa file" symbol="doc" onPress={addFromFiles} />
+          <MenuItem label="Scansiona" symbol="doc.viewfinder" onPress={() => whenBelowLimit(addByScan)} />
+          <MenuItem label="Dalle foto" symbol="photo.on.rectangle" onPress={() => whenBelowLimit(addFromPhotos)} />
+          <MenuItem label="Importa file" symbol="doc" onPress={() => whenBelowLimit(addFromFiles)} />
         </ScrollView>
 
         <Text style={styles.version}>Versione {version}</Text>

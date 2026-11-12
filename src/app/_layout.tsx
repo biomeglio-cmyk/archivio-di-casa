@@ -208,6 +208,11 @@ export default function RootLayout() {
             name="delete-person/[id]"
             options={{ presentation: 'transparentModal', animation: 'fade', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
           />
+          {/* Free limit reached: "Hai usato i 7 spazi gratuiti" (Sblocca / Più tardi) */}
+          <Stack.Screen
+            name="limit"
+            options={{ presentation: 'transparentModal', animation: 'none', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
           {/* "Notifiche": the panel over Home opened by the bell */}
           <Stack.Screen
             name="notifications"

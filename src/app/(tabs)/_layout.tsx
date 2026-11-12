@@ -3,6 +3,7 @@ import { NativeTabs } from 'expo-router/native-tabs';
 
 import { Colors } from '@/constants/theme';
 import { useNotificationFeed } from '@/notifications/feed';
+import { useFreeLimit, whenBelowLimit } from '@/settings/free-limit';
 
 // Home is the tab the app starts on, at every launch and for every deep link into the tabs
 export const unstable_settings = { anchor: '(archive)' };
@@ -14,6 +15,8 @@ export const unstable_settings = { anchor: '(archive)' };
 export default function TabsLayout() {
   // Unread notifications (the same number as the bell in Home)
   const { unread } = useNotificationFeed();
+  // At the free limit the "+" is grey with a lock and opens the limit panel (docs/design/HomeLimite.dc.html)
+  const { reached } = useFreeLimit();
 
   return (
     <NativeTabs tintColor={Colors.light.indigo} badgeBackgroundColor={Colors.light.badge}>
@@ -45,11 +48,16 @@ export default function TabsLayout() {
       <NativeTabs.Trigger
         name="add"
         disabled
-        accessibilityLabel="Aggiungi un documento"
-        listeners={{ tabPress: () => router.push('/add-document') }}>
+        accessibilityLabel={reached ? 'Aggiungi documento, bloccato: limite gratuito raggiunto' : 'Aggiungi un documento'}
+        listeners={{ tabPress: () => whenBelowLimit(() => router.push('/add-document')) }}>
         {/* A blue circle with a white plus (assets/images/tab-add*.png), drawn with its own colors
-            ("original"): the tab is never selected, so the tint would leave it black */}
-        <NativeTabs.Trigger.Icon src={require('@/assets/images/tab-add.png')} renderingMode="original" md="add_circle" />
+            ("original"): the tab is never selected, so the tint would leave it black.
+            At the limit: a grey circle with a lock (the unselected tab color) */}
+        {reached ? (
+          <NativeTabs.Trigger.Icon sf="lock.circle.fill" md="lock" />
+        ) : (
+          <NativeTabs.Trigger.Icon src={require('@/assets/images/tab-add.png')} renderingMode="original" md="add_circle" />
+        )}
         <NativeTabs.Trigger.Label hidden>Aggiungi</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
     </NativeTabs>

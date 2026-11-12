@@ -21,6 +21,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { addDaysIso, formatShortDate, MONTHS, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 import { groupDeadlines, upcomingSummary } from '@/utils/deadlines';
 import { formatEuro } from '@/utils/money';
+import { whenBelowLimit } from '@/settings/free-limit';
 
 type Dated = DocumentListItem & { expiresAt: string };
 
@@ -81,7 +82,8 @@ export default function DeadlinesScreen() {
   }
 
   // "+": a new document whose deadline is the chosen day (the form opens with "Aggiungi scadenza" on)
-  const addReminder = () => router.push({ pathname: '/new-document', params: { expiresAt: selected } });
+  const addReminder = () =>
+    whenBelowLimit(() => router.push({ pathname: '/new-document', params: { expiresAt: selected } }));
 
   const open = (document: DocumentListItem) => router.push(documentHref(document.id));
 

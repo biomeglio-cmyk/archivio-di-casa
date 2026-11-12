@@ -13,6 +13,8 @@ import type {
   DocumentRecord,
   DocumentVersion,
   FileSide,
+  PasswordInfo,
+  PasswordType,
   PaymentStatus,
 } from '@/db/types';
 import { deletePassword } from '@/security/password-vault';
@@ -26,6 +28,26 @@ type DocumentWithCategoryRecord = DocumentRecord & Record<string, unknown>;
 // Photos in page order (front 1, back 2, then the other scanned pages); the barcode last.
 // The fallback on side is only a safety net: every photo saved since V6 has a page.
 const FILE_ORDER = `CASE WHEN f.side = 'barcode' THEN 1000 ELSE COALESCE(f.page, CASE f.side WHEN 'back' THEN 2 ELSE 1 END) END`;
+
+const PASSWORD_TYPES: PasswordType[] = ['site', 'wifi', 'pin', 'other'];
+
+// The Password fields; null for the documents of other categories (no type)
+function mapPassword(row: DocumentWithCategoryRecord): PasswordInfo | null {
+  const type = PASSWORD_TYPES.find((t) => t === row.pw_type);
+  if (!type) return null;
+  return {
+    type,
+    customType: row.pw_custom_type ?? null,
+    url: row.pw_url ?? null,
+    wifiQr: row.pw_wifi_qr === 1,
+    preview: {
+      color: row.preview_color ?? null,
+      hex: row.preview_hex ?? null,
+      icon: row.preview_icon ?? null,
+      imagePath: row.preview_image_path ?? null,
+    },
+  };
+}
 
 function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
   return {
@@ -52,6 +74,7 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     paymentStatus: row.payment_status === 'due' || row.payment_status === 'paid' ? row.payment_status : null,
     paidAt: row.paid_at ?? null,
     amountCents: row.amount_cents ?? null,
+    password: mapPassword(row),
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
@@ -474,12 +497,13 @@ export function listTrashedDocuments(db: SQLiteDatabase): Promise<DocumentListIt
 // its calendar event. A normal "Elimina" only moves the document to the Cestino (db/trash.ts).
 export async function deleteDocumentForever(db: SQLiteDatabase, id: number): Promise<void> {
   const files = await db.getAllAsync<{ path: string }>('SELECT path FROM document_files WHERE document_id = ?', id);
-  const event = await db.getFirstAsync<{ calendar_event_id: string | null }>(
-    'SELECT calendar_event_id FROM documents WHERE id = ?',
+  const event = await db.getFirstAsync<{ calendar_event_id: string | null; preview_image_path: string | null }>(
+    'SELECT calendar_event_id, preview_image_path FROM documents WHERE id = ?',
     id,
   );
   await db.runAsync('DELETE FROM documents WHERE id = ?', id);
   files.forEach((file) => deleteStoredFile(file.path));
+  if (event?.preview_image_path) deleteStoredFile(event.preview_image_path); // a Password entry's image
   await deletePassword(id); // its Keychain item, if it was a "Password" document
   await removeCalendarEvent(event?.calendar_event_id ?? null);
   await rescheduleReminders(db);
@@ -634,4 +658,57 @@ async function updateCardFields(db: SQLiteDatabase, id: number, card: CardInput)
   if (card.docType !== undefined) {
     await db.runAsync('UPDATE documents SET doc_type = ? WHERE id = ?', card.docType?.trim() || null, id);
   }
+}
+
+// ---- Password entries (docs/design/NuovaPassword.dc.html) ----
+
+export type PasswordFields = Omit<PasswordInfo, 'preview'> & {
+  preview: Omit<PasswordInfo['preview'], 'imagePath'>;
+};
+
+// The Password fields of an entry (the password itself goes to the Keychain, never here)
+export async function savePasswordFields(db: SQLiteDatabase, id: number, fields: PasswordFields): Promise<void> {
+  const text = (value: string | null) => (value && value.trim() ? value.trim() : null);
+  await db.runAsync(
+    `UPDATE documents
+     SET pw_type = ?, pw_custom_type = ?, pw_url = ?, pw_wifi_qr = ?,
+         preview_color = ?, preview_hex = ?, preview_icon = ?,
+         updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+     WHERE id = ?`,
+    fields.type,
+    fields.type === 'other' ? text(fields.customType) : null,
+    fields.type === 'site' ? text(fields.url) : null,
+    fields.type === 'wifi' && fields.wifiQr ? 1 : 0,
+    fields.preview.color,
+    fields.preview.color === 'custom' ? fields.preview.hex : null,
+    fields.preview.icon,
+    id,
+  );
+}
+
+// "Anteprima" image: a new one (a file:// photo) is copied into documents/; null takes it away.
+// The previous file is deleted only after the database points to the new state.
+export async function setPreviewImage(db: SQLiteDatabase, id: number, uri: string | null): Promise<void> {
+  const old = await db.getFirstAsync<{ preview_image_path: string | null }>(
+    'SELECT preview_image_path FROM documents WHERE id = ?',
+    id,
+  );
+  const path = uri ? await storePendingFile({ uri, kind: 'image', side: 'front' }) : null;
+  try {
+    await db.runAsync('UPDATE documents SET preview_image_path = ? WHERE id = ?', path, id);
+  } catch (error) {
+    if (path) deleteStoredFile(path);
+    throw error;
+  }
+  if (old?.preview_image_path && old.preview_image_path !== path) deleteStoredFile(old.preview_image_path);
+}
+
+// "Altro" types written before ("Allarme", "Cassaforte"), offered among the choices
+export async function listCustomPasswordTypes(db: SQLiteDatabase): Promise<string[]> {
+  const rows = await db.getAllAsync<{ pw_custom_type: string }>(
+    `SELECT pw_custom_type FROM documents
+     WHERE pw_custom_type IS NOT NULL AND deleted_at IS NULL
+     GROUP BY pw_custom_type COLLATE NOCASE ORDER BY MIN(created_at)`,
+  );
+  return rows.map((row) => row.pw_custom_type);
 }

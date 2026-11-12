@@ -1,14 +1,14 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { router } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { useRef, useState } from 'react';
+import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { Linking, Pressable, StyleSheet, View, type LayoutChangeEvent } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
+import { addFromFiles, addFromPhotos } from '@/capture/add-actions';
 import { cropToGuideFrame } from '@/capture/crop-photo';
 import type { FrameRect } from '@/capture/guide-frame';
-import { isScannerAvailable } from '@/capture/scan-document';
+import { isScannerAvailable, scanDocument } from '@/capture/scan-document';
 import { startAddCard } from '@/capture/start-add-card';
 import { Text } from '@/components/text';
 import { FONTS } from '@/constants/typography';
@@ -23,9 +23,11 @@ type Mode = { key: string; label: string; onPress?: () => void };
 // "+" (docs/design/Aggiungi.dc.html), full screen on dark: ✕, "Nuovo documento" and the flash; the
 // camera in a rounded box with the page frame and a hint; Scansiona / Dalle foto / Da file PDF; the
 // gallery button, the shutter and the count of pages. Each shot is cropped to the frame and added as
-// a page; "N pagine ›" goes on to the form (Conferma). Our extras: "Tessera" and "A mano", and the
-// iOS scanner (straightens the page by itself) when this phone has it.
-// Expo Go has no live edge detection: the hint says to frame the page instead of "Documento trovato".
+// a page; "N pagine ›" goes on to the form (Conferma). Our extras: "Tessera" and "A mano".
+// "Scansiona" is the iOS document scanner (VisionKit: finds the edges, shoots by itself, straightens
+// the pages, several in a row): it opens right away with this screen, and again from the chip or the
+// shutter. Its pages go to Nuovo documento. Only where there is no system scanner, our own camera
+// with the page frame takes its place (no live edge detection: "Inquadra il documento").
 export default function AddDocumentScreen() {
   const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
@@ -35,6 +37,29 @@ export default function AddDocumentScreen() {
   const [busy, setBusy] = useState(false);
   const [torch, setTorch] = useState(false);
   const [pages, setPages] = useState<string[]>([]);
+  // The system scanner, unless this phone has none (then our camera)
+  const [useOwnCamera, setUseOwnCamera] = useState(() => !isScannerAvailable());
+
+  // "Scansiona": the iOS scanner; "Annulla" there leaves this screen as it is
+  async function scan() {
+    const result = await scanDocument();
+    if (result === 'cancelled') return;
+    if (result === 'unavailable') {
+      setUseOwnCamera(true);
+      return;
+    }
+    router.replace({ pathname: '/new-document', params: { files: encodePendingFiles(pagesToFiles(result.pages)) } });
+  }
+
+  // Opening on "Scansiona" starts the scanner at once, after the screen finished sliding up
+  const scanOnOpen = useEffectEvent(() => scan());
+  useEffect(() => {
+    if (useOwnCamera) return;
+    const timer = setTimeout(() => scanOnOpen(), 450);
+    return () => clearTimeout(timer);
+    // only when the screen opens
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const frame = box ? pageFrame(box) : null;
 
@@ -56,7 +81,7 @@ export default function AddDocumentScreen() {
   }
 
   const modes: Mode[] = [
-    { key: 'scan', label: 'Scansiona' },
+    { key: 'scan', label: 'Scansiona', onPress: useOwnCamera ? undefined : scan },
     { key: 'photos', label: 'Dalle foto', onPress: addFromPhotos },
     { key: 'pdf', label: 'Da file PDF', onPress: addFromFiles },
     { key: 'card', label: 'Tessera', onPress: () => startAddCard('replace') },
@@ -75,15 +100,40 @@ export default function AddDocumentScreen() {
         <Text style={styles.title} accessibilityRole="header">
           Nuovo documento
         </Text>
-        <DarkButton
-          symbol={torch ? 'bolt.fill' : 'bolt.slash'}
-          label={torch ? 'Spegni il flash' : 'Accendi il flash'}
-          onPress={() => setTorch((on) => !on)}
-        />
+        {useOwnCamera ? (
+          <DarkButton
+            symbol={torch ? 'bolt.fill' : 'bolt.slash'}
+            label={torch ? 'Spegni il flash' : 'Accendi il flash'}
+            onPress={() => setTorch((on) => !on)}
+          />
+        ) : (
+          // The iOS scanner has its own flash
+          <View style={styles.barSpace} />
+        )}
       </View>
 
       <View style={styles.viewfinder} onLayout={(event: LayoutChangeEvent) => setBox(event.nativeEvent.layout)}>
-        {permission?.granted ? (
+        {!useOwnCamera ? (
+          <Pressable
+            onPress={scan}
+            accessibilityRole="button"
+            accessibilityLabel="Scansiona con lo scanner di iOS"
+            style={styles.scannerIdle}>
+            <View style={styles.sheet} accessibilityElementsHidden>
+              <View style={[styles.sheetLine, { width: 70, height: 12, backgroundColor: '#CFC8C3' }]} />
+              <View style={[styles.sheetLine, { width: 120, marginTop: 10 }]} />
+              <View style={[styles.sheetLine, { width: 90 }]} />
+              <View style={[styles.sheetLine, styles.sheetLineLight, { width: 160, marginTop: 14 }]} />
+              <View style={[styles.sheetLine, styles.sheetLineLight, { width: 150 }]} />
+              <View style={[styles.sheetLine, styles.sheetLineLight, { width: 110 }]} />
+            </View>
+            <View style={styles.sheetFrame} pointerEvents="none" />
+            <View style={styles.hint} pointerEvents="none">
+              <SymbolView name="doc.viewfinder" tintColor="#FFFFFF" size={16} />
+              <Text style={styles.hintText}>Tocca per scansionare: trova i bordi da solo</Text>
+            </View>
+          </Pressable>
+        ) : permission?.granted ? (
           <>
             <CameraView
               ref={cameraRef}
@@ -97,12 +147,6 @@ export default function AddDocumentScreen() {
                 pointerEvents="none"
                 style={[styles.frame, { left: frame.x, top: frame.y, width: frame.width, height: frame.height }]}
               />
-            )}
-            {isScannerAvailable() && (
-              <Pressable onPress={addByScan} accessibilityRole="button" style={styles.scanner}>
-                <SymbolView name="doc.viewfinder" tintColor="#FFFFFF" size={14} />
-                <Text style={styles.scannerText}>Scanner automatico</Text>
-              </Pressable>
             )}
             <View style={styles.hint} pointerEvents="none">
               <SymbolView name={pages.length ? 'checkmark.circle.fill' : 'viewfinder'} tintColor="#FFFFFF" size={16} />
@@ -147,11 +191,11 @@ export default function AddDocumentScreen() {
           <SymbolView name="photo.on.rectangle" tintColor="#FFFFFF" size={22} />
         </Pressable>
         <Pressable
-          onPress={shoot}
-          disabled={!ready || busy}
+          onPress={useOwnCamera ? shoot : scan}
+          disabled={useOwnCamera && (!ready || busy)}
           accessibilityRole="button"
-          accessibilityLabel="Scatta"
-          style={({ pressed }) => [styles.shutter, (pressed || busy || !ready) && styles.dimmed]}>
+          accessibilityLabel={useOwnCamera ? 'Scatta' : 'Scansiona'}
+          style={({ pressed }) => [styles.shutter, (pressed || (useOwnCamera && (busy || !ready))) && styles.dimmed]}>
           <View style={styles.shutterInner} />
         </Pressable>
         <Pressable
@@ -229,22 +273,42 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     backgroundColor: 'rgba(139, 108, 240, 0.12)',
   },
-  scanner: {
-    position: 'absolute',
-    top: 14,
-    alignSelf: 'center',
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 6,
-    paddingVertical: 7,
-    paddingHorizontal: 12,
-    borderRadius: 14,
-    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+  barSpace: {
+    width: 44,
   },
-  scannerText: {
-    color: '#FFFFFF',
-    fontSize: 13,
-    fontFamily: FONTS.semiBold,
+  scannerIdle: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sheet: {
+    width: 210,
+    height: 290,
+    paddingVertical: 20,
+    paddingHorizontal: 16,
+    borderRadius: 4,
+    backgroundColor: '#F4F1EE',
+    transform: [{ rotate: '4deg' }],
+    boxShadow: '0 12px 30px rgba(0, 0, 0, 0.5)',
+    gap: 10,
+  },
+  sheetLine: {
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: '#DDD7D2',
+  },
+  sheetLineLight: {
+    backgroundColor: '#E6E1DD',
+  },
+  sheetFrame: {
+    position: 'absolute',
+    width: 236,
+    height: 316,
+    borderWidth: 3,
+    borderColor: FRAME_COLOR,
+    borderRadius: 10,
+    backgroundColor: 'rgba(139, 108, 240, 0.12)',
+    transform: [{ rotate: '4deg' }],
   },
   hint: {
     position: 'absolute',

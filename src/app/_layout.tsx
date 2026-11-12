@@ -78,16 +78,15 @@ export default function RootLayout() {
               sheetAllowedDetents: 'fitToContents',
             }}
           />
-          {/* "Menu" from the ≡ in the Home header: 90% of the screen, closes by dragging down */}
+          {/* Side menu from ≡ in Home: transparent, it draws its own dimmed background and slides
+              its panel in from the left (src/app/menu.tsx) */}
           <Stack.Screen
             name="menu"
             options={{
-              presentation: 'formSheet',
+              presentation: 'transparentModal',
+              animation: 'none',
               headerShown: false,
-              sheetGrabberVisible: true,
-              sheetAllowedDetents: [0.9],
-              sheetCornerRadius: Radius.sheet,
-              contentStyle: { backgroundColor: Colors.light.background },
+              contentStyle: { backgroundColor: 'transparent' },
             }}
           />
           <Stack.Screen
@@ -189,15 +188,8 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
-          {/* Opened from the Menu */}
-          <Stack.Screen
-            name="notification-settings"
-            options={{
-              presentation: 'modal',
-              title: 'Notifiche',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
-          />
+          {/* "Impostazioni" from the side menu: a full page with its own back button */}
+          <Stack.Screen name="settings" options={{ headerShown: false }} />
           <Stack.Screen
             name="appearance"
             options={{
@@ -228,6 +220,16 @@ export default function RootLayout() {
             options={{
               presentation: 'modal',
               title: 'Cestino',
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
+            }}
+          />
+          {/* "Sblocca": the free version and the one-time purchase (its own × at the top) */}
+          <Stack.Screen name="unlock" options={{ presentation: 'modal', headerShown: false }} />
+          <Stack.Screen
+            name="terms"
+            options={{
+              presentation: 'modal',
+              title: 'Termini d’uso',
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />

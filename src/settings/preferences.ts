@@ -10,6 +10,7 @@ export type Preferences = {
   reminderMinute: number;
   defaultReminderDays: number; // "Avvisa prima di", for documents without their own value
   iconBadgeEnabled: boolean; // "Numero sull'icona"
+  hidePreviews: boolean; // "Nascondi anteprime": reminders without the document's name or person
 };
 
 export const DEFAULT_PREFERENCES: Preferences = {
@@ -18,6 +19,7 @@ export const DEFAULT_PREFERENCES: Preferences = {
   reminderMinute: 0,
   defaultReminderDays: 7,
   iconBadgeEnabled: true,
+  hidePreviews: false,
 };
 
 // Last value read or saved: the same object until something changes (useSyncExternalStore

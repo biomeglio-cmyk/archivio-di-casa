@@ -36,7 +36,7 @@ export default function FavoritesScreen() {
   return (
     // Gesture root for the drag and drop
     <GestureHandlerRootView style={[styles.flex, { backgroundColor: theme.background }]}>
-      <TabHeader
+      <TabHeader section="favorites"
         title="Preferiti"
         action={pinned && pinned.length > 0 ? { label: 'Modifica', onPress: () => router.push('/pinned-edit') } : undefined}
       />

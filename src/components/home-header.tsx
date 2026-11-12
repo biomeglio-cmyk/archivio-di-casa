@@ -23,7 +23,7 @@ export function HomeHeader() {
     <View style={styles.row}>
       <Pressable
         {...menu.handlers}
-        onPress={() => router.push('/menu')}
+        onPress={() => router.push({ pathname: '/menu', params: { current: 'home' } })}
         accessibilityRole="button"
         accessibilityLabel="Menu"
         style={[styles.menu, menu.pressed && styles.pressed]}>

@@ -23,7 +23,7 @@ export default function FamilyScreen() {
 
   return (
     <View style={[styles.screen, { backgroundColor: theme.background }]}>
-      <TabHeader
+      <TabHeader section="family"
         title="Famiglia"
         action={{ symbol: 'plus', accessibilityLabel: 'Aggiungi persona', onPress: addPerson }}
       />

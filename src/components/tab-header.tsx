@@ -7,6 +7,7 @@ import { LogoMark } from '@/components/logo-mark';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
+import type { MenuSection } from '@/constants/navigation';
 import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
@@ -16,6 +17,7 @@ export type TabHeaderAction =
   | { symbol: SFSymbol; accessibilityLabel: string; onPress: () => void }; // icon button ("+")
 
 type Props = {
+  section: MenuSection; // highlighted in the menu
   title: string; // "Sottomano" on Home, the tab name elsewhere
   action?: TabHeaderAction; // the page action, just left of the menu button
 };
@@ -24,7 +26,7 @@ type Props = {
 // Onest Bold wordmark, the page action and the round Menu button on the right.
 // Fixed at the top (the tabs hide the navigation bar), same paddings everywhere.
 // Inner screens (category, person, document) keep the standard iOS header with "back".
-export function TabHeader({ title, action }: Props) {
+export function TabHeader({ section, title, action }: Props) {
   const insets = useSafeAreaInsets();
   const theme = useTheme();
 
@@ -45,7 +47,7 @@ export function TabHeader({ title, action }: Props) {
           ) : (
             <RoundIconButton symbol={action.symbol} accessibilityLabel={action.accessibilityLabel} onPress={action.onPress} />
           ))}
-        <RoundIconButton symbol="circle.grid.3x3.fill" accessibilityLabel="Menu" onPress={() => router.push('/menu')} />
+        <RoundIconButton symbol="circle.grid.3x3.fill" accessibilityLabel="Menu" onPress={() => router.push({ pathname: '/menu', params: { current: section } })} />
       </View>
     </View>
   );

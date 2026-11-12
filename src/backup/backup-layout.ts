@@ -48,3 +48,18 @@ export function getLastBackupDate(): Date | null {
 export function saveLastBackupDate(date: Date): void {
   Storage.setItemSync(LAST_BACKUP_KEY, date.toISOString());
 }
+
+// A backup is "due" when there is none, or the last one is older than this. There is no
+// frequency setting in the app yet: a fixed 30 days (Home notice, orange dot in the Menu).
+export const BACKUP_REMINDER_DAYS = 30;
+const DAY_MS = 24 * 60 * 60 * 1000;
+
+export function daysSinceLastBackup(now: number): number | null {
+  const last = getLastBackupDate();
+  return last ? Math.floor((now - last.getTime()) / DAY_MS) : null;
+}
+
+export function isBackupDue(now: number): boolean {
+  const days = daysSinceLastBackup(now);
+  return days === null || days > BACKUP_REMINDER_DAYS;
+}

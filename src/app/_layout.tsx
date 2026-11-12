@@ -78,16 +78,15 @@ export default function RootLayout() {
               sheetAllowedDetents: 'fitToContents',
             }}
           />
-          {/* "Menu" from the ≡ in the Home header: 90% of the screen, closes by dragging down */}
+          {/* Side menu from ≡ in Home: transparent, it draws its own dimmed background and slides
+              its panel in from the left (src/app/menu.tsx) */}
           <Stack.Screen
             name="menu"
             options={{
-              presentation: 'formSheet',
+              presentation: 'transparentModal',
+              animation: 'none',
               headerShown: false,
-              sheetGrabberVisible: true,
-              sheetAllowedDetents: [0.9],
-              sheetCornerRadius: Radius.sheet,
-              contentStyle: { backgroundColor: Colors.light.background },
+              contentStyle: { backgroundColor: 'transparent' },
             }}
           />
           <Stack.Screen

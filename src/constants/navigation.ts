@@ -8,3 +8,6 @@ export const TAB_STACK_SCREEN_OPTIONS: NativeStackNavigationOptions = {
   headerLargeTitleStyle: { fontFamily: FONTS.bold },
   headerTitleStyle: { fontFamily: FONTS.semiBold },
 };
+
+// The screen the side menu was opened from: its entry is highlighted (src/app/menu.tsx)
+export type MenuSection = 'home' | 'favorites' | 'deadlines' | 'family' | 'cards';

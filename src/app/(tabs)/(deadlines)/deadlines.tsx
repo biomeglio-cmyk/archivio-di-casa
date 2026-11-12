@@ -95,7 +95,7 @@ export default function DeadlinesScreen() {
   return (
     <View style={[styles.screen, { backgroundColor: theme.background }]}>
       {/* The shared tab header, fixed; "Mese" opens the month grid */}
-      <TabHeader title="Scadenze" action={{ label: 'Mese', onPress: openMonth }} />
+      <TabHeader section="deadlines" title="Scadenze" action={{ label: 'Mese', onPress: openMonth }} />
       <SectionList
         ref={listRef}
         sections={sections}

@@ -4,15 +4,12 @@ import Storage from 'expo-sqlite/kv-store';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { getLastBackupDate } from '@/backup/backup-layout';
+import { BACKUP_REMINDER_DAYS, daysSinceLastBackup } from '@/backup/backup-layout';
 import { Text } from '@/components/text';
 import { Colors, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
-// How old the last backup may be before Home reminds about it. There is no frequency setting
-// in the app: a fixed 30 days, as before the redesign.
-const BACKUP_REMINDER_DAYS = 30;
 const SNOOZE_DAYS = 7; // ✕ on the "old backup" notice hides it for a week
 const SNOOZE_KEY = 'backup.reminderSnoozedUntil';
 
@@ -31,9 +28,8 @@ type Notice = { kind: 'none' } | { kind: 'old'; days: number };
 
 // Which notice to show now, or null
 function noticeFor(now: number): Notice | null {
-  const last = getLastBackupDate();
-  if (!last) return dismissedThisLaunch ? null : { kind: 'none' };
-  const days = Math.floor((now - last.getTime()) / DAY_MS);
+  const days = daysSinceLastBackup(now);
+  if (days === null) return dismissedThisLaunch ? null : { kind: 'none' };
   if (days <= BACKUP_REMINDER_DAYS || now < snoozedUntil()) return null;
   return { kind: 'old', days };
 }

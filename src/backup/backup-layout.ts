@@ -49,10 +49,35 @@ export function saveLastBackupDate(date: Date): void {
   Storage.setItemSync(LAST_BACKUP_KEY, date.toISOString());
 }
 
-// A backup is "due" when there is none, or the last one is older than this. There is no
-// frequency setting in the app yet: a fixed 30 days (Home notice, orange dot in the Menu).
-export const BACKUP_REMINDER_DAYS = 30;
+// "Ricordami di fare il backup" (Backup screen): every week, every month (default) or never.
+// A backup is "due" when there is none, or the last one is older than that (Home notice,
+// orange dot in the Menu, the Backup notification).
+export type BackupFrequency = 'week' | 'month' | 'never';
+export const BACKUP_FREQUENCIES: { value: BackupFrequency; label: string }[] = [
+  { value: 'week', label: 'Ogni settimana' },
+  { value: 'month', label: 'Ogni mese' },
+  { value: 'never', label: 'Mai' },
+];
+const FREQUENCY_KEY = 'backup.reminderFrequency';
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+export function getBackupFrequency(): BackupFrequency {
+  try {
+    const saved = Storage.getItemSync(FREQUENCY_KEY);
+    return saved === 'week' || saved === 'never' ? saved : 'month';
+  } catch {
+    return 'month';
+  }
+}
+
+export function saveBackupFrequency(frequency: BackupFrequency): void {
+  Storage.setItemSync(FREQUENCY_KEY, frequency);
+}
+
+// Days between reminders, or null for "Mai"
+export function backupReminderDays(frequency: BackupFrequency = getBackupFrequency()): number | null {
+  return frequency === 'week' ? 7 : frequency === 'month' ? 30 : null;
+}
 
 export function daysSinceLastBackup(now: number): number | null {
   const last = getLastBackupDate();
@@ -60,6 +85,25 @@ export function daysSinceLastBackup(now: number): number | null {
 }
 
 export function isBackupDue(now: number): boolean {
+  const interval = backupReminderDays();
+  if (interval === null) return false;
   const days = daysSinceLastBackup(now);
-  return days === null || days > BACKUP_REMINDER_DAYS;
+  return days === null || days > interval;
+}
+
+// The backup kept on the phone (Backup screen, "Backup completato")
+export type SavedBackup = { uri: string; name: string; documents: number; bytes: number; createdAt: string };
+const SAVED_KEY = 'backup.saved';
+
+export function getSavedBackup(): SavedBackup | null {
+  try {
+    const saved = Storage.getItemSync(SAVED_KEY);
+    return saved ? (JSON.parse(saved) as SavedBackup) : null;
+  } catch {
+    return null;
+  }
+}
+
+export function setSavedBackup(backup: SavedBackup): void {
+  Storage.setItemSync(SAVED_KEY, JSON.stringify(backup));
 }

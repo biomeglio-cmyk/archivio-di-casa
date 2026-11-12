@@ -174,11 +174,7 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="backup"
-            options={{
-              presentation: 'modal',
-              title: 'Backup',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'modal', title: 'Backup', headerShown: false }}
           />
           {/* "Prepara per il commercialista" in the "…" menu of Spese 730 */}
           <Stack.Screen

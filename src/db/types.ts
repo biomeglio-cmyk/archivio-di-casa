@@ -8,7 +8,11 @@ export type Person = {
   id: number;
   name: string;
   photoPath: string | null; // relative to Paths.document; null = initial in a circle
+  role: PersonRole | null; // "Chi è"; null = not said
 };
+
+// "Chi è" of a family member; 'me' is the owner of the phone ("Tu")
+export type PersonRole = 'me' | 'partner' | 'child' | 'parent' | 'sibling' | 'other';
 
 export type CategoryColors = {
   top: string; // start of the gradient (top-left)
@@ -82,7 +86,7 @@ export type DocumentFile = {
 
 // ---- Raw rows as returned by SQLite ----
 
-export type PersonRecord = { id: number; name: string; photo_path: string | null };
+export type PersonRecord = { id: number; name: string; photo_path: string | null; role: string | null };
 
 export type CategoryRecord = {
   id: number;

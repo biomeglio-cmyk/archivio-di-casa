@@ -71,7 +71,7 @@ export function categoryQuickActions(db: SQLiteDatabase, category: Category): Qu
   return actions;
 }
 
-// People in Famiglia: Apri, Modifica, Elimina
+// People in Famiglia: Apri, Modifica persona, Cancella persona
 export function personQuickActions(db: SQLiteDatabase, person: Person): QuickAction[] {
   return [
     {
@@ -82,16 +82,16 @@ export function personQuickActions(db: SQLiteDatabase, person: Person): QuickAct
     },
     {
       key: 'edit',
-      label: 'Modifica',
+      label: 'Modifica persona',
       symbol: 'pencil',
       onPress: () => router.push({ pathname: '/person-form', params: { id: String(person.id) } }),
     },
     {
       key: 'delete',
-      label: 'Elimina',
+      label: 'Cancella persona',
       symbol: 'trash',
       destructive: true,
-      onPress: () => confirmDeletePerson(db, person),
+      onPress: () => confirmDeletePerson(person),
     },
   ];
 }

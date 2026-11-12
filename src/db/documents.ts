@@ -1,6 +1,7 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { removeCalendarEvent, syncDocumentEvent } from '@/calendar/calendar-sync';
+import { isPersonRole } from '@/constants/person-roles';
 import { CATEGORY_JOIN_COLUMNS, mapCategory } from '@/db/categories';
 import { rescheduleReminders } from '@/notifications/reminders';
 import type {
@@ -133,8 +134,10 @@ export async function saveDocumentOrder(
 }
 
 export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise<DocumentDetail | null> {
-  const row = await db.getFirstAsync<DocumentWithCategoryRecord & { p_name: string | null; p_photo_path: string | null }>(
-    `SELECT d.*, ${CATEGORY_JOIN_COLUMNS}, p.name AS p_name, p.photo_path AS p_photo_path
+  const row = await db.getFirstAsync<
+    DocumentWithCategoryRecord & { p_name: string | null; p_photo_path: string | null; p_role: string | null }
+  >(
+    `SELECT d.*, ${CATEGORY_JOIN_COLUMNS}, p.name AS p_name, p.photo_path AS p_photo_path, p.role AS p_role
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      LEFT JOIN people p ON p.id = d.person_id
@@ -145,7 +148,7 @@ export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise
   const document = mapDocument(row);
   const person =
     row.person_id !== null && row.p_name !== null
-      ? { id: row.person_id, name: row.p_name, photoPath: row.p_photo_path }
+      ? { id: row.person_id, name: row.p_name, photoPath: row.p_photo_path, role: isPersonRole(row.p_role) ? row.p_role : null }
       : null;
   return { ...document, person };
 }

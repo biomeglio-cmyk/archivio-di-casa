@@ -347,6 +347,23 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 16,
+    name: 'role and order of the family members',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Chi è": who the person is for the owner of the phone; 'me' = "Tu"; NULL = not said
+        ALTER TABLE people ADD COLUMN role TEXT CHECK (role IN ('me', 'partner', 'child', 'parent', 'sibling', 'other'));
+        -- Only one person can be "Tu"
+        CREATE UNIQUE INDEX people_one_me ON people (role) WHERE role = 'me';
+        -- Order of Famiglia ("Riordina"); the people so far keep the order they were added in
+        ALTER TABLE people ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0;
+        UPDATE people SET sort_order = (SELECT COUNT(*) FROM people AS earlier
+          WHERE earlier.created_at < people.created_at
+             OR (earlier.created_at = people.created_at AND earlier.id < people.id));
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

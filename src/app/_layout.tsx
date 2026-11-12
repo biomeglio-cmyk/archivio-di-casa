@@ -265,15 +265,6 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
-          {/* "Modifica" of the Preferiti section: reorder and remove pinned items */}
-          <Stack.Screen
-            name="pinned-edit"
-            options={{
-              presentation: 'modal',
-              title: 'Preferiti',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
-          />
         </Stack>
         </Fragment>
         {/* After the Stack, so it is drawn on top of the first screen while it fades */}

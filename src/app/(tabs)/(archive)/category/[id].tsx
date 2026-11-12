@@ -48,7 +48,7 @@ export default function CategoryScreen() {
               onPress={() => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })}>
               Modifica categoria
             </Stack.Toolbar.MenuAction>
-            <Stack.Toolbar.MenuAction icon="trash" destructive onPress={() => confirmDeleteCategory(db, category)}>
+            <Stack.Toolbar.MenuAction icon="trash" destructive onPress={() => confirmDeleteCategory(category)}>
               Cancella categoria
             </Stack.Toolbar.MenuAction>
           </Stack.Toolbar.Menu>

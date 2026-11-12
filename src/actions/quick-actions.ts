@@ -65,7 +65,7 @@ export function categoryQuickActions(db: SQLiteDatabase, category: Category): Qu
       label: 'Cancella categoria',
       symbol: 'trash',
       destructive: true,
-      onPress: () => void confirmDeleteCategory(db, category),
+      onPress: () => confirmDeleteCategory(category),
     });
   }
   return actions;

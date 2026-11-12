@@ -47,7 +47,12 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
         action?.();
       }}>
       <View style={styles.fill} accessibilityViewIsModal onAccessibilityEscape={onClose}>
-        <Pressable style={StyleSheet.absoluteFill} onPress={onClose} accessibilityRole="button" accessibilityLabel="Chiudi" />
+        <Pressable
+          style={StyleSheet.absoluteFill}
+          onPress={onClose}
+          accessibilityRole="button"
+          accessibilityLabel="Chiudi"
+        />
         <View style={[styles.sheet, { paddingBottom: Math.max(insets.bottom, 20) + 14 }]} accessibilityRole="menu">
           <View style={styles.grabber} />
           <Text style={styles.title} accessibilityRole="header">

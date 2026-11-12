@@ -92,7 +92,11 @@ export function FolderScreen({ category, documents }: Props) {
 
   async function saveOrder(items: DocumentListItem[]) {
     try {
-      await saveDocumentOrder(db, 'category', items.map((d) => d.id));
+      await saveDocumentOrder(
+        db,
+        'category',
+        items.map((d) => d.id),
+      );
     } catch (error) {
       Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
     }
@@ -126,7 +130,14 @@ export function FolderScreen({ category, documents }: Props) {
       ? [{ key: 'select', label: 'Seleziona e invia', symbol: 'checkmark.circle' as const, onPress: selection.start }]
       : []),
     ...(documents.length > 1
-      ? [{ key: 'reorder', label: 'Riordina', symbol: 'arrow.up.arrow.down' as const, onPress: () => setReordering(true) }]
+      ? [
+          {
+            key: 'reorder',
+            label: 'Riordina',
+            symbol: 'arrow.up.arrow.down' as const,
+            onPress: () => setReordering(true),
+          },
+        ]
       : []),
     ...(isOtherCategory(category)
       ? []
@@ -136,7 +147,7 @@ export function FolderScreen({ category, documents }: Props) {
             label: 'Cancella categoria',
             symbol: 'trash' as const,
             destructive: true,
-            onPress: () => confirmDeleteCategory(db, category),
+            onPress: () => confirmDeleteCategory(category),
           },
         ]),
   ];
@@ -237,9 +248,7 @@ export function FolderScreen({ category, documents }: Props) {
               </ChipGroup>
             </View>
 
-            {months.length === 0 && documents.length > 0 && (
-              <Text style={styles.empty}>Nessun documento trovato.</Text>
-            )}
+            {months.length === 0 && documents.length > 0 && <Text style={styles.empty}>Nessun documento trovato.</Text>}
 
             {months.map((month) => (
               <View key={month.key} style={styles.month}>

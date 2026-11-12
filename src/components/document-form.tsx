@@ -11,7 +11,7 @@ import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
-import { DEFAULT_REMINDER, EVERY_OPTIONS, reminderChoices, reminderLabel } from '@/constants/deadline-options';
+import { EVERY_OPTIONS, reminderChoices, reminderLabel, reminderPickerValue, reminderToSave } from '@/constants/deadline-options';
 import { Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategories } from '@/db/categories';
@@ -65,7 +65,7 @@ export function DocumentForm({
     initial?.expiresAt ? parseISODate(initial.expiresAt) : new Date(),
   );
   const [calendarOpen, setCalendarOpen] = useState(false);
-  const [reminderDays, setReminderDays] = useState(initial?.reminderDays ?? DEFAULT_REMINDER);
+  const [reminderDays, setReminderDays] = useState(reminderPickerValue(initial?.reminderDays ?? null));
   const { defaultReminderDays } = usePreferences();
   // "Si ripete": 'never' or a unit, and every how many (kept while switching back and forth)
   const [repeatUnit, setRepeatUnit] = useState<RepeatUnit | 'never'>(initial?.repeat?.unit ?? 'never');
@@ -98,7 +98,7 @@ export function DocumentForm({
           personId: personId === NONE ? null : personId,
           number,
           expiresAt: hasExpiry ? toISODate(expiryDate) : null,
-          reminderDays: hasExpiry && reminderDays !== DEFAULT_REMINDER ? reminderDays : null,
+          reminderDays: hasExpiry ? reminderToSave(reminderDays) : null,
           repeat: hasExpiry && repeatUnit !== 'never' ? { every: repeatEvery, unit: repeatUnit } : null,
           notes,
           username: isPassword ? username : null,

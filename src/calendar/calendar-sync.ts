@@ -38,7 +38,8 @@ function eventDetails(doc: EventSource & { expires_at: string }) {
   // An empty list also REMOVES the alarm of an existing event when it is updated.
   const preferences = getPreferences();
   const days = reminderDaysFor(doc.reminder_days, preferences);
-  const alarms = preferences.remindersEnabled ? [] : [{ relativeOffset: -days * 24 * 60 + REMINDER_HOUR * 60 }];
+  // No alarm while the app reminds, or when "Ricordamelo" is off for this document (days < 0)
+  const alarms = preferences.remindersEnabled || days < 0 ? [] : [{ relativeOffset: -days * 24 * 60 + REMINDER_HOUR * 60 }];
   return { title: `Scade: ${doc.title}`, startDate: day, endDate: day, allDay: true, alarms };
 }
 

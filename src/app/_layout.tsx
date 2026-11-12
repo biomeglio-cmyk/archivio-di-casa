@@ -223,6 +223,8 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
+          {/* "Visualizza": the pages on a dark background, full screen */}
+          <Stack.Screen name="view/[id]" options={{ presentation: 'fullScreenModal', headerShown: false }} />
           {/* Delete confirmations of the design: transparent, they draw their own dimmed background */}
           <Stack.Screen
             name="delete-document/[id]"

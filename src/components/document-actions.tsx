@@ -1,10 +1,9 @@
 import { router } from 'expo-router';
-import { Alert, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/primary-button';
 import { SecondaryButton } from '@/components/secondary-button';
 import type { Category, DocumentFile } from '@/db/types';
-import { previewDocumentFiles } from '@/storage/preview-files';
 
 type Props = {
   documentId: number;
@@ -14,18 +13,10 @@ type Props = {
 };
 
 // Buttons under the document files
-export function DocumentActions({ documentId, title, category, files }: Props) {
-  const pdf = files.find((f) => f.kind === 'pdf');
-  const images = files.filter((f) => f.kind === 'image'); // already in page order
-
-  // "Visualizza documento": PDF, or all the photos (front first, then the pages) full screen with zoom
-  async function view() {
-    const shown: DocumentFile[] = pdf ? [pdf] : images;
-    try {
-      await previewDocumentFiles(title, category, shown);
-    } catch (error) {
-      Alert.alert('Impossibile aprire il documento', error instanceof Error ? error.message : String(error));
-    }
+export function DocumentActions({ documentId }: Props) {
+  // "Visualizza documento": the Visualizza screen (pages on a dark background, zoom, Invia)
+  function view() {
+    router.push({ pathname: '/view/[id]', params: { id: String(documentId) } });
   }
 
   return (

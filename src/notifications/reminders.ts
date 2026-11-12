@@ -66,6 +66,7 @@ function reminderDate(doc: ReminderSource, preferences: Preferences, now: Date):
   const { reminderHour: hour, reminderMinute: minute } = preferences;
   const expiry = parseISODate(doc.expires_at);
   const days = reminderDaysFor(doc.reminder_days, preferences);
+  if (days < 0) return null; // "Ricordamelo" off for this document
   const at = new Date(expiry.getFullYear(), expiry.getMonth(), expiry.getDate() - days, hour, minute);
   if (at > now) return at;
   // The reminder day has passed but the deadline hasn't: remind on the expiry day itself

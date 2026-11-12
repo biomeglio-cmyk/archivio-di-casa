@@ -10,7 +10,7 @@ import { Group, Row } from '@/components/grouped-list';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
-import { DEFAULT_REMINDER, EVERY_OPTIONS, reminderChoices, reminderLabel } from '@/constants/deadline-options';
+import { EVERY_OPTIONS, reminderChoices, reminderLabel, reminderPickerValue, reminderToSave } from '@/constants/deadline-options';
 import { Colors, Spacing } from '@/constants/theme';
 import { getDocumentDetail, saveDocumentDeadline } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
@@ -47,7 +47,7 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
   const [date, setDate] = useState(() => (document.expiresAt ? parseISODate(document.expiresAt) : new Date()));
   const [repeatUnit, setRepeatUnit] = useState<RepeatUnit | 'never'>(document.repeat?.unit ?? 'never');
   const [repeatEvery, setRepeatEvery] = useState(document.repeat?.every ?? 1);
-  const [reminderDays, setReminderDays] = useState(document.reminderDays ?? DEFAULT_REMINDER);
+  const [reminderDays, setReminderDays] = useState(reminderPickerValue(document.reminderDays));
   const [saving, setSaving] = useState(false);
 
   async function run(work: () => Promise<void>) {
@@ -66,7 +66,7 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
     return run(async () => {
       await saveDocumentDeadline(db, document.id, {
         expiresAt,
-        reminderDays: reminderDays === DEFAULT_REMINDER ? null : reminderDays,
+        reminderDays: reminderToSave(reminderDays),
         repeat: repeatUnit === 'never' ? null : { every: repeatEvery, unit: repeatUnit },
       });
       await afterDocumentSaved(db, expiresAt); // asks for notifications the first time

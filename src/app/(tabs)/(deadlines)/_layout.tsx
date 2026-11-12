@@ -9,7 +9,7 @@ export const unstable_settings = { anchor: 'deadlines' };
 export default function DeadlinesLayout() {
   return (
     <Stack screenOptions={TAB_STACK_SCREEN_OPTIONS}>
-      {/* No navigation bar: the screen draws "Scadenze" with the "Mese" button on the same line.
+      {/* No navigation bar: the screen draws its own header (back, "+", title) as in the design.
           The title still names the back button of the document screen. */}
       <Stack.Screen name="deadlines" options={{ title: 'Scadenze', headerShown: false }} />
       <Stack.Screen name="document/[id]" options={{ headerLargeTitleEnabled: false }} />

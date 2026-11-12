@@ -20,8 +20,9 @@ function suggestTitle(files: PendingFile[]): string {
 export default function NewDocumentScreen() {
   const db = useSQLiteContext();
   // Files arrive as a JSON route param from the "+" sheet or from the camera.
-  // personId / categoryId preselect the person or the category ("Aggiungi documento" in their screens).
-  const params = useLocalSearchParams<{ files?: string; personId?: string; categoryId?: string }>();
+  // personId / categoryId preselect the person or the category ("Aggiungi documento" in their screens);
+  // expiresAt ('YYYY-MM-DD', the "+" of Scadenze) opens it with the deadline on that day.
+  const params = useLocalSearchParams<{ files?: string; personId?: string; categoryId?: string; expiresAt?: string }>();
   const [captured] = useState(() => decodePendingFiles(params.files));
   // The pages can still be added, removed and reordered before saving
   const [files, setFiles] = useState<EditableFile[]>(() => captured.map(fromPending));
@@ -34,6 +35,7 @@ export default function NewDocumentScreen() {
           title: suggestTitle(captured),
           personId: params.personId ? Number(params.personId) : null,
           categoryId: params.categoryId ? Number(params.categoryId) : undefined,
+          expiresAt: params.expiresAt && /^\d{4}-\d{2}-\d{2}$/.test(params.expiresAt) ? params.expiresAt : undefined,
         }}
         files={(category) => <FilesEditor files={files} category={category} onChange={setFiles} />}
         hasPhoto={files.some((f) => f.kind === 'image')}

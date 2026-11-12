@@ -70,13 +70,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
             name="add-document"
-            options={{
-              presentation: 'formSheet',
-              headerShown: false,
-              sheetGrabberVisible: true,
-              sheetCornerRadius: Radius.sheet,
-              sheetAllowedDetents: 'fitToContents',
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
           />
           {/* Side menu from ≡ in Home: transparent, it draws its own dimmed background and slides
               its panel in from the left (src/app/menu.tsx) */}

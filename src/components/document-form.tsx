@@ -58,6 +58,7 @@ type Props = {
   onDelete?: () => void; // "Cancella documento" (only when editing)
   hasSavedPassword?: boolean; // editing a Password document that already has one in the Keychain
   hasPhoto?: boolean; // the pages include a photo: "Copertina" defaults to Foto
+  notice?: ReactNode; // under the pages: "Letto dal documento" after a capture (Conferma design)
 };
 
 // "Modifica documento" / "Nuovo documento" (docs/design/Modifica.dc.html): back button and title,
@@ -76,6 +77,7 @@ export function DocumentForm({
   onDelete,
   hasSavedPassword = false,
   hasPhoto = false,
+  notice,
 }: Props) {
   const insets = useSafeAreaInsets();
   const { data: categories } = useDbQuery(listCategories, []);
@@ -216,6 +218,7 @@ export function DocumentForm({
       </View>
 
       <View style={styles.pages}>{files?.(selectedCategory)}</View>
+      {notice}
 
       <SectionTitle>Nome</SectionTitle>
       <View style={styles.nameField}>

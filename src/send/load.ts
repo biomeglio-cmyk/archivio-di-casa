@@ -1,11 +1,14 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
+import type { Category } from '@/db/types';
 import type { SendDocument } from '@/send/prepare';
 
 export type SendItem = SendDocument & {
   id: number;
+  category: Category; // the whole category: its colors tint the sheet
   personName: string | null;
+  notes: string | null; // "Includi la nota del documento"
   faces: number; // photos: front, back, or all the pages of a scan
   hasPdf: boolean;
 };
@@ -21,6 +24,7 @@ export async function loadSendItems(db: SQLiteDatabase, ids: number[]): Promise<
       id,
       title: detail.title,
       personName: detail.person?.name ?? null,
+      notes: detail.notes,
       category: detail.category,
       files,
       faces: files.filter((f) => f.kind === 'image').length,

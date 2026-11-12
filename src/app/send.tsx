@@ -1,24 +1,23 @@
-import { useLocalSearchParams } from 'expo-router';
-import { SymbolView } from 'expo-symbols';
+import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
+import { router, useLocalSearchParams } from 'expo-router';
+import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { FrontBackComposer, type FrontBackComposerHandle } from '@/components/front-back-composer';
 import { Segmented } from '@/components/segmented';
 import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
-import { FrontBackComposer, type FrontBackComposerHandle } from '@/components/front-back-composer';
-import { PrimaryButton } from '@/components/primary-button';
-import { SecondaryButton } from '@/components/secondary-button';
-import { ThemedText } from '@/components/themed-text';
-import { WhiteCard } from '@/components/white-card';
-import { BRAND_COLOR } from '@/constants/brand';
-import { Spacing } from '@/constants/theme';
+import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { Colors, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useTheme } from '@/hooks/use-theme';
-import { usesFrontBack } from '@/utils/page-labels';
+import { copyToClipboard, emailFiles, printFiles, saveToFiles, shareFiles } from '@/send/deliver';
 import { resolveDocumentFile } from '@/storage/document-files';
-import { saveToFiles, shareFiles } from '@/send/deliver';
+import { categoryTint } from '@/utils/colors';
+import { usesFrontBack } from '@/utils/page-labels';
 import { fileBaseName } from '@/send/file-name';
 import { imageSize } from '@/send/images';
 import { loadSendItems, type SendItem } from '@/send/load';
@@ -34,7 +33,11 @@ import {
 // Warnings: soft orange box, dark orange text
 const WARNING_COLORS = { text: '#B35400', background: '#FFF1E0' };
 
-// Sheet "Invia": /send?ids=12 for one document, /send?ids=3,7,9&label=Step for several
+// Sheet "Invia" (docs/design/Invia.dc.html): /send?ids=12 for one document, /send?ids=3,7,9&label=…
+// for several. The document with "PDF unico · 2 pagine · 1,2 MB", PDF / Foto, then Email, WhatsApp,
+// Stampa, Salva in File, Copia, Altro, "Includi la nota del documento" and Annulla. On top of our
+// send engine: the files are prepared (and compressed) as before; our extras stay below the
+// actions (front and back together, Peso massimo, the files that will go, warnings).
 export default function SendSheet() {
   const { ids, label } = useLocalSearchParams<{ ids: string; label?: string }>();
   const { data: items } = useDbQuery((db) => loadSendItems(db, ids.split(',').map(Number)), [ids]);
@@ -46,17 +49,32 @@ export default function SendSheet() {
 
 type Result = { key: string; prepared?: PreparedSend; error?: string };
 
+type DeliverAction = 'email' | 'whatsapp' | 'print' | 'save' | 'copy' | 'other';
+
+// The six actions of the design, in its colors
+const ACTIONS: {
+  key: DeliverAction;
+  label: string;
+  symbol: SFSymbol;
+  gradient?: readonly [string, string];
+  shadow?: string;
+}[] = [
+  { key: 'email', label: 'Email', symbol: 'envelope', gradient: BRAND_GRADIENT, shadow: '100, 90, 235' },
+  { key: 'whatsapp', label: 'WhatsApp', symbol: 'message', gradient: ['#3DD37A', '#1FA855'], shadow: '31, 168, 85' },
+  { key: 'print', label: 'Stampa', symbol: 'printer', gradient: ['#A9AFC4', '#6E7591'], shadow: '110, 117, 145' },
+  { key: 'save', label: 'Salva in File', symbol: 'folder', gradient: ['#86B4F7', '#6494EE'], shadow: '100, 148, 238' },
+  { key: 'copy', label: 'Copia', symbol: 'doc.on.doc', gradient: ['#FFA36E', '#F5824A'], shadow: '245, 130, 74' },
+  { key: 'other', label: 'Altro', symbol: 'ellipsis' },
+];
+
 function SendForm({ items, label }: { items: SendItem[]; label: string | null }) {
-  const theme = useTheme();
-  const warningColors = WARNING_COLORS;
-  const WARNING_TEXT = warningColors.text;
-  const warningBox = [styles.warning, { backgroundColor: warningColors.background }];
-  const warningText = [styles.warningText, { color: warningColors.text }];
+  const insets = useSafeAreaInsets();
   const composerRef = useRef<FrontBackComposerHandle>(null);
   const [preferences, setPreferences] = useState<SendPreferences>(loadSendPreferences);
   const [result, setResult] = useState<Result | null>(null);
   const [aspects, setAspects] = useState<{ front: number; back: number } | null>(null);
   const [delivering, setDelivering] = useState(false);
+  const [includeNote, setIncludeNote] = useState(false);
 
   const single = items.length === 1 ? items[0] : null;
   const importedPdf = Boolean(single?.hasPdf);
@@ -116,15 +134,34 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
     setPreferences(next);
   }
 
-  async function deliver(action: 'share' | 'save') {
+  const notes = includeNote ? (single?.notes?.trim() || null) : null;
+  const copyText = [title, notes].filter(Boolean).join('\n\n'); // "Copia" of a PDF
+
+  // Runs one of the six actions on the prepared files
+  async function deliver(action: DeliverAction) {
     const prepared = result?.prepared;
     if (!prepared || busy) return;
     setDelivering(true);
     try {
-      if (action === 'share') {
-        await shareFiles(prepared.files, title);
-      } else if (await saveToFiles(prepared.files)) {
-        Alert.alert('Salvato in File', prepared.files.map((f) => f.name).join('\n'));
+      if (action === 'email') {
+        if (!(await emailFiles(prepared.files, title, notes))) await shareFiles(prepared.files, title, notes);
+      } else if (action === 'whatsapp' || action === 'other') {
+        // WhatsApp: the iOS share sheet, where WhatsApp is one of the apps (Expo Go can't open it directly)
+        await shareFiles(prepared.files, title, notes);
+      } else if (action === 'print') {
+        await printFiles(prepared.files);
+      } else if (action === 'save') {
+        if (await saveToFiles(prepared.files)) Alert.alert('Salvato in File', prepared.files.map((f) => f.name).join('\n'));
+      } else {
+        const copied = await copyToClipboard(prepared.files, copyText);
+        Alert.alert(
+          copied === 'image' ? 'Immagine copiata' : 'Testo copiato',
+          copied === 'image'
+            ? prepared.files.length > 1
+              ? 'È stata copiata la prima pagina: incollala in un messaggio.'
+              : 'Incollala in un messaggio o in una nota.'
+            : 'Un PDF non si può copiare: sono stati copiati il nome e la nota. Per il file usa Altro.',
+        );
       }
     } catch (error) {
       Alert.alert('Impossibile completare', error instanceof Error ? error.message : String(error));
@@ -135,123 +172,157 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
 
   const prepared = !busy ? result?.prepared : undefined;
   const error = !busy ? result?.error : undefined;
-  const line = theme.backgroundSelected;
+  const meta = prepared
+    ? [
+        format === 'pdf'
+          ? prepared.files.length > 1
+            ? `${prepared.files.length} PDF`
+            : 'PDF unico'
+          : prepared.files.length === 1
+            ? '1 foto'
+            : `${prepared.files.length} foto`,
+        prepared.pages !== null ? (prepared.pages === 1 ? '1 pagina' : `${prepared.pages} pagine`) : null,
+        formatBytes(prepared.bytes),
+      ]
+        .filter(Boolean)
+        .join(' · ')
+    : error
+      ? 'Non è stato possibile preparare il file'
+      : 'Preparazione…';
+  const ready = Boolean(prepared) && !delivering;
+  const firstPhoto = single?.files.find((f) => f.kind === 'image');
+  const { tint, onTint } = single ? categoryTint(single.category.colors) : { tint: Colors.light.lilac, onTint: Colors.light.indigo };
 
   return (
-    <ScrollView contentContainerStyle={styles.container}>
-      <View>
-        <ThemedText style={styles.title}>Invia</ThemedText>
-        <ThemedText themeColor="textSecondary" numberOfLines={1}>
-          {title}
-        </ThemedText>
+    <ScrollView contentContainerStyle={[styles.container, { paddingBottom: insets.bottom + 24 }]}>
+      <View style={styles.head}>
+        <View style={[styles.thumb, { backgroundColor: tint }]}>
+          {firstPhoto ? (
+            <Image source={{ uri: resolveDocumentFile(firstPhoto.path).uri }} style={styles.thumbPhoto} contentFit="cover" />
+          ) : (
+            <View style={styles.miniPage}>
+              <View style={[styles.miniTitle, { backgroundColor: onTint }]} />
+              <View style={styles.miniLine} />
+              <View style={[styles.miniLine, styles.miniShort]} />
+            </View>
+          )}
+        </View>
+        <View style={styles.flex}>
+          <Text style={styles.title} numberOfLines={2} accessibilityRole="header">
+            {`Invia ${title}`}
+          </Text>
+          <View style={styles.metaRow}>
+            {busy && <ActivityIndicator size="small" />}
+            <Text style={styles.meta} numberOfLines={1}>
+              {meta}
+            </Text>
+          </View>
+        </View>
       </View>
 
-      <View style={styles.group}>
-        <ThemedText type="smallBold" themeColor="textSecondary" style={styles.groupTitle}>
-          Formato
-        </ThemedText>
+      <View style={styles.format}>
         <Segmented
-          values={['PDF', 'JPEG']}
+          values={['PDF', 'Foto']}
           selectedIndex={format === 'pdf' ? 0 : 1}
           enabled={!multi && !importedPdf}
           onChange={(index) => update({ format: index === 0 ? 'pdf' : 'jpeg' })}
         />
-        {multi && (
-          <ThemedText type="small" themeColor="textSecondary">
-            Un unico PDF: i documenti uno dopo l&apos;altro, fronte e retro di documenti d&apos;identità e tessere sulla stessa pagina.
-          </ThemedText>
-        )}
       </View>
 
+      <View style={styles.actions}>
+        {ACTIONS.map((action) => (
+          <Pressable
+            key={action.key}
+            onPress={() => deliver(action.key)}
+            disabled={!ready}
+            accessibilityRole="button"
+            accessibilityState={{ disabled: !ready }}
+            style={({ pressed }) => [styles.action, (pressed || !ready) && styles.dimmed]}>
+            {action.gradient ? (
+              <LinearGradient
+                colors={action.gradient}
+                start={GRADIENT_START}
+                end={GRADIENT_END}
+                style={[styles.actionIcon, { boxShadow: `0 8px 16px rgba(${action.shadow}, 0.30)` }]}>
+                <SymbolView name={action.symbol} tintColor="#FFFFFF" size={26} />
+              </LinearGradient>
+            ) : (
+              <View style={[styles.actionIcon, { backgroundColor: Colors.light.lilac }]}>
+                <SymbolView name={action.symbol} tintColor={Colors.light.indigo} size={26} />
+              </View>
+            )}
+            <Text style={styles.actionLabel} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
+              {action.label}
+            </Text>
+          </Pressable>
+        ))}
+      </View>
+
+      <View style={styles.noteRow}>
+        <Text style={styles.noteLabel}>Includi la nota del documento</Text>
+        <Switch
+          value={includeNote}
+          onValueChange={setIncludeNote}
+          disabled={!single?.notes}
+          accessibilityLabel="Includi la nota del documento"
+        />
+      </View>
+      {single && !single.notes && <Text style={styles.small}>Questo documento non ha una nota.</Text>}
+
+      {/* Our extras: front and back together, the weight limit, the files that will go */}
       {single && twoFaces && (
-        <WhiteCard style={[styles.card, styles.switchRow]}>
-          <ThemedText style={styles.flex}>
+        <View style={styles.noteRow}>
+          <Text style={styles.noteLabel}>
             {format === 'pdf' ? 'Fronte e retro su una pagina' : "Fronte e retro in un'immagine"}
-          </ThemedText>
+          </Text>
           <Switch
             value={together}
             onValueChange={(value) => update({ together: value })}
             accessibilityLabel={format === 'pdf' ? 'Fronte e retro su una pagina' : "Fronte e retro in un'immagine"}
           />
-        </WhiteCard>
+        </View>
       )}
 
-      <View style={styles.group}>
-        <ThemedText type="smallBold" themeColor="textSecondary" style={styles.groupTitle}>
-          Peso massimo
-        </ThemedText>
-        <Segmented
-          values={SIZE_LIMITS.map((l) => l.label)}
-          selectedIndex={SIZE_LIMITS.indexOf(limit)}
-          enabled={!importedPdf}
-          onChange={(index) => update({ limit: SIZE_LIMITS[index].key })}
-        />
-        {importedPdf && (
-          <ThemedText type="small" themeColor="textSecondary">
-            Il PDF viene inviato così com&apos;è: la compressione dei PDF importati arriverà in seguito.
-          </ThemedText>
-        )}
-      </View>
+      <Text style={styles.section}>Peso massimo</Text>
+      <Segmented
+        values={SIZE_LIMITS.map((l) => l.label)}
+        selectedIndex={SIZE_LIMITS.indexOf(limit)}
+        enabled={!importedPdf}
+        onChange={(index) => update({ limit: SIZE_LIMITS[index].key })}
+      />
+      {importedPdf && <Text style={styles.small}>Il PDF viene inviato così com’è.</Text>}
+      {multi && (
+        <Text style={styles.small}>
+          Un unico PDF: i documenti uno dopo l’altro, fronte e retro di documenti d’identità e tessere sulla stessa pagina.
+        </Text>
+      )}
 
-      {/* Preview of what will be sent */}
-      <WhiteCard style={[styles.card, styles.preview]}>
-        {busy && (
-          <View style={styles.previewRow}>
-            <ActivityIndicator />
-            <ThemedText themeColor="textSecondary">Preparazione…</ThemedText>
-          </View>
-        )}
-        {error && <ThemedText style={{ color: WARNING_TEXT }}>{error}</ThemedText>}
-        {prepared &&
-          prepared.files.map((file, index) => (
-            <View
-              key={file.name}
-              style={[styles.previewRow, index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: line }]}>
-              <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={BRAND_COLOR} size={26} />
-              <View style={styles.flex}>
-                <ThemedText numberOfLines={1}>{file.name}</ThemedText>
-                <ThemedText type="small" themeColor="textSecondary">
-                  {[
-                    prepared.pages !== null ? (prepared.pages === 1 ? '1 pagina' : `${prepared.pages} pagine`) : null,
-                    formatBytes(file.bytes),
-                    `Qualità ${prepared.quality.toLowerCase()}`,
-                  ]
-                    .filter(Boolean)
-                    .join(' · ')}
-                </ThemedText>
-              </View>
+      {prepared && (
+        <View style={styles.files}>
+          {prepared.files.map((file) => (
+            <View key={file.name} style={styles.fileRow}>
+              <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={Colors.light.indigo} size={20} />
+              <Text style={styles.fileName} numberOfLines={1}>
+                {file.name}
+              </Text>
+              <Text style={styles.small}>{formatBytes(file.bytes)}</Text>
             </View>
           ))}
-        {prepared && prepared.files.length > 1 && (
-          <ThemedText type="small" themeColor="textSecondary">
-            Totale {formatBytes(prepared.bytes)} · si condividono uno dopo l&apos;altro
-          </ThemedText>
-        )}
-      </WhiteCard>
-
-      {prepared?.warnings.map((warning) => (
-        <View key={warning} style={warningBox}>
-          <SymbolView name="exclamationmark.triangle.fill" tintColor={WARNING_TEXT} size={16} />
-          <Text style={warningText}>{warning}</Text>
-        </View>
-      ))}
-      {skipped > 0 && (
-        <View style={warningBox}>
-          <SymbolView name="exclamationmark.triangle.fill" tintColor={WARNING_TEXT} size={16} />
-          <Text style={warningText}>
-            {skipped === 1 ? '1 documento senza foto non è incluso' : `${skipped} documenti senza foto non sono inclusi`}{' '}
-            (i PDF importati non si possono ancora unire).
-          </Text>
+          <Text style={styles.small}>{`Qualità ${prepared.quality.toLowerCase()}`}</Text>
         </View>
       )}
 
-      <PrimaryButton
-        label="Condividi"
-        symbol="square.and.arrow.up"
-        disabled={!prepared || delivering}
-        onPress={() => deliver('share')}
-      />
-      <SecondaryButton label="Salva su File" symbol="folder" disabled={!prepared || delivering} onPress={() => deliver('save')} />
+      {error && <Warning text={error} />}
+      {prepared?.warnings.map((warning) => <Warning key={warning} text={warning} />)}
+      {skipped > 0 && (
+        <Warning
+          text={`${skipped === 1 ? '1 documento senza foto non è incluso' : `${skipped} documenti senza foto non sono inclusi`} (i PDF importati non si possono ancora unire).`}
+        />
+      )}
+
+      <Pressable onPress={() => router.back()} accessibilityRole="button" style={({ pressed }) => [styles.cancel, pressed && styles.dimmed]}>
+        <Text style={styles.cancelText}>Annulla</Text>
+      </Pressable>
 
       {/* Off screen: draws front and back into one JPEG when that option is chosen */}
       {needsComposer && front && back && aspects && (
@@ -267,59 +338,185 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
   );
 }
 
+function Warning({ text }: { text: string }) {
+  return (
+    <View style={styles.warning}>
+      <SymbolView name="exclamationmark.triangle.fill" tintColor={WARNING_COLORS.text} size={16} />
+      <Text style={styles.warningText}>{text}</Text>
+    </View>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: Spacing.side,
-    paddingTop: 28,
-    paddingBottom: 40,
-    gap: 18,
-  },
-  title: {
-    fontSize: 22,
-    lineHeight: 28,
-    fontFamily: FONTS.bold,
-  },
-  group: {
-    gap: 8,
-  },
-  groupTitle: {
-    paddingHorizontal: 4,
-  },
-  card: {
-    borderRadius: 12,
-    borderCurve: 'continuous',
-    paddingHorizontal: 16,
-  },
-  switchRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 12,
-    minHeight: 56,
+    paddingTop: 30,
   },
   flex: {
     flex: 1,
   },
-  preview: {
-    paddingVertical: 8,
-    gap: 4,
+  head: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
   },
-  previewRow: {
+  thumb: {
+    width: 52,
+    height: 66,
+    borderRadius: 8,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+    overflow: 'hidden',
+  },
+  thumbPhoto: {
+    width: '100%',
+    height: '100%',
+  },
+  miniPage: {
+    width: 36,
+    height: 48,
+    borderRadius: 4,
+    padding: 5,
+    gap: 3,
+    backgroundColor: '#FFFFFF',
+    boxShadow: '0 3px 8px rgba(28, 30, 70, 0.12)',
+  },
+  miniTitle: {
+    width: 14,
+    height: 4,
+    borderRadius: 2,
+  },
+  miniLine: {
+    width: 22,
+    height: 3,
+    borderRadius: 2,
+    backgroundColor: '#E6E8F0',
+  },
+  miniShort: {
+    width: 18,
+  },
+  title: {
+    fontSize: 18,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.text,
+  },
+  metaRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  meta: {
+    flexShrink: 1,
+    fontSize: 13,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textSecondary,
+  },
+  format: {
+    marginTop: 18,
+  },
+  actions: {
+    marginTop: 22,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    rowGap: 18,
+  },
+  action: {
+    width: '25%',
+    alignItems: 'center',
+    gap: 8,
+  },
+  dimmed: {
+    opacity: 0.5,
+  },
+  actionIcon: {
+    width: 62,
+    height: 62,
+    borderRadius: 20,
+    borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  actionLabel: {
+    fontSize: 13,
+    fontFamily: FONTS.medium,
+    color: Colors.light.text,
+  },
+  noteRow: {
+    marginTop: 22,
+    paddingVertical: 12,
+    paddingHorizontal: 14,
+    borderRadius: 16,
+    borderCurve: 'continuous',
+    backgroundColor: Colors.light.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
-    paddingVertical: 8,
+  },
+  noteLabel: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: FONTS.medium,
+    color: Colors.light.text,
+  },
+  section: {
+    marginTop: 22,
+    marginBottom: 8,
+    fontSize: 13,
+    fontFamily: FONTS.regular,
+    textTransform: 'uppercase',
+    color: Colors.light.textSecondary,
+  },
+  small: {
+    marginTop: 6,
+    marginHorizontal: 4,
+    fontSize: 13,
+    lineHeight: 18,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textSecondary,
+  },
+  files: {
+    marginTop: 14,
+    gap: 4,
+  },
+  fileRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 10,
+  },
+  fileName: {
+    flex: 1,
+    fontSize: 14,
+    fontFamily: FONTS.regular,
+    color: Colors.light.text,
   },
   warning: {
+    marginTop: 12,
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 8,
     padding: 12,
     borderRadius: 12,
     borderCurve: 'continuous',
+    backgroundColor: WARNING_COLORS.background,
   },
   warningText: {
     flex: 1,
     fontSize: 14,
     lineHeight: 19,
+    color: WARNING_COLORS.text,
+  },
+  cancel: {
+    marginTop: 18,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: Colors.light.lilac,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  cancelText: {
+    fontSize: 16,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.text,
   },
 });

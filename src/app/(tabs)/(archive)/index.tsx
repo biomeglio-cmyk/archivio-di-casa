@@ -24,6 +24,7 @@ import { listDocumentsWithExpiry, listPinnedDocuments } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
+import { useEmptyHomePreview } from '@/settings/debug-previews';
 import { useFreeLimit } from '@/settings/free-limit';
 import { toISODate } from '@/utils/dates';
 
@@ -46,7 +47,8 @@ export default function ArchiveScreen() {
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
   const { data: withExpiry } = useDbQuery(listDocumentsWithExpiry, []);
   const { usage, reached } = useFreeLimit();
-  const empty = usage?.used === 0; // no documents or cards yet: Home vuota
+  const emptyPreview = useEmptyHomePreview(); // test switch in Impostazioni (data untouched)
+  const empty = usage?.used === 0 || emptyPreview; // no documents or cards yet: Home vuota
 
   const [reordering, setReordering] = useState(false); // "Riordina" … "Fine"
 

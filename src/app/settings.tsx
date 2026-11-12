@@ -25,6 +25,7 @@ import { disableAppLock, useAppLockEnabled } from '@/security/app-lock';
 import { usePaletteId } from '@/settings/palette';
 import { PALETTES } from '@/constants/palettes';
 import { getPreferences, savePreferences, type Preferences } from '@/settings/preferences';
+import { setEmptyHomePreview, useEmptyHomePreview } from '@/settings/debug-previews';
 import { FREE_LIMIT_ENFORCED, setLimitPreview, useLimitPreview } from '@/settings/free-limit';
 import { chooseAction } from '@/utils/action-sheet';
 import { daysBefore } from '@/constants/deadline-options';
@@ -71,7 +72,8 @@ export default function SettingsScreen() {
   // Hidden test switch: 5 taps on the version show "Anteprima limite gratuito"
   const limitPreview = useLimitPreview();
   const [versionTaps, setVersionTaps] = useState(0);
-  const showDebug = versionTaps >= 5 || limitPreview;
+  const emptyHomePreview = useEmptyHomePreview();
+  const showDebug = versionTaps >= 5 || limitPreview || emptyHomePreview;
   const [calendarLabel, setCalendarLabel] = useState('');
 
   // Coming back from the iPhone Settings, Backup or Calendario: permission, dates and labels may have changed
@@ -292,6 +294,26 @@ export default function SettingsScreen() {
             trailing={
               <Switch value={limitPreview} onValueChange={setLimitPreview} accessibilityLabel="Anteprima limite gratuito" />
             }
+          />
+        )}
+        {showDebug && (
+          <SettingsRow
+            symbol="ladybug"
+            tint={TINTS.info}
+            label="Anteprima Home vuota"
+            subtitle="Solo per le prove: la Home come se non ci fossero documenti (i dati restano)"
+            trailing={
+              <Switch value={emptyHomePreview} onValueChange={setEmptyHomePreview} accessibilityLabel="Anteprima Home vuota" />
+            }
+          />
+        )}
+        {showDebug && (
+          <SettingsRow
+            symbol="ladybug"
+            tint={TINTS.info}
+            label="Rivedi il benvenuto"
+            subtitle="Solo per le prove: le pagine Benvenuto 1–4"
+            onPress={() => open('/onboarding')}
           />
         )}
       </Section>

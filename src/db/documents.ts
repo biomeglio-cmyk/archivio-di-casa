@@ -439,6 +439,17 @@ export async function setPaymentStatus(db: SQLiteDatabase, id: number, status: P
   await db.runAsync(`UPDATE documents SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`, id);
 }
 
+// "Ricordamelo" of the document screen: null = the default days, -1 = no reminder for it
+export async function setReminderDays(db: SQLiteDatabase, id: number, days: number | null): Promise<void> {
+  await db.runAsync(
+    `UPDATE documents SET reminder_days = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
+    days,
+    id,
+  );
+  await syncDocumentEvent(db, id);
+  await rescheduleReminders(db);
+}
+
 // The "Tipo" values already used in a folder (for the chips and the suggestions)
 export async function listDocumentTypes(db: SQLiteDatabase, categoryId: number): Promise<string[]> {
   const rows = await db.getAllAsync<{ doc_type: string }>(

@@ -3,11 +3,9 @@ import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import {
-  Alert,
   PanResponder,
   Pressable,
   ScrollView,
-  Share,
   StyleSheet,
   useWindowDimensions,
   View,
@@ -15,11 +13,11 @@ import {
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { rateApp, recommendApp } from '@/actions/app-actions';
 import { isBackupDue } from '@/backup/backup-layout';
-import { getCalendarSettings } from '@/calendar/calendar-settings';
 import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
+import { FreeUsageCard } from '@/components/free-usage-card';
 import { LogoMark } from '@/components/logo-mark';
-import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
 import type { MenuSection } from '@/constants/navigation';
 import { Colors } from '@/constants/theme';
@@ -27,20 +25,21 @@ import { FONTS } from '@/constants/typography';
 import { getMenuCounts } from '@/db/menu-counts';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
-import { disableAppLock, enableAppLock, useAppLockEnabled } from '@/security/app-lock';
 
 const OPEN_MS = 260;
 const CLOSE_MS = 200;
 const PANEL_SHARE = 0.79; // 308 of 390 in the design
 const PANEL_MAX = 340;
 const BACKUP_DOT = '#F5824A';
-const SHARE_TEXT =
-  'Ti consiglio Sottomano: i documenti di casa, le tessere e le scadenze sempre a portata di mano, sul telefono e anche senza internet.';
 
 // Side menu (docs/design/Menu.dc.html), opened by ≡ in Home (and the menu button of the other
 // tabs). It slides in from the left over the dimmed screen; a tap outside, ✕, a swipe to the
 // left or the VoiceOver escape gesture close it. The header and the version stay fixed, the
 // list scrolls when it is longer than the screen.
+// Entries of the design first (purple free-version card → Sblocca; Home, Preferiti, Scadenze,
+// Famiglia, Tessere; Impostazioni, Backup, Aiuto e contatti, Valuta Sottomano, Consiglialo a un
+// amico), then our extras: Cestino, Password, Pacchetto commercialista, Scansiona, Dalle foto,
+// Importa file.
 // Rows: a tab → close, then go there; another screen → the menu is REPLACED by it (closing that
 // screen brings back to where you were); "Aggiungi" rows keep the menu open while the scanner or
 // the picker is up (a cancel leaves you in the menu).
@@ -51,12 +50,7 @@ export default function MenuScreen() {
   const width = Math.min(PANEL_MAX, Math.round(screenWidth * PANEL_SHARE));
 
   const { data: counts } = useDbQuery(getMenuCounts, []);
-  const lockEnabled = useAppLockEnabled();
   const [backupDue] = useState(() => isBackupDue(Date.now()));
-  const [calendarLabel] = useState(() => {
-    const calendar = getCalendarSettings();
-    return calendar.enabled && calendar.calendarTitle ? calendar.calendarTitle : 'Spento';
-  });
 
   // 0 = closed (off screen on the left), 1 = open; `drag` follows a swipe to the left (≤ 0)
   const progress = useSharedValue(0);
@@ -106,21 +100,9 @@ export default function MenuScreen() {
     });
   const openScreen = (href: Href) => close(() => router.replace(href));
 
-  async function toggleLock(value: boolean) {
-    if (!value) {
-      disableAppLock();
-      return;
-    }
-    const result = await enableAppLock();
-    if (result === 'no-passcode') {
-      Alert.alert(
-        'Blocco non disponibile',
-        "Per bloccare Sottomano serve un codice sull'iPhone. Impostalo in Impostazioni › Face ID e codice, poi riprova.",
-      );
-    }
-  }
-
   const cardsId = counts?.cardsCategoryId;
+  const passwordId = counts?.passwordCategoryId;
+  const taxId = counts?.taxCategoryId;
   const urgent = counts?.urgent ?? 0;
   const trash = counts?.trash ?? 0;
   const version = Constants.expoConfig?.version ?? '1.0';
@@ -162,6 +144,10 @@ export default function MenuScreen() {
           </Pressable>
         </View>
 
+        <View style={styles.freeCard}>
+          <FreeUsageCard variant="menu" onOpen={() => openScreen('/unlock')} />
+        </View>
+
         <ScrollView style={styles.list} contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
           <MenuItem label="Home" symbol="house" active={current === 'home'} onPress={() => goToTab('/')} />
           <MenuItem
@@ -189,6 +175,7 @@ export default function MenuScreen() {
           )}
 
           <Divider />
+          <MenuItem label="Impostazioni" symbol="gearshape" onPress={() => openScreen('/settings')} />
           <MenuItem
             label="Backup"
             symbol="icloud.and.arrow.up"
@@ -196,21 +183,12 @@ export default function MenuScreen() {
             onPress={() => openScreen('/backup')}
             trailing={backupDue ? <View style={styles.dot} /> : null}
           />
-          <MenuItem label="Impostazioni" symbol="gearshape" onPress={() => openScreen('/settings')} />
-          <MenuItem
-            label="Calendario"
-            symbol="calendar.badge.plus"
-            onPress={() => openScreen('/calendar-settings')}
-            trailing={<Value text={calendarLabel} />}
-          />
-          <MenuItem label="Aspetto" symbol="paintpalette" onPress={() => openScreen('/appearance')} />
-          <MenuItem
-            label="Blocca con Face ID"
-            symbol="faceid"
-            accessibilityHint="Per aprire Sottomano servirà il tuo viso o il codice dell'iPhone"
-            onPress={() => toggleLock(!lockEnabled)}
-            trailing={<Switch value={lockEnabled} onValueChange={toggleLock} accessibilityLabel="Blocca con Face ID" />}
-          />
+          <MenuItem label="Aiuto e contatti" symbol="questionmark.circle" onPress={() => openScreen('/onboarding')} />
+          <MenuItem label="Valuta Sottomano" symbol="star" onPress={rateApp} />
+          <MenuItem label="Consiglialo a un amico" symbol="square.and.arrow.up" onPress={recommendApp} />
+
+          {/* Our extras, after the entries of the design */}
+          <Divider />
           <MenuItem
             label="Cestino"
             symbol="trash"
@@ -218,20 +196,23 @@ export default function MenuScreen() {
             onPress={() => openScreen('/trash')}
             trailing={trash > 0 ? <Value text={String(trash)} /> : null}
           />
-
-          <Divider />
+          {passwordId != null && (
+            <MenuItem
+              label="Password"
+              symbol="key"
+              onPress={() => goToTab({ pathname: '/category/[id]', params: { id: String(passwordId) } })}
+            />
+          )}
+          {taxId != null && (
+            <MenuItem
+              label="Pacchetto commercialista"
+              symbol="doc.text.magnifyingglass"
+              onPress={() => openScreen({ pathname: '/tax-package', params: { categoryId: String(taxId) } })}
+            />
+          )}
           <MenuItem label="Scansiona" symbol="doc.viewfinder" onPress={addByScan} />
           <MenuItem label="Dalle foto" symbol="photo.on.rectangle" onPress={addFromPhotos} />
           <MenuItem label="Importa file" symbol="doc" onPress={addFromFiles} />
-
-          <Divider />
-          <MenuItem label="Info e privacy" symbol="info.circle" onPress={() => openScreen('/about')} />
-          <MenuItem label="Aiuto" symbol="questionmark.circle" onPress={() => openScreen('/onboarding')} />
-          <MenuItem
-            label="Consiglialo a un amico"
-            symbol="square.and.arrow.up"
-            onPress={() => Share.share({ message: SHARE_TEXT }).catch(() => undefined)}
-          />
         </ScrollView>
 
         <Text style={styles.version}>Versione {version}</Text>
@@ -337,6 +318,9 @@ const styles = StyleSheet.create({
   },
   pressed: {
     opacity: 0.6,
+  },
+  freeCard: {
+    marginTop: 20,
   },
   list: {
     flex: 1,

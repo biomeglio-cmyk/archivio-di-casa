@@ -212,6 +212,11 @@ export default function RootLayout() {
             name="delete-person/[id]"
             options={{ presentation: 'transparentModal', animation: 'fade', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
           />
+          {/* "Notifiche": the panel over Home opened by the bell */}
+          <Stack.Screen
+            name="notifications"
+            options={{ presentation: 'transparentModal', animation: 'none', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
           {/* "Sblocca": the free version and the one-time purchase (its own × at the top) */}
           <Stack.Screen name="unlock" options={{ presentation: 'modal', headerShown: false }} />
           <Stack.Screen

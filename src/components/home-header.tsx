@@ -6,18 +6,16 @@ import { LogoMark } from '@/components/logo-mark';
 import { Text } from '@/components/text';
 import { Colors } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
-import { countUrgentDeadlines } from '@/db/urgent-count';
-import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
+import { useNotificationFeed } from '@/notifications/feed';
 
-// Top of Home (docs/design/Main.dc.html): ≡ menu on the left (our Menu sheet for now); on the
-// right the bell with the badge of the Scadenze tab (it opens Scadenze until the Notifiche
-// screen exists) and the logo.
+// Top of Home (docs/design/Main.dc.html): ≡ menu on the left; on the right the bell, with the
+// number of unread notifications, which opens the Notifiche panel, and the logo.
 export function HomeHeader() {
-  const { data: urgent } = useDbQuery(countUrgentDeadlines, []);
+  const { unread } = useNotificationFeed();
   const menu = usePressed();
   const bell = usePressed();
-  const count = urgent ?? 0;
+  const count = unread;
 
   return (
     <View style={styles.row}>
@@ -32,9 +30,9 @@ export function HomeHeader() {
       <View style={styles.right}>
         <Pressable
           {...bell.handlers}
-          onPress={() => router.navigate('/(tabs)/(deadlines)/deadlines')}
+          onPress={() => router.push('/notifications')}
           accessibilityRole="button"
-          accessibilityLabel={count > 0 ? `Scadenze, ${count} da controllare` : 'Scadenze'}
+          accessibilityLabel={count > 0 ? `Notifiche, ${count} non lette` : 'Notifiche'}
           style={[styles.bell, bell.pressed && styles.pressed]}>
           <SymbolView name="bell" tintColor={Colors.light.text} size={21} weight="medium" />
           {count > 0 && (

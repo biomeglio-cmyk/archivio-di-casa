@@ -138,7 +138,7 @@ export async function moveDocumentsToOther(db: SQLiteDatabase, id: number): Prom
   return moved;
 }
 
-// Removes an empty category: a built-in one is only hidden (restorable from "Aspetto"),
+// Removes an empty category: a built-in one is only hidden (restorable from Nuova categoria or Aspetto),
 // a custom one is deleted. "Altro" never.
 export async function deleteCategory(db: SQLiteDatabase, id: number): Promise<void> {
   const row = await db.getFirstAsync<{ is_builtin: number; builtin_key: string | null }>(
@@ -163,17 +163,20 @@ export async function deleteCategory(db: SQLiteDatabase, id: number): Promise<vo
   }
 }
 
-// "Ripristina categorie predefinite" (Aspetto): the hidden built-in categories come back with
-// their original name, icon and colors (palette), placed right before "Altro".
-// Documents and custom categories are never touched. Returns how many came back.
-export async function restoreBuiltinCategories(db: SQLiteDatabase): Promise<number> {
-  const hidden = await db.getAllAsync<{ id: number; builtin_key: string }>(
-    'SELECT id, builtin_key FROM categories WHERE is_builtin = 1 AND hidden = 1',
-  );
-  if (hidden.length === 0) return 0;
+// The built-in categories removed with "Cancella categoria" (only hidden: their kind, rules and
+// documents in the Cestino stay), in their original order, for "Ripristina una categoria predefinita"
+export async function listHiddenBuiltinCategories(db: SQLiteDatabase): Promise<Category[]> {
+  const rows = await db.getAllAsync<CategoryRecord>('SELECT * FROM categories WHERE is_builtin = 1 AND hidden = 1');
   const order = BUILTIN_DEFAULTS.map((d) => d.key);
-  hidden.sort((a, b) => order.indexOf(a.builtin_key) - order.indexOf(b.builtin_key));
+  return rows
+    .map((row) => mapCategory(row))
+    .sort((a, b) => order.indexOf(a.builtinKey ?? '') - order.indexOf(b.builtinKey ?? ''));
+}
 
+// Brings hidden built-in categories back with their original name, icon and colors (palette),
+// placed right before "Altro". Documents and custom categories are never touched.
+async function unhideBuiltins(db: SQLiteDatabase, hidden: { id: number; builtin_key: string }[]): Promise<void> {
+  if (hidden.length === 0) return;
   await db.withTransactionAsync(async () => {
     const other = await db.getFirstAsync<{ sort_order: number }>(
       'SELECT sort_order FROM categories WHERE builtin_key = ?',
@@ -202,6 +205,25 @@ export async function restoreBuiltinCategories(db: SQLiteDatabase): Promise<numb
       );
     }
   });
+}
+
+// "Ripristina una categoria predefinita" in Nuova categoria: one of them
+export async function restoreBuiltinCategory(db: SQLiteDatabase, id: number): Promise<void> {
+  const row = await db.getFirstAsync<{ id: number; builtin_key: string }>(
+    'SELECT id, builtin_key FROM categories WHERE id = ? AND is_builtin = 1 AND hidden = 1',
+    id,
+  );
+  if (row) await unhideBuiltins(db, [row]);
+}
+
+// "Ripristina categorie predefinite" (Aspetto): all of them. Returns how many came back.
+export async function restoreBuiltinCategories(db: SQLiteDatabase): Promise<number> {
+  const hidden = await db.getAllAsync<{ id: number; builtin_key: string }>(
+    'SELECT id, builtin_key FROM categories WHERE is_builtin = 1 AND hidden = 1',
+  );
+  const order = BUILTIN_DEFAULTS.map((d) => d.key);
+  hidden.sort((a, b) => order.indexOf(a.builtin_key) - order.indexOf(b.builtin_key));
+  await unhideBuiltins(db, hidden);
   return hidden.length;
 }
 

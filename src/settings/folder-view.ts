@@ -1,23 +1,29 @@
 import Storage from 'expo-sqlite/kv-store';
 
-// "Elenco" (the design list by month) or "Griglia" (tiles with covers, drag and drop) in the
-// folders; the last choice is kept on the phone and used by every folder
+// "Elenco" (the design list) or "Griglia" (tiles with covers, drag and drop). The last choice is
+// kept on the phone: one for every folder, one for Preferiti.
 export type FolderView = 'list' | 'grid';
 
-const KEY = 'folder.view';
+const FOLDER_KEY = 'folder.view';
+const FAVORITES_KEY = 'favorites.view';
 
-export function getFolderView(): FolderView {
+function read(key: string): FolderView {
   try {
-    return Storage.getItemSync(KEY) === 'grid' ? 'grid' : 'list';
+    return Storage.getItemSync(key) === 'grid' ? 'grid' : 'list';
   } catch {
     return 'list';
   }
 }
 
-export function saveFolderView(view: FolderView): void {
+function write(key: string, view: FolderView): void {
   try {
-    Storage.setItemSync(KEY, view);
+    Storage.setItemSync(key, view);
   } catch {
-    // without storage the choice lasts until the folder is closed
+    // without storage the choice lasts until the screen is closed
   }
 }
+
+export const getFolderView = () => read(FOLDER_KEY);
+export const saveFolderView = (view: FolderView) => write(FOLDER_KEY, view);
+export const getFavoritesView = () => read(FAVORITES_KEY);
+export const saveFavoritesView = (view: FolderView) => write(FAVORITES_KEY, view);

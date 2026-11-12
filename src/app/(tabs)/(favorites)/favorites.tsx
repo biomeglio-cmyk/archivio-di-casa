@@ -9,13 +9,17 @@ import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { accessibilityActionsOf, documentQuickActions, runAccessibilityAction } from '@/actions/quick-actions';
+import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
 import { DocumentThumb } from '@/components/document-thumb';
 import { IconSquare } from '@/components/icon-square';
 import { goHome, PageHeader } from '@/components/page-header';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { SearchBar } from '@/components/search-bar';
+import { Segmented } from '@/components/segmented';
+import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { REORDER_FOOTER, ReorderHeader, ReorderRow, SortableList } from '@/components/sortable-list';
 import { Text } from '@/components/text';
+import { TileGrid } from '@/components/tile-grid';
 import { CardSurface, Colors, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPinnedDocuments, savePinnedOrder, setPinned } from '@/db/documents';
@@ -23,6 +27,7 @@ import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
 import { findMatch, normalizeText } from '@/search/text-match';
+import { getFavoritesView, saveFavoritesView, type FolderView } from '@/settings/folder-view';
 import { describeDistance } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
@@ -35,6 +40,8 @@ const documentHref = (id: number) =>
 // one white row per item (category square, name, "Bollette · scade tra 3 giorni", a pink heart
 // that takes it away), the dashed "Aggiungi ai preferiti" and the hint; "Non hai ancora preferiti."
 // when empty. Long press on a row: "Riordina" (docs/design/RiordinaLista.dc.html), drag to reorder.
+// Our extra, as in the folders: Elenco / Griglia (remembered). Griglia = the tiles with their covers,
+// long press to drag (or for the quick menu); both views share the same order.
 export default function FavoritesScreen() {
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
@@ -43,6 +50,12 @@ export default function FavoritesScreen() {
   const [reordering, setReordering] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState('');
+  const [view, setView] = useState<FolderView>(getFavoritesView);
+
+  function changeView(next: FolderView) {
+    setView(next);
+    saveFavoritesView(next);
+  }
 
   const items = pinned ?? [];
   const needle = normalizeText(query.trim());
@@ -124,22 +137,59 @@ export default function FavoritesScreen() {
               </View>
             )}
 
-            <Text style={styles.section}>{pinned ? `${items.length} preferiti` : ' '}</Text>
-            <View style={styles.list}>
-              {shown.map((document) => (
-                <FavoriteRow
-                  key={document.id}
-                  document={document}
-                  onOpen={() => router.push(documentHref(document.id))}
-                  onRemove={() => void setPinned(db, document.id, false)}
-                  onLongPress={startReorder}
+            {items.length > 0 && (
+              <View style={styles.viewSwitch}>
+                <Segmented
+                  values={['Elenco', 'Griglia']}
+                  selectedIndex={view === 'list' ? 0 : 1}
+                  onChange={(index) => changeView(index === 0 ? 'list' : 'grid')}
                 />
-              ))}
-              {pinned && items.length === 0 && <Text style={styles.empty}>Non hai ancora preferiti.</Text>}
-              {items.length > 0 && shown.length === 0 && (
-                <Text style={styles.empty}>Nessun preferito con “{query.trim()}”.</Text>
-              )}
-            </View>
+              </View>
+            )}
+
+            <Text style={styles.section}>{pinned ? `${items.length} preferiti` : ' '}</Text>
+            {view === 'grid' && items.length > 0 ? (
+              <View style={styles.grid}>
+                {shown.length < items.length ? (
+                  // Searching: fixed tiles (the order is set on all the favorites)
+                  <TileGrid
+                    items={shown}
+                    keyFor={(document) => document.id}
+                    renderTile={(document, size) => (
+                      <DocumentTile document={document} size={size} href={documentHref(document.id)} />
+                    )}
+                  />
+                ) : (
+                  <SortableTileGrid
+                    items={items}
+                    keyFor={(document) => document.id}
+                    labelFor={(document) => document.title}
+                    renderTile={(document) => <DocumentTileFace document={document} />}
+                    actionsFor={(document) => documentQuickActions(db, document, documentHref(document.id))}
+                    onOpen={(document) => router.push(documentHref(document.id))}
+                    onReorder={saveOrder}
+                    scrollableRef={scrollRef}
+                  />
+                )}
+                {shown.length === 0 && <Text style={styles.empty}>Nessun preferito con “{query.trim()}”.</Text>}
+              </View>
+            ) : (
+              <View style={styles.list}>
+                {shown.map((document) => (
+                  <FavoriteRow
+                    key={document.id}
+                    document={document}
+                    onOpen={() => router.push(documentHref(document.id))}
+                    onRemove={() => void setPinned(db, document.id, false)}
+                    onLongPress={startReorder}
+                  />
+                ))}
+                {pinned && items.length === 0 && <Text style={styles.empty}>Non hai ancora preferiti.</Text>}
+                {items.length > 0 && shown.length === 0 && (
+                  <Text style={styles.empty}>Nessun preferito con “{query.trim()}”.</Text>
+                )}
+              </View>
+            )}
 
             <Pressable
               onPress={goHome}
@@ -150,7 +200,7 @@ export default function FavoritesScreen() {
             </Pressable>
             <Text style={styles.footer}>
               {items.length > 1
-                ? 'Tocca il cuore su qualsiasi documento per aggiungerlo qui. Tieni premuto una riga per riordinarli.'
+                ? `Tocca il cuore su qualsiasi documento per aggiungerlo qui. Tieni premuto ${view === 'grid' ? 'un riquadro e trascinalo' : 'una riga'} per riordinarli.`
                 : 'Tocca il cuore su qualsiasi documento per aggiungerlo qui.'}
             </Text>
           </>
@@ -232,6 +282,13 @@ const styles = StyleSheet.create({
   },
   search: {
     marginTop: 16,
+  },
+  viewSwitch: {
+    marginTop: 18,
+  },
+  grid: {
+    marginTop: 12,
+    gap: 10,
   },
   section: {
     marginTop: 26,

@@ -6,7 +6,8 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { TileTitle } from '@/components/tile-title';
-import { BRAND_COLOR } from '@/constants/brand';
+import { BRAND_COLOR, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { previewGradient, previewSymbol } from '@/constants/password-options';
 import { FONTS } from '@/constants/typography';
 import { DeadlineChip } from '@/components/deadline-chip';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
@@ -31,6 +32,8 @@ type FaceProps = {
 // The look only: it fills its cell; DocumentTile below (or the sortable grid) handles the tap.
 export function DocumentTileFace({ document, selected }: FaceProps) {
   const { category } = document;
+  // A Password entry: the tile is its "Anteprima" (its image, or its color with its icon)
+  if (document.password) return <PasswordTileFace document={document} info={document.password} selected={selected} />;
   const showPhoto = document.firstImagePath !== null && document.coverMode !== 'color';
   // Colore: a picked color (cards always have one), else the category gradient
   const solid = showPhoto
@@ -147,3 +150,31 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.85)', // readable over the photo or a color
   },
 });
+
+// The tile of a Password entry: its image full-bleed, or its preview color with its icon; the name
+function PasswordTileFace({ document, info, selected }: FaceProps & { info: NonNullable<DocumentListItem['password']> }) {
+  const [top, bottom] = previewGradient(info.preview);
+  const image = info.preview.imagePath ? resolveDocumentFile(info.preview.imagePath).uri : null;
+  const content = (
+    <>
+      {image ? (
+        <Image source={{ uri: image }} style={styles.thumbnail} contentFit="cover" transition={120} />
+      ) : (
+        <View style={styles.iconArea}>
+          <SymbolView name={previewSymbol(info.preview, info.type)} tintColor="#FFFFFF" size={28} />
+        </View>
+      )}
+      <TileTitle style={[styles.title, { color: '#FFFFFF' }]}>{document.title}</TileTitle>
+      {selected !== undefined && (
+        <View style={styles.check}>
+          <SymbolView name={selected ? 'checkmark.circle.fill' : 'circle'} tintColor={selected ? BRAND_COLOR : UNSELECTED_TINT} size={24} />
+        </View>
+      )}
+    </>
+  );
+  return (
+    <LinearGradient colors={[top, bottom]} start={GRADIENT_START} end={GRADIENT_END} style={styles.tile}>
+      {content}
+    </LinearGradient>
+  );
+}

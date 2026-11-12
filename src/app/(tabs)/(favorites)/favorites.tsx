@@ -12,6 +12,7 @@ import { accessibilityActionsOf, documentQuickActions, runAccessibilityAction } 
 import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
 import { DocumentThumb } from '@/components/document-thumb';
 import { IconSquare } from '@/components/icon-square';
+import { PasswordPreviewTile } from '@/components/password-preview';
 import { goHome, PageHeader } from '@/components/page-header';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { SearchBar } from '@/components/search-bar';
@@ -230,7 +231,11 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
         accessibilityActions={accessibilityActionsOf(actions)}
         onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
         style={[styles.rowMain, pressed && styles.rowPressed]}>
-        <IconSquare symbol={document.category.symbol} colors={document.category.colors} size={52} radius={16} shadow />
+        {document.password ? (
+          <PasswordPreviewTile info={document.password} size={52} />
+        ) : (
+          <IconSquare symbol={document.category.symbol} colors={document.category.colors} size={52} radius={16} shadow />
+        )}
         <View style={styles.texts}>
           <Text style={styles.name} numberOfLines={1}>
             {document.title}

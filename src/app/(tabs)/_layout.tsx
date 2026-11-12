@@ -2,7 +2,8 @@ import { router } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
 
 import { Colors } from '@/constants/theme';
-import { useNotificationFeed } from '@/notifications/feed';
+import { countUrgentDeadlines } from '@/db/urgent-count';
+import { useDbQuery } from '@/hooks/use-db-query';
 import { useFreeLimit, whenBelowLimit } from '@/settings/free-limit';
 
 // Home is the tab the app starts on, at every launch and for every deep link into the tabs
@@ -13,8 +14,10 @@ export const unstable_settings = { anchor: '(archive)' };
 // Each trigger name matches a route (or route group) in this folder.
 // Home is first and owns "/" (its index.tsx), so the app opens there.
 export default function TabsLayout() {
-  // Unread notifications (the same number as the bell in Home)
-  const { unread } = useNotificationFeed();
+  // Deadlines to check: overdue + due within 7 days (the same number as the Menu and the app icon;
+  // the Home bell counts unread notifications instead). Kept live by the database change listener.
+  const { data } = useDbQuery(countUrgentDeadlines, []);
+  const urgent = data ?? 0;
   // At the free limit the "+" is grey with a lock and opens the limit panel (docs/design/HomeLimite.dc.html)
   const { reached } = useFreeLimit();
 
@@ -32,10 +35,11 @@ export default function TabsLayout() {
 
       <NativeTabs.Trigger
         name="(deadlines)"
-        accessibilityLabel={unread ? `Scadenze, ${unread} notifiche non lette` : 'Scadenze'}>
+        accessibilityLabel={urgent > 0 ? `Scadenze, ${urgent} da controllare` : 'Scadenze'}>
         <NativeTabs.Trigger.Icon sf="calendar" md="event" />
         <NativeTabs.Trigger.Label hidden>Scadenze</NativeTabs.Trigger.Label>
-        <NativeTabs.Trigger.Badge hidden={!unread}>{String(unread)}</NativeTabs.Trigger.Badge>
+        {/* Not rendered at all when 0: a hidden badge could still show "0" */}
+        {urgent > 0 && <NativeTabs.Trigger.Badge>{String(urgent)}</NativeTabs.Trigger.Badge>}
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="(family)" accessibilityLabel="Famiglia">

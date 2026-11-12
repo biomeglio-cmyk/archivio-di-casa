@@ -11,6 +11,7 @@ type Props = {
   value: string;
   onChangeText: (text: string) => void;
   placeholder: string;
+  onOpen?: () => void; // Home: the field is a button that opens the Ricerca screen
 };
 
 const HEIGHT = 64;
@@ -19,7 +20,7 @@ const LENS_COLOR = '#6D5CE6'; // the magnifying glass of the design
 // Home search field (docs/design/Main.dc.html): 64-high lilac pill, text 16, lens on the right.
 // While typing: a clear button, and "Annulla" next to it, which empties the field and closes
 // the keyboard.
-export function SearchBar({ value, onChangeText, placeholder }: Props) {
+export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
   const theme = useTheme();
   const inputRef = useRef<TextInputInstance>(null);
   const [focused, setFocused] = useState(false);
@@ -30,6 +31,21 @@ export function SearchBar({ value, onChangeText, placeholder }: Props) {
     inputRef.current?.blur();
     Keyboard.dismiss();
     setFocused(false);
+  }
+
+  if (onOpen) {
+    return (
+      <Pressable
+        onPress={onOpen}
+        accessibilityRole="search"
+        accessibilityLabel={placeholder}
+        style={({ pressed }) => [styles.field, { backgroundColor: theme.lilac }, pressed && styles.pressed]}>
+        <Text style={[styles.input, { color: theme.textSecondary }]} numberOfLines={1}>
+          {placeholder}
+        </Text>
+        <SymbolView name="magnifyingglass" tintColor={LENS_COLOR} size={19} weight="semibold" />
+      </Pressable>
+    );
   }
 
   return (
@@ -88,6 +104,9 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     paddingVertical: 12,
+  },
+  pressed: {
+    opacity: 0.7,
   },
   cancelButton: {
     minHeight: 44,

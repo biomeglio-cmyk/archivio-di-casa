@@ -20,8 +20,8 @@ type Choice = 'move' | 'trash';
 // "Cancella categoria" (docs/design/CancellaCategoria.dc.html), a transparent route over the screen
 // that opened it. With documents inside: move them to "Altro" (default) or delete them too; deleted
 // documents go to our Cestino (recoverable for 30 days), never straight away. "Altro" can't be
-// deleted (its "…" never offers it). A built-in category is only hidden: Impostazioni › Colori
-// delle categorie › "Ripristina categorie predefinite" brings it back.
+// deleted (its "…" never offers it). A built-in category (Tessere e card, Password… with their own
+// forms) is only hidden: Nuova categoria › "Ripristina una categoria predefinita" brings it back.
 export default function DeleteCategoryScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const categoryId = Number(id);
@@ -53,12 +53,13 @@ export default function DeleteCategoryScreen() {
   }
 
   const some = count === 1 ? '1 documento' : `${count} documenti`;
-  const restorable = category.isBuiltin ? ' Potrai ripristinarla da Impostazioni › Colori delle categorie.' : '';
+  // A built-in is only hidden: it comes back from Nuova categoria › "Ripristina una categoria predefinita"
+  const restorable = category.isBuiltin ? ' Potrai ripristinarla da Nuova categoria.' : '';
 
   return (
     <ConfirmDialog
       title={`Cancellare la categoria ${category.name}?`}
-      message={count ? `Dentro ci sono ${some}. Cosa vuoi farne?` : `La categoria è vuota.${restorable}`}
+      message={count ? `Dentro ci sono ${some}. Cosa vuoi farne?${restorable}` : `La categoria è vuota.${restorable}`}
       confirmLabel={count && choice === 'trash' ? 'Cancella tutto' : 'Cancella la categoria'}
       onConfirm={confirm}
       onCancel={() => router.back()}

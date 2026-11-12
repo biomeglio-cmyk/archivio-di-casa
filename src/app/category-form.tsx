@@ -7,6 +7,7 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActionSheet } from '@/components/action-sheet';
+import { IconSquare } from '@/components/icon-square';
 import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Text, TextInput } from '@/components/text';
@@ -14,7 +15,14 @@ import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { CATEGORY_SYMBOLS } from '@/constants/category-options';
 import { CardSurface, Colors, Spacing, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
-import { countDocumentsInCategory, getCategory, insertCategory, updateCategory } from '@/db/categories';
+import {
+  countDocumentsInCategory,
+  getCategory,
+  insertCategory,
+  listHiddenBuiltinCategories,
+  restoreBuiltinCategory,
+  updateCategory,
+} from '@/db/categories';
 import { listPeople } from '@/db/people';
 import type { Category, CategoryColors } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -58,11 +66,13 @@ export default function CategoryFormScreen() {
 // docs/design/NuovaCategoria.dc.html: back and the title, the live preview (172 × 140 tile), NOME,
 // COLORE (our 13 colors of the palette chosen in Aspetto, 38pt circles), ICONA (5 per row, the chosen
 // one in the gradient), PER CHI È, and "Crea categoria" in the chosen gradient. Our extras: a
-// built-in can keep following Aspetto, more icons after the design's 10; names can hold emoji.
+// built-in can keep following Aspetto, more icons after the design's 10; names can hold emoji;
+// at the top, "Ripristina una categoria predefinita" for the built-ins removed with Cancella.
 function CategoryForm({ category, count }: { category: Category | null; count: number }) {
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const { data: people } = useDbQuery(listPeople, []);
+  const { data: hiddenBuiltins } = useDbQuery(listHiddenBuiltinCategories, []);
   const palette = getPalette();
   const [name, setName] = useState(category?.name ?? '');
   const [symbol, setSymbol] = useState<SFSymbol>(category?.symbol ?? DESIGN_SYMBOLS[0].symbol);
@@ -88,6 +98,16 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   ].filter((s): s is SFSymbol => Boolean(s));
   const personName = people?.find((p) => p.id === personId)?.name ?? 'Tutta la famiglia';
   const canSave = name.trim().length > 0 && !saving;
+
+  // "Ripristina": the built-in comes back as it was (its forms, color and icon), before "Altro"
+  async function restore(builtin: Category) {
+    try {
+      await restoreBuiltinCategory(db, builtin.id);
+      router.back();
+    } catch (error) {
+      Alert.alert('Impossibile ripristinare', String(error));
+    }
+  }
 
   async function save() {
     if (!canSave) return;
@@ -119,6 +139,30 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           </Text>
           <View style={styles.barSpace} />
         </View>
+
+        {/* New category only: the built-ins removed with "Cancella categoria" can come back */}
+        {!category && hiddenBuiltins && hiddenBuiltins.length > 0 && (
+          <>
+            <Text style={styles.section}>Ripristina una categoria predefinita</Text>
+            <View style={styles.restoreCard}>
+              {hiddenBuiltins.map((builtin, index) => (
+                <Pressable
+                  key={builtin.id}
+                  onPress={() => restore(builtin)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Ripristina ${builtin.name}`}
+                  style={({ pressed }) => [styles.restoreRow, index > 0 && styles.restoreDivider, pressed && styles.pressed]}>
+                  <IconSquare symbol={builtin.symbol} colors={builtin.colors} size={40} />
+                  <Text style={styles.restoreName} numberOfLines={1}>
+                    {builtin.name}
+                  </Text>
+                  <Text style={styles.restoreAction}>Ripristina</Text>
+                </Pressable>
+              ))}
+            </View>
+            <Text style={styles.hint}>Torna com’era, con i suoi colori, l’icona e i suoi campi. Oppure creane una nuova qui sotto.</Text>
+          </>
+        )}
 
         {/* Live preview, as the tile will look in Home */}
         <View style={styles.previewRow}>
@@ -412,5 +456,32 @@ const styles = StyleSheet.create({
   },
   save: {
     marginTop: 26,
+  },
+  restoreCard: {
+    ...CardSurface,
+    marginTop: 10,
+    paddingVertical: 4,
+  },
+  restoreRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+  },
+  restoreDivider: {
+    borderTopWidth: 1,
+    borderTopColor: Colors.light.separator,
+  },
+  restoreName: {
+    flex: 1,
+    fontSize: 16,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.text,
+  },
+  restoreAction: {
+    fontSize: 14,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.accent,
   },
 });

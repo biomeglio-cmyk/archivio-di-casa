@@ -2,8 +2,17 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { useRef, useState } from 'react';
+import {
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  useWindowDimensions,
+  View,
+  type NativeScrollEvent,
+  type NativeSyntheticEvent,
+  type ScrollViewInstance,
+} from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
@@ -15,7 +24,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
 
 const BACKGROUND = '#1A1C30';
-const PAGE_SHARE = 330 / 390; // page width on the screen at 100% (design)
+const SIDE_MARGIN = 30; // equal margins left and right of a page at 100% (design: 330 of 390)
 const PAGE_GAP = 18;
 const ZOOM_MIN = 1;
 const ZOOM_MAX = 2;
@@ -24,8 +33,9 @@ const A4_RATIO = 210 / 297;
 
 // "Visualizza" (docs/design/Visualizza.dc.html): the pages one under the other on a dark
 // background; on top ✕, the name with "N pagine · scorri in basso" and Invia; at the bottom the
-// zoom (100–200%) and "Pag. X di N". A PDF is drawn by iOS (WKWebView) in the same frame: its pages
-// scroll inside it and the zoom makes it wider; pinch zoom works too.
+// zoom (100–200%) and "Pag. X di N". At 100% every page fits between the bars, centered; the pages
+// are stacked and centered. Pinch or the buttons zoom around the center (the iOS scroll view zoom).
+// A PDF is drawn by iOS (WKWebView) in the same centered frame: its pages scroll inside it.
 export default function ViewDocumentScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const documentId = Number(id);
@@ -33,16 +43,28 @@ export default function ViewDocumentScreen() {
   const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, documentId), [documentId]);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, documentId), [documentId]);
+  const scrollRef = useRef<ScrollViewInstance>(null);
   const [zoom, setZoom] = useState(1);
   const [ratios, setRatios] = useState<Record<number, number>>({}); // width / height of each photo
   const [page, setPage] = useState(1);
+  // Where the visible area is, in content points at zoom 1 (for the zoom buttons and "Pag. X")
+  const view = useRef({ x: 0, y: 0, zoom: 1 });
 
   const pdf = files?.find((f) => f.kind === 'pdf') ?? null;
   const images = (files ?? []).filter((f) => f.kind === 'image');
   const pageCount = pdf ? null : images.length;
-  const pageWidth = Math.round(screenWidth * PAGE_SHARE * zoom);
-  const contentWidth = Math.max(screenWidth, pageWidth + 60);
   const topBar = insets.top + 76;
+  const bottomBar = insets.bottom + 30 + 56 + 16; // the zoom bar and a little room above it
+
+  // At 100% a page fits the free area: the screen width minus equal margins, and never taller
+  // than the space between the top bar and the zoom bar; always centered
+  const maxWidth = screenWidth - SIDE_MARGIN * 2;
+  const maxHeight = screenHeight - topBar - bottomBar;
+  const fit = (ratio: number) => {
+    const width = Math.min(maxWidth, maxHeight * ratio);
+    return { width, height: width / ratio };
+  };
+  const sizes = images.map((file) => fit(ratios[file.id] ?? A4_RATIO));
 
   const subtitle = pdf
     ? 'PDF · scorri in basso'
@@ -50,39 +72,58 @@ export default function ViewDocumentScreen() {
       ? '1 pagina'
       : `${pageCount ?? 0} pagine · scorri in basso`;
 
-  // The page whose top has passed the middle of the screen
-  function onScroll(y: number) {
+  // Scroll or pinch: remember the visible area; the page is the one under the middle of the screen
+  function onScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
+    const { contentOffset, zoomScale } = event.nativeEvent;
+    const scale = zoomScale || 1;
+    view.current = { x: contentOffset.x, y: contentOffset.y, zoom: scale };
+    if (Math.abs(scale - zoom) > 0.01) setZoom(scale);
     if (!pageCount) return;
+    const middle = (contentOffset.y + screenHeight / 2) / scale;
     let top = topBar;
-    for (let index = 0; index < images.length; index++) {
-      const height = pageWidth / (ratios[images[index].id] ?? A4_RATIO);
-      if (y + screenHeight / 2 < top + height + PAGE_GAP) {
+    for (let index = 0; index < sizes.length; index++) {
+      top += sizes[index].height + PAGE_GAP;
+      if (middle < top) {
         setPage(index + 1);
         return;
       }
-      top += height + PAGE_GAP;
     }
-    setPage(images.length);
+    setPage(sizes.length);
+  }
+
+  // The zoom buttons: zoom around the center of what is on screen
+  function zoomTo(target: number) {
+    const next = Math.min(ZOOM_MAX, Math.max(ZOOM_MIN, target));
+    const { x, y, zoom: current } = view.current;
+    const centerX = (x + screenWidth / 2) / current;
+    const centerY = (y + screenHeight / 2) / current;
+    const width = screenWidth / next;
+    const height = screenHeight / next;
+    scrollRef.current?.scrollResponderZoomTo({ x: centerX - width / 2, y: centerY - height / 2, width, height, animated: true });
+    setZoom(next);
   }
 
   const send = () => router.push({ pathname: '/send', params: { ids: String(documentId) } });
 
   return (
     <View style={styles.screen}>
-      {pdf ? (
-        <ScrollView horizontal contentContainerStyle={{ width: contentWidth }} bounces={false}>
-          <View
-            style={[styles.pdfFrame, { width: contentWidth, paddingTop: topBar, paddingBottom: insets.bottom + 100 }]}>
-            <PdfPage file={pdf} width={pageWidth} />
-          </View>
-        </ScrollView>
-      ) : (
-        <ScrollView
-          onScroll={(event) => onScroll(event.nativeEvent.contentOffset.y)}
-          scrollEventThrottle={64}
-          contentContainerStyle={{ paddingTop: topBar, paddingBottom: insets.bottom + 120 }}>
-          <ScrollView horizontal contentContainerStyle={[styles.pages, { width: contentWidth }]} bounces={false}>
-            {images.map((file, index) => (
+      <ScrollView
+        ref={scrollRef}
+        style={StyleSheet.absoluteFill}
+        minimumZoomScale={ZOOM_MIN}
+        maximumZoomScale={ZOOM_MAX}
+        pinchGestureEnabled
+        bouncesZoom
+        centerContent
+        contentInsetAdjustmentBehavior="never"
+        showsHorizontalScrollIndicator={false}
+        onScroll={onScroll}
+        scrollEventThrottle={32}>
+        <View style={[styles.pages, { width: screenWidth, paddingTop: topBar, paddingBottom: bottomBar }]}>
+          {pdf ? (
+            <PdfPage file={pdf} width={maxWidth} height={maxHeight} />
+          ) : (
+            images.map((file, index) => (
               <Image
                 key={file.id}
                 source={{ uri: resolveDocumentFile(file.path).uri }}
@@ -90,15 +131,15 @@ export default function ViewDocumentScreen() {
                   const { width, height } = event.source;
                   if (width > 0 && height > 0) setRatios((current) => ({ ...current, [file.id]: width / height }));
                 }}
-                style={[styles.page, { width: pageWidth, aspectRatio: ratios[file.id] ?? A4_RATIO }]}
+                style={[styles.page, sizes[index]]}
                 contentFit="contain"
                 accessibilityLabel={`Pagina ${index + 1} di ${images.length}`}
               />
-            ))}
-            {files && images.length === 0 && <Text style={styles.empty}>Questo documento non ha pagine.</Text>}
-          </ScrollView>
-        </ScrollView>
-      )}
+            ))
+          )}
+          {files && !pdf && images.length === 0 && <Text style={styles.empty}>Questo documento non ha pagine.</Text>}
+        </View>
+      </ScrollView>
 
       <LinearGradient
         colors={[BACKGROUND, 'rgba(26, 28, 48, 0)']}
@@ -122,8 +163,8 @@ export default function ViewDocumentScreen() {
           symbol="minus"
           label="Riduci"
           transparent
-          disabled={zoom <= ZOOM_MIN}
-          onPress={() => setZoom((z) => Math.max(ZOOM_MIN, z - ZOOM_STEP))}
+          disabled={zoom <= ZOOM_MIN + 0.01}
+          onPress={() => zoomTo(zoom - ZOOM_STEP)}
         />
         <Text style={styles.percent} accessibilityLiveRegion="polite">
           {Math.round(zoom * 100)}%
@@ -132,8 +173,8 @@ export default function ViewDocumentScreen() {
           symbol="plus"
           label="Ingrandisci"
           transparent
-          disabled={zoom >= ZOOM_MAX}
-          onPress={() => setZoom((z) => Math.min(ZOOM_MAX, z + ZOOM_STEP))}
+          disabled={zoom >= ZOOM_MAX - 0.01}
+          onPress={() => zoomTo(zoom + ZOOM_STEP)}
         />
         <View style={styles.divider} />
         <Text style={styles.pageLabel}>{pageCount ? `Pag. ${page} di ${pageCount}` : 'PDF'}</Text>
@@ -143,14 +184,14 @@ export default function ViewDocumentScreen() {
 }
 
 // WKWebView draws the PDF; it may only read files inside our documents folder
-function PdfPage({ file, width }: { file: DocumentFile; width: number }) {
+function PdfPage({ file, width, height }: { file: DocumentFile; width: number; height: number }) {
   return (
     <WebView
       source={{ uri: resolveDocumentFile(file.path).uri }}
       originWhitelist={['*']}
       allowingReadAccessToURL={getDocumentsDirectory().uri}
-      style={[styles.pdf, { width }]}
-      containerStyle={styles.pdfContainer}
+      style={styles.pdf}
+      containerStyle={[styles.pdfContainer, { width, height }]}
     />
   );
 }
@@ -201,16 +242,11 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: FONTS.regular,
   },
-  pdfFrame: {
-    flex: 1,
-    alignItems: 'center',
-  },
   pdf: {
     flex: 1,
     backgroundColor: BACKGROUND,
   },
   pdfContainer: {
-    flex: 1,
     backgroundColor: BACKGROUND,
   },
   top: {

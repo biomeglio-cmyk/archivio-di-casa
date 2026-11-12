@@ -4,7 +4,7 @@ import Storage from 'expo-sqlite/kv-store';
 import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { BACKUP_REMINDER_DAYS, daysSinceLastBackup } from '@/backup/backup-layout';
+import { backupReminderDays, daysSinceLastBackup } from '@/backup/backup-layout';
 import { Text } from '@/components/text';
 import { Colors, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -28,15 +28,17 @@ type Notice = { kind: 'none' } | { kind: 'old'; days: number };
 
 // Which notice to show now, or null
 function noticeFor(now: number): Notice | null {
+  const interval = backupReminderDays(); // "Ricordami di fare il backup": null = "Mai"
+  if (interval === null) return null;
   const days = daysSinceLastBackup(now);
   if (days === null) return dismissedThisLaunch ? null : { kind: 'none' };
-  if (days <= BACKUP_REMINDER_DAYS || now < snoozedUntil()) return null;
+  if (days <= interval || now < snoozedUntil()) return null;
   return { kind: 'old', days };
 }
 
 // Notice on Home (docs/design/Main.dc.html), "Fai il backup" opens Backup:
 // - no backup yet: "Non hai ancora fatto un backup"; ✕ hides it until the next launch;
-// - last backup older than 30 days: "Il tuo ultimo backup è di N giorni fa"; ✕ hides it for 7 days.
+// - last backup older than the chosen frequency (a week or a month; never with "Mai"): "Il tuo ultimo backup è di N giorni fa"; ✕ hides it for 7 days.
 // Checked again every time Home comes back on screen (so it goes away right after a backup).
 export function BackupReminder() {
   const [now, setNow] = useState(() => Date.now());

@@ -29,6 +29,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { deletePersonPhoto, storePersonPhoto } from '@/storage/person-photos';
+import { whenBelowLimit } from '@/settings/free-limit';
 
 const TILE_HEIGHT = 132; // the document squares of the design
 
@@ -67,7 +68,8 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
   const subtitle = [person.role === 'me' ? null : role, documentsLabel(documents.length)].filter(Boolean).join(' · ');
   const selectedIds = documents.filter((d) => selection.selected.has(d.id)).map((d) => d.id);
   const edit = () => router.push({ pathname: '/person-form', params: { id: String(person.id) } });
-  const addDocument = () => router.push({ pathname: '/new-document', params: { personId: String(person.id) } });
+  const addDocument = () =>
+    whenBelowLimit(() => router.push({ pathname: '/new-document', params: { personId: String(person.id) } }));
 
   async function saveOrder(items: DocumentListItem[]) {
     try {

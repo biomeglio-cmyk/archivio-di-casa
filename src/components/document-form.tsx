@@ -63,7 +63,9 @@ type Props = {
 
 // "Modifica documento" / "Nuovo documento" (docs/design/Modifica.dc.html): back button and title,
 // the pages (3-column grid), NOME, DOVE SALVARLO (Cartella, Persona), SCADENZA (switch, calendar,
-// Avvisami), NOTE, "Aggiungi ai preferiti", "Salva modifiche" and "Cancella documento".
+// Avvisami), NOTE, "Aggiungi ai preferiti", "Salva modifiche" and "Cancella documento"; the same
+// order as Conferma.dc.html for a new document after a capture (with "Letto dal documento").
+// Our extras come after the design's fields, so its order stays unbroken.
 // Our extras, added where they fit: Tipo in DOVE SALVARLO; Si ripete in SCADENZA; IMPORTO E STATO;
 // COPERTINA; Utente and Password for the "Password" category; the document number.
 // Required: name and folder.
@@ -340,6 +342,30 @@ export function DocumentForm({
             )}
           </WhiteCard>
 
+          <SectionTitle>Note</SectionTitle>
+          <WhiteCard style={styles.notesCard}>
+            <TextInput
+              value={notes}
+              onChangeText={setNotes}
+              placeholder="Per esempio: pagata con domiciliazione, chiedere il rimborso…"
+              placeholderTextColor={Colors.light.textSecondary}
+              multiline
+              accessibilityLabel="Note"
+              style={styles.notes}
+            />
+          </WhiteCard>
+
+          <WhiteCard style={[styles.card, styles.pinCard]}>
+            <Pressable onPress={() => setPinned(!pinned)} accessible={false} style={styles.switchRow}>
+              <IconBox symbol={pinned ? 'heart.fill' : 'heart'} tint={PIN_BACKGROUND} color={PIN_COLOR} />
+              <View style={styles.flex}>
+                <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>
+                <Text style={styles.rowSubtitle}>Lo trovi subito in home</Text>
+              </View>
+              <Switch value={pinned} onValueChange={setPinned} accessibilityLabel="Aggiungi ai preferiti" />
+            </Pressable>
+          </WhiteCard>
+
           {/* Ours: what it costs and whether it is paid */}
           <SectionTitle>Importo e stato</SectionTitle>
           <WhiteCard style={styles.card}>
@@ -368,30 +394,6 @@ export function DocumentForm({
                 onChange={(index) => setStatus(STATUSES[index].value)}
               />
             </View>
-          </WhiteCard>
-
-          <SectionTitle>Note</SectionTitle>
-          <WhiteCard style={styles.notesCard}>
-            <TextInput
-              value={notes}
-              onChangeText={setNotes}
-              placeholder="Per esempio: pagata con domiciliazione, chiedere il rimborso…"
-              placeholderTextColor={Colors.light.textSecondary}
-              multiline
-              accessibilityLabel="Note"
-              style={styles.notes}
-            />
-          </WhiteCard>
-
-          <WhiteCard style={[styles.card, styles.pinCard]}>
-            <Pressable onPress={() => setPinned(!pinned)} accessible={false} style={styles.switchRow}>
-              <IconBox symbol={pinned ? 'heart.fill' : 'heart'} tint={PIN_BACKGROUND} color={PIN_COLOR} />
-              <View style={styles.flex}>
-                <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>
-                <Text style={styles.rowSubtitle}>Lo trovi subito in home</Text>
-              </View>
-              <Switch value={pinned} onValueChange={setPinned} accessibilityLabel="Aggiungi ai preferiti" />
-            </Pressable>
           </WhiteCard>
 
           {/* Ours: how it looks in the grids */}

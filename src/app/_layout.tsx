@@ -174,11 +174,7 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="backup"
-            options={{
-              presentation: 'modal',
-              title: 'Backup',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'modal', title: 'Backup', headerShown: false }}
           />
           {/* "Prepara per il commercialista" in the "…" menu of Spese 730 */}
           <Stack.Screen
@@ -211,6 +207,16 @@ export default function RootLayout() {
           <Stack.Screen
             name="delete-person/[id]"
             options={{ presentation: 'transparentModal', animation: 'fade', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
+          {/* Free limit reached: "Hai usato i 7 spazi gratuiti" (Sblocca / Più tardi) */}
+          <Stack.Screen
+            name="limit"
+            options={{ presentation: 'transparentModal', animation: 'none', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
+          {/* "Notifiche": the panel over Home opened by the bell */}
+          <Stack.Screen
+            name="notifications"
+            options={{ presentation: 'transparentModal', animation: 'none', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
           />
           {/* "Sblocca": the free version and the one-time purchase (its own × at the top) */}
           <Stack.Screen name="unlock" options={{ presentation: 'modal', headerShown: false }} />

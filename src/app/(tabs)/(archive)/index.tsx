@@ -8,10 +8,11 @@ import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { categoryQuickActions } from '@/actions/quick-actions';
 import { BackupReminder } from '@/components/backup-reminder';
 import { CATEGORY_TILE_HEIGHT, CategoryTile, describeCategoryCount } from '@/components/category-tile';
+import { HomeEmpty } from '@/components/home-empty';
 import { HomeHeader } from '@/components/home-header';
+import { LimitCard } from '@/components/limit-card';
 import { FavoriteTile, NextDeadlineCard } from '@/components/home-sections';
 import { SearchBar } from '@/components/search-bar';
-import { SearchResultsList } from '@/components/search-results';
 import { SectionHeader } from '@/components/section-header';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { Text } from '@/components/text';
@@ -19,15 +20,14 @@ import { TileScrollView } from '@/components/tile-grid';
 import { Colors, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategoriesWithCounts, saveCategoryOrder } from '@/db/categories';
-import { listAllDocuments, listDocumentsWithExpiry, listPinnedDocuments } from '@/db/documents';
+import { listDocumentsWithExpiry, listPinnedDocuments } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
-import { searchDocuments, type SearchFilter } from '@/search/search-documents';
+import { useFreeLimit } from '@/settings/free-limit';
 import { toISODate } from '@/utils/dates';
 
 const AFTER_SPLASH_MS = 1100; // the opening screen lasts about one second
-const SEARCH_DEBOUNCE_MS = 200;
 
 // Under "SCADENZE": the first deadline from today on (none: the section is hidden)
 function nextDeadline(documents: DocumentListItem[]): DocumentListItem | null {
@@ -38,32 +38,21 @@ function nextDeadline(documents: DocumentListItem[]): DocumentListItem | null {
 // "/" route, the app opens here (docs/design/Main.dc.html). One scrolling page: ≡ menu, bell and
 // logo; "Ciao!"; the search field; the backup notice; PREFERITI (the first 2), SCADENZE (the
 // next one), ARCHIVIO (the categories, with drag and drop and the quick menu).
-// While searching, the results take the place of the sections, under the same field (so the
-// keyboard stays open).
+// The search field opens Ricerca (docs/design/Ricerca.dc.html).
 export default function ArchiveScreen() {
   const db = useSQLiteContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>(); // the page scrolls while a category is dragged
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
-  const { data: allDocuments } = useDbQuery(listAllDocuments, []);
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
   const { data: withExpiry } = useDbQuery(listDocumentsWithExpiry, []);
+  const { usage, reached } = useFreeLimit();
+  const empty = usage?.used === 0; // no documents or cards yet: Home vuota
 
-  const [query, setQuery] = useState(''); // what is typed
-  const [searched, setSearched] = useState(''); // what is searched, ~200 ms after the last key
-  const [filter, setFilter] = useState<SearchFilter>({ kind: 'all' });
   const [reordering, setReordering] = useState(false); // "Riordina" … "Fine"
 
   // Leaving Home ends "Riordina"
   useFocusEffect(useCallback(() => () => setReordering(false), []));
 
-  // Debounce: search only when typing pauses
-  useEffect(() => {
-    const timer = setTimeout(() => setSearched(query), SEARCH_DEBOUNCE_MS);
-    return () => clearTimeout(timer);
-  }, [query]);
-
-  const searching = searched.trim().length > 0 && query.trim().length > 0;
-  const results = searching ? searchDocuments(allDocuments ?? [], searched) : null;
   const favorites = (pinned ?? []).slice(0, 2);
   const next = withExpiry ? nextDeadline(withExpiry) : null;
 
@@ -80,29 +69,21 @@ export default function ArchiveScreen() {
       <TileScrollView
         ref={scrollRef}
         keyboardShouldPersistTaps="handled"
-        keyboardDismissMode={searching ? 'on-drag' : 'none'}
         contentContainerStyle={styles.page}>
         <HomeHeader />
         <Text style={styles.hello} accessibilityRole="header">
           Ciao!
         </Text>
-        <View style={styles.search}>
-          <SearchBar
-            value={query}
-            placeholder="Cerca un documento"
-            onChangeText={(text) => {
-              setQuery(text);
-              setFilter({ kind: 'all' }); // new search, all results
-            }}
-          />
-        </View>
-
-        {searching && results ? (
-          <SearchResultsList query={searched} results={results} filter={filter} onFilterChange={setFilter} />
+        {empty && categories ? (
+          <HomeEmpty categories={categories} />
         ) : (
           <>
+            <View style={styles.search}>
+              <SearchBar value="" onChangeText={() => undefined} placeholder="Cerca un documento" onOpen={() => router.push('/search')} />
+            </View>
+
             <View style={styles.notice}>
-              <BackupReminder />
+              {reached && usage ? <LimitCard usage={usage} /> : <BackupReminder />}
             </View>
 
             {favorites.length > 0 && (

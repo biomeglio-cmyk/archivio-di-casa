@@ -1,11 +1,22 @@
+import { router } from 'expo-router';
 import type { SQLiteDatabase } from 'expo-sqlite';
 import Storage from 'expo-sqlite/kv-store';
+import { useEffect, useSyncExternalStore } from 'react';
+
+import { useDbQuery } from '@/hooks/use-db-query';
 
 // Free version (docs/design-guide.md, "Limite gratuito"): up to 7 elements in all, where an
 // element is a document or a card ("Tessere e card" items are documents too). Categories,
 // people and deadlines do not count; the Cestino does not count either (it frees a space).
-// Nothing is blocked yet: the count is only shown (menu, Impostazioni, Sblocca).
+// At the limit (docs/design/HomeLimite.dc.html, ProvaFinita.dc.html): the "+" turns grey with a
+// lock, adding a document or a card opens the limit panel (Sblocca / Più tardi), Home shows
+// "7 di 7 spazi gratuiti usati". Everything else keeps working.
 export const FREE_LIMIT = 7;
+
+// The blocking is switched on only when the real purchase exists (StoreKit, development build).
+// While false, the limit states can be previewed with the hidden switch of Impostazioni ›
+// Informazioni (tap the version 5 times).
+export const FREE_LIMIT_ENFORCED = false;
 export const UNLOCK_PRICE = '0,99 €';
 
 const UNLOCKED_KEY = 'app.unlocked';
@@ -37,4 +48,67 @@ export async function getFreeUsage(db: SQLiteDatabase): Promise<FreeUsage> {
     share: Math.min(1, used / FREE_LIMIT),
     unlocked: isUnlocked(),
   };
+}
+
+// ——— Preview of the limit states (debug) ———
+
+const PREVIEW_KEY = 'debug.limitPreview';
+let preview: boolean | null = null;
+const listeners = new Set<() => void>();
+
+function readPreview(): boolean {
+  if (preview === null) {
+    try {
+      preview = Storage.getItemSync(PREVIEW_KEY) === '1';
+    } catch {
+      preview = false;
+    }
+  }
+  return preview;
+}
+
+export function setLimitPreview(on: boolean): void {
+  preview = on;
+  try {
+    Storage.setItemSync(PREVIEW_KEY, on ? '1' : '0');
+  } catch {
+    // lasts until the app closes
+  }
+  listeners.forEach((listener) => listener());
+}
+
+function subscribe(listener: () => void) {
+  listeners.add(listener);
+  return () => {
+    listeners.delete(listener);
+  };
+}
+
+export function useLimitPreview(): boolean {
+  return useSyncExternalStore(subscribe, readPreview);
+}
+
+// Whether adding is blocked now: never once unlocked; with the blocking off, only in the preview
+export function isLimitReached(usage: FreeUsage | undefined, previewOn: boolean): boolean {
+  if (!usage || usage.unlocked) return false;
+  return FREE_LIMIT_ENFORCED ? usage.used >= usage.limit : previewOn;
+}
+
+// The last known state, for the add buttons that have no database at hand (kept by useFreeLimit)
+let reachedNow = false;
+
+export function useFreeLimit() {
+  const { data: usage } = useDbQuery(getFreeUsage, []);
+  const previewOn = useLimitPreview();
+  const reached = isLimitReached(usage, previewOn);
+  useEffect(() => {
+    reachedNow = reached;
+  }, [reached]);
+  return { usage, reached };
+}
+
+// Every "add a document / a card" goes through here: at the limit the panel opens instead
+export function whenBelowLimit(add: () => void): void {
+  if (reachedNow) router.push('/limit');
+  else add();
 }

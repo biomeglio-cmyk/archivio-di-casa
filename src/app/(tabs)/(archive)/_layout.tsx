@@ -11,6 +11,7 @@ export default function ArchiveLayout() {
     <Stack screenOptions={TAB_STACK_SCREEN_OPTIONS}>
       {/* No navigation bar: the screen draws its own brand header. The title still names the back button. */}
       <Stack.Screen name="index" options={{ title: 'Home', headerShown: false }} />
+      <Stack.Screen name="search" options={{ title: 'Cerca', headerShown: false, animation: 'fade' }} />
       <Stack.Screen name="category/[id]" />
       <Stack.Screen name="document/[id]" options={{ headerLargeTitleEnabled: false }} />
     </Stack>

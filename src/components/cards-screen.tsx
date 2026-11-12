@@ -28,6 +28,7 @@ import { useMaxBrightness } from '@/hooks/use-max-brightness';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { generateBarcode } from '@/utils/barcode';
 import { categoryTint } from '@/utils/colors';
+import { whenBelowLimit } from '@/settings/free-limit';
 
 const detailHref = (id: number) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(id) } }) as const;
 
@@ -68,7 +69,7 @@ export function CardsScreen({ category, cards }: Props) {
     }
   }
 
-  const add = () => startAddCard('push');
+  const add = () => whenBelowLimit(() => startAddCard('push'));
 
   const categoryActions: SheetAction[] = [
     {

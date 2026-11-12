@@ -8,6 +8,7 @@ import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { categoryQuickActions } from '@/actions/quick-actions';
 import { BackupReminder } from '@/components/backup-reminder';
 import { CATEGORY_TILE_HEIGHT, CategoryTile, describeCategoryCount } from '@/components/category-tile';
+import { HomeEmpty } from '@/components/home-empty';
 import { HomeHeader } from '@/components/home-header';
 import { FavoriteTile, NextDeadlineCard } from '@/components/home-sections';
 import { SearchBar } from '@/components/search-bar';
@@ -22,6 +23,7 @@ import { listDocumentsWithExpiry, listPinnedDocuments } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
+import { getFreeUsage } from '@/settings/free-limit';
 import { toISODate } from '@/utils/dates';
 
 const AFTER_SPLASH_MS = 1100; // the opening screen lasts about one second
@@ -42,6 +44,8 @@ export default function ArchiveScreen() {
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: pinned } = useDbQuery(listPinnedDocuments, []);
   const { data: withExpiry } = useDbQuery(listDocumentsWithExpiry, []);
+  const { data: usage } = useDbQuery(getFreeUsage, []);
+  const empty = usage?.used === 0; // no documents or cards yet: Home vuota
 
   const [reordering, setReordering] = useState(false); // "Riordina" … "Fine"
 
@@ -69,82 +73,88 @@ export default function ArchiveScreen() {
         <Text style={styles.hello} accessibilityRole="header">
           Ciao!
         </Text>
-        <View style={styles.search}>
-          <SearchBar value="" onChangeText={() => undefined} placeholder="Cerca un documento" onOpen={() => router.push('/search')} />
-        </View>
-
-        <View style={styles.notice}>
-          <BackupReminder />
-        </View>
-
-        {favorites.length > 0 && (
-          <View style={styles.section}>
-            <SectionHeader
-              title="Preferiti"
-              action={{
-                label: 'Vedi tutto',
-                accessibilityLabel: 'Vedi tutti i preferiti',
-                onPress: () => router.navigate('/(tabs)/(favorites)/favorites'),
-              }}
-            />
-            <View style={styles.favorites}>
-              {favorites.map((document) => (
-                <FavoriteTile key={document.id} document={document} />
-              ))}
-              {/* One favorite: it keeps half the width, like in a grid of two */}
-              {favorites.length === 1 && <View style={styles.flex} />}
+        {empty && categories ? (
+          <HomeEmpty categories={categories} />
+        ) : (
+          <>
+            <View style={styles.search}>
+              <SearchBar value="" onChangeText={() => undefined} placeholder="Cerca un documento" onOpen={() => router.push('/search')} />
             </View>
-          </View>
-        )}
 
-        {next && (
-          <View style={styles.section}>
-            <SectionHeader
-              title="Scadenze"
-              action={{
-                label: 'Vedi tutto',
-                accessibilityLabel: 'Vedi tutte le scadenze',
-                onPress: () => router.navigate('/(tabs)/(deadlines)/deadlines'),
-              }}
-            />
-            <NextDeadlineCard document={next} />
-          </View>
-        )}
+            <View style={styles.notice}>
+              <BackupReminder />
+            </View>
 
-        <View style={styles.section}>
-          <SectionHeader
-            title="Archivio"
-            action={
-              categories && categories.length > 1
-                ? reordering
-                  ? { label: 'Fine', accessibilityLabel: 'Fine riordino', onPress: () => setReordering(false) }
-                  : { label: 'Riordina', accessibilityLabel: 'Riordina le categorie', onPress: () => setReordering(true) }
-                : undefined
-            }
-          />
-          {reordering && (
-            <Text style={styles.reorderHint}>Trascina le categorie nell’ordine che preferisci.</Text>
-          )}
-          {categories && (
-            <SortableTileGrid
-              items={categories}
-              keyFor={(category) => category.id}
-              labelFor={(category) => `${category.name}, ${describeCategoryCount(category, category.documentCount)}`}
-              tileHeight={CATEGORY_TILE_HEIGHT}
-              reordering={reordering}
-              renderTile={(category) => <CategoryTile category={category} documentCount={category.documentCount} />}
-              actionsFor={(category) => categoryQuickActions(db, category)}
-              onOpen={(category) => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
-              onReorder={(ordered) =>
-                saveCategoryOrder(db, ordered.map((c) => c.id)).catch((error: unknown) =>
-                  Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error)),
-                )
-              }
-              add={{ label: 'Nuova categoria', onPress: () => router.push('/category-form') }}
-              scrollableRef={scrollRef}
-            />
-          )}
-        </View>
+            {favorites.length > 0 && (
+              <View style={styles.section}>
+                <SectionHeader
+                  title="Preferiti"
+                  action={{
+                    label: 'Vedi tutto',
+                    accessibilityLabel: 'Vedi tutti i preferiti',
+                    onPress: () => router.navigate('/(tabs)/(favorites)/favorites'),
+                  }}
+                />
+                <View style={styles.favorites}>
+                  {favorites.map((document) => (
+                    <FavoriteTile key={document.id} document={document} />
+                  ))}
+                  {/* One favorite: it keeps half the width, like in a grid of two */}
+                  {favorites.length === 1 && <View style={styles.flex} />}
+                </View>
+              </View>
+            )}
+
+            {next && (
+              <View style={styles.section}>
+                <SectionHeader
+                  title="Scadenze"
+                  action={{
+                    label: 'Vedi tutto',
+                    accessibilityLabel: 'Vedi tutte le scadenze',
+                    onPress: () => router.navigate('/(tabs)/(deadlines)/deadlines'),
+                  }}
+                />
+                <NextDeadlineCard document={next} />
+              </View>
+            )}
+
+            <View style={styles.section}>
+              <SectionHeader
+                title="Archivio"
+                action={
+                  categories && categories.length > 1
+                    ? reordering
+                      ? { label: 'Fine', accessibilityLabel: 'Fine riordino', onPress: () => setReordering(false) }
+                      : { label: 'Riordina', accessibilityLabel: 'Riordina le categorie', onPress: () => setReordering(true) }
+                    : undefined
+                }
+              />
+              {reordering && (
+                <Text style={styles.reorderHint}>Trascina le categorie nell’ordine che preferisci.</Text>
+              )}
+              {categories && (
+                <SortableTileGrid
+                  items={categories}
+                  keyFor={(category) => category.id}
+                  labelFor={(category) => `${category.name}, ${describeCategoryCount(category, category.documentCount)}`}
+                  tileHeight={CATEGORY_TILE_HEIGHT}
+                  reordering={reordering}
+                  renderTile={(category) => <CategoryTile category={category} documentCount={category.documentCount} />}
+                  actionsFor={(category) => categoryQuickActions(db, category)}
+                  onOpen={(category) => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
+                  onReorder={(ordered) =>
+                    saveCategoryOrder(db, ordered.map((c) => c.id)).catch((error: unknown) =>
+                      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error)),
+                    )
+                  }
+                  add={{ label: 'Nuova categoria', onPress: () => router.push('/category-form') }}
+                  scrollableRef={scrollRef}
+                />
+              )}
+            </View>
+          </>
+        )}
       </TileScrollView>
     </GestureHandlerRootView>
   );

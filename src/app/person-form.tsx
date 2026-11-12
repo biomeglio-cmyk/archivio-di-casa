@@ -1,24 +1,26 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
+import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Text } from '@/components/text';
 import { pickPersonPhoto } from '@/capture/pick-files';
-import { FormField, TextField } from '@/components/form-field';
-import { PrimaryButton } from '@/components/primary-button';
+import { ActionSheet } from '@/components/action-sheet';
 import { PersonAvatar } from '@/components/person-avatar';
-import { ThemedText } from '@/components/themed-text';
-import { BRAND_COLOR } from '@/constants/brand';
-import { Spacing } from '@/constants/theme';
+import { PrimaryButton } from '@/components/primary-button';
+import { RoundIconButton } from '@/components/round-icon-button';
+import { Text, TextInput } from '@/components/text';
+import { PERSON_ROLES } from '@/constants/person-roles';
+import { CardSurface, Colors, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getPerson, insertPerson, updatePerson } from '@/db/people';
-import type { Person } from '@/db/types';
+import type { Person, PersonRole } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { deletePersonPhoto, storePersonPhoto } from '@/storage/person-photos';
 
-// Bottom sheet for a person: "Nuova persona" (no id) or "Modifica persona" (?id=…)
-export default function PersonFormSheet() {
+// "Nuova persona" (no id) or "Modifica persona" (?id=…)
+export default function PersonFormScreen() {
   const { id } = useLocalSearchParams<{ id?: string }>();
   const personId = id ? Number(id) : null;
   const { data: person } = useDbQuery((db) => (personId ? getPerson(db, personId) : Promise.resolve(null)), [personId]);
@@ -32,14 +34,21 @@ export default function PersonFormSheet() {
 // The photo in the form: unchanged, a new one just chosen, or removed
 type PhotoChange = { kind: 'keep' } | { kind: 'new'; uri: string } | { kind: 'remove' };
 
+// docs/design/NuovoUtente.dc.html: back and the title, the round "Aggiungi foto" (dashed), "NOME",
+// "CHI È" (Partner, Figlio o figlia…; our extra "Sono io" gives the "Tu" badge), the note and
+// "Aggiungi alla famiglia"
 function PersonForm({ person }: { person: Person | null }) {
   const db = useSQLiteContext();
+  const insets = useSafeAreaInsets();
   const [name, setName] = useState(person?.name ?? '');
+  const [role, setRole] = useState<PersonRole>(person?.role ?? 'partner');
   const [photo, setPhoto] = useState<PhotoChange>({ kind: 'keep' });
+  const [rolesOpen, setRolesOpen] = useState(false);
   const [saving, setSaving] = useState(false);
 
   const canSave = name.trim().length > 0 && !saving;
   const hasPhoto = photo.kind === 'new' || (photo.kind === 'keep' && Boolean(person?.photoPath));
+  const roleName = PERSON_ROLES.find((r) => r.value === role)?.label ?? '';
 
   async function changePhoto() {
     try {
@@ -61,11 +70,11 @@ function PersonForm({ person }: { person: Person | null }) {
       const photoPath = photo.kind === 'new' ? storedPath : photo.kind === 'remove' ? null : (person?.photoPath ?? null);
 
       if (person) {
-        await updatePerson(db, person.id, name, photoPath);
+        await updatePerson(db, person.id, name, photoPath, role);
         // The old photo file goes only after the database points to the new state
         if (photo.kind !== 'keep' && person.photoPath) deletePersonPhoto(person.photoPath);
       } else {
-        await insertPerson(db, name, photoPath);
+        await insertPerson(db, name, photoPath, role);
       }
       router.back();
     } catch (error) {
@@ -76,56 +85,181 @@ function PersonForm({ person }: { person: Person | null }) {
   }
 
   return (
-    <View style={styles.container}>
-      <ThemedText style={styles.title}>{person ? 'Modifica persona' : 'Nuova persona'}</ThemedText>
+    <>
+      <ScrollView
+        style={styles.screen}
+        keyboardShouldPersistTaps="handled"
+        automaticallyAdjustKeyboardInsets
+        contentContainerStyle={[styles.page, { paddingBottom: insets.bottom + 36 }]}>
+        <View style={styles.bar}>
+          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.light.text} onPress={() => router.back()} />
+          <Text style={styles.heading} accessibilityRole="header">
+            {person ? 'Modifica persona' : 'Nuova persona'}
+          </Text>
+          <View style={styles.barSpace} />
+        </View>
 
-      {/* Avatar: tap to add, change or remove the photo */}
-      <Pressable onPress={changePhoto} accessibilityRole="button" style={styles.avatar}>
-        <PersonAvatar
-          name={name}
-          photoPath={photo.kind === 'keep' ? person?.photoPath : null}
-          photoUri={photo.kind === 'new' ? photo.uri : null}
-          size={96}
+        <View style={styles.photoRow}>
+          <Pressable
+            onPress={changePhoto}
+            accessibilityRole="button"
+            accessibilityLabel={hasPhoto ? 'Cambia foto' : 'Aggiungi foto'}
+            style={({ pressed }) => [styles.photo, !hasPhoto && styles.photoEmpty, pressed && styles.pressed]}>
+            {hasPhoto ? (
+              <PersonAvatar
+                name={name}
+                photoPath={photo.kind === 'keep' ? person?.photoPath : null}
+                photoUri={photo.kind === 'new' ? photo.uri : null}
+                size={112}
+              />
+            ) : (
+              <>
+                <SymbolView name="camera" tintColor={Colors.light.indigo} size={26} />
+                <Text style={styles.photoLabel}>Aggiungi foto</Text>
+              </>
+            )}
+          </Pressable>
+        </View>
+
+        <Text style={styles.section}>Nome</Text>
+        <View style={styles.field}>
+          <TextInput
+            value={name}
+            onChangeText={setName}
+            placeholder="Come si chiama?"
+            placeholderTextColor={Colors.light.textSecondary}
+            autoFocus={!person}
+            autoCapitalize="words"
+            returnKeyType="done"
+            accessibilityLabel="Nome"
+            style={styles.input}
+          />
+        </View>
+
+        <Text style={styles.section}>Chi è</Text>
+        <Pressable
+          onPress={() => setRolesOpen(true)}
+          accessibilityRole="button"
+          accessibilityLabel={`Chi è per te: ${roleName}`}
+          style={({ pressed }) => [styles.field, styles.select, pressed && styles.pressed]}>
+          <Text style={styles.selectText}>{roleName}</Text>
+          <SymbolView name="chevron.down" tintColor={Colors.light.textSecondary} size={15} weight="semibold" />
+        </Pressable>
+
+        <Text style={styles.note}>
+          Il profilo resta su questo telefono. Ti serve per tenere in ordine i documenti di ognuno.
+        </Text>
+
+        <PrimaryButton
+          label={person ? 'Salva' : 'Aggiungi alla famiglia'}
+          disabled={!canSave}
+          onPress={save}
+          style={styles.save}
         />
-        <Text style={styles.photoLink}>{hasPhoto ? 'Cambia foto' : 'Aggiungi foto'}</Text>
-      </Pressable>
+      </ScrollView>
 
-      <FormField label="Nome" required>
-        <TextField
-          value={name}
-          onChangeText={setName}
-          placeholder="Es. Nonna"
-          autoFocus={!person}
-          autoCapitalize="words"
-          returnKeyType="done"
-          onSubmitEditing={save}
-        />
-      </FormField>
-
-      <PrimaryButton label="Salva" disabled={!canSave} onPress={save} />
-    </View>
+      <ActionSheet
+        visible={rolesOpen}
+        title="Chi è per te"
+        actions={PERSON_ROLES.map((r) => ({
+          key: r.value,
+          label: r.label,
+          symbol: r.value === role ? 'checkmark.circle.fill' : 'circle',
+          onPress: () => setRole(r.value),
+        }))}
+        onClose={() => setRolesOpen(false)}
+      />
+    </>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  screen: {
+    flex: 1,
+    backgroundColor: Colors.light.background,
+  },
+  page: {
+    paddingTop: 24,
     paddingHorizontal: Spacing.side,
-    paddingTop: 28,
-    paddingBottom: 40,
-    gap: 20,
   },
-  title: {
-    fontSize: 22,
-    lineHeight: 28,
-    fontFamily: FONTS.bold,
-  },
-  avatar: {
+  bar: {
+    flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
+    justifyContent: 'space-between',
   },
-  photoLink: {
-    color: BRAND_COLOR,
-    fontSize: 15,
+  heading: {
+    fontSize: 17,
     fontFamily: FONTS.semiBold,
+    color: Colors.light.text,
+  },
+  barSpace: {
+    width: 44,
+  },
+  photoRow: {
+    marginTop: 20,
+    alignItems: 'center',
+  },
+  photo: {
+    width: 112,
+    height: 112,
+    borderRadius: 56,
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 4,
+  },
+  photoEmpty: {
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    borderColor: Colors.light.dashed,
+    backgroundColor: Colors.light.paleLilac,
+  },
+  photoLabel: {
+    fontSize: 13,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.indigo,
+  },
+  pressed: {
+    opacity: 0.7,
+  },
+  section: {
+    marginTop: 22,
+    fontSize: 13,
+    fontFamily: FONTS.regular,
+    textTransform: 'uppercase',
+    color: Colors.light.textSecondary,
+  },
+  field: {
+    ...CardSurface,
+    marginTop: 10,
+    height: 56,
+    borderRadius: 18,
+    paddingHorizontal: 18,
+    justifyContent: 'center',
+  },
+  input: {
+    fontSize: 16,
+    fontFamily: FONTS.medium,
+    color: Colors.light.text,
+  },
+  select: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+  },
+  selectText: {
+    fontSize: 16,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.text,
+  },
+  note: {
+    marginTop: 18,
+    marginHorizontal: 4,
+    fontSize: 13,
+    lineHeight: 19,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textSecondary,
+  },
+  save: {
+    marginTop: 26,
   },
 });

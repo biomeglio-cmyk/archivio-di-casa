@@ -70,13 +70,7 @@ export default function RootLayout() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
             name="add-document"
-            options={{
-              presentation: 'formSheet',
-              headerShown: false,
-              sheetGrabberVisible: true,
-              sheetCornerRadius: Radius.sheet,
-              sheetAllowedDetents: 'fitToContents',
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
           />
           {/* Side menu from ≡ in Home: transparent, it draws its own dimmed background and slides
               its panel in from the left (src/app/menu.tsx) */}
@@ -115,23 +109,11 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="category-form"
-            options={{
-              presentation: 'formSheet',
-              headerShown: false,
-              sheetGrabberVisible: true,
-              sheetCornerRadius: Radius.sheet,
-              sheetAllowedDetents: [0.9],
-            }}
+            options={{ presentation: 'modal', headerShown: false }}
           />
           <Stack.Screen
             name="person-form"
-            options={{
-              presentation: 'formSheet',
-              headerShown: false,
-              sheetGrabberVisible: true,
-              sheetCornerRadius: Radius.sheet,
-              sheetAllowedDetents: 'fitToContents',
-            }}
+            options={{ presentation: 'modal', headerShown: false }}
           />
           <Stack.Screen
             name="capture"
@@ -139,11 +121,7 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="edit-document/[id]"
-            options={{
-              presentation: 'modal',
-              title: 'Modifica documento',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Modifica documento' }}
           />
           {/* "Aggiungi pagine" in the document detail: the pages editor of "Nuovo documento" */}
           <Stack.Screen
@@ -182,11 +160,7 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="new-document"
-            options={{
-              presentation: 'modal',
-              title: 'Nuovo documento',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Nuovo documento' }}
           />
           {/* "Impostazioni" from the side menu: a full page with its own back button */}
           <Stack.Screen name="settings" options={{ headerShown: false }} />
@@ -223,6 +197,21 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
+          {/* "Visualizza": the pages on a dark background, full screen */}
+          <Stack.Screen name="view/[id]" options={{ presentation: 'fullScreenModal', headerShown: false }} />
+          {/* Delete confirmations of the design: transparent, they draw their own dimmed background */}
+          <Stack.Screen
+            name="delete-document/[id]"
+            options={{ presentation: 'transparentModal', animation: 'fade', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
+          <Stack.Screen
+            name="delete-category/[id]"
+            options={{ presentation: 'transparentModal', animation: 'fade', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
+          <Stack.Screen
+            name="delete-person/[id]"
+            options={{ presentation: 'transparentModal', animation: 'fade', headerShown: false, contentStyle: { backgroundColor: 'transparent' } }}
+          />
           {/* "Sblocca": the free version and the one-time purchase (its own × at the top) */}
           <Stack.Screen name="unlock" options={{ presentation: 'modal', headerShown: false }} />
           <Stack.Screen
@@ -248,28 +237,11 @@ export default function RootLayout() {
           />
           <Stack.Screen
             name="new-card"
-            options={{
-              presentation: 'modal',
-              title: 'Nuova carta',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Nuova tessera' }}
           />
           <Stack.Screen
             name="edit-card/[id]"
-            options={{
-              presentation: 'modal',
-              title: 'Modifica carta',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
-          />
-          {/* "Modifica" of the Preferiti section: reorder and remove pinned items */}
-          <Stack.Screen
-            name="pinned-edit"
-            options={{
-              presentation: 'modal',
-              title: 'Preferiti',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Modifica tessera' }}
           />
         </Stack>
         </Fragment>

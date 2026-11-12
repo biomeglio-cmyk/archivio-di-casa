@@ -1,4 +1,4 @@
-import { addDaysIso, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
+import { addDaysIso, MONTHS, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -8,48 +8,60 @@ export function daysUntil(iso: string, today: Date = new Date()): number {
   return Math.round((parseISODate(iso).getTime() - start.getTime()) / DAY_MS);
 }
 
-export type DeadlineSectionKey = 'overdue' | 'week' | 'month' | 'later';
-
 export type DeadlineSection<T> = {
-  key: DeadlineSectionKey;
-  title: string; // "Da sistemare · 2", "Questa settimana · 3", "Questo mese", "Più avanti"
-  data: T[]; // `data` is the name SectionList expects
+  key: string; // 'overdue', 'week' or the month 'YYYY-MM'
+  title: string; // "Da sistemare", "Questa settimana", "Dicembre", "Gennaio 2027"
+  kind: 'overdue' | 'week' | 'month';
+  data: T[];
 };
 
 type WithExpiry = { expiresAt: string | null };
 
-// Every document with an expiry, in calendar sections, each sorted by date:
-// - "Da sistemare": already expired (always first)
+const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
+
+// "Dicembre" in the current year, "Gennaio 2027" otherwise
+export function monthSectionTitle(monthKey: string, now: Date = new Date()): string {
+  const [year, month] = monthKey.split('-').map(Number);
+  const name = capitalize(MONTHS[month - 1]);
+  return year === now.getFullYear() ? name : `${name} ${year}`;
+}
+
+// The deadlines of Scadenze (docs/design/Scadenze.dc.html), each list sorted by date:
+// - "Da sistemare": already expired (our extra, always first)
 // - "Questa settimana": from today to Sunday
-// - "Questo mese": after this week, up to the last day of the month
-// - "Più avanti": the rest
+// - then one section per month ("Novembre", "Dicembre", "Gennaio 2027"…)
 // Empty sections are left out.
 export function groupDeadlines<T extends WithExpiry>(documents: T[], now: Date = new Date()): DeadlineSection<T>[] {
   const todayIso = toISODate(now);
   const sundayIso = addDaysIso(mondayOfIso(todayIso), 6);
-  const monthEndIso = toISODate(new Date(now.getFullYear(), now.getMonth() + 1, 0)); // day 0 = last of this month
-
-  const overdue: T[] = [];
-  const week: T[] = [];
-  const month: T[] = [];
-  const later: T[] = [];
 
   const sorted = documents
     .filter((d): d is T & { expiresAt: string } => d.expiresAt !== null)
     .sort((a, b) => a.expiresAt.localeCompare(b.expiresAt)); // ISO strings sort like dates
 
+  const overdue: T[] = [];
+  const week: T[] = [];
+  const months = new Map<string, T[]>();
   for (const doc of sorted) {
     if (doc.expiresAt < todayIso) overdue.push(doc);
     else if (doc.expiresAt <= sundayIso) week.push(doc);
-    else if (doc.expiresAt <= monthEndIso) month.push(doc);
-    else later.push(doc);
+    else {
+      const key = doc.expiresAt.slice(0, 7);
+      months.set(key, [...(months.get(key) ?? []), doc]);
+    }
   }
 
-  const sections: DeadlineSection<T>[] = [
-    { key: 'overdue', title: `Da sistemare · ${overdue.length}`, data: overdue },
-    { key: 'week', title: `Questa settimana · ${week.length}`, data: week },
-    { key: 'month', title: 'Questo mese', data: month },
-    { key: 'later', title: 'Più avanti', data: later },
-  ];
-  return sections.filter((s) => s.data.length > 0);
+  const sections: DeadlineSection<T>[] = [];
+  if (overdue.length) sections.push({ key: 'overdue', title: 'Da sistemare', kind: 'overdue', data: overdue });
+  if (week.length) sections.push({ key: 'week', title: 'Questa settimana', kind: 'week', data: week });
+  for (const [key, data] of months) {
+    sections.push({ key, title: monthSectionTitle(key, now), kind: 'month', data });
+  }
+  return sections;
+}
+
+// "4 cose da fare nei prossimi mesi": the deadlines from today on
+export function upcomingSummary(count: number): string {
+  if (count === 0) return 'Niente in scadenza nei prossimi mesi';
+  return count === 1 ? '1 cosa da fare nei prossimi mesi' : `${count} cose da fare nei prossimi mesi`;
 }

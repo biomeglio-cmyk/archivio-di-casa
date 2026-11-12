@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 
 import { Group, Row } from '@/components/grouped-list';
-import { reminderLabel } from '@/constants/deadline-options';
+import { reminderLabel, reminderPickerValue } from '@/constants/deadline-options';
 import type { FamilyDocument } from '@/db/types';
 import { usePreferences } from '@/settings/preferences';
 import { formatDate } from '@/utils/dates';
@@ -34,7 +34,7 @@ export function DeadlineSection({ document }: { document: Pick<FamilyDocument, '
       <Row
         label="Promemoria"
         symbol="bell"
-        value={reminderLabel(document.reminderDays ?? 0, defaultReminderDays)}
+        value={reminderLabel(reminderPickerValue(document.reminderDays), defaultReminderDays)}
         onPress={open}
       />
     </Group>

@@ -330,6 +330,51 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 15,
+    name: 'type, payment status and amount of a document',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Tipo": the sub-type inside its folder (Luce, Gas…), free text; NULL = none
+        ALTER TABLE documents ADD COLUMN doc_type TEXT;
+        -- "Da pagare" / "Pagata"; NULL = no status (most documents)
+        ALTER TABLE documents ADD COLUMN payment_status TEXT CHECK (payment_status IN ('due', 'paid'));
+        -- The day it was marked "Pagata" ('YYYY-MM-DD'), for "Pagata il 5 novembre"
+        ALTER TABLE documents ADD COLUMN paid_at TEXT;
+        -- "Importo" in euro cents (84,20 € = 8420), so sums are exact; NULL = no amount
+        ALTER TABLE documents ADD COLUMN amount_cents INTEGER CHECK (amount_cents >= 0);
+        CREATE INDEX documents_doc_type ON documents (category_id, doc_type);
+      `);
+    },
+  },
+  {
+    version: 16,
+    name: 'role and order of the family members',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Chi è": who the person is for the owner of the phone; 'me' = "Tu"; NULL = not said
+        ALTER TABLE people ADD COLUMN role TEXT CHECK (role IN ('me', 'partner', 'child', 'parent', 'sibling', 'other'));
+        -- Only one person can be "Tu"
+        CREATE UNIQUE INDEX people_one_me ON people (role) WHERE role = 'me';
+        -- Order of Famiglia ("Riordina"); the people so far keep the order they were added in
+        ALTER TABLE people ADD COLUMN sort_order INTEGER NOT NULL DEFAULT 0;
+        UPDATE people SET sort_order = (SELECT COUNT(*) FROM people AS earlier
+          WHERE earlier.created_at < people.created_at
+             OR (earlier.created_at = people.created_at AND earlier.id < people.id));
+      `);
+    },
+  },
+  {
+    version: 17,
+    name: 'who a category is for',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Per chi è": the person of a category (new documents in it start with that person);
+        -- NULL = "Tutta la famiglia". Deleting the person leaves the category for everyone.
+        ALTER TABLE categories ADD COLUMN person_id INTEGER REFERENCES people(id) ON DELETE SET NULL;
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

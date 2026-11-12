@@ -1,6 +1,7 @@
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { removeCalendarEvent, syncDocumentEvent } from '@/calendar/calendar-sync';
+import { isPersonRole } from '@/constants/person-roles';
 import { CATEGORY_JOIN_COLUMNS, mapCategory } from '@/db/categories';
 import { rescheduleReminders } from '@/notifications/reminders';
 import type {
@@ -12,6 +13,7 @@ import type {
   DocumentRecord,
   DocumentVersion,
   FileSide,
+  PaymentStatus,
 } from '@/db/types';
 import { deletePassword } from '@/security/password-vault';
 import { deleteStoredFile, storePendingFile } from '@/storage/document-files';
@@ -46,6 +48,10 @@ function mapDocument(row: DocumentWithCategoryRecord): DocumentListItem {
     coverColor: row.cover_color ?? null,
     deletedAt: row.deleted_at ?? null,
     repeat: row.repeat_every && isRepeatUnit(row.repeat_unit) ? { every: row.repeat_every, unit: row.repeat_unit } : null,
+    docType: row.doc_type ?? null,
+    paymentStatus: row.payment_status === 'due' || row.payment_status === 'paid' ? row.payment_status : null,
+    paidAt: row.paid_at ?? null,
+    amountCents: row.amount_cents ?? null,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
     category: mapCategory(row, 'c_'),
@@ -128,8 +134,10 @@ export async function saveDocumentOrder(
 }
 
 export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise<DocumentDetail | null> {
-  const row = await db.getFirstAsync<DocumentWithCategoryRecord & { p_name: string | null; p_photo_path: string | null }>(
-    `SELECT d.*, ${CATEGORY_JOIN_COLUMNS}, p.name AS p_name, p.photo_path AS p_photo_path
+  const row = await db.getFirstAsync<
+    DocumentWithCategoryRecord & { p_name: string | null; p_photo_path: string | null; p_role: string | null }
+  >(
+    `SELECT d.*, ${CATEGORY_JOIN_COLUMNS}, p.name AS p_name, p.photo_path AS p_photo_path, p.role AS p_role
      FROM documents d
      JOIN categories c ON c.id = d.category_id
      LEFT JOIN people p ON p.id = d.person_id
@@ -140,7 +148,7 @@ export async function getDocumentDetail(db: SQLiteDatabase, id: number): Promise
   const document = mapDocument(row);
   const person =
     row.person_id !== null && row.p_name !== null
-      ? { id: row.person_id, name: row.p_name, photoPath: row.p_photo_path }
+      ? { id: row.person_id, name: row.p_name, photoPath: row.p_photo_path, role: isPersonRole(row.p_role) ? row.p_role : null }
       : null;
   return { ...document, person };
 }
@@ -158,6 +166,9 @@ export type DocumentInput = {
   coverMode?: CoverMode | null; // "Copertina"; null/absent = automatic
   coverColor?: string | null; // null = the category color
   repeat?: Repeat | null; // "Si ripete"; null/absent = "Mai" (only meaningful with a deadline)
+  docType?: string | null; // "Tipo"; absent = unchanged on edit (cards), null = none
+  paymentStatus?: PaymentStatus | null; // absent = unchanged on edit
+  amountCents?: number | null; // "Importo" in cents; absent = unchanged on edit
 };
 
 // Empty strings become NULL, and no reminder without an expiry date
@@ -170,6 +181,7 @@ function normalize(doc: DocumentInput) {
     username: text(doc.username ?? null),
     reminderDays: doc.expiresAt ? doc.reminderDays : null,
     repeat: doc.expiresAt && doc.repeat ? doc.repeat : null,
+    docType: doc.docType === undefined ? undefined : text(doc.docType),
   };
 }
 
@@ -210,8 +222,9 @@ export async function insertDocument(
       const clean = normalize(doc);
       const result = await db.runAsync(
         `INSERT INTO documents (title, category_id, person_id, number, expires_at, reminder_days, notes, username,
-                                cover_mode, cover_color, repeat_every, repeat_unit)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+                                cover_mode, cover_color, repeat_every, repeat_unit, doc_type, payment_status, paid_at,
+                                amount_cents)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CASE WHEN ? = 'paid' THEN date('now', 'localtime') END, ?)`,
         clean.title,
         doc.categoryId,
         doc.personId,
@@ -224,6 +237,10 @@ export async function insertDocument(
         doc.coverColor ?? null,
         clean.repeat?.every ?? null,
         clean.repeat?.unit ?? null,
+        clean.docType ?? null,
+        doc.paymentStatus ?? null,
+        doc.paymentStatus ?? null,
+        doc.amountCents ?? null,
       );
       documentId = result.lastInsertRowId;
 
@@ -379,7 +396,8 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
   await db.runAsync(
     `UPDATE documents
      SET title = ?, category_id = ?, person_id = ?, number = ?, expires_at = ?, reminder_days = ?, notes = ?,
-         username = ?, cover_mode = ?, cover_color = ?, repeat_every = ?, repeat_unit = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
+         username = ?, cover_mode = ?, cover_color = ?, repeat_every = ?, repeat_unit = ?,
+         updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now')
      WHERE id = ?`,
     clean.title,
     doc.categoryId,
@@ -395,6 +413,55 @@ export async function updateDocument(db: SQLiteDatabase, id: number, doc: Docume
     clean.repeat?.unit ?? null,
     id,
   );
+  // Tipo, status and amount only when the form has them (the card form has not)
+  if (clean.docType !== undefined) {
+    await db.runAsync('UPDATE documents SET doc_type = ? WHERE id = ?', clean.docType, id);
+  }
+  if (doc.amountCents !== undefined) {
+    await db.runAsync('UPDATE documents SET amount_cents = ? WHERE id = ?', doc.amountCents, id);
+  }
+  if (doc.paymentStatus !== undefined) await setPaymentStatusRow(db, id, doc.paymentStatus);
+}
+
+// The status; "Pagata" remembers today as the payment day (kept if it was already paid)
+async function setPaymentStatusRow(db: SQLiteDatabase, id: number, status: PaymentStatus | null): Promise<void> {
+  await db.runAsync(
+    `UPDATE documents
+     SET paid_at = CASE WHEN ? = 'paid' THEN COALESCE(CASE WHEN payment_status = 'paid' THEN paid_at END, date('now', 'localtime')) END,
+         payment_status = ?
+     WHERE id = ?`,
+    status,
+    status,
+    id,
+  );
+}
+
+// "Segna come pagata" / back to "Da pagare" from the document screen
+export async function setPaymentStatus(db: SQLiteDatabase, id: number, status: PaymentStatus | null): Promise<void> {
+  await setPaymentStatusRow(db, id, status);
+  await db.runAsync(`UPDATE documents SET updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`, id);
+}
+
+// "Ricordamelo" of the document screen: null = the default days, -1 = no reminder for it
+export async function setReminderDays(db: SQLiteDatabase, id: number, days: number | null): Promise<void> {
+  await db.runAsync(
+    `UPDATE documents SET reminder_days = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
+    days,
+    id,
+  );
+  await syncDocumentEvent(db, id);
+  await rescheduleReminders(db);
+}
+
+// The "Tipo" values already used in a folder (for the chips and the suggestions)
+export async function listDocumentTypes(db: SQLiteDatabase, categoryId: number): Promise<string[]> {
+  const rows = await db.getAllAsync<{ doc_type: string }>(
+    `SELECT doc_type FROM documents
+     WHERE category_id = ? AND deleted_at IS NULL AND doc_type IS NOT NULL
+     GROUP BY doc_type COLLATE NOCASE ORDER BY MIN(created_at)`,
+    categoryId,
+  );
+  return rows.map((r) => r.doc_type);
 }
 
 // The "Cestino", most recently deleted first
@@ -523,6 +590,7 @@ export type CardInput = {
   barcodeType: string | null; // null when typed by hand
   cardColor: string;
   coverMode: CoverMode | null; // "Copertina"; null = automatic
+  docType?: string | null; // "Tipo" (Carta fedeltà, Abbonamento…); absent = unchanged
 };
 
 // Saves a new card with its photos (card_front, barcode); same safety rules as insertDocument
@@ -563,4 +631,7 @@ async function updateCardFields(db: SQLiteDatabase, id: number, card: CardInput)
     card.cardColor, // a card's color IS its cover color
     id,
   );
+  if (card.docType !== undefined) {
+    await db.runAsync('UPDATE documents SET doc_type = ? WHERE id = ?', card.docType?.trim() || null, id);
+  }
 }

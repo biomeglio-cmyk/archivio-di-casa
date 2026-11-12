@@ -30,3 +30,25 @@ export function categoryShadowRgb(colors: CategoryColors): string {
 export function categoryInk(colors: CategoryColors): string {
   return colors.onTint ?? (isLightColor(colors.text) ? colors.bottom : colors.text);
 }
+
+// A mix of a hex color with white: amount 0 = the color, 1 = white
+export function mixWithWhite(hex: string, amount: number): string {
+  const match = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!match) return '#FFFFFF';
+  const value = parseInt(match[1], 16);
+  const mix = (channel: number) => Math.round(channel + (255 - channel) * amount);
+  const r = mix((value >> 16) & 255);
+  const g = mix((value >> 8) & 255);
+  const b = mix(value & 255);
+  return `#${((1 << 24) | (r << 16) | (g << 8) | b).toString(16).slice(1).toUpperCase()}`;
+}
+
+// The light tint of a category (round buttons, inactive chips of its screens) and the text on it:
+// from the palette ("Sottomano"), or derived from the gradient end for the other palettes
+export function categoryTint(colors: CategoryColors): { tint: string; onTint: string; dashed: string } {
+  return {
+    tint: colors.tint ?? mixWithWhite(colors.bottom, 0.86),
+    onTint: categoryInk(colors),
+    dashed: mixWithWhite(colors.bottom, 0.45), // border of its dashed "Nuovo…" tile
+  };
+}

@@ -16,6 +16,7 @@ import { usePressed } from '@/hooks/use-pressed';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { categoryShadowRgb, hexToRgb } from '@/utils/colors';
 import { describeDistance, formatShortDate } from '@/utils/dates';
+import { formatEuro } from '@/utils/money';
 import { daysUntil } from '@/utils/deadlines';
 
 const FAVORITE_HEIGHT = 196;
@@ -98,10 +99,11 @@ export function FavoriteTile({ document }: { document: DocumentListItem }) {
   );
 }
 
-// "Tra 3 giorni · Mario": the distance (capitalized) and, when there is one, the person
+// "Tra 3 giorni · € 84,20": the distance (capitalized) and the amount; without an amount, the person
 function deadlineSubtitle(document: DocumentListItem, days: number): string {
   const distance = describeDistance(days);
-  return [distance.charAt(0).toUpperCase() + distance.slice(1), document.personName].filter(Boolean).join(' · ');
+  const extra = document.amountCents !== null ? formatEuro(document.amountCents) : document.personName;
+  return [distance.charAt(0).toUpperCase() + distance.slice(1), extra].filter(Boolean).join(' · ');
 }
 
 // The next deadline of Home: date square in the main gradient, name 16/600, distance 13 indigo,

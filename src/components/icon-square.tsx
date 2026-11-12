@@ -12,12 +12,13 @@ type Props = {
   colors?: CategoryColors; // a category's gradient and icon color; the main gradient by default
   size?: number; // 40–52 in the guide; smaller in dense lists
   shadow?: boolean; // the small colored shadow (off in dense lists)
+  radius?: number; // corners: 13 by default (16 for the 52pt squares of Preferiti)
 };
 
 // Icon in a small gradient square (135°), corners 12–14
-export function IconSquare({ symbol, colors, size = 44, shadow = false }: Props) {
+export function IconSquare({ symbol, colors, size = 44, shadow = false, radius: cornerRadius }: Props) {
   const gradient = colors ? ([colors.top, colors.bottom] as const) : BRAND_GRADIENT;
-  const radius = size >= 40 ? Radius.iconSquare : Math.round(size * 0.3);
+  const radius = cornerRadius ?? (size >= 40 ? Radius.iconSquare : Math.round(size * 0.3));
   return (
     <LinearGradient
       colors={gradient}

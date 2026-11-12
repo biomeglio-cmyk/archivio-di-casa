@@ -9,6 +9,8 @@ type Props = {
   selectedIndex: number;
   onChange: (index: number) => void;
   enabled?: boolean;
+  tint?: string; // the pill: lilac by default, or a section tint
+  activeColor?: string; // text of the chosen segment: indigo by default
 };
 
 const SEGMENT_HEIGHT = 38;
@@ -16,9 +18,11 @@ const INSET = 4;
 
 // Choice between a few options (PDF/Foto, Foto/Colore…): 38-high segments inside a lilac pill,
 // the chosen one a white pill with a shadow and indigo text
-export function Segmented({ values, selectedIndex, onChange, enabled = true }: Props) {
+export function Segmented({ values, selectedIndex, onChange, enabled = true, tint, activeColor }: Props) {
   return (
-    <View style={[styles.pill, !enabled && styles.disabled]} accessibilityRole="tablist">
+    <View
+      style={[styles.pill, tint !== undefined && { backgroundColor: tint }, !enabled && styles.disabled]}
+      accessibilityRole="tablist">
       {values.map((value, index) => {
         const selected = index === selectedIndex;
         return (
@@ -30,7 +34,12 @@ export function Segmented({ values, selectedIndex, onChange, enabled = true }: P
             accessibilityState={{ selected, disabled: !enabled }}
             style={[styles.segment, selected && styles.selected]}>
             <Text
-              style={[styles.label, selected ? styles.labelSelected : styles.labelIdle]}
+              style={[
+                styles.label,
+                selected
+                  ? [styles.labelSelected, activeColor !== undefined && { color: activeColor }]
+                  : styles.labelIdle,
+              ]}
               numberOfLines={1}
               adjustsFontSizeToFit
               minimumFontScale={0.75}

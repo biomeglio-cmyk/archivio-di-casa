@@ -12,6 +12,7 @@ import { A4_MM, MM_PER_INCH, printFormatFor, printedSizeMm, effectivePpi } from 
 import type { PreparedFile } from '@/send/prepare';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { formatDate, toISODate } from '@/utils/dates';
+import { formatEuro } from '@/utils/money';
 
 // "Prepara per il commercialista" (Spese 730): ONE PDF with an index page (title, date, person,
 // page) and every document of the year, in date order: photos and imported PDFs together
@@ -212,7 +213,9 @@ function drawIndex(
 ) {
   const black = rgb(0.1, 0.1, 0.12);
   const grey = rgb(0.42, 0.42, 0.46);
-  const columns = { number: MARGIN, title: MARGIN + 28, date: 300, person: 380, page: PAGE.width - MARGIN };
+  // Importo is right-aligned on its column end, Pagina on the right margin
+  const columns = { number: MARGIN, title: MARGIN + 28, date: 250, person: 320, amount: 480, page: PAGE.width - MARGIN };
+  const total = items.reduce((sum, item) => sum + (item.document.amountCents ?? 0), 0);
 
   // A new index page (inserted in front, in order) with the column names; returns where rows start
   const newPage = (pageIndex: number): { page: PDFPage; y: number } => {
@@ -221,7 +224,8 @@ function drawIndex(
     if (pageIndex === 0) {
       page.drawText(safe(title), { x: MARGIN, y: y - 20, size: 20, font: bold, color: black });
       const count = items.length === 1 ? '1 documento' : `${items.length} documenti`;
-      page.drawText(safe(`Preparato il ${formatDate(toISODate(new Date()))} con Sottomano · ${count}`), {
+      const sum = total > 0 ? ` · totale ${formatEuro(total)}` : '';
+      page.drawText(safe(`Preparato il ${formatDate(toISODate(new Date()))} con Sottomano · ${count}${sum}`), {
         x: MARGIN,
         y: y - 42,
         size: 10,
@@ -234,6 +238,7 @@ function drawIndex(
     page.drawText('Documento', { x: columns.title, y, size: 9, font: bold, color: grey });
     page.drawText('Data', { x: columns.date, y, size: 9, font: bold, color: grey });
     page.drawText('Persona', { x: columns.person, y, size: 9, font: bold, color: grey });
+    page.drawText('Importo', { x: columns.amount - bold.widthOfTextAtSize('Importo', 9), y, size: 9, font: bold, color: grey });
     page.drawText('Pagina', { x: columns.page - bold.widthOfTextAtSize('Pagina', 9), y, size: 9, font: bold, color: grey });
     y -= 8;
     page.drawLine({ start: { x: MARGIN, y }, end: { x: PAGE.width - MARGIN, y }, thickness: 0.5, color: grey });
@@ -256,9 +261,16 @@ function drawIndex(
         ? String(startPage.get(document.id))
         : 'senza pagine';
     page.drawText(String(index + 1), { x: columns.number, y, size: 10, font, color: grey });
-    page.drawText(fit(document.title, font, 10, columns.date - columns.title - 8), { x: columns.title, y, size: 10, font, color: black });
+    // "Visita (Dentista) · pagata": the title with its Tipo and its payment status
+    const status = document.paymentStatus === 'paid' ? ' · pagata' : document.paymentStatus === 'due' ? ' · da pagare' : '';
+    const name = `${document.title}${document.docType ? ` (${document.docType})` : ''}${status}`;
+    page.drawText(fit(name, font, 10, columns.date - columns.title - 8), { x: columns.title, y, size: 10, font, color: black });
     page.drawText(formatDate(item.date), { x: columns.date, y, size: 10, font, color: black });
-    page.drawText(fit(document.personName ?? '—', font, 10, columns.page - columns.person - 80), {
+    if (document.amountCents !== null) {
+      const amount = safe(formatEuro(document.amountCents));
+      page.drawText(amount, { x: columns.amount - font.widthOfTextAtSize(amount, 10), y, size: 10, font, color: black });
+    }
+    page.drawText(fit(document.personName ?? '—', font, 10, columns.amount - columns.person - 60), {
       x: columns.person,
       y,
       size: 10,

@@ -8,7 +8,11 @@ export type Person = {
   id: number;
   name: string;
   photoPath: string | null; // relative to Paths.document; null = initial in a circle
+  role: PersonRole | null; // "Chi è"; null = not said
 };
+
+// "Chi è" of a family member; 'me' is the owner of the phone ("Tu")
+export type PersonRole = 'me' | 'partner' | 'child' | 'parent' | 'sibling' | 'other';
 
 export type CategoryColors = {
   top: string; // start of the gradient (top-left)
@@ -31,6 +35,7 @@ export type Category = {
   followsPalette: boolean; // built-in with the colors of "Aspetto" (not a color picked by the user)
   isCards: boolean; // "Tessere e card": shown as a wallet of cards
   isPassword: boolean; // "Password": its documents have "Utente" and a password in the Keychain
+  personId: number | null; // "Per chi è"; null = "Tutta la famiglia"
 };
 
 export type FamilyDocument = {
@@ -53,9 +58,15 @@ export type FamilyDocument = {
   coverColor: string | null; // "Colore" cover; null = the category color (follows the palette)
   deletedAt: string | null; // in the "Cestino" since then (ISO); null = a live document
   repeat: Repeat | null; // "Si ripete" of the deadline; null = "Mai"
+  docType: string | null; // "Tipo" inside its folder (Luce, Gas…)
+  paymentStatus: PaymentStatus | null; // "Da pagare" / "Pagata"; null = no status
+  paidAt: string | null; // 'YYYY-MM-DD' when marked "Pagata"
+  amountCents: number | null; // "Importo" in euro cents
   createdAt: string;
   updatedAt: string;
 };
+
+export type PaymentStatus = 'due' | 'paid';
 
 // How a document looks in the grids: its front photo full-bleed, or a color with the title
 export type CoverMode = 'photo' | 'color';
@@ -76,7 +87,7 @@ export type DocumentFile = {
 
 // ---- Raw rows as returned by SQLite ----
 
-export type PersonRecord = { id: number; name: string; photo_path: string | null };
+export type PersonRecord = { id: number; name: string; photo_path: string | null; role: string | null };
 
 export type CategoryRecord = {
   id: number;
@@ -91,6 +102,7 @@ export type CategoryRecord = {
   builtin_key: string | null;
   hidden: number;
   custom_colors: number;
+  person_id: number | null;
 };
 
 export type DocumentRecord = {
@@ -114,6 +126,10 @@ export type DocumentRecord = {
   deleted_at: string | null;
   repeat_every: number | null;
   repeat_unit: string | null;
+  doc_type: string | null;
+  payment_status: string | null;
+  paid_at: string | null;
+  amount_cents: number | null;
   created_at: string;
   updated_at: string;
 };

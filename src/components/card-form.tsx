@@ -1,33 +1,39 @@
 import { Host, Picker } from '@expo/ui';
 import { Image } from 'expo-image';
+import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView } from 'expo-symbols';
 import { useState, type ReactNode } from 'react';
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { Text } from '@/components/text';
 import { scanDocument } from '@/capture/scan-document';
+import { GeneratedCode } from '@/components/barcode-view';
 import { CardCapture, type CardCaptureResult, type CardStep } from '@/components/card-capture';
-import { CardFace } from '@/components/card-face';
 import { CoverField } from '@/components/cover-field';
-import { FieldLabel, FormField, TextField } from '@/components/form-field';
 import { PrimaryButton } from '@/components/primary-button';
-import { ThemedText } from '@/components/themed-text';
+import { Segmented } from '@/components/segmented';
+import { Text, TextInput } from '@/components/text';
+import { spacedNumber, WalletCardFace } from '@/components/wallet-card';
 import { WhiteCard } from '@/components/white-card';
-import { BRAND_COLOR } from '@/constants/brand';
-import { Spacing } from '@/constants/theme';
+import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { Colors, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
 import type { CoverMode } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useTheme } from '@/hooks/use-theme';
+import { barcodeTypeName, codeKindOf, generateBarcode, typeForKind, type CodeKind } from '@/utils/barcode';
 
 const NONE = 0; // Picker values must be numbers: 0 = no person (ids start at 1)
+const DARK = '#12142A';
+const MINT_TINT = '#E6F7F0';
+const MINT_TEXT = '#1F7A5A';
 
 export type CardFormValues = {
   title: string;
-  personId: number | null;
+  docType: string | null; // "Tipo": Carta fedeltà, Abbonamento…
+  personId: number | null; // "Intestata a"
   barcodeValue: string | null;
-  barcodeType: string | null; // kept only while the number is the one read by the camera
+  barcodeType: string | null; // the format read by the camera, or chosen with Codice a barre / QR code
   cardColor: string; // its "Colore" cover
   coverMode: CoverMode | null; // "Copertina"; null = automatic (Foto when there is a photo)
   frontUri: string | null; // photo of the front (file:// URI)
@@ -35,20 +41,30 @@ export type CardFormValues = {
 };
 
 type Props = {
+  heading: string; // "Nuova tessera", "Modifica tessera"
   initial: CardFormValues;
   onSubmit: (values: CardFormValues, changed: { front: boolean; barcode: boolean }) => Promise<void>;
+  onCancel: () => void;
 };
 
-// "Nuova carta" and "Modifica carta": the two photos (each can be retaken), name, person,
-// the number of the code and a background color for when there is no photo
-export function CardForm({ initial, onSubmit }: Props) {
-  const theme = useTheme();
+// "Nuova tessera" / "Modifica tessera" (docs/design/NuovaTessera.dc.html): on a dark top the photo of
+// the whole card in its frame, "Tessera riconosciuta", ✕ and "Scatta di nuovo"; then "Copertina"
+// (the card as it looks in Tessere), "Codice da mostrare alla cassa" (what the camera found,
+// Codice a barre / QR code, the code redrawn and its number), "Dati letti dalla tessera" and the
+// fields Nome, Tipo, Numero, Intestata a; "Salva tessera". Our extras: Foto / Colore with the card
+// colors, and the photo of the code (shown at the checkout when its format is unknown).
+// Expo Go cannot read text from a photo: the camera reads the code (its number goes in Numero);
+// Nome and Tipo are typed.
+export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
+  const insets = useSafeAreaInsets();
   const { data: people } = useDbQuery(listPeople, []);
 
   const [title, setTitle] = useState(initial.title);
+  const [docType, setDocType] = useState(initial.docType ?? '');
   const [personId, setPersonId] = useState(initial.personId ?? NONE);
   const [number, setNumber] = useState(initial.barcodeValue ?? '');
   const [scanned, setScanned] = useState({ value: initial.barcodeValue, type: initial.barcodeType });
+  const [kind, setKind] = useState<CodeKind>(codeKindOf(initial.barcodeType));
   const [cardColor, setCardColor] = useState(initial.cardColor);
   const [coverMode, setCoverMode] = useState<CoverMode | null>(initial.coverMode);
   const [frontUri, setFrontUri] = useState(initial.frontUri);
@@ -57,6 +73,28 @@ export function CardForm({ initial, onSubmit }: Props) {
   const [retake, setRetake] = useState<CardStep | null>(null); // full-screen camera for one photo
   const [saving, setSaving] = useState(false);
 
+  const code = number.trim();
+  // The camera's format while the number and the kind are the ones it read; else drawn from the kind
+  const readByCamera = code !== '' && code === scanned.value && codeKindOf(scanned.type) === kind;
+  const barcodeType = readByCamera ? scanned.type : typeForKind(code, kind);
+  const preview = generateBarcode(code || null, barcodeType);
+  const typeName = barcodeTypeName(barcodeType);
+  const found = readByCamera
+    ? `Trovato: ${kind === 'qr' ? typeName : `codice a barre ${typeName ?? ''}`.trim()}`
+    : code
+      ? 'Codice scritto a mano'
+      : 'Nessun codice letto';
+  const holder = people?.find((p) => p.id === personId)?.name ?? null;
+  const showPhoto = (coverMode ?? (frontUri ? 'photo' : 'color')) === 'photo' && frontUri !== null;
+  const face = {
+    title: title.trim(),
+    docType: docType.trim() || null,
+    barcodeValue: code || null,
+    cardColor,
+    coverMode: showPhoto ? ('photo' as const) : ('color' as const),
+    firstImagePath: null,
+    holder,
+  };
   const canSave = title.trim().length > 0 && !saving;
 
   function onRetaken(result: CardCaptureResult) {
@@ -71,12 +109,12 @@ export function CardForm({ initial, onSubmit }: Props) {
       if (result.code) {
         setNumber(result.code.value);
         setScanned({ value: result.code.value, type: result.code.type });
+        setKind(codeKindOf(result.code.type));
       }
     }
   }
 
-  // The front: iOS scanner first (straight, clean crop); without it, the app camera.
-  // "Annulla" in the scanner leaves the form as it was.
+  // "Scatta di nuovo": iOS scanner first (straight, clean crop); without it, the app camera
   async function retakeFront() {
     const result = await scanDocument({ tip: false });
     if (result === 'cancelled') return;
@@ -91,15 +129,14 @@ export function CardForm({ initial, onSubmit }: Props) {
   async function submit() {
     if (!canSave) return;
     setSaving(true);
-    const code = number.trim();
     try {
       await onSubmit(
         {
           title,
+          docType: docType.trim() || null,
           personId: personId === NONE ? null : personId,
           barcodeValue: code || null,
-          // Typed or changed by hand → the format is unknown
-          barcodeType: code && code === scanned.value ? scanned.type : null,
+          barcodeType: code ? barcodeType : null,
           cardColor,
           coverMode,
           frontUri,
@@ -113,82 +150,154 @@ export function CardForm({ initial, onSubmit }: Props) {
     }
   }
 
+  // The photo of the card, or its color face, as it will be the cover
+  const coverImage = (width: number, height: number) => (
+    <View style={[styles.faceClip, { width, height, borderRadius: Math.round(width * 0.05) }]}>
+      {showPhoto && frontUri ? (
+        <LocalPhoto uri={frontUri} />
+      ) : (
+        <WalletCardFace card={face} height={height} scale={width / 330} usePhoto={false} />
+      )}
+    </View>
+  );
+
   return (
     <>
       <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
         automaticallyAdjustKeyboardInsets
-        contentContainerStyle={styles.content}>
-        {/* The two photos, side by side: the card as it will look, and the barcode */}
-        <View style={styles.photos}>
-          <PhotoSlot label="Fronte" onPress={retakeFront} action={frontUri ? 'Rifai' : 'Fotografa'}>
-            <CardFace card={{ title: title || 'Nuova carta', firstImagePath: null, cardColor, personName: null }} width={150} />
-            {frontUri && <Image source={{ uri: frontUri }} style={styles.photoOver} contentFit="cover" />}
-          </PhotoSlot>
-          <PhotoSlot label="Codice" onPress={() => setRetake('barcode')} action={barcodeUri ? 'Rifai' : 'Fotografa'}>
-            <WhiteCard style={styles.barcodeBox}>
-              {barcodeUri ? (
-                <Image source={{ uri: barcodeUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
-              ) : (
-                <SymbolView name="barcode" tintColor={theme.textSecondary} size={36} />
-              )}
-            </WhiteCard>
-          </PhotoSlot>
+        contentInsetAdjustmentBehavior="never"
+        style={styles.screen}
+        contentContainerStyle={{ paddingBottom: insets.bottom + 36 }}>
+        {/* Dark top: the photographed card in its frame */}
+        <View style={[styles.dark, { paddingTop: insets.top + 12 }]}>
+          <View style={styles.darkBar}>
+            <DarkButton symbol="xmark" label="Chiudi" onPress={onCancel} />
+            <Text style={styles.darkTitle} accessibilityRole="header">
+              {heading}
+            </Text>
+            <DarkButton symbol="camera.rotate" label="Scatta di nuovo" onPress={retakeFront} />
+          </View>
+          <View style={styles.frameArea}>
+            <LinearGradient colors={['#33365A', '#1C1E38']} style={[StyleSheet.absoluteFill, styles.frameGlow]} />
+            <View style={styles.tilted}>{coverImage(232, 146)}</View>
+            <View style={styles.frame} pointerEvents="none" />
+          </View>
+          <View style={styles.recognized}>
+            <SymbolView name={frontUri ? 'checkmark.circle.fill' : 'camera'} tintColor="#FFFFFF" size={16} />
+            <Text style={styles.recognizedText}>{frontUri ? 'Tessera riconosciuta' : 'Tocca Scatta di nuovo per fotografarla'}</Text>
+          </View>
         </View>
 
-        <FormField label="Nome" required>
-          <TextField value={title} onChangeText={setTitle} placeholder="Es. Tessera Esselunga" returnKeyType="done" />
-        </FormField>
+        <View style={styles.body}>
+          <Text style={styles.section}>Copertina</Text>
+          <View style={styles.coverRow}>
+            <View style={styles.coverShadow}>{coverImage(300, 188)}</View>
+          </View>
+          <Text style={styles.caption}>
+            {showPhoto ? 'Ritagliata e raddrizzata dalla foto della tessera' : 'Il colore della tessera, con il nome e il numero'}
+          </Text>
+          <View style={styles.coverField}>
+            <CoverField
+              mode={coverMode ?? (frontUri ? 'photo' : 'color')}
+              onModeChange={setCoverMode}
+              color={cardColor}
+              onColorChange={(color) => color && setCardColor(color)}
+              hasPhoto={Boolean(frontUri)}
+            />
+          </View>
 
-        <FormField label="Numero del codice">
-          <TextField
-            value={number}
-            onChangeText={setNumber}
-            placeholder="Es. 2701234567890"
-            autoCapitalize="characters"
-            autoCorrect={false}
-          />
-          <ThemedText type="small" themeColor="textSecondary" style={styles.hint}>
-            {number.trim() && number.trim() === scanned.value
-              ? 'Letto dalla fotocamera.'
-              : 'Scrivilo se non è stato letto: alla cassa si può digitare.'}
-          </ThemedText>
-        </FormField>
-
-        {people && (
-          <WhiteCard style={styles.card}>
-            <View style={styles.row}>
-              <View style={styles.rowLabel}>
-                <FieldLabel label="Persona" />
+          <Text style={styles.section}>Codice da mostrare alla cassa</Text>
+          <WhiteCard style={styles.codeCard}>
+            <View style={styles.foundRow}>
+              <View style={styles.found}>
+                <SymbolView name={readByCamera ? 'checkmark' : code ? 'keyboard' : 'questionmark'} tintColor={MINT_TEXT} size={12} weight="bold" />
+                <Text style={styles.foundText}>{found}</Text>
               </View>
-              <View style={styles.rowControl}>
-                <Host matchContents>
-                  <Picker selectedValue={personId} onValueChange={setPersonId}>
-                    <Picker.Item label="Nessuna" value={NONE} />
-                    {people.map((p) => (
-                      <Picker.Item key={p.id} label={p.name} value={p.id} />
-                    ))}
-                  </Picker>
-                </Host>
-              </View>
+              <Pressable onPress={() => setRetake('barcode')} accessibilityRole="button" hitSlop={10}>
+                <Text style={styles.link}>{barcodeUri ? 'Rifai la foto' : 'Fotografa il codice'}</Text>
+              </Pressable>
             </View>
+            <View style={styles.kind}>
+              <Segmented
+                values={['Codice a barre', 'QR code']}
+                selectedIndex={kind === 'bar' ? 0 : 1}
+                onChange={(index) => setKind(index === 0 ? 'bar' : 'qr')}
+              />
+            </View>
+            <View style={styles.previewBox}>
+              {preview ? (
+                <GeneratedCode barcode={preview} maxWidth={260} maxHeight={kind === 'qr' ? 120 : 86} />
+              ) : (
+                <SymbolView name={kind === 'qr' ? 'qrcode' : 'barcode'} tintColor={Colors.light.dashed} size={56} />
+              )}
+              <Text style={styles.previewNumber}>
+                {code ? (kind === 'qr' ? `${title.trim() || 'Tessera'} · ${spacedNumber(code)}` : spacedNumber(code)) : 'Scrivi il numero qui sotto'}
+              </Text>
+            </View>
+            <Text style={styles.explain}>
+              Sottomano riconosce da solo se la tessera ha un codice a barre o un QR code. Alla cassa lo mostra grande, con
+              lo schermo al massimo della luminosità.
+            </Text>
           </WhiteCard>
-        )}
 
-        <CoverField
-          mode={coverMode ?? (frontUri ? 'photo' : 'color')}
-          onModeChange={setCoverMode}
-          color={cardColor}
-          onColorChange={(color) => color && setCardColor(color)}
-          hasPhoto={Boolean(frontUri)}
-        />
+          <View style={styles.readBox}>
+            <LinearGradient colors={BRAND_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={styles.readIcon}>
+              <SymbolView name="sparkles" tintColor="#FFFFFF" size={17} />
+            </LinearGradient>
+            <Text style={styles.readText}>
+              <Text style={styles.readTitle}>{'Dati letti dalla tessera\n'}</Text>
+              Controlla e correggi se serve.
+            </Text>
+          </View>
 
-        <View style={styles.footer}>
-          <PrimaryButton label="Salva" disabled={!canSave} onPress={submit} />
-          <ThemedText type="small" themeColor="textSecondary" style={styles.note}>
-            {title.trim() ? '* Campo obbligatorio' : 'Per salvare scrivi il nome della carta.'}
-          </ThemedText>
+          <WhiteCard style={styles.fields}>
+            <FieldRow label="Nome">
+              <TextInput
+                value={title}
+                onChangeText={setTitle}
+                placeholder="Es. Supermercato"
+                placeholderTextColor={Colors.light.textSecondary}
+                style={styles.input}
+                accessibilityLabel="Nome"
+              />
+            </FieldRow>
+            <FieldRow label="Tipo">
+              <TextInput
+                value={docType}
+                onChangeText={setDocType}
+                placeholder="Es. Carta fedeltà"
+                placeholderTextColor={Colors.light.textSecondary}
+                style={styles.input}
+                accessibilityLabel="Tipo"
+              />
+            </FieldRow>
+            <FieldRow label="Numero">
+              <TextInput
+                value={number}
+                onChangeText={setNumber}
+                placeholder="Es. 0400 2219 8876"
+                placeholderTextColor={Colors.light.textSecondary}
+                autoCapitalize="characters"
+                autoCorrect={false}
+                style={styles.input}
+                accessibilityLabel="Numero"
+              />
+            </FieldRow>
+            <FieldRow label="Intestata a" last>
+              <Host matchContents>
+                <Picker selectedValue={personId} onValueChange={setPersonId}>
+                  <Picker.Item label="Nessuno" value={NONE} />
+                  {(people ?? []).map((p) => (
+                    <Picker.Item key={p.id} label={p.name} value={p.id} />
+                  ))}
+                </Picker>
+              </Host>
+            </FieldRow>
+          </WhiteCard>
+
+          <PrimaryButton label="Salva tessera" disabled={!canSave} onPress={submit} style={styles.save} />
+          {!title.trim() && <Text style={styles.note}>Per salvare scrivi il nome della tessera.</Text>}
         </View>
       </ScrollView>
 
@@ -199,90 +308,271 @@ export function CardForm({ initial, onSubmit }: Props) {
   );
 }
 
-// Photo with its label and a "Rifai" button under it
-function PhotoSlot({ label, action, onPress, children }: { label: string; action: string; onPress: () => void; children: ReactNode }) {
+// The photo just taken (a file:// URI, not saved yet)
+function LocalPhoto({ uri }: { uri: string }) {
+  return <Image source={{ uri }} style={StyleSheet.absoluteFill} contentFit="cover" accessibilityIgnoresInvertColors />;
+}
+
+function DarkButton({ symbol, label, onPress }: { symbol: 'xmark' | 'camera.rotate'; label: string; onPress: () => void }) {
   return (
-    <View style={styles.slot}>
-      <View style={styles.slotPhoto}>{children}</View>
-      <ThemedText type="small" themeColor="textSecondary">
-        {label}
-      </ThemedText>
-      <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={`${action}: ${label}`} hitSlop={8}>
-        <Text style={styles.slotAction}>{action}</Text>
-      </Pressable>
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      style={({ pressed }) => [styles.darkButton, pressed && styles.pressed]}>
+      <SymbolView name={symbol} tintColor="#FFFFFF" size={18} weight="semibold" />
+    </Pressable>
+  );
+}
+
+function FieldRow({ label, last = false, children }: { label: string; last?: boolean; children: ReactNode }) {
+  return (
+    <View style={[styles.fieldRow, !last && styles.fieldDivider]}>
+      <Text style={styles.fieldLabel}>{label}</Text>
+      <View style={styles.fieldControl}>{children}</View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  content: {
-    paddingVertical: 16,
-    paddingHorizontal: Spacing.side,
-    paddingBottom: 40,
-    gap: 20,
-  },
-  photos: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    gap: 16,
-  },
-  slot: {
-    alignItems: 'center',
-    gap: 4,
-  },
-  slotPhoto: {
-    width: 150,
-    height: 95, // 150 / 1.586
-    borderRadius: 12,
-    borderCurve: 'continuous',
-    overflow: 'hidden',
-  },
-  photoOver: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    bottom: 0,
-  },
-  barcodeBox: {
+  screen: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: Colors.light.background,
   },
-  slotAction: {
-    color: BRAND_COLOR,
-    fontSize: 17,
-    fontFamily: FONTS.medium,
+  dark: {
+    backgroundColor: DARK,
+    borderBottomLeftRadius: 32,
+    borderBottomRightRadius: 32,
+    paddingHorizontal: Spacing.side,
+    paddingBottom: 20,
   },
-  hint: {
-    paddingHorizontal: 4,
-  },
-  card: {
-    borderRadius: 12,
-    borderCurve: 'continuous',
-    paddingHorizontal: 16,
-  },
-  row: {
+  darkBar: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 12,
-    minHeight: 52,
+  },
+  darkTitle: {
+    color: '#FFFFFF',
+    fontSize: 17,
+    fontFamily: FONTS.semiBold,
+  },
+  darkButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    backgroundColor: 'rgba(255, 255, 255, 0.14)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  pressed: {
+    opacity: 0.6,
+  },
+  frameArea: {
+    marginTop: 22,
+    alignSelf: 'center',
+    width: 280,
+    height: 176,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  frameGlow: {
+    borderRadius: 20,
+  },
+  tilted: {
+    transform: [{ rotate: '-2deg' }],
+    boxShadow: '0 12px 26px rgba(0, 0, 0, 0.35)',
+    borderRadius: 11,
+  },
+  frame: {
+    position: 'absolute',
+    top: 4,
+    left: 4,
+    right: 4,
+    bottom: 4,
+    borderWidth: 3,
+    borderColor: '#8B6CF0',
+    borderRadius: 18,
+  },
+  recognized: {
+    marginTop: 16,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
     paddingVertical: 8,
+    paddingHorizontal: 14,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255, 255, 255, 0.12)',
   },
-  rowLabel: {
-    flexShrink: 1,
+  recognizedText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontFamily: FONTS.medium,
   },
-  rowControl: {
+  body: {
+    paddingHorizontal: Spacing.side,
+    paddingTop: 22,
+  },
+  section: {
+    marginTop: 2,
+    marginBottom: 12,
+    fontSize: 13,
+    fontFamily: FONTS.regular,
+    textTransform: 'uppercase',
+    color: Colors.light.textSecondary,
+  },
+  coverRow: {
+    alignItems: 'center',
+  },
+  coverShadow: {
+    borderRadius: 15,
+    boxShadow: '0 12px 26px rgba(28, 30, 70, 0.22)',
+  },
+  faceClip: {
+    overflow: 'hidden',
+    borderCurve: 'continuous',
+  },
+  caption: {
+    marginTop: 10,
+    fontSize: 13,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textSecondary,
+    textAlign: 'center',
+  },
+  coverField: {
+    marginTop: 14,
+    marginBottom: 24,
+  },
+  codeCard: {
+    padding: 16,
+  },
+  foundRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
+  },
+  found: {
     flexShrink: 1,
-    maxWidth: '65%',
+    height: 28,
+    paddingHorizontal: 10,
+    borderRadius: 14,
+    backgroundColor: MINT_TINT,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  foundText: {
+    flexShrink: 1,
+    fontSize: 12,
+    fontFamily: FONTS.semiBold,
+    color: MINT_TEXT,
+  },
+  link: {
+    fontSize: 13,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.accent,
+  },
+  kind: {
+    marginTop: 12,
+  },
+  previewBox: {
+    marginTop: 14,
+    padding: 16,
+    borderRadius: 16,
+    borderCurve: 'continuous',
+    borderWidth: 1,
+    borderColor: Colors.light.separator,
+    alignItems: 'center',
+    gap: 8,
+  },
+  previewNumber: {
+    fontSize: 15,
+    fontFamily: FONTS.semiBold,
+    letterSpacing: 2.4,
+    color: Colors.light.text,
+    textAlign: 'center',
+  },
+  explain: {
+    marginTop: 12,
+    marginHorizontal: 2,
+    fontSize: 13,
+    lineHeight: 19,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textSecondary,
+  },
+  readBox: {
+    marginTop: 24,
+    paddingVertical: 14,
+    paddingHorizontal: 16,
+    borderRadius: 18,
+    borderCurve: 'continuous',
+    backgroundColor: Colors.light.paleLilac,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 12,
+  },
+  readIcon: {
+    width: 34,
+    height: 34,
+    borderRadius: 11,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  readText: {
+    flex: 1,
+    fontSize: 13,
+    lineHeight: 19,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textOnLilac,
+  },
+  readTitle: {
+    fontSize: 14,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.text,
+  },
+  fields: {
+    marginTop: 12,
+    paddingVertical: 2,
+    paddingHorizontal: 18,
+  },
+  fieldRow: {
+    minHeight: 52,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+  },
+  fieldDivider: {
+    borderBottomWidth: 1,
+    borderBottomColor: Colors.light.separator,
+  },
+  fieldLabel: {
+    width: 104,
+    fontSize: 14,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textSecondary,
+  },
+  fieldControl: {
+    flex: 1,
     alignItems: 'flex-end',
     overflow: 'hidden',
   },
-  footer: {
-    gap: 8,
+  input: {
+    alignSelf: 'stretch',
+    minHeight: 44,
+    fontSize: 15,
+    fontFamily: FONTS.semiBold,
+    color: Colors.light.text,
+    textAlign: 'right',
+  },
+  save: {
+    marginTop: 24,
   },
   note: {
+    marginTop: 8,
+    fontSize: 13,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textSecondary,
     textAlign: 'center',
   },
 });

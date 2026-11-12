@@ -1,14 +1,15 @@
 import { router, useLocalSearchParams } from 'expo-router';
-import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 
+import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { DocumentForm } from '@/components/document-form';
 import { FilesEditor, filesToSave, fromExisting, type EditableFile } from '@/components/files-editor';
 import { isPasswordCategory } from '@/db/categories';
-import { getDocumentDetail, listDocumentFiles, saveDocumentEdits } from '@/db/documents';
+import { getDocumentDetail, listDocumentFiles, saveDocumentEdits, setPinned } from '@/db/documents';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { afterDocumentSaved } from '@/notifications/reminders';
 import { deletePassword, readPassword, savePassword } from '@/security/password-vault';
 
@@ -18,6 +19,8 @@ export default function EditDocumentScreen() {
   const documentId = Number(id);
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, documentId), [documentId]);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, documentId), [documentId]);
+  // "Cancella documento" from this form → it is in the Cestino: close the form
+  useLeaveWhenDeleted(document);
   // Only whether a password exists (to show "••••" in the field): its value is never read here
   const [hasPassword, setHasPassword] = useState<boolean | null>(null);
   useEffect(() => {
@@ -34,9 +37,6 @@ export default function EditDocumentScreen() {
         <EditDocumentContent document={document} savedFiles={files} hasPassword={hasPassword} />
       )}
 
-      <Stack.Toolbar placement="left">
-        <Stack.Toolbar.Button onPress={() => router.back()}>Annulla</Stack.Toolbar.Button>
-      </Stack.Toolbar>
     </>
   );
 }
@@ -55,17 +55,21 @@ function EditDocumentContent({
 
   return (
     <DocumentForm
+      heading="Modifica documento"
       initial={document}
+      initialPinned={document.isPinned}
+      onDelete={() => confirmDeleteDocument(document)}
       files={(category) => <FilesEditor files={files} category={category} onChange={setFiles} />}
       hasSavedPassword={hasPassword}
       hasPhoto={files.some((f) => f.kind === 'image')}
-      onSubmit={async (input, password) => {
+      onSubmit={async (input, password, { pinned }) => {
         // Compare with what is saved: files no longer in the list are removed, new ones are added
         const kept = new Set(files.flatMap((f) => (f.existing ? [f.existing.id] : [])));
         const removed = savedFiles.filter((f) => !kept.has(f.id));
         // New pages get their page number; saved pages that changed position are renumbered
         const { added, moved } = filesToSave(files);
         await saveDocumentEdits(db, document.id, input, removed, added, moved);
+        if (pinned !== document.isPinned) await setPinned(db, document.id, pinned);
         // Password: a new one replaces the old; moved out of the "Password" category, it is deleted
         if (password !== null) await savePassword(document.id, password);
         else if (!(await isPasswordCategory(db, input.categoryId))) {

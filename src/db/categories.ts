@@ -29,6 +29,7 @@ export function mapCategory(row: Record<string, unknown>, prefix = ''): Category
     followsPalette,
     isCards: r('kind') === 'cards',
     isPassword: r('kind') === 'password',
+    personId: (r('person_id') as number | null | undefined) ?? null,
   };
 }
 
@@ -37,7 +38,7 @@ export const CATEGORY_JOIN_COLUMNS = `
   c.id AS c_id, c.name AS c_name, c.symbol AS c_symbol, c.examples AS c_examples,
   c.color_top AS c_color_top, c.color_bottom AS c_color_bottom, c.color_text AS c_color_text,
   c.is_builtin AS c_is_builtin, c.kind AS c_kind, c.builtin_key AS c_builtin_key,
-  c.custom_colors AS c_custom_colors`;
+  c.custom_colors AS c_custom_colors, c.person_id AS c_person_id`;
 
 export async function listCategories(db: SQLiteDatabase): Promise<Category[]> {
   const rows = await db.getAllAsync<CategoryRecord>('SELECT * FROM categories WHERE hidden = 0 ORDER BY sort_order, name');
@@ -65,18 +66,20 @@ export type CategoryInput = {
   symbol: SFSymbol;
   colors: CategoryColors;
   followPalette?: boolean; // built-in only: use the colors of "Aspetto" instead of `colors`
+  personId?: number | null; // "Per chi è"; absent = unchanged
 };
 
 // New custom categories go after all the others
 export async function insertCategory(db: SQLiteDatabase, input: CategoryInput): Promise<number> {
   const result = await db.runAsync(
-    `INSERT INTO categories (name, symbol, color_top, color_bottom, color_text, is_builtin, sort_order)
-     VALUES (?, ?, ?, ?, ?, 0, (SELECT COALESCE(MAX(sort_order), -1) + 1 FROM categories))`,
+    `INSERT INTO categories (name, symbol, color_top, color_bottom, color_text, is_builtin, sort_order, person_id)
+     VALUES (?, ?, ?, ?, ?, 0, (SELECT COALESCE(MAX(sort_order), -1) + 1 FROM categories), ?)`,
     input.name.trim(),
     input.symbol,
     input.colors.top,
     input.colors.bottom,
     input.colors.text,
+    input.personId ?? null,
   );
   return result.lastInsertRowId;
 }
@@ -98,6 +101,9 @@ export async function updateCategory(db: SQLiteDatabase, id: number, input: Cate
     input.followPalette ? 1 : 0,
     id,
   );
+  if (input.personId !== undefined) {
+    await db.runAsync('UPDATE categories SET person_id = ? WHERE id = ?', input.personId, id);
+  }
 }
 
 // "Altro": the fallback category, never deletable (documents of a deleted category move here)

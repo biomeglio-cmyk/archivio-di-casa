@@ -58,3 +58,50 @@ export function generateBarcode(value: string | null, type: string | null): Gene
     return null;
   }
 }
+
+// ---- "Codice a barre" / "QR code" in Nuova tessera ----
+
+export type CodeKind = 'bar' | 'qr'; // a 1D code, or a 2D one (QR, PDF417, Data Matrix)
+
+const TYPE_NAMES: Record<string, string> = {
+  ean13: 'EAN-13',
+  ean8: 'EAN-8',
+  upca: 'UPC-A',
+  upce: 'UPC-E',
+  code128: 'Code 128',
+  code39: 'Code 39',
+  itf14: 'ITF-14',
+  qrcode: 'QR code',
+  pdf417: 'PDF417',
+  datamatrix: 'Data Matrix',
+};
+
+// "EAN-13", "QR code"… for "Trovato: codice a barre EAN-13"; null when unknown
+export function barcodeTypeName(type: string | null): string | null {
+  if (!type) return null;
+  const symbology = SYMBOLOGIES[type.toLowerCase()];
+  return symbology ? (TYPE_NAMES[symbology.bcid] ?? null) : null;
+}
+
+export function codeKindOf(type: string | null): CodeKind {
+  return type && SYMBOLOGIES[type.toLowerCase()]?.twoD ? 'qr' : 'bar';
+}
+
+// GS1 check digit (EAN-8, EAN-13): the last digit must match the others
+function validGs1(digits: string): boolean {
+  const body = digits.slice(0, -1).split('').map(Number);
+  const sum = body.reverse().reduce((total, digit, index) => total + digit * (index % 2 === 0 ? 3 : 1), 0);
+  return (10 - (sum % 10)) % 10 === Number(digits.at(-1));
+}
+
+// The format to draw a code typed by hand (or switched between "Codice a barre" and "QR code"):
+// a valid EAN-13 / EAN-8 stays EAN (what supermarket cards use), any other text is Code 128,
+// which every checkout scanner reads; "QR code" is a QR
+export function typeForKind(value: string, kind: CodeKind): string | null {
+  const clean = value.trim();
+  if (!clean) return null;
+  if (kind === 'qr') return 'qr';
+  if (/^\d{13}$/.test(clean) && validGs1(clean)) return 'ean13';
+  if (/^\d{8}$/.test(clean) && validGs1(clean)) return 'ean8';
+  return 'code128';
+}

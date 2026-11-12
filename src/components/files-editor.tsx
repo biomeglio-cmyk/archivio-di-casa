@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useEffect, useEffectEvent, useState } from 'react';
-import { Alert, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Modal, Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { pickPdf, pickPhotos } from '@/capture/pick-files';
@@ -144,31 +144,29 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
 
   if (pdf) {
     return (
-      <View style={styles.pdfRow}>
+      <View style={styles.grid}>
         <PageThumb file={pdf} label="PDF" />
-        <SecondaryButton label="Sostituisci PDF" symbol="doc" onPress={changePdf} />
+        <AddTile label="Sostituisci PDF" symbol="doc" onPress={changePdf} />
       </View>
     );
   }
 
   return (
     <View style={styles.container}>
-      {images.length > 0 && (
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.strip}>
-          {images.map((file, index) => (
-            <PageThumb
-              key={file.key}
-              file={file}
-              label={pageLabel(index, images.length, frontBack)}
-              onRemove={() => remove(file.key)}
-              onMoveLeft={index > 0 ? () => move(index, -1) : undefined}
-              onMoveRight={index < images.length - 1 ? () => move(index, 1) : undefined}
-            />
-          ))}
-        </ScrollView>
-      )}
-
-      <SecondaryButton label={`+ ${addLabel}`} onPress={addPages} />
+      {/* The pages in a 3-column grid (docs/design/Modifica.dc.html), the dashed tile last */}
+      <View style={styles.grid}>
+        {images.map((file, index) => (
+          <PageThumb
+            key={file.key}
+            file={file}
+            label={pageLabel(index, images.length, frontBack)}
+            onRemove={() => remove(file.key)}
+            onMoveLeft={index > 0 ? () => move(index, -1) : undefined}
+            onMoveRight={index < images.length - 1 ? () => move(index, 1) : undefined}
+          />
+        ))}
+        <AddTile label={addLabel} symbol="plus" onPress={addPages} />
+      </View>
 
       {images.length === 0 && <SecondaryButton label="Importa un PDF" symbol="doc" onPress={changePdf} />}
 
@@ -207,40 +205,46 @@ type ThumbProps = {
   onMoveRight?: () => void; // undefined = last page
 };
 
-// One page: thumbnail with ✕, its label, and ‹ › to move it (also for VoiceOver)
+// One page: a mini sheet on lilac with ✕, its label, and ‹ › to move it (also for VoiceOver)
 function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProps) {
   const theme = useTheme();
   const name = label ?? 'Pagina';
   const canMove = Boolean(onMoveLeft || onMoveRight);
+  const caption = [label, file.pending && file.kind === 'image' ? 'nuova' : null].filter(Boolean).join(' · ');
 
   return (
-    <View style={styles.page}>
-      <View>
+    <View
+      style={[styles.cell, { backgroundColor: theme.lilac }]}
+      accessible={false}
+      accessibilityActions={[
+        ...(onMoveLeft ? [{ name: 'left', label: `Sposta ${name} prima` }] : []),
+        ...(onMoveRight ? [{ name: 'right', label: `Sposta ${name} dopo` }] : []),
+      ]}
+      onAccessibilityAction={(event) => (event.nativeEvent.actionName === 'left' ? onMoveLeft?.() : onMoveRight?.())}>
+      <View style={styles.sheet}>
         {file.kind === 'image' ? (
-          <Image source={{ uri: file.uri }} style={[styles.thumb, { backgroundColor: theme.surface }]} contentFit="cover" />
+          <Image source={{ uri: file.uri }} style={styles.sheetImage} contentFit="cover" accessibilityLabel={name} />
         ) : (
-          <View style={[styles.thumb, styles.pdfThumb, { backgroundColor: theme.surface }]}>
-            <SymbolView name="doc.richtext" tintColor={BRAND_COLOR} size={32} />
+          <View style={[styles.sheetImage, styles.pdfThumb]}>
+            <SymbolView name="doc.richtext" tintColor={BRAND_COLOR} size={28} />
           </View>
         )}
-        {onRemove && (
-          <Pressable
-            onPress={onRemove}
-            hitSlop={10}
-            accessibilityRole="button"
-            accessibilityLabel={`Togli ${name}`}
-            style={styles.remove}>
-            <SymbolView name="xmark.circle.fill" tintColor="#FFFFFF" size={26} />
-          </Pressable>
-        )}
       </View>
-
-      {(label || file.pending) && (
-        <ThemedText type="smallBold" themeColor="textSecondary" numberOfLines={1}>
-          {[label, file.pending && file.kind === 'image' ? 'nuova' : null].filter(Boolean).join(' · ')}
+      {caption.length > 0 && (
+        <ThemedText type="smallBold" themeColor="textSecondary" numberOfLines={1} style={styles.caption}>
+          {caption}
         </ThemedText>
       )}
-
+      {onRemove && (
+        <Pressable
+          onPress={onRemove}
+          hitSlop={10}
+          accessibilityRole="button"
+          accessibilityLabel={`Togli ${name}`}
+          style={styles.remove}>
+          <SymbolView name="xmark.circle.fill" tintColor={theme.textSecondary} size={22} />
+        </Pressable>
+      )}
       {canMove && (
         <View style={styles.arrows}>
           <Arrow symbol="chevron.left" label={`Sposta ${name} prima`} onPress={onMoveLeft} />
@@ -251,17 +255,47 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
   );
 }
 
-function Arrow({ symbol, label, onPress }: { symbol: 'chevron.left' | 'chevron.right'; label: string; onPress?: () => void }) {
+// The dashed tile at the end of the grid: "Aggiungi pagina" (or "Sostituisci PDF")
+function AddTile({ label, symbol, onPress }: { label: string; symbol: 'plus' | 'doc'; onPress: () => void }) {
+  const theme = useTheme();
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      style={({ pressed }) => [
+        styles.cell,
+        styles.add,
+        { borderColor: theme.dashed },
+        pressed && { backgroundColor: theme.paleLilac },
+      ]}>
+      <SymbolView name={symbol} tintColor={theme.textSecondary} size={22} />
+      <ThemedText style={styles.addLabel} themeColor="textSecondary" numberOfLines={2}>
+        {label}
+      </ThemedText>
+    </Pressable>
+  );
+}
+
+function Arrow({
+  symbol,
+  label,
+  onPress,
+}: {
+  symbol: 'chevron.left' | 'chevron.right';
+  label: string;
+  onPress?: () => void;
+}) {
   const theme = useTheme();
   return (
     <Pressable
       onPress={onPress}
       disabled={!onPress}
+      hitSlop={6}
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityState={{ disabled: !onPress }}
-      style={[styles.arrow, { backgroundColor: theme.backgroundSelected }, !onPress && styles.arrowDisabled]}>
-      <SymbolView name={symbol} tintColor={theme.text} size={14} weight="semibold" />
+      style={[styles.arrow, !onPress && styles.arrowDisabled]}>
+      <SymbolView name={symbol} tintColor={theme.text} size={11} weight="bold" />
     </Pressable>
   );
 }
@@ -270,48 +304,73 @@ const styles = StyleSheet.create({
   container: {
     gap: 12,
   },
-  strip: {
-    gap: 12,
+  grid: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 10,
   },
-  pdfRow: {
-    gap: 12,
-    alignItems: 'flex-start',
-  },
-  page: {
-    width: 120,
-    alignItems: 'center',
-    gap: 6,
-  },
-  thumb: {
-    width: 120,
-    height: 150, // portrait sheet
-    borderRadius: 10,
+  cell: {
+    width: '31.4%', // 3 columns with two 10pt gaps
+    height: 140,
+    borderRadius: 18,
     borderCurve: 'continuous',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  sheet: {
+    width: 74,
+    height: 98,
+    borderRadius: 5,
+    backgroundColor: '#FFFFFF',
+    boxShadow: '0 6px 14px rgba(28, 30, 70, 0.12)',
+    overflow: 'hidden',
+  },
+  sheetImage: {
+    flex: 1,
   },
   pdfThumb: {
     alignItems: 'center',
     justifyContent: 'center',
   },
+  caption: {
+    position: 'absolute',
+    left: 8,
+    top: 6,
+    right: 30,
+    fontSize: 11,
+  },
   remove: {
     position: 'absolute',
     top: 4,
     right: 4,
-    borderRadius: 13,
-    backgroundColor: 'rgba(0, 0, 0, 0.45)', // the white ✕ is readable on any photo
   },
   arrows: {
+    position: 'absolute',
+    bottom: 5,
     flexDirection: 'row',
-    gap: 8,
+    gap: 28,
   },
   arrow: {
-    width: 44,
-    height: 32,
-    borderRadius: 16,
+    width: 24,
+    height: 20,
+    borderRadius: 10,
+    backgroundColor: '#FFFFFF',
     alignItems: 'center',
     justifyContent: 'center',
   },
   arrowDisabled: {
     opacity: 0.35,
+  },
+  add: {
+    borderWidth: 2,
+    borderStyle: 'dashed',
+    gap: 6,
+    padding: 8,
+  },
+  addLabel: {
+    fontSize: 13,
+    fontFamily: FONTS.medium,
+    textAlign: 'center',
   },
   rescan: {
     alignSelf: 'center',

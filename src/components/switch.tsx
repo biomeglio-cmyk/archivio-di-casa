@@ -11,6 +11,7 @@ type Props = {
   onValueChange: (value: boolean) => void;
   disabled?: boolean;
   accessibilityLabel?: string; // the label of its row, read by VoiceOver
+  gradient?: readonly [string, string]; // when on: a section gradient, the main one by default
 };
 
 const WIDTH = 52;
@@ -19,7 +20,7 @@ const KNOB = 26;
 const TRAVEL = WIDTH - KNOB - (HEIGHT - KNOB); // knob from the left inset to the right inset
 
 // Switch of the guide (52 × 32, knob 26): main gradient when on, #D6D8E4 when off
-export function Switch({ value, onValueChange, disabled = false, accessibilityLabel }: Props) {
+export function Switch({ value, onValueChange, disabled = false, accessibilityLabel, gradient = BRAND_GRADIENT }: Props) {
   const progress = useSharedValue(value ? 1 : 0);
 
   useEffect(() => {
@@ -40,7 +41,7 @@ export function Switch({ value, onValueChange, disabled = false, accessibilityLa
       style={[styles.track, disabled && styles.disabled]}>
       <Animated.View style={[StyleSheet.absoluteFill, onLayer]}>
         <LinearGradient
-          colors={BRAND_GRADIENT}
+          colors={gradient}
           start={GRADIENT_START}
           end={GRADIENT_END}
           style={StyleSheet.absoluteFill}

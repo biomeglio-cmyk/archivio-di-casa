@@ -330,6 +330,23 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 15,
+    name: 'type, payment status and amount of a document',
+    up: async (db) => {
+      await db.execAsync(`
+        -- "Tipo": the sub-type inside its folder (Luce, Gas…), free text; NULL = none
+        ALTER TABLE documents ADD COLUMN doc_type TEXT;
+        -- "Da pagare" / "Pagata"; NULL = no status (most documents)
+        ALTER TABLE documents ADD COLUMN payment_status TEXT CHECK (payment_status IN ('due', 'paid'));
+        -- The day it was marked "Pagata" ('YYYY-MM-DD'), for "Pagata il 5 novembre"
+        ALTER TABLE documents ADD COLUMN paid_at TEXT;
+        -- "Importo" in euro cents (84,20 € = 8420), so sums are exact; NULL = no amount
+        ALTER TABLE documents ADD COLUMN amount_cents INTEGER CHECK (amount_cents >= 0);
+        CREATE INDEX documents_doc_type ON documents (category_id, doc_type);
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

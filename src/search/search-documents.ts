@@ -8,7 +8,7 @@ export type SearchHit = {
 };
 
 export type SearchResults = {
-  documents: SearchHit[]; // match in title, number, category or person
+  documents: SearchHit[]; // match in title, number, Tipo, category or person
   inNotes: SearchHit[]; // match only in the notes
 };
 
@@ -25,6 +25,7 @@ export function searchDocuments(all: DocumentListItem[], query: string): SearchR
     const elsewhere =
       titleMatch ||
       findMatch(document.number, q) ||
+      findMatch(document.docType, q) ||
       findMatch(document.barcodeValue, q) ||
       findMatch(document.category.name, q) ||
       findMatch(document.personName, q);

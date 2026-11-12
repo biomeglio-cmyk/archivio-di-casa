@@ -53,9 +53,15 @@ export type FamilyDocument = {
   coverColor: string | null; // "Colore" cover; null = the category color (follows the palette)
   deletedAt: string | null; // in the "Cestino" since then (ISO); null = a live document
   repeat: Repeat | null; // "Si ripete" of the deadline; null = "Mai"
+  docType: string | null; // "Tipo" inside its folder (Luce, Gas…)
+  paymentStatus: PaymentStatus | null; // "Da pagare" / "Pagata"; null = no status
+  paidAt: string | null; // 'YYYY-MM-DD' when marked "Pagata"
+  amountCents: number | null; // "Importo" in euro cents
   createdAt: string;
   updatedAt: string;
 };
+
+export type PaymentStatus = 'due' | 'paid';
 
 // How a document looks in the grids: its front photo full-bleed, or a color with the title
 export type CoverMode = 'photo' | 'color';
@@ -114,6 +120,10 @@ export type DocumentRecord = {
   deleted_at: string | null;
   repeat_every: number | null;
   repeat_unit: string | null;
+  doc_type: string | null;
+  payment_status: string | null;
+  paid_at: string | null;
+  amount_cents: number | null;
   created_at: string;
   updated_at: string;
 };

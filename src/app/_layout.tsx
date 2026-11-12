@@ -188,15 +188,8 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
-          {/* Opened from the Menu */}
-          <Stack.Screen
-            name="notification-settings"
-            options={{
-              presentation: 'modal',
-              title: 'Notifiche',
-              headerTitleStyle: { fontFamily: FONTS.semiBold },
-            }}
-          />
+          {/* "Impostazioni" from the side menu: a full page with its own back button */}
+          <Stack.Screen name="settings" options={{ headerShown: false }} />
           <Stack.Screen
             name="appearance"
             options={{

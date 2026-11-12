@@ -1,9 +1,9 @@
 import * as DocumentPicker from 'expo-document-picker';
-import { router } from 'expo-router';
+import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import * as Sharing from 'expo-sharing';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useState } from 'react';
+import { useEffect, useEffectEvent, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
 
 import { reloadApp } from '@/backup/app-reload';
@@ -50,6 +50,17 @@ export default function BackupScreen() {
   const [repeat, setRepeat] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [lastBackup, setLastBackup] = useState(getLastBackupDate);
+  // From Impostazioni: "Crea un backup ora" starts creating, "Ripristina da un backup" picks a file
+  const { action } = useLocalSearchParams<{ action?: 'create' | 'restore' }>();
+  const startAction = useEffectEvent(() => {
+    if (action === 'create') setStep({ kind: 'create' });
+    else if (action === 'restore') pickBackup();
+  });
+  useEffect(() => {
+    if (!action) return;
+    const timer = setTimeout(() => startAction(), 500); // after the modal finished sliding up
+    return () => clearTimeout(timer);
+  }, [action]);
 
   const working = step.kind === 'working';
 

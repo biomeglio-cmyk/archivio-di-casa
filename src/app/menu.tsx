@@ -196,7 +196,7 @@ export default function MenuScreen() {
             onPress={() => openScreen('/backup')}
             trailing={backupDue ? <View style={styles.dot} /> : null}
           />
-          <MenuItem label="Notifiche" symbol="bell" onPress={() => openScreen('/notification-settings')} />
+          <MenuItem label="Impostazioni" symbol="gearshape" onPress={() => openScreen('/settings')} />
           <MenuItem
             label="Calendario"
             symbol="calendar.badge.plus"

@@ -91,9 +91,11 @@ function urgentCountOn(day: Date, expiryDates: string[]): number {
 }
 
 // "Carta d'identità · Step scade gio 12 nov (tra 2 giorni)"
-function reminderBody(doc: ReminderSource, at: Date): string {
-  const who = doc.person_name ? ` · ${doc.person_name}` : '';
+function reminderBody(doc: ReminderSource, at: Date, hidePreviews: boolean): string {
   const distance = describeDistance(daysUntil(doc.expires_at, at));
+  // "Nascondi anteprime": nothing about the document on the lock screen
+  if (hidePreviews) return `Un documento scade ${formatShortDate(doc.expires_at)} (${distance}). Apri Sottomano per vederlo.`;
+  const who = doc.person_name ? ` · ${doc.person_name}` : '';
   return `${doc.title}${who} scade ${formatShortDate(doc.expires_at)} (${distance})`;
 }
 
@@ -130,7 +132,7 @@ export async function rescheduleReminders(db: SQLiteDatabase): Promise<void> {
         identifier: `deadline-${doc.id}`,
         content: {
           title: 'Scadenza in arrivo',
-          body: reminderBody(doc, at),
+          body: reminderBody(doc, at, preferences.hidePreviews),
           sound: 'default',
           // The app icon shows the right number when this reminder arrives
           ...(preferences.iconBadgeEnabled ? { badge: urgentCountOn(at, allExpiries) } : {}),

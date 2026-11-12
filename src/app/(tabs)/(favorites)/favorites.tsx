@@ -38,7 +38,7 @@ const documentHref = (id: number) =>
 
 // "Preferiti" (docs/design/Preferiti.dc.html): back and search, title and subtitle, "N PREFERITI",
 // one white row per item (category square, name, "Bollette · scade tra 3 giorni", a pink heart
-// that takes it away), the dashed "Aggiungi ai preferiti" and the hint; "Non hai ancora preferiti."
+// that takes it away), and the hint; "Non hai ancora preferiti."
 // when empty. Long press on a row: "Riordina" (docs/design/RiordinaLista.dc.html), drag to reorder.
 // Our extra, as in the folders: Elenco / Griglia (remembered). Griglia = the tiles with their covers,
 // long press to drag (or for the quick menu); both views share the same order.
@@ -191,13 +191,6 @@ export default function FavoritesScreen() {
               </View>
             )}
 
-            <Pressable
-              onPress={goHome}
-              accessibilityRole="button"
-              style={({ pressed }) => [styles.add, pressed && styles.addPressed]}>
-              <SymbolView name="plus" tintColor={Colors.light.textSecondary} size={22} />
-              <Text style={styles.addLabel}>Aggiungi ai preferiti</Text>
-            </Pressable>
             <Text style={styles.footer}>
               {items.length > 1
                 ? `Tocca il cuore su qualsiasi documento per aggiungerlo qui. Tieni premuto ${view === 'grid' ? 'un riquadro e trascinalo' : 'una riga'} per riordinarli.`
@@ -352,27 +345,6 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: Colors.light.textSecondary,
     textAlign: 'center',
-  },
-  add: {
-    marginTop: 14,
-    height: 72,
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    borderColor: Colors.light.dashed,
-    borderRadius: 20,
-    borderCurve: 'continuous',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 8,
-  },
-  addPressed: {
-    backgroundColor: Colors.light.paleLilac,
-  },
-  addLabel: {
-    fontSize: 15,
-    fontFamily: FONTS.medium,
-    color: Colors.light.textSecondary,
   },
   footer: {
     marginTop: 16,

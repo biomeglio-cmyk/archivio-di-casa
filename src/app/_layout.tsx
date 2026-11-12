@@ -230,6 +230,16 @@ export default function RootLayout() {
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
+          {/* "Sblocca": the free version and the one-time purchase (its own × at the top) */}
+          <Stack.Screen name="unlock" options={{ presentation: 'modal', headerShown: false }} />
+          <Stack.Screen
+            name="terms"
+            options={{
+              presentation: 'modal',
+              title: 'Termini d’uso',
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
+            }}
+          />
           <Stack.Screen
             name="about"
             options={{

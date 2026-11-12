@@ -73,7 +73,7 @@ export const Spacing = {
   side: 22, // left and right margin of every page
   section: 24, // between sections
   titleToContent: 12, // between a section title and its content
-  tileGap: 12, // between cards and tiles
+  tileGap: 14, // between cards and tiles
   belowContent: 124, // free space under the content, above the bottom bar
 } as const;
 

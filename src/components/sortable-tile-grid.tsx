@@ -1,8 +1,16 @@
 import * as Haptics from 'expo-haptics';
-import { useRef, useState, type ComponentRef, type ReactNode } from 'react';
-import { View } from 'react-native';
-import type Animated from 'react-native-reanimated';
-import type { AnimatedRef } from 'react-native-reanimated';
+import { SymbolView } from 'expo-symbols';
+import { useEffect, useRef, useState, type ComponentRef, type ReactNode } from 'react';
+import { StyleSheet, View } from 'react-native';
+import Animated, {
+  cancelAnimation,
+  useAnimatedStyle,
+  useSharedValue,
+  withRepeat,
+  withSequence,
+  withTiming,
+  type AnimatedRef,
+} from 'react-native-reanimated';
 import Sortable, { type DragMoveParams, type SortableGridDragEndParams } from 'react-native-sortables';
 
 import { accessibilityActionsOf, runAccessibilityAction, type QuickAction } from '@/actions/quick-actions';
@@ -13,6 +21,8 @@ import { QuickActionMenu, type QuickMenuTarget } from '@/components/quick-action
 import { TILE_COLUMNS, TILE_GAP, useTileSize } from '@/hooks/use-tile-size';
 
 const DRAG_DELAY_MS = 400; // long press before a tile lifts, like the iOS Home Screen
+const REORDER_DRAG_DELAY_MS = 120; // "Riordina": a short touch is enough to pick a tile up
+const WIGGLE_DEGREES = 1.2;
 const TAP_AFTER_DRAG_MS = 300;
 // Event time (only ever called from gesture callbacks, never while rendering)
 const eventTime = () => Date.now();
@@ -28,6 +38,10 @@ type Props<T> = {
   scrollableRef?: AnimatedRef<Animated.ScrollView>; // the page scrolls when a tile nears its edge
   add?: { label: string; onPress: () => void }; // dashed tile, always last and never draggable
   cardShaped?: boolean; // "Tessere e card": tiles as tall as a real card, as in TileGrid
+  tileHeight?: number; // minimum tile height instead of the default (Home squares: 132)
+  // "Riordina" mode: tiles wiggle with a handle, they drag at once (no long press), a tap does
+  // not open them, no quick menu, no dashed "add" tile
+  reordering?: boolean;
   // Long press released WITHOUT moving: the quick-action menu (also the VoiceOver actions)
   actionsFor?: (item: T) => QuickAction[];
 };
@@ -54,16 +68,18 @@ export function SortableTileGrid<T>({
   scrollableRef,
   add,
   cardShaped = false,
+  tileHeight,
+  reordering = false,
   actionsFor,
 }: Props<T>) {
   const gridSize = useTileSize(); // the width comes from the grid column
   const tileSize = cardShaped
     ? { width: gridSize.width, minHeight: Math.round(gridSize.width / CARD_ASPECT_RATIO) }
-    : gridSize;
+    : { width: gridSize.width, minHeight: tileHeight ?? gridSize.minHeight };
   const { minHeight } = tileSize;
 
   const cells: Cell<T>[] = items.map((item) => ({ kind: 'item', item }));
-  if (add) cells.push({ kind: 'add' });
+  if (add && !reordering) cells.push({ kind: 'add' });
 
   // The lifted tile: where the finger was when it lifted, and whether it moved since
   // (`active`/`endedAt`: a release right after the lift is not also a tap that opens the item)
@@ -98,7 +114,7 @@ export function SortableTileGrid<T>({
     drag.current.endedAt = eventTime();
     const ordered = data.flatMap((cell) => (cell.kind === 'item' ? [cell.item] : []));
     if (ordered.some((item, index) => keyFor(item) !== keyFor(items[index]))) onReorder(ordered);
-    if (!drag.current.moved && fromIndex === toIndex && actionsFor) openMenu(key);
+    if (!reordering && !drag.current.moved && fromIndex === toIndex && actionsFor) openMenu(key);
   }
 
   function openMenu(key: string) {
@@ -130,7 +146,7 @@ export function SortableTileGrid<T>({
         columns={TILE_COLUMNS}
         rowGap={TILE_GAP}
         columnGap={TILE_GAP}
-        dragActivationDelay={DRAG_DELAY_MS}
+        dragActivationDelay={reordering ? REORDER_DRAG_DELAY_MS : DRAG_DELAY_MS}
         activeItemScale={1.05}
         activeItemShadowOpacity={0.25}
         inactiveItemOpacity={1}
@@ -156,6 +172,7 @@ export function SortableTileGrid<T>({
           }
           const { item } = cell;
           const key = String(keyFor(item));
+          const index = items.indexOf(item);
           const quick = actionsFor?.(item) ?? [];
           return (
             // Sortable.Touchable: the tap opens the item, the long press is left to the drag
@@ -163,25 +180,29 @@ export function SortableTileGrid<T>({
               <Sortable.Touchable
                 onTap={() => {
                   // The tap recognizer runs alongside the drag: ignore it when a tile was lifted
-                  if (drag.current.active || eventTime() - drag.current.endedAt < TAP_AFTER_DRAG_MS) return;
+                  if (reordering || drag.current.active || eventTime() - drag.current.endedAt < TAP_AFTER_DRAG_MS) return;
                   onOpen(item);
                 }}
                 style={{ minHeight }}
                 accessible
                 accessibilityRole="button"
                 accessibilityLabel={labelFor(item)}
-                accessibilityHint="Tieni premuto: trascina per spostarlo, oppure lascia per le azioni"
+                accessibilityHint={
+                  reordering
+                    ? 'Trascina per spostarlo, oppure usa le azioni Sposta prima e Sposta dopo'
+                    : 'Tieni premuto: trascina per spostarlo, oppure lascia per le azioni'
+                }
                 accessibilityActions={[
                   { name: 'activate' },
                   { name: 'earlier', label: 'Sposta prima' },
                   { name: 'later', label: 'Sposta dopo' },
-                  ...accessibilityActionsOf(quick),
+                  ...(reordering ? [] : accessibilityActionsOf(quick)),
                 ]}
                 onAccessibilityAction={(event) => {
                   const action = event.nativeEvent.actionName;
                   if (action === 'earlier') moveBy(item, -1);
                   else if (action === 'later') moveBy(item, 1);
-                  else if (!runAccessibilityAction(quick, action)) onOpen(item);
+                  else if (!reordering && !runAccessibilityAction(quick, action)) onOpen(item);
                 }}>
                 <View
                   collapsable={false}
@@ -190,7 +211,7 @@ export function SortableTileGrid<T>({
                     if (view) tileViews.current.set(key, view);
                     else tileViews.current.delete(key);
                   }}>
-                  {renderTile(item)}
+                  {reordering ? <Wiggle direction={index % 2 === 0 ? 1 : -1}>{renderTile(item)}</Wiggle> : renderTile(item)}
                 </View>
               </Sortable.Touchable>
             </Sortable.Handle>
@@ -201,3 +222,48 @@ export function SortableTileGrid<T>({
     </>
   );
 }
+
+// "Riordina": the tile rocks a little (like the iOS Home Screen in edit mode) and shows a handle
+function Wiggle({ direction, children }: { direction: 1 | -1; children: ReactNode }) {
+  const angle = useSharedValue(0);
+  useEffect(() => {
+    angle.set(
+      withRepeat(
+        withSequence(
+          withTiming(WIGGLE_DEGREES * direction, { duration: 130 }),
+          withTiming(-WIGGLE_DEGREES * direction, { duration: 130 }),
+        ),
+        -1,
+        true,
+      ),
+    );
+    return () => cancelAnimation(angle);
+  }, [angle, direction]);
+  const rocking = useAnimatedStyle(() => ({ transform: [{ rotate: `${angle.get()}deg` }] }));
+
+  return (
+    <Animated.View style={[styles.wiggle, rocking]}>
+      {children}
+      <View style={styles.handle} pointerEvents="none">
+        <SymbolView name="line.3.horizontal" tintColor="#1C1E2E" size={14} weight="semibold" />
+      </View>
+    </Animated.View>
+  );
+}
+
+const styles = StyleSheet.create({
+  wiggle: {
+    flex: 1,
+  },
+  handle: {
+    position: 'absolute',
+    top: 10,
+    right: 10,
+    width: 28,
+    height: 28,
+    borderRadius: 14,
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});

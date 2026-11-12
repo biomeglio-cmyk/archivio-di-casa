@@ -1,11 +1,11 @@
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, SectionList, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Chip, ChipGroup } from '@/components/chip';
 import { IconSquare } from '@/components/icon-square';
 import { Text } from '@/components/text';
-import { cardRowEdge, Spacing } from '@/constants/theme';
+import { cardRowEdge } from '@/constants/theme';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
 import { applyFilter, chipsFor, type SearchFilter, type SearchHit, type SearchResults } from '@/search/search-documents';
@@ -21,11 +21,11 @@ type Props = {
 
 type Section = { key: 'documents' | 'notes'; title: string; data: SearchHit[] };
 
-// Search results in Home: filter chips, then "DOCUMENTI · N" and "TROVATO NELLE NOTE · N"
-// as iOS grouped blocks, with the matched word in bold
+// Search results in Home, drawn inside the Home page (which scrolls): filter chips, then
+// "DOCUMENTI · N" and "TROVATO NELLE NOTE · N" as white cards, with the matched word in bold
 export function SearchResultsList({ query, results, filter, onFilterChange }: Props) {
   const theme = useTheme();
-  const cardColor = theme.surface; // grouped blocks on the page background
+  const cardColor = theme.surface;
   const chips = chipsFor(results);
 
   const documents = applyFilter(results.documents, filter);
@@ -36,41 +36,41 @@ export function SearchResultsList({ query, results, filter, onFilterChange }: Pr
   ].filter((s) => s.data.length > 0);
 
   return (
-    <SectionList
-      sections={sections}
-      keyExtractor={(hit) => String(hit.document.id)}
-      keyboardShouldPersistTaps="handled"
-      keyboardDismissMode="on-drag"
-      contentInsetAdjustmentBehavior="automatic"
-      style={{ backgroundColor: theme.background }}
-      contentContainerStyle={styles.content}
-      stickySectionHeadersEnabled={false}
-      ListHeaderComponent={
-        chips.length > 1 ? (
-          <View style={styles.chips}>
-            <ChipGroup>
-              {chips.map((chip) => (
-                <Chip
-                  key={chip.key}
-                  label={chip.label}
-                  selected={sameFilter(chip.filter, filter)}
-                  onPress={() => onFilterChange(chip.filter)}
-                />
-              ))}
-            </ChipGroup>
-          </View>
-        ) : undefined
-      }
-      renderSectionHeader={({ section }) => (
-        <Text style={[styles.sectionTitle, { color: theme.textSecondary }]}>{section.title}</Text>
+    <View style={styles.content}>
+      {chips.length > 1 && (
+        <View style={styles.chips}>
+          <ChipGroup>
+            {chips.map((chip) => (
+              <Chip
+                key={chip.key}
+                label={chip.label}
+                selected={sameFilter(chip.filter, filter)}
+                onPress={() => onFilterChange(chip.filter)}
+              />
+            ))}
+          </ChipGroup>
+        </View>
       )}
-      renderItem={({ item, index, section }) => (
-        <ResultRow hit={item} cardColor={cardColor} first={index === 0} last={index === section.data.length - 1} />
-      )}
-      ListEmptyComponent={
+      {sections.length === 0 && (
         <Text style={[styles.empty, { color: theme.textSecondary }]}>Nessun risultato per «{query.trim()}»</Text>
-      }
-    />
+      )}
+      {sections.map((section) => (
+        <View key={section.key}>
+          <Text style={[styles.sectionTitle, { color: theme.textSecondary }]} accessibilityRole="header">
+            {section.title}
+          </Text>
+          {section.data.map((hit, index) => (
+            <ResultRow
+              key={hit.document.id}
+              hit={hit}
+              cardColor={cardColor}
+              first={index === 0}
+              last={index === section.data.length - 1}
+            />
+          ))}
+        </View>
+      ))}
+    </View>
   );
 }
 
@@ -138,9 +138,7 @@ function ResultRow({ hit, cardColor, first, last }: { hit: SearchHit; cardColor:
 
 const styles = StyleSheet.create({
   content: {
-    paddingHorizontal: Spacing.side,
-    paddingTop: 10,
-    paddingBottom: 48,
+    paddingTop: 16, // the page around it gives the side margins
   },
   chips: {
     paddingVertical: 4,
@@ -149,9 +147,9 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     textTransform: 'uppercase',
-    paddingHorizontal: 16,
+    paddingHorizontal: 4,
     paddingTop: 20,
-    paddingBottom: 6,
+    paddingBottom: 12,
   },
   row: {
     flexDirection: 'row',

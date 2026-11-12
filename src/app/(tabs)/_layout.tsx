@@ -23,17 +23,17 @@ export default function TabsLayout() {
         <NativeTabs.Trigger.Label hidden>Home</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
+      <NativeTabs.Trigger name="(favorites)" accessibilityLabel="Preferiti">
+        <NativeTabs.Trigger.Icon sf={{ default: 'heart', selected: 'heart.fill' }} md="favorite" />
+        <NativeTabs.Trigger.Label hidden>Preferiti</NativeTabs.Trigger.Label>
+      </NativeTabs.Trigger>
+
       <NativeTabs.Trigger
         name="(deadlines)"
         accessibilityLabel={urgent ? `Scadenze, ${urgent} da controllare` : 'Scadenze'}>
         <NativeTabs.Trigger.Icon sf="calendar" md="event" />
         <NativeTabs.Trigger.Label hidden>Scadenze</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Badge hidden={!urgent}>{String(urgent ?? 0)}</NativeTabs.Trigger.Badge>
-      </NativeTabs.Trigger>
-
-      <NativeTabs.Trigger name="(favorites)" accessibilityLabel="Preferiti">
-        <NativeTabs.Trigger.Icon sf={{ default: 'heart', selected: 'heart.fill' }} md="favorite" />
-        <NativeTabs.Trigger.Label hidden>Preferiti</NativeTabs.Trigger.Label>
       </NativeTabs.Trigger>
 
       <NativeTabs.Trigger name="(family)" accessibilityLabel="Famiglia">

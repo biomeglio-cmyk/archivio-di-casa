@@ -1,39 +1,60 @@
-import { router } from 'expo-router';
+import { router, useFocusEffect } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Alert, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
 import { categoryQuickActions } from '@/actions/quick-actions';
 import { BackupReminder } from '@/components/backup-reminder';
-import { CategoryTile } from '@/components/category-tile';
+import { CATEGORY_TILE_HEIGHT, CategoryTile, describeCategoryCount } from '@/components/category-tile';
+import { HomeHeader } from '@/components/home-header';
+import { FavoriteTile, NextDeadlineCard } from '@/components/home-sections';
 import { SearchBar } from '@/components/search-bar';
 import { SearchResultsList } from '@/components/search-results';
+import { SectionHeader } from '@/components/section-header';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
-import { TabHeader } from '@/components/tab-header';
+import { Text } from '@/components/text';
 import { TileScrollView } from '@/components/tile-grid';
-import { Spacing } from '@/constants/theme';
+import { Colors, Spacing } from '@/constants/theme';
+import { FONTS } from '@/constants/typography';
 import { listCategoriesWithCounts, saveCategoryOrder } from '@/db/categories';
-import { listAllDocuments } from '@/db/documents';
+import { listAllDocuments, listDocumentsWithExpiry, listPinnedDocuments } from '@/db/documents';
+import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
 import { searchDocuments, type SearchFilter } from '@/search/search-documents';
+import { toISODate } from '@/utils/dates';
 
 const AFTER_SPLASH_MS = 1100; // the opening screen lasts about one second
 const SEARCH_DEBOUNCE_MS = 200;
 
-// "/" route, the app opens here: logo + "Sottomano" + Menu, the search bar (both fixed), then the
-// two-column grid of categories with the dashed "Nuova categoria" tile, or the search results while searching
+// Under "SCADENZE": the first deadline from today on (none: the section is hidden)
+function nextDeadline(documents: DocumentListItem[]): DocumentListItem | null {
+  const today = toISODate(new Date());
+  return documents.find((d) => d.expiresAt !== null && d.expiresAt >= today) ?? null;
+}
+
+// "/" route, the app opens here (docs/design/Main.dc.html). One scrolling page: ≡ menu, bell and
+// logo; "Ciao!"; the search field; the backup notice; PREFERITI (the first 2), SCADENZE (the
+// next one), ARCHIVIO (the categories, with drag and drop and the quick menu).
+// While searching, the results take the place of the sections, under the same field (so the
+// keyboard stays open).
 export default function ArchiveScreen() {
   const db = useSQLiteContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>(); // the page scrolls while a category is dragged
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
   const { data: allDocuments } = useDbQuery(listAllDocuments, []);
+  const { data: pinned } = useDbQuery(listPinnedDocuments, []);
+  const { data: withExpiry } = useDbQuery(listDocumentsWithExpiry, []);
 
   const [query, setQuery] = useState(''); // what is typed
   const [searched, setSearched] = useState(''); // what is searched, ~200 ms after the last key
   const [filter, setFilter] = useState<SearchFilter>({ kind: 'all' });
+  const [reordering, setReordering] = useState(false); // "Riordina" … "Fine"
+
+  // Leaving Home ends "Riordina"
+  useFocusEffect(useCallback(() => () => setReordering(false), []));
 
   // Debounce: search only when typing pauses
   useEffect(() => {
@@ -43,6 +64,8 @@ export default function ArchiveScreen() {
 
   const searching = searched.trim().length > 0 && query.trim().length > 0;
   const results = searching ? searchDocuments(allDocuments ?? [], searched) : null;
+  const favorites = (pinned ?? []).slice(0, 2);
+  const next = withExpiry ? nextDeadline(withExpiry) : null;
 
   // First launch only: show the "Consigli iniziali" once the opening screen has faded
   useEffect(() => {
@@ -54,47 +77,105 @@ export default function ArchiveScreen() {
   return (
     // Gesture root for the drag and drop of the categories
     <GestureHandlerRootView style={styles.screen}>
-      {/* Fixed top: the shared tab header, then the search field. It stays mounted while the grid
-          below is swapped for the results, so the keyboard stays open. */}
-      <TabHeader title="Sottomano" />
-      <View style={styles.top}>
-        <SearchBar
-          value={query}
-          placeholder="Cerca nei documenti"
-          onChangeText={(text) => {
-            setQuery(text);
-            setFilter({ kind: 'all' }); // new search, all results
-          }}
-        />
-      </View>
+      <TileScrollView
+        ref={scrollRef}
+        keyboardShouldPersistTaps="handled"
+        keyboardDismissMode={searching ? 'on-drag' : 'none'}
+        contentContainerStyle={styles.page}>
+        <HomeHeader />
+        <Text style={styles.hello} accessibilityRole="header">
+          Ciao!
+        </Text>
+        <View style={styles.search}>
+          <SearchBar
+            value={query}
+            placeholder="Cerca un documento"
+            onChangeText={(text) => {
+              setQuery(text);
+              setFilter({ kind: 'all' }); // new search, all results
+            }}
+          />
+        </View>
 
-      {searching && results ? (
-        <SearchResultsList query={searched} results={results} filter={filter} onFilterChange={setFilter} />
-      ) : (
-        <TileScrollView ref={scrollRef} keyboardShouldPersistTaps="handled">
-          {/* Discreet reminder when the last backup is old (or missing) */}
-          {allDocuments && <BackupReminder documentCount={allDocuments.length} />}
-          {categories && (
-            <SortableTileGrid
-              items={categories}
-              keyFor={(category) => category.id}
-              labelFor={(category) =>
-                `${category.name}, ${category.documentCount === 1 ? '1 documento' : `${category.documentCount} documenti`}`
-              }
-              renderTile={(category) => <CategoryTile category={category} documentCount={category.documentCount} />}
-              actionsFor={(category) => categoryQuickActions(db, category)}
-              onOpen={(category) => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
-              onReorder={(ordered) =>
-                saveCategoryOrder(db, ordered.map((c) => c.id)).catch((error: unknown) =>
-                  Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error)),
-                )
-              }
-              add={{ label: 'Nuova categoria', onPress: () => router.push('/category-form') }}
-              scrollableRef={scrollRef}
-            />
-          )}
-        </TileScrollView>
-      )}
+        {searching && results ? (
+          <SearchResultsList query={searched} results={results} filter={filter} onFilterChange={setFilter} />
+        ) : (
+          <>
+            <View style={styles.notice}>
+              <BackupReminder />
+            </View>
+
+            {favorites.length > 0 && (
+              <View style={styles.section}>
+                <SectionHeader
+                  title="Preferiti"
+                  action={{
+                    label: 'Vedi tutto',
+                    accessibilityLabel: 'Vedi tutti i preferiti',
+                    onPress: () => router.navigate('/(tabs)/(favorites)/favorites'),
+                  }}
+                />
+                <View style={styles.favorites}>
+                  {favorites.map((document) => (
+                    <FavoriteTile key={document.id} document={document} />
+                  ))}
+                  {/* One favorite: it keeps half the width, like in a grid of two */}
+                  {favorites.length === 1 && <View style={styles.flex} />}
+                </View>
+              </View>
+            )}
+
+            {next && (
+              <View style={styles.section}>
+                <SectionHeader
+                  title="Scadenze"
+                  action={{
+                    label: 'Vedi tutto',
+                    accessibilityLabel: 'Vedi tutte le scadenze',
+                    onPress: () => router.navigate('/(tabs)/(deadlines)/deadlines'),
+                  }}
+                />
+                <NextDeadlineCard document={next} />
+              </View>
+            )}
+
+            <View style={styles.section}>
+              <SectionHeader
+                title="Archivio"
+                action={
+                  categories && categories.length > 1
+                    ? reordering
+                      ? { label: 'Fine', accessibilityLabel: 'Fine riordino', onPress: () => setReordering(false) }
+                      : { label: 'Riordina', accessibilityLabel: 'Riordina le categorie', onPress: () => setReordering(true) }
+                    : undefined
+                }
+              />
+              {reordering && (
+                <Text style={styles.reorderHint}>Trascina le categorie nell’ordine che preferisci.</Text>
+              )}
+              {categories && (
+                <SortableTileGrid
+                  items={categories}
+                  keyFor={(category) => category.id}
+                  labelFor={(category) => `${category.name}, ${describeCategoryCount(category, category.documentCount)}`}
+                  tileHeight={CATEGORY_TILE_HEIGHT}
+                  reordering={reordering}
+                  renderTile={(category) => <CategoryTile category={category} documentCount={category.documentCount} />}
+                  actionsFor={(category) => categoryQuickActions(db, category)}
+                  onOpen={(category) => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
+                  onReorder={(ordered) =>
+                    saveCategoryOrder(db, ordered.map((c) => c.id)).catch((error: unknown) =>
+                      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error)),
+                    )
+                  }
+                  add={{ label: 'Nuova categoria', onPress: () => router.push('/category-form') }}
+                  scrollableRef={scrollRef}
+                />
+              )}
+            </View>
+          </>
+        )}
+      </TileScrollView>
     </GestureHandlerRootView>
   );
 }
@@ -103,8 +184,39 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
-  // The search bar under the shared header; the grid's own top padding (16) gives the same air below
-  top: {
-    paddingHorizontal: Spacing.side,
+  flex: {
+    flex: 1,
+  },
+  // The page of the design: 22 at the sides, room for the tab bar at the bottom
+  page: {
+    paddingTop: 8,
+    paddingBottom: Spacing.belowContent,
+    gap: 0,
+  },
+  hello: {
+    marginTop: 22,
+    fontSize: 30,
+    lineHeight: 36,
+    fontFamily: FONTS.bold,
+    color: Colors.light.text,
+  },
+  search: {
+    marginTop: 18,
+  },
+  notice: {
+    marginTop: 16,
+  },
+  section: {
+    marginTop: 26,
+    gap: Spacing.titleToContent,
+  },
+  reorderHint: {
+    fontSize: 14,
+    fontFamily: FONTS.regular,
+    color: Colors.light.textOnLilac,
+  },
+  favorites: {
+    flexDirection: 'row',
+    gap: Spacing.tileGap,
   },
 });

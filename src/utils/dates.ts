@@ -25,7 +25,7 @@ export function toISODate(date: Date): string {
 
 const WEEKDAYS_SHORT = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
 export const MONTHS_SHORT = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
-const MONTHS = [
+export const MONTHS = [
   'gennaio',
   'febbraio',
   'marzo',

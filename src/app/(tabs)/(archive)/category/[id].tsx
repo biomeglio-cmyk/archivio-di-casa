@@ -5,71 +5,34 @@ import { Alert } from 'react-native';
 
 import { confirmDeleteCategory } from '@/actions/delete-actions';
 import { CardGrid } from '@/components/card-grid';
-import { DocumentGrid } from '@/components/document-grid';
-import { BRAND_COLOR } from '@/constants/brand';
-import { getCategory, isOtherCategory } from '@/db/categories';
+import { FolderScreen } from '@/components/folder-screen';
+import { getCategory } from '@/db/categories';
 import { listDocumentsByCategory, saveDocumentOrder } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
-import { TAX_CATEGORY_KEY } from '@/send/tax-package';
 
-// "/category/[id]": documents of one category as tiles. "Seleziona" picks several to send as one PDF.
+// "/category/[id]": a folder (FolderScreen, docs/design/Archivio.dc.html); "Tessere e card" stays a
+// wallet of card-shaped tiles until its own redesign step.
 export default function CategoryScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const categoryId = Number(id);
   const { data: category } = useDbQuery((db) => getCategory(db, categoryId), [categoryId]);
   const { data: documents } = useDbQuery((db) => listDocumentsByCategory(db, categoryId), [categoryId]);
-  const selection = useDocumentSelection();
   const db = useSQLiteContext();
 
   // Deleted with "Cancella" → back to Home
   useLeaveWhenDeleted(category);
 
-  // Selected documents in list order, so the PDF pages follow the grid
-  const selectedIds = (documents ?? []).filter((d) => selection.selected.has(d.id)).map((d) => d.id);
-
-  // After a drag: the new order of this grid (the dashed tile stays last)
-  async function saveOrder(items: DocumentListItem[]) {
-    try {
-      await saveDocumentOrder(db, 'category', items.map((d) => d.id));
-    } catch (error) {
-      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
-    }
-  }
-
-  function sendTogether() {
-    router.push({ pathname: '/send', params: { ids: selectedIds.join(','), label: category?.name ?? '' } });
-    selection.cancel();
-  }
-
-  // "…" in the header: Modifica and Cancella for every category, built-in too; "Altro" can't be deleted
-  const menu = category ? (
-    <Stack.Toolbar.Menu icon="ellipsis" accessibilityLabel="Altre azioni" hidden={selection.selecting}>
-      <Stack.Toolbar.MenuAction
-        icon="doc.on.doc"
-        hidden={category.builtinKey !== TAX_CATEGORY_KEY}
-        onPress={() => router.push({ pathname: '/tax-package', params: { categoryId: String(categoryId) } })}>
-        Prepara per il commercialista
-      </Stack.Toolbar.MenuAction>
-      <Stack.Toolbar.MenuAction
-        icon="pencil"
-        onPress={() => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })}>
-        Modifica categoria
-      </Stack.Toolbar.MenuAction>
-      <Stack.Toolbar.MenuAction
-        icon="trash"
-        destructive
-        hidden={isOtherCategory(category)}
-        onPress={() => confirmDeleteCategory(db, category)}>
-        Cancella categoria
-      </Stack.Toolbar.MenuAction>
-    </Stack.Toolbar.Menu>
-  ) : null;
-
-  // "Tessere e card": a wallet of card-shaped tiles
+  // "Tessere e card": a wallet of card-shaped tiles, with the native header and its "…" menu
   if (category?.isCards) {
+    const saveOrder = async (items: DocumentListItem[]) => {
+      try {
+        await saveDocumentOrder(db, 'category', items.map((d) => d.id));
+      } catch (error) {
+        Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
+      }
+    };
     return (
       <>
         <Stack.Screen options={{ title: category.name }} />
@@ -78,46 +41,27 @@ export default function CategoryScreen() {
           hrefFor={(card) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(card.id) } })}
           onReorder={saveOrder}
         />
-        <Stack.Toolbar placement="right">{menu}</Stack.Toolbar>
+        <Stack.Toolbar placement="right">
+          <Stack.Toolbar.Menu icon="ellipsis" accessibilityLabel="Altre azioni">
+            <Stack.Toolbar.MenuAction
+              icon="pencil"
+              onPress={() => router.push({ pathname: '/category-form', params: { id: String(categoryId) } })}>
+              Modifica categoria
+            </Stack.Toolbar.MenuAction>
+            <Stack.Toolbar.MenuAction icon="trash" destructive onPress={() => confirmDeleteCategory(db, category)}>
+              Cancella categoria
+            </Stack.Toolbar.MenuAction>
+          </Stack.Toolbar.Menu>
+        </Stack.Toolbar>
       </>
     );
   }
 
+  // Every other category: the folder of the design (it draws its own header)
   return (
     <>
-      <Stack.Screen options={{ title: category?.name ?? '' }} />
-
-      <DocumentGrid
-        documents={documents}
-        hrefFor={(doc) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(doc.id) } })}
-        selection={selection}
-        onReorder={saveOrder}
-        onAdd={() => router.push({ pathname: '/new-document', params: { categoryId: String(categoryId) } })}
-      />
-
-      {/* Header: "Seleziona" and "…", or "Annulla" while selecting */}
-      <Stack.Toolbar placement="right">
-        {selection.selecting ? (
-          <Stack.Toolbar.Button onPress={selection.cancel}>Annulla</Stack.Toolbar.Button>
-        ) : (
-          <Stack.Toolbar.Button onPress={selection.start} disabled={!documents?.length}>
-            Seleziona
-          </Stack.Toolbar.Button>
-        )}
-        {menu}
-      </Stack.Toolbar>
-
-      {selection.selecting && (
-        <Stack.Toolbar placement="bottom">
-          <Stack.Toolbar.Button
-            variant="prominent"
-            tintColor={BRAND_COLOR}
-            disabled={selectedIds.length === 0}
-            onPress={sendTogether}>
-            {`Invia insieme (${selectedIds.length})`}
-          </Stack.Toolbar.Button>
-        </Stack.Toolbar>
-      )}
+      <Stack.Screen options={{ title: category?.name ?? '', headerShown: false }} />
+      {category && documents && <FolderScreen category={category} documents={documents} />}
     </>
   );
 }

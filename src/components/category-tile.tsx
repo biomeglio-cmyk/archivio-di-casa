@@ -17,15 +17,15 @@ type Props = {
 
 export const CATEGORY_TILE_HEIGHT = 132; // Home squares of the guide
 
-// "12 documenti", "1 documento"; "5 tessere" for "Tessere e card"
+// "12 documenti", "1 documento"; "5 tessere" for "Tessere e card" (VoiceOver label of the tile)
 export function describeCategoryCount(category: Pick<Category, 'isCards'>, count: number): string {
   if (category.isCards) return count === 1 ? '1 tessera' : `${count} tessere`;
   return count === 1 ? '1 documento' : `${count} documenti`;
 }
 
 // Square of a category in Home (docs/design/Main.dc.html): 135° gradient in the palette colors
-// with a shadow of its own color; icon 28 at the top, name 17/600 (never broken inside a word)
-// and "N documenti" 13/400 at the bottom.
+// with a shadow of its own color; icon 28 at the top-left with the number of documents next to
+// it (17/600, nothing when empty), name 17/600 at the bottom (never broken inside a word).
 // The look only: the sortable grid around it handles tap (open) and drag (reorder).
 export function CategoryTile({ category, documentCount }: Props) {
   const { colors } = category;
@@ -36,13 +36,21 @@ export function CategoryTile({ category, documentCount }: Props) {
       start={GRADIENT_START}
       end={GRADIENT_END}
       style={[styles.tile, { boxShadow: tintedShadow(categoryShadowRgb(colors)) }]}>
-      <SymbolView name={category.symbol} tintColor={colors.text} size={28} />
-      <View style={styles.bottom}>
-        <TileTitle style={[styles.name, { color: colors.text }]}>{category.name}</TileTitle>
-        <Text style={[styles.count, { color: colors.text }]} numberOfLines={1}>
-          {describeCategoryCount(category, documentCount)}
-        </Text>
+      <View style={styles.top}>
+        <SymbolView name={category.symbol} tintColor={colors.text} size={28} />
+        {/* The number only when there is something; VoiceOver reads "N documenti" from the grid label */}
+        {documentCount > 0 && (
+          <Text
+            style={[styles.count, { color: colors.text }]}
+            numberOfLines={1}
+            maxFontSizeMultiplier={1.4}
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants">
+            {documentCount}
+          </Text>
+        )}
       </View>
+      <TileTitle style={[styles.name, { color: colors.text }]}>{category.name}</TileTitle>
     </LinearGradient>
   );
 }
@@ -55,8 +63,10 @@ const styles = StyleSheet.create({
     borderRadius: Radius.card,
     borderCurve: 'continuous',
   },
-  bottom: {
-    gap: 1,
+  top: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
   },
   name: {
     fontSize: 17,
@@ -64,8 +74,9 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
   },
   count: {
-    fontSize: 13,
-    lineHeight: 17,
-    fontFamily: FONTS.regular,
+    fontSize: 17,
+    lineHeight: 28, // the height of the icon, so the number sits centered on its line
+    fontFamily: FONTS.semiBold,
+    fontVariant: ['tabular-nums'],
   },
 });

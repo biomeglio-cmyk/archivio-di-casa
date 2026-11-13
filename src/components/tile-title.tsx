@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { StyleSheet, useWindowDimensions, View, type AccessibilityRole, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
@@ -22,9 +22,8 @@ const SAFETY = 1; // a point of room, so rounding never pushes the word onto two
 
 // The name on a tile (category, document, card). It wraps only between words, never inside one:
 // when its longest word is wider than the tile, the font shrinks for this tile until the word
-// fits (down to 85 %, a last resort); if it still does not fit, the tile grid is told and lays out
-// with one column (TileColumnsProvider), so the word gets the room; if even that is not enough the
-// text gets smaller still: a word is never cut or broken (npm run check:fit reports these cases). The words are measured by an invisible copy with one word per line.
+// fits (down to 85 %, a last resort). In a grid tile it then ends with "…" (the grid's columns depend
+// only on the text size); outside a grid the text gets smaller still: a word is never broken. The words are measured by an invisible copy with one word per line.
 // Text grows up to 200 % (Apple's Larger Text) unless the caller sets another cap.
 export function TileTitle({
   children,
@@ -36,12 +35,10 @@ export function TileTitle({
 }: Props) {
   const styles = useThemedStyles(makeStyles);
   const { fontScale } = useWindowDimensions();
-  const { reportTooLong, inGrid, columns } = useTileColumns();
+  const { inGrid } = useTileColumns();
 
   // Larger text: twice the lines, so a name is not cut after a word or two
   const lines = numberOfLines > 0 && fontScale > 1.3 ? numberOfLines * 2 : numberOfLines;
-  // In a 2-column grid the title is laid out in full: more than 2 lines → the grid goes to 1 column
-  const watchLines = inGrid && columns === 2;
   const [width, setWidth] = useState(0); // room for the text
   const [wordWidth, setWordWidth] = useState(0); // the widest word at the full font size
 
@@ -53,13 +50,11 @@ export function TileTitle({
 
   const needed = width > 0 && wordWidth > width - SAFETY ? (width - SAFETY) / wordWidth : 1;
   const tooLong = needed < MIN_SCALE; // the word does not fit even at 85 %
-  // In a 2-column grid: 85 % while the grid moves to one column. Otherwise (one column, a title, a
-  // button) the word must still never be cut: the text gets as small as needed (check:fit flags it)
-  const waitsForColumn = tooLong && inGrid && columns === 2;
-  const scale = tooLong && !waitsForColumn ? Math.max(LAST_RESORT, needed) : Math.max(MIN_SCALE, needed);
-  useEffect(() => {
-    if (tooLong) reportTooLong(); // the grid goes to one column
-  }, [tooLong, reportTooLong]);
+  // In a tile of a grid: 85 % at most, then the name ends with "…" (one line, so a word is never
+  // broken across two). Outside a grid (page titles, buttons) a word is never cut: the text gets as
+  // small as needed (check:fit flags those cases).
+  const truncates = tooLong && inGrid;
+  const scale = tooLong && !inGrid ? Math.max(LAST_RESORT, needed) : Math.max(MIN_SCALE, needed);
   const sized: TextStyle =
     scale < 1
       ? { fontSize: fontSize * scale, ...(flat.lineHeight !== undefined && { lineHeight: flat.lineHeight * scale }) }
@@ -69,8 +64,7 @@ export function TileTitle({
     <View style={containerStyle} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
       <Text
         style={[style, sized]}
-        numberOfLines={watchLines ? undefined : lines}
-        onTextLayout={watchLines ? (e) => e.nativeEvent.lines.length > 2 && reportTooLong() : undefined}
+        numberOfLines={truncates ? 1 : lines}
         accessibilityRole={accessibilityRole}
         ellipsizeMode="tail"
         maxFontSizeMultiplier={cap}>

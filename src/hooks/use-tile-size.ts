@@ -23,9 +23,8 @@ export function useTileSize(): TileSize {
   };
 }
 
-// The columns of a grid: 2, or 1 when a tile name has a word that doesn't fit its tile even at 85 %
-// (narrow phone, large text, a long language). A TileTitle that would have to cut its word reports
-// it (reportTooLong) and the grid lays out again with 1 column, so no word is ever broken or cut.
+// The columns of a grid: 2 up to XL, 1 from XXL — from the text size only (TileColumnsProvider).
+// inGrid: a TileTitle inside a grid ends a too-long name with "…" instead of shrinking further.
 export type TileColumns = { columns: 1 | 2; reportTooLong: () => void; inGrid: boolean };
 
 export const TileColumnsContext = createContext<TileColumns>({ columns: TILE_COLUMNS, reportTooLong: () => undefined, inGrid: false });

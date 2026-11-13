@@ -10,8 +10,8 @@
  *    Apple's "Larger Text"), so beyond it the size stays at 200 %.
  *
  * What each place does when a word is too wide (the rules of the app):
- *  - tiles (TileTitle): one column with large text (XXL+); otherwise shrink to 85 %, then one
- *    column when a word does not fit or a name needs more than 2 lines — fail if it still does not fit
+ *  - tiles (TileTitle): 2 columns up to XL, 1 from XXL (text size only); 2 lines between words,
+ *    85 % at most, then "…" (allowed: counted and listed, not a failure)
  *  - page titles, buttons, chips (NoBreakText): shrink to 85 % — fail below
  *  - one-line buttons: shrink to 85 % (wrap between words above 130 % text) — fail below
  *  - segmented controls: one line per option; if any option doesn't fit, a vertical list of options
@@ -140,13 +140,10 @@ const CARD_PAD = 16; // inside a white card
 // mode "words": wraps between words, every word must fit (minScale: how far it may shrink)
 // mode "line": one line (minScale: how far it may shrink)
 const PLACES = {
-  // 2 columns; 1 column with large text, or when a word doesn't fit or the name needs more than 2 lines
-  categoryTile: (W, scale) => {
-    const one = W - SIDE * 2 - 32;
-    const two = Math.floor((W - SIDE * 2 - 14) / 2) - 32;
-    return { label: 'category tile', size: 17, weight: 600, mode: 'words', minScale: 0.85, lines: 2,
-      width: scale >= LARGE_TEXT_SCALE ? one : two, fallback: one };
-  },
+  // 2 columns up to XL, 1 column from XXL (the text size only); a word that doesn't fit at 85 % ends
+  // the name with "…" (allowed in tiles: counted and listed as a warning)
+  categoryTile: (W, scale) => ({ label: 'category tile', size: 17, weight: 600, mode: 'words', minScale: 0.85, ellipsis: true,
+    width: scale >= LARGE_TEXT_SCALE ? W - SIDE * 2 - 32 : Math.floor((W - SIDE * 2 - 14) / 2) - 32 }),
   folderTitle: (W) => ({ label: 'folder title', size: 30, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
   pageTitle: (W) => ({ label: 'page title', size: 30, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
   bigTitle: (W) => ({ label: 'big title', size: 28, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
@@ -358,6 +355,7 @@ const widestWord = (text, size, weight) =>
 
 let failures = 0;
 let shrinks = 0;
+let ellipsized = 0; // tile names that end with "…" (allowed in grids)
 let fitted = 0; // plain texts made smaller by the app Text so a long word stays whole
 // Keys never drawn by our Text on screen: spoken by VoiceOver, system alerts, notifications, the
 // iPhone calendar, the accountant PDF, file names, share messages, demo content
@@ -392,10 +390,6 @@ function checkLanguage(lang, W, scaleName, scale) {
       if (NOT_ON_SCREEN.test(key)) continue;
       const text = place.upper ? sample(texts.get(key)).toUpperCase() : sample(texts.get(key));
       const widest = place.mode === 'words' ? widestWord(text, size, place.weight) : { word: text, width: measure(text, size, place.weight) };
-      // more lines than allowed (estimate: the whole text over the line width) → the 1-column layout
-      if (place.lines && place.fallback && measure(text, size, place.weight) > place.width * place.lines) {
-        if (widest.width <= place.fallback) continue;
-      }
       if (widest.width <= place.width) continue;
       const needed = place.width / widest.width;
       if (place.autoFit && needed >= place.minScale) {
@@ -408,8 +402,14 @@ function checkLanguage(lang, W, scaleName, scale) {
         if (verbose) console.log(`  ${at}: ${place.label} shrinks to ${Math.round(needed * 100)}%: "${widest.word}" (${key})`);
         continue;
       }
-      // a tile grid goes to one column
-      if (place.fallback && widest.width * place.minScale <= place.fallback) continue;
+      if (place.ellipsis) {
+        ellipsized++;
+        if (!reported.has(`…${lang}|${key}|${W}|${scaleName}`)) {
+          reported.add(`…${lang}|${key}|${W}|${scaleName}`);
+          if (verbose || W === 375) console.log(`  ⚠ ${at}: ${place.label} ends with "…": "${widest.word}" (${key})`);
+        }
+        continue;
+      }
       fail(`${at}: ${place.label}: "${widest.word}" ${Math.round(widest.width)} pt, room ${Math.round(place.fallback ?? place.width)} pt` +
         (place.minScale < 1 ? ` (even at ${Math.round(place.minScale * 100)} %)` : '') + ` — ${key} (${slot.where})`);
     }
@@ -458,5 +458,5 @@ if (failures) {
 }
 console.log(
   `✓ text fit: ${languages.length} languages at 375 pt and at 320 pt × 200 %, it/en/de/fi at ${WIDTHS.join('/')} pt × xS–AX5: ` +
-    `no word broken or cut (${shrinks} shrink at most to 85 %, ${fitted} long words made smaller by Text)`,
+    `no word broken (${shrinks} shrink at most to 85 %, ${fitted} long words made smaller by Text, ${ellipsized} tile names end with "…")`,
 );

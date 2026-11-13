@@ -11,7 +11,8 @@ import { Alert } from 'react-native';
 // 'unavailable' = no scanner here (simulator, old device, or the call failed): use the app camera
 export type ScanResult = { pages: string[] } | 'cancelled' | 'unavailable';
 
-const PAGE_QUALITY = 0.85; // same as the photos chosen from the library
+const PAGE_QUALITY = 0.85; // documents: same as the photos chosen from the library
+export const CARD_QUALITY = 1; // cards: small on the page, so every detail counts (logo, number)
 
 export function isScannerAvailable(): boolean {
   // Read defensively: on a native side without the scanner the property is simply missing
@@ -36,11 +37,11 @@ function showTipOnce(): Promise<void> {
 }
 
 // `tip: false` for cards (one side, no multi-page tip)
-export async function scanDocument({ tip = true }: { tip?: boolean } = {}): Promise<ScanResult> {
+export async function scanDocument({ tip = true, quality = PAGE_QUALITY }: { tip?: boolean; quality?: number } = {}): Promise<ScanResult> {
   if (!isScannerAvailable()) return 'unavailable';
   if (tip) await showTipOnce();
   try {
-    const result = await CameraView.scanDocumentAsync({ quality: PAGE_QUALITY });
+    const result = await CameraView.scanDocumentAsync({ quality });
     if (!result || result.pages.length === 0) return 'cancelled';
     return { pages: result.pages };
   } catch {

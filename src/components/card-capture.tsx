@@ -13,6 +13,7 @@ import { PrimaryButton } from '@/components/primary-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/typography';
 import { CARD_BARCODE_TYPES } from '@/constants/card-colors';
+import { useLargestPictureSize } from '@/capture/picture-size';
 
 export type CardStep = 'front' | 'barcode';
 
@@ -41,6 +42,7 @@ const STEP_TITLE: Record<CardStep, string> = {
 export function CardCapture({ steps, onDone, onCancel }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
+  const picture = useLargestPictureSize(cameraRef); // full sensor resolution, not the preview size
   const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
   const frame = guideFrameRect(width, height);
@@ -161,7 +163,11 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
         ref={cameraRef}
         style={StyleSheet.absoluteFill}
         facing="back"
-        onCameraReady={() => setReady(true)}
+        pictureSize={picture.pictureSize}
+        onCameraReady={() => {
+          setReady(true);
+          picture.onReady();
+        }}
         barcodeScannerSettings={step === 'barcode' ? { barcodeTypes: CARD_BARCODE_TYPES } : undefined}
         onBarcodeScanned={step === 'barcode' ? onBarcodeScanned : undefined}
       />

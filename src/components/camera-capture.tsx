@@ -11,6 +11,7 @@ import { guideFrameRect } from '@/capture/guide-frame';
 import { PrimaryButton } from '@/components/primary-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/typography';
+import { useLargestPictureSize } from '@/capture/picture-size';
 
 type Props = {
   onDone: (uris: string[]) => void; // the photos in the order they were taken
@@ -23,6 +24,7 @@ type Props = {
 export function CameraCapture({ onDone, onCancel }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
+  const picture = useLargestPictureSize(cameraRef); // full sensor resolution, not the preview size
   const insets = useSafeAreaInsets();
   const { width, height } = useWindowDimensions();
   const frame = guideFrameRect(width, height);
@@ -120,7 +122,11 @@ export function CameraCapture({ onDone, onCancel }: Props) {
         ref={cameraRef}
         style={StyleSheet.absoluteFill}
         facing="back"
-        onCameraReady={() => setReady(true)}
+        pictureSize={picture.pictureSize}
+        onCameraReady={() => {
+          setReady(true);
+          picture.onReady();
+        }}
       />
       {/* Overlays are siblings positioned on top of the camera, not its children */}
       <GuideFrameOverlay frame={frame} />

@@ -72,7 +72,7 @@ export async function pickImageUri(): Promise<string | null> {
   const result = await ImagePicker.launchImageLibraryAsync({
     mediaTypes: ['images'],
     allowsMultipleSelection: false,
-    quality: 0.9,
+    quality: 0.92, // a card or its code from the library: as sharp as the camera crops
   });
   return result.canceled || result.assets.length === 0 ? null : result.assets[0].uri;
 }

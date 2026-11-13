@@ -13,6 +13,7 @@ import { startAddCard } from '@/capture/start-add-card';
 import { Text } from '@/components/text';
 import { FONTS } from '@/constants/typography';
 import { encodePendingFiles, pagesToFiles } from '@/storage/pending-files';
+import { useLargestPictureSize } from '@/capture/picture-size';
 
 const DARK = '#12142A';
 const PAGE_RATIO = 210 / 297; // the frame has the shape of an A4 page
@@ -32,6 +33,7 @@ export default function AddDocumentScreen() {
   const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
+  const picture = useLargestPictureSize(cameraRef); // full sensor resolution, not the preview size
   const [box, setBox] = useState<{ width: number; height: number } | null>(null);
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -140,7 +142,11 @@ export default function AddDocumentScreen() {
               style={StyleSheet.absoluteFill}
               facing="back"
               enableTorch={torch}
-              onCameraReady={() => setReady(true)}
+              pictureSize={picture.pictureSize}
+              onCameraReady={() => {
+                setReady(true);
+                picture.onReady();
+              }}
             />
             {frame && (
               <View

@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 
-import { scanDocument } from '@/capture/scan-document';
+import { CARD_QUALITY, scanDocument } from '@/capture/scan-document';
 
 // "Aggiungi carta": first the iOS scanner for the front (clean, straight crop of the card),
 // then the app camera for the barcode, which reads the code live.
@@ -8,7 +8,7 @@ import { scanDocument } from '@/capture/scan-document';
 // in at the same time. No scanner → the app camera does the front too.
 // "Annulla" in the scanner opens nothing: the user stays where they were.
 export async function startAddCard(navigation: 'push' | 'replace'): Promise<void> {
-  const result = await scanDocument({ tip: false });
+  const result = await scanDocument({ tip: false, quality: CARD_QUALITY });
   if (result === 'cancelled') return;
   if (result === 'unavailable') {
     router[navigation]('/add-card');

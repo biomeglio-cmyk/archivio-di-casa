@@ -5,7 +5,7 @@ import { useState, type ReactNode } from 'react';
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { scanDocument } from '@/capture/scan-document';
+import { CARD_QUALITY, scanDocument } from '@/capture/scan-document';
 import { GeneratedCode } from '@/components/barcode-view';
 import { CardCapture, type CardCaptureResult, type CardStep } from '@/components/card-capture';
 import { CoverField } from '@/components/cover-field';
@@ -117,7 +117,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
 
   // "Scatta di nuovo": iOS scanner first (straight, clean crop); without it, the app camera
   async function retakeFront() {
-    const result = await scanDocument({ tip: false });
+    const result = await scanDocument({ tip: false, quality: CARD_QUALITY });
     if (result === 'cancelled') return;
     if (result === 'unavailable') {
       setRetake('front');

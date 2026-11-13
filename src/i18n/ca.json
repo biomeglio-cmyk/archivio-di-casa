@@ -1,1 +1,1585 @@
-{}
+{
+  "common": {
+    "cancel": "Cancel·lar",
+    "ok": "D’acord",
+    "done": "Fet",
+    "save": "Desar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Tancar",
+    "confirm": "Confirmar",
+    "back": "Enrere",
+    "next": "Següent",
+    "share": "Compartir",
+    "send": "Enviar",
+    "search": "Cercar",
+    "add": "Afegir",
+    "remove": "Treure",
+    "retry": "Tornar-ho a provar",
+    "continue": "Continuar",
+    "yes": "Sí",
+    "no": "No",
+    "restore": "Restaurar",
+    "settings": "Configuració",
+    "more": "Més",
+    "none": "Cap",
+    "documents_one": "{{count}} document",
+    "documents_other": "{{count}} documents",
+    "pages_one": "{{count}} pàgina",
+    "pages_other": "{{count}} pàgines",
+    "photos_one": "{{count}} foto",
+    "photos_other": "{{count}} fotos",
+    "wholeFamily": "Tota la família"
+  },
+  "dates": {
+    "today": "avui",
+    "tomorrow": "demà",
+    "yesterday": "ahir",
+    "inSpan": "d’aquí a {{span}}",
+    "spanAgo": "fa {{span}}",
+    "expiredYesterday": "va vèncer ahir",
+    "expiredFor": "va vèncer fa {{span}}",
+    "days_one": "{{count}} dia",
+    "days_other": "{{count}} dies",
+    "months_one": "{{count}} mes",
+    "months_other": "{{count}} mesos",
+    "years_one": "{{count}} any",
+    "years_other": "{{count}} anys"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Documents",
+      "cards": "Targetes",
+      "utilities": "Rebuts",
+      "home": "Casa",
+      "insurance": "Assegurances",
+      "warranties": "Garanties i tiquets",
+      "car": "Cotxe",
+      "tax": "Despeses deduïbles",
+      "householdStaff": "Servei domèstic",
+      "school": "Escola",
+      "pet": "Mascotes",
+      "password": "Contrasenyes",
+      "other": "Altres"
+    }
+  },
+  "language": {
+    "title": "Idioma",
+    "auto": "Automàtic",
+    "autoSubtitle": "Segueix l’idioma del telèfon",
+    "search": "Cercar idiomes",
+    "autoDetail": "Idioma de l’iPhone: {{language}}",
+    "noResults": "Cap idioma per a «{{query}}»"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastel",
+    "vivid": "Vius",
+    "earth": "Terra",
+    "sea": "Mar",
+    "sunset": "Posta de sol",
+    "night": "Nit"
+  },
+  "home": {
+    "welcome": "Et donem la benvinguda a Sottomano",
+    "hello": "Hola!",
+    "searchPlaceholder": "Cerca un document",
+    "favorites": "Preferits",
+    "seeAll": "Veure-ho tot",
+    "seeAllFavorites": "Veure tots els preferits",
+    "deadlines": "Venciments",
+    "seeAllDeadlines": "Veure tots els venciments",
+    "archive": "Arxiu",
+    "reorderDone": "Acabar d’ordenar",
+    "reorder": "Ordenar",
+    "reorderCategories": "Ordenar categories",
+    "reorderHint": "Arrossega les categories en l’ordre que prefereixis.",
+    "alerts": {
+      "orderNotSaved": "No s’ha pogut desar l’ordre"
+    },
+    "newCategory": "Nova categoria"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} targeta",
+    "cards_other": "{{count}} targetes"
+  },
+  "folder": {
+    "paidOn": "Pagat el {{date}}",
+    "expiredOn": "Va vèncer el {{date}}",
+    "expiresOn": "Venç el {{date}}",
+    "addedOn": "Afegit el {{date}}",
+    "newItem": {
+      "bill": "Nou rebut",
+      "card": "Nova targeta",
+      "warranty": "Nova garantia",
+      "password": "Nova contrasenya",
+      "document": "Nou document"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Tot",
+      "documents": "Documents",
+      "cards": "Targetes",
+      "deadlines": "Venciments"
+    },
+    "paid": "pagat",
+    "expiresOn": "venç el {{date}}",
+    "folderSubtitle_one": "Carpeta · {{count}} document",
+    "folderSubtitle_other": "Carpeta · {{count}} documents",
+    "card": "Targeta",
+    "deadlineSubtitle": "Venciment · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Cerca un document",
+    "fieldLabel": "Cerca als teus documents",
+    "filter": "Filtrar",
+    "results_one": "{{count}} resultat",
+    "results_other": "{{count}} resultats",
+    "noResults": "Cap resultat",
+    "noResultsHint": "Prova una altra paraula, per exemple el nom d’una botiga.",
+    "hint": "Cerca noms, carpetes, tipus, notes, targetes i venciments."
+  },
+  "navigation": {
+    "home": "Inici",
+    "favorites": "Preferits",
+    "family": "Família",
+    "deadlines": "Venciments",
+    "deadlinesToCheck_one": "Venciments, {{count}} per revisar",
+    "deadlinesToCheck_other": "Venciments, {{count}} per revisar",
+    "addLocked": "Afegir document, bloquejat: límit gratuït assolit",
+    "addDocument": "Afegir un document",
+    "titles": {
+      "editDocument": "Editar document",
+      "pages": "Pàgines",
+      "deadline": "Venciment",
+      "renewed": "Renovat",
+      "previousVersion": "Versió anterior",
+      "newDocument": "Nou document",
+      "appearance": "Aparença",
+      "backup": "Còpia de seguretat",
+      "taxPackage": "Enviar al gestor",
+      "trash": "Paperera",
+      "terms": "Condicions d’ús",
+      "about": "Informació i privadesa",
+      "newCard": "Nova targeta",
+      "editCard": "Editar targeta"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Arrossega per moure’l, o fes servir les accions Moure abans i Moure després",
+    "moveEarlier": "Moure abans",
+    "moveLater": "Moure després",
+    "footer": "De la mateixa manera ordenes les targetes, les persones de Família i els Preferits: mantén premuda una fila i arrossega-la amb la nansa de la dreta."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Mantén premut: arrossega per moure’l o deixa anar per veure les accions"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "No s’ha pogut desar l’ordre"
+    },
+    "reorderTitle": "Ordenar preferits",
+    "reorderHint": "Mantén premut un preferit i arrossega’l on vulguis.",
+    "yourFavorites": "Els teus preferits",
+    "title": "Preferits",
+    "subtitle": "El que has triat tenir sempre a mà",
+    "searchPlaceholder": "Cercar als preferits",
+    "viewList": "Llista",
+    "viewGrid": "Quadrícula",
+    "count_one": "{{count}} preferit",
+    "count_other": "{{count}} preferits",
+    "noMatch": "Cap preferit coincideix amb «{{query}}».",
+    "empty": "Encara no tens cap preferit.",
+    "footer": "Toca el cor de qualsevol document per afegir-lo aquí.",
+    "footerGrid": "Toca el cor de qualsevol document per afegir-lo aquí. Mantén premut un requadre i arrossega’l per canviar l’ordre.",
+    "footerList": "Toca el cor de qualsevol document per afegir-lo aquí. Mantén premuda una fila per canviar l’ordre.",
+    "rowHint": "Mantén premut per ordenar els preferits",
+    "unpin": "Treure dels preferits",
+    "expires": "venç {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} per pagar",
+    "alerts": {
+      "orderNotSaved": "No s’ha pogut desar l’ordre"
+    },
+    "actions": {
+      "editCategory": "Editar categoria",
+      "sendToAccountant": "Enviar al gestor",
+      "selectAndSend": "Seleccionar i enviar",
+      "reorder": "Ordenar",
+      "deleteCategory": "Eliminar categoria"
+    },
+    "moreLabel": "Editar o eliminar la categoria {{name}}",
+    "searchIn": "Cercar a {{name}}",
+    "viewList": "Llista",
+    "viewGrid": "Quadrícula",
+    "reorderHint": "Mantén premut i arrossega els documents en l’ordre que prefereixis.",
+    "allTypes": "Tots",
+    "noDocumentsFound": "No s’ha trobat cap document.",
+    "sendTogether": "Enviar junts ({{count}})",
+    "sheetTitle": "Categoria {{name}}"
+  },
+  "folderRow": {
+    "due": "per pagar",
+    "paid": "pagat"
+  },
+  "homeSections": {
+    "expired": "Vençut",
+    "expiresToday": "Venç avui",
+    "expiresTomorrow": "Venç demà",
+    "expiresInDays_one": "Venç d’aquí a {{count}} dia",
+    "expiresInDays_other": "Venç d’aquí a {{count}} dies",
+    "expiresOn": "Venç {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Treure dels preferits",
+    "pin": "Afegir als preferits"
+  },
+  "searchBar": {
+    "clear": "Esborrar el text"
+  },
+  "documentGrid": {
+    "addDocument": "Afegir document"
+  },
+  "homeHeader": {
+    "menu": "Menú",
+    "notifications": "Notificacions",
+    "notificationsUnread_one": "Notificacions, {{count}} sense llegir",
+    "notificationsUnread_other": "Notificacions, {{count}} sense llegir"
+  },
+  "demoData": {
+    "people": {
+      "step": "Step",
+      "mom": "Mama",
+      "dad": "Papa"
+    },
+    "documents": {
+      "idCard": "DNI",
+      "drivingLicence": "Carnet de conduir",
+      "passport": "Passaport",
+      "electricityBill": "Rebut de la llum",
+      "carInsurance": "Assegurança del cotxe",
+      "carTax": "Impost de circulació",
+      "washingMachineWarranty": "Garantia de la rentadora",
+      "gymCard": "Targeta del gimnàs",
+      "rentalContract": "Contracte de lloguer",
+      "pharmacyReceipt": "Tiquet de farmàcia",
+      "reportCard": "Butlletí de notes"
+    },
+    "notes": {
+      "electricityBill": "Domiciliat al banc"
+    }
+  },
+  "documentTypes": {
+    "documents": "DNI|Carnet de conduir|Passaport|Targeta sanitària|NIE",
+    "cards": "Fidelització|Gimnàs|Biblioteca|Transport|Soci",
+    "utilities": "Llum|Gas|Aigua|Internet|Telèfon|Escombraries",
+    "home": "Lloguer|Hipoteca|Comunitat|Manteniment|Contracte",
+    "insurance": "Cotxe|Llar|Salut|Vida|Viatge",
+    "warranties": "Electrodomèstic|Electrònica|Mobles|Tiquet",
+    "car": "Impost de circulació|Assegurança|ITV|Revisió|Permís de circulació",
+    "tax": "Farmàcia|Visita mèdica|Dentista|Anàlisis|Esport|Escola",
+    "householdStaff": "Nòmina|Cotitzacions|Contracte",
+    "school": "Matrícula|Butlletí de notes|Certificat|Menjador|Excursió",
+    "pet": "Cartilla sanitària|Vacuna|Veterinari|Microxip",
+    "password": "Correu|Banc|Xarxes socials|Wi-Fi|Feina"
+  },
+  "pageLabels": {
+    "front": "Anvers",
+    "back": "Revers",
+    "page": "Pàgina {{number}}"
+  },
+  "statusBadge": {
+    "due": "Per pagar",
+    "paid": "Pagat"
+  },
+  "addActions": {
+    "openFileFailed": "No s’ha pogut obrir el fitxer"
+  },
+  "pickFiles": {
+    "takePhoto": "Fer una foto",
+    "choosePhoto": "Triar de Fotos",
+    "removePhoto": "Treure la foto"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Diverses pàgines",
+      "text": "Pots escanejar diverses pàgines seguides: enquadra la pàgina següent abans de tocar Desar."
+    },
+    "cardTip": {
+      "title": "Colors reals",
+      "text": "Per tenir els colors reals de la targeta, toca el botó de filtres de l’escàner i tria «Foto»."
+    },
+    "gotIt": "Entesos"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Cal accés a la càmera",
+    "permissionText": "Sottomano fa servir la càmera només per fotografiar els teus documents.",
+    "allow": "Permetre",
+    "openSettings": "Obrir Configuració",
+    "readable": "Es llegeix bé?",
+    "pageReadable": "Pàgina {{number}}: es llegeix bé?",
+    "retake": "Repetir",
+    "addPage": "Afegir pàgina",
+    "frameDocument": "Enquadra el document",
+    "framePage": "Enquadra la pàgina {{number}}",
+    "shoot": "Fer una foto",
+    "finishWithPages_one": "Fet, {{count}} pàgina",
+    "finishWithPages_other": "Fet, {{count}} pàgines"
+  },
+  "coverField": {
+    "label": "Portada",
+    "photo": "Foto",
+    "color": "Color",
+    "noPhotoHint": "Sense foto es mostra el color: afegeix una pàgina per fer servir la seva foto com a portada.",
+    "categoryColor": "Color de la carpeta",
+    "colorNumber": "Color {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Afegir pàgines",
+    "pinned": "Als preferits",
+    "pin": "Afegir als preferits",
+    "renewed": "Renovat",
+    "delete": "Eliminar"
+  },
+  "documentFilesView": {
+    "document": "Document",
+    "openFailed": "No s’ha pogut obrir el document",
+    "pageOfSwipe": "Pàgina {{number}} de {{total}} · llisca per passar",
+    "openFullScreen": "{{label}}, obrir a pantalla completa",
+    "missingFile": "No es troba el fitxer en aquest telèfon."
+  },
+  "filesEditor": {
+    "addBack": "Afegir el revers",
+    "addPage": "Afegir pàgina",
+    "scan": "Escanejar",
+    "photograph": "Fer una foto",
+    "fromPhotos": "De Fotos",
+    "scannerUnavailableTitle": "Escàner no disponible",
+    "scannerUnavailableMessage": "Treu les pàgines amb ✕ i afegeix-ne de noves.",
+    "replacePdf": "Substituir el PDF",
+    "importPdf": "Importar un PDF",
+    "rescanAll": "Tornar a escanejar-ho tot",
+    "openFileFailed": "No s’ha pogut obrir el fitxer",
+    "page": "Pàgina",
+    "newTag": "nova",
+    "moveBefore": "Moure {{name}} abans",
+    "moveAfter": "Moure {{name}} després",
+    "removePage": "Treure {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "No s’ha trobat el document.",
+    "noPages": "Sense pàgines",
+    "photoPages_one": "Foto, {{count}} pàgina",
+    "photoPages_other": "Fotos, {{count}} pàgines",
+    "amount": "Import",
+    "expired": "vençut",
+    "inDays_one": "d’aquí a {{count}} dia",
+    "inDays_other": "d’aquí a {{count}} dies",
+    "deadline": "Venciment",
+    "folder": "Carpeta",
+    "status": "Estat",
+    "person": "Persona",
+    "number": "Número",
+    "notes": "Notes",
+    "inCalendar": "Al calendari",
+    "view": "Veure el document",
+    "unpin": "Treure dels preferits",
+    "pin": "Afegir als preferits",
+    "addPages": "Afegir pàgines",
+    "renewed": "Renovat",
+    "delete": "Eliminar",
+    "details": "Detalls",
+    "remindMe": "Recorda-m’ho",
+    "reminderNeedsDeadline": "Afegeix un venciment per rebre un avís",
+    "reminderWhen": "Avís: {{when}}",
+    "noReminder": "Sense avís",
+    "previousVersions": "Versions anteriors",
+    "versionUntil": "Fins al {{date}}",
+    "versionExpired": "va vèncer el {{date}}",
+    "paidOnMarkDue": "Pagat el {{date}} · marcar com a per pagar",
+    "markDue": "Marcar com a per pagar",
+    "markPaid": "Marcar com a pagat",
+    "firstOf": "1 de {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Per pagar",
+    "statusPaid": "Pagat",
+    "saveFailed": "No s’ha pogut desar",
+    "folder": "Carpeta",
+    "person": "Persona",
+    "type": "Tipus",
+    "otherType": "Escriu-ne un altre…",
+    "noType": "Sense tipus",
+    "typeExample": "Per exemple: Llum, Impost de circulació, Dentista",
+    "dueOn": "El {{date}}",
+    "noDeadline": "Sense venciment",
+    "nameSection": "Nom",
+    "namePlaceholder": "Nom del document",
+    "whereSection": "On desar-lo",
+    "choose": "Triar…",
+    "deadlineSection": "Venciment",
+    "addDeadline": "Afegir venciment",
+    "remindMe": "Recorda-m’ho",
+    "whenToRemind": "Quan avisar-te",
+    "repeats": "Repetir",
+    "never": "Mai",
+    "everySpan": "Cada {{span}}",
+    "every": "Cada",
+    "notesSection": "Notes",
+    "notesPlaceholder": "Per exemple: domiciliat, demanar el reemborsament…",
+    "pin": "Afegir als preferits",
+    "pinSubtitle": "El trobes de seguida a la pantalla d’inici",
+    "amountSection": "Import i estat",
+    "amount": "Import",
+    "amountInEuro": "Import en euros",
+    "accessSection": "Accés",
+    "username": "Usuari",
+    "usernamePlaceholder": "nom@exemple.com",
+    "password": "Contrasenya",
+    "passwordUnchanged": "•••••••• (sense canvis)",
+    "passwordNote": "La contrasenya només es queda al clauer de l’iPhone.",
+    "numberSection": "Número del document",
+    "numberPlaceholder": "P. ex., 12345678Z",
+    "saveChanges": "Desar els canvis",
+    "saveDocument": "Desar el document",
+    "amountHint": "Escriu l’import així: {{example}}.",
+    "missingNameAndFolder": "Per desar, escriu el nom i tria la carpeta.",
+    "missingName": "Per desar, escriu el nom.",
+    "missingFolder": "Per desar, tria la carpeta.",
+    "deleteDocument": "Eliminar el document"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Escanejar",
+      "photos": "De Fotos",
+      "pdf": "D’un PDF",
+      "card": "Targeta",
+      "manual": "Manual"
+    },
+    "hintFirst": "Enquadra el document · no moguis el telèfon",
+    "hintNext": "Pàgina {{number}} feta · enquadra la següent",
+    "title": "Nou document",
+    "flashOff": "Apagar el flaix",
+    "flashOn": "Encendre el flaix",
+    "scanWithIos": "Escanejar amb l’escàner d’iOS",
+    "tapToScan": "Toca per escanejar: detecta les vores tot sol",
+    "permissionTitle": "Cal accés a la càmera",
+    "permissionText": "Sottomano la fa servir només per fotografiar els teus documents.",
+    "allow": "Permetre",
+    "openSettings": "Obrir Configuració",
+    "howToAdd": "Com afegir-lo",
+    "chooseFromGallery": "Triar de la fototeca",
+    "shoot": "Fer una foto",
+    "goOnWith_one": "Continuar amb {{count}} pàgina",
+    "goOnWith_other": "Continuar amb {{count}} pàgines",
+    "noPages": "Sense pàgines",
+    "countNext": "següent ›",
+    "countPages": "pàgines"
+  },
+  "newDocument": {
+    "readTitle": "Llegit del document",
+    "readText": "Nom extret del fitxer: {{name}}. Revisa’l i corregeix-lo si cal.",
+    "checkTitle": "Revisa les dades",
+    "checkText_one": "{{count}} pàgina capturada. Escriu el nom i, si en té, el venciment: el trobaràs a Venciments.",
+    "checkText_other": "{{count}} pàgines capturades. Escriu el nom i, si en té, el venciment: el trobaràs a Venciments.",
+    "heading": "Nou document"
+  },
+  "editDocument": {
+    "heading": "Editar document"
+  },
+  "documentVersion": {
+    "replacedOn": "Substituït el {{date}}",
+    "expiredOn": "va vèncer el {{date}}",
+    "previewTitle": "{{title}} (versió anterior)"
+  },
+  "documentPages": {
+    "saveFailed": "No s’han pogut desar les pàgines"
+  },
+  "deleteDocument": {
+    "deleteFailed": "No s’ha pogut eliminar",
+    "title": "Vols eliminar {{title}}?",
+    "message_one": "El document i el seu avís van a la Paperera. El pots recuperar des de Menú › Paperera durant {{count}} dia.",
+    "message_other": "El document i el seu avís van a la Paperera. El pots recuperar des de Menú › Paperera durant {{count}} dies.",
+    "confirm": "Eliminar el document"
+  },
+  "renew": {
+    "saveFailed": "No s’ha pogut desar",
+    "deadline": "Venciment",
+    "repeatFooter": "{{repeat}}: la nova data es calcula a partir de l’anterior.",
+    "was": "Abans",
+    "newDeadline": "Nou venciment",
+    "newDocument": "Nou document",
+    "withScanFooter": "Les pàgines actuals passen a ser una «Versió anterior», que trobaràs als detalls.",
+    "withoutScanFooter": "Activa-ho si tens el document nou per escanejar.",
+    "addNewScan": "Afegir el nou escaneig"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · desplaça’t cap avall",
+    "pagesSubtitle_one": "{{count}} pàgina",
+    "pagesSubtitle_other": "{{count}} pàgines · desplaça’t cap avall",
+    "pageOf": "Pàgina {{number}} de {{total}}",
+    "noPages": "Aquest document no té pàgines.",
+    "zoom": "Zoom",
+    "zoomOut": "Allunyar",
+    "zoomIn": "Apropar",
+    "pageShort": "Pàg. {{number}} de {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "dia",
+      "day_other": "dies",
+      "week_one": "setmana",
+      "week_other": "setmanes",
+      "month_one": "mes",
+      "month_other": "mesos",
+      "year_one": "any",
+      "year_other": "anys"
+    },
+    "count": {
+      "day_one": "{{count}} dia",
+      "day_other": "{{count}} dies",
+      "week_one": "{{count}} setmana",
+      "week_other": "{{count}} setmanes",
+      "month_one": "{{count}} mes",
+      "month_other": "{{count}} mesos",
+      "year_one": "{{count}} any",
+      "year_other": "{{count}} anys"
+    },
+    "every": {
+      "day_one": "Cada dia",
+      "day_other": "Cada {{count}} dies",
+      "week_one": "Cada setmana",
+      "week_other": "Cada {{count}} setmanes",
+      "month_one": "Cada mes",
+      "month_other": "Cada {{count}} mesos",
+      "year_one": "Cada any",
+      "year_other": "Cada {{count}} anys"
+    },
+    "repeats": {
+      "day_one": "Es repeteix cada dia",
+      "day_other": "Es repeteix cada {{count}} dies",
+      "week_one": "Es repeteix cada setmana",
+      "week_other": "Es repeteix cada {{count}} setmanes",
+      "month_one": "Es repeteix cada mes",
+      "month_other": "Es repeteix cada {{count}} mesos",
+      "year_one": "Es repeteix cada any",
+      "year_other": "Es repeteix cada {{count}} anys"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Cal revisar",
+    "thisWeek": "Aquesta setmana",
+    "upcomingNone": "Res pendent els propers mesos",
+    "upcoming_one": "{{count}} cosa pendent els propers mesos",
+    "upcoming_other": "{{count}} coses pendents els propers mesos"
+  },
+  "deadlineOptions": {
+    "sameDay": "El mateix dia",
+    "daysBefore_one": "{{count}} dia abans",
+    "daysBefore_other": "{{count}} dies abans",
+    "defaultChoice": "{{label}} (per defecte)"
+  },
+  "personRoles": {
+    "you": "Tu",
+    "choice": {
+      "me": "Soc jo",
+      "partner": "Parella",
+      "child": "Fill o filla",
+      "parent": "Pare o mare",
+      "sibling": "Germà o germana",
+      "other": "Altre"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "La categoria «Altres» no existeix.",
+    "otherNotDeletable": "La categoria «Altres» no es pot eliminar."
+  },
+  "deadlineChip": {
+    "overdue": "Vençut",
+    "today": "Avui",
+    "dueToday": "Venç avui",
+    "dueIn_one": "Venç d’aquí a {{count}} dia",
+    "dueIn_other": "Venç d’aquí a {{count}} dies"
+  },
+  "deadlineListRow": {
+    "hint": "Mantén premut per editar o treure el venciment",
+    "statusDue": "per pagar",
+    "statusPaid": "pagat"
+  },
+  "deadlineSection": {
+    "title": "Venciment",
+    "emptyFooter": "Amb un avís al telèfon i, si està activat, al calendari «Sottomano».",
+    "add": "Afegir venciment",
+    "expiresOn": "Venç el",
+    "repeats": "Repetir",
+    "never": "Mai",
+    "reminder": "Avís"
+  },
+  "dateCalendar": {
+    "previousMonth": "Mes anterior",
+    "nextMonth": "Mes següent"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Setmana següent",
+    "previousWeek": "Setmana anterior",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} venciment",
+    "dayWithDeadlines_other": "{{day}}, {{count}} venciments"
+  },
+  "deadlines": {
+    "title": "Venciments",
+    "newReminder": "Nou avís",
+    "week": "Setmana",
+    "month": "Mes",
+    "openDocument": "Obrir el document",
+    "editDeadline": "Editar el venciment",
+    "markDue": "Marcar com a per pagar",
+    "markPaid": "Marcar com a pagat",
+    "removeDeadline": "Treure el venciment",
+    "removeAlert": {
+      "title": "Vols treure el venciment?",
+      "message": "El document es queda; se n’eliminen l’avís i l’esdeveniment del calendari.",
+      "confirm": "Treure"
+    },
+    "emptyTitle": "Cap venciment a la vista",
+    "emptyText": "Toca + per afegir un document amb venciment: apareixerà aquí i al calendari.",
+    "sheetSubtitle": "Venç {{date}}",
+    "dayRepeats": "es repeteix",
+    "dayReminder": "avís",
+    "dayEmpty": "Cap venciment aquest dia"
+  },
+  "deadlineScreen": {
+    "saveFailed": "No s’ha pogut desar",
+    "date": "Data",
+    "footer": "L’avís arriba al telèfon; amb el calendari activat, el venciment també és a «Sottomano».",
+    "every": "Cada"
+  },
+  "family": {
+    "title": "Família",
+    "subtitle": "Un perfil per a cada persona de casa",
+    "addPerson": "Afegir una persona",
+    "members": "Membres",
+    "orderSaveFailed": "No s’ha pogut desar l’ordre",
+    "reorderTitle": "Ordenar la família",
+    "reorderHint": "Mantén premuda una persona i arrossega-la on vulguis.",
+    "privacyNote": "Tot es queda en aquest telèfon. Per enviar un document a algú, obre’l i toca Enviar.",
+    "youSpoken": "tu",
+    "reorderA11yHint": "Mantén premut per ordenar la família",
+    "expiring_one": "{{count}} per vèncer",
+    "expiring_other": "{{count}} per vèncer"
+  },
+  "personScreen": {
+    "photoFailed": "No s’ha pogut fer servir la foto",
+    "editPerson": "Editar la persona",
+    "selectAndSend": "Seleccionar i enviar",
+    "deletePerson": "Eliminar la persona",
+    "moreA11y": "Editar o eliminar {{name}}",
+    "changePhoto": "Canviar la foto",
+    "editProfile": "Editar el perfil",
+    "documentsSection": "Els seus documents · {{count}}",
+    "addDocument": "Afegir document",
+    "sendTogether": "Enviar junts ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "No s’ha pogut desar",
+    "newPerson": "Nova persona",
+    "addPhoto": "Afegir foto",
+    "name": "Nom",
+    "namePlaceholder": "Com es diu?",
+    "role": "Qui és",
+    "roleA11y": "Qui és per a tu: {{role}}",
+    "note": "El perfil es queda en aquest telèfon. T’ajuda a tenir en ordre els documents de tothom.",
+    "addToFamily": "Afegir a la família",
+    "roleSheetTitle": "Qui és per a tu"
+  },
+  "deleteCategory": {
+    "deleteFailed": "No s’ha pogut eliminar",
+    "title": "Vols eliminar la categoria {{name}}?",
+    "messageWithDocuments_one": "Conté {{count}} document. Què en vols fer?",
+    "messageWithDocuments_other": "Conté {{count}} documents. Què en vols fer?",
+    "messageWithDocumentsRestorable_one": "Conté {{count}} document. Què en vols fer? Pots restaurar la categoria des de Nova categoria.",
+    "messageWithDocumentsRestorable_other": "Conté {{count}} documents. Què en vols fer? Pots restaurar la categoria des de Nova categoria.",
+    "messageEmpty": "La categoria és buida.",
+    "messageEmptyRestorable": "La categoria és buida. La pots restaurar des de Nova categoria.",
+    "deleteAll": "Eliminar-ho tot",
+    "confirm": "Eliminar la categoria",
+    "choicesA11y": "Què fer amb els documents",
+    "moveLabel": "Moure’ls a Altres",
+    "moveDetailPassword": "Es queden a l’app, a Altres, sense usuari ni contrasenya",
+    "moveDetail": "Es queden a l’app, en una carpeta general",
+    "trashLabel": "Eliminar-los",
+    "trashDetail_one": "Van a la Paperera: els pots recuperar durant {{count}} dia",
+    "trashDetail_other": "Van a la Paperera: els pots recuperar durant {{count}} dies"
+  },
+  "deletePerson": {
+    "title": "Vols treure {{name}} de la família?",
+    "messageWithDocuments_one": "{{name}} té {{count}} document. Què en vols fer?",
+    "messageWithDocuments_other": "{{name}} té {{count}} documents. Què en vols fer?",
+    "messageEmpty": "El perfil s’elimina d’aquest telèfon.",
+    "familyLabel": "Moure’ls a Tota la família",
+    "familyDetail": "Es queden a l’app, visibles per a tothom",
+    "trashDetail_one": "Se’n van amb el perfil: es queden a la Paperera durant {{count}} dia",
+    "trashDetail_other": "Se’n van amb el perfil: es queden a la Paperera durant {{count}} dies"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Mascotes",
+      "document": "Document",
+      "home": "Casa",
+      "car": "Cotxe",
+      "health": "Salut",
+      "school": "Escola",
+      "work": "Feina",
+      "keys": "Claus",
+      "travel": "Viatges",
+      "expenses": "Despeses"
+    },
+    "restoreFailed": "No s’ha pogut restaurar",
+    "editTitle": "Editar la categoria",
+    "newTitle": "Nova categoria",
+    "restoreSection": "Restaurar una categoria predeterminada",
+    "restoreA11y": "Restaurar {{name}}",
+    "restoreHint": "Torna tal com era, amb els seus colors, la icona i els camps. O crea’n una de nova aquí sota.",
+    "previewA11y": "Previsualització de la categoria",
+    "namePlaceholder": "P. ex., Mascotes",
+    "nameA11y": "Nom de la categoria",
+    "color": "Color",
+    "paletteColor": "Color d’Aparença",
+    "colorNumber": "Color {{number}}",
+    "followsPaletteHint": "El color segueix la paleta triada a Aparença.",
+    "ownColorHint": "El teu propi color: no canvia amb Aparença.",
+    "icon": "Icona",
+    "forWhom": "Per a qui",
+    "forWhomA11y": "Per a qui és aquesta categoria: {{name}}",
+    "forWhomHint": "Els documents nous d’aquesta categoria comencen amb aquesta persona.",
+    "create": "Crear la categoria"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Web o app",
+        "namePlaceholder": "Per exemple: Banca en línia",
+        "userLabel": "Usuari o correu",
+        "userPlaceholder": "nom@correu.com",
+        "passwordLabel": "Contrasenya",
+        "notePlaceholder": "Per exemple: pregunta de seguretat, codi de recuperació…"
+      },
+      "wifi": {
+        "name": "Wi-Fi",
+        "namePlaceholder": "Per exemple: Wi-Fi de casa",
+        "userLabel": "Nom de la xarxa",
+        "userPlaceholder": "CasaPuig_5G",
+        "passwordLabel": "Contrasenya de la xarxa",
+        "notePlaceholder": "Per exemple: el router és a la sala d’estar, darrere la tele…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Per exemple: Targeta de dèbit",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Per exemple: la targeta de la Júlia…"
+      },
+      "other": {
+        "name": "Altre",
+        "namePlaceholder": "Per exemple: Alarma de casa",
+        "userLabel": "Usuari",
+        "userPlaceholder": "Opcional",
+        "passwordLabel": "Codi o contrasenya",
+        "notePlaceholder": "Per a què serveix, on es fa servir…"
+      }
+    },
+    "colors": {
+      "aqua": "Aiguamarina",
+      "indigo": "Indi",
+      "apricot": "Albercoc",
+      "pink": "Rosa",
+      "mint": "Menta",
+      "sky": "Cel",
+      "graphite": "Grafit"
+    },
+    "icons": {
+      "key": "Clau",
+      "lock": "Cadenat",
+      "globe": "Globus",
+      "wifi": "Wi-Fi",
+      "bank": "Banc",
+      "card": "Targeta",
+      "mail": "Correu",
+      "home": "Casa",
+      "car": "Cotxe",
+      "shield": "Escut",
+      "cart": "Carretó",
+      "star": "Estrella"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Només xifres",
+    "strength": {
+      "weak": "Feble",
+      "fair": "Acceptable",
+      "good": "Bona",
+      "strong": "Segura"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Confirma per activar el bloqueig"
+  },
+  "appLock": {
+    "prompt": "Desbloquejar Sottomano",
+    "unlock": "Desbloquejar",
+    "unlockWith": {
+      "faceId": "Desbloquejar amb Face ID",
+      "touchId": "Desbloquejar amb Touch ID",
+      "passcode": "Desbloquejar amb el codi"
+    },
+    "message": "Els teus documents estan protegits"
+  },
+  "passwordForm": {
+    "showPrompt": "Mostrar la contrasenya",
+    "copyPrompt": "Copiar la contrasenya",
+    "copiedTitle": "Copiat",
+    "copiedMessage": "S’esborrarà del porta-retalls d’aquí a 1 minut.",
+    "scannerUnavailableTitle": "Escàner no disponible",
+    "scannerUnavailableMessage": "Tria la imatge de la teva fototeca.",
+    "saveFailed": "No s’ha pogut desar",
+    "editTitle": "Editar la contrasenya",
+    "newTitle": "Nova contrasenya",
+    "privacy": "Només es queden en aquest telèfon i s’obren amb Face ID.",
+    "sections": {
+      "what": "Què deses",
+      "name": "Nom",
+      "preview": "Previsualització",
+      "access": "Inici de sessió",
+      "site": "Web o app",
+      "whose": "De qui és",
+      "notes": "Notes"
+    },
+    "typesLabel": "Tipus de contrasenya",
+    "customTypePlaceholder": "Què és? Alarma, caixa forta, cadenat…",
+    "customTypeLabel": "Què és",
+    "customTypeHint": "Es converteix en un tipus nou i la propera vegada el trobaràs entre les opcions.",
+    "previewTitle": "Com es veu a la llista",
+    "previewText": "Un color i una icona, o una imatge.",
+    "color": "Color",
+    "colorLabel": "Color de la previsualització",
+    "icon": "Icona",
+    "iconLabel": "Icona de la previsualització",
+    "image": "Imatge",
+    "scan": "Escanejar",
+    "gallery": "De Fotos",
+    "removeImage": "Treure la imatge i fer servir color i icona",
+    "passwordPlaceholder": "Escriu-la o genera-la",
+    "show": "Mostrar",
+    "hide": "Amagar",
+    "copy": "Copiar",
+    "saved": "Desada",
+    "generate": "Generar una contrasenya segura",
+    "urlPlaceholder": "www.exemple.com",
+    "urlLabel": "Adreça web",
+    "wifiQrTitle": "Codi QR per als convidats",
+    "wifiQrSubtitle": "L’escanegen i es connecten",
+    "person": "Persona",
+    "personA11y": "Persona, {{name}}",
+    "favoriteTitle": "Afegir als preferits",
+    "favoriteSubtitle": "La trobaràs directament a la pantalla d’inici",
+    "saveButton": "Desar la contrasenya",
+    "saveHint": "Escriu un nom per desar."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Sense contrasenya",
+    "noPasswordMessage": "Afegeix-la amb Editar.",
+    "showPrompt": {
+      "site": "Mostrar la contrasenya",
+      "wifi": "Mostrar la contrasenya de la xarxa",
+      "pin": "Mostrar el PIN",
+      "other": "Mostrar el codi o la contrasenya"
+    },
+    "copyPrompt": {
+      "site": "Copiar la contrasenya",
+      "wifi": "Copiar la contrasenya de la xarxa",
+      "pin": "Copiar el PIN",
+      "other": "Copiar el codi o la contrasenya"
+    },
+    "copyUser": {
+      "site": "Copiar l’usuari o el correu",
+      "wifi": "Copiar el nom de la xarxa",
+      "pin": "Copiar l’usuari",
+      "other": "Copiar l’usuari"
+    },
+    "copiedTitle": "Copiat",
+    "copiedMessage": "S’esborrarà del porta-retalls d’aquí a 1 minut.",
+    "copiedTextTitle": "Copiat",
+    "qrPrompt": "Mostrar el codi QR per als convidats",
+    "invalidAddress": "Adreça no vàlida",
+    "removeFavorite": "Treure dels preferits",
+    "favoriteTitle": "Afegir als preferits",
+    "favoriteSubtitle": "La trobaràs directament a la pantalla d’inici",
+    "moreActions": "Més accions",
+    "sections": {
+      "access": "Inici de sessió",
+      "site": "Web o app",
+      "wifiQr": "Codi QR per als convidats",
+      "whose": "De qui és",
+      "notes": "Notes"
+    },
+    "hidden": "Amagada",
+    "show": "Mostrar",
+    "hide": "Amagar",
+    "copy": "Copiar",
+    "locked": "Visible després de Face ID o del codi de l’iPhone",
+    "wifiQrLabel": "Codi QR de la xarxa Wi-Fi",
+    "qrHint": "L’escanegen amb la càmera i es connecten.",
+    "qrLocked": "El codi QR conté la contrasenya: és visible després de Face ID o del codi de l’iPhone.",
+    "qrNoNetwork": "Afegeix el nom de la xarxa amb Editar per obtenir el codi QR.",
+    "showQr": "Mostrar el codi QR",
+    "hideQr": "Amagar el codi QR",
+    "person": "Persona",
+    "moveToTrash": "Moure a la Paperera"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Sense contrasenya",
+    "noPasswordMessage": "Afegeix-la amb Editar.",
+    "showPrompt": "Mostrar la contrasenya",
+    "copyPrompt": "Copiar la contrasenya",
+    "copiedTitle": "Contrasenya copiada",
+    "copiedMessage": "S’esborrarà del porta-retalls d’aquí a 1 minut.",
+    "user": "Usuari",
+    "password": "Contrasenya",
+    "hidden": "Contrasenya amagada",
+    "show": "Mostrar",
+    "hide": "Amagar",
+    "copy": "Copiar"
+  },
+  "cardForm": {
+    "found": "Trobat: {{name}}",
+    "foundBarcode": "Trobat: codi de barres {{name}}",
+    "handwritten": "Codi escrit a mà",
+    "noCode": "No s’ha llegit cap codi",
+    "photoOpenFailed": "No s’ha pogut obrir la foto",
+    "saveFailed": "No s’ha pogut desar",
+    "retakeFront": "Repetir",
+    "retakePhoto": "Repetir la foto",
+    "recognized": "Targeta reconeguda",
+    "tapRetake": "Toca Repetir per fotografiar-la",
+    "fromPhotos": "De Fotos",
+    "cover": "Portada",
+    "coverPhotoCaption": "Retallada i redreçada a partir de la foto de la targeta",
+    "coverColorCaption": "El color de la targeta, amb el seu nom i el número",
+    "codeSection": "Codi per mostrar a la caixa",
+    "photographCode": "Fotografiar el codi",
+    "barcode": "Codi de barres",
+    "qrCode": "Codi QR",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Targeta",
+    "typeNumber": "Escriu el número a sota",
+    "explain": "Sottomano reconeix tot sol si la targeta té un codi de barres o un codi QR. A la caixa el mostra en gran, amb la pantalla a la brillantor màxima.",
+    "readTitle": "Dades llegides de la targeta",
+    "readText": "Revisa-les i corregeix-les si cal.",
+    "name": "Nom",
+    "namePlaceholder": "P. ex., Supermercat",
+    "type": "Tipus",
+    "typePlaceholder": "P. ex., Targeta de fidelització",
+    "number": "Número",
+    "numberPlaceholder": "P. ex., 0400 2219 8876",
+    "holder": "Titular",
+    "saveButton": "Desar la targeta",
+    "saveHint": "Escriu el nom de la targeta per desar."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Foto de l’anvers",
+      "barcode": "Fotografia el codi de barres"
+    },
+    "photoOpenFailed": "No s’ha pogut obrir la foto",
+    "permissionTitle": "Cal accés a la càmera",
+    "permissionText": "Sottomano fa servir la càmera per fotografiar les teves targetes i llegir-ne el codi de barres.",
+    "allow": "Permetre",
+    "openSettings": "Obrir Configuració",
+    "frontCheck": "Anvers: es veu bé?",
+    "read": "Llegit: {{value}}",
+    "notRead": "Codi no llegit",
+    "notReadHint": "Conserva la foto: escriuràs el número al pas següent.",
+    "retake": "Repetir",
+    "use": "Fer servir",
+    "focus": "Enfocar",
+    "stepCount": "{{current}} de {{total}}",
+    "frameHint": "Enquadra la targeta dins del requadre",
+    "searching": "Cercant el codi…",
+    "chooseFromPhotos": "Triar de Fotos",
+    "shoot": "Fer una foto",
+    "skip": "Ometre"
+  },
+  "cardDetail": {
+    "code": "Codi",
+    "photo": "Foto",
+    "barcodeLabel": "Codi de barres",
+    "barcodePhotoLabel": "Foto del codi de barres",
+    "fullScreenHint": "Obre el codi a pantalla completa",
+    "noCode": "Sense codi. Toca «Editar» per fotografiar-lo o escriure’l.",
+    "tapHint": "Toca el codi per ampliar-lo",
+    "person": "Persona"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "No s’ha pogut desar l’ordre",
+    "editCategory": "Editar la categoria",
+    "deleteCategory": "Eliminar la categoria",
+    "reorderTitle": "Ordenar targetes",
+    "reorderHint": "Mantén premuda una targeta i arrossega-la on vulguis.",
+    "yourCards": "Les teves targetes",
+    "title": "Targetes",
+    "subtitle": "Toca una targeta per mostrar-ne el codi a la caixa",
+    "categoryMenuLabel": "Editar o eliminar la categoria {{name}}",
+    "addCard": "Afegir targeta",
+    "reorder": "Ordenar",
+    "newCard": "Nova targeta",
+    "cardDetails": "Detalls de la targeta",
+    "categoryMenuTitle": "Categoria {{name}}",
+    "cardCount_one": "{{count}} targeta",
+    "cardCount_other": "{{count}} targetes",
+    "cardOpenLabel": "{{label}}, tancar",
+    "cardClosedLabel": "{{label}}, mostrar el codi",
+    "qrLabel": "Codi QR de la targeta",
+    "barcodeLabel": "Codi de barres de la targeta",
+    "fullScreenHint": "Obre el codi a pantalla completa",
+    "noCode": "Sense codi: toca Detalls › Editar per fotografiar-lo o escriure’l.",
+    "details": "Detalls"
+  },
+  "walletCard": {
+    "untitled": "Nova targeta"
+  },
+  "barcodeView": {
+    "close": "Tancar el codi"
+  },
+  "colorPicker": {
+    "color": "Color",
+    "custom": "El teu color",
+    "hex": "Codi",
+    "hexLabel": "Codi del color"
+  },
+  "colorWheel": {
+    "label": "Roda de colors: toca o arrossega per triar",
+    "nextHue": "To següent",
+    "previousHue": "To anterior"
+  },
+  "newCard": {
+    "title": "Nova targeta",
+    "missingCategory": "La categoria «Targetes» ja no existeix."
+  },
+  "editCard": {
+    "title": "Editar la targeta"
+  },
+  "unlock": {
+    "storeOnly": "Disponible a la versió de l’App Store",
+    "remainingNone": "Has fet servir tots els espais gratuïts.",
+    "remaining_one": "Encara en pots afegir {{count}}.",
+    "remaining_other": "Encara en pots afegir {{count}}.",
+    "tag": "Versió gratuïta · {{used}} de {{limit}} utilitzats",
+    "title": "Tots els teus documents, sense límits",
+    "intro": "Gratis fins a {{limit}} documents i targetes. Per afegir-ne tants com vulguis, desbloqueja-la amb un sol pagament.",
+    "benefits": {
+      "unlimited": {
+        "title": "Documents il·limitats",
+        "text": "Rebuts, targetes, garanties i tota la resta"
+      },
+      "reminders": {
+        "title": "Avisos de venciment",
+        "text": "T’avisem abans que sigui tard"
+      },
+      "offline": {
+        "title": "Funciona sense internet",
+        "text": "Tot es queda al teu telèfon, també la còpia de seguretat"
+      },
+      "family": {
+        "title": "Tota la família",
+        "text": "Un perfil per a cada persona de casa"
+      }
+    },
+    "sectionTitle": "La teva versió gratuïta",
+    "usageLabel": "Documents i targetes",
+    "usageValue": "{{used}} de {{limit}}",
+    "usageA11y": "Espais gratuïts utilitzats",
+    "keptNote": "Els que ja has desat continuen sent teus, encara que no desbloquegis.",
+    "priceTitle": "Per sempre",
+    "priceText": "Sense límits · un sol pagament",
+    "buy": "Desbloquejar per {{price}}",
+    "continueFree": "Continuar gratis",
+    "restore": "Restaurar la compra",
+    "terms": "Condicions",
+    "privacy": "Privadesa"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "La categoria «Altres»",
+    "otherCategoryMessage": "No es pot eliminar: conté els documents de les categories eliminades."
+  },
+  "quickActionMenu": {
+    "close": "Tancar el menú"
+  },
+  "quickActions": {
+    "open": "Obrir",
+    "unpin": "Treure dels preferits",
+    "pin": "Afegir als preferits",
+    "moveToTrash": "Moure a la Paperera",
+    "editCategory": "Editar la categoria",
+    "deleteCategory": "Eliminar la categoria",
+    "editPerson": "Editar la persona",
+    "deletePerson": "Eliminar la persona"
+  },
+  "shareCopies": {
+    "defaultName": "Document",
+    "fileNotFound": "No es troba el fitxer al telèfon."
+  },
+  "sendCompression": {
+    "tooBig": "Fins i tot amb la compressió màxima supera el límit: planteja’t dividir-lo en diversos fitxers.",
+    "lowPpi": "Potser el text petit no es llegirà bé."
+  },
+  "sendPreferences": {
+    "original": "Original"
+  },
+  "sendFileName": {
+    "fallback": "document"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Ara mateix no es poden ajuntar l’anvers i el revers.",
+    "noPhotos": "No hi ha fotos per enviar.",
+    "fileFront": "anvers",
+    "fileBack": "revers",
+    "filePage": "pagina-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "documents",
+    "title": "Enviar {{title}}",
+    "formatPhotos": "Fotos",
+    "actions": {
+      "email": "Correu",
+      "whatsapp": "WhatsApp",
+      "print": "Imprimir",
+      "save": "Desar a Fitxers",
+      "copy": "Copiar",
+      "other": "Més"
+    },
+    "alerts": {
+      "savedToFiles": "Desat a Fitxers",
+      "imageCopied": "Imatge copiada",
+      "textCopied": "Text copiat",
+      "firstPageCopied": "S’ha copiat la primera pàgina: enganxa-la en un missatge.",
+      "pasteImage": "Enganxa-la en un missatge o en una nota.",
+      "pdfNotCopied": "Un PDF no es pot copiar: s’han copiat el nom i la nota. Per al fitxer, fes servir Més.",
+      "failed": "No s’ha pogut completar"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDF",
+      "singlePdf": "Un sol PDF",
+      "failed": "No s’ha pogut preparar el fitxer",
+      "preparing": "S’està preparant…"
+    },
+    "includeNote": "Incloure la nota del document",
+    "noNote": "Aquest document no té nota.",
+    "frontBackPage": "Anvers i revers en una pàgina",
+    "frontBackImage": "Anvers i revers en una imatge",
+    "maxSize": "Mida màxima",
+    "pdfAsIs": "El PDF s’envia tal com és.",
+    "severalInfo": "Un sol PDF: els documents l’un darrere l’altre, amb l’anvers i el revers dels DNI i de les targetes a la mateixa pàgina.",
+    "quality": {
+      "high": "Qualitat alta",
+      "good": "Qualitat bona",
+      "low": "Qualitat baixa",
+      "minimum": "Qualitat mínima",
+      "original": "Qualitat original"
+    },
+    "skipped_one": "{{count}} document sense fotos no s’inclou (encara no es poden unir els PDF importats).",
+    "skipped_other": "{{count}} documents sense fotos no s’inclouen (encara no es poden unir els PDF importats)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "S’està preparant el PDF…",
+    "progressRetry": "S’estan reduint les fotos (intent {{attempt}})…",
+    "subtitle": "Preparat el {{date}} amb Sottomano · {{documents}}",
+    "subtitleWithTotal": "Preparat el {{date}} amb Sottomano · {{documents}} · total {{total}}",
+    "columns": {
+      "number": "Núm.",
+      "document": "Document",
+      "date": "Data",
+      "person": "Persona",
+      "amount": "Import",
+      "page": "Pàgina"
+    },
+    "sentApart": "enviat a part",
+    "noPages": "sense pàgines",
+    "paid": "pagat",
+    "due": "per pagar",
+    "invalidIndex": "Índex no vàlid"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Un PDF no es pot unir (protegit amb contrasenya o malmès): {{titles}}. L’índex el marca com a «enviat a part» i s’envia juntament amb els altres.",
+    "sentApart_other": "{{count}} PDF no es poden unir (protegits amb contrasenya o malmesos): {{titles}}. L’índex els marca com a «enviat a part» i s’envien juntament amb els altres.",
+    "alerts": {
+      "prepareFailed": "No s’ha pogut preparar el PDF",
+      "ready": "PDF a punt",
+      "noMailTitle": "Mail no està configurat",
+      "noMailMessage": "Afegeix un compte a Mail o desa els PDF a Fitxers.",
+      "savedToFiles": "Desat a Fitxers",
+      "sendFailed": "No s’ha pogut enviar"
+    },
+    "readyMany": "{{number}} PDF a punt",
+    "choices": {
+      "email": "Correu: tots els PDF en un missatge",
+      "save": "Desar a Fitxers: tots a la mateixa carpeta",
+      "oneByOne": "Compartir-los d’un en un"
+    },
+    "intro": "Tots els documents de {{category}}, dividits per any: un PDF per a cada any, amb el seu índex (document, data, persona, import, pàgina) i el total. L’any és el del venciment o el del pagament; si no n’hi ha cap, l’any en què els vas afegir.",
+    "noDocuments": "No hi ha documents en aquest any.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF",
+    "year": "Any",
+    "allYears": "Tots els anys",
+    "maxPhotoSize": "Mida màxima de les fotos",
+    "limitInfo": "Les fotos es redueixen per no superar el límit; els PDF importats es queden tal com són.",
+    "prepare": "Preparar i enviar"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Alguna cosa ha fallat",
+      "restoredToOther": "Restaurat a Altres",
+      "restoredPassword": "La seva categoria ja no existeix: el document és a Altres, sense usuari ni contrasenya.",
+      "restoredMessage": "La seva categoria ja no existeix: el document és a Altres.",
+      "deleteTitle": "Vols eliminar «{{title}}» definitivament?",
+      "deleteMessage": "També se n’eliminaran les fotos i els PDF. Aquesta acció no es pot desfer.",
+      "emptyTitle": "Vols buidar la Paperera?",
+      "emptyMessage_one": "El document s’eliminarà amb les seves fotos i PDF. Aquesta acció no es pot desfer.",
+      "emptyMessage_other": "Els {{count}} documents s’eliminaran amb les seves fotos i PDF. Aquesta acció no es pot desfer.",
+      "emptyConfirm": "Buidar"
+    },
+    "intro": "Els documents eliminats es queden aquí {{days}} dies i després s’esborren amb les seves fotos i PDF.",
+    "empty": "La Paperera és buida",
+    "deletedSoon": "S’eliminarà aviat",
+    "deletedIn": "S’eliminarà d’aquí a {{days}} dies",
+    "restoreLabel": "Restaurar {{title}}",
+    "deleteForeverLabel": "Eliminar {{title}} definitivament",
+    "deleteForever": "Eliminar definitivament",
+    "emptyTrash": "Buidar la Paperera"
+  },
+  "menu": {
+    "close": "Tancar el menú",
+    "home": "Inici",
+    "favorites": "Preferits",
+    "deadlines": "Venciments",
+    "deadlinesUrgent": "Venciments, {{number}} per revisar",
+    "family": "Família",
+    "cards": "Targetes",
+    "backup": "Còpia de seguretat",
+    "backupDue": "Còpia de seguretat, pendent",
+    "help": "Ajuda i contacte",
+    "rate": "Valorar Sottomano",
+    "recommend": "Recomanar-la a un amic",
+    "trash": "Paperera",
+    "trashCount": "Paperera, {{number}}",
+    "password": "Contrasenyes",
+    "scan": "Escanejar",
+    "fromPhotos": "De Fotos",
+    "importFiles": "Importar fitxers",
+    "version": "Versió {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Tancar les notificacions",
+    "title": "Notificacions",
+    "markAllRead": "Marcar com a llegides",
+    "empty": "Cap notificació els darrers 7 dies.",
+    "today": "Avui",
+    "thisWeek": "Aquesta setmana",
+    "settings": "Configuració de les notificacions",
+    "unreadItem": "Sense llegir. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Va vèncer el {{date}}.",
+    "expiresToday": "Venç avui.",
+    "expiresOn": "Venç {{distance}}, el {{date}}.",
+    "amount": "Import: {{amount}}.",
+    "backupTitle": "Còpia de seguretat",
+    "backupLate": "Fa temps que no fas una còpia de seguretat dels teus documents.",
+    "backupNever": "Encara no has fet cap còpia de seguretat dels teus documents."
+  },
+  "deadlineReminders": {
+    "title": "Venciment proper",
+    "hiddenBody": "Un document venç {{date}} ({{distance}}). Obre Sottomano per veure’l.",
+    "body": "{{name}} venç {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Aparença",
+      "security": "Seguretat",
+      "reminders": "Avisos",
+      "backup": "Còpia de seguretat",
+      "info": "Informació"
+    },
+    "calendarOff": "Desactivat",
+    "alerts": {
+      "notificationsOffTitle": "Les notificacions estan desactivades",
+      "notificationsOffMessage": "Per rebre avisos, permet les notificacions de Sottomano a la Configuració de l’iPhone.",
+      "openSettings": "Obrir Configuració"
+    },
+    "lastBackup": {
+      "never": "Mai",
+      "today": "Avui",
+      "yesterday": "Ahir",
+      "daysAgo_one": "Fa {{count}} dia",
+      "daysAgo_other": "Fa {{count}} dies"
+    },
+    "categoryColors": "Colors de les categories",
+    "faceId": "Bloquejar amb Face ID",
+    "faceIdSubtitle": "Et reconeix cada vegada que obres l’app",
+    "hidePreviews": "Amagar les previsualitzacions",
+    "hidePreviewsSubtitle": "Les notificacions no mostren el document",
+    "notifications": "Notificacions",
+    "reminderTime": "Hora de l’avís",
+    "defaultReminder": "Avís per defecte",
+    "iconBadge": "Indicador a la icona de l’app",
+    "iconBadgeSubtitle": "Venciments passats o en els propers 7 dies",
+    "calendar": "Calendari «Sottomano»",
+    "notificationsBlocked": "Les notificacions estan bloquejades",
+    "notificationsBlockedSubtitle": "Permet-les a la Configuració de l’iPhone",
+    "backupNote": "La còpia de seguretat és un fitxer desat al teu telèfon, a l’app Fitxers. La pots copiar on vulguis. Sottomano també funciona sense internet.",
+    "createBackup": "Fer una còpia ara",
+    "restoreBackup": "Restaurar des d’una còpia",
+    "help": "Ajuda i contacte",
+    "privacy": "Privadesa",
+    "terms": "Condicions d’ús",
+    "rate": "Valorar Sottomano",
+    "debug": {
+      "limitPreview": "Previsualització del límit gratuït",
+      "limitPreviewSubtitle": "Només per a proves: mostra el + bloquejat, el tauler del límit i la targeta a Inici",
+      "emptyHome": "Previsualització d’Inici buit",
+      "emptyHomeSubtitle": "Només per a proves: Inici com si no hi hagués documents (les teves dades es conserven)",
+      "onboarding": "Tornar a veure la benvinguda",
+      "onboardingSubtitle": "Només per a proves: les pàgines de benvinguda 1–4"
+    },
+    "version": "Sottomano · versió {{version}}",
+    "theme": {
+      "title": "Tema",
+      "autoSubtitle": "Segueix la configuració del telèfon",
+      "auto": "Automàtic",
+      "light": "Clar",
+      "dark": "Fosc"
+    }
+  },
+  "backup": {
+    "title": "Còpia de seguretat",
+    "subtitle": "Una còpia de tots els teus documents, desada al teu telèfon.",
+    "keyProgress": "S’està protegint amb la teva contrasenya… pot trigar fins a un minut",
+    "whenToday": "avui a les {{time}}",
+    "whenDate": "{{date}} a les {{time}}",
+    "minLength": "Com a mínim {{min}} caràcters.",
+    "mismatch": "Les dues contrasenyes no coincideixen.",
+    "creating": "S’està creant la còpia…",
+    "copyDialogTitle": "Copiar la còpia de seguretat",
+    "opening": "S’està obrint la còpia…",
+    "checking": "S’estan comprovant els documents…",
+    "restoring": "S’està restaurant…",
+    "keepOpen": "Mantén l’app oberta fins que acabi.",
+    "forgotWarning": "Si oblides la contrasenya, la còpia no es podrà obrir.",
+    "passwordPlaceholder": "Contrasenya (com a mínim {{min}} caràcters)",
+    "repeatPlaceholder": "Repeteix la contrasenya",
+    "createAndSave": "Crear i desar",
+    "backupPassword": "Contrasenya de la còpia",
+    "openBackup": "Obrir la còpia",
+    "completed": "Còpia completada",
+    "lastBackup": "Darrera còpia",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Copiar el fitxer a un altre lloc",
+    "createNew": "Crear una còpia nova",
+    "noneTitle": "Encara no has fet cap còpia",
+    "noneText": "Si perds o canvies el telèfon, la còpia ho recupera tot.",
+    "createNow": "Fer una còpia ara",
+    "restoreSection": "Restaurar",
+    "restoreTitle": "Tens un telèfon nou?",
+    "restoreText": "Tria el fitxer de còpia per recuperar els teus documents, targetes i avisos.",
+    "chooseFile": "Triar un fitxer de còpia",
+    "remindersSection": "Avisos",
+    "remindMe": "Recordar-me de fer còpia",
+    "remindMeValue": "Recordar-me de fer còpia: {{value}}",
+    "footnote": "La còpia és un sol fitxer protegit amb la contrasenya que triïs: documents, fotos, targetes, persones i avisos. Copia-la en un altre lloc (Fitxers, iCloud Drive, un ordinador) perquè la tinguis encara que perdis el telèfon.",
+    "alerts": {
+      "createFailed": "No s’ha pogut fer la còpia",
+      "copyFailed": "No s’ha pogut copiar",
+      "restoreTitle": "Vols restaurar la còpia del {{date}}?",
+      "restoreMessage_one": "Conté {{count}} document. El que hi ha ara a l’app se substituirà.",
+      "restoreMessage_other": "Conté {{count}} documents. El que hi ha ara a l’app se substituirà.",
+      "restoreFailed": "No s’ha pogut restaurar",
+      "restoreFailedMessage": "No ha canviat res a l’app.\n\n{{reason}}",
+      "restored": "Còpia restaurada",
+      "restoredMessage": "Els teus documents han tornat."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Cada setmana",
+      "month": "Cada mes",
+      "never": "Mai"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Aquest fitxer no és una còpia de seguretat de Sottomano.",
+    "newerVersion": "Aquesta còpia es va fer amb una versió més recent de Sottomano. Actualitza l’app i torna-ho a provar.",
+    "empty": "El fitxer de còpia és buit o incomplet.",
+    "incomplete": "El fitxer de còpia és incomplet.",
+    "wrongPassword": "Contrasenya incorrecta. Revisa les majúscules i minúscules i torna-ho a provar.",
+    "damaged": "El fitxer de còpia està malmès o és incomplet."
+  },
+  "createBackup": {
+    "incompleteFile": "Fitxer incomplet: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "El contingut de la còpia no és vàlid.",
+    "newerApp": "Aquesta còpia prové d’una versió més recent de Sottomano. Actualitza l’app i torna-ho a provar."
+  },
+  "zipReader": {
+    "invalid": "Arxiu comprimit no vàlid",
+    "incomplete": "Arxiu comprimit incomplet"
+  },
+  "backupReminder": {
+    "none": "Encara no has fet cap còpia",
+    "old_one": "La teva darrera còpia és de fa {{count}} dia",
+    "old_other": "La teva darrera còpia és de fa {{count}} dies",
+    "link": "Fer una còpia ara",
+    "close": "Tancar l’avís",
+    "snooze_one": "Amagar durant {{count}} dia",
+    "snooze_other": "Amagar durant {{count}} dies"
+  },
+  "calendarSettings": {
+    "title": "Calendari",
+    "intro": "Els venciments van a un calendari a part, «Sottomano». El pots amagar a l’app Calendari; si el desactives aquí, s’elimina.",
+    "details": "Cada venciment és un esdeveniment de tot el dia «Venç: títol», sense cap altra dada del document. Si els avisos de Sottomano estan desactivats, l’esdeveniment t’avisa a les 9:00 del dia de l’avís; si estan activats, només t’avisa l’app, perquè no rebis dos avisos.",
+    "allowAccess": "Permetre l’accés a Calendari",
+    "denied": "S’ha denegat l’accés a Calendari. El pots activar a la Configuració de l’iPhone.",
+    "openSettings": "Obrir Configuració",
+    "switchLabel": "Venciments al calendari «Sottomano»",
+    "enabled_one": "{{count}} venciment al calendari «Sottomano»",
+    "enabled_other": "{{count}} venciments al calendari «Sottomano»",
+    "removeConfirm": "Vols eliminar de Calendari el calendari Sottomano i tots els seus venciments?",
+    "remove": "Eliminar",
+    "removed": "Calendari «Sottomano» eliminat"
+  },
+  "calendarSync": {
+    "eventTitle": "Venç: {{title}}",
+    "cannotCreate": "No s’ha pogut crear el calendari «Sottomano» en aquest iPhone."
+  },
+  "appearance": {
+    "intro": "Els colors de les categories predeterminades. Les categories que has creat conserven el seu color.",
+    "restoreButton": "Restaurar les categories predeterminades",
+    "restoreHint": "Recupera les categories predeterminades que vas eliminar.",
+    "paletteLabel": "Paleta {{name}}",
+    "alerts": {
+      "restoreTitle": "Vols restaurar les categories predeterminades?",
+      "restoreMessage": "Les que vas eliminar tornen amb el nom, la icona i el color originals. Els teus documents i les categories que vas crear no canvien.",
+      "nothingTitle": "No hi ha res per restaurar",
+      "nothingMessage": "Totes les categories predeterminades ja són a Inici.",
+      "restoredTitle": "Categories restaurades",
+      "restoredMessage_one": "{{count}} categoria ha tornat a Inici, abans d’«Altres».",
+      "restoredMessage_other": "{{count}} categories han tornat a Inici, abans d’«Altres».",
+      "restoreFailed": "No s’ha pogut restaurar"
+    }
+  },
+  "about": {
+    "version": "Versió {{version}}",
+    "privacy": "Privadesa",
+    "privacyFooter": "Si actives Calendari, els venciments s’escriuen al calendari de l’iPhone que triïs. Quan envies un document, tu decideixes amb qui el comparteixes.",
+    "onPhone": "Els teus documents es queden al teu telèfon",
+    "offline": "Sense compte i sense servidor: també funciona sense connexió",
+    "noTracking": "Sense seguiment i sense anuncis"
+  },
+  "terms": {
+    "intro": "Les condicions d’ús completes es publicaran amb la versió de l’App Store. En resum:",
+    "free": "Sottomano és gratis fins a {{limit}} documents i targetes",
+    "oneTime": "El desbloqueig és una compra única, sense subscripció",
+    "yours": "Els teus documents es queden al teu telèfon i són teus",
+    "backup": "Fes una còpia de seguretat per no perdre’ls si canvies de telèfon"
+  },
+  "limit": {
+    "later": "Més tard",
+    "title": "Has fet servir els teus {{limit}} espais gratuïts",
+    "text": "Tot el que has desat es queda aquí i funciona com sempre. Per afegir més documents i targetes, desbloqueja Sottomano.",
+    "stillWorks": {
+      "view": "Consultar els teus documents",
+      "send": "Enviar-los i compartir-los",
+      "cards": "Mostrar les targetes a la caixa",
+      "reminders": "Rebre avisos"
+    },
+    "blocked": "Afegir més documents o targetes",
+    "unlock": "Desbloquejar sense límits per {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}} de {{limit}} espais gratuïts utilitzats",
+    "accessibility": "{{title}}. Desbloquejar",
+    "unlock": "Desbloquejar"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Versió gratuïta: {{used}} de {{limit}} utilitzats",
+    "titleMenu": "Gratis: {{used}} de {{limit}} utilitzats",
+    "subtitle": "Desbloquejar sense límits per {{price}}",
+    "accessibility": "{{title}}. Desbloquejar sense límits per {{price}}",
+    "unlock": "Desbloquejar"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Et donem la benvinguda a Sottomano",
+        "text": "DNI, targetes, rebuts, garanties: tots els documents de casa en un sol lloc, sempre a mà.",
+        "info": "Es queden al teu telèfon i funcionen fins i tot sense internet"
+      },
+      "scan": {
+        "title": "Fotografia’l un cop",
+        "text": "Escaneja també diverses pàgines o importa fotos i PDF. Els trobaràs en ordre i els enviaràs tan lleugers com calgui."
+      },
+      "deadlines": {
+        "title": "Nosaltres vigilem els venciments",
+        "text": "T’avisem abans que venci un rebut o un document. També al teu Calendari, si vols."
+      },
+      "cards": {
+        "title": "Les teves targetes sempre a la butxaca",
+        "text": "Fotografia les teves targetes de fidelització: a la caixa, mostra el codi de barres o el QR amb un toc."
+      }
+    },
+    "skip": "Ometre",
+    "pageOf": "Pàgina {{page}} de {{total}}",
+    "start": "Començar",
+    "restore": "Restaurar des d’una còpia",
+    "art": {
+      "bills": "Rebuts",
+      "cards": "Targetes",
+      "health": "Salut",
+      "car": "Cotxe",
+      "pdfReady": "PDF a punt",
+      "billTitle": "Rebut de la llum",
+      "billExpires": "Venç d’aquí a 2 dies",
+      "gym": "Gimnàs",
+      "library": "Biblioteca",
+      "supermarket": "Supermercat"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "No s’ha pogut obrir el fitxer",
+    "title": "Fotografia el teu primer document",
+    "text": "Un rebut, el teu DNI o la garantia de la rentadora: en pocs segons és a resguard i sempre a mà.",
+    "snap": "Fotografiar un document",
+    "pdf": "Carregar un PDF",
+    "folders": "Les teves carpetes",
+    "emptyAccessibility": "{{name}}, buida",
+    "empty": "Buida",
+    "newCategory": "Nova categoria"
+  },
+  "splashOverlay": {
+    "tagline": "Els documents de casa, a punt per enviar"
+  },
+  "appActions": {
+    "shareText": "Et recomano Sottomano: els documents de casa, les targetes i els venciments sempre a mà, al telèfon i fins i tot sense internet.",
+    "rateTitle": "Valorar Sottomano",
+    "rateMessage": "Podràs deixar una valoració quan Sottomano sigui a l’App Store.",
+    "lockUnavailableTitle": "Bloqueig no disponible",
+    "lockUnavailableMessage": "Per bloquejar Sottomano necessites un codi a l’iPhone. Configura’l a Configuració › Face ID i codi i torna-ho a provar."
+  }
+}

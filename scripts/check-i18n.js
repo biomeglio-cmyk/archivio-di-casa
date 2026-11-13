@@ -61,14 +61,86 @@ const it = flatten(readLocale('it'));
 const en = flatten(readLocale('en'));
 const variables = (text) => [...text.matchAll(/\{\{\s*([\w.]+)[^}]*\}\}/g)].map((m) => m[1]).sort().join(',');
 
-for (const [key, value] of it) {
-  if (!en.has(key)) errors.push(`en.json: missing key "${key}"`);
-  else if (variables(value) !== variables(en.get(key))) errors.push(`en.json: "${key}" has different {{variables}}`);
-  if (value.trim() === '') errors.push(`it.json: empty value "${key}"`);
+const PLURAL = /_(zero|one|two|few|many|other)$/;
+// A plural key "a.b_one" → base "a.b"; the base keys and the plain keys of a file
+function shape(map) {
+  const plain = new Map();
+  const plurals = new Map(); // base → Map(category → text)
+  for (const [key, value] of map) {
+    const m = PLURAL.exec(key);
+    if (m) {
+      const base = key.slice(0, -m[0].length);
+      if (!plurals.has(base)) plurals.set(base, new Map());
+      plurals.get(base).set(m[1], value);
+    } else plain.set(key, value);
+  }
+  return { plain, plurals };
 }
-for (const [key, value] of en) {
-  if (!it.has(key)) errors.push(`it.json: missing key "${key}" (only in en.json)`);
-  if (value.trim() === '') errors.push(`en.json: empty value "${key}"`);
+
+// The categories a language really uses for counts (whole numbers 0–1000 and a few millions):
+// Russian one/few/many, Slovenian one/two/few/other, English one/other…
+function requiredCategories(lang) {
+  const rules = new Intl.PluralRules(lang);
+  const used = new Set();
+  for (let n = 0; n <= 1000; n++) used.add(rules.select(n));
+  return used;
+}
+const allowedCategories = (lang) => new Set(new Intl.PluralRules(lang).resolvedOptions().pluralCategories);
+
+// Every locale against the reference: same keys, the plural forms of its language, same {{variables}}
+function compareLocale(lang, map, reference) {
+  const file = `${lang}.json`;
+  const own = shape(map);
+  const ref = shape(reference);
+  const required = requiredCategories(lang);
+  const allowed = allowedCategories(lang);
+  for (const [key, value] of ref.plain) {
+    if (!own.plain.has(key)) {
+      if (own.plurals.has(key)) continue; // a plain English text can be a plural in another language
+      errors.push(`${file}: missing key "${key}"`);
+    } else if (variables(own.plain.get(key)) !== variables(value)) {
+      errors.push(`${file}: "${key}" has different {{variables}}`);
+    }
+  }
+  for (const [base, forms] of ref.plurals) {
+    const mine = own.plurals.get(base);
+    if (!mine) {
+      if (!own.plain.has(base)) errors.push(`${file}: missing plural key "${base}_…"`);
+      continue;
+    }
+    const refVars = variables([...forms.values()].join(' '));
+    for (const category of required) {
+      if (!mine.has(category)) errors.push(`${file}: "${base}" needs the plural form "_${category}"`);
+    }
+    for (const [category, text] of mine) {
+      if (!allowed.has(category)) errors.push(`${file}: "${base}_${category}" is not a plural form of ${lang}`);
+      const vars = variables(text);
+      // a form may leave out {{count}} ("un documento"), never add or lose other variables
+      if (vars.split(',').filter((v) => v && v !== 'count').join(',') !== refVars.split(',').filter((v) => v && v !== 'count').filter((v, i, a) => a.indexOf(v) === i).join(',')) {
+        errors.push(`${file}: "${base}_${category}" has different {{variables}}`);
+      }
+    }
+  }
+  for (const key of own.plain.keys()) {
+    if (!ref.plain.has(key) && !ref.plurals.has(key)) errors.push(`${file}: unknown key "${key}"`);
+  }
+  for (const base of own.plurals.keys()) {
+    if (!ref.plurals.has(base) && !ref.plain.has(base)) errors.push(`${file}: unknown plural key "${base}_…"`);
+  }
+  for (const [key, value] of map) if (String(value).trim() === '') errors.push(`${file}: empty value "${key}"`);
+}
+
+compareLocale('en', en, it);
+compareLocale('it', it, en);
+const LOCALES = fs
+  .readdirSync(I18N)
+  .filter((f) => /^[a-z]{2}(-[A-Z]{2})?\.json$/.test(f))
+  .map((f) => f.replace('.json', ''))
+  .filter((l) => l !== 'it' && l !== 'en');
+const onlyLocale = process.env.I18N_LOCALE; // I18N_LOCALE=de node scripts/check-i18n.js → one language
+for (const lang of LOCALES) {
+  if (onlyLocale && lang !== onlyLocale) continue;
+  compareLocale(lang, flatten(readLocale(lang)), en);
 }
 
 const PLURAL_SUFFIXES = ['_zero', '_one', '_two', '_few', '_many', '_other'];
@@ -227,4 +299,5 @@ if (errors.length) {
   console.error(`\n✖ i18n: ${errors.length} problem${errors.length === 1 ? '' : 's'}`);
   process.exit(1);
 }
-console.log(`✓ i18n: ${it.size} keys, it.json and en.json match, no hardcoded strings`);
+const checked = onlyLocale ? `it, en${LOCALES.includes(onlyLocale) ? `, ${onlyLocale}` : ''}` : `${LOCALES.length + 2} languages`;
+console.log(`✓ i18n: ${it.size} keys, ${checked} complete, no hardcoded strings`);

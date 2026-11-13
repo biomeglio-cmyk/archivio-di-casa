@@ -1,7 +1,7 @@
 import { useSQLiteContext } from 'expo-sqlite';
 import { useSyncExternalStore } from 'react';
 
-import i18n from '@/i18n';
+import { changeAppLanguage } from '@/i18n';
 import { rescheduleReminders } from '@/notifications/reminders';
 import {
   getLanguageSetting,
@@ -19,7 +19,7 @@ export function useLanguageSetting() {
 
   async function setSetting(next: LanguageSetting) {
     storeLanguageSetting(next);
-    await i18n.changeLanguage(resolveLanguage(next));
+    await changeAppLanguage(resolveLanguage(next));
     // The reminders already scheduled were written in the old language
     try {
       await rescheduleReminders(db);

@@ -67,8 +67,9 @@
     "title": "Language",
     "auto": "Automatic",
     "autoSubtitle": "Follows the phone language",
-    "italian": "Italiano",
-    "english": "English"
+    "search": "Search languages",
+    "autoDetail": "iPhone language: {{language}}",
+    "noResults": "No languages for “{{query}}”"
   },
   "palettes": {
     "sottomano": "Sottomano",

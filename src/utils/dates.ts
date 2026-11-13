@@ -1,5 +1,5 @@
 import { t } from '@/i18n';
-import { intlLocale, monthName, weekdayName } from '@/i18n/format';
+import { composesDates, intlLocale, monthName, weekdayName } from '@/i18n/format';
 
 // Turns an ISO date string (YYYY-MM-DD) into a local Date at midnight.
 // new Date('2026-11-09') would be read as UTC and could shift by one day.
@@ -9,10 +9,10 @@ export function parseISODate(iso: string): Date {
 }
 
 // "12 nov 2026" / "12 Nov 2026"
-export function formatDate(iso: string): string {
+export function formatDate(iso: string, month: 'short' | 'long' = 'short'): string {
   return parseISODate(iso).toLocaleDateString(intlLocale(), {
     day: 'numeric',
-    month: 'short',
+    month,
     year: 'numeric',
   });
 }
@@ -28,14 +28,24 @@ export function toISODate(date: Date): string {
 
 // "9 novembre" / "9 November"
 export function formatDayMonth(date: Date, width: 'long' | 'short' = 'long'): string {
+  if (!composesDates()) return date.toLocaleDateString(intlLocale(), { day: 'numeric', month: width });
   return `${date.getDate()} ${monthName(date.getMonth(), width)}`;
 }
 
 // "lun 9 nov" / "Mon 9 Nov"; the year is added only when it isn't the current one: "mer 14 lug 2027"
 export function formatShortDate(iso: string, today: Date = new Date()): string {
   const date = parseISODate(iso);
+  const sameYear = date.getFullYear() === today.getFullYear();
+  if (!composesDates()) {
+    return date.toLocaleDateString(intlLocale(), {
+      weekday: 'short',
+      day: 'numeric',
+      month: 'short',
+      ...(sameYear ? {} : { year: 'numeric' }),
+    });
+  }
   const base = `${weekdayName(date.getDay(), 'short')} ${formatDayMonth(date, 'short')}`;
-  return date.getFullYear() === today.getFullYear() ? base : `${base} ${date.getFullYear()}`;
+  return sameYear ? base : `${base} ${date.getFullYear()}`;
 }
 
 // "3 giorni", "2 mesi", "1 anno": days up to 45, then months, then years
@@ -68,12 +78,26 @@ export function capitalize(text: string): string {
 // "Giovedì 12 novembre" / "Thursday 12 November" (+ year if it isn't the current one)
 export function formatLongDay(iso: string, today: Date = new Date()): string {
   const date = parseISODate(iso);
+  const sameYear = date.getFullYear() === today.getFullYear();
+  if (!composesDates()) {
+    return capitalize(
+      date.toLocaleDateString(intlLocale(), {
+        weekday: 'long',
+        day: 'numeric',
+        month: 'long',
+        ...(sameYear ? {} : { year: 'numeric' }),
+      }),
+    );
+  }
   const base = `${capitalize(weekdayName(date.getDay()))} ${formatDayMonth(date)}`;
-  return date.getFullYear() === today.getFullYear() ? base : `${base} ${date.getFullYear()}`;
+  return sameYear ? base : `${base} ${date.getFullYear()}`;
 }
 
 // "Novembre 2026" / "November 2026"
 export function formatMonthTitle(year: number, month: number): string {
+  if (!composesDates()) {
+    return capitalize(new Date(year, month, 1).toLocaleDateString(intlLocale(), { month: 'long', year: 'numeric' }));
+  }
   return `${capitalize(monthName(month))} ${year}`;
 }
 

@@ -1,10 +1,18 @@
-import i18n from '@/i18n';
+import { currentLanguage } from '@/i18n';
+import { languageInfo } from '@/settings/language';
 
 // Dates, numbers and amounts in the active language (Intl), e.g. "€ 84,20" / "€84.20".
 
-// The Intl locale of the language: Italian, or British English (day before month, Monday first)
+// The Intl locale of the language ("de-DE"…); English is British (day before month, Monday first)
 export function intlLocale(): string {
-  return i18n.language === 'it' ? 'it-IT' : 'en-GB';
+  return languageInfo(currentLanguage()).locale;
+}
+
+// Italian and English compose dates from the names (as the design wants them); the other
+// languages use the whole Intl format of their locale (word order, "12." in German…)
+export function composesDates(): boolean {
+  const language = currentLanguage();
+  return language === 'it' || language === 'en';
 }
 
 const cache = new Map<string, Intl.DateTimeFormat>();
@@ -47,7 +55,7 @@ export function formatNumber(value: number, options?: Intl.NumberFormatOptions):
 // Integer cents → "€ 84,20" (Italian, as in the design) / "€84.20"
 export function formatMoney(cents: number): string {
   const amount = cents / 100;
-  if (i18n.language === 'it') {
+  if (currentLanguage() === 'it') {
     return `€ ${formatNumber(amount, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
   return formatNumber(amount, { style: 'currency', currency: 'EUR' });
@@ -55,5 +63,6 @@ export function formatMoney(cents: number): string {
 
 // The decimal separator of the language: "," / "."
 export function decimalSeparator(): string {
-  return i18n.language === 'it' ? ',' : '.';
+  const sample = new Intl.NumberFormat(intlLocale(), { minimumFractionDigits: 1 }).format(1.5);
+  return sample.replace(/\d/g, '').charAt(0) || '.';
 }

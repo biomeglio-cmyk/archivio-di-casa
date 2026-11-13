@@ -30,7 +30,7 @@ import { FREE_LIMIT_ENFORCED, setLimitPreview, useLimitPreview } from '@/setting
 import { chooseAction } from '@/utils/action-sheet';
 import { daysBefore } from '@/constants/deadline-options';
 import type { ThemeMode } from '@/settings/theme-mode';
-import type { LanguageSetting } from '@/settings/language';
+import { languageInfo } from '@/settings/language';
 import { t, useI18n } from '@/i18n';
 import { useLanguageSetting } from '@/i18n/use-language';
 import { Segmented } from '@/components/segmented';
@@ -167,7 +167,7 @@ export default function SettingsScreen() {
 
       <Section title={t('settings.sections.appearance')}>
         <ThemeRow />
-        <LanguageRow />
+        <LanguageRow onPress={() => open('/language')} />
         <SettingsRow
           symbol="paintpalette"
           tint={TINTS(theme).grey}
@@ -227,7 +227,7 @@ export default function SettingsScreen() {
               value={reminderTime}
               mode="time"
               display="spinner"
-              locale={language === 'it' ? 'it_IT' : 'en_GB'}
+              locale={languageInfo(language).locale.replace('-', '_')}
               accentColor={BRAND_COLOR(theme)}
               onValueChange={(_, date) => update({ reminderHour: date.getHours(), reminderMinute: date.getMinutes() })}
             />
@@ -365,32 +365,21 @@ function ThemeRow() {
   );
 }
 
-// "Lingua": globe in a lilac square; Automatica (the iPhone language when the app has it,
-// otherwise English) / Italiano / English. Switching is live, like the theme.
-const LANGUAGE_SETTINGS: LanguageSetting[] = ['auto', 'it', 'en'];
-
-function LanguageRow() {
+// "Lingua": globe in a lilac square, the language in its own name on the right ("Automatica"
+// under it when it follows the iPhone); it opens the searchable list (src/app/language.tsx)
+function LanguageRow({ onPress }: { onPress: () => void }) {
   const theme = useTheme();
-  const styles = useThemedStyles(makeStyles);
-  const { t } = useI18n();
-  const { setting, setSetting } = useLanguageSetting();
+  const { t, language } = useI18n();
+  const { setting } = useLanguageSetting();
   return (
-    <View style={styles.themeRow}>
-      <View style={styles.themeHead}>
-        <View style={[styles.icon, { backgroundColor: theme.lilac }]}>
-          <SymbolView name="globe" tintColor={theme.indigo} size={19} />
-        </View>
-        <View style={styles.rowTexts}>
-          <Text style={styles.rowLabel}>{t('language.title')}</Text>
-          {setting === 'auto' && <Text style={styles.rowSubtitle}>{t('language.autoSubtitle')}</Text>}
-        </View>
-      </View>
-      <Segmented
-        values={[t('language.auto'), t('language.italian'), t('language.english')]}
-        selectedIndex={LANGUAGE_SETTINGS.indexOf(setting)}
-        onChange={(index) => void setSetting(LANGUAGE_SETTINGS[index])}
-      />
-    </View>
+    <SettingsRow
+      symbol="globe"
+      tint={{ background: theme.lilac, icon: theme.indigo }}
+      label={t('language.title')}
+      subtitle={setting === 'auto' ? t('language.autoSubtitle') : undefined}
+      value={languageInfo(language).name}
+      onPress={onPress}
+    />
   );
 }
 

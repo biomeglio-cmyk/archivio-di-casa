@@ -67,8 +67,9 @@
     "title": "Lingua",
     "auto": "Automatica",
     "autoSubtitle": "Segue la lingua del telefono",
-    "italian": "Italiano",
-    "english": "English"
+    "search": "Cerca una lingua",
+    "autoDetail": "Lingua dell’iPhone: {{language}}",
+    "noResults": "Nessuna lingua per «{{query}}»"
   },
   "palettes": {
     "sottomano": "Sottomano",

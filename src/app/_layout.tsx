@@ -196,6 +196,15 @@ function RootContent() {
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
+          {/* "Lingua" from Impostazioni › Aspetto: the searchable list of languages */}
+          <Stack.Screen
+            name="language"
+            options={{
+              presentation: 'modal',
+              title: t('language.title'),
+              headerTitleStyle: { fontFamily: FONTS.semiBold },
+            }}
+          />
           <Stack.Screen
             name="backup"
             options={{ presentation: 'modal', title: t('navigation.titles.backup'), headerShown: false }}

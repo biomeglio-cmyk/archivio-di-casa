@@ -49,7 +49,7 @@ export const LIGHT = {
   menuActive: '#F1EFFD', // the current screen in the side menu
   gradient: ['#4A5CF0', '#7558E6'] as readonly [string, string], // main gradient (white text 4.9:1)
   brandShadow: '0 10px 22px rgba(100, 90, 235, 0.28)', // glow under anything in the main gradient
-  glass: null as null | { top: string; bottom: string; border: string; panelTop: string; panelBottom: string }, // menus and sheets: plain surface
+  glass: null as null | { top: string; bottom: string; border: string }, // menus and sheets: plain surface
   glow: null as null | string, // indigo light at the top of the screen (Tema notte only)
 };
 
@@ -87,13 +87,8 @@ export const DARK: Palette = {
   menuActive: 'rgba(169, 156, 255, 0.16)', // lilac #A99CFF at 16 %
   gradient: ['#4F5CF2', '#7A55F0'],
   brandShadow: '0 14px 32px rgba(100, 90, 235, 0.45)', // 45 %, wider
-  glass: {
-    top: 'rgba(36, 38, 68, 0.78)', // quick menu, action sheets
-    bottom: 'rgba(22, 23, 44, 0.62)',
-    border: 'rgba(255, 255, 255, 0.1)',
-    panelTop: 'rgba(36, 38, 68, 0.94)', // side menu: denser, over a strong blur
-    panelBottom: 'rgba(22, 23, 44, 0.92)',
-  },
+  // Side menu, quick menu and action sheets: dense glass over a strong blur
+  glass: { top: 'rgba(36, 38, 68, 0.94)', bottom: 'rgba(22, 23, 44, 0.92)', border: 'rgba(255, 255, 255, 0.1)' },
   glow: 'rgba(98, 104, 255, 0.16)',
 };
 

@@ -133,7 +133,7 @@ export default function MenuScreen() {
           panelStyle,
         ]}>
         {/* Tema notte: the glass of the design (#242644 78 % → #16172C 62 %) over the dimmed page */}
-        <GlassFill variant="panel" />
+        <GlassFill />
         <View style={styles.header}>
           <View style={styles.logo} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
             <LogoMark size={42} radius={9} />

@@ -381,5 +381,5 @@ Ricavate: la tonalità della cartella Sottomano, più profonda (luminosità abba
 
 ### Menu a vetro e fogli
 
-Vetro #242644 al 78 % → #16172C al 62 %, bordo bianco 10 %; voce attiva lilla #A99CFF al 16 %; velo dietro i fogli
+Vetro #242644 al 94 % → #16172C al 92 % sopra una sfocatura forte (intensità 80), per menu laterale, menu rapido e fogli azione (la prima versione al 78 % → 62 % era troppo trasparente), bordo bianco 10 %; voce attiva lilla #A99CFF al 16 %; velo dietro i fogli
 nero 55 %.

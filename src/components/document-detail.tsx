@@ -183,7 +183,7 @@ function DocumentScreen({
         // Near or past: red, and the exclamation mark for who can't tell the red
         <View style={styles.deadlineValue}>
           {near && <SymbolView name="exclamationmark.circle.fill" tintColor={theme.error} size={15} />}
-          <Text style={[styles.value, near && styles.valueAlert]}>
+          <Text style={[styles.value, stacked && styles.valueStacked, near && styles.valueAlert]}>
             {dayAndMonth(document.expiresAt)} · {distance}
           </Text>
         </View>
@@ -194,7 +194,7 @@ function DocumentScreen({
   const folder = document.docType ? `${category.name} › ${document.docType}` : category.name;
   details.push({
     label: t('documentDetail.folder'),
-    value: <Text style={styles.value}>{folder}</Text>,
+    value: <Text style={[styles.value, stacked && styles.valueStacked]}>{folder}</Text>,
     spoken: document.docType ? `${category.name}, ${document.docType}` : category.name,
   });
   if (document.paymentStatus) {
@@ -210,7 +210,7 @@ function DocumentScreen({
       value: (
         <View style={styles.person}>
           <PersonAvatar name={person.name} photoPath={person.photoPath} size={26} />
-          <Text style={styles.value}>{person.name}</Text>
+          <Text style={[styles.value, stacked && styles.valueStacked]}>{person.name}</Text>
         </View>
       ),
       spoken: person.name,
@@ -220,19 +220,19 @@ function DocumentScreen({
     details.push({
       label: t('documentDetail.number'),
       value: (
-        <Text style={styles.value} selectable>
+        <Text style={[styles.value, stacked && styles.valueStacked]} selectable>
           {document.number}
         </Text>
       ),
       spoken: document.number,
     });
   if (document.notes) {
-    details.push({ label: t('documentDetail.notes'), value: <Text style={styles.value}>{document.notes}</Text>, spoken: document.notes });
+    details.push({ label: t('documentDetail.notes'), value: <Text style={[styles.value, stacked && styles.valueStacked]}>{document.notes}</Text>, spoken: document.notes });
   }
   if (calendar.enabled && document.calendarEventId && calendar.calendarTitle) {
     details.push({
       label: t('documentDetail.inCalendar'),
-      value: <Text style={styles.value}>{calendar.calendarTitle}</Text>,
+      value: <Text style={[styles.value, stacked && styles.valueStacked]}>{calendar.calendarTitle}</Text>,
       spoken: calendar.calendarTitle,
     });
   }
@@ -720,6 +720,7 @@ const makeStyles = (c: Palette) =>
   },
   detailValueStacked: {
     alignItems: 'flex-start',
+    alignSelf: 'stretch',
   },
   deadlineValue: {
     flexShrink: 1,
@@ -744,7 +745,11 @@ const makeStyles = (c: Palette) =>
     fontSize: 15,
     fontFamily: FONTS.semiBold,
     color: c.text,
-    textAlign: 'right',
+    textAlign: 'right', // on the label's line: right-aligned
+  },
+  valueStacked: {
+    textAlign: 'left', // under its label (larger text): left-aligned like the label
+    alignSelf: 'flex-start',
   },
   valueAlert: {
     color: c.error,

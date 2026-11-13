@@ -75,7 +75,7 @@ export function PasswordCard({ documentId, username }: Props) {
         accessible
         accessibilityLabel={`${t('passwordCard.user')}, ${username ?? t('common.none')}`}>
         <ThemedText themeColor="textSecondary">{t('passwordCard.user')}</ThemedText>
-        <ThemedText style={styles.value} selectable>
+        <ThemedText style={[styles.value, stacked && styles.valueStacked]} selectable>
           {username ?? '—'}
         </ThemedText>
       </View>
@@ -84,7 +84,7 @@ export function PasswordCard({ documentId, username }: Props) {
         accessible
         accessibilityLabel={`${t('passwordCard.password')}, ${shown === null ? t('passwordCard.hidden') : shown}`}>
         <ThemedText themeColor="textSecondary">{t('passwordCard.password')}</ThemedText>
-        <ThemedText style={[styles.value, styles.password]}>
+        <ThemedText style={[styles.value, stacked && styles.valueStacked, styles.password]}>
           {shown ?? '••••••••'}
         </ThemedText>
       </View>
@@ -121,7 +121,11 @@ const makeStyles = (c: Palette) =>
   },
   value: {
     flexShrink: 1,
-    textAlign: 'right',
+    textAlign: 'right', // on the label's line
+  },
+  valueStacked: {
+    textAlign: 'left', // under the label (larger text)
+    alignSelf: 'flex-start',
   },
   password: {
     fontVariant: ['tabular-nums'],

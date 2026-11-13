@@ -1,1 +1,1585 @@
-{}
+{
+  "common": {
+    "cancel": "Abbrechen",
+    "ok": "OK",
+    "done": "Fertig",
+    "save": "Sichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "close": "Schließen",
+    "confirm": "Bestätigen",
+    "back": "Zurück",
+    "next": "Weiter",
+    "share": "Teilen",
+    "send": "Senden",
+    "search": "Suchen",
+    "add": "Hinzufügen",
+    "remove": "Entfernen",
+    "retry": "Erneut versuchen",
+    "continue": "Fortfahren",
+    "yes": "Ja",
+    "no": "Nein",
+    "restore": "Wiederherstellen",
+    "settings": "Einstellungen",
+    "more": "Mehr",
+    "none": "Keine",
+    "documents_one": "{{count}} Dokument",
+    "documents_other": "{{count}} Dokumente",
+    "pages_one": "{{count}} Seite",
+    "pages_other": "{{count}} Seiten",
+    "photos_one": "{{count}} Foto",
+    "photos_other": "{{count}} Fotos",
+    "wholeFamily": "Ganze Familie"
+  },
+  "dates": {
+    "today": "heute",
+    "tomorrow": "morgen",
+    "yesterday": "gestern",
+    "inSpan": "in {{span}}",
+    "spanAgo": "vor {{span}}",
+    "expiredYesterday": "gestern abgelaufen",
+    "expiredFor": "seit {{span}} abgelaufen",
+    "days_one": "{{count}} Tag",
+    "days_other": "{{count}} Tagen",
+    "months_one": "{{count}} Monat",
+    "months_other": "{{count}} Monaten",
+    "years_one": "{{count}} Jahr",
+    "years_other": "{{count}} Jahre"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Dokumente",
+      "cards": "Karten",
+      "utilities": "Rechnungen",
+      "home": "Zuhause",
+      "insurance": "Versicherungen",
+      "warranties": "Garantien & Belege",
+      "car": "Auto",
+      "tax": "Steuerbelege",
+      "householdStaff": "Haushaltshilfe",
+      "school": "Schule",
+      "pet": "Haustiere",
+      "password": "Passwörter",
+      "other": "Sonstiges"
+    }
+  },
+  "language": {
+    "title": "Sprache",
+    "auto": "Automatisch",
+    "autoSubtitle": "Wie die Sprache des iPhone",
+    "search": "Sprachen suchen",
+    "autoDetail": "iPhone-Sprache: {{language}}",
+    "noResults": "Keine Sprachen für „{{query}}“"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastell",
+    "vivid": "Kräftig",
+    "earth": "Erde",
+    "sea": "Meer",
+    "sunset": "Abendrot",
+    "night": "Nacht"
+  },
+  "home": {
+    "welcome": "Willkommen bei Sottomano",
+    "hello": "Hallo!",
+    "searchPlaceholder": "Dokument suchen",
+    "favorites": "Favoriten",
+    "seeAll": "Alle anzeigen",
+    "seeAllFavorites": "Alle Favoriten anzeigen",
+    "deadlines": "Fristen",
+    "seeAllDeadlines": "Alle Fristen anzeigen",
+    "archive": "Archiv",
+    "reorderDone": "Sortieren beenden",
+    "reorder": "Sortieren",
+    "reorderCategories": "Kategorien sortieren",
+    "reorderHint": "Zieh die Kategorien in die gewünschte Reihenfolge.",
+    "alerts": {
+      "orderNotSaved": "Reihenfolge konnte nicht gesichert werden"
+    },
+    "newCategory": "Neue Kategorie"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} Karte",
+    "cards_other": "{{count}} Karten"
+  },
+  "folder": {
+    "paidOn": "Bezahlt am {{date}}",
+    "expiredOn": "Abgelaufen am {{date}}",
+    "expiresOn": "Läuft ab am {{date}}",
+    "addedOn": "Hinzugefügt am {{date}}",
+    "newItem": {
+      "bill": "Neue Rechnung",
+      "card": "Neue Karte",
+      "warranty": "Neue Garantie",
+      "password": "Neues Passwort",
+      "document": "Neues Dokument"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Alle",
+      "documents": "Dokumente",
+      "cards": "Karten",
+      "deadlines": "Fristen"
+    },
+    "paid": "bezahlt",
+    "expiresOn": "läuft ab am {{date}}",
+    "folderSubtitle_one": "Ordner · {{count}} Dokument",
+    "folderSubtitle_other": "Ordner · {{count}} Dokumente",
+    "card": "Karte",
+    "deadlineSubtitle": "Frist · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Dokument suchen",
+    "fieldLabel": "Deine Dokumente durchsuchen",
+    "filter": "Filter",
+    "results_one": "{{count}} Ergebnis",
+    "results_other": "{{count}} Ergebnisse",
+    "noResults": "Keine Ergebnisse",
+    "noResultsHint": "Versuch es mit einem anderen Wort, zum Beispiel dem Namen eines Geschäfts.",
+    "hint": "Suche nach Namen, Ordnern, Typen, Notizen, Karten und Fristen."
+  },
+  "navigation": {
+    "home": "Start",
+    "favorites": "Favoriten",
+    "family": "Familie",
+    "deadlines": "Fristen",
+    "deadlinesToCheck_one": "Fristen, {{count}} zu prüfen",
+    "deadlinesToCheck_other": "Fristen, {{count}} zu prüfen",
+    "addLocked": "Dokument hinzufügen, gesperrt: Gratis-Limit erreicht",
+    "addDocument": "Dokument hinzufügen",
+    "titles": {
+      "editDocument": "Dokument bearbeiten",
+      "pages": "Seiten",
+      "deadline": "Frist",
+      "renewed": "Erneuert",
+      "previousVersion": "Frühere Version",
+      "newDocument": "Neues Dokument",
+      "appearance": "Darstellung",
+      "backup": "Backup",
+      "taxPackage": "Zum Steuerberater",
+      "trash": "Papierkorb",
+      "terms": "Nutzungsbedingungen",
+      "about": "Info & Datenschutz",
+      "newCard": "Neue Karte",
+      "editCard": "Karte bearbeiten"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Zum Verschieben ziehen oder die Aktionen „Nach oben“ und „Nach unten“ verwenden",
+    "moveEarlier": "Nach oben",
+    "moveLater": "Nach unten",
+    "footer": "Karten, Personen in der Familie und Favoriten sortierst du genauso: Halte eine Zeile gedrückt und zieh sie am Griff rechts."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Gedrückt halten: zum Verschieben ziehen oder für Aktionen loslassen"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Reihenfolge konnte nicht gesichert werden"
+    },
+    "reorderTitle": "Favoriten sortieren",
+    "reorderHint": "Halte einen Favoriten gedrückt und zieh ihn an die gewünschte Stelle.",
+    "yourFavorites": "Deine Favoriten",
+    "title": "Favoriten",
+    "subtitle": "Was du immer griffbereit haben willst",
+    "searchPlaceholder": "Favoriten suchen",
+    "viewList": "Liste",
+    "viewGrid": "Raster",
+    "count_one": "{{count}} Favorit",
+    "count_other": "{{count}} Favoriten",
+    "noMatch": "Keine Favoriten für „{{query}}“.",
+    "empty": "Du hast noch keine Favoriten.",
+    "footer": "Tippe bei einem Dokument auf das Herz, um es hier hinzuzufügen.",
+    "footerGrid": "Tippe bei einem Dokument auf das Herz, um es hier hinzuzufügen. Halte eine Kachel gedrückt und zieh sie, um zu sortieren.",
+    "footerList": "Tippe bei einem Dokument auf das Herz, um es hier hinzuzufügen. Halte eine Zeile gedrückt, um zu sortieren.",
+    "rowHint": "Gedrückt halten, um Favoriten zu sortieren",
+    "unpin": "Aus Favoriten entfernen",
+    "expires": "läuft {{distance}} ab"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} offen",
+    "alerts": {
+      "orderNotSaved": "Reihenfolge konnte nicht gesichert werden"
+    },
+    "actions": {
+      "editCategory": "Kategorie bearbeiten",
+      "sendToAccountant": "An Steuerberater senden",
+      "selectAndSend": "Auswählen und senden",
+      "reorder": "Sortieren",
+      "deleteCategory": "Kategorie löschen"
+    },
+    "moreLabel": "Kategorie {{name}} bearbeiten oder löschen",
+    "searchIn": "In {{name}} suchen",
+    "viewList": "Liste",
+    "viewGrid": "Raster",
+    "reorderHint": "Halte die Dokumente gedrückt und zieh sie in die gewünschte Reihenfolge.",
+    "allTypes": "Alle",
+    "noDocumentsFound": "Keine Dokumente gefunden.",
+    "sendTogether": "Zusammen senden ({{count}})",
+    "sheetTitle": "Kategorie {{name}}"
+  },
+  "folderRow": {
+    "due": "offen",
+    "paid": "bezahlt"
+  },
+  "homeSections": {
+    "expired": "Abgelaufen",
+    "expiresToday": "Läuft heute ab",
+    "expiresTomorrow": "Läuft morgen ab",
+    "expiresInDays_one": "Läuft in {{count}} Tag ab",
+    "expiresInDays_other": "Läuft in {{count}} Tagen ab",
+    "expiresOn": "Läuft ab: {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Aus Favoriten entfernen",
+    "pin": "Zu Favoriten hinzufügen"
+  },
+  "searchBar": {
+    "clear": "Text löschen"
+  },
+  "documentGrid": {
+    "addDocument": "Dokument hinzufügen"
+  },
+  "homeHeader": {
+    "menu": "Menü",
+    "notifications": "Mitteilungen",
+    "notificationsUnread_one": "Mitteilungen, {{count}} ungelesen",
+    "notificationsUnread_other": "Mitteilungen, {{count}} ungelesen"
+  },
+  "demoData": {
+    "people": {
+      "step": "Step",
+      "mom": "Mama",
+      "dad": "Papa"
+    },
+    "documents": {
+      "idCard": "Personalausweis",
+      "drivingLicence": "Führerschein",
+      "passport": "Reisepass",
+      "electricityBill": "Stromrechnung",
+      "carInsurance": "Kfz-Versicherung",
+      "carTax": "Kfz-Steuer",
+      "washingMachineWarranty": "Garantie Waschmaschine",
+      "gymCard": "Fitnessstudio-Karte",
+      "rentalContract": "Mietvertrag",
+      "pharmacyReceipt": "Apothekenbeleg",
+      "reportCard": "Zeugnis"
+    },
+    "notes": {
+      "electricityBill": "Lastschrift vom Bankkonto"
+    }
+  },
+  "documentTypes": {
+    "documents": "Personalausweis|Führerschein|Reisepass|Krankenkassenkarte|Steuer-ID",
+    "cards": "Kundenkarte|Fitness|Bibliothek|ÖPNV|Mitgliedschaft",
+    "utilities": "Strom|Gas|Wasser|Internet|Telefon|Müll",
+    "home": "Miete|Kredit|Hausgeld|Wartung|Vertrag",
+    "insurance": "Auto|Hausrat|Kranken|Leben|Reise",
+    "warranties": "Haushaltsgerät|Elektronik|Möbel|Kassenbon",
+    "car": "Kfz-Steuer|Versicherung|TÜV|Inspektion|Fahrzeugschein",
+    "tax": "Apotheke|Arztbesuch|Zahnarzt|Labor|Sport|Schule",
+    "householdStaff": "Lohnabrechnung|Abgaben|Vertrag",
+    "school": "Anmeldung|Zeugnis|Bescheinigung|Mensa|Klassenfahrt",
+    "pet": "Impfpass|Impfung|Tierarzt|Mikrochip",
+    "password": "E-Mail|Bank|Social Media|WLAN|Arbeit"
+  },
+  "pageLabels": {
+    "front": "Vorderseite",
+    "back": "Rückseite",
+    "page": "Seite {{number}}"
+  },
+  "statusBadge": {
+    "due": "Offen",
+    "paid": "Bezahlt"
+  },
+  "addActions": {
+    "openFileFailed": "Datei konnte nicht geöffnet werden"
+  },
+  "pickFiles": {
+    "takePhoto": "Foto aufnehmen",
+    "choosePhoto": "Aus Fotos auswählen",
+    "removePhoto": "Foto entfernen"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Mehrere Seiten",
+      "text": "Du kannst mehrere Seiten hintereinander scannen: Richte die nächste Seite aus, bevor du auf „Sichern“ tippst."
+    },
+    "cardTip": {
+      "title": "Echte Farben",
+      "text": "Für die echten Farben der Karte tippe im Scanner auf die Filtertaste und wähle „Foto“."
+    },
+    "gotIt": "Verstanden"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Kamerazugriff erforderlich",
+    "permissionText": "Sottomano verwendet die Kamera nur, um deine Dokumente zu fotografieren.",
+    "allow": "Erlauben",
+    "openSettings": "Einstellungen öffnen",
+    "readable": "Ist es lesbar?",
+    "pageReadable": "Seite {{number}}: Ist sie lesbar?",
+    "retake": "Wiederholen",
+    "addPage": "Seite hinzufügen",
+    "frameDocument": "Dokument ausrichten",
+    "framePage": "Seite {{number}} ausrichten",
+    "shoot": "Foto aufnehmen",
+    "finishWithPages_one": "Fertig, {{count}} Seite",
+    "finishWithPages_other": "Fertig, {{count}} Seiten"
+  },
+  "coverField": {
+    "label": "Titelbild",
+    "photo": "Foto",
+    "color": "Farbe",
+    "noPhotoHint": "Ohne Foto wird die Farbe angezeigt: Füge eine Seite hinzu, um ihr Foto als Titelbild zu nutzen.",
+    "categoryColor": "Ordnerfarbe",
+    "colorNumber": "Farbe {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Seiten hinzufügen",
+    "pinned": "In Favoriten",
+    "pin": "Zu Favoriten",
+    "renewed": "Erneuert",
+    "delete": "Löschen"
+  },
+  "documentFilesView": {
+    "document": "Dokument",
+    "openFailed": "Dokument konnte nicht geöffnet werden",
+    "pageOfSwipe": "Seite {{number}} von {{total}} · zum Blättern wischen",
+    "openFullScreen": "{{label}}, im Vollbild öffnen",
+    "missingFile": "Datei auf diesem iPhone nicht gefunden."
+  },
+  "filesEditor": {
+    "addBack": "Rückseite hinzufügen",
+    "addPage": "Seite hinzufügen",
+    "scan": "Scannen",
+    "photograph": "Foto aufnehmen",
+    "fromPhotos": "Aus Fotos",
+    "scannerUnavailableTitle": "Scanner nicht verfügbar",
+    "scannerUnavailableMessage": "Entferne die Seiten mit ✕ und füge neue hinzu.",
+    "replacePdf": "PDF ersetzen",
+    "importPdf": "PDF importieren",
+    "rescanAll": "Alle neu scannen",
+    "openFileFailed": "Datei konnte nicht geöffnet werden",
+    "page": "Seite",
+    "newTag": "neu",
+    "moveBefore": "{{name}} nach vorne",
+    "moveAfter": "{{name}} nach hinten",
+    "removePage": "{{name}} entfernen"
+  },
+  "documentDetail": {
+    "notFound": "Dokument nicht gefunden.",
+    "noPages": "Keine Seiten",
+    "photoPages_one": "Foto, {{count}} Seite",
+    "photoPages_other": "Fotos, {{count}} Seiten",
+    "amount": "Betrag",
+    "expired": "abgelaufen",
+    "inDays_one": "in {{count}} Tag",
+    "inDays_other": "in {{count}} Tagen",
+    "deadline": "Frist",
+    "folder": "Ordner",
+    "status": "Status",
+    "person": "Person",
+    "number": "Nummer",
+    "notes": "Notizen",
+    "inCalendar": "Im Kalender",
+    "view": "Dokument ansehen",
+    "unpin": "Aus Favoriten entfernen",
+    "pin": "Zu Favoriten hinzufügen",
+    "addPages": "Seiten hinzufügen",
+    "renewed": "Erneuert",
+    "delete": "Löschen",
+    "details": "Details",
+    "remindMe": "Erinnern",
+    "reminderNeedsDeadline": "Füge eine Frist hinzu, um erinnert zu werden",
+    "reminderWhen": "Erinnerung: {{when}}",
+    "noReminder": "Keine Erinnerung",
+    "previousVersions": "Frühere Versionen",
+    "versionUntil": "Bis {{date}}",
+    "versionExpired": "abgelaufen {{date}}",
+    "paidOnMarkDue": "Bezahlt am {{date}} · als offen markieren",
+    "markDue": "Als offen markieren",
+    "markPaid": "Als bezahlt markieren",
+    "firstOf": "1 von {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Offen",
+    "statusPaid": "Bezahlt",
+    "saveFailed": "Sichern fehlgeschlagen",
+    "folder": "Ordner",
+    "person": "Person",
+    "type": "Typ",
+    "otherType": "Anderen Typ eingeben …",
+    "noType": "Kein Typ",
+    "typeExample": "Zum Beispiel: Strom, Kfz-Steuer, Zahnarzt",
+    "dueOn": "Am {{date}}",
+    "noDeadline": "Keine Frist",
+    "nameSection": "Name",
+    "namePlaceholder": "Name des Dokuments",
+    "whereSection": "Speicherort",
+    "choose": "Auswählen …",
+    "deadlineSection": "Frist",
+    "addDeadline": "Frist hinzufügen",
+    "remindMe": "Erinnern",
+    "whenToRemind": "Wann erinnern",
+    "repeats": "Wiederholen",
+    "never": "Nie",
+    "everySpan": "Alle {{span}}",
+    "every": "Alle",
+    "notesSection": "Notizen",
+    "notesPlaceholder": "Zum Beispiel: per Lastschrift bezahlt, Erstattung beantragen …",
+    "pin": "Zu Favoriten hinzufügen",
+    "pinSubtitle": "Direkt auf dem Startbildschirm finden",
+    "amountSection": "Betrag und Status",
+    "amount": "Betrag",
+    "amountInEuro": "Betrag in Euro",
+    "accessSection": "Anmeldung",
+    "username": "Benutzername",
+    "usernamePlaceholder": "name@beispiel.de",
+    "password": "Passwort",
+    "passwordUnchanged": "•••••••• (unverändert)",
+    "passwordNote": "Das Passwort bleibt nur im Schlüsselbund des iPhone.",
+    "numberSection": "Dokumentnummer",
+    "numberPlaceholder": "Z. B. L01X00T47",
+    "saveChanges": "Änderungen sichern",
+    "saveDocument": "Dokument sichern",
+    "amountHint": "Gib den Betrag so ein: {{example}}.",
+    "missingNameAndFolder": "Gib zum Sichern den Namen ein und wähle den Ordner.",
+    "missingName": "Gib zum Sichern den Namen ein.",
+    "missingFolder": "Wähle zum Sichern den Ordner.",
+    "deleteDocument": "Dokument löschen"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Scannen",
+      "photos": "Aus Fotos",
+      "pdf": "Aus PDF-Datei",
+      "card": "Karte",
+      "manual": "Manuell"
+    },
+    "hintFirst": "Dokument ausrichten · iPhone ruhig halten",
+    "hintNext": "Seite {{number}} aufgenommen · nächste ausrichten",
+    "title": "Neues Dokument",
+    "flashOff": "Blitz aus",
+    "flashOn": "Blitz ein",
+    "scanWithIos": "Mit dem iOS-Scanner scannen",
+    "tapToScan": "Zum Scannen tippen: Die Ränder werden automatisch erkannt",
+    "permissionTitle": "Kamerazugriff erforderlich",
+    "permissionText": "Sottomano verwendet sie nur, um deine Dokumente zu fotografieren.",
+    "allow": "Erlauben",
+    "openSettings": "Einstellungen öffnen",
+    "howToAdd": "Hinzufügen per",
+    "chooseFromGallery": "Aus Mediathek wählen",
+    "shoot": "Foto aufnehmen",
+    "goOnWith_one": "Weiter mit {{count}} Seite",
+    "goOnWith_other": "Weiter mit {{count}} Seiten",
+    "noPages": "Keine Seiten",
+    "countNext": "weiter ›",
+    "countPages": "Seiten"
+  },
+  "newDocument": {
+    "readTitle": "Aus dem Dokument gelesen",
+    "readText": "Name aus der Datei übernommen: {{name}}. Prüfe ihn und korrigiere ihn bei Bedarf.",
+    "checkTitle": "Angaben prüfen",
+    "checkText_one": "{{count}} Seite erfasst. Gib den Namen und, falls vorhanden, die Frist ein: Du findest sie unter „Fristen“.",
+    "checkText_other": "{{count}} Seiten erfasst. Gib den Namen und, falls vorhanden, die Frist ein: Du findest sie unter „Fristen“.",
+    "heading": "Neues Dokument"
+  },
+  "editDocument": {
+    "heading": "Dokument bearbeiten"
+  },
+  "documentVersion": {
+    "replacedOn": "Ersetzt am {{date}}",
+    "expiredOn": "abgelaufen am {{date}}",
+    "previewTitle": "{{title}} (frühere Version)"
+  },
+  "documentPages": {
+    "saveFailed": "Seiten konnten nicht gesichert werden"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Löschen fehlgeschlagen",
+    "title": "{{title}} löschen?",
+    "message_one": "Das Dokument und seine Erinnerung kommen in den Papierkorb. Du kannst es {{count}} Tag lang unter Menü › Papierkorb wiederherstellen.",
+    "message_other": "Das Dokument und seine Erinnerung kommen in den Papierkorb. Du kannst es {{count}} Tage lang unter Menü › Papierkorb wiederherstellen.",
+    "confirm": "Dokument löschen"
+  },
+  "renew": {
+    "saveFailed": "Sichern fehlgeschlagen",
+    "deadline": "Frist",
+    "repeatFooter": "{{repeat}}: Das neue Datum wird aus dem alten berechnet.",
+    "was": "Bisher",
+    "newDeadline": "Neue Frist",
+    "newDocument": "Neues Dokument",
+    "withScanFooter": "Die aktuellen Seiten werden zur „Früheren Version“, die du in den Details findest.",
+    "withoutScanFooter": "Schalte es ein, wenn du das neue Dokument scannen willst.",
+    "addNewScan": "Neuen Scan hinzufügen"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · nach unten scrollen",
+    "pagesSubtitle_one": "{{count}} Seite",
+    "pagesSubtitle_other": "{{count}} Seiten · nach unten scrollen",
+    "pageOf": "Seite {{number}} von {{total}}",
+    "noPages": "Dieses Dokument hat keine Seiten.",
+    "zoom": "Zoom",
+    "zoomOut": "Verkleinern",
+    "zoomIn": "Vergrößern",
+    "pageShort": "Seite {{number}} von {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "Tag",
+      "day_other": "Tage",
+      "week_one": "Woche",
+      "week_other": "Wochen",
+      "month_one": "Monat",
+      "month_other": "Monate",
+      "year_one": "Jahr",
+      "year_other": "Jahre"
+    },
+    "count": {
+      "day_one": "{{count}} Tag",
+      "day_other": "{{count}} Tage",
+      "week_one": "{{count}} Woche",
+      "week_other": "{{count}} Wochen",
+      "month_one": "{{count}} Monat",
+      "month_other": "{{count}} Monate",
+      "year_one": "{{count}} Jahr",
+      "year_other": "{{count}} Jahre"
+    },
+    "every": {
+      "day_one": "Jeden Tag",
+      "day_other": "Alle {{count}} Tage",
+      "week_one": "Jede Woche",
+      "week_other": "Alle {{count}} Wochen",
+      "month_one": "Jeden Monat",
+      "month_other": "Alle {{count}} Monate",
+      "year_one": "Jedes Jahr",
+      "year_other": "Alle {{count}} Jahre"
+    },
+    "repeats": {
+      "day_one": "Wiederholt sich täglich",
+      "day_other": "Wiederholt sich alle {{count}} Tage",
+      "week_one": "Wiederholt sich wöchentlich",
+      "week_other": "Wiederholt sich alle {{count}} Wochen",
+      "month_one": "Wiederholt sich monatlich",
+      "month_other": "Wiederholt sich alle {{count}} Monate",
+      "year_one": "Wiederholt sich jährlich",
+      "year_other": "Wiederholt sich alle {{count}} Jahre"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Zu erledigen",
+    "thisWeek": "Diese Woche",
+    "upcomingNone": "In den nächsten Monaten steht nichts an",
+    "upcoming_one": "{{count}} Sache in den nächsten Monaten zu erledigen",
+    "upcoming_other": "{{count}} Sachen in den nächsten Monaten zu erledigen"
+  },
+  "deadlineOptions": {
+    "sameDay": "Am selben Tag",
+    "daysBefore_one": "{{count}} Tag vorher",
+    "daysBefore_other": "{{count}} Tage vorher",
+    "defaultChoice": "{{label}} (Standard)"
+  },
+  "personRoles": {
+    "you": "Du",
+    "choice": {
+      "me": "Das bin ich",
+      "partner": "Partner:in",
+      "child": "Sohn oder Tochter",
+      "parent": "Elternteil",
+      "sibling": "Bruder oder Schwester",
+      "other": "Andere"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Die Kategorie „Sonstiges“ existiert nicht.",
+    "otherNotDeletable": "Die Kategorie „Sonstiges“ kann nicht gelöscht werden."
+  },
+  "deadlineChip": {
+    "overdue": "Abgelaufen",
+    "today": "Heute",
+    "dueToday": "Heute fällig",
+    "dueIn_one": "Fällig in {{count}} Tag",
+    "dueIn_other": "Fällig in {{count}} Tagen"
+  },
+  "deadlineListRow": {
+    "hint": "Gedrückt halten, um die Frist zu bearbeiten oder zu entfernen",
+    "statusDue": "offen",
+    "statusPaid": "bezahlt"
+  },
+  "deadlineSection": {
+    "title": "Frist",
+    "emptyFooter": "Mit Erinnerung auf dem iPhone und, falls aktiviert, im Kalender „Sottomano“.",
+    "add": "Frist hinzufügen",
+    "expiresOn": "Fällig am",
+    "repeats": "Wiederholen",
+    "never": "Nie",
+    "reminder": "Erinnerung"
+  },
+  "dateCalendar": {
+    "previousMonth": "Vorheriger Monat",
+    "nextMonth": "Nächster Monat"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Nächste Woche",
+    "previousWeek": "Vorherige Woche",
+    "weekdayDate": "{{weekday}}, {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} Frist",
+    "dayWithDeadlines_other": "{{day}}, {{count}} Fristen"
+  },
+  "deadlines": {
+    "title": "Fristen",
+    "newReminder": "Neue Erinnerung",
+    "week": "Woche",
+    "month": "Monat",
+    "openDocument": "Dokument öffnen",
+    "editDeadline": "Frist bearbeiten",
+    "markDue": "Als offen markieren",
+    "markPaid": "Als bezahlt markieren",
+    "removeDeadline": "Frist entfernen",
+    "removeAlert": {
+      "title": "Frist entfernen?",
+      "message": "Das Dokument bleibt erhalten; Erinnerung und Kalendereintrag werden entfernt.",
+      "confirm": "Entfernen"
+    },
+    "emptyTitle": "Keine anstehenden Fristen",
+    "emptyText": "Tippe auf +, um ein Dokument mit Frist hinzuzufügen: Es erscheint hier und im Kalender.",
+    "sheetSubtitle": "Fällig {{date}}",
+    "dayRepeats": "wiederholt",
+    "dayReminder": "Erinnerung",
+    "dayEmpty": "Keine Fristen an diesem Tag"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Sichern fehlgeschlagen",
+    "date": "Datum",
+    "footer": "Die Erinnerung kommt auf dein iPhone; ist der Kalender aktiviert, steht die Frist auch in „Sottomano“.",
+    "every": "Alle"
+  },
+  "family": {
+    "title": "Familie",
+    "subtitle": "Ein Profil für alle im Haushalt",
+    "addPerson": "Person hinzufügen",
+    "members": "Mitglieder",
+    "orderSaveFailed": "Reihenfolge konnte nicht gesichert werden",
+    "reorderTitle": "Familie sortieren",
+    "reorderHint": "Halte eine Person gedrückt und zieh sie an die gewünschte Stelle.",
+    "privacyNote": "Alles bleibt auf diesem iPhone. Um jemandem ein Dokument zu senden, öffne es und tippe auf „Senden“.",
+    "youSpoken": "du",
+    "reorderA11yHint": "Gedrückt halten, um die Familie zu sortieren",
+    "expiring_one": "{{count}} läuft ab",
+    "expiring_other": "{{count}} laufen ab"
+  },
+  "personScreen": {
+    "photoFailed": "Foto konnte nicht verwendet werden",
+    "editPerson": "Person bearbeiten",
+    "selectAndSend": "Auswählen und senden",
+    "deletePerson": "Person löschen",
+    "moreA11y": "{{name}} bearbeiten oder löschen",
+    "changePhoto": "Foto ändern",
+    "editProfile": "Profil bearbeiten",
+    "documentsSection": "Dokumente · {{count}}",
+    "addDocument": "Dokument hinzufügen",
+    "sendTogether": "Zusammen senden ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Sichern fehlgeschlagen",
+    "newPerson": "Neue Person",
+    "addPhoto": "Foto hinzufügen",
+    "name": "Name",
+    "namePlaceholder": "Wie heißt die Person?",
+    "role": "Wer ist das?",
+    "roleA11y": "Wer die Person für dich ist: {{role}}",
+    "note": "Das Profil bleibt auf diesem iPhone. Es hilft dir, die Dokumente aller in Ordnung zu halten.",
+    "addToFamily": "Zur Familie hinzufügen",
+    "roleSheetTitle": "Wer ist das für dich?"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Löschen fehlgeschlagen",
+    "title": "Kategorie {{name}} löschen?",
+    "messageWithDocuments_one": "Sie enthält {{count}} Dokument. Was soll damit passieren?",
+    "messageWithDocuments_other": "Sie enthält {{count}} Dokumente. Was soll damit passieren?",
+    "messageWithDocumentsRestorable_one": "Sie enthält {{count}} Dokument. Was soll damit passieren? Du kannst die Kategorie unter „Neue Kategorie“ wiederherstellen.",
+    "messageWithDocumentsRestorable_other": "Sie enthält {{count}} Dokumente. Was soll damit passieren? Du kannst die Kategorie unter „Neue Kategorie“ wiederherstellen.",
+    "messageEmpty": "Die Kategorie ist leer.",
+    "messageEmptyRestorable": "Die Kategorie ist leer. Du kannst sie unter „Neue Kategorie“ wiederherstellen.",
+    "deleteAll": "Alles löschen",
+    "confirm": "Kategorie löschen",
+    "choicesA11y": "Was mit den Dokumenten passieren soll",
+    "moveLabel": "Nach „Sonstiges“ verschieben",
+    "moveDetailPassword": "Sie bleiben in der App, unter „Sonstiges“, ohne Benutzername und Passwort",
+    "moveDetail": "Sie bleiben in der App, in einem allgemeinen Ordner",
+    "trashLabel": "Löschen",
+    "trashDetail_one": "Sie kommen in den Papierkorb: Du kannst sie {{count}} Tag lang wiederherstellen",
+    "trashDetail_other": "Sie kommen in den Papierkorb: Du kannst sie {{count}} Tage lang wiederherstellen"
+  },
+  "deletePerson": {
+    "title": "{{name}} aus der Familie entfernen?",
+    "messageWithDocuments_one": "{{name}} hat {{count}} Dokument. Was soll damit passieren?",
+    "messageWithDocuments_other": "{{name}} hat {{count}} Dokumente. Was soll damit passieren?",
+    "messageEmpty": "Das Profil wird von diesem iPhone entfernt.",
+    "familyLabel": "Zu „Ganze Familie“ verschieben",
+    "familyDetail": "Sie bleiben in der App, für alle sichtbar",
+    "trashDetail_one": "Sie gehen mit dem Profil: Sie bleiben {{count}} Tag im Papierkorb",
+    "trashDetail_other": "Sie gehen mit dem Profil: Sie bleiben {{count}} Tage im Papierkorb"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Haustiere",
+      "document": "Dokument",
+      "home": "Zuhause",
+      "car": "Auto",
+      "health": "Gesundheit",
+      "school": "Schule",
+      "work": "Arbeit",
+      "keys": "Schlüssel",
+      "travel": "Reisen",
+      "expenses": "Ausgaben"
+    },
+    "restoreFailed": "Wiederherstellen fehlgeschlagen",
+    "editTitle": "Kategorie bearbeiten",
+    "newTitle": "Neue Kategorie",
+    "restoreSection": "Standardkategorie wiederherstellen",
+    "restoreA11y": "{{name}} wiederherstellen",
+    "restoreHint": "Sie kommt so zurück, wie sie war, mit Farben, Symbol und Feldern. Oder erstelle unten eine neue.",
+    "previewA11y": "Vorschau der Kategorie",
+    "namePlaceholder": "Z. B. Haustiere",
+    "nameA11y": "Name der Kategorie",
+    "color": "Farbe",
+    "paletteColor": "Farbe aus Darstellung",
+    "colorNumber": "Farbe {{number}}",
+    "followsPaletteHint": "Die Farbe folgt der unter „Darstellung“ gewählten Palette.",
+    "ownColorHint": "Deine eigene Farbe: Sie ändert sich nicht mit der Darstellung.",
+    "icon": "Symbol",
+    "forWhom": "Für wen",
+    "forWhomA11y": "Für wen diese Kategorie ist: {{name}}",
+    "forWhomHint": "Neue Dokumente in dieser Kategorie sind zuerst dieser Person zugeordnet.",
+    "create": "Kategorie erstellen"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Website oder App",
+        "namePlaceholder": "Zum Beispiel: Onlinebanking",
+        "userLabel": "Benutzername oder E-Mail",
+        "userPlaceholder": "name@email.de",
+        "passwordLabel": "Passwort",
+        "notePlaceholder": "Zum Beispiel: Sicherheitsfrage, Wiederherstellungscode …"
+      },
+      "wifi": {
+        "name": "WLAN",
+        "namePlaceholder": "Zum Beispiel: WLAN zu Hause",
+        "userLabel": "Netzwerkname",
+        "userPlaceholder": "Mueller_5G",
+        "passwordLabel": "Netzwerkpasswort",
+        "notePlaceholder": "Zum Beispiel: Der Router steht im Wohnzimmer hinter dem Fernseher …"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Zum Beispiel: Girokarte",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Zum Beispiel: Julias Karte …"
+      },
+      "other": {
+        "name": "Andere",
+        "namePlaceholder": "Zum Beispiel: Alarmanlage",
+        "userLabel": "Benutzername",
+        "userPlaceholder": "Optional",
+        "passwordLabel": "Code oder Passwort",
+        "notePlaceholder": "Wofür es ist, wo es verwendet wird …"
+      }
+    },
+    "colors": {
+      "aqua": "Aqua",
+      "indigo": "Indigo",
+      "apricot": "Aprikose",
+      "pink": "Rosa",
+      "mint": "Mint",
+      "sky": "Himmel",
+      "graphite": "Graphit"
+    },
+    "icons": {
+      "key": "Schlüssel",
+      "lock": "Schloss",
+      "globe": "Globus",
+      "wifi": "WLAN",
+      "bank": "Bank",
+      "card": "Karte",
+      "mail": "E-Mail",
+      "home": "Zuhause",
+      "car": "Auto",
+      "shield": "Schild",
+      "cart": "Einkaufswagen",
+      "star": "Stern"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Nur Ziffern",
+    "strength": {
+      "weak": "Schwach",
+      "fair": "Mittel",
+      "good": "Gut",
+      "strong": "Stark"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Bestätigen, um die Sperre zu aktivieren"
+  },
+  "appLock": {
+    "prompt": "Sottomano entsperren",
+    "unlock": "Entsperren",
+    "unlockWith": {
+      "faceId": "Mit Face ID entsperren",
+      "touchId": "Mit Touch ID entsperren",
+      "passcode": "Mit Code entsperren"
+    },
+    "message": "Deine Dokumente sind geschützt"
+  },
+  "passwordForm": {
+    "showPrompt": "Passwort anzeigen",
+    "copyPrompt": "Passwort kopieren",
+    "copiedTitle": "Kopiert",
+    "copiedMessage": "Es wird in 1 Minute aus der Zwischenablage gelöscht.",
+    "scannerUnavailableTitle": "Scanner nicht verfügbar",
+    "scannerUnavailableMessage": "Wähle das Bild aus deiner Fotomediathek.",
+    "saveFailed": "Sichern fehlgeschlagen",
+    "editTitle": "Passwort bearbeiten",
+    "newTitle": "Neues Passwort",
+    "privacy": "Sie bleiben nur auf diesem iPhone und öffnen sich mit Face ID.",
+    "sections": {
+      "what": "Was du sicherst",
+      "name": "Name",
+      "preview": "Vorschau",
+      "access": "Anmeldung",
+      "site": "Website oder App",
+      "whose": "Wem gehört es",
+      "notes": "Notizen"
+    },
+    "typesLabel": "Passworttyp",
+    "customTypePlaceholder": "Was ist es? Alarmanlage, Tresor, Schloss …",
+    "customTypeLabel": "Was es ist",
+    "customTypeHint": "Es wird ein neuer Typ, den du beim nächsten Mal in der Auswahl findest.",
+    "previewTitle": "So sieht es in der Liste aus",
+    "previewText": "Eine Farbe und ein Symbol oder ein Bild.",
+    "color": "Farbe",
+    "colorLabel": "Vorschaufarbe",
+    "icon": "Symbol",
+    "iconLabel": "Vorschausymbol",
+    "image": "Bild",
+    "scan": "Scannen",
+    "gallery": "Aus Fotos",
+    "removeImage": "Bild entfernen und Farbe und Symbol verwenden",
+    "passwordPlaceholder": "Eingeben oder erzeugen",
+    "show": "Einblenden",
+    "hide": "Ausblenden",
+    "copy": "Kopieren",
+    "saved": "Gesichert",
+    "generate": "Starkes Passwort erzeugen",
+    "urlPlaceholder": "www.beispiel.de",
+    "urlLabel": "Website-Adresse",
+    "wifiQrTitle": "QR-Code für Gäste",
+    "wifiQrSubtitle": "Scannen und verbinden",
+    "person": "Person",
+    "personA11y": "Person, {{name}}",
+    "favoriteTitle": "Zu Favoriten hinzufügen",
+    "favoriteSubtitle": "Du findest es direkt auf dem Startbildschirm",
+    "saveButton": "Passwort sichern",
+    "saveHint": "Gib zum Sichern einen Namen ein."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Kein Passwort",
+    "noPasswordMessage": "Füge es über „Bearbeiten“ hinzu.",
+    "showPrompt": {
+      "site": "Passwort anzeigen",
+      "wifi": "Netzwerkpasswort anzeigen",
+      "pin": "PIN anzeigen",
+      "other": "Code oder Passwort anzeigen"
+    },
+    "copyPrompt": {
+      "site": "Passwort kopieren",
+      "wifi": "Netzwerkpasswort kopieren",
+      "pin": "PIN kopieren",
+      "other": "Code oder Passwort kopieren"
+    },
+    "copyUser": {
+      "site": "Benutzername oder E-Mail kopieren",
+      "wifi": "Netzwerkname kopieren",
+      "pin": "Benutzername kopieren",
+      "other": "Benutzername kopieren"
+    },
+    "copiedTitle": "Kopiert",
+    "copiedMessage": "Es wird in 1 Minute aus der Zwischenablage gelöscht.",
+    "copiedTextTitle": "Kopiert",
+    "qrPrompt": "QR-Code für Gäste anzeigen",
+    "invalidAddress": "Ungültige Adresse",
+    "removeFavorite": "Aus Favoriten entfernen",
+    "favoriteTitle": "Zu Favoriten hinzufügen",
+    "favoriteSubtitle": "Du findest es direkt auf dem Startbildschirm",
+    "moreActions": "Weitere Aktionen",
+    "sections": {
+      "access": "Anmeldung",
+      "site": "Website oder App",
+      "wifiQr": "QR-Code für Gäste",
+      "whose": "Wem gehört es",
+      "notes": "Notizen"
+    },
+    "hidden": "Verborgen",
+    "show": "Einblenden",
+    "hide": "Ausblenden",
+    "copy": "Kopieren",
+    "locked": "Sichtbar nach Face ID oder iPhone-Code",
+    "wifiQrLabel": "QR-Code des WLAN-Netzwerks",
+    "qrHint": "Mit der Kamera scannen und verbinden.",
+    "qrLocked": "Der QR-Code enthält das Passwort: Er ist nach Face ID oder iPhone-Code sichtbar.",
+    "qrNoNetwork": "Füge den Netzwerknamen über „Bearbeiten“ hinzu, um den QR-Code zu erhalten.",
+    "showQr": "QR-Code anzeigen",
+    "hideQr": "QR-Code ausblenden",
+    "person": "Person",
+    "moveToTrash": "In den Papierkorb"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Kein Passwort",
+    "noPasswordMessage": "Füge es über „Bearbeiten“ hinzu.",
+    "showPrompt": "Passwort anzeigen",
+    "copyPrompt": "Passwort kopieren",
+    "copiedTitle": "Passwort kopiert",
+    "copiedMessage": "Es wird in 1 Minute aus der Zwischenablage gelöscht.",
+    "user": "Benutzername",
+    "password": "Passwort",
+    "hidden": "Passwort verborgen",
+    "show": "Einblenden",
+    "hide": "Ausblenden",
+    "copy": "Kopieren"
+  },
+  "cardForm": {
+    "found": "Gefunden: {{name}}",
+    "foundBarcode": "Gefunden: Barcode {{name}}",
+    "handwritten": "Code von Hand eingegeben",
+    "noCode": "Kein Code gelesen",
+    "photoOpenFailed": "Foto konnte nicht geöffnet werden",
+    "saveFailed": "Sichern fehlgeschlagen",
+    "retakeFront": "Neu aufnehmen",
+    "retakePhoto": "Foto wiederholen",
+    "recognized": "Karte erkannt",
+    "tapRetake": "Tippe auf „Neu aufnehmen“, um sie zu fotografieren",
+    "fromPhotos": "Aus Fotos",
+    "cover": "Titelbild",
+    "coverPhotoCaption": "Aus dem Foto der Karte zugeschnitten und begradigt",
+    "coverColorCaption": "Die Farbe der Karte mit Name und Nummer",
+    "codeSection": "Code für die Kasse",
+    "photographCode": "Code fotografieren",
+    "barcode": "Barcode",
+    "qrCode": "QR-Code",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Karte",
+    "typeNumber": "Gib die Nummer unten ein",
+    "explain": "Sottomano erkennt selbst, ob die Karte einen Barcode oder QR-Code hat. An der Kasse zeigt es ihn groß an, mit voller Bildschirmhelligkeit.",
+    "readTitle": "Von der Karte gelesen",
+    "readText": "Prüfe die Angaben und korrigiere sie bei Bedarf.",
+    "name": "Name",
+    "namePlaceholder": "Z. B. Supermarkt",
+    "type": "Typ",
+    "typePlaceholder": "Z. B. Kundenkarte",
+    "number": "Nummer",
+    "numberPlaceholder": "Z. B. 0400 2219 8876",
+    "holder": "Inhaber:in",
+    "saveButton": "Karte sichern",
+    "saveHint": "Gib zum Sichern den Namen der Karte ein."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Foto der Vorderseite",
+      "barcode": "Barcode fotografieren"
+    },
+    "photoOpenFailed": "Foto konnte nicht geöffnet werden",
+    "permissionTitle": "Kamerazugriff erforderlich",
+    "permissionText": "Sottomano verwendet die Kamera, um deine Karten zu fotografieren und ihren Barcode zu lesen.",
+    "allow": "Erlauben",
+    "openSettings": "Einstellungen öffnen",
+    "frontCheck": "Vorderseite: Ist sie scharf?",
+    "read": "Gelesen: {{value}}",
+    "notRead": "Code nicht gelesen",
+    "notReadHint": "Behalte das Foto: Die Nummer gibst du im nächsten Schritt ein.",
+    "retake": "Wiederholen",
+    "use": "Verwenden",
+    "focus": "Fokus",
+    "stepCount": "{{current}} von {{total}}",
+    "frameHint": "Richte die Karte im Rahmen aus",
+    "searching": "Code wird gesucht …",
+    "chooseFromPhotos": "Aus Fotos wählen",
+    "shoot": "Foto aufnehmen",
+    "skip": "Überspringen"
+  },
+  "cardDetail": {
+    "code": "Code",
+    "photo": "Foto",
+    "barcodeLabel": "Barcode",
+    "barcodePhotoLabel": "Foto des Barcodes",
+    "fullScreenHint": "Öffnet den Code im Vollbild",
+    "noCode": "Kein Code. Tippe auf „Bearbeiten“, um ihn zu fotografieren oder einzugeben.",
+    "tapHint": "Tippe auf den Code, um ihn zu vergrößern",
+    "person": "Person"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Reihenfolge konnte nicht gesichert werden",
+    "editCategory": "Kategorie bearbeiten",
+    "deleteCategory": "Kategorie löschen",
+    "reorderTitle": "Karten sortieren",
+    "reorderHint": "Halte eine Karte gedrückt und zieh sie an die gewünschte Stelle.",
+    "yourCards": "Deine Karten",
+    "title": "Karten",
+    "subtitle": "Tippe auf eine Karte, um ihren Code an der Kasse zu zeigen",
+    "categoryMenuLabel": "Kategorie {{name}} bearbeiten oder löschen",
+    "addCard": "Karte hinzufügen",
+    "reorder": "Sortieren",
+    "newCard": "Neue Karte",
+    "cardDetails": "Kartendetails",
+    "categoryMenuTitle": "Kategorie {{name}}",
+    "cardCount_one": "{{count}} Karte",
+    "cardCount_other": "{{count}} Karten",
+    "cardOpenLabel": "{{label}}, schließen",
+    "cardClosedLabel": "{{label}}, Code anzeigen",
+    "qrLabel": "QR-Code der Karte",
+    "barcodeLabel": "Barcode der Karte",
+    "fullScreenHint": "Öffnet den Code im Vollbild",
+    "noCode": "Kein Code: Tippe auf Details › Bearbeiten, um ihn zu fotografieren oder einzugeben.",
+    "details": "Details"
+  },
+  "walletCard": {
+    "untitled": "Neue Karte"
+  },
+  "barcodeView": {
+    "close": "Code schließen"
+  },
+  "colorPicker": {
+    "color": "Farbe",
+    "custom": "Eigene Farbe",
+    "hex": "Code",
+    "hexLabel": "Farbcode"
+  },
+  "colorWheel": {
+    "label": "Farbkreis: Zum Auswählen tippen oder ziehen",
+    "nextHue": "Nächster Farbton",
+    "previousHue": "Vorheriger Farbton"
+  },
+  "newCard": {
+    "title": "Neue Karte",
+    "missingCategory": "Die Kategorie „Karten“ existiert nicht mehr."
+  },
+  "editCard": {
+    "title": "Karte bearbeiten"
+  },
+  "unlock": {
+    "storeOnly": "In der App Store-Version verfügbar",
+    "remainingNone": "Du hast alle freien Plätze verwendet.",
+    "remaining_one": "Du kannst noch {{count}} hinzufügen.",
+    "remaining_other": "Du kannst noch {{count}} hinzufügen.",
+    "tag": "Gratisversion · {{used}} von {{limit}} verwendet",
+    "title": "Alle deine Dokumente, ohne Limit",
+    "intro": "Gratis für bis zu {{limit}} Dokumente und Karten. Um so viele hinzuzufügen, wie du willst, schalte es mit einer einmaligen Zahlung frei.",
+    "benefits": {
+      "unlimited": {
+        "title": "Unbegrenzt Dokumente",
+        "text": "Rechnungen, Karten, Garantien und alles andere"
+      },
+      "reminders": {
+        "title": "Erinnerung an Fristen",
+        "text": "Wir erinnern dich, bevor es zu spät ist"
+      },
+      "offline": {
+        "title": "Funktioniert ohne Internet",
+        "text": "Alles bleibt auf deinem iPhone, auch das Backup"
+      },
+      "family": {
+        "title": "Die ganze Familie",
+        "text": "Ein Profil für alle im Haushalt"
+      }
+    },
+    "sectionTitle": "Deine Gratisversion",
+    "usageLabel": "Dokumente und Karten",
+    "usageValue": "{{used}} von {{limit}}",
+    "usageA11y": "Verwendete freie Plätze",
+    "keptNote": "Was du schon gesichert hast, gehört immer dir, auch ohne Freischaltung.",
+    "priceTitle": "Für immer",
+    "priceText": "Ohne Limit · einmalige Zahlung",
+    "buy": "Für {{price}} freischalten",
+    "continueFree": "Gratis weiter",
+    "restore": "Kauf wiederherstellen",
+    "terms": "Bedingungen",
+    "privacy": "Datenschutz"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Die Kategorie „Sonstiges“",
+    "otherCategoryMessage": "Sie kann nicht gelöscht werden: Sie enthält die Dokumente gelöschter Kategorien."
+  },
+  "quickActionMenu": {
+    "close": "Menü schließen"
+  },
+  "quickActions": {
+    "open": "Öffnen",
+    "unpin": "Aus Favoriten entfernen",
+    "pin": "Zu Favoriten hinzufügen",
+    "moveToTrash": "In den Papierkorb",
+    "editCategory": "Kategorie bearbeiten",
+    "deleteCategory": "Kategorie löschen",
+    "editPerson": "Person bearbeiten",
+    "deletePerson": "Person löschen"
+  },
+  "shareCopies": {
+    "defaultName": "Dokument",
+    "fileNotFound": "Datei auf dem iPhone nicht gefunden."
+  },
+  "sendCompression": {
+    "tooBig": "Selbst bei maximaler Komprimierung ist es über dem Limit: Teile es am besten in mehrere Dateien auf.",
+    "lowPpi": "Kleiner Text ist eventuell nicht lesbar."
+  },
+  "sendPreferences": {
+    "original": "Original"
+  },
+  "sendFileName": {
+    "fallback": "dokument"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Vorder- und Rückseite können gerade nicht kombiniert werden.",
+    "noPhotos": "Keine Fotos zum Senden.",
+    "fileFront": "vorderseite",
+    "fileBack": "rueckseite",
+    "filePage": "seite-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "dokumente",
+    "title": "{{title}} senden",
+    "formatPhotos": "Fotos",
+    "actions": {
+      "email": "E-Mail",
+      "whatsapp": "WhatsApp",
+      "print": "Drucken",
+      "save": "In Dateien sichern",
+      "copy": "Kopieren",
+      "other": "Mehr"
+    },
+    "alerts": {
+      "savedToFiles": "In Dateien gesichert",
+      "imageCopied": "Bild kopiert",
+      "textCopied": "Text kopiert",
+      "firstPageCopied": "Die erste Seite wurde kopiert: Füge sie in eine Nachricht ein.",
+      "pasteImage": "Füge es in eine Nachricht oder Notiz ein.",
+      "pdfNotCopied": "Ein PDF kann nicht kopiert werden: Name und Notiz wurden kopiert. Für die Datei verwende „Mehr“.",
+      "failed": "Vorgang fehlgeschlagen"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDFs",
+      "singlePdf": "Ein PDF",
+      "failed": "Die Datei konnte nicht vorbereitet werden",
+      "preparing": "Wird vorbereitet …"
+    },
+    "includeNote": "Notiz des Dokuments mitsenden",
+    "noNote": "Dieses Dokument hat keine Notiz.",
+    "frontBackPage": "Vorder- und Rückseite auf einer Seite",
+    "frontBackImage": "Vorder- und Rückseite in einem Bild",
+    "maxSize": "Maximale Größe",
+    "pdfAsIs": "Das PDF wird unverändert gesendet.",
+    "severalInfo": "Ein einziges PDF: die Dokumente nacheinander, Vorder- und Rückseite von Ausweisen und Karten auf derselben Seite.",
+    "quality": {
+      "high": "Hohe Qualität",
+      "good": "Gute Qualität",
+      "low": "Niedrige Qualität",
+      "minimum": "Minimale Qualität",
+      "original": "Originalqualität"
+    },
+    "skipped_one": "{{count}} Dokument ohne Fotos ist nicht enthalten (importierte PDFs können noch nicht zusammengeführt werden).",
+    "skipped_other": "{{count}} Dokumente ohne Fotos sind nicht enthalten (importierte PDFs können noch nicht zusammengeführt werden)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "PDF wird vorbereitet …",
+    "progressRetry": "Fotos werden verkleinert (Versuch {{attempt}}) …",
+    "subtitle": "Erstellt am {{date}} mit Sottomano · {{documents}}",
+    "subtitleWithTotal": "Erstellt am {{date}} mit Sottomano · {{documents}} · Summe {{total}}",
+    "columns": {
+      "number": "Nr.",
+      "document": "Dokument",
+      "date": "Datum",
+      "person": "Person",
+      "amount": "Betrag",
+      "page": "Seite"
+    },
+    "sentApart": "separat gesendet",
+    "noPages": "keine Seiten",
+    "paid": "bezahlt",
+    "due": "offen",
+    "invalidIndex": "Ungültiger Index"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Ein PDF kann nicht zusammengeführt werden (passwortgeschützt oder beschädigt): {{titles}}. Im Verzeichnis ist es als „separat gesendet“ markiert und wird mit den anderen mitgeschickt.",
+    "sentApart_other": "{{count}} PDFs können nicht zusammengeführt werden (passwortgeschützt oder beschädigt): {{titles}}. Im Verzeichnis sind sie als „separat gesendet“ markiert und werden mit den anderen mitgeschickt.",
+    "alerts": {
+      "prepareFailed": "PDF konnte nicht vorbereitet werden",
+      "ready": "PDF fertig",
+      "noMailTitle": "Mail ist nicht eingerichtet",
+      "noMailMessage": "Füge in Mail einen Account hinzu oder sichere die PDFs in „Dateien“.",
+      "savedToFiles": "In Dateien gesichert",
+      "sendFailed": "Senden fehlgeschlagen"
+    },
+    "readyMany": "{{number}} PDFs fertig",
+    "choices": {
+      "email": "E-Mail: alle PDFs in einer Nachricht",
+      "save": "In Dateien sichern: alle im selben Ordner",
+      "oneByOne": "Einzeln teilen"
+    },
+    "intro": "Alle Dokumente in {{category}}, nach Jahr aufgeteilt: ein PDF pro Jahr, mit Verzeichnis (Dokument, Datum, Person, Betrag, Seite) und Summe. Maßgeblich ist das Jahr der Frist oder der Zahlung; ist keins davon angegeben, das Jahr, in dem du sie hinzugefügt hast.",
+    "noDocuments": "Keine Dokumente in diesem Jahr.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDFs",
+    "year": "Jahr",
+    "allYears": "Alle Jahre",
+    "maxPhotoSize": "Maximale Fotogröße",
+    "limitInfo": "Fotos werden verkleinert, um im Limit zu bleiben; importierte PDFs bleiben unverändert.",
+    "prepare": "Vorbereiten und senden"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Etwas ist schiefgelaufen",
+      "restoredToOther": "In „Sonstiges“ wiederhergestellt",
+      "restoredPassword": "Seine Kategorie existiert nicht mehr: Das Dokument ist in „Sonstiges“, ohne Benutzername und Passwort.",
+      "restoredMessage": "Seine Kategorie existiert nicht mehr: Das Dokument ist in „Sonstiges“.",
+      "deleteTitle": "„{{title}}“ endgültig löschen?",
+      "deleteMessage": "Auch die Fotos und PDFs werden gelöscht. Dies kann nicht widerrufen werden.",
+      "emptyTitle": "Papierkorb leeren?",
+      "emptyMessage_one": "Das Dokument wird mit seinen Fotos und PDFs gelöscht. Dies kann nicht widerrufen werden.",
+      "emptyMessage_other": "Die {{count}} Dokumente werden mit ihren Fotos und PDFs gelöscht. Dies kann nicht widerrufen werden.",
+      "emptyConfirm": "Leeren"
+    },
+    "intro": "Gelöschte Dokumente bleiben {{days}} Tage hier und werden dann mit ihren Fotos und PDFs entfernt.",
+    "empty": "Der Papierkorb ist leer",
+    "deletedSoon": "Wird bald gelöscht",
+    "deletedIn": "Wird in {{days}} Tagen gelöscht",
+    "restoreLabel": "{{title}} wiederherstellen",
+    "deleteForeverLabel": "{{title}} endgültig löschen",
+    "deleteForever": "Endgültig löschen",
+    "emptyTrash": "Papierkorb leeren"
+  },
+  "menu": {
+    "close": "Menü schließen",
+    "home": "Start",
+    "favorites": "Favoriten",
+    "deadlines": "Fristen",
+    "deadlinesUrgent": "Fristen, {{number}} zu prüfen",
+    "family": "Familie",
+    "cards": "Karten",
+    "backup": "Backup",
+    "backupDue": "Backup, fällig",
+    "help": "Hilfe und Kontakt",
+    "rate": "Sottomano bewerten",
+    "recommend": "Einem Freund empfehlen",
+    "trash": "Papierkorb",
+    "trashCount": "Papierkorb, {{number}}",
+    "password": "Passwörter",
+    "scan": "Scannen",
+    "fromPhotos": "Aus Fotos",
+    "importFiles": "Dateien importieren",
+    "version": "Version {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Mitteilungen schließen",
+    "title": "Mitteilungen",
+    "markAllRead": "Als gelesen markieren",
+    "empty": "Keine Mitteilungen in den letzten 7 Tagen.",
+    "today": "Heute",
+    "thisWeek": "Diese Woche",
+    "settings": "Mitteilungseinstellungen",
+    "unreadItem": "Ungelesen. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Abgelaufen am {{date}}.",
+    "expiresToday": "Läuft heute ab.",
+    "expiresOn": "Läuft {{distance}} ab, am {{date}}.",
+    "amount": "Betrag {{amount}}.",
+    "backupTitle": "Backup",
+    "backupLate": "Dein letztes Backup ist schon eine Weile her.",
+    "backupNever": "Du hast noch kein Backup deiner Dokumente erstellt."
+  },
+  "deadlineReminders": {
+    "title": "Anstehende Frist",
+    "hiddenBody": "Ein Dokument läuft am {{date}} ab ({{distance}}). Öffne Sottomano, um es zu sehen.",
+    "body": "{{name}} läuft am {{date}} ab ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Darstellung",
+      "security": "Sicherheit",
+      "reminders": "Erinnerungen",
+      "backup": "Backup",
+      "info": "Info"
+    },
+    "calendarOff": "Aus",
+    "alerts": {
+      "notificationsOffTitle": "Mitteilungen sind deaktiviert",
+      "notificationsOffMessage": "Um Erinnerungen zu erhalten, erlaube Mitteilungen für Sottomano in den Einstellungen des iPhone.",
+      "openSettings": "Einstellungen öffnen"
+    },
+    "lastBackup": {
+      "never": "Nie",
+      "today": "Heute",
+      "yesterday": "Gestern",
+      "daysAgo_one": "Vor {{count}} Tag",
+      "daysAgo_other": "Vor {{count}} Tagen"
+    },
+    "categoryColors": "Kategoriefarben",
+    "faceId": "Mit Face ID sperren",
+    "faceIdSubtitle": "Fragt bei jedem Öffnen der App nach deinem Gesicht",
+    "hidePreviews": "Vorschauen ausblenden",
+    "hidePreviewsSubtitle": "Mitteilungen zeigen das Dokument nicht an",
+    "notifications": "Mitteilungen",
+    "reminderTime": "Uhrzeit der Erinnerung",
+    "defaultReminder": "Standarderinnerung",
+    "iconBadge": "Kennzeichen am App-Symbol",
+    "iconBadgeSubtitle": "Fristen, die abgelaufen sind oder in 7 Tagen ablaufen",
+    "calendar": "Kalender „Sottomano“",
+    "notificationsBlocked": "Mitteilungen sind blockiert",
+    "notificationsBlockedSubtitle": "Erlaube sie in den Einstellungen des iPhone",
+    "backupNote": "Das Backup ist eine Datei auf deinem iPhone, in der App „Dateien“. Du kannst sie kopieren, wohin du willst. Sottomano funktioniert auch ohne Internet.",
+    "createBackup": "Jetzt Backup erstellen",
+    "restoreBackup": "Aus Backup wiederherstellen",
+    "help": "Hilfe und Kontakt",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "rate": "Sottomano bewerten",
+    "debug": {
+      "limitPreview": "Vorschau Gratis-Limit",
+      "limitPreviewSubtitle": "Nur zum Testen: zeigt das gesperrte +, das Limit-Fenster und die Karte auf der Startseite",
+      "emptyHome": "Vorschau leere Startseite",
+      "emptyHomeSubtitle": "Nur zum Testen: Startseite, als gäbe es keine Dokumente (deine Daten bleiben)",
+      "onboarding": "Willkommen erneut zeigen",
+      "onboardingSubtitle": "Nur zum Testen: die Willkommensseiten 1–4"
+    },
+    "version": "Sottomano · Version {{version}}",
+    "theme": {
+      "title": "Design",
+      "autoSubtitle": "Wie die Einstellung des iPhone",
+      "auto": "Automatisch",
+      "light": "Hell",
+      "dark": "Dunkel"
+    }
+  },
+  "backup": {
+    "title": "Backup",
+    "subtitle": "Eine Kopie all deiner Dokumente, gesichert auf deinem iPhone.",
+    "keyProgress": "Wird mit deinem Passwort geschützt … Das kann bis zu einer Minute dauern",
+    "whenToday": "heute um {{time}}",
+    "whenDate": "{{date}} um {{time}}",
+    "minLength": "Mindestens {{min}} Zeichen.",
+    "mismatch": "Die beiden Passwörter stimmen nicht überein.",
+    "creating": "Backup wird erstellt …",
+    "copyDialogTitle": "Backup kopieren",
+    "opening": "Backup wird geöffnet …",
+    "checking": "Dokumente werden geprüft …",
+    "restoring": "Wird wiederhergestellt …",
+    "keepOpen": "Lass die App geöffnet, bis es fertig ist.",
+    "forgotWarning": "Wenn du das Passwort vergisst, kann das Backup nicht geöffnet werden.",
+    "passwordPlaceholder": "Passwort (mindestens {{min}} Zeichen)",
+    "repeatPlaceholder": "Passwort wiederholen",
+    "createAndSave": "Erstellen und sichern",
+    "backupPassword": "Backup-Passwort",
+    "openBackup": "Backup öffnen",
+    "completed": "Backup abgeschlossen",
+    "lastBackup": "Letztes Backup",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Datei woanders hin kopieren",
+    "createNew": "Neues Backup erstellen",
+    "noneTitle": "Du hast noch kein Backup erstellt",
+    "noneText": "Wenn du dein iPhone verlierst oder wechselst, bringt das Backup alles zurück.",
+    "createNow": "Jetzt Backup erstellen",
+    "restoreSection": "Wiederherstellen",
+    "restoreTitle": "Neues iPhone?",
+    "restoreText": "Wähle die Backup-Datei, um deine Dokumente, Karten und Erinnerungen zurückzuholen.",
+    "chooseFile": "Backup-Datei auswählen",
+    "remindersSection": "Erinnerungen",
+    "remindMe": "An Backup erinnern",
+    "remindMeValue": "An Backup erinnern: {{value}}",
+    "footnote": "Das Backup ist eine einzige Datei, geschützt durch das Passwort deiner Wahl: Dokumente, Fotos, Karten, Personen und Erinnerungen. Kopiere sie woanders hin (Dateien, iCloud Drive, ein Computer), damit du sie auch hast, wenn du dein iPhone verlierst.",
+    "alerts": {
+      "createFailed": "Backup fehlgeschlagen",
+      "copyFailed": "Kopieren fehlgeschlagen",
+      "restoreTitle": "Backup vom {{date}} wiederherstellen?",
+      "restoreMessage_one": "Es enthält {{count}} Dokument. Der aktuelle Inhalt der App wird ersetzt.",
+      "restoreMessage_other": "Es enthält {{count}} Dokumente. Der aktuelle Inhalt der App wird ersetzt.",
+      "restoreFailed": "Wiederherstellen fehlgeschlagen",
+      "restoreFailedMessage": "In der App hat sich nichts geändert.\n\n{{reason}}",
+      "restored": "Backup wiederhergestellt",
+      "restoredMessage": "Deine Dokumente sind wieder da."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Jede Woche",
+      "month": "Jeden Monat",
+      "never": "Nie"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Diese Datei ist kein Sottomano-Backup.",
+    "newerVersion": "Dieses Backup wurde mit einer neueren Version von Sottomano erstellt. Aktualisiere die App und versuch es erneut.",
+    "empty": "Die Backup-Datei ist leer oder unvollständig.",
+    "incomplete": "Die Backup-Datei ist unvollständig.",
+    "wrongPassword": "Falsches Passwort. Achte auf Groß- und Kleinschreibung und versuch es erneut.",
+    "damaged": "Die Backup-Datei ist beschädigt oder unvollständig."
+  },
+  "createBackup": {
+    "incompleteFile": "Unvollständige Datei: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Der Inhalt des Backups ist ungültig.",
+    "newerApp": "Dieses Backup stammt von einer neueren Version von Sottomano. Aktualisiere die App und versuch es erneut."
+  },
+  "zipReader": {
+    "invalid": "Ungültiges Archiv",
+    "incomplete": "Unvollständiges Archiv"
+  },
+  "backupReminder": {
+    "none": "Du hast noch kein Backup erstellt",
+    "old_one": "Dein letztes Backup ist {{count}} Tag her",
+    "old_other": "Dein letztes Backup ist {{count}} Tage her",
+    "link": "Jetzt Backup erstellen",
+    "close": "Hinweis schließen",
+    "snooze_one": "{{count}} Tag ausblenden",
+    "snooze_other": "{{count}} Tage ausblenden"
+  },
+  "calendarSettings": {
+    "title": "Kalender",
+    "intro": "Fristen kommen in einen eigenen Kalender, „Sottomano“. Du kannst ihn in der App „Kalender“ ausblenden; wenn du ihn hier deaktivierst, wird er gelöscht.",
+    "details": "Jede Frist ist ein ganztägiges Ereignis „Läuft ab: Titel“, ohne weitere Angaben aus dem Dokument. Sind die Erinnerungen von Sottomano aus, erinnert dich das Ereignis am Erinnerungstag um 9:00; sind sie an, erinnert dich nur die App, damit du nicht zwei Hinweise bekommst.",
+    "allowAccess": "Zugriff auf Kalender erlauben",
+    "denied": "Der Zugriff auf Kalender wurde verweigert. Du kannst ihn in den Einstellungen des iPhone aktivieren.",
+    "openSettings": "Einstellungen öffnen",
+    "switchLabel": "Fristen im Kalender „Sottomano“",
+    "enabled_one": "{{count}} Frist im Kalender „Sottomano“",
+    "enabled_other": "{{count}} Fristen im Kalender „Sottomano“",
+    "removeConfirm": "Den Kalender „Sottomano“ und alle seine Fristen aus Kalender entfernen?",
+    "remove": "Entfernen",
+    "removed": "Kalender „Sottomano“ gelöscht"
+  },
+  "calendarSync": {
+    "eventTitle": "Läuft ab: {{title}}",
+    "cannotCreate": "Der Kalender „Sottomano“ konnte auf diesem iPhone nicht erstellt werden."
+  },
+  "appearance": {
+    "intro": "Die Farben der Standardkategorien. Von dir erstellte Kategorien behalten ihre eigene Farbe.",
+    "restoreButton": "Standardkategorien wiederherstellen",
+    "restoreHint": "Holt die gelöschten Standardkategorien zurück.",
+    "paletteLabel": "Palette {{name}}",
+    "alerts": {
+      "restoreTitle": "Standardkategorien wiederherstellen?",
+      "restoreMessage": "Die gelöschten kommen mit ihrem ursprünglichen Namen, Symbol und ihrer Farbe zurück. Deine Dokumente und die von dir erstellten Kategorien bleiben unverändert.",
+      "nothingTitle": "Nichts wiederherzustellen",
+      "nothingMessage": "Alle Standardkategorien sind schon auf der Startseite.",
+      "restoredTitle": "Kategorien wiederhergestellt",
+      "restoredMessage_one": "{{count}} Kategorie ist wieder auf der Startseite, vor „Sonstiges“.",
+      "restoredMessage_other": "{{count}} Kategorien sind wieder auf der Startseite, vor „Sonstiges“.",
+      "restoreFailed": "Wiederherstellen fehlgeschlagen"
+    }
+  },
+  "about": {
+    "version": "Version {{version}}",
+    "privacy": "Datenschutz",
+    "privacyFooter": "Wenn du „Kalender“ aktivierst, werden Fristen in den gewählten iPhone-Kalender eingetragen. Wenn du ein Dokument sendest, entscheidest du, mit wem du es teilst.",
+    "onPhone": "Deine Dokumente bleiben auf deinem iPhone",
+    "offline": "Kein Account und kein Server: funktioniert auch offline",
+    "noTracking": "Kein Tracking und keine Werbung"
+  },
+  "terms": {
+    "intro": "Die vollständigen Nutzungsbedingungen werden mit der App Store-Version veröffentlicht. Kurz gesagt:",
+    "free": "Sottomano ist gratis für bis zu {{limit}} Dokumente und Karten",
+    "oneTime": "Die Freischaltung ist ein einmaliger Kauf, ohne Abo",
+    "yours": "Deine Dokumente bleiben auf deinem iPhone und gehören dir",
+    "backup": "Erstelle ein Backup, damit du sie beim iPhone-Wechsel nicht verlierst"
+  },
+  "limit": {
+    "later": "Später",
+    "title": "Du hast deine {{limit}} freien Plätze verwendet",
+    "text": "Alles, was du gesichert hast, bleibt hier und funktioniert wie immer. Um weitere Dokumente und Karten hinzuzufügen, schalte Sottomano frei.",
+    "stillWorks": {
+      "view": "Deine Dokumente ansehen",
+      "send": "Sie senden und teilen",
+      "cards": "Deine Karten an der Kasse zeigen",
+      "reminders": "Erinnerungen erhalten"
+    },
+    "blocked": "Weitere Dokumente oder Karten hinzufügen",
+    "unlock": "Ohne Limit freischalten für {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}} von {{limit}} freien Plätzen verwendet",
+    "accessibility": "{{title}}. Freischalten",
+    "unlock": "Freischalten"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Gratisversion: {{used}} von {{limit}} verwendet",
+    "titleMenu": "Gratis: {{used}} von {{limit}} verwendet",
+    "subtitle": "Ohne Limit freischalten für {{price}}",
+    "accessibility": "{{title}}. Ohne Limit freischalten für {{price}}",
+    "unlock": "Freischalten"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Willkommen bei Sottomano",
+        "text": "Ausweise, Kundenkarten, Rechnungen, Garantien: alle Dokumente deines Haushalts an einem Ort, immer griffbereit.",
+        "info": "Sie bleiben auf deinem iPhone und funktionieren auch ohne Internet"
+      },
+      "scan": {
+        "title": "Einmal fotografieren",
+        "text": "Scanne auch mehrere Seiten oder importiere Fotos und PDFs. Du findest sie geordnet wieder und sendest sie so klein wie nötig."
+      },
+      "deadlines": {
+        "title": "Wir behalten Fristen im Blick",
+        "text": "Wir erinnern dich, bevor eine Rechnung oder ein Dokument abläuft. Auf Wunsch auch in deinem Kalender."
+      },
+      "cards": {
+        "title": "Deine Karten immer dabei",
+        "text": "Fotografiere deine Kundenkarten: An der Kasse zeigst du Barcode oder QR-Code mit einem Tippen."
+      }
+    },
+    "skip": "Überspringen",
+    "pageOf": "Seite {{page}} von {{total}}",
+    "start": "Los geht’s",
+    "restore": "Aus Backup wiederherstellen",
+    "art": {
+      "bills": "Rechnungen",
+      "cards": "Karten",
+      "health": "Gesundheit",
+      "car": "Auto",
+      "pdfReady": "PDF fertig",
+      "billTitle": "Stromrechnung",
+      "billExpires": "Fällig in 2 Tagen",
+      "gym": "Fitness",
+      "library": "Bibliothek",
+      "supermarket": "Supermarkt"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Datei konnte nicht geöffnet werden",
+    "title": "Fotografiere dein erstes Dokument",
+    "text": "Eine Rechnung, dein Ausweis oder die Garantie der Waschmaschine: In wenigen Sekunden ist es sicher und immer griffbereit.",
+    "snap": "Dokument fotografieren",
+    "pdf": "PDF hochladen",
+    "folders": "Deine Ordner",
+    "emptyAccessibility": "{{name}}, leer",
+    "empty": "Leer",
+    "newCategory": "Neue Kategorie"
+  },
+  "splashOverlay": {
+    "tagline": "Die Dokumente deines Haushalts, bereit zum Senden"
+  },
+  "appActions": {
+    "shareText": "Ich empfehle dir Sottomano: Dokumente, Karten und Fristen deines Haushalts immer griffbereit, auf dem iPhone und auch ohne Internet.",
+    "rateTitle": "Sottomano bewerten",
+    "rateMessage": "Du kannst eine Bewertung abgeben, sobald Sottomano im App Store ist.",
+    "lockUnavailableTitle": "Sperre nicht verfügbar",
+    "lockUnavailableMessage": "Um Sottomano zu sperren, brauchst du einen Code auf deinem iPhone. Lege ihn unter Einstellungen › Face ID & Code fest und versuch es erneut."
+  }
+}

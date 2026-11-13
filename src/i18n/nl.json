@@ -1,1 +1,1585 @@
-{}
+{
+  "common": {
+    "cancel": "Annuleer",
+    "ok": "OK",
+    "done": "Gereed",
+    "save": "Bewaar",
+    "delete": "Verwijder",
+    "edit": "Wijzig",
+    "close": "Sluit",
+    "confirm": "Bevestig",
+    "back": "Terug",
+    "next": "Volgende",
+    "share": "Deel",
+    "send": "Stuur",
+    "search": "Zoek",
+    "add": "Voeg toe",
+    "remove": "Verwijder",
+    "retry": "Probeer opnieuw",
+    "continue": "Ga door",
+    "yes": "Ja",
+    "no": "Nee",
+    "restore": "Zet terug",
+    "settings": "Instellingen",
+    "more": "Meer",
+    "none": "Geen",
+    "documents_one": "{{count}} document",
+    "documents_other": "{{count}} documenten",
+    "pages_one": "{{count}} pagina",
+    "pages_other": "{{count}} pagina’s",
+    "photos_one": "{{count}} foto",
+    "photos_other": "{{count}} foto’s",
+    "wholeFamily": "Hele gezin"
+  },
+  "dates": {
+    "today": "vandaag",
+    "tomorrow": "morgen",
+    "yesterday": "gisteren",
+    "inSpan": "over {{span}}",
+    "spanAgo": "{{span}} geleden",
+    "expiredYesterday": "gisteren verlopen",
+    "expiredFor": "{{span}} geleden verlopen",
+    "days_one": "{{count}} dag",
+    "days_other": "{{count}} dagen",
+    "months_one": "{{count}} maand",
+    "months_other": "{{count}} maanden",
+    "years_one": "{{count}} jaar",
+    "years_other": "{{count}} jaar"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Documenten",
+      "cards": "Pasjes",
+      "utilities": "Rekeningen",
+      "home": "Huis",
+      "insurance": "Verzekeringen",
+      "warranties": "Garanties & bonnen",
+      "car": "Auto",
+      "tax": "Aftrekposten",
+      "householdStaff": "Huishoudhulp",
+      "school": "School",
+      "pet": "Huisdieren",
+      "password": "Wachtwoorden",
+      "other": "Overig"
+    }
+  },
+  "language": {
+    "title": "Taal",
+    "auto": "Automatisch",
+    "autoSubtitle": "Volgt de taal van de telefoon",
+    "search": "Zoek talen",
+    "autoDetail": "iPhone-taal: {{language}}",
+    "noResults": "Geen talen voor “{{query}}”"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastel",
+    "vivid": "Fel",
+    "earth": "Aarde",
+    "sea": "Zee",
+    "sunset": "Zonsondergang",
+    "night": "Nacht"
+  },
+  "home": {
+    "welcome": "Welkom bij Sottomano",
+    "hello": "Hoi!",
+    "searchPlaceholder": "Zoek een document",
+    "favorites": "Favorieten",
+    "seeAll": "Toon alles",
+    "seeAllFavorites": "Toon alle favorieten",
+    "deadlines": "Deadlines",
+    "seeAllDeadlines": "Toon alle deadlines",
+    "archive": "Archief",
+    "reorderDone": "Klaar met ordenen",
+    "reorder": "Orden",
+    "reorderCategories": "Orden categorieën",
+    "reorderHint": "Sleep de categorieën in de volgorde die je wilt.",
+    "alerts": {
+      "orderNotSaved": "Kan volgorde niet bewaren"
+    },
+    "newCategory": "Nieuwe categorie"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} pas",
+    "cards_other": "{{count}} passen"
+  },
+  "folder": {
+    "paidOn": "Betaald op {{date}}",
+    "expiredOn": "Verlopen op {{date}}",
+    "expiresOn": "Verloopt op {{date}}",
+    "addedOn": "Toegevoegd op {{date}}",
+    "newItem": {
+      "bill": "Nieuwe rekening",
+      "card": "Nieuwe pas",
+      "warranty": "Nieuwe garantie",
+      "password": "Nieuw wachtwoord",
+      "document": "Nieuw document"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Alle",
+      "documents": "Documenten",
+      "cards": "Pasjes",
+      "deadlines": "Deadlines"
+    },
+    "paid": "betaald",
+    "expiresOn": "verloopt op {{date}}",
+    "folderSubtitle_one": "Map · {{count}} document",
+    "folderSubtitle_other": "Map · {{count}} documenten",
+    "card": "Pas",
+    "deadlineSubtitle": "Deadline · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Zoek een document",
+    "fieldLabel": "Zoek in je documenten",
+    "filter": "Filter",
+    "results_one": "{{count}} resultaat",
+    "results_other": "{{count}} resultaten",
+    "noResults": "Geen resultaten",
+    "noResultsHint": "Probeer een ander woord, bijvoorbeeld de naam van een winkel.",
+    "hint": "Zoek op namen, mappen, types, notities, pasjes en deadlines."
+  },
+  "navigation": {
+    "home": "Start",
+    "favorites": "Favorieten",
+    "family": "Gezin",
+    "deadlines": "Deadlines",
+    "deadlinesToCheck_one": "Deadlines, {{count}} te controleren",
+    "deadlinesToCheck_other": "Deadlines, {{count}} te controleren",
+    "addLocked": "Voeg document toe, vergrendeld: gratis limiet bereikt",
+    "addDocument": "Voeg een document toe",
+    "titles": {
+      "editDocument": "Wijzig document",
+      "pages": "Pagina’s",
+      "deadline": "Deadline",
+      "renewed": "Vernieuwd",
+      "previousVersion": "Vorige versie",
+      "newDocument": "Nieuw document",
+      "appearance": "Weergave",
+      "backup": "Reservekopie",
+      "taxPackage": "Naar boekhouder",
+      "trash": "Prullenmand",
+      "terms": "Gebruiksvoorwaarden",
+      "about": "Info en privacy",
+      "newCard": "Nieuwe pas",
+      "editCard": "Wijzig pas"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Sleep om te verplaatsen, of gebruik de acties “Naar boven” en “Naar beneden”",
+    "moveEarlier": "Naar boven",
+    "moveLater": "Naar beneden",
+    "footer": "Pasjes, personen in Gezin en Favorieten orden je op dezelfde manier: houd een rij ingedrukt en sleep hem aan de greep rechts."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Houd ingedrukt: sleep om te verplaatsen, of laat los voor acties"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Kan volgorde niet bewaren"
+    },
+    "reorderTitle": "Orden favorieten",
+    "reorderHint": "Houd een favoriet ingedrukt en sleep hem waar je wilt.",
+    "yourFavorites": "Je favorieten",
+    "title": "Favorieten",
+    "subtitle": "Wat je altijd bij de hand wilt hebben",
+    "searchPlaceholder": "Zoek in favorieten",
+    "viewList": "Lijst",
+    "viewGrid": "Raster",
+    "count_one": "{{count}} favoriet",
+    "count_other": "{{count}} favorieten",
+    "noMatch": "Geen favorieten voor “{{query}}”.",
+    "empty": "Je hebt nog geen favorieten.",
+    "footer": "Tik op het hartje bij een document om het hier toe te voegen.",
+    "footerGrid": "Tik op het hartje bij een document om het hier toe te voegen. Houd een tegel ingedrukt en sleep hem om te ordenen.",
+    "footerList": "Tik op het hartje bij een document om het hier toe te voegen. Houd een rij ingedrukt om te ordenen.",
+    "rowHint": "Houd ingedrukt om favorieten te ordenen",
+    "unpin": "Verwijder uit favorieten",
+    "expires": "verloopt {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} te betalen",
+    "alerts": {
+      "orderNotSaved": "Kan volgorde niet bewaren"
+    },
+    "actions": {
+      "editCategory": "Wijzig categorie",
+      "sendToAccountant": "Naar boekhouder sturen",
+      "selectAndSend": "Selecteer en stuur",
+      "reorder": "Orden",
+      "deleteCategory": "Verwijder categorie"
+    },
+    "moreLabel": "Wijzig of verwijder de categorie {{name}}",
+    "searchIn": "Zoek in {{name}}",
+    "viewList": "Lijst",
+    "viewGrid": "Raster",
+    "reorderHint": "Houd de documenten ingedrukt en sleep ze in de volgorde die je wilt.",
+    "allTypes": "Alle",
+    "noDocumentsFound": "Geen documenten gevonden.",
+    "sendTogether": "Stuur samen ({{count}})",
+    "sheetTitle": "Categorie {{name}}"
+  },
+  "folderRow": {
+    "due": "te betalen",
+    "paid": "betaald"
+  },
+  "homeSections": {
+    "expired": "Verlopen",
+    "expiresToday": "Verloopt vandaag",
+    "expiresTomorrow": "Verloopt morgen",
+    "expiresInDays_one": "Verloopt over {{count}} dag",
+    "expiresInDays_other": "Verloopt over {{count}} dagen",
+    "expiresOn": "Verloopt {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Verwijder uit favorieten",
+    "pin": "Voeg toe aan favorieten"
+  },
+  "searchBar": {
+    "clear": "Wis tekst"
+  },
+  "documentGrid": {
+    "addDocument": "Voeg document toe"
+  },
+  "homeHeader": {
+    "menu": "Menu",
+    "notifications": "Meldingen",
+    "notificationsUnread_one": "Meldingen, {{count}} ongelezen",
+    "notificationsUnread_other": "Meldingen, {{count}} ongelezen"
+  },
+  "demoData": {
+    "people": {
+      "step": "Step",
+      "mom": "Mama",
+      "dad": "Papa"
+    },
+    "documents": {
+      "idCard": "Identiteitskaart",
+      "drivingLicence": "Rijbewijs",
+      "passport": "Paspoort",
+      "electricityBill": "Stroomrekening",
+      "carInsurance": "Autoverzekering",
+      "carTax": "Wegenbelasting",
+      "washingMachineWarranty": "Garantie wasmachine",
+      "gymCard": "Sportschoolpas",
+      "rentalContract": "Huurcontract",
+      "pharmacyReceipt": "Bon apotheek",
+      "reportCard": "Rapport"
+    },
+    "notes": {
+      "electricityBill": "Automatische incasso van de bank"
+    }
+  },
+  "documentTypes": {
+    "documents": "Identiteitskaart|Rijbewijs|Paspoort|Zorgpas|BSN",
+    "cards": "Klantenkaart|Sportschool|Bibliotheek|OV|Lidmaatschap",
+    "utilities": "Stroom|Gas|Water|Internet|Telefoon|Afval",
+    "home": "Huur|Hypotheek|VvE|Onderhoud|Contract",
+    "insurance": "Auto|Woning|Zorg|Leven|Reis",
+    "warranties": "Huishoudapparaat|Elektronica|Meubels|Bon",
+    "car": "Wegenbelasting|Verzekering|APK|Onderhoud|Kenteken",
+    "tax": "Apotheek|Huisarts|Tandarts|Lab|Sport|School",
+    "householdStaff": "Loonstrook|Premies|Contract",
+    "school": "Inschrijving|Rapport|Certificaat|Overblijf|Schoolreis",
+    "pet": "Dierenpaspoort|Vaccinatie|Dierenarts|Chip",
+    "password": "E-mail|Bank|Social|Wifi|Werk"
+  },
+  "pageLabels": {
+    "front": "Voorkant",
+    "back": "Achterkant",
+    "page": "Pagina {{number}}"
+  },
+  "statusBadge": {
+    "due": "Te betalen",
+    "paid": "Betaald"
+  },
+  "addActions": {
+    "openFileFailed": "Kan bestand niet openen"
+  },
+  "pickFiles": {
+    "takePhoto": "Maak foto",
+    "choosePhoto": "Kies uit foto’s",
+    "removePhoto": "Verwijder foto"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Meerdere pagina’s",
+      "text": "Je kunt meerdere pagina’s achter elkaar scannen: richt op de volgende pagina voordat je op “Bewaar” tikt."
+    },
+    "cardTip": {
+      "title": "Echte kleuren",
+      "text": "Voor de echte kleuren van de pas tik je in de scanner op de filterknop en kies je “Foto”."
+    },
+    "gotIt": "Begrepen"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Cameratoegang nodig",
+    "permissionText": "Sottomano gebruikt de camera alleen om je documenten te fotograferen.",
+    "allow": "Sta toe",
+    "openSettings": "Open Instellingen",
+    "readable": "Is het leesbaar?",
+    "pageReadable": "Pagina {{number}}: is hij leesbaar?",
+    "retake": "Opnieuw",
+    "addPage": "Voeg pagina toe",
+    "frameDocument": "Richt op het document",
+    "framePage": "Richt op pagina {{number}}",
+    "shoot": "Maak foto",
+    "finishWithPages_one": "Gereed, {{count}} pagina",
+    "finishWithPages_other": "Gereed, {{count}} pagina’s"
+  },
+  "coverField": {
+    "label": "Omslag",
+    "photo": "Foto",
+    "color": "Kleur",
+    "noPhotoHint": "Zonder foto wordt de kleur getoond: voeg een pagina toe om de foto ervan als omslag te gebruiken.",
+    "categoryColor": "Mapkleur",
+    "colorNumber": "Kleur {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Voeg pagina’s toe",
+    "pinned": "In favorieten",
+    "pin": "Naar favorieten",
+    "renewed": "Vernieuwd",
+    "delete": "Verwijder"
+  },
+  "documentFilesView": {
+    "document": "Document",
+    "openFailed": "Kan document niet openen",
+    "pageOfSwipe": "Pagina {{number}} van {{total}} · veeg om te bladeren",
+    "openFullScreen": "{{label}}, open schermvullend",
+    "missingFile": "Bestand niet gevonden op deze telefoon."
+  },
+  "filesEditor": {
+    "addBack": "Voeg achterkant toe",
+    "addPage": "Voeg pagina toe",
+    "scan": "Scan",
+    "photograph": "Maak foto",
+    "fromPhotos": "Uit foto’s",
+    "scannerUnavailableTitle": "Scanner niet beschikbaar",
+    "scannerUnavailableMessage": "Verwijder de pagina’s met ✕ en voeg nieuwe toe.",
+    "replacePdf": "Vervang PDF",
+    "importPdf": "Importeer een PDF",
+    "rescanAll": "Scan alles opnieuw",
+    "openFileFailed": "Kan bestand niet openen",
+    "page": "Pagina",
+    "newTag": "nieuw",
+    "moveBefore": "Zet {{name}} eerder",
+    "moveAfter": "Zet {{name}} later",
+    "removePage": "Verwijder {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Document niet gevonden.",
+    "noPages": "Geen pagina’s",
+    "photoPages_one": "Foto, {{count}} pagina",
+    "photoPages_other": "Foto’s, {{count}} pagina’s",
+    "amount": "Bedrag",
+    "expired": "verlopen",
+    "inDays_one": "over {{count}} dag",
+    "inDays_other": "over {{count}} dagen",
+    "deadline": "Deadline",
+    "folder": "Map",
+    "status": "Status",
+    "person": "Persoon",
+    "number": "Nummer",
+    "notes": "Notities",
+    "inCalendar": "In agenda",
+    "view": "Bekijk document",
+    "unpin": "Verwijder uit favorieten",
+    "pin": "Voeg toe aan favorieten",
+    "addPages": "Voeg pagina’s toe",
+    "renewed": "Vernieuwd",
+    "delete": "Verwijder",
+    "details": "Details",
+    "remindMe": "Herinner me",
+    "reminderNeedsDeadline": "Voeg een deadline toe voor een herinnering",
+    "reminderWhen": "Herinnering: {{when}}",
+    "noReminder": "Geen herinnering",
+    "previousVersions": "Vorige versies",
+    "versionUntil": "Tot {{date}}",
+    "versionExpired": "verlopen {{date}}",
+    "paidOnMarkDue": "Betaald op {{date}} · markeer als te betalen",
+    "markDue": "Markeer als te betalen",
+    "markPaid": "Markeer als betaald",
+    "firstOf": "1 van {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Te betalen",
+    "statusPaid": "Betaald",
+    "saveFailed": "Kan niet bewaren",
+    "folder": "Map",
+    "person": "Persoon",
+    "type": "Type",
+    "otherType": "Typ een ander…",
+    "noType": "Geen type",
+    "typeExample": "Bijvoorbeeld: Stroom, Wegenbelasting, Tandarts",
+    "dueOn": "Op {{date}}",
+    "noDeadline": "Geen deadline",
+    "nameSection": "Naam",
+    "namePlaceholder": "Naam van het document",
+    "whereSection": "Waar bewaren",
+    "choose": "Kies…",
+    "deadlineSection": "Deadline",
+    "addDeadline": "Voeg deadline toe",
+    "remindMe": "Herinner me",
+    "whenToRemind": "Wanneer herinneren",
+    "repeats": "Herhaal",
+    "never": "Nooit",
+    "everySpan": "Elke {{span}}",
+    "every": "Elke",
+    "notesSection": "Notities",
+    "notesPlaceholder": "Bijvoorbeeld: betaald via incasso, terugbetaling aanvragen…",
+    "pin": "Voeg toe aan favorieten",
+    "pinSubtitle": "Direct te vinden op het beginscherm",
+    "amountSection": "Bedrag en status",
+    "amount": "Bedrag",
+    "amountInEuro": "Bedrag in euro",
+    "accessSection": "Inloggen",
+    "username": "Gebruikersnaam",
+    "usernamePlaceholder": "naam@voorbeeld.nl",
+    "password": "Wachtwoord",
+    "passwordUnchanged": "•••••••• (ongewijzigd)",
+    "passwordNote": "Het wachtwoord blijft alleen in de iPhone-sleutelhanger.",
+    "numberSection": "Documentnummer",
+    "numberPlaceholder": "Bijv. NX1234AB5",
+    "saveChanges": "Bewaar wijzigingen",
+    "saveDocument": "Bewaar document",
+    "amountHint": "Voer het bedrag in zoals {{example}}.",
+    "missingNameAndFolder": "Vul de naam in en kies de map om te bewaren.",
+    "missingName": "Vul de naam in om te bewaren.",
+    "missingFolder": "Kies de map om te bewaren.",
+    "deleteDocument": "Verwijder document"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Scan",
+      "photos": "Uit foto’s",
+      "pdf": "Uit PDF",
+      "card": "Pas",
+      "manual": "Handmatig"
+    },
+    "hintFirst": "Richt op het document · houd de telefoon stil",
+    "hintNext": "Pagina {{number}} gemaakt · richt op de volgende",
+    "title": "Nieuw document",
+    "flashOff": "Zet flitser uit",
+    "flashOn": "Zet flitser aan",
+    "scanWithIos": "Scan met de iOS-scanner",
+    "tapToScan": "Tik om te scannen: de randen worden vanzelf gevonden",
+    "permissionTitle": "Cameratoegang nodig",
+    "permissionText": "Sottomano gebruikt hem alleen om je documenten te fotograferen.",
+    "allow": "Sta toe",
+    "openSettings": "Open Instellingen",
+    "howToAdd": "Hoe toevoegen",
+    "chooseFromGallery": "Kies uit bibliotheek",
+    "shoot": "Maak foto",
+    "goOnWith_one": "Ga door met {{count}} pagina",
+    "goOnWith_other": "Ga door met {{count}} pagina’s",
+    "noPages": "Geen pagina’s",
+    "countNext": "volgende ›",
+    "countPages": "pagina’s"
+  },
+  "newDocument": {
+    "readTitle": "Gelezen uit het document",
+    "readText": "Naam overgenomen uit het bestand: {{name}}. Controleer hem en pas hem aan als dat nodig is.",
+    "checkTitle": "Controleer de gegevens",
+    "checkText_one": "{{count}} pagina vastgelegd. Vul de naam in en, als die er is, de deadline: je vindt hem bij Deadlines.",
+    "checkText_other": "{{count}} pagina’s vastgelegd. Vul de naam in en, als die er is, de deadline: je vindt hem bij Deadlines.",
+    "heading": "Nieuw document"
+  },
+  "editDocument": {
+    "heading": "Wijzig document"
+  },
+  "documentVersion": {
+    "replacedOn": "Vervangen op {{date}}",
+    "expiredOn": "verlopen op {{date}}",
+    "previewTitle": "{{title}} (vorige versie)"
+  },
+  "documentPages": {
+    "saveFailed": "Kan pagina’s niet bewaren"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Kan niet verwijderen",
+    "title": "Verwijder {{title}}?",
+    "message_one": "Het document en de herinnering gaan naar de prullenmand. Je kunt het {{count}} dag terugzetten via Menu › Prullenmand.",
+    "message_other": "Het document en de herinnering gaan naar de prullenmand. Je kunt het {{count}} dagen terugzetten via Menu › Prullenmand.",
+    "confirm": "Verwijder document"
+  },
+  "renew": {
+    "saveFailed": "Kan niet bewaren",
+    "deadline": "Deadline",
+    "repeatFooter": "{{repeat}}: de nieuwe datum wordt berekend vanaf de oude.",
+    "was": "Was",
+    "newDeadline": "Nieuwe deadline",
+    "newDocument": "Nieuw document",
+    "withScanFooter": "De huidige pagina’s worden een “Vorige versie”, die je in de details vindt.",
+    "withoutScanFooter": "Zet aan als je het nieuwe document wilt scannen.",
+    "addNewScan": "Voeg nieuwe scan toe"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · scrol omlaag",
+    "pagesSubtitle_one": "{{count}} pagina",
+    "pagesSubtitle_other": "{{count}} pagina’s · scrol omlaag",
+    "pageOf": "Pagina {{number}} van {{total}}",
+    "noPages": "Dit document heeft geen pagina’s.",
+    "zoom": "Zoom",
+    "zoomOut": "Zoom uit",
+    "zoomIn": "Zoom in",
+    "pageShort": "Pagina {{number}} van {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "dag",
+      "day_other": "dagen",
+      "week_one": "week",
+      "week_other": "weken",
+      "month_one": "maand",
+      "month_other": "maanden",
+      "year_one": "jaar",
+      "year_other": "jaar"
+    },
+    "count": {
+      "day_one": "{{count}} dag",
+      "day_other": "{{count}} dagen",
+      "week_one": "{{count}} week",
+      "week_other": "{{count}} weken",
+      "month_one": "{{count}} maand",
+      "month_other": "{{count}} maanden",
+      "year_one": "{{count}} jaar",
+      "year_other": "{{count}} jaar"
+    },
+    "every": {
+      "day_one": "Elke dag",
+      "day_other": "Elke {{count}} dagen",
+      "week_one": "Elke week",
+      "week_other": "Elke {{count}} weken",
+      "month_one": "Elke maand",
+      "month_other": "Elke {{count}} maanden",
+      "year_one": "Elk jaar",
+      "year_other": "Elke {{count}} jaar"
+    },
+    "repeats": {
+      "day_one": "Herhaalt elke dag",
+      "day_other": "Herhaalt elke {{count}} dagen",
+      "week_one": "Herhaalt elke week",
+      "week_other": "Herhaalt elke {{count}} weken",
+      "month_one": "Herhaalt elke maand",
+      "month_other": "Herhaalt elke {{count}} maanden",
+      "year_one": "Herhaalt elk jaar",
+      "year_other": "Herhaalt elke {{count}} jaar"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Vraagt aandacht",
+    "thisWeek": "Deze week",
+    "upcomingNone": "Niets te doen de komende maanden",
+    "upcoming_one": "{{count}} ding te doen de komende maanden",
+    "upcoming_other": "{{count}} dingen te doen de komende maanden"
+  },
+  "deadlineOptions": {
+    "sameDay": "Op de dag zelf",
+    "daysBefore_one": "{{count}} dag ervoor",
+    "daysBefore_other": "{{count}} dagen ervoor",
+    "defaultChoice": "{{label}} (standaard)"
+  },
+  "personRoles": {
+    "you": "Jij",
+    "choice": {
+      "me": "Dat ben ik",
+      "partner": "Partner",
+      "child": "Zoon of dochter",
+      "parent": "Ouder",
+      "sibling": "Broer of zus",
+      "other": "Anders"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "De categorie “Overig” bestaat niet.",
+    "otherNotDeletable": "De categorie “Overig” kan niet worden verwijderd."
+  },
+  "deadlineChip": {
+    "overdue": "Verlopen",
+    "today": "Vandaag",
+    "dueToday": "Vandaag",
+    "dueIn_one": "Over {{count}} dag",
+    "dueIn_other": "Over {{count}} dagen"
+  },
+  "deadlineListRow": {
+    "hint": "Houd ingedrukt om de deadline te wijzigen of te verwijderen",
+    "statusDue": "te betalen",
+    "statusPaid": "betaald"
+  },
+  "deadlineSection": {
+    "title": "Deadline",
+    "emptyFooter": "Met een herinnering op je telefoon en, als die aanstaat, in de agenda “Sottomano”.",
+    "add": "Voeg deadline toe",
+    "expiresOn": "Vervalt op",
+    "repeats": "Herhaal",
+    "never": "Nooit",
+    "reminder": "Herinnering"
+  },
+  "dateCalendar": {
+    "previousMonth": "Vorige maand",
+    "nextMonth": "Volgende maand"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Volgende week",
+    "previousWeek": "Vorige week",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} deadline",
+    "dayWithDeadlines_other": "{{day}}, {{count}} deadlines"
+  },
+  "deadlines": {
+    "title": "Deadlines",
+    "newReminder": "Nieuwe herinnering",
+    "week": "Week",
+    "month": "Maand",
+    "openDocument": "Open document",
+    "editDeadline": "Wijzig deadline",
+    "markDue": "Markeer als te betalen",
+    "markPaid": "Markeer als betaald",
+    "removeDeadline": "Verwijder deadline",
+    "removeAlert": {
+      "title": "Deadline verwijderen?",
+      "message": "Het document blijft; de herinnering en het agenda-item worden verwijderd.",
+      "confirm": "Verwijder"
+    },
+    "emptyTitle": "Geen komende deadlines",
+    "emptyText": "Tik op + om een document met een deadline toe te voegen: het verschijnt hier en in de agenda.",
+    "sheetSubtitle": "Vervalt {{date}}",
+    "dayRepeats": "herhaalt",
+    "dayReminder": "herinnering",
+    "dayEmpty": "Geen deadlines op deze dag"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Kan niet bewaren",
+    "date": "Datum",
+    "footer": "De herinnering komt op je telefoon; met de agenda aan staat de deadline ook in “Sottomano”.",
+    "every": "Elke"
+  },
+  "family": {
+    "title": "Gezin",
+    "subtitle": "Een profiel voor iedereen thuis",
+    "addPerson": "Voeg iemand toe",
+    "members": "Leden",
+    "orderSaveFailed": "Kan volgorde niet bewaren",
+    "reorderTitle": "Orden gezin",
+    "reorderHint": "Houd een persoon ingedrukt en sleep hem waar je wilt.",
+    "privacyNote": "Alles blijft op deze telefoon. Om iemand een document te sturen, open je het en tik je op Stuur.",
+    "youSpoken": "jij",
+    "reorderA11yHint": "Houd ingedrukt om het gezin te ordenen",
+    "expiring_one": "{{count}} verloopt",
+    "expiring_other": "{{count}} verlopen"
+  },
+  "personScreen": {
+    "photoFailed": "Kan foto niet gebruiken",
+    "editPerson": "Wijzig persoon",
+    "selectAndSend": "Selecteer en stuur",
+    "deletePerson": "Verwijder persoon",
+    "moreA11y": "Wijzig of verwijder {{name}}",
+    "changePhoto": "Wijzig foto",
+    "editProfile": "Wijzig profiel",
+    "documentsSection": "Documenten · {{count}}",
+    "addDocument": "Voeg document toe",
+    "sendTogether": "Stuur samen ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Kan niet bewaren",
+    "newPerson": "Nieuwe persoon",
+    "addPhoto": "Voeg foto toe",
+    "name": "Naam",
+    "namePlaceholder": "Hoe heet hij of zij?",
+    "role": "Wie is het",
+    "roleA11y": "Wie het voor jou is: {{role}}",
+    "note": "Het profiel blijft op deze telefoon. Zo houd je ieders documenten op orde.",
+    "addToFamily": "Voeg toe aan gezin",
+    "roleSheetTitle": "Wie is het voor jou"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Kan niet verwijderen",
+    "title": "Categorie {{name}} verwijderen?",
+    "messageWithDocuments_one": "Er zit {{count}} document in. Wat wil je ermee doen?",
+    "messageWithDocuments_other": "Er zitten {{count}} documenten in. Wat wil je ermee doen?",
+    "messageWithDocumentsRestorable_one": "Er zit {{count}} document in. Wat wil je ermee doen? Je kunt de categorie terugzetten via Nieuwe categorie.",
+    "messageWithDocumentsRestorable_other": "Er zitten {{count}} documenten in. Wat wil je ermee doen? Je kunt de categorie terugzetten via Nieuwe categorie.",
+    "messageEmpty": "De categorie is leeg.",
+    "messageEmptyRestorable": "De categorie is leeg. Je kunt hem terugzetten via Nieuwe categorie.",
+    "deleteAll": "Verwijder alles",
+    "confirm": "Verwijder categorie",
+    "choicesA11y": "Wat te doen met de documenten",
+    "moveLabel": "Verplaats naar Overig",
+    "moveDetailPassword": "Ze blijven in de app, in Overig, zonder gebruikersnaam en wachtwoord",
+    "moveDetail": "Ze blijven in de app, in een algemene map",
+    "trashLabel": "Verwijder ze",
+    "trashDetail_one": "Ze gaan naar de prullenmand: je kunt ze {{count}} dag terugzetten",
+    "trashDetail_other": "Ze gaan naar de prullenmand: je kunt ze {{count}} dagen terugzetten"
+  },
+  "deletePerson": {
+    "title": "{{name}} uit het gezin verwijderen?",
+    "messageWithDocuments_one": "{{name}} heeft {{count}} document. Wat wil je ermee doen?",
+    "messageWithDocuments_other": "{{name}} heeft {{count}} documenten. Wat wil je ermee doen?",
+    "messageEmpty": "Het profiel wordt van deze telefoon verwijderd.",
+    "familyLabel": "Verplaats naar Hele gezin",
+    "familyDetail": "Ze blijven in de app, zichtbaar voor iedereen",
+    "trashDetail_one": "Ze gaan mee met het profiel: ze blijven {{count}} dag in de prullenmand",
+    "trashDetail_other": "Ze gaan mee met het profiel: ze blijven {{count}} dagen in de prullenmand"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Huisdieren",
+      "document": "Document",
+      "home": "Huis",
+      "car": "Auto",
+      "health": "Gezondheid",
+      "school": "School",
+      "work": "Werk",
+      "keys": "Sleutels",
+      "travel": "Reizen",
+      "expenses": "Uitgaven"
+    },
+    "restoreFailed": "Kan niet terugzetten",
+    "editTitle": "Wijzig categorie",
+    "newTitle": "Nieuwe categorie",
+    "restoreSection": "Zet een standaardcategorie terug",
+    "restoreA11y": "Zet {{name}} terug",
+    "restoreHint": "Hij komt terug zoals hij was, met zijn kleuren, symbool en velden. Of maak hieronder een nieuwe.",
+    "previewA11y": "Voorvertoning categorie",
+    "namePlaceholder": "Bijv. Huisdieren",
+    "nameA11y": "Naam categorie",
+    "color": "Kleur",
+    "paletteColor": "Kleur uit Weergave",
+    "colorNumber": "Kleur {{number}}",
+    "followsPaletteHint": "De kleur volgt het palet dat in Weergave is gekozen.",
+    "ownColorHint": "Je eigen kleur: die verandert niet met Weergave.",
+    "icon": "Symbool",
+    "forWhom": "Voor wie",
+    "forWhomA11y": "Voor wie deze categorie is: {{name}}",
+    "forWhomHint": "Nieuwe documenten in deze categorie staan eerst op naam van deze persoon.",
+    "create": "Maak categorie"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Website of app",
+        "namePlaceholder": "Bijvoorbeeld: Internetbankieren",
+        "userLabel": "Gebruikersnaam of e-mail",
+        "userPlaceholder": "naam@email.nl",
+        "passwordLabel": "Wachtwoord",
+        "notePlaceholder": "Bijvoorbeeld: beveiligingsvraag, herstelcode…"
+      },
+      "wifi": {
+        "name": "Wifi",
+        "namePlaceholder": "Bijvoorbeeld: Wifi thuis",
+        "userLabel": "Netwerknaam",
+        "userPlaceholder": "FamilieJansen_5G",
+        "passwordLabel": "Netwerkwachtwoord",
+        "notePlaceholder": "Bijvoorbeeld: de router staat in de woonkamer, achter de tv…"
+      },
+      "pin": {
+        "name": "Pincode",
+        "namePlaceholder": "Bijvoorbeeld: Bankpas",
+        "passwordLabel": "Pincode",
+        "notePlaceholder": "Bijvoorbeeld: de pas van Julia…"
+      },
+      "other": {
+        "name": "Anders",
+        "namePlaceholder": "Bijvoorbeeld: Alarm thuis",
+        "userLabel": "Gebruikersnaam",
+        "userPlaceholder": "Optioneel",
+        "passwordLabel": "Code of wachtwoord",
+        "notePlaceholder": "Waarvoor het is, waar het wordt gebruikt…"
+      }
+    },
+    "colors": {
+      "aqua": "Aqua",
+      "indigo": "Indigo",
+      "apricot": "Abrikoos",
+      "pink": "Roze",
+      "mint": "Mint",
+      "sky": "Hemel",
+      "graphite": "Grafiet"
+    },
+    "icons": {
+      "key": "Sleutel",
+      "lock": "Hangslot",
+      "globe": "Wereldbol",
+      "wifi": "Wifi",
+      "bank": "Bank",
+      "card": "Pas",
+      "mail": "E-mail",
+      "home": "Huis",
+      "car": "Auto",
+      "shield": "Schild",
+      "cart": "Winkelwagen",
+      "star": "Ster"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Alleen cijfers",
+    "strength": {
+      "weak": "Zwak",
+      "fair": "Redelijk",
+      "good": "Goed",
+      "strong": "Sterk"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Bevestig om de vergrendeling aan te zetten"
+  },
+  "appLock": {
+    "prompt": "Ontgrendel Sottomano",
+    "unlock": "Ontgrendel",
+    "unlockWith": {
+      "faceId": "Ontgrendel met Face ID",
+      "touchId": "Ontgrendel met Touch ID",
+      "passcode": "Ontgrendel met toegangscode"
+    },
+    "message": "Je documenten zijn beschermd"
+  },
+  "passwordForm": {
+    "showPrompt": "Toon het wachtwoord",
+    "copyPrompt": "Kopieer het wachtwoord",
+    "copiedTitle": "Gekopieerd",
+    "copiedMessage": "Het wordt over 1 minuut van het klembord gewist.",
+    "scannerUnavailableTitle": "Scanner niet beschikbaar",
+    "scannerUnavailableMessage": "Kies de afbeelding uit je fotobibliotheek.",
+    "saveFailed": "Kan niet bewaren",
+    "editTitle": "Wijzig wachtwoord",
+    "newTitle": "Nieuw wachtwoord",
+    "privacy": "Ze blijven alleen op deze telefoon en openen met Face ID.",
+    "sections": {
+      "what": "Wat je bewaart",
+      "name": "Naam",
+      "preview": "Voorvertoning",
+      "access": "Inloggen",
+      "site": "Website of app",
+      "whose": "Van wie is het",
+      "notes": "Notities"
+    },
+    "typesLabel": "Type wachtwoord",
+    "customTypePlaceholder": "Wat is het? Alarm, kluis, hangslot…",
+    "customTypeLabel": "Wat het is",
+    "customTypeHint": "Het wordt een nieuw type, dat je de volgende keer tussen de keuzes vindt.",
+    "previewTitle": "Zo ziet het eruit in de lijst",
+    "previewText": "Een kleur en een symbool, of een afbeelding.",
+    "color": "Kleur",
+    "colorLabel": "Kleur voorvertoning",
+    "icon": "Symbool",
+    "iconLabel": "Symbool voorvertoning",
+    "image": "Afbeelding",
+    "scan": "Scan",
+    "gallery": "Uit Foto’s",
+    "removeImage": "Verwijder de afbeelding en gebruik kleur en symbool",
+    "passwordPlaceholder": "Typ of genereer",
+    "show": "Toon",
+    "hide": "Verberg",
+    "copy": "Kopieer",
+    "saved": "Bewaard",
+    "generate": "Genereer een sterk wachtwoord",
+    "urlPlaceholder": "www.voorbeeld.nl",
+    "urlLabel": "Websiteadres",
+    "wifiQrTitle": "QR-code voor gasten",
+    "wifiQrSubtitle": "Ze scannen hem en zijn verbonden",
+    "person": "Persoon",
+    "personA11y": "Persoon, {{name}}",
+    "favoriteTitle": "Voeg toe aan favorieten",
+    "favoriteSubtitle": "Je vindt het direct op het beginscherm",
+    "saveButton": "Bewaar wachtwoord",
+    "saveHint": "Vul een naam in om te bewaren."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Geen wachtwoord",
+    "noPasswordMessage": "Voeg het toe met Wijzig.",
+    "showPrompt": {
+      "site": "Toon wachtwoord",
+      "wifi": "Toon netwerkwachtwoord",
+      "pin": "Toon pincode",
+      "other": "Toon code of wachtwoord"
+    },
+    "copyPrompt": {
+      "site": "Kopieer wachtwoord",
+      "wifi": "Kopieer netwerkwachtwoord",
+      "pin": "Kopieer pincode",
+      "other": "Kopieer code of wachtwoord"
+    },
+    "copyUser": {
+      "site": "Kopieer gebruikersnaam of e-mail",
+      "wifi": "Kopieer netwerknaam",
+      "pin": "Kopieer gebruikersnaam",
+      "other": "Kopieer gebruikersnaam"
+    },
+    "copiedTitle": "Gekopieerd",
+    "copiedMessage": "Het wordt over 1 minuut van het klembord gewist.",
+    "copiedTextTitle": "Gekopieerd",
+    "qrPrompt": "Toon de QR-code voor gasten",
+    "invalidAddress": "Ongeldig adres",
+    "removeFavorite": "Verwijder uit favorieten",
+    "favoriteTitle": "Voeg toe aan favorieten",
+    "favoriteSubtitle": "Je vindt het direct op het beginscherm",
+    "moreActions": "Meer acties",
+    "sections": {
+      "access": "Inloggen",
+      "site": "Website of app",
+      "wifiQr": "QR-code voor gasten",
+      "whose": "Van wie is het",
+      "notes": "Notities"
+    },
+    "hidden": "Verborgen",
+    "show": "Toon",
+    "hide": "Verberg",
+    "copy": "Kopieer",
+    "locked": "Zichtbaar na Face ID of de iPhone-toegangscode",
+    "wifiQrLabel": "QR-code van het wifinetwerk",
+    "qrHint": "Ze scannen hem met de camera en zijn verbonden.",
+    "qrLocked": "De QR-code bevat het wachtwoord: hij is zichtbaar na Face ID of de iPhone-toegangscode.",
+    "qrNoNetwork": "Voeg de netwerknaam toe met Wijzig om de QR-code te krijgen.",
+    "showQr": "Toon QR-code",
+    "hideQr": "Verberg QR-code",
+    "person": "Persoon",
+    "moveToTrash": "Naar prullenmand"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Geen wachtwoord",
+    "noPasswordMessage": "Voeg het toe met Wijzig.",
+    "showPrompt": "Toon het wachtwoord",
+    "copyPrompt": "Kopieer het wachtwoord",
+    "copiedTitle": "Wachtwoord gekopieerd",
+    "copiedMessage": "Het wordt over 1 minuut van het klembord gewist.",
+    "user": "Gebruikersnaam",
+    "password": "Wachtwoord",
+    "hidden": "Wachtwoord verborgen",
+    "show": "Toon",
+    "hide": "Verberg",
+    "copy": "Kopieer"
+  },
+  "cardForm": {
+    "found": "Gevonden: {{name}}",
+    "foundBarcode": "Gevonden: streepjescode {{name}}",
+    "handwritten": "Code met de hand ingevoerd",
+    "noCode": "Geen code gelezen",
+    "photoOpenFailed": "Kan foto niet openen",
+    "saveFailed": "Kan niet bewaren",
+    "retakeFront": "Opnieuw maken",
+    "retakePhoto": "Maak foto opnieuw",
+    "recognized": "Pas herkend",
+    "tapRetake": "Tik op Opnieuw maken om hem te fotograferen",
+    "fromPhotos": "Uit Foto’s",
+    "cover": "Omslag",
+    "coverPhotoCaption": "Bijgesneden en rechtgezet uit de foto van de pas",
+    "coverColorCaption": "De kleur van de pas, met naam en nummer",
+    "codeSection": "Code voor bij de kassa",
+    "photographCode": "Fotografeer de code",
+    "barcode": "Streepjescode",
+    "qrCode": "QR-code",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Pas",
+    "typeNumber": "Typ het nummer hieronder",
+    "explain": "Sottomano herkent zelf of de pas een streepjescode of een QR-code heeft. Bij de kassa toont het hem groot, met het scherm op volle helderheid.",
+    "readTitle": "Gelezen van de pas",
+    "readText": "Controleer ze en pas aan als dat nodig is.",
+    "name": "Naam",
+    "namePlaceholder": "Bijv. Supermarkt",
+    "type": "Type",
+    "typePlaceholder": "Bijv. Klantenkaart",
+    "number": "Nummer",
+    "numberPlaceholder": "Bijv. 0400 2219 8876",
+    "holder": "Houder",
+    "saveButton": "Bewaar pas",
+    "saveHint": "Vul de naam van de pas in om te bewaren."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Foto van de voorkant",
+      "barcode": "Fotografeer de streepjescode"
+    },
+    "photoOpenFailed": "Kan foto niet openen",
+    "permissionTitle": "Cameratoegang nodig",
+    "permissionText": "Sottomano gebruikt de camera om je pasjes te fotograferen en hun streepjescode te lezen.",
+    "allow": "Sta toe",
+    "openSettings": "Open Instellingen",
+    "frontCheck": "Voorkant: is hij scherp?",
+    "read": "Gelezen: {{value}}",
+    "notRead": "Code niet gelezen",
+    "notReadHint": "Houd de foto: het nummer typ je in de volgende stap.",
+    "retake": "Opnieuw",
+    "use": "Gebruik",
+    "focus": "Focus",
+    "stepCount": "{{current}} van {{total}}",
+    "frameHint": "Houd de pas binnen het kader",
+    "searching": "Code zoeken…",
+    "chooseFromPhotos": "Kies uit Foto’s",
+    "shoot": "Maak foto",
+    "skip": "Sla over"
+  },
+  "cardDetail": {
+    "code": "Code",
+    "photo": "Foto",
+    "barcodeLabel": "Streepjescode",
+    "barcodePhotoLabel": "Foto van de streepjescode",
+    "fullScreenHint": "Opent de code schermvullend",
+    "noCode": "Geen code. Tik op “Wijzig” om hem te fotograferen of te typen.",
+    "tapHint": "Tik op de code om hem te vergroten",
+    "person": "Persoon"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Kan volgorde niet bewaren",
+    "editCategory": "Wijzig categorie",
+    "deleteCategory": "Verwijder categorie",
+    "reorderTitle": "Orden pasjes",
+    "reorderHint": "Houd een pas ingedrukt en sleep hem waar je wilt.",
+    "yourCards": "Je pasjes",
+    "title": "Pasjes",
+    "subtitle": "Tik op een pas om de code bij de kassa te tonen",
+    "categoryMenuLabel": "Wijzig of verwijder de categorie {{name}}",
+    "addCard": "Voeg pas toe",
+    "reorder": "Orden",
+    "newCard": "Nieuwe pas",
+    "cardDetails": "Details van de pas",
+    "categoryMenuTitle": "Categorie {{name}}",
+    "cardCount_one": "{{count}} pas",
+    "cardCount_other": "{{count}} passen",
+    "cardOpenLabel": "{{label}}, sluit",
+    "cardClosedLabel": "{{label}}, toon de code",
+    "qrLabel": "QR-code van de pas",
+    "barcodeLabel": "Streepjescode van de pas",
+    "fullScreenHint": "Opent de code schermvullend",
+    "noCode": "Geen code: tik op Details › Wijzig om hem te fotograferen of te typen.",
+    "details": "Details"
+  },
+  "walletCard": {
+    "untitled": "Nieuwe pas"
+  },
+  "barcodeView": {
+    "close": "Sluit de code"
+  },
+  "colorPicker": {
+    "color": "Kleur",
+    "custom": "Eigen kleur",
+    "hex": "Code",
+    "hexLabel": "Kleurcode"
+  },
+  "colorWheel": {
+    "label": "Kleurenwiel: tik of sleep om te kiezen",
+    "nextHue": "Volgende tint",
+    "previousHue": "Vorige tint"
+  },
+  "newCard": {
+    "title": "Nieuwe pas",
+    "missingCategory": "De categorie “Pasjes” bestaat niet meer."
+  },
+  "editCard": {
+    "title": "Wijzig pas"
+  },
+  "unlock": {
+    "storeOnly": "Beschikbaar in de App Store-versie",
+    "remainingNone": "Je hebt alle gratis plekken gebruikt.",
+    "remaining_one": "Je kunt er nog {{count}} toevoegen.",
+    "remaining_other": "Je kunt er nog {{count}} toevoegen.",
+    "tag": "Gratis versie · {{used}} van {{limit}} gebruikt",
+    "title": "Al je documenten, zonder limiet",
+    "intro": "Gratis voor maximaal {{limit}} documenten en pasjes. Om er zoveel toe te voegen als je wilt, ontgrendel je de app met één betaling.",
+    "benefits": {
+      "unlimited": {
+        "title": "Onbeperkt documenten",
+        "text": "Rekeningen, pasjes, garanties en al het andere"
+      },
+      "reminders": {
+        "title": "Herinneringen voor deadlines",
+        "text": "We herinneren je voordat het te laat is"
+      },
+      "offline": {
+        "title": "Werkt zonder internet",
+        "text": "Alles blijft op je telefoon, ook de reservekopie"
+      },
+      "family": {
+        "title": "Het hele gezin",
+        "text": "Een profiel voor iedereen thuis"
+      }
+    },
+    "sectionTitle": "Je gratis versie",
+    "usageLabel": "Documenten en pasjes",
+    "usageValue": "{{used}} van {{limit}}",
+    "usageA11y": "Gebruikte gratis plekken",
+    "keptNote": "Wat je al hebt bewaard, blijft altijd van jou, ook zonder te ontgrendelen.",
+    "priceTitle": "Voor altijd",
+    "priceText": "Geen limiet · één betaling",
+    "buy": "Ontgrendel voor {{price}}",
+    "continueFree": "Ga gratis door",
+    "restore": "Zet aankoop terug",
+    "terms": "Voorwaarden",
+    "privacy": "Privacy"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "De categorie “Overig”",
+    "otherCategoryMessage": "Die kan niet worden verwijderd: hij bevat de documenten van verwijderde categorieën."
+  },
+  "quickActionMenu": {
+    "close": "Sluit menu"
+  },
+  "quickActions": {
+    "open": "Open",
+    "unpin": "Verwijder uit favorieten",
+    "pin": "Voeg toe aan favorieten",
+    "moveToTrash": "Naar prullenmand",
+    "editCategory": "Wijzig categorie",
+    "deleteCategory": "Verwijder categorie",
+    "editPerson": "Wijzig persoon",
+    "deletePerson": "Verwijder persoon"
+  },
+  "shareCopies": {
+    "defaultName": "Document",
+    "fileNotFound": "Bestand niet gevonden op de telefoon."
+  },
+  "sendCompression": {
+    "tooBig": "Zelfs met maximale compressie is het te groot: overweeg het op te splitsen in meerdere bestanden.",
+    "lowPpi": "Kleine tekst is misschien niet leesbaar."
+  },
+  "sendPreferences": {
+    "original": "Origineel"
+  },
+  "sendFileName": {
+    "fallback": "document"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Voor- en achterkant kunnen nu niet worden samengevoegd.",
+    "noPhotos": "Geen foto’s om te sturen.",
+    "fileFront": "voorkant",
+    "fileBack": "achterkant",
+    "filePage": "pagina-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "documenten",
+    "title": "Stuur {{title}}",
+    "formatPhotos": "Foto’s",
+    "actions": {
+      "email": "E-mail",
+      "whatsapp": "WhatsApp",
+      "print": "Druk af",
+      "save": "Bewaar in Bestanden",
+      "copy": "Kopieer",
+      "other": "Meer"
+    },
+    "alerts": {
+      "savedToFiles": "Bewaard in Bestanden",
+      "imageCopied": "Afbeelding gekopieerd",
+      "textCopied": "Tekst gekopieerd",
+      "firstPageCopied": "De eerste pagina is gekopieerd: plak hem in een bericht.",
+      "pasteImage": "Plak hem in een bericht of notitie.",
+      "pdfNotCopied": "Een PDF kan niet worden gekopieerd: de naam en de notitie zijn gekopieerd. Gebruik Meer voor het bestand.",
+      "failed": "Kan niet voltooien"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDF’s",
+      "singlePdf": "Eén PDF",
+      "failed": "Het bestand kon niet worden voorbereid",
+      "preparing": "Voorbereiden…"
+    },
+    "includeNote": "Voeg de notitie van het document toe",
+    "noNote": "Dit document heeft geen notitie.",
+    "frontBackPage": "Voor- en achterkant op één pagina",
+    "frontBackImage": "Voor- en achterkant in één afbeelding",
+    "maxSize": "Maximale grootte",
+    "pdfAsIs": "De PDF wordt verstuurd zoals hij is.",
+    "severalInfo": "Eén PDF: de documenten na elkaar, met voor- en achterkant van identiteitsbewijzen en pasjes op dezelfde pagina.",
+    "quality": {
+      "high": "Hoge kwaliteit",
+      "good": "Goede kwaliteit",
+      "low": "Lage kwaliteit",
+      "minimum": "Minimale kwaliteit",
+      "original": "Originele kwaliteit"
+    },
+    "skipped_one": "{{count}} document zonder foto’s is niet meegenomen (geïmporteerde PDF’s kunnen nog niet worden samengevoegd).",
+    "skipped_other": "{{count}} documenten zonder foto’s zijn niet meegenomen (geïmporteerde PDF’s kunnen nog niet worden samengevoegd)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "PDF voorbereiden…",
+    "progressRetry": "Foto’s verkleinen (poging {{attempt}})…",
+    "subtitle": "Gemaakt op {{date}} met Sottomano · {{documents}}",
+    "subtitleWithTotal": "Gemaakt op {{date}} met Sottomano · {{documents}} · totaal {{total}}",
+    "columns": {
+      "number": "Nr.",
+      "document": "Document",
+      "date": "Datum",
+      "person": "Persoon",
+      "amount": "Bedrag",
+      "page": "Pagina"
+    },
+    "sentApart": "apart verstuurd",
+    "noPages": "geen pagina’s",
+    "paid": "betaald",
+    "due": "te betalen",
+    "invalidIndex": "Ongeldige index"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Eén PDF kan niet worden samengevoegd (beveiligd met wachtwoord of beschadigd): {{titles}}. In de index staat hij als “apart verstuurd” en hij gaat mee met de andere.",
+    "sentApart_other": "{{count}} PDF’s kunnen niet worden samengevoegd (beveiligd met wachtwoord of beschadigd): {{titles}}. In de index staan ze als “apart verstuurd” en ze gaan mee met de andere.",
+    "alerts": {
+      "prepareFailed": "Kan PDF niet voorbereiden",
+      "ready": "PDF klaar",
+      "noMailTitle": "Mail is niet ingesteld",
+      "noMailMessage": "Voeg een account toe in Mail, of bewaar de PDF’s in Bestanden.",
+      "savedToFiles": "Bewaard in Bestanden",
+      "sendFailed": "Kan niet versturen"
+    },
+    "readyMany": "{{number}} PDF’s klaar",
+    "choices": {
+      "email": "E-mail: alle PDF’s in één bericht",
+      "save": "Bewaar in Bestanden: alles in dezelfde map",
+      "oneByOne": "Deel één voor één"
+    },
+    "intro": "Alle documenten in {{category}}, per jaar verdeeld: één PDF per jaar, met een index (document, datum, persoon, bedrag, pagina) en het totaal. Het jaar is dat van de deadline of de betaling; als geen van beide is ingevuld, het jaar waarin je ze hebt toegevoegd.",
+    "noDocuments": "Geen documenten in dit jaar.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF’s",
+    "year": "Jaar",
+    "allYears": "Alle jaren",
+    "maxPhotoSize": "Maximale fotogrootte",
+    "limitInfo": "Foto’s worden verkleind om binnen de limiet te blijven; geïmporteerde PDF’s blijven zoals ze zijn.",
+    "prepare": "Maak klaar en stuur"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Er ging iets mis",
+      "restoredToOther": "Teruggezet in Overig",
+      "restoredPassword": "De categorie bestaat niet meer: het document staat in Overig, zonder gebruikersnaam en wachtwoord.",
+      "restoredMessage": "De categorie bestaat niet meer: het document staat in Overig.",
+      "deleteTitle": "“{{title}}” definitief verwijderen?",
+      "deleteMessage": "De foto’s en PDF’s worden ook verwijderd. Dit kan niet ongedaan worden gemaakt.",
+      "emptyTitle": "Prullenmand legen?",
+      "emptyMessage_one": "Het document wordt verwijderd met zijn foto’s en PDF’s. Dit kan niet ongedaan worden gemaakt.",
+      "emptyMessage_other": "De {{count}} documenten worden verwijderd met hun foto’s en PDF’s. Dit kan niet ongedaan worden gemaakt.",
+      "emptyConfirm": "Leeg"
+    },
+    "intro": "Verwijderde documenten blijven hier {{days}} dagen en worden daarna gewist met hun foto’s en PDF’s.",
+    "empty": "De prullenmand is leeg",
+    "deletedSoon": "Wordt binnenkort verwijderd",
+    "deletedIn": "Wordt over {{days}} dagen verwijderd",
+    "restoreLabel": "Zet {{title}} terug",
+    "deleteForeverLabel": "Verwijder {{title}} definitief",
+    "deleteForever": "Verwijder definitief",
+    "emptyTrash": "Leeg prullenmand"
+  },
+  "menu": {
+    "close": "Sluit het menu",
+    "home": "Start",
+    "favorites": "Favorieten",
+    "deadlines": "Deadlines",
+    "deadlinesUrgent": "Deadlines, {{number}} te controleren",
+    "family": "Gezin",
+    "cards": "Pasjes",
+    "backup": "Reservekopie",
+    "backupDue": "Reservekopie, nodig",
+    "help": "Hulp en contact",
+    "rate": "Beoordeel Sottomano",
+    "recommend": "Raad aan bij een vriend",
+    "trash": "Prullenmand",
+    "trashCount": "Prullenmand, {{number}}",
+    "password": "Wachtwoorden",
+    "scan": "Scan",
+    "fromPhotos": "Uit foto’s",
+    "importFiles": "Importeer bestanden",
+    "version": "Versie {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Sluit meldingen",
+    "title": "Meldingen",
+    "markAllRead": "Markeer als gelezen",
+    "empty": "Geen meldingen in de afgelopen 7 dagen.",
+    "today": "Vandaag",
+    "thisWeek": "Deze week",
+    "settings": "Instellingen voor meldingen",
+    "unreadItem": "Ongelezen. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Verlopen op {{date}}.",
+    "expiresToday": "Verloopt vandaag.",
+    "expiresOn": "Verloopt {{distance}}, op {{date}}.",
+    "amount": "Bedrag {{amount}}.",
+    "backupTitle": "Reservekopie",
+    "backupLate": "Het is al een tijd geleden dat je een reservekopie van je documenten hebt gemaakt.",
+    "backupNever": "Je hebt nog geen reservekopie van je documenten gemaakt."
+  },
+  "deadlineReminders": {
+    "title": "Komende deadline",
+    "hiddenBody": "Een document verloopt {{date}} ({{distance}}). Open Sottomano om het te zien.",
+    "body": "{{name}} verloopt {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Weergave",
+      "security": "Beveiliging",
+      "reminders": "Herinneringen",
+      "backup": "Reservekopie",
+      "info": "Info"
+    },
+    "calendarOff": "Uit",
+    "alerts": {
+      "notificationsOffTitle": "Meldingen staan uit",
+      "notificationsOffMessage": "Sta meldingen voor Sottomano toe in Instellingen op de iPhone om herinneringen te krijgen.",
+      "openSettings": "Open Instellingen"
+    },
+    "lastBackup": {
+      "never": "Nooit",
+      "today": "Vandaag",
+      "yesterday": "Gisteren",
+      "daysAgo_one": "{{count}} dag geleden",
+      "daysAgo_other": "{{count}} dagen geleden"
+    },
+    "categoryColors": "Kleuren van categorieën",
+    "faceId": "Vergrendel met Face ID",
+    "faceIdSubtitle": "Vraagt elke keer om je gezicht als je de app opent",
+    "hidePreviews": "Verberg voorvertoningen",
+    "hidePreviewsSubtitle": "Meldingen tonen het document niet",
+    "notifications": "Meldingen",
+    "reminderTime": "Tijd van herinnering",
+    "defaultReminder": "Standaardherinnering",
+    "iconBadge": "Badge op appsymbool",
+    "iconBadgeSubtitle": "Deadlines die verstreken zijn of binnen 7 dagen vallen",
+    "calendar": "Agenda “Sottomano”",
+    "notificationsBlocked": "Meldingen zijn geblokkeerd",
+    "notificationsBlockedSubtitle": "Sta ze toe in Instellingen op de iPhone",
+    "backupNote": "De reservekopie is een bestand op je telefoon, in de Bestanden-app. Je kunt het kopiëren waarheen je wilt. Sottomano werkt ook zonder internet.",
+    "createBackup": "Maak nu een reservekopie",
+    "restoreBackup": "Zet terug uit reservekopie",
+    "help": "Hulp en contact",
+    "privacy": "Privacy",
+    "terms": "Gebruiksvoorwaarden",
+    "rate": "Beoordeel Sottomano",
+    "debug": {
+      "limitPreview": "Voorvertoning gratis limiet",
+      "limitPreviewSubtitle": "Alleen om te testen: toont de vergrendelde +, het limietpaneel en de kaart op Start",
+      "emptyHome": "Voorvertoning lege Start",
+      "emptyHomeSubtitle": "Alleen om te testen: Start alsof er geen documenten zijn (je gegevens blijven)",
+      "onboarding": "Toon welkom opnieuw",
+      "onboardingSubtitle": "Alleen om te testen: de welkomstpagina’s 1–4"
+    },
+    "version": "Sottomano · versie {{version}}",
+    "theme": {
+      "title": "Thema",
+      "autoSubtitle": "Volgt de instelling van de telefoon",
+      "auto": "Automatisch",
+      "light": "Licht",
+      "dark": "Donker"
+    }
+  },
+  "backup": {
+    "title": "Reservekopie",
+    "subtitle": "Een kopie van al je documenten, bewaard op je telefoon.",
+    "keyProgress": "Beveiligen met je wachtwoord… dit kan tot een minuut duren",
+    "whenToday": "vandaag om {{time}}",
+    "whenDate": "{{date}} om {{time}}",
+    "minLength": "Minstens {{min}} tekens.",
+    "mismatch": "De twee wachtwoorden komen niet overeen.",
+    "creating": "Reservekopie maken…",
+    "copyDialogTitle": "Kopieer de reservekopie",
+    "opening": "Reservekopie openen…",
+    "checking": "Documenten controleren…",
+    "restoring": "Terugzetten…",
+    "keepOpen": "Houd de app open tot het klaar is.",
+    "forgotWarning": "Als je het wachtwoord vergeet, kan de reservekopie niet worden geopend.",
+    "passwordPlaceholder": "Wachtwoord (minstens {{min}} tekens)",
+    "repeatPlaceholder": "Herhaal het wachtwoord",
+    "createAndSave": "Maak en bewaar",
+    "backupPassword": "Wachtwoord reservekopie",
+    "openBackup": "Open reservekopie",
+    "completed": "Reservekopie voltooid",
+    "lastBackup": "Laatste reservekopie",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Kopieer het bestand naar elders",
+    "createNew": "Maak een nieuwe reservekopie",
+    "noneTitle": "Je hebt nog geen reservekopie gemaakt",
+    "noneText": "Als je je telefoon verliest of vervangt, zet de reservekopie alles terug.",
+    "createNow": "Maak nu een reservekopie",
+    "restoreSection": "Zet terug",
+    "restoreTitle": "Nieuwe telefoon?",
+    "restoreText": "Kies het reservekopiebestand om je documenten, pasjes en herinneringen terug te krijgen.",
+    "chooseFile": "Kies een reservekopiebestand",
+    "remindersSection": "Herinneringen",
+    "remindMe": "Herinner me aan reservekopie",
+    "remindMeValue": "Herinner me aan reservekopie: {{value}}",
+    "footnote": "De reservekopie is één bestand, beveiligd met het wachtwoord dat je kiest: documenten, foto’s, pasjes, personen en herinneringen. Kopieer het naar elders (Bestanden, iCloud Drive, een computer), zodat je het nog hebt als je je telefoon kwijtraakt.",
+    "alerts": {
+      "createFailed": "Reservekopie mislukt",
+      "copyFailed": "Kan niet kopiëren",
+      "restoreTitle": "Reservekopie van {{date}} terugzetten?",
+      "restoreMessage_one": "Er zit {{count}} document in. Wat nu in de app staat, wordt vervangen.",
+      "restoreMessage_other": "Er zitten {{count}} documenten in. Wat nu in de app staat, wordt vervangen.",
+      "restoreFailed": "Terugzetten mislukt",
+      "restoreFailedMessage": "Er is niets veranderd in de app.\n\n{{reason}}",
+      "restored": "Reservekopie teruggezet",
+      "restoredMessage": "Je documenten zijn terug."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Elke week",
+      "month": "Elke maand",
+      "never": "Nooit"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Dit bestand is geen reservekopie van Sottomano.",
+    "newerVersion": "Deze reservekopie is gemaakt met een nieuwere versie van Sottomano. Werk de app bij en probeer het opnieuw.",
+    "empty": "Het reservekopiebestand is leeg of onvolledig.",
+    "incomplete": "Het reservekopiebestand is onvolledig.",
+    "wrongPassword": "Onjuist wachtwoord. Let op hoofdletters en kleine letters en probeer het opnieuw.",
+    "damaged": "Het reservekopiebestand is beschadigd of onvolledig."
+  },
+  "createBackup": {
+    "incompleteFile": "Onvolledig bestand: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "De inhoud van de reservekopie is ongeldig.",
+    "newerApp": "Deze reservekopie komt van een nieuwere versie van Sottomano. Werk de app bij en probeer het opnieuw."
+  },
+  "zipReader": {
+    "invalid": "Ongeldig archief",
+    "incomplete": "Onvolledig archief"
+  },
+  "backupReminder": {
+    "none": "Je hebt nog geen reservekopie gemaakt",
+    "old_one": "Je laatste reservekopie is van {{count}} dag geleden",
+    "old_other": "Je laatste reservekopie is van {{count}} dagen geleden",
+    "link": "Maak nu een reservekopie",
+    "close": "Sluit melding",
+    "snooze_one": "Verberg {{count}} dag",
+    "snooze_other": "Verberg {{count}} dagen"
+  },
+  "calendarSettings": {
+    "title": "Agenda",
+    "intro": "Deadlines komen in een aparte agenda, “Sottomano”. Je kunt die verbergen in de Agenda-app; als je hem hier uitzet, wordt hij verwijderd.",
+    "details": "Elke deadline is een gebeurtenis voor de hele dag “Verloopt: titel”, zonder andere gegevens uit het document. Als de herinneringen van Sottomano uit staan, waarschuwt de gebeurtenis je om 9:00 op de herinneringsdag; staan ze aan, dan waarschuwt alleen de app, zodat je geen twee meldingen krijgt.",
+    "allowAccess": "Sta toegang tot Agenda toe",
+    "denied": "Toegang tot Agenda is geweigerd. Je kunt het aanzetten in Instellingen op de iPhone.",
+    "openSettings": "Open Instellingen",
+    "switchLabel": "Deadlines in de agenda “Sottomano”",
+    "enabled_one": "{{count}} deadline in de agenda “Sottomano”",
+    "enabled_other": "{{count}} deadlines in de agenda “Sottomano”",
+    "removeConfirm": "De agenda Sottomano en al zijn deadlines uit Agenda verwijderen?",
+    "remove": "Verwijder",
+    "removed": "Agenda “Sottomano” verwijderd"
+  },
+  "calendarSync": {
+    "eventTitle": "Verloopt: {{title}}",
+    "cannotCreate": "Kan de agenda “Sottomano” niet maken op deze iPhone."
+  },
+  "appearance": {
+    "intro": "De kleuren van de standaardcategorieën. Categorieën die je zelf hebt gemaakt, houden hun eigen kleur.",
+    "restoreButton": "Zet standaardcategorieën terug",
+    "restoreHint": "Brengt de standaardcategorieën terug die je hebt verwijderd.",
+    "paletteLabel": "Palet {{name}}",
+    "alerts": {
+      "restoreTitle": "Standaardcategorieën terugzetten?",
+      "restoreMessage": "De verwijderde categorieën komen terug met hun oorspronkelijke naam, symbool en kleur. Je documenten en de categorieën die je zelf hebt gemaakt, veranderen niet.",
+      "nothingTitle": "Niets om terug te zetten",
+      "nothingMessage": "Alle standaardcategorieën staan al op Start.",
+      "restoredTitle": "Categorieën teruggezet",
+      "restoredMessage_one": "{{count}} categorie staat weer op Start, vóór “Overig”.",
+      "restoredMessage_other": "{{count}} categorieën staan weer op Start, vóór “Overig”.",
+      "restoreFailed": "Kan niet terugzetten"
+    }
+  },
+  "about": {
+    "version": "Versie {{version}}",
+    "privacy": "Privacy",
+    "privacyFooter": "Als je Agenda aanzet, worden deadlines in de iPhone-agenda gezet die je kiest. Als je een document stuurt, bepaal jij met wie je het deelt.",
+    "onPhone": "Je documenten blijven op je telefoon",
+    "offline": "Geen account en geen server: werkt ook offline",
+    "noTracking": "Geen tracking en geen advertenties"
+  },
+  "terms": {
+    "intro": "De volledige gebruiksvoorwaarden worden gepubliceerd met de App Store-versie. In het kort:",
+    "free": "Sottomano is gratis voor maximaal {{limit}} documenten en pasjes",
+    "oneTime": "Ontgrendelen is een eenmalige aankoop, zonder abonnement",
+    "yours": "Je documenten blijven op je telefoon en zijn van jou",
+    "backup": "Maak een reservekopie, zodat je ze niet kwijtraakt als je van telefoon wisselt"
+  },
+  "limit": {
+    "later": "Later",
+    "title": "Je hebt je {{limit}} gratis plekken gebruikt",
+    "text": "Alles wat je hebt bewaard, blijft hier en werkt zoals altijd. Ontgrendel Sottomano om meer documenten en pasjes toe te voegen.",
+    "stillWorks": {
+      "view": "Je documenten bekijken",
+      "send": "Ze sturen en delen",
+      "cards": "Je pasjes tonen bij de kassa",
+      "reminders": "Herinneringen krijgen"
+    },
+    "blocked": "Meer documenten of pasjes toevoegen",
+    "unlock": "Ontgrendel zonder limiet voor {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}} van {{limit}} gratis plekken gebruikt",
+    "accessibility": "{{title}}. Ontgrendel",
+    "unlock": "Ontgrendel"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Gratis versie: {{used}} van {{limit}} gebruikt",
+    "titleMenu": "Gratis: {{used}} van {{limit}} gebruikt",
+    "subtitle": "Ontgrendel zonder limiet voor {{price}}",
+    "accessibility": "{{title}}. Ontgrendel zonder limiet voor {{price}}",
+    "unlock": "Ontgrendel"
+  },
+  "freeLimit": {
+    "unlockPrice": "€ 0,99"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Welkom bij Sottomano",
+        "text": "Identiteitsbewijzen, klantenkaarten, rekeningen, garanties: al je documenten van thuis op één plek, altijd bij de hand.",
+        "info": "Ze blijven op je telefoon en werken ook zonder internet"
+      },
+      "scan": {
+        "title": "Eén keer vastleggen",
+        "text": "Scan ook meerdere pagina’s, of importeer foto’s en PDF’s. Je vindt ze op volgorde terug en stuurt ze zo licht als nodig."
+      },
+      "deadlines": {
+        "title": "Wij letten op de deadlines",
+        "text": "We herinneren je voordat een rekening of document verloopt. Ook in je agenda, als je wilt."
+      },
+      "cards": {
+        "title": "Je pasjes altijd op zak",
+        "text": "Fotografeer je klantenkaarten: bij de kassa toon je de streepjescode of QR-code met één tik."
+      }
+    },
+    "skip": "Sla over",
+    "pageOf": "Pagina {{page}} van {{total}}",
+    "start": "Begin",
+    "restore": "Zet terug uit reservekopie",
+    "art": {
+      "bills": "Rekeningen",
+      "cards": "Pasjes",
+      "health": "Gezondheid",
+      "car": "Auto",
+      "pdfReady": "PDF klaar",
+      "billTitle": "Stroomrekening",
+      "billExpires": "Vervalt over 2 dagen",
+      "gym": "Sportschool",
+      "library": "Bibliotheek",
+      "supermarket": "Supermarkt"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Kan bestand niet openen",
+    "title": "Leg je eerste document vast",
+    "text": "Een rekening, je identiteitskaart of de garantie van de wasmachine: in een paar seconden is het veilig en altijd bij de hand.",
+    "snap": "Leg een document vast",
+    "pdf": "Upload een PDF",
+    "folders": "Je mappen",
+    "emptyAccessibility": "{{name}}, leeg",
+    "empty": "Leeg",
+    "newCategory": "Nieuwe categorie"
+  },
+  "splashOverlay": {
+    "tagline": "Je documenten van thuis, klaar om te versturen"
+  },
+  "appActions": {
+    "shareText": "Ik raad je Sottomano aan: je documenten, pasjes en deadlines van thuis altijd bij de hand, op je telefoon en ook zonder internet.",
+    "rateTitle": "Beoordeel Sottomano",
+    "rateMessage": "Je kunt een beoordeling geven zodra Sottomano in de App Store staat.",
+    "lockUnavailableTitle": "Vergrendeling niet beschikbaar",
+    "lockUnavailableMessage": "Om Sottomano te vergrendelen heb je een toegangscode op je iPhone nodig. Stel er een in via Instellingen › Face ID en toegangscode en probeer het opnieuw."
+  }
+}

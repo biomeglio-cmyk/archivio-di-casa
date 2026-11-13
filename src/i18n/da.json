@@ -1,1 +1,1585 @@
-{}
+{
+  "common": {
+    "cancel": "Annuller",
+    "ok": "OK",
+    "done": "Færdig",
+    "save": "Gem",
+    "delete": "Slet",
+    "edit": "Rediger",
+    "close": "Luk",
+    "confirm": "Bekræft",
+    "back": "Tilbage",
+    "next": "Næste",
+    "share": "Del",
+    "send": "Send",
+    "search": "Søg",
+    "add": "Tilføj",
+    "remove": "Fjern",
+    "retry": "Prøv igen",
+    "continue": "Fortsæt",
+    "yes": "Ja",
+    "no": "Nej",
+    "restore": "Gendan",
+    "settings": "Indstillinger",
+    "more": "Mere",
+    "none": "Ingen",
+    "documents_one": "{{count}} dokument",
+    "documents_other": "{{count}} dokumenter",
+    "pages_one": "{{count}} side",
+    "pages_other": "{{count}} sider",
+    "photos_one": "{{count}} foto",
+    "photos_other": "{{count}} fotos",
+    "wholeFamily": "Hele familien"
+  },
+  "dates": {
+    "today": "i dag",
+    "tomorrow": "i morgen",
+    "yesterday": "i går",
+    "inSpan": "om {{span}}",
+    "spanAgo": "for {{span}} siden",
+    "expiredYesterday": "udløb i går",
+    "expiredFor": "udløb for {{span}} siden",
+    "days_one": "{{count}} dag",
+    "days_other": "{{count}} dage",
+    "months_one": "{{count}} måned",
+    "months_other": "{{count}} måneder",
+    "years_one": "{{count}} år",
+    "years_other": "{{count}} år"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Dokumenter",
+      "cards": "Kort",
+      "utilities": "Regninger",
+      "home": "Bolig",
+      "insurance": "Forsikringer",
+      "warranties": "Garantier & bonner",
+      "car": "Bil",
+      "tax": "Fradrag",
+      "householdStaff": "Hushjælp",
+      "school": "Skole",
+      "pet": "Kæledyr",
+      "password": "Adgangskoder",
+      "other": "Andet"
+    }
+  },
+  "language": {
+    "title": "Sprog",
+    "auto": "Automatisk",
+    "autoSubtitle": "Følger telefonens sprog",
+    "search": "Søg efter sprog",
+    "autoDetail": "iPhone-sprog: {{language}}",
+    "noResults": "Ingen sprog for “{{query}}”"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastel",
+    "vivid": "Klar",
+    "earth": "Jord",
+    "sea": "Hav",
+    "sunset": "Solnedgang",
+    "night": "Nat"
+  },
+  "home": {
+    "welcome": "Velkommen til Sottomano",
+    "hello": "Hej!",
+    "searchPlaceholder": "Søg efter et dokument",
+    "favorites": "Favoritter",
+    "seeAll": "Se alle",
+    "seeAllFavorites": "Se alle favoritter",
+    "deadlines": "Frister",
+    "seeAllDeadlines": "Se alle frister",
+    "archive": "Arkiv",
+    "reorderDone": "Færdig med at sortere",
+    "reorder": "Sorter",
+    "reorderCategories": "Sorter kategorier",
+    "reorderHint": "Træk kategorierne i den rækkefølge, du vil have.",
+    "alerts": {
+      "orderNotSaved": "Rækkefølgen kunne ikke gemmes"
+    },
+    "newCategory": "Ny kategori"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} kort",
+    "cards_other": "{{count}} kort"
+  },
+  "folder": {
+    "paidOn": "Betalt den {{date}}",
+    "expiredOn": "Udløb den {{date}}",
+    "expiresOn": "Udløber den {{date}}",
+    "addedOn": "Tilføjet den {{date}}",
+    "newItem": {
+      "bill": "Ny regning",
+      "card": "Nyt kort",
+      "warranty": "Ny garanti",
+      "password": "Ny adgangskode",
+      "document": "Nyt dokument"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Alle",
+      "documents": "Dokumenter",
+      "cards": "Kort",
+      "deadlines": "Frister"
+    },
+    "paid": "betalt",
+    "expiresOn": "udløber den {{date}}",
+    "folderSubtitle_one": "Mappe · {{count}} dokument",
+    "folderSubtitle_other": "Mappe · {{count}} dokumenter",
+    "card": "Kort",
+    "deadlineSubtitle": "Frist · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Søg efter et dokument",
+    "fieldLabel": "Søg i dine dokumenter",
+    "filter": "Filter",
+    "results_one": "{{count}} resultat",
+    "results_other": "{{count}} resultater",
+    "noResults": "Ingen resultater",
+    "noResultsHint": "Prøv et andet ord, for eksempel navnet på en butik.",
+    "hint": "Søg i navne, mapper, typer, noter, kort og frister."
+  },
+  "navigation": {
+    "home": "Hjem",
+    "favorites": "Favoritter",
+    "family": "Familie",
+    "deadlines": "Frister",
+    "deadlinesToCheck_one": "Frister, {{count}} skal tjekkes",
+    "deadlinesToCheck_other": "Frister, {{count}} skal tjekkes",
+    "addLocked": "Tilføj dokument, låst: gratisgrænsen er nået",
+    "addDocument": "Tilføj et dokument",
+    "titles": {
+      "editDocument": "Rediger dokument",
+      "pages": "Sider",
+      "deadline": "Frist",
+      "renewed": "Fornyet",
+      "previousVersion": "Tidligere version",
+      "newDocument": "Nyt dokument",
+      "appearance": "Udseende",
+      "backup": "Sikkerhedskopi",
+      "taxPackage": "Send til revisor",
+      "trash": "Papirkurv",
+      "terms": "Vilkår for brug",
+      "about": "Om og anonymitet",
+      "newCard": "Nyt kort",
+      "editCard": "Rediger kort"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Træk for at flytte, eller brug handlingerne Flyt op og Flyt ned",
+    "moveEarlier": "Flyt op",
+    "moveLater": "Flyt ned",
+    "footer": "Kort, personer i Familie og Favoritter sorterer du på samme måde: Hold fingeren på en række, og træk i håndtaget til højre."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Hold fingeren nede: træk for at flytte, eller slip for handlinger"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Rækkefølgen kunne ikke gemmes"
+    },
+    "reorderTitle": "Sorter favoritter",
+    "reorderHint": "Hold fingeren på en favorit, og træk den, hvor du vil.",
+    "yourFavorites": "Dine favoritter",
+    "title": "Favoritter",
+    "subtitle": "Det, du vil have lige ved hånden",
+    "searchPlaceholder": "Søg i favoritter",
+    "viewList": "Liste",
+    "viewGrid": "Gitter",
+    "count_one": "{{count}} favorit",
+    "count_other": "{{count}} favoritter",
+    "noMatch": "Ingen favoritter matcher “{{query}}”.",
+    "empty": "Du har ingen favoritter endnu.",
+    "footer": "Tryk på hjertet på et dokument for at føje det til her.",
+    "footerGrid": "Tryk på hjertet på et dokument for at føje det til her. Hold fingeren på et felt, og træk det for at sortere.",
+    "footerList": "Tryk på hjertet på et dokument for at føje det til her. Hold fingeren på en række for at sortere.",
+    "rowHint": "Hold fingeren nede for at sortere favoritter",
+    "unpin": "Fjern fra favoritter",
+    "expires": "udløber {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} ubetalt",
+    "alerts": {
+      "orderNotSaved": "Rækkefølgen kunne ikke gemmes"
+    },
+    "actions": {
+      "editCategory": "Rediger kategori",
+      "sendToAccountant": "Send til revisor",
+      "selectAndSend": "Vælg og send",
+      "reorder": "Sorter",
+      "deleteCategory": "Slet kategori"
+    },
+    "moreLabel": "Rediger eller slet kategorien {{name}}",
+    "searchIn": "Søg i {{name}}",
+    "viewList": "Liste",
+    "viewGrid": "Gitter",
+    "reorderHint": "Hold fingeren på dokumenterne, og træk dem i den rækkefølge, du vil have.",
+    "allTypes": "Alle",
+    "noDocumentsFound": "Ingen dokumenter fundet.",
+    "sendTogether": "Send samlet ({{count}})",
+    "sheetTitle": "Kategorien {{name}}"
+  },
+  "folderRow": {
+    "due": "ubetalt",
+    "paid": "betalt"
+  },
+  "homeSections": {
+    "expired": "Udløbet",
+    "expiresToday": "Udløber i dag",
+    "expiresTomorrow": "Udløber i morgen",
+    "expiresInDays_one": "Udløber om {{count}} dag",
+    "expiresInDays_other": "Udløber om {{count}} dage",
+    "expiresOn": "Udløber {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Fjern fra favoritter",
+    "pin": "Føj til favoritter"
+  },
+  "searchBar": {
+    "clear": "Ryd tekst"
+  },
+  "documentGrid": {
+    "addDocument": "Tilføj dokument"
+  },
+  "homeHeader": {
+    "menu": "Menu",
+    "notifications": "Meddelelser",
+    "notificationsUnread_one": "Meddelelser, {{count}} ulæst",
+    "notificationsUnread_other": "Meddelelser, {{count}} ulæste"
+  },
+  "demoData": {
+    "people": {
+      "step": "Step",
+      "mom": "Mor",
+      "dad": "Far"
+    },
+    "documents": {
+      "idCard": "ID-kort",
+      "drivingLicence": "Kørekort",
+      "passport": "Pas",
+      "electricityBill": "Elregning",
+      "carInsurance": "Bilforsikring",
+      "carTax": "Vægtafgift",
+      "washingMachineWarranty": "Garanti vaskemaskine",
+      "gymCard": "Fitnesskort",
+      "rentalContract": "Lejekontrakt",
+      "pharmacyReceipt": "Apotekskvittering",
+      "reportCard": "Skolerapport"
+    },
+    "notes": {
+      "electricityBill": "Betalingsservice fra banken"
+    }
+  },
+  "documentTypes": {
+    "documents": "ID-kort|Kørekort|Pas|Sundhedskort|Skattekort",
+    "cards": "Bonuskort|Fitness|Bibliotek|Rejsekort|Medlemskab",
+    "utilities": "El|Gas|Vand|Internet|Telefon|Affald",
+    "home": "Husleje|Boliglån|Fællesudgifter|Vedligehold|Kontrakt",
+    "insurance": "Bil|Indbo|Sundhed|Liv|Rejse",
+    "warranties": "Hvidevare|Elektronik|Møbler|Kvittering",
+    "car": "Vægtafgift|Forsikring|Syn|Service|Registreringsattest",
+    "tax": "Apotek|Lægebesøg|Tandlæge|Prøver|Sport|Skole",
+    "householdStaff": "Lønseddel|Bidrag|Kontrakt",
+    "school": "Indskrivning|Skolerapport|Bevis|Madordning|Skoletur",
+    "pet": "Sundhedsbog|Vaccine|Dyrlæge|Mikrochip",
+    "password": "E-mail|Bank|Sociale medier|Wi-Fi|Arbejde"
+  },
+  "pageLabels": {
+    "front": "Forside",
+    "back": "Bagside",
+    "page": "Side {{number}}"
+  },
+  "statusBadge": {
+    "due": "Ubetalt",
+    "paid": "Betalt"
+  },
+  "addActions": {
+    "openFileFailed": "Filen kunne ikke åbnes"
+  },
+  "pickFiles": {
+    "takePhoto": "Tag foto",
+    "choosePhoto": "Vælg fra Fotos",
+    "removePhoto": "Fjern foto"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Flere sider",
+      "text": "Du kan scanne flere sider i træk: Ret næste side ind, før du trykker på Gem."
+    },
+    "cardTip": {
+      "title": "Ægte farver",
+      "text": "For at få kortets ægte farver skal du trykke på filterknappen i scanneren og vælge “Foto”."
+    },
+    "gotIt": "Forstået"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Adgang til kamera kræves",
+    "permissionText": "Sottomano bruger kun kameraet til at fotografere dine dokumenter.",
+    "allow": "Tillad",
+    "openSettings": "Åbn Indstillinger",
+    "readable": "Kan det læses?",
+    "pageReadable": "Side {{number}}: Kan den læses?",
+    "retake": "Tag igen",
+    "addPage": "Tilføj side",
+    "frameDocument": "Ret dokumentet ind",
+    "framePage": "Ret side {{number}} ind",
+    "shoot": "Tag foto",
+    "finishWithPages_one": "Færdig, {{count}} side",
+    "finishWithPages_other": "Færdig, {{count}} sider"
+  },
+  "coverField": {
+    "label": "Forside",
+    "photo": "Foto",
+    "color": "Farve",
+    "noPhotoHint": "Uden foto vises farven: Tilføj en side for at bruge dens foto som forside.",
+    "categoryColor": "Mappefarve",
+    "colorNumber": "Farve {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Tilføj sider",
+    "pinned": "I favoritter",
+    "pin": "Til favoritter",
+    "renewed": "Fornyet",
+    "delete": "Slet"
+  },
+  "documentFilesView": {
+    "document": "Dokument",
+    "openFailed": "Dokumentet kunne ikke åbnes",
+    "pageOfSwipe": "Side {{number}} af {{total}} · skub for at bladre",
+    "openFullScreen": "{{label}}, åbn på fuld skærm",
+    "missingFile": "Filen blev ikke fundet på denne telefon."
+  },
+  "filesEditor": {
+    "addBack": "Tilføj bagsiden",
+    "addPage": "Tilføj side",
+    "scan": "Scan",
+    "photograph": "Tag foto",
+    "fromPhotos": "Fra Fotos",
+    "scannerUnavailableTitle": "Scanner ikke tilgængelig",
+    "scannerUnavailableMessage": "Fjern siderne med ✕, og tilføj nye.",
+    "replacePdf": "Erstat PDF",
+    "importPdf": "Importer en PDF",
+    "rescanAll": "Scan alle igen",
+    "openFileFailed": "Filen kunne ikke åbnes",
+    "page": "Side",
+    "newTag": "ny",
+    "moveBefore": "Flyt {{name}} op",
+    "moveAfter": "Flyt {{name}} ned",
+    "removePage": "Fjern {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Dokumentet blev ikke fundet.",
+    "noPages": "Ingen sider",
+    "photoPages_one": "Foto, {{count}} side",
+    "photoPages_other": "Fotos, {{count}} sider",
+    "amount": "Beløb",
+    "expired": "udløbet",
+    "inDays_one": "om {{count}} dag",
+    "inDays_other": "om {{count}} dage",
+    "deadline": "Frist",
+    "folder": "Mappe",
+    "status": "Status",
+    "person": "Person",
+    "number": "Nummer",
+    "notes": "Noter",
+    "inCalendar": "I kalenderen",
+    "view": "Vis dokument",
+    "unpin": "Fjern fra favoritter",
+    "pin": "Føj til favoritter",
+    "addPages": "Tilføj sider",
+    "renewed": "Fornyet",
+    "delete": "Slet",
+    "details": "Detaljer",
+    "remindMe": "Påmind mig",
+    "reminderNeedsDeadline": "Tilføj en frist for at få en påmindelse",
+    "reminderWhen": "Påmindelse: {{when}}",
+    "noReminder": "Ingen påmindelse",
+    "previousVersions": "Tidligere versioner",
+    "versionUntil": "Indtil {{date}}",
+    "versionExpired": "udløb {{date}}",
+    "paidOnMarkDue": "Betalt den {{date}} · marker som ubetalt",
+    "markDue": "Marker som ubetalt",
+    "markPaid": "Marker som betalt",
+    "firstOf": "1 af {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Ubetalt",
+    "statusPaid": "Betalt",
+    "saveFailed": "Kunne ikke gemme",
+    "folder": "Mappe",
+    "person": "Person",
+    "type": "Type",
+    "otherType": "Skriv en anden …",
+    "noType": "Ingen type",
+    "typeExample": "For eksempel: El, Vægtafgift, Tandlæge",
+    "dueOn": "Den {{date}}",
+    "noDeadline": "Ingen frist",
+    "nameSection": "Navn",
+    "namePlaceholder": "Dokumentets navn",
+    "whereSection": "Hvor det skal gemmes",
+    "choose": "Vælg …",
+    "deadlineSection": "Frist",
+    "addDeadline": "Tilføj frist",
+    "remindMe": "Påmind mig",
+    "whenToRemind": "Hvornår du skal påmindes",
+    "repeats": "Gentag",
+    "never": "Aldrig",
+    "everySpan": "Hver {{span}}",
+    "every": "Hver",
+    "notesSection": "Noter",
+    "notesPlaceholder": "For eksempel: betalt via Betalingsservice, bed om refusion …",
+    "pin": "Føj til favoritter",
+    "pinSubtitle": "Find det med det samme på hjemmeskærmen",
+    "amountSection": "Beløb og status",
+    "amount": "Beløb",
+    "amountInEuro": "Beløb i euro",
+    "accessSection": "Log ind",
+    "username": "Brugernavn",
+    "usernamePlaceholder": "navn@eksempel.dk",
+    "password": "Adgangskode",
+    "passwordUnchanged": "•••••••• (uændret)",
+    "passwordNote": "Adgangskoden ligger kun i iPhones nøglering.",
+    "numberSection": "Dokumentnummer",
+    "numberPlaceholder": "F.eks. 123456789",
+    "saveChanges": "Gem ændringer",
+    "saveDocument": "Gem dokument",
+    "amountHint": "Skriv beløbet sådan: {{example}}.",
+    "missingNameAndFolder": "Skriv navnet, og vælg mappen for at gemme.",
+    "missingName": "Skriv navnet for at gemme.",
+    "missingFolder": "Vælg mappen for at gemme.",
+    "deleteDocument": "Slet dokument"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Scan",
+      "photos": "Fra Fotos",
+      "pdf": "Fra PDF-fil",
+      "card": "Kort",
+      "manual": "Manuelt"
+    },
+    "hintFirst": "Ret dokumentet ind · hold telefonen stille",
+    "hintNext": "Side {{number}} taget · ret den næste ind",
+    "title": "Nyt dokument",
+    "flashOff": "Slå blitz fra",
+    "flashOn": "Slå blitz til",
+    "scanWithIos": "Scan med iOS-scanneren",
+    "tapToScan": "Tryk for at scanne: Den finder selv kanterne",
+    "permissionTitle": "Adgang til kamera kræves",
+    "permissionText": "Sottomano bruger det kun til at fotografere dine dokumenter.",
+    "allow": "Tillad",
+    "openSettings": "Åbn Indstillinger",
+    "howToAdd": "Tilføj via",
+    "chooseFromGallery": "Vælg fra bibliotek",
+    "shoot": "Tag foto",
+    "goOnWith_one": "Fortsæt med {{count}} side",
+    "goOnWith_other": "Fortsæt med {{count}} sider",
+    "noPages": "Ingen sider",
+    "countNext": "næste ›",
+    "countPages": "sider"
+  },
+  "newDocument": {
+    "readTitle": "Læst fra dokumentet",
+    "readText": "Navn hentet fra filen: {{name}}. Tjek det, og ret det om nødvendigt.",
+    "checkTitle": "Tjek oplysningerne",
+    "checkText_one": "{{count}} side registreret. Skriv navnet og eventuelt fristen: Du finder den under Frister.",
+    "checkText_other": "{{count}} sider registreret. Skriv navnet og eventuelt fristen: Du finder den under Frister.",
+    "heading": "Nyt dokument"
+  },
+  "editDocument": {
+    "heading": "Rediger dokument"
+  },
+  "documentVersion": {
+    "replacedOn": "Erstattet den {{date}}",
+    "expiredOn": "udløb den {{date}}",
+    "previewTitle": "{{title}} (tidligere version)"
+  },
+  "documentPages": {
+    "saveFailed": "Siderne kunne ikke gemmes"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Kunne ikke slette",
+    "title": "Slet {{title}}?",
+    "message_one": "Dokumentet og dets påmindelse flyttes til papirkurven. Du kan gendanne det fra Menu › Papirkurv i {{count}} dag.",
+    "message_other": "Dokumentet og dets påmindelse flyttes til papirkurven. Du kan gendanne det fra Menu › Papirkurv i {{count}} dage.",
+    "confirm": "Slet dokument"
+  },
+  "renew": {
+    "saveFailed": "Kunne ikke gemme",
+    "deadline": "Frist",
+    "repeatFooter": "{{repeat}}: Den nye dato beregnes ud fra den gamle.",
+    "was": "Før",
+    "newDeadline": "Ny frist",
+    "newDocument": "Nyt dokument",
+    "withScanFooter": "De nuværende sider bliver en “Tidligere version”, som du finder i detaljerne.",
+    "withoutScanFooter": "Slå det til, hvis du har det nye dokument, der skal scannes.",
+    "addNewScan": "Tilføj den nye scanning"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · rul ned",
+    "pagesSubtitle_one": "{{count}} side",
+    "pagesSubtitle_other": "{{count}} sider · rul ned",
+    "pageOf": "Side {{number}} af {{total}}",
+    "noPages": "Dette dokument har ingen sider.",
+    "zoom": "Zoom",
+    "zoomOut": "Zoom ud",
+    "zoomIn": "Zoom ind",
+    "pageShort": "Side {{number}} af {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "dag",
+      "day_other": "dage",
+      "week_one": "uge",
+      "week_other": "uger",
+      "month_one": "måned",
+      "month_other": "måneder",
+      "year_one": "år",
+      "year_other": "år"
+    },
+    "count": {
+      "day_one": "{{count}} dag",
+      "day_other": "{{count}} dage",
+      "week_one": "{{count}} uge",
+      "week_other": "{{count}} uger",
+      "month_one": "{{count}} måned",
+      "month_other": "{{count}} måneder",
+      "year_one": "{{count}} år",
+      "year_other": "{{count}} år"
+    },
+    "every": {
+      "day_one": "Hver dag",
+      "day_other": "Hver {{count}}. dag",
+      "week_one": "Hver uge",
+      "week_other": "Hver {{count}}. uge",
+      "month_one": "Hver måned",
+      "month_other": "Hver {{count}}. måned",
+      "year_one": "Hvert år",
+      "year_other": "Hvert {{count}}. år"
+    },
+    "repeats": {
+      "day_one": "Gentages hver dag",
+      "day_other": "Gentages hver {{count}}. dag",
+      "week_one": "Gentages hver uge",
+      "week_other": "Gentages hver {{count}}. uge",
+      "month_one": "Gentages hver måned",
+      "month_other": "Gentages hver {{count}}. måned",
+      "year_one": "Gentages hvert år",
+      "year_other": "Gentages hvert {{count}}. år"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Kræver opmærksomhed",
+    "thisWeek": "Denne uge",
+    "upcomingNone": "Intet forfalder de kommende måneder",
+    "upcoming_one": "{{count}} ting at gøre de kommende måneder",
+    "upcoming_other": "{{count}} ting at gøre de kommende måneder"
+  },
+  "deadlineOptions": {
+    "sameDay": "Samme dag",
+    "daysBefore_one": "{{count}} dag før",
+    "daysBefore_other": "{{count}} dage før",
+    "defaultChoice": "{{label}} (standard)"
+  },
+  "personRoles": {
+    "you": "Dig",
+    "choice": {
+      "me": "Det er mig",
+      "partner": "Partner",
+      "child": "Søn eller datter",
+      "parent": "Forælder",
+      "sibling": "Bror eller søster",
+      "other": "Andet"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Kategorien “Andet” findes ikke.",
+    "otherNotDeletable": "Kategorien “Andet” kan ikke slettes."
+  },
+  "deadlineChip": {
+    "overdue": "Udløbet",
+    "today": "I dag",
+    "dueToday": "Forfalder i dag",
+    "dueIn_one": "Forfalder om {{count}} dag",
+    "dueIn_other": "Forfalder om {{count}} dage"
+  },
+  "deadlineListRow": {
+    "hint": "Hold fingeren nede for at redigere eller fjerne fristen",
+    "statusDue": "ubetalt",
+    "statusPaid": "betalt"
+  },
+  "deadlineSection": {
+    "title": "Frist",
+    "emptyFooter": "Med en påmindelse på telefonen og, hvis det er slået til, i kalenderen “Sottomano”.",
+    "add": "Tilføj frist",
+    "expiresOn": "Forfalder",
+    "repeats": "Gentag",
+    "never": "Aldrig",
+    "reminder": "Påmindelse"
+  },
+  "dateCalendar": {
+    "previousMonth": "Forrige måned",
+    "nextMonth": "Næste måned"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Næste uge",
+    "previousWeek": "Forrige uge",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} frist",
+    "dayWithDeadlines_other": "{{day}}, {{count}} frister"
+  },
+  "deadlines": {
+    "title": "Frister",
+    "newReminder": "Ny påmindelse",
+    "week": "Uge",
+    "month": "Måned",
+    "openDocument": "Åbn dokument",
+    "editDeadline": "Rediger frist",
+    "markDue": "Marker som ubetalt",
+    "markPaid": "Marker som betalt",
+    "removeDeadline": "Fjern frist",
+    "removeAlert": {
+      "title": "Fjern fristen?",
+      "message": "Dokumentet bliver; påmindelsen og kalenderbegivenheden fjernes.",
+      "confirm": "Fjern"
+    },
+    "emptyTitle": "Ingen kommende frister",
+    "emptyText": "Tryk på + for at tilføje et dokument med en frist: Det vises her og i kalenderen.",
+    "sheetSubtitle": "Forfalder {{date}}",
+    "dayRepeats": "gentages",
+    "dayReminder": "påmindelse",
+    "dayEmpty": "Ingen frister denne dag"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Kunne ikke gemme",
+    "date": "Dato",
+    "footer": "Påmindelsen kommer på din telefon; med kalenderen slået til står fristen også i “Sottomano”.",
+    "every": "Hver"
+  },
+  "family": {
+    "title": "Familie",
+    "subtitle": "En profil til alle derhjemme",
+    "addPerson": "Tilføj en person",
+    "members": "Medlemmer",
+    "orderSaveFailed": "Rækkefølgen kunne ikke gemmes",
+    "reorderTitle": "Sorter familien",
+    "reorderHint": "Hold fingeren på en person, og træk vedkommende, hvor du vil.",
+    "privacyNote": "Alt bliver på denne telefon. Hvis du vil sende et dokument til nogen, så åbn det, og tryk på Send.",
+    "youSpoken": "dig",
+    "reorderA11yHint": "Hold fingeren nede for at sortere familien",
+    "expiring_one": "{{count}} udløber",
+    "expiring_other": "{{count}} udløber"
+  },
+  "personScreen": {
+    "photoFailed": "Fotoet kunne ikke bruges",
+    "editPerson": "Rediger person",
+    "selectAndSend": "Vælg og send",
+    "deletePerson": "Slet person",
+    "moreA11y": "Rediger eller slet {{name}}",
+    "changePhoto": "Skift foto",
+    "editProfile": "Rediger profil",
+    "documentsSection": "Dokumenter · {{count}}",
+    "addDocument": "Tilføj dokument",
+    "sendTogether": "Send samlet ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Kunne ikke gemme",
+    "newPerson": "Ny person",
+    "addPhoto": "Tilføj foto",
+    "name": "Navn",
+    "namePlaceholder": "Hvad hedder personen?",
+    "role": "Hvem er det",
+    "roleA11y": "Hvem personen er for dig: {{role}}",
+    "note": "Profilen bliver på denne telefon. Den hjælper dig med at holde styr på alles dokumenter.",
+    "addToFamily": "Føj til familien",
+    "roleSheetTitle": "Hvem er det for dig"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Kunne ikke slette",
+    "title": "Slet kategorien {{name}}?",
+    "messageWithDocuments_one": "Den indeholder {{count}} dokument. Hvad vil du gøre med det?",
+    "messageWithDocuments_other": "Den indeholder {{count}} dokumenter. Hvad vil du gøre med dem?",
+    "messageWithDocumentsRestorable_one": "Den indeholder {{count}} dokument. Hvad vil du gøre med det? Du kan gendanne kategorien fra Ny kategori.",
+    "messageWithDocumentsRestorable_other": "Den indeholder {{count}} dokumenter. Hvad vil du gøre med dem? Du kan gendanne kategorien fra Ny kategori.",
+    "messageEmpty": "Kategorien er tom.",
+    "messageEmptyRestorable": "Kategorien er tom. Du kan gendanne den fra Ny kategori.",
+    "deleteAll": "Slet alt",
+    "confirm": "Slet kategori",
+    "choicesA11y": "Hvad der skal ske med dokumenterne",
+    "moveLabel": "Flyt dem til Andet",
+    "moveDetailPassword": "De bliver i appen, under Andet, uden brugernavn og adgangskode",
+    "moveDetail": "De bliver i appen, i en generel mappe",
+    "trashLabel": "Slet dem",
+    "trashDetail_one": "De flyttes til papirkurven: Du kan gendanne dem i {{count}} dag",
+    "trashDetail_other": "De flyttes til papirkurven: Du kan gendanne dem i {{count}} dage"
+  },
+  "deletePerson": {
+    "title": "Fjern {{name}} fra familien?",
+    "messageWithDocuments_one": "{{name}} har {{count}} dokument. Hvad vil du gøre med det?",
+    "messageWithDocuments_other": "{{name}} har {{count}} dokumenter. Hvad vil du gøre med dem?",
+    "messageEmpty": "Profilen fjernes fra denne telefon.",
+    "familyLabel": "Flyt dem til Hele familien",
+    "familyDetail": "De bliver i appen, synlige for alle",
+    "trashDetail_one": "De følger med profilen: De ligger i papirkurven i {{count}} dag",
+    "trashDetail_other": "De følger med profilen: De ligger i papirkurven i {{count}} dage"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Kæledyr",
+      "document": "Dokument",
+      "home": "Hjem",
+      "car": "Bil",
+      "health": "Sundhed",
+      "school": "Skole",
+      "work": "Arbejde",
+      "keys": "Nøgler",
+      "travel": "Rejser",
+      "expenses": "Udgifter"
+    },
+    "restoreFailed": "Kunne ikke gendanne",
+    "editTitle": "Rediger kategori",
+    "newTitle": "Ny kategori",
+    "restoreSection": "Gendan en standardkategori",
+    "restoreA11y": "Gendan {{name}}",
+    "restoreHint": "Den kommer tilbage, som den var, med farver, symbol og felter. Eller opret en ny nedenfor.",
+    "previewA11y": "Eksempel på kategori",
+    "namePlaceholder": "F.eks. Kæledyr",
+    "nameA11y": "Kategoriens navn",
+    "color": "Farve",
+    "paletteColor": "Farve fra Udseende",
+    "colorNumber": "Farve {{number}}",
+    "followsPaletteHint": "Farven følger paletten valgt i Udseende.",
+    "ownColorHint": "Din egen farve: Den ændres ikke med Udseende.",
+    "icon": "Symbol",
+    "forWhom": "Til hvem",
+    "forWhomA11y": "Hvem kategorien er til: {{name}}",
+    "forWhomHint": "Nye dokumenter i denne kategori starter med denne person.",
+    "create": "Opret kategori"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Websted eller app",
+        "namePlaceholder": "For eksempel: Netbank",
+        "userLabel": "Brugernavn eller e-mail",
+        "userPlaceholder": "navn@email.dk",
+        "passwordLabel": "Adgangskode",
+        "notePlaceholder": "For eksempel: sikkerhedsspørgsmål, gendannelseskode …"
+      },
+      "wifi": {
+        "name": "Wi-Fi",
+        "namePlaceholder": "For eksempel: Wi-Fi derhjemme",
+        "userLabel": "Netværksnavn",
+        "userPlaceholder": "Hansen_5G",
+        "passwordLabel": "Netværksadgangskode",
+        "notePlaceholder": "For eksempel: routeren står i stuen bag tv’et …"
+      },
+      "pin": {
+        "name": "Pinkode",
+        "namePlaceholder": "For eksempel: Betalingskort",
+        "passwordLabel": "Pinkode",
+        "notePlaceholder": "For eksempel: Julias kort …"
+      },
+      "other": {
+        "name": "Andet",
+        "namePlaceholder": "For eksempel: Alarm derhjemme",
+        "userLabel": "Brugernavn",
+        "userPlaceholder": "Valgfrit",
+        "passwordLabel": "Kode eller adgangskode",
+        "notePlaceholder": "Hvad den bruges til, og hvor …"
+      }
+    },
+    "colors": {
+      "aqua": "Akva",
+      "indigo": "Indigo",
+      "apricot": "Abrikos",
+      "pink": "Lyserød",
+      "mint": "Mint",
+      "sky": "Himmel",
+      "graphite": "Grafit"
+    },
+    "icons": {
+      "key": "Nøgle",
+      "lock": "Hængelås",
+      "globe": "Globus",
+      "wifi": "Wi-Fi",
+      "bank": "Bank",
+      "card": "Kort",
+      "mail": "E-mail",
+      "home": "Hjem",
+      "car": "Bil",
+      "shield": "Skjold",
+      "cart": "Indkøbskurv",
+      "star": "Stjerne"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Kun tal",
+    "strength": {
+      "weak": "Svag",
+      "fair": "Middel",
+      "good": "God",
+      "strong": "Stærk"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Bekræft for at slå låsen til"
+  },
+  "appLock": {
+    "prompt": "Lås Sottomano op",
+    "unlock": "Lås op",
+    "unlockWith": {
+      "faceId": "Lås op med Face ID",
+      "touchId": "Lås op med Touch ID",
+      "passcode": "Lås op med kode"
+    },
+    "message": "Dine dokumenter er beskyttet"
+  },
+  "passwordForm": {
+    "showPrompt": "Vis adgangskoden",
+    "copyPrompt": "Kopier adgangskoden",
+    "copiedTitle": "Kopieret",
+    "copiedMessage": "Den slettes fra udklipsholderen om 1 minut.",
+    "scannerUnavailableTitle": "Scanner ikke tilgængelig",
+    "scannerUnavailableMessage": "Vælg billedet fra dit fotobibliotek.",
+    "saveFailed": "Kunne ikke gemme",
+    "editTitle": "Rediger adgangskode",
+    "newTitle": "Ny adgangskode",
+    "privacy": "De bliver kun på denne telefon og åbnes med Face ID.",
+    "sections": {
+      "what": "Hvad du gemmer",
+      "name": "Navn",
+      "preview": "Eksempel",
+      "access": "Log ind",
+      "site": "Websted eller app",
+      "whose": "Hvis er den",
+      "notes": "Noter"
+    },
+    "typesLabel": "Type adgangskode",
+    "customTypePlaceholder": "Hvad er det? Alarm, pengeskab, hængelås …",
+    "customTypeLabel": "Hvad det er",
+    "customTypeHint": "Den bliver en ny type, som du finder blandt valgene næste gang.",
+    "previewTitle": "Sådan ser den ud på listen",
+    "previewText": "En farve og et symbol eller et billede.",
+    "color": "Farve",
+    "colorLabel": "Farve i eksempel",
+    "icon": "Symbol",
+    "iconLabel": "Symbol i eksempel",
+    "image": "Billede",
+    "scan": "Scan",
+    "gallery": "Fra Fotos",
+    "removeImage": "Fjern billedet, og brug farve og symbol",
+    "passwordPlaceholder": "Skriv eller generer",
+    "show": "Vis",
+    "hide": "Skjul",
+    "copy": "Kopier",
+    "saved": "Gemt",
+    "generate": "Generer en stærk adgangskode",
+    "urlPlaceholder": "www.eksempel.dk",
+    "urlLabel": "Webstedsadresse",
+    "wifiQrTitle": "QR-kode til gæster",
+    "wifiQrSubtitle": "De scanner den og opretter forbindelse",
+    "person": "Person",
+    "personA11y": "Person, {{name}}",
+    "favoriteTitle": "Føj til favoritter",
+    "favoriteSubtitle": "Du finder den direkte på hjemmeskærmen",
+    "saveButton": "Gem adgangskode",
+    "saveHint": "Skriv et navn for at gemme."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Ingen adgangskode",
+    "noPasswordMessage": "Tilføj den med Rediger.",
+    "showPrompt": {
+      "site": "Vis adgangskode",
+      "wifi": "Vis netværksadgangskode",
+      "pin": "Vis pinkode",
+      "other": "Vis kode eller adgangskode"
+    },
+    "copyPrompt": {
+      "site": "Kopier adgangskode",
+      "wifi": "Kopier netværksadgangskode",
+      "pin": "Kopier pinkode",
+      "other": "Kopier kode eller adgangskode"
+    },
+    "copyUser": {
+      "site": "Kopier brugernavn eller e-mail",
+      "wifi": "Kopier netværksnavn",
+      "pin": "Kopier brugernavn",
+      "other": "Kopier brugernavn"
+    },
+    "copiedTitle": "Kopieret",
+    "copiedMessage": "Den slettes fra udklipsholderen om 1 minut.",
+    "copiedTextTitle": "Kopieret",
+    "qrPrompt": "Vis QR-koden til gæster",
+    "invalidAddress": "Ugyldig adresse",
+    "removeFavorite": "Fjern fra favoritter",
+    "favoriteTitle": "Føj til favoritter",
+    "favoriteSubtitle": "Du finder den direkte på hjemmeskærmen",
+    "moreActions": "Flere handlinger",
+    "sections": {
+      "access": "Log ind",
+      "site": "Websted eller app",
+      "wifiQr": "QR-kode til gæster",
+      "whose": "Hvis er den",
+      "notes": "Noter"
+    },
+    "hidden": "Skjult",
+    "show": "Vis",
+    "hide": "Skjul",
+    "copy": "Kopier",
+    "locked": "Synlig efter Face ID eller iPhone-koden",
+    "wifiQrLabel": "QR-kode til Wi-Fi-netværket",
+    "qrHint": "De scanner den med kameraet og opretter forbindelse.",
+    "qrLocked": "QR-koden indeholder adgangskoden: Den er synlig efter Face ID eller iPhone-koden.",
+    "qrNoNetwork": "Tilføj netværksnavnet med Rediger for at få QR-koden.",
+    "showQr": "Vis QR-kode",
+    "hideQr": "Skjul QR-kode",
+    "person": "Person",
+    "moveToTrash": "Flyt til papirkurv"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Ingen adgangskode",
+    "noPasswordMessage": "Tilføj den med Rediger.",
+    "showPrompt": "Vis adgangskoden",
+    "copyPrompt": "Kopier adgangskoden",
+    "copiedTitle": "Adgangskode kopieret",
+    "copiedMessage": "Den slettes fra udklipsholderen om 1 minut.",
+    "user": "Brugernavn",
+    "password": "Adgangskode",
+    "hidden": "Adgangskode skjult",
+    "show": "Vis",
+    "hide": "Skjul",
+    "copy": "Kopier"
+  },
+  "cardForm": {
+    "found": "Fundet: {{name}}",
+    "foundBarcode": "Fundet: stregkode {{name}}",
+    "handwritten": "Kode indtastet manuelt",
+    "noCode": "Ingen kode læst",
+    "photoOpenFailed": "Fotoet kunne ikke åbnes",
+    "saveFailed": "Kunne ikke gemme",
+    "retakeFront": "Tag igen",
+    "retakePhoto": "Tag foto igen",
+    "recognized": "Kort genkendt",
+    "tapRetake": "Tryk på Tag igen for at fotografere det",
+    "fromPhotos": "Fra Fotos",
+    "cover": "Forside",
+    "coverPhotoCaption": "Beskåret og rettet ud fra fotoet af kortet",
+    "coverColorCaption": "Kortets farve med navn og nummer",
+    "codeSection": "Kode til kassen",
+    "photographCode": "Fotografer koden",
+    "barcode": "Stregkode",
+    "qrCode": "QR-kode",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Kort",
+    "typeNumber": "Skriv nummeret nedenfor",
+    "explain": "Sottomano genkender selv, om kortet har en stregkode eller en QR-kode. Ved kassen viser den koden stort med skærmen på fuld lysstyrke.",
+    "readTitle": "Oplysninger læst fra kortet",
+    "readText": "Tjek dem, og ret dem om nødvendigt.",
+    "name": "Navn",
+    "namePlaceholder": "F.eks. Supermarked",
+    "type": "Type",
+    "typePlaceholder": "F.eks. Bonuskort",
+    "number": "Nummer",
+    "numberPlaceholder": "F.eks. 0400 2219 8876",
+    "holder": "Indehaver",
+    "saveButton": "Gem kort",
+    "saveHint": "Skriv kortets navn for at gemme."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Foto af forsiden",
+      "barcode": "Fotografer stregkoden"
+    },
+    "photoOpenFailed": "Fotoet kunne ikke åbnes",
+    "permissionTitle": "Adgang til kamera kræves",
+    "permissionText": "Sottomano bruger kameraet til at fotografere dine kort og læse deres stregkode.",
+    "allow": "Tillad",
+    "openSettings": "Åbn Indstillinger",
+    "frontCheck": "Forside: Er den skarp?",
+    "read": "Læst: {{value}}",
+    "notRead": "Koden blev ikke læst",
+    "notReadHint": "Behold fotoet: Du skriver nummeret i næste trin.",
+    "retake": "Tag igen",
+    "use": "Brug",
+    "focus": "Fokus",
+    "stepCount": "{{current}} af {{total}}",
+    "frameHint": "Hold kortet inden for rammen",
+    "searching": "Leder efter koden …",
+    "chooseFromPhotos": "Vælg fra Fotos",
+    "shoot": "Tag foto",
+    "skip": "Spring over"
+  },
+  "cardDetail": {
+    "code": "Kode",
+    "photo": "Foto",
+    "barcodeLabel": "Stregkode",
+    "barcodePhotoLabel": "Foto af stregkoden",
+    "fullScreenHint": "Åbner koden på fuld skærm",
+    "noCode": "Ingen kode. Tryk på “Rediger” for at fotografere eller skrive den.",
+    "tapHint": "Tryk på koden for at forstørre den",
+    "person": "Person"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Rækkefølgen kunne ikke gemmes",
+    "editCategory": "Rediger kategori",
+    "deleteCategory": "Slet kategori",
+    "reorderTitle": "Sorter kort",
+    "reorderHint": "Hold fingeren på et kort, og træk det, hvor du vil.",
+    "yourCards": "Dine kort",
+    "title": "Kort",
+    "subtitle": "Tryk på et kort for at vise koden ved kassen",
+    "categoryMenuLabel": "Rediger eller slet kategorien {{name}}",
+    "addCard": "Tilføj kort",
+    "reorder": "Sorter",
+    "newCard": "Nyt kort",
+    "cardDetails": "Kortdetaljer",
+    "categoryMenuTitle": "Kategorien {{name}}",
+    "cardCount_one": "{{count}} kort",
+    "cardCount_other": "{{count}} kort",
+    "cardOpenLabel": "{{label}}, luk",
+    "cardClosedLabel": "{{label}}, vis koden",
+    "qrLabel": "Kortets QR-kode",
+    "barcodeLabel": "Kortets stregkode",
+    "fullScreenHint": "Åbner koden på fuld skærm",
+    "noCode": "Ingen kode: Tryk på Detaljer › Rediger for at fotografere eller skrive den.",
+    "details": "Detaljer"
+  },
+  "walletCard": {
+    "untitled": "Nyt kort"
+  },
+  "barcodeView": {
+    "close": "Luk koden"
+  },
+  "colorPicker": {
+    "color": "Farve",
+    "custom": "Din farve",
+    "hex": "Kode",
+    "hexLabel": "Farvekode"
+  },
+  "colorWheel": {
+    "label": "Farvehjul: Tryk eller træk for at vælge",
+    "nextHue": "Næste nuance",
+    "previousHue": "Forrige nuance"
+  },
+  "newCard": {
+    "title": "Nyt kort",
+    "missingCategory": "Kategorien “Kort” findes ikke længere."
+  },
+  "editCard": {
+    "title": "Rediger kort"
+  },
+  "unlock": {
+    "storeOnly": "Tilgængelig i App Store-versionen",
+    "remainingNone": "Du har brugt alle de gratis pladser.",
+    "remaining_one": "Du kan tilføje {{count}} mere.",
+    "remaining_other": "Du kan tilføje {{count}} mere.",
+    "tag": "Gratisversion · {{used}} af {{limit}} brugt",
+    "title": "Alle dine dokumenter, uden grænser",
+    "intro": "Gratis til op til {{limit}} dokumenter og kort. Lås op med én betaling for at tilføje så mange, du vil.",
+    "benefits": {
+      "unlimited": {
+        "title": "Ubegrænset antal dokumenter",
+        "text": "Regninger, kort, garantier og alt det andet"
+      },
+      "reminders": {
+        "title": "Påmindelser om frister",
+        "text": "Vi minder dig om det, før det er for sent"
+      },
+      "offline": {
+        "title": "Virker uden internet",
+        "text": "Alt bliver på din telefon, også sikkerhedskopien"
+      },
+      "family": {
+        "title": "Hele familien",
+        "text": "En profil til alle derhjemme"
+      }
+    },
+    "sectionTitle": "Din gratisversion",
+    "usageLabel": "Dokumenter og kort",
+    "usageValue": "{{used}} af {{limit}}",
+    "usageA11y": "Brugte gratis pladser",
+    "keptNote": "Det, du allerede har gemt, er altid dit, også uden at låse op.",
+    "priceTitle": "For altid",
+    "priceText": "Ingen grænser · én betaling",
+    "buy": "Lås op for {{price}}",
+    "continueFree": "Fortsæt gratis",
+    "restore": "Gendan køb",
+    "terms": "Vilkår",
+    "privacy": "Anonymitet"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Kategorien “Andet”",
+    "otherCategoryMessage": "Den kan ikke slettes: Den indeholder dokumenterne fra slettede kategorier."
+  },
+  "quickActionMenu": {
+    "close": "Luk menu"
+  },
+  "quickActions": {
+    "open": "Åbn",
+    "unpin": "Fjern fra favoritter",
+    "pin": "Føj til favoritter",
+    "moveToTrash": "Flyt til papirkurv",
+    "editCategory": "Rediger kategori",
+    "deleteCategory": "Slet kategori",
+    "editPerson": "Rediger person",
+    "deletePerson": "Slet person"
+  },
+  "shareCopies": {
+    "defaultName": "Dokument",
+    "fileNotFound": "Filen blev ikke fundet på telefonen."
+  },
+  "sendCompression": {
+    "tooBig": "Selv med maksimal komprimering er den over grænsen: Overvej at dele den op i flere filer.",
+    "lowPpi": "Lille tekst er måske ikke læselig."
+  },
+  "sendPreferences": {
+    "original": "Original"
+  },
+  "sendFileName": {
+    "fallback": "dokument"
+  },
+  "sendPrepare": {
+    "cannotCombine": "For- og bagside kan ikke samles lige nu.",
+    "noPhotos": "Ingen fotos at sende.",
+    "fileFront": "forside",
+    "fileBack": "bagside",
+    "filePage": "side-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "dokumenter",
+    "title": "Send {{title}}",
+    "formatPhotos": "Fotos",
+    "actions": {
+      "email": "E-mail",
+      "whatsapp": "WhatsApp",
+      "print": "Udskriv",
+      "save": "Gem i Arkiver",
+      "copy": "Kopier",
+      "other": "Mere"
+    },
+    "alerts": {
+      "savedToFiles": "Gemt i Arkiver",
+      "imageCopied": "Billede kopieret",
+      "textCopied": "Tekst kopieret",
+      "firstPageCopied": "Den første side er kopieret: Indsæt den i en besked.",
+      "pasteImage": "Indsæt det i en besked eller en note.",
+      "pdfNotCopied": "En PDF kan ikke kopieres: Navnet og noten er kopieret. Brug Mere for at få filen.",
+      "failed": "Kunne ikke fuldføres"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDF’er",
+      "singlePdf": "Én PDF",
+      "failed": "Filen kunne ikke klargøres",
+      "preparing": "Klargør …"
+    },
+    "includeNote": "Medtag dokumentets note",
+    "noNote": "Dette dokument har ingen note.",
+    "frontBackPage": "For- og bagside på én side",
+    "frontBackImage": "For- og bagside i ét billede",
+    "maxSize": "Maksimal størrelse",
+    "pdfAsIs": "PDF’en sendes, som den er.",
+    "severalInfo": "Én samlet PDF: dokumenterne efter hinanden, med for- og bagside af id- og andre kort på samme side.",
+    "quality": {
+      "high": "Høj kvalitet",
+      "good": "God kvalitet",
+      "low": "Lav kvalitet",
+      "minimum": "Minimal kvalitet",
+      "original": "Original kvalitet"
+    },
+    "skipped_one": "{{count}} dokument uden fotos er ikke med (importerede PDF’er kan endnu ikke samles).",
+    "skipped_other": "{{count}} dokumenter uden fotos er ikke med (importerede PDF’er kan endnu ikke samles)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Klargør PDF’en …",
+    "progressRetry": "Formindsker fotoene (forsøg {{attempt}}) …",
+    "subtitle": "Oprettet den {{date}} med Sottomano · {{documents}}",
+    "subtitleWithTotal": "Oprettet den {{date}} med Sottomano · {{documents}} · i alt {{total}}",
+    "columns": {
+      "number": "Nr.",
+      "document": "Dokument",
+      "date": "Dato",
+      "person": "Person",
+      "amount": "Beløb",
+      "page": "Side"
+    },
+    "sentApart": "sendt separat",
+    "noPages": "ingen sider",
+    "paid": "betalt",
+    "due": "ubetalt",
+    "invalidIndex": "Ugyldigt indeks"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Én PDF kan ikke samles (beskyttet med adgangskode eller beskadiget): {{titles}}. Indekset markerer den “sendt separat”, og den sendes med de andre.",
+    "sentApart_other": "{{count}} PDF’er kan ikke samles (beskyttet med adgangskode eller beskadiget): {{titles}}. Indekset markerer dem “sendt separat”, og de sendes med de andre.",
+    "alerts": {
+      "prepareFailed": "PDF’en kunne ikke klargøres",
+      "ready": "PDF klar",
+      "noMailTitle": "Mail er ikke indstillet",
+      "noMailMessage": "Tilføj en konto i Mail, eller gem PDF’erne i Arkiver.",
+      "savedToFiles": "Gemt i Arkiver",
+      "sendFailed": "Kunne ikke sende"
+    },
+    "readyMany": "{{number}} PDF’er klar",
+    "choices": {
+      "email": "E-mail: alle PDF’er i én besked",
+      "save": "Gem i Arkiver: alle i samme mappe",
+      "oneByOne": "Del én ad gangen"
+    },
+    "intro": "Alle dokumenterne i {{category}}, opdelt efter år: én PDF for hvert år med indeks (dokument, dato, person, beløb, side) og total. Året er fristens eller betalingens; hvis ingen af dem er angivet, året hvor du tilføjede dem.",
+    "noDocuments": "Ingen dokumenter i dette år.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF’er",
+    "year": "År",
+    "allYears": "Alle år",
+    "maxPhotoSize": "Maksimal fotostørrelse",
+    "limitInfo": "Fotos formindskes for at holde sig inden for grænsen; importerede PDF’er forbliver uændrede.",
+    "prepare": "Klargør og send"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Noget gik galt",
+      "restoredToOther": "Gendannet i Andet",
+      "restoredPassword": "Dets kategori findes ikke længere: Dokumentet ligger i Andet, uden brugernavn og adgangskode.",
+      "restoredMessage": "Dets kategori findes ikke længere: Dokumentet ligger i Andet.",
+      "deleteTitle": "Slet “{{title}}” permanent?",
+      "deleteMessage": "Fotos og PDF’er slettes også. Det kan ikke fortrydes.",
+      "emptyTitle": "Tøm papirkurven?",
+      "emptyMessage_one": "Dokumentet slettes med dets fotos og PDF’er. Det kan ikke fortrydes.",
+      "emptyMessage_other": "De {{count}} dokumenter slettes med deres fotos og PDF’er. Det kan ikke fortrydes.",
+      "emptyConfirm": "Tøm"
+    },
+    "intro": "Slettede dokumenter ligger her i {{days}} dage og slettes derefter med deres fotos og PDF’er.",
+    "empty": "Papirkurven er tom",
+    "deletedSoon": "Slettes snart",
+    "deletedIn": "Slettes om {{days}} dage",
+    "restoreLabel": "Gendan {{title}}",
+    "deleteForeverLabel": "Slet {{title}} permanent",
+    "deleteForever": "Slet permanent",
+    "emptyTrash": "Tøm papirkurv"
+  },
+  "menu": {
+    "close": "Luk menuen",
+    "home": "Hjem",
+    "favorites": "Favoritter",
+    "deadlines": "Frister",
+    "deadlinesUrgent": "Frister, {{number}} skal tjekkes",
+    "family": "Familie",
+    "cards": "Kort",
+    "backup": "Sikkerhedskopi",
+    "backupDue": "Sikkerhedskopi, tid til ny",
+    "help": "Hjælp og kontakt",
+    "rate": "Bedøm Sottomano",
+    "recommend": "Anbefal den til en ven",
+    "trash": "Papirkurv",
+    "trashCount": "Papirkurv, {{number}}",
+    "password": "Adgangskoder",
+    "scan": "Scan",
+    "fromPhotos": "Fra Fotos",
+    "importFiles": "Importer filer",
+    "version": "Version {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Luk meddelelser",
+    "title": "Meddelelser",
+    "markAllRead": "Marker som læst",
+    "empty": "Ingen meddelelser de sidste 7 dage.",
+    "today": "I dag",
+    "thisWeek": "Denne uge",
+    "settings": "Indstillinger for meddelelser",
+    "unreadItem": "Ulæst. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Den udløb den {{date}}.",
+    "expiresToday": "Den udløber i dag.",
+    "expiresOn": "Den udløber {{distance}}, den {{date}}.",
+    "amount": "Beløb {{amount}}.",
+    "backupTitle": "Sikkerhedskopi",
+    "backupLate": "Det er et stykke tid siden, du sidst sikkerhedskopierede dine dokumenter.",
+    "backupNever": "Du har ikke sikkerhedskopieret dine dokumenter endnu."
+  },
+  "deadlineReminders": {
+    "title": "Kommende frist",
+    "hiddenBody": "Et dokument udløber {{date}} ({{distance}}). Åbn Sottomano for at se det.",
+    "body": "{{name}} udløber {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Udseende",
+      "security": "Sikkerhed",
+      "reminders": "Påmindelser",
+      "backup": "Sikkerhedskopi",
+      "info": "Om"
+    },
+    "calendarOff": "Fra",
+    "alerts": {
+      "notificationsOffTitle": "Meddelelser er slået fra",
+      "notificationsOffMessage": "Tillad meddelelser for Sottomano i iPhones Indstillinger for at få påmindelser.",
+      "openSettings": "Åbn Indstillinger"
+    },
+    "lastBackup": {
+      "never": "Aldrig",
+      "today": "I dag",
+      "yesterday": "I går",
+      "daysAgo_one": "For {{count}} dag siden",
+      "daysAgo_other": "For {{count}} dage siden"
+    },
+    "categoryColors": "Kategorifarver",
+    "faceId": "Lås med Face ID",
+    "faceIdSubtitle": "Beder om dit ansigt, hver gang du åbner appen",
+    "hidePreviews": "Skjul eksempler",
+    "hidePreviewsSubtitle": "Meddelelser viser ikke dokumentet",
+    "notifications": "Meddelelser",
+    "reminderTime": "Tidspunkt for påmindelse",
+    "defaultReminder": "Standardpåmindelse",
+    "iconBadge": "Kendetegn på appsymbolet",
+    "iconBadgeSubtitle": "Frister, der er overskredet eller inden for 7 dage",
+    "calendar": "Kalenderen “Sottomano”",
+    "notificationsBlocked": "Meddelelser er blokeret",
+    "notificationsBlockedSubtitle": "Tillad dem i iPhones Indstillinger",
+    "backupNote": "Sikkerhedskopien er en fil på din telefon, i appen Arkiver. Du kan kopiere den, hvorhen du vil. Sottomano virker også uden internet.",
+    "createBackup": "Sikkerhedskopier nu",
+    "restoreBackup": "Gendan fra sikkerhedskopi",
+    "help": "Hjælp og kontakt",
+    "privacy": "Anonymitet",
+    "terms": "Vilkår for brug",
+    "rate": "Bedøm Sottomano",
+    "debug": {
+      "limitPreview": "Eksempel på gratisgrænse",
+      "limitPreviewSubtitle": "Kun til test: viser det låste +, grænsepanelet og kortet på Hjem",
+      "emptyHome": "Eksempel på tom Hjem",
+      "emptyHomeSubtitle": "Kun til test: Hjem, som om der ingen dokumenter var (dine data bevares)",
+      "onboarding": "Vis velkomst igen",
+      "onboardingSubtitle": "Kun til test: velkomstsiderne 1–4"
+    },
+    "version": "Sottomano · version {{version}}",
+    "theme": {
+      "title": "Tema",
+      "autoSubtitle": "Følger telefonens indstilling",
+      "auto": "Automatisk",
+      "light": "Lyst",
+      "dark": "Mørkt"
+    }
+  },
+  "backup": {
+    "title": "Sikkerhedskopi",
+    "subtitle": "En kopi af alle dine dokumenter, gemt på din telefon.",
+    "keyProgress": "Beskytter med din adgangskode … det kan tage op til et minut",
+    "whenToday": "i dag kl. {{time}}",
+    "whenDate": "{{date}} kl. {{time}}",
+    "minLength": "Mindst {{min}} tegn.",
+    "mismatch": "De to adgangskoder er ikke ens.",
+    "creating": "Opretter sikkerhedskopien …",
+    "copyDialogTitle": "Kopier sikkerhedskopien",
+    "opening": "Åbner sikkerhedskopien …",
+    "checking": "Tjekker dokumenterne …",
+    "restoring": "Gendanner …",
+    "keepOpen": "Hold appen åben, indtil den er færdig.",
+    "forgotWarning": "Hvis du glemmer adgangskoden, kan sikkerhedskopien ikke åbnes.",
+    "passwordPlaceholder": "Adgangskode (mindst {{min}} tegn)",
+    "repeatPlaceholder": "Gentag adgangskoden",
+    "createAndSave": "Opret og gem",
+    "backupPassword": "Adgangskode til sikkerhedskopi",
+    "openBackup": "Åbn sikkerhedskopi",
+    "completed": "Sikkerhedskopi fuldført",
+    "lastBackup": "Seneste sikkerhedskopi",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Kopier filen et andet sted hen",
+    "createNew": "Opret en ny sikkerhedskopi",
+    "noneTitle": "Du har ikke lavet en sikkerhedskopi endnu",
+    "noneText": "Hvis du mister eller skifter telefon, bringer sikkerhedskopien det hele tilbage.",
+    "createNow": "Sikkerhedskopier nu",
+    "restoreSection": "Gendan",
+    "restoreTitle": "Har du fået en ny telefon?",
+    "restoreText": "Vælg sikkerhedskopifilen for at få dine dokumenter, kort og påmindelser tilbage.",
+    "chooseFile": "Vælg en sikkerhedskopifil",
+    "remindersSection": "Påmindelser",
+    "remindMe": "Påmind mig om sikkerhedskopi",
+    "remindMeValue": "Påmind mig om sikkerhedskopi: {{value}}",
+    "footnote": "Sikkerhedskopien er én fil beskyttet med den adgangskode, du vælger: dokumenter, fotos, kort, personer og påmindelser. Kopier den et andet sted hen (Arkiver, iCloud Drive, en computer), så du stadig har den, hvis du mister telefonen.",
+    "alerts": {
+      "createFailed": "Sikkerhedskopiering mislykkedes",
+      "copyFailed": "Kunne ikke kopiere",
+      "restoreTitle": "Gendan sikkerhedskopien fra {{date}}?",
+      "restoreMessage_one": "Den indeholder {{count}} dokument. Det, der er i appen nu, bliver erstattet.",
+      "restoreMessage_other": "Den indeholder {{count}} dokumenter. Det, der er i appen nu, bliver erstattet.",
+      "restoreFailed": "Gendannelse mislykkedes",
+      "restoreFailedMessage": "Intet i appen er ændret.\n\n{{reason}}",
+      "restored": "Sikkerhedskopi gendannet",
+      "restoredMessage": "Dine dokumenter er tilbage."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Hver uge",
+      "month": "Hver måned",
+      "never": "Aldrig"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Denne fil er ikke en sikkerhedskopi fra Sottomano.",
+    "newerVersion": "Denne sikkerhedskopi er lavet med en nyere version af Sottomano. Opdater appen, og prøv igen.",
+    "empty": "Sikkerhedskopifilen er tom eller ufuldstændig.",
+    "incomplete": "Sikkerhedskopifilen er ufuldstændig.",
+    "wrongPassword": "Forkert adgangskode. Tjek store og små bogstaver, og prøv igen.",
+    "damaged": "Sikkerhedskopifilen er beskadiget eller ufuldstændig."
+  },
+  "createBackup": {
+    "incompleteFile": "Ufuldstændig fil: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Indholdet af sikkerhedskopien er ugyldigt.",
+    "newerApp": "Denne sikkerhedskopi kommer fra en nyere version af Sottomano. Opdater appen, og prøv igen."
+  },
+  "zipReader": {
+    "invalid": "Ugyldigt arkiv",
+    "incomplete": "Ufuldstændigt arkiv"
+  },
+  "backupReminder": {
+    "none": "Du har ikke lavet en sikkerhedskopi endnu",
+    "old_one": "Din seneste sikkerhedskopi er fra for {{count}} dag siden",
+    "old_other": "Din seneste sikkerhedskopi er fra for {{count}} dage siden",
+    "link": "Sikkerhedskopier nu",
+    "close": "Luk besked",
+    "snooze_one": "Skjul i {{count}} dag",
+    "snooze_other": "Skjul i {{count}} dage"
+  },
+  "calendarSettings": {
+    "title": "Kalender",
+    "intro": "Frister lægges i en separat kalender, “Sottomano”. Du kan skjule den i appen Kalender; slår du den fra her, slettes den.",
+    "details": "Hver frist er en heldagsbegivenhed “Udløber: titel” uden andre oplysninger fra dokumentet. Hvis Sottomanos påmindelser er slået fra, giver begivenheden besked kl. 9.00 på påmindelsesdagen; er de slået til, giver kun appen besked, så du ikke får to.",
+    "allowAccess": "Giv adgang til Kalender",
+    "denied": "Adgang til Kalender blev afvist. Du kan slå den til i iPhones Indstillinger.",
+    "openSettings": "Åbn Indstillinger",
+    "switchLabel": "Frister i kalenderen “Sottomano”",
+    "enabled_one": "{{count}} frist i kalenderen “Sottomano”",
+    "enabled_other": "{{count}} frister i kalenderen “Sottomano”",
+    "removeConfirm": "Fjern Sottomano-kalenderen og alle dens frister fra Kalender?",
+    "remove": "Fjern",
+    "removed": "Kalenderen “Sottomano” er slettet"
+  },
+  "calendarSync": {
+    "eventTitle": "Udløber: {{title}}",
+    "cannotCreate": "Kalenderen “Sottomano” kunne ikke oprettes på denne iPhone."
+  },
+  "appearance": {
+    "intro": "Farverne på standardkategorierne. Kategorier, du selv har oprettet, beholder deres egen farve.",
+    "restoreButton": "Gendan standardkategorier",
+    "restoreHint": "Henter de standardkategorier tilbage, som du har slettet.",
+    "paletteLabel": "Paletten {{name}}",
+    "alerts": {
+      "restoreTitle": "Gendan standardkategorierne?",
+      "restoreMessage": "Dem, du har slettet, kommer tilbage med deres oprindelige navn, symbol og farve. Dine dokumenter og de kategorier, du selv har oprettet, ændres ikke.",
+      "nothingTitle": "Intet at gendanne",
+      "nothingMessage": "Alle standardkategorierne er allerede på Hjem.",
+      "restoredTitle": "Kategorier gendannet",
+      "restoredMessage_one": "{{count}} kategori er tilbage på Hjem, før “Andet”.",
+      "restoredMessage_other": "{{count}} kategorier er tilbage på Hjem, før “Andet”.",
+      "restoreFailed": "Kunne ikke gendanne"
+    }
+  },
+  "about": {
+    "version": "Version {{version}}",
+    "privacy": "Anonymitet",
+    "privacyFooter": "Hvis du slår Kalender til, skrives fristerne i den iPhone-kalender, du vælger. Når du sender et dokument, bestemmer du, hvem du deler det med.",
+    "onPhone": "Dine dokumenter bliver på din telefon",
+    "offline": "Ingen konto og ingen server: virker også offline",
+    "noTracking": "Ingen sporing og ingen reklamer"
+  },
+  "terms": {
+    "intro": "De fulde vilkår for brug offentliggøres med App Store-versionen. Kort fortalt:",
+    "free": "Sottomano er gratis til op til {{limit}} dokumenter og kort",
+    "oneTime": "Oplåsning er et engangskøb uden abonnement",
+    "yours": "Dine dokumenter bliver på din telefon og tilhører dig",
+    "backup": "Lav en sikkerhedskopi, så du ikke mister dem, når du skifter telefon"
+  },
+  "limit": {
+    "later": "Senere",
+    "title": "Du har brugt dine {{limit}} gratis pladser",
+    "text": "Alt, hvad du har gemt, bliver her og virker som altid. Lås Sottomano op for at tilføje flere dokumenter og kort.",
+    "stillWorks": {
+      "view": "Se dine dokumenter",
+      "send": "Send og del dem",
+      "cards": "Vis dine kort ved kassen",
+      "reminders": "Få påmindelser"
+    },
+    "blocked": "Tilføj flere dokumenter eller kort",
+    "unlock": "Lås op uden grænser for {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}} af {{limit}} gratis pladser brugt",
+    "accessibility": "{{title}}. Lås op",
+    "unlock": "Lås op"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Gratisversion: {{used}} af {{limit}} brugt",
+    "titleMenu": "Gratis: {{used}} af {{limit}} brugt",
+    "subtitle": "Lås op uden grænser for {{price}}",
+    "accessibility": "{{title}}. Lås op uden grænser for {{price}}",
+    "unlock": "Lås op"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Velkommen til Sottomano",
+        "text": "ID-kort, bonuskort, regninger, garantier: alle husstandens dokumenter samlet ét sted, altid ved hånden.",
+        "info": "De bliver på din telefon og virker også uden internet"
+      },
+      "scan": {
+        "title": "Tag et billede én gang",
+        "text": "Scan også flere sider, eller importer fotos og PDF’er. Du finder dem i orden og sender dem så lette som nødvendigt."
+      },
+      "deadlines": {
+        "title": "Vi holder øje med fristerne",
+        "text": "Vi minder dig om det, før en regning eller et dokument udløber. Også i din kalender, hvis du vil."
+      },
+      "cards": {
+        "title": "Dine kort altid i lommen",
+        "text": "Tag billeder af dine bonuskort: Ved kassen viser du stregkoden eller QR-koden med ét tryk."
+      }
+    },
+    "skip": "Spring over",
+    "pageOf": "Side {{page}} af {{total}}",
+    "start": "Kom i gang",
+    "restore": "Gendan fra sikkerhedskopi",
+    "art": {
+      "bills": "Regninger",
+      "cards": "Kort",
+      "health": "Sundhed",
+      "car": "Bil",
+      "pdfReady": "PDF klar",
+      "billTitle": "Elregning",
+      "billExpires": "Forfalder om 2 dage",
+      "gym": "Fitness",
+      "library": "Bibliotek",
+      "supermarket": "Supermarked"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Filen kunne ikke åbnes",
+    "title": "Tag et billede af dit første dokument",
+    "text": "En regning, dit ID-kort eller garantien på vaskemaskinen: På få sekunder er det i sikkerhed og altid ved hånden.",
+    "snap": "Fotografer et dokument",
+    "pdf": "Upload en PDF",
+    "folders": "Dine mapper",
+    "emptyAccessibility": "{{name}}, tom",
+    "empty": "Tom",
+    "newCategory": "Ny kategori"
+  },
+  "splashOverlay": {
+    "tagline": "Husstandens dokumenter, klar til at blive sendt"
+  },
+  "appActions": {
+    "shareText": "Jeg kan anbefale Sottomano: husstandens dokumenter, kort og frister altid ved hånden, på telefonen og også uden internet.",
+    "rateTitle": "Bedøm Sottomano",
+    "rateMessage": "Du kan give en bedømmelse, når Sottomano er i App Store.",
+    "lockUnavailableTitle": "Lås ikke tilgængelig",
+    "lockUnavailableMessage": "For at låse Sottomano skal du have en kode på din iPhone. Indstil en i Indstillinger › Face ID & kode, og prøv igen."
+  }
+}

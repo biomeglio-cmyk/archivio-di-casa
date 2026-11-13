@@ -5,6 +5,8 @@ import { useState, type ReactNode } from 'react';
 import { Alert, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { pickImageUri } from '@/capture/pick-files';
+import { CARD_QUALITY, scanDocument } from '@/capture/scan-document';
 import { GeneratedCode } from '@/components/barcode-view';
 import { CardCapture, type CardCaptureResult, type CardStep } from '@/components/card-capture';
 import { CoverField } from '@/components/cover-field';
@@ -114,9 +116,29 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
     }
   }
 
-  // "Scatta di nuovo": our camera for the front (true colors, macro when close)
-  function retakeFront() {
-    setRetake('front');
+  // "Scatta di nuovo": the iOS scanner (straight, clean crop); without it, the app camera.
+  // "Annulla" in the scanner leaves the form as it was.
+  async function retakeFront() {
+    const result = await scanDocument({ tip: 'card', quality: CARD_QUALITY });
+    if (result === 'cancelled') return;
+    if (result === 'unavailable') {
+      setRetake('front');
+      return;
+    }
+    setFrontUri(result.pages[0]);
+    setChanged((c) => ({ ...c, front: true }));
+  }
+
+  // "Dalle foto": the front picked from the library, as it is
+  async function frontFromLibrary() {
+    try {
+      const uri = await pickImageUri();
+      if (!uri) return;
+      setFrontUri(uri);
+      setChanged((c) => ({ ...c, front: true }));
+    } catch (error) {
+      Alert.alert('Impossibile aprire la foto', String(error));
+    }
   }
 
   async function submit() {
@@ -181,6 +203,11 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
             <SymbolView name={frontUri ? 'checkmark.circle.fill' : 'camera'} tintColor="#FFFFFF" size={16} />
             <Text style={styles.recognizedText}>{frontUri ? 'Tessera riconosciuta' : 'Tocca Scatta di nuovo per fotografarla'}</Text>
           </View>
+          {/* Ours: the front from the photo library (e.g. a macro shot made with the Camera app) */}
+          <Pressable onPress={frontFromLibrary} accessibilityRole="button" hitSlop={8} style={styles.fromPhotos}>
+            <SymbolView name="photo.on.rectangle" tintColor="#FFFFFF" size={15} />
+            <Text style={styles.fromPhotosText}>Dalle foto</Text>
+          </Pressable>
         </View>
 
         <View style={styles.body}>
@@ -397,6 +424,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 14,
     backgroundColor: 'rgba(255, 255, 255, 0.12)',
+  },
+  fromPhotos: {
+    marginTop: 10,
+    alignSelf: 'center',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    minHeight: 32,
+  },
+  fromPhotosText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontFamily: FONTS.semiBold,
+    textDecorationLine: 'underline',
   },
   recognizedText: {
     color: '#FFFFFF',

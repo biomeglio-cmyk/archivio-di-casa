@@ -38,9 +38,10 @@ const STEP_TITLE: Record<CardStep, string> = {
 };
 
 // Full-screen camera for a card: 1) the front, 2) the barcode, read live while framing it.
-// The front is a photo, not a scan: no color "enhancement", full sensor size, cropped to the card
-// frame without resizing and saved as JPEG 0.92 (crop-photo.ts); macro by itself when close; tap
-// to focus again. "Dalle foto" takes a macro shot made with the iPhone Camera app.
+// The front here only when the iOS scanner is missing (start-add-card.ts): full sensor size,
+// cropped to the card frame without resizing, JPEG 0.92 (crop-photo.ts); the automatic multi-camera
+// device (macro where it works); tap to focus again. "Dalle foto" takes a shot made with the
+// iPhone Camera app.
 // Every shot gets a "Rifai / Usa" preview; both steps can use the photo library or be skipped.
 export function CardCapture({ steps, onDone, onCancel }: Props) {
   const [permission, requestPermission] = useCameraPermissions();

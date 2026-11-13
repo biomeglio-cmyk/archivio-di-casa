@@ -18,27 +18,41 @@ export function isScannerAvailable(): boolean {
   return CameraView.isDocumentScannerAvailable === true && typeof CameraView.scanDocumentAsync === 'function';
 }
 
-const TIP_KEY = 'scanner.tipShown';
+// Cards: small on the page, so every detail counts (logo, number)
+export const CARD_QUALITY = 1;
 
-// Shown once, the first time the scanner opens for a document: the iOS scanner keeps going
-// page after page, but that isn't obvious
-function showTipOnce(): Promise<void> {
-  if (Storage.getItemSync(TIP_KEY) === '1') return Promise.resolve();
-  Storage.setItemSync(TIP_KEY, '1');
+const TIPS = {
+  // The iOS scanner keeps going page after page, but that isn't obvious
+  document: {
+    key: 'scanner.tipShown',
+    title: 'Più pagine',
+    text: 'Puoi scansionare più pagine di fila: inquadra la pagina successiva prima di toccare Salva.',
+  },
+  // The scanner "enhances" a card like paper (yellowish); its filter button has "Foto"
+  card: {
+    key: 'scanner.cardTipShown',
+    title: 'Colori veri',
+    text: 'Per i colori veri della tessera tocca il pulsante dei filtri nello scanner e scegli «Foto».',
+  },
+} as const;
+
+// Shown once, the first time the scanner opens for that kind
+function showTipOnce(kind: keyof typeof TIPS): Promise<void> {
+  const tip = TIPS[kind];
+  if (Storage.getItemSync(tip.key) === '1') return Promise.resolve();
+  Storage.setItemSync(tip.key, '1');
   return new Promise((resolve) => {
-    Alert.alert(
-      'Più pagine',
-      'Puoi scansionare più pagine di fila: inquadra la pagina successiva prima di toccare Salva.',
-      [{ text: 'Ho capito', onPress: () => resolve() }],
-      { cancelable: false },
-    );
+    Alert.alert(tip.title, tip.text, [{ text: 'Ho capito', onPress: () => resolve() }], { cancelable: false });
   });
 }
 
-// `tip: false` for cards (one side, no multi-page tip)
-export async function scanDocument({ tip = true, quality = PAGE_QUALITY }: { tip?: boolean; quality?: number } = {}): Promise<ScanResult> {
+// `tip`: 'document' (multi-page), 'card' (true colors) or false (none)
+export async function scanDocument({
+  tip = 'document',
+  quality = PAGE_QUALITY,
+}: { tip?: keyof typeof TIPS | false; quality?: number } = {}): Promise<ScanResult> {
   if (!isScannerAvailable()) return 'unavailable';
-  if (tip) await showTipOnce();
+  if (tip) await showTipOnce(tip);
   try {
     const result = await CameraView.scanDocumentAsync({ quality });
     if (!result || result.pages.length === 0) return 'cancelled';

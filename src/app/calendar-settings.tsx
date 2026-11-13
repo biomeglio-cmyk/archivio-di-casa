@@ -1,7 +1,8 @@
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { ActivityIndicator, Alert, Linking, ScrollView, StyleSheet } from 'react-native';
+import { ActivityIndicator, Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { announce } from '@/a11y/accessibility';
 import { getCalendarSettings, type CalendarSettings } from '@/calendar/calendar-settings';
 import {
   disableCalendarSync,
@@ -56,7 +57,9 @@ export default function CalendarSettingsSheet() {
     setBusy(true);
     setStatus(null);
     try {
-      setStatus(await task());
+      const done = await task();
+      setStatus(done);
+      announce(done);
     } catch (error) {
       Alert.alert(t('calendarSettings.title'), error instanceof Error ? error.message : String(error));
     } finally {
@@ -89,7 +92,9 @@ export default function CalendarSettingsSheet() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <ThemedText style={styles.title}>{t('calendarSettings.title')}</ThemedText>
+      <ThemedText style={styles.title} accessibilityRole="header">
+        {t('calendarSettings.title')}
+      </ThemedText>
       <ThemedText themeColor="textSecondary">{t('calendarSettings.intro')}</ThemedText>
       <ThemedText type="small" themeColor="textSecondary">
         {t('calendarSettings.details')}
@@ -106,9 +111,20 @@ export default function CalendarSettingsSheet() {
 
       {permission === 'granted' && (
         <>
-          <WhiteCard style={[styles.card, styles.switchRow]}>
-            <ThemedText style={styles.switchLabel}>{t('calendarSettings.switchLabel')}</ThemedText>
-            <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} accessibilityLabel={t('calendarSettings.switchLabel')} />
+          <WhiteCard style={styles.card}>
+            {/* One switch for VoiceOver: the whole row toggles, the drawn switch is hidden */}
+            <Pressable
+              onPress={() => toggle(!settings.enabled)}
+              disabled={busy}
+              accessibilityRole="switch"
+              accessibilityLabel={t('calendarSettings.switchLabel')}
+              accessibilityState={{ checked: settings.enabled, disabled: busy, busy }}
+              style={styles.switchRow}>
+              <ThemedText style={styles.switchLabel}>{t('calendarSettings.switchLabel')}</ThemedText>
+              <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} />
+              </View>
+            </Pressable>
           </WhiteCard>
 
           {busy && <ActivityIndicator />}

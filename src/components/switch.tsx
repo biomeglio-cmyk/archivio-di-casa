@@ -13,6 +13,8 @@ type Props = {
   disabled?: boolean;
   accessibilityLabel?: string; // the label of its row, read by VoiceOver
   gradient?: readonly [string, string]; // when on: a section gradient, the main one by default
+  // Inside a row that is itself the VoiceOver switch (label, state, a tap toggles): hidden here
+  hiddenFromAccessibility?: boolean;
 };
 
 const WIDTH = 52;
@@ -21,7 +23,14 @@ const KNOB = 26;
 const TRAVEL = WIDTH - KNOB - (HEIGHT - KNOB); // knob from the left inset to the right inset
 
 // Switch of the guide (52 × 32, knob 26): main gradient when on, #D6D8E4 when off
-export function Switch({ value, onValueChange, disabled = false, accessibilityLabel, gradient = BRAND_GRADIENT }: Props) {
+export function Switch({
+  value,
+  onValueChange,
+  disabled = false,
+  accessibilityLabel,
+  gradient = BRAND_GRADIENT,
+  hiddenFromAccessibility = false,
+}: Props) {
   const styles = useThemedStyles(makeStyles);
   const progress = useSharedValue(value ? 1 : 0);
 
@@ -40,6 +49,8 @@ export function Switch({ value, onValueChange, disabled = false, accessibilityLa
       accessibilityRole="switch"
       accessibilityLabel={accessibilityLabel}
       accessibilityState={{ checked: value, disabled }}
+      accessibilityElementsHidden={hiddenFromAccessibility}
+      importantForAccessibility={hiddenFromAccessibility ? 'no-hide-descendants' : 'auto'}
       style={[styles.track, disabled && styles.disabled]}>
       <Animated.View style={[StyleSheet.absoluteFill, onLayer]}>
         <LinearGradient

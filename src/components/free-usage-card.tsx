@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
@@ -22,6 +22,7 @@ type Props = {
 export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }: Props) {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
+  const large = useWindowDimensions().fontScale > 1.3; // larger text: the texts get the whole width
   const { data: usage } = useDbQuery(getFreeUsage, []);
   if (!usage || usage.unlocked) return null;
   const settings = variant === 'settings';
@@ -39,11 +40,11 @@ export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }
         colors={BRAND_GRADIENT}
         start={GRADIENT_START}
         end={GRADIENT_END}
-        style={[styles.fill, settings ? styles.fillSettings : styles.fillMenu]}>
+        style={[styles.fill, settings ? styles.fillSettings : styles.fillMenu, large && styles.fillLarge]}>
         <View style={[styles.icon, settings && styles.iconSettings]}>
           <SymbolView name="gift" tintColor="#FFFFFF" size={settings ? 22 : 20} />
         </View>
-        <View style={styles.texts}>
+        <View style={[styles.texts, large && styles.textsLarge]}>
           <Text style={[styles.title, settings && styles.titleSettings]}>{title}</Text>
           <Text style={styles.subtitle}>{t('freeUsageCard.subtitle', { price })}</Text>
           <View style={styles.bar}>
@@ -80,6 +81,9 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     borderCurve: 'continuous',
   },
+  fillLarge: {
+    flexWrap: 'wrap', // icon and "Sblocca" on their own lines around the texts
+  },
   fillMenu: {
     padding: 14,
     gap: 12,
@@ -107,6 +111,9 @@ const makeStyles = (c: Palette) =>
     flex: 1,
     gap: 2,
   },
+  textsLarge: {
+    flexBasis: '100%',
+  },
   title: {
     color: '#FFFFFF',
     fontSize: 15,
@@ -124,7 +131,8 @@ const makeStyles = (c: Palette) =>
     marginTop: 6,
   },
   pill: {
-    height: 34,
+    minHeight: 34,
+    paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 17,
     backgroundColor: '#FFFFFF',

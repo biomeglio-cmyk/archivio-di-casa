@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
@@ -17,6 +17,7 @@ import { useI18n } from '@/i18n';
 export function LimitCard({ usage }: { usage: FreeUsage }) {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
+  const large = useWindowDimensions().fontScale > 1.3; // larger text: "Sblocca" goes under the title
   const title = t('limitCard.title', { used: usage.used, count: usage.limit });
   return (
     <Pressable
@@ -28,7 +29,7 @@ export function LimitCard({ usage }: { usage: FreeUsage }) {
         <SymbolView name="lock.fill" tintColor="#FFFFFF" size={18} />
       </LinearGradient>
       <View style={styles.texts}>
-        <View style={styles.line}>
+        <View style={[styles.line, large && styles.lineLarge]}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.unlock}>{t('limitCard.unlock')}</Text>
         </View>
@@ -71,6 +72,11 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     gap: 8,
   },
+  lineLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 2,
+  },
   title: {
     flexShrink: 1,
     fontSize: 14,
@@ -78,7 +84,7 @@ const makeStyles = (c: Palette) =>
     color: c.text,
   },
   unlock: {
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
     color: c.accent,

@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -25,47 +25,66 @@ export default function LimitPanel() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
+  const { height } = useWindowDimensions();
   const { t } = useI18n();
 
   return (
-    <Animated.View entering={FadeIn.duration(160)} style={styles.dim}>
-      <Pressable style={StyleSheet.absoluteFill} onPress={() => router.back()} accessibilityRole="button" accessibilityLabel={t('limit.later')} />
+    // The whole screen is the modal for VoiceOver (the screen below is not reachable); the
+    // two-finger scrub closes it like "Più tardi"
+    <Animated.View
+      entering={FadeIn.duration(160)}
+      style={styles.dim}
+      accessibilityViewIsModal
+      onAccessibilityEscape={() => router.back()}>
+      {/* Tap outside closes; VoiceOver uses "Più tardi" */}
+      <Pressable
+        style={StyleSheet.absoluteFill}
+        onPress={() => router.back()}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      />
       <Animated.View
         entering={SlideInDown.duration(240)}
-        style={[styles.sheet, { paddingBottom: Math.max(insets.bottom, 20) + 14 }]}
-        accessibilityViewIsModal>
+        style={[styles.sheet, { maxHeight: height - insets.top - 12 }]}>
         <View style={styles.grabber} />
-        <View style={styles.logo}>
-          <LogoMark size={60} radius={14} />
-        </View>
-        <Text style={styles.title} accessibilityRole="header">
-          {t('limit.title', { count: FREE_LIMIT })}
-        </Text>
-        <Text style={styles.text}>{t('limit.text')}</Text>
-        <View style={styles.list}>
-          {STILL_WORKS.map((item) => (
-            <View key={item} style={styles.item}>
-              <View style={[styles.mark, styles.markOn]}>
-                <SymbolView name="checkmark" tintColor={MINT_INK(theme)} size={13} weight="bold" />
-              </View>
-              <Text style={styles.itemText}>{t(`limit.stillWorks.${item}`)}</Text>
-            </View>
-          ))}
-          <View style={styles.item}>
-            <View style={[styles.mark, styles.markOff]}>
-              <SymbolView name="lock.fill" tintColor={theme.textSecondary} size={12} />
-            </View>
-            <Text style={[styles.itemText, styles.itemOff]}>{t('limit.blocked')}</Text>
+        {/* Scrolls when the text is large and the panel taller than the screen */}
+        <ScrollView
+          style={styles.scroll}
+          contentContainerStyle={{ paddingBottom: Math.max(insets.bottom, 20) + 14 }}
+          alwaysBounceVertical={false}
+          showsVerticalScrollIndicator={false}>
+          <View style={styles.logo}>
+            <LogoMark size={60} radius={14} />
           </View>
-        </View>
-        <PrimaryButton
-          label={t('limit.unlock', { price: unlockPrice() })}
-          onPress={() => router.replace('/unlock')}
-          style={styles.unlock}
-        />
-        <Pressable onPress={() => router.back()} accessibilityRole="button" style={styles.later}>
-          <Text style={styles.laterText}>{t('limit.later')}</Text>
-        </Pressable>
+          <Text style={styles.title} accessibilityRole="header">
+            {t('limit.title', { count: FREE_LIMIT })}
+          </Text>
+          <Text style={styles.text}>{t('limit.text')}</Text>
+          <View style={styles.list}>
+            {STILL_WORKS.map((item) => (
+              <View key={item} style={styles.item}>
+                <View style={[styles.mark, styles.markOn]} accessibilityElementsHidden>
+                  <SymbolView name="checkmark" tintColor={MINT_INK(theme)} size={13} weight="bold" />
+                </View>
+                <Text style={styles.itemText}>{t(`limit.stillWorks.${item}`)}</Text>
+              </View>
+            ))}
+            <View style={styles.item}>
+              <View style={[styles.mark, styles.markOff]} accessibilityElementsHidden>
+                <SymbolView name="lock.fill" tintColor={theme.textSecondary} size={12} />
+              </View>
+              <Text style={[styles.itemText, styles.itemOff]}>{t('limit.blocked')}</Text>
+            </View>
+          </View>
+          <PrimaryButton
+            label={t('limit.unlock', { price: unlockPrice() })}
+            onPress={() => router.replace('/unlock')}
+            style={styles.unlock}
+          />
+          <Pressable onPress={() => router.back()} accessibilityRole="button" style={styles.later}>
+            <Text style={styles.laterText}>{t('limit.later')}</Text>
+          </Pressable>
+        </ScrollView>
       </Animated.View>
     </Animated.View>
   );
@@ -85,6 +104,9 @@ const makeStyles = (c: Palette) =>
     borderTopRightRadius: 32,
     backgroundColor: c.surface,
     boxShadow: '0 -10px 30px rgba(28, 30, 70, 0.15)',
+  },
+  scroll: {
+    flexGrow: 0,
   },
   grabber: {
     alignSelf: 'center',
@@ -153,7 +175,7 @@ const makeStyles = (c: Palette) =>
   },
   later: {
     marginTop: 8,
-    height: 44,
+    minHeight: 44,
     alignItems: 'center',
     justifyContent: 'center',
   },

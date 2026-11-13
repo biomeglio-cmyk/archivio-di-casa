@@ -2,9 +2,10 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView } from 'expo-symbols';
 import { useState, type ReactNode } from 'react';
-import { Alert, Modal, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Modal, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { modalAnimation, useReduceMotion } from '@/a11y/accessibility';
 import { pickImageUri } from '@/capture/pick-files';
 import { CARD_QUALITY, scanDocument } from '@/capture/scan-document';
 import { GeneratedCode } from '@/components/barcode-view';
@@ -63,6 +64,8 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
+  const reduceMotion = useReduceMotion();
+  const largeText = useWindowDimensions().fontScale > 1.3; // fields under their labels (FieldRow)
   const { data: people } = useDbQuery(listPeople, []);
 
   const [title, setTitle] = useState(initial.title);
@@ -103,6 +106,15 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
     holder,
   };
   const canSave = title.trim().length > 0 && !saving;
+  // The cover as VoiceOver says it: "Esselunga, Carta fedeltà, numero 0400 2219, Mario Rossi"
+  const coverLabel = [
+    face.title || t('walletCard.untitled'),
+    face.docType,
+    code ? t('a11y.walletCard.number', { number: spacedNumber(code) }) : null,
+    holder,
+  ]
+    .filter(Boolean)
+    .join(', ');
 
   function onRetaken(result: CardCaptureResult) {
     setRetake(null);
@@ -201,12 +213,15 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
           </View>
           <View style={styles.frameArea}>
             <LinearGradient colors={['#33365A', '#1C1E38']} style={[StyleSheet.absoluteFill, styles.frameGlow]} />
-            <View style={styles.tilted}>{coverImage(232, 146)}</View>
+            {/* The same card as in Copertina below, where VoiceOver reads it */}
+            <View style={styles.tilted} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+              {coverImage(232, 146)}
+            </View>
             <View style={styles.frame} pointerEvents="none" />
             {/* On the box: take the front again (iOS scanner; cancelling keeps this one) */}
             {frontUri && <RetakePill label={t('cardForm.retakePhoto')} onPress={retakeFront} />}
           </View>
-          <View style={styles.recognized}>
+          <View style={styles.recognized} accessible>
             <SymbolView name={frontUri ? 'checkmark.circle.fill' : 'camera'} tintColor="#FFFFFF" size={16} />
             <Text style={styles.recognizedText}>{frontUri ? t('cardForm.recognized') : t('cardForm.tapRetake')}</Text>
           </View>
@@ -218,8 +233,10 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
         </View>
 
         <View style={styles.body}>
-          <Text style={styles.section}>{t('cardForm.cover')}</Text>
-          <View style={styles.coverRow}>
+          <Text style={styles.section} accessibilityRole="header">
+            {t('cardForm.cover')}
+          </Text>
+          <View style={styles.coverRow} accessible accessibilityRole="image" accessibilityLabel={coverLabel}>
             <View style={styles.coverShadow}>{coverImage(300, 188)}</View>
           </View>
           <Text style={styles.caption}>
@@ -236,10 +253,12 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
             />
           </View>
 
-          <Text style={styles.section}>{t('cardForm.codeSection')}</Text>
+          <Text style={styles.section} accessibilityRole="header">
+            {t('cardForm.codeSection')}
+          </Text>
           <WhiteCard style={styles.codeCard}>
             <View style={styles.foundRow}>
-              <View style={styles.found}>
+              <View style={styles.found} accessible>
                 <SymbolView name={readByCamera ? 'checkmark' : code ? 'keyboard' : 'questionmark'} tintColor={MINT_TEXT(theme)} size={12} weight="bold" />
                 <Text style={styles.foundText}>{found}</Text>
               </View>
@@ -250,7 +269,15 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
             {/* The photo of the code, on dark like the card above, with "Rifai la foto" on it */}
             {barcodeUri && (
               <View style={styles.barcodeBox}>
-                <Image source={{ uri: barcodeUri }} style={StyleSheet.absoluteFill} contentFit="contain" accessibilityIgnoresInvertColors />
+                <Image
+                  source={{ uri: barcodeUri }}
+                  style={StyleSheet.absoluteFill}
+                  contentFit="contain"
+                  accessibilityIgnoresInvertColors
+                  accessible
+                  accessibilityRole="image"
+                  accessibilityLabel={t('cardDetail.barcodePhotoLabel')}
+                />
                 <RetakePill label={t('cardForm.retakePhoto')} onPress={() => setRetake('barcode')} />
               </View>
             )}
@@ -261,7 +288,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 onChange={(index) => setKind(index === 0 ? 'bar' : 'qr')}
               />
             </View>
-            <View style={styles.previewBox}>
+            <View style={styles.previewBox} accessible>
               {preview ? (
                 <GeneratedCode barcode={preview} maxWidth={260} maxHeight={kind === 'qr' ? 120 : 86} />
               ) : (
@@ -279,7 +306,11 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
           </WhiteCard>
 
           <View style={styles.readBox}>
-            <LinearGradient colors={BRAND_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={styles.readIcon}>
+            <LinearGradient
+              colors={BRAND_GRADIENT}
+              start={GRADIENT_START}
+              end={GRADIENT_END}
+              style={styles.readIcon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
               <SymbolView name="sparkles" tintColor="#FFFFFF" size={17} />
             </LinearGradient>
             <Text style={styles.readText}>
@@ -295,7 +326,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 onChangeText={setTitle}
                 placeholder={t('cardForm.namePlaceholder')}
                 placeholderTextColor={theme.placeholder}
-                style={styles.input}
+                style={[styles.input, largeText && styles.inputStacked]}
                 accessibilityLabel={t('cardForm.name')}
               />
             </FieldRow>
@@ -305,7 +336,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 onChangeText={setDocType}
                 placeholder={t('cardForm.typePlaceholder')}
                 placeholderTextColor={theme.placeholder}
-                style={styles.input}
+                style={[styles.input, largeText && styles.inputStacked]}
                 accessibilityLabel={t('cardForm.type')}
               />
             </FieldRow>
@@ -317,7 +348,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 placeholderTextColor={theme.placeholder}
                 autoCapitalize="characters"
                 autoCorrect={false}
-                style={styles.input}
+                style={[styles.input, largeText && styles.inputStacked]}
                 accessibilityLabel={t('cardForm.number')}
               />
             </FieldRow>
@@ -337,7 +368,11 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
         </View>
       </ScrollView>
 
-      <Modal visible={retake !== null} animationType="slide" presentationStyle="fullScreen" onRequestClose={() => setRetake(null)}>
+      <Modal
+        visible={retake !== null}
+        animationType={modalAnimation(reduceMotion)}
+        presentationStyle="fullScreen"
+        onRequestClose={() => setRetake(null)}>
         {retake && <CardCapture steps={[retake]} onDone={onRetaken} onCancel={() => setRetake(null)} />}
       </Modal>
     </>
@@ -378,12 +413,17 @@ function DarkButton({ symbol, label, onPress }: { symbol: 'xmark' | 'camera.rota
   );
 }
 
+// Label on the left, the field on the right; with larger text the field goes under its label.
+// The field has the same accessibilityLabel: the visible label is hidden from VoiceOver.
 function FieldRow({ label, last = false, children }: { label: string; last?: boolean; children: ReactNode }) {
   const styles = useThemedStyles(makeStyles);
+  const large = useWindowDimensions().fontScale > 1.3;
   return (
-    <View style={[styles.fieldRow, !last && styles.fieldDivider]}>
-      <Text style={styles.fieldLabel}>{label}</Text>
-      <View style={styles.fieldControl}>{children}</View>
+    <View style={[styles.fieldRow, large && styles.fieldRowStacked, !last && styles.fieldDivider]}>
+      <Text style={[styles.fieldLabel, large && styles.fieldLabelStacked]} accessibilityElementsHidden importantForAccessibility="no">
+        {label}
+      </Text>
+      <View style={[styles.fieldControl, large && styles.fieldControlStacked]}>{children}</View>
     </View>
   );
 }
@@ -434,7 +474,8 @@ const makeStyles = (c: Palette) =>
     position: 'absolute',
     bottom: 10,
     alignSelf: 'center',
-    height: 34,
+    minHeight: 34,
+    paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 17,
     backgroundColor: 'rgba(0, 0, 0, 0.55)',
@@ -543,13 +584,15 @@ const makeStyles = (c: Palette) =>
   },
   foundRow: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: 10,
   },
   found: {
     flexShrink: 1,
-    height: 28,
+    minHeight: 28,
+    paddingVertical: 4,
     paddingHorizontal: 10,
     borderRadius: 14,
     backgroundColor: MINT_TINT(c),
@@ -637,6 +680,18 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     gap: 12,
   },
+  fieldRowStacked: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: 2,
+    paddingTop: 10,
+  },
+  fieldLabelStacked: {
+    width: 'auto',
+  },
+  fieldControlStacked: {
+    alignItems: 'stretch',
+  },
   fieldDivider: {
     borderBottomWidth: 1,
     borderBottomColor: c.separator,
@@ -659,6 +714,9 @@ const makeStyles = (c: Palette) =>
     fontFamily: FONTS.semiBold,
     color: c.text,
     textAlign: 'right',
+  },
+  inputStacked: {
+    textAlign: 'left',
   },
   save: {
     marginTop: 24,

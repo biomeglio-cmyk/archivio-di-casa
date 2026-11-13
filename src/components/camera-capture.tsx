@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { Linking, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
 import { cropToGuideFrame } from '@/capture/crop-photo';
 import { guideFrameRect } from '@/capture/guide-frame';
@@ -46,6 +47,7 @@ export function CameraCapture({ onDone, onCancel }: Props) {
       // quality 1 here: the crop below re-compresses once, avoiding a double JPEG loss
       const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
       setPreviewUri(await cropToGuideFrame(photo, frame, { width, height }));
+      announce(pageNumber === 1 ? t('cameraCapture.readable') : t('cameraCapture.pageReadable', { number: pageNumber }));
     } finally {
       setBusy(false);
     }
@@ -56,6 +58,7 @@ export function CameraCapture({ onDone, onCancel }: Props) {
     if (!previewUri) return;
     setPages([...pages, previewUri]);
     setPreviewUri(null);
+    announce(t('a11y.cameraCapture.pageAdded', { number: pages.length + 1 }));
   }
 
   // "Fine" / "Usa": keep this photo and finish
@@ -75,7 +78,7 @@ export function CameraCapture({ onDone, onCancel }: Props) {
   if (!permission.granted) {
     return (
       <View style={[styles.screen, styles.centered, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        <SymbolView name="camera" tintColor="#FFFFFF" size={44} />
+        <SymbolView name="camera" tintColor="#FFFFFF" size={44} accessibilityElementsHidden />
         <Text style={styles.permissionTitle}>{t('cameraCapture.permissionTitle')}</Text>
         <Text style={styles.permissionText}>{t('cameraCapture.permissionText')}</Text>
         <View style={styles.permissionButton}>
@@ -84,7 +87,7 @@ export function CameraCapture({ onDone, onCancel }: Props) {
             onPress={() => (permission.canAskAgain ? requestPermission() : Linking.openSettings())}
           />
         </View>
-        <Pressable onPress={() => onCancel()} hitSlop={12}>
+        <Pressable onPress={() => onCancel()} hitSlop={12} accessibilityRole="button">
           <Text style={styles.link}>{t('common.cancel')}</Text>
         </Pressable>
       </View>
@@ -96,9 +99,17 @@ export function CameraCapture({ onDone, onCancel }: Props) {
   if (previewUri) {
     return (
       <View style={styles.screen}>
-        <Image source={{ uri: previewUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
-        <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
-          <Text style={styles.instruction}>
+        <Image
+          source={{ uri: previewUri }}
+          style={StyleSheet.absoluteFill}
+          contentFit="contain"
+          accessibilityIgnoresInvertColors
+          accessible
+          accessibilityRole="image"
+          accessibilityLabel={t('pageLabels.page', { number: pageNumber })}
+        />
+        <View style={[styles.topBar, styles.centeredBar, { paddingTop: insets.top + 8 }]}>
+          <Text style={[styles.instruction, styles.scrim]} accessibilityRole="header">
             {pageNumber === 1 ? t('cameraCapture.readable') : t('cameraCapture.pageReadable', { number: pageNumber })}
           </Text>
         </View>
@@ -135,28 +146,43 @@ export function CameraCapture({ onDone, onCancel }: Props) {
       <GuideFrameOverlay frame={frame} />
 
       <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
-        <Pressable onPress={() => onCancel()} hitSlop={12} accessibilityLabel={t('common.close')}>
+        <Pressable
+          onPress={() => onCancel()}
+          hitSlop={12}
+          accessibilityRole="button"
+          accessibilityLabel={t('common.close')}
+          style={styles.closeButton}>
           <SymbolView name="xmark" tintColor="#FFFFFF" size={22} />
         </Pressable>
       </View>
 
-      <Text style={[styles.instruction, styles.instructionOverFrame, { top: frame.y - 56 }]}>
-        {pageNumber === 1 ? t('cameraCapture.frameDocument') : t('cameraCapture.framePage', { number: pageNumber })}
-      </Text>
+      {/* On a dark pill: readable over any scene */}
+      <View style={[styles.instructionOverFrame, { top: frame.y - 56 }]} pointerEvents="none">
+        <Text style={[styles.instruction, styles.scrim]}>
+          {pageNumber === 1 ? t('cameraCapture.frameDocument') : t('cameraCapture.framePage', { number: pageNumber })}
+        </Text>
+      </View>
 
       <View style={[styles.cameraBar, { paddingBottom: insets.bottom + 24 }]}>
         <View style={styles.sideSlot} />
         <Pressable
           onPress={shoot}
           disabled={!ready || busy}
+          accessibilityRole="button"
           accessibilityLabel={t('cameraCapture.shoot')}
+          accessibilityState={{ disabled: !ready || busy, busy }}
           style={({ pressed }) => [styles.shutter, (pressed || busy) && styles.shutterPressed]}>
           <View style={styles.shutterInner} />
         </Pressable>
         <View style={styles.sideSlot}>
           {/* Changed idea after "Aggiungi pagina": finish with the pages already taken */}
           {pages.length > 0 && (
-            <Pressable onPress={() => onDone(pages)} hitSlop={12} accessibilityLabel={t('cameraCapture.finishWithPages', { count: pages.length })}>
+            <Pressable
+              onPress={() => onDone(pages)}
+              hitSlop={12}
+              accessibilityRole="button"
+              accessibilityLabel={t('cameraCapture.finishWithPages', { count: pages.length })}
+              style={styles.scrimButton}>
               <Text style={styles.link}>{t('common.done')}</Text>
             </Pressable>
           )}
@@ -196,10 +222,36 @@ const makeStyles = (c: Palette) =>
     fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
+  centeredBar: {
+    justifyContent: 'center',
+  },
   instructionOverFrame: {
     position: 'absolute',
     left: 24,
     right: 24,
+    alignItems: 'center',
+  },
+  scrim: {
+    overflow: 'hidden',
+    paddingHorizontal: 14,
+    paddingVertical: 6,
+    borderRadius: 16,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+  },
+  closeButton: {
+    width: 44,
+    height: 44,
+    borderRadius: 22,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.55)', // readable over any scene
+  },
+  scrimButton: {
+    minHeight: 44,
+    paddingHorizontal: 12,
+    borderRadius: 22,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
   },
   cameraBar: {
     position: 'absolute',
@@ -212,7 +264,7 @@ const makeStyles = (c: Palette) =>
     paddingHorizontal: 32,
   },
   sideSlot: {
-    width: 64,
+    minWidth: 64,
     alignItems: 'center',
   },
   shutter: {
@@ -242,7 +294,7 @@ const makeStyles = (c: Palette) =>
     gap: 12,
     paddingHorizontal: 20,
     paddingTop: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)', // white labels stay readable over a white page
   },
   secondaryButton: {
     flex: 1,
@@ -252,7 +304,7 @@ const makeStyles = (c: Palette) =>
     paddingVertical: 8,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+    backgroundColor: 'rgba(255, 255, 255, 0.16)',
   },
   secondaryLabel: {
     color: '#FFFFFF',

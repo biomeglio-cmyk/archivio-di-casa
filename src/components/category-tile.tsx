@@ -47,7 +47,7 @@ export function CategoryTile({ category, documentCount }: Props) {
           <Text
             style={[styles.count, { color: colors.text }]}
             numberOfLines={1}
-            maxFontSizeMultiplier={1.4}
+            maxFontSizeMultiplier={2}
             accessibilityElementsHidden
             importantForAccessibility="no-hide-descendants">
             {documentCount}

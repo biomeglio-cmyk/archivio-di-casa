@@ -7,6 +7,7 @@ import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
+import { textOn } from '@/utils/colors';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
 
@@ -32,7 +33,7 @@ export function DocumentThumb({ document }: { document: DocumentListItem }) {
   if (solid) {
     return (
       <View style={[styles.thumb, styles.center, { backgroundColor: solid }]}>
-        <SymbolView name={category.symbol} tintColor="#FFFFFF" size={20} />
+        <SymbolView name={category.symbol} tintColor={textOn(solid)} size={20} />
       </View>
     );
   }

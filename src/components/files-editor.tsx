@@ -1,7 +1,8 @@
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useEffect, useEffectEvent, useState } from 'react';
-import { Alert, Modal, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Modal, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { announce, modalAnimation, useReduceMotion } from '@/a11y/accessibility';
 
 import { Text } from '@/components/text';
 import { pickPdf, pickPhotos } from '@/capture/pick-files';
@@ -82,6 +83,7 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const [camera, setCamera] = useState(false); // app camera, when the scanner isn't available
+  const reduceMotion = useReduceMotion();
   const canScan = isScannerAvailable();
 
   const pdf = files.find((f) => f.kind === 'pdf');
@@ -97,10 +99,12 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
 
   function append(pages: PendingFile[]) {
     setImages([...images, ...pages.map(fromPending)]);
+    if (pages.length > 0) announce(t('a11y.filesEditor.added', { count: pages.length }));
   }
 
-  function remove(key: string) {
+  function remove(key: string, name: string) {
     setImages(images.filter((f) => f.key !== key));
+    announce(t('a11y.filesEditor.removed', { name }));
   }
 
   function move(index: number, delta: number) {
@@ -108,6 +112,7 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
     const [page] = next.splice(index, 1);
     next.splice(index + delta, 0, page);
     setImages(next);
+    announce(t('a11y.filesEditor.movedTo', { position: index + delta + 1, total: next.length }));
   }
 
   function showError(error: unknown): null {
@@ -143,6 +148,7 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
       Alert.alert(t('filesEditor.scannerUnavailableTitle'), t('filesEditor.scannerUnavailableMessage'));
     } else if (result !== 'cancelled') {
       setImages(pagesToFiles(result.pages).map(fromPending));
+      announce(t('a11y.filesEditor.added', { count: result.pages.length }));
     }
   }
 
@@ -169,7 +175,7 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
             key={file.key}
             file={file}
             label={pageLabel(index, images.length, frontBack)}
-            onRemove={() => remove(file.key)}
+            onRemove={() => remove(file.key, pageLabel(index, images.length, frontBack) ?? t('filesEditor.page'))}
             onMoveLeft={index > 0 ? () => move(index, -1) : undefined}
             onMoveRight={index < images.length - 1 ? () => move(index, 1) : undefined}
           />
@@ -186,7 +192,7 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
       )}
 
       {/* Full-screen camera above the form, when there is no scanner */}
-      <Modal visible={camera} animationType="slide" presentationStyle="fullScreen">
+      <Modal visible={camera} animationType={modalAnimation(reduceMotion)} presentationStyle="fullScreen">
         {camera && (
           <CameraCapture
             onDone={(uris) => {
@@ -209,42 +215,61 @@ type ThumbProps = {
   onMoveRight?: () => void; // undefined = last page
 };
 
-// One page: a mini sheet on lilac with ✕, its label, and ‹ › to move it (also for VoiceOver)
+// One page: a mini sheet on lilac with ✕, its label, and ‹ › to move it. VoiceOver: the page is
+// one element ("Pagina 2, nuova") with the actions Sposta prima / Sposta dopo / Togli; ✕ stays reachable.
 function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProps) {
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
-  const name = label ?? t('filesEditor.page');
+  const { fontScale } = useWindowDimensions();
+  const large = fontScale > 1.3; // larger text: the caption goes above the sheet, on up to 2 lines
+  const name = label ?? (file.kind === 'pdf' ? 'PDF' : t('filesEditor.page'));
   const canMove = Boolean(onMoveLeft || onMoveRight);
-  const caption = [label, file.pending && file.kind === 'image' ? t('filesEditor.newTag') : null].filter(Boolean).join(' · ');
+  const isNew = Boolean(file.pending && file.kind === 'image');
+  const caption = [label, isNew ? t('filesEditor.newTag') : null].filter(Boolean).join(' · ');
+  const actions = [
+    ...(onMoveLeft ? [{ name: 'left', label: t('filesEditor.moveBefore', { name }) }] : []),
+    ...(onMoveRight ? [{ name: 'right', label: t('filesEditor.moveAfter', { name }) }] : []),
+    ...(onRemove ? [{ name: 'remove', label: t('filesEditor.removePage', { name }) }] : []),
+  ];
 
   return (
-    <View
-      style={[styles.cell, { backgroundColor: theme.lilac }]}
-      accessible={false}
-      accessibilityActions={[
-        ...(onMoveLeft ? [{ name: 'left', label: t('filesEditor.moveBefore', { name }) }] : []),
-        ...(onMoveRight ? [{ name: 'right', label: t('filesEditor.moveAfter', { name }) }] : []),
-      ]}
-      onAccessibilityAction={(event) => (event.nativeEvent.actionName === 'left' ? onMoveLeft?.() : onMoveRight?.())}>
-      <View style={styles.sheet}>
+    <View style={[styles.cell, large && styles.cellLarge, { backgroundColor: theme.lilac }]}>
+      {caption.length > 0 && (
+        <ThemedText
+          type="smallBold"
+          themeColor="textSecondary"
+          numberOfLines={large ? 2 : 1}
+          style={[styles.caption, large && styles.captionLarge]}
+          accessibilityElementsHidden
+          importantForAccessibility="no">
+          {caption}
+        </ThemedText>
+      )}
+      <View
+        style={styles.sheet}
+        accessible
+        accessibilityRole="image"
+        accessibilityLabel={isNew ? `${name}, ${t('filesEditor.newTag')}` : name}
+        accessibilityActions={actions}
+        onAccessibilityAction={(event) => {
+          const action = event.nativeEvent.actionName;
+          if (action === 'left') onMoveLeft?.();
+          else if (action === 'right') onMoveRight?.();
+          else if (action === 'remove') onRemove?.();
+        }}>
         {file.kind === 'image' ? (
-          <Image source={{ uri: file.uri }} style={styles.sheetImage} contentFit="cover" accessibilityLabel={name} />
+          <Image source={{ uri: file.uri }} style={styles.sheetImage} contentFit="cover" accessibilityIgnoresInvertColors />
         ) : (
           <View style={[styles.sheetImage, styles.pdfThumb]}>
             <SymbolView name="doc.richtext" tintColor={BRAND_COLOR(theme)} size={28} />
           </View>
         )}
       </View>
-      {caption.length > 0 && (
-        <ThemedText type="smallBold" themeColor="textSecondary" numberOfLines={1} style={styles.caption}>
-          {caption}
-        </ThemedText>
-      )}
       {onRemove && (
         <Pressable
           onPress={onRemove}
-          hitSlop={10}
+          hitSlop={12}
           accessibilityRole="button"
           accessibilityLabel={t('filesEditor.removePage', { name })}
           style={styles.remove}>
@@ -252,7 +277,8 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
         </Pressable>
       )}
       {canMove && (
-        <View style={styles.arrows}>
+        // The same moves are actions of the page for VoiceOver: the small arrows are hidden from it
+        <View style={styles.arrows} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
           <Arrow symbol="chevron.left" label={t('filesEditor.moveBefore', { name })} onPress={onMoveLeft} />
           <Arrow symbol="chevron.right" label={t('filesEditor.moveAfter', { name })} onPress={onMoveRight} />
         </View>
@@ -276,7 +302,7 @@ function AddTile({ label, symbol, onPress }: { label: string; symbol: 'plus' | '
         pressed && { backgroundColor: theme.paleLilac },
       ]}>
       <SymbolView name={symbol} tintColor={theme.textSecondary} size={22} />
-      <ThemedText style={styles.addLabel} themeColor="textSecondary" numberOfLines={2}>
+      <ThemedText style={styles.addLabel} themeColor="textSecondary">
         {label}
       </ThemedText>
     </Pressable>
@@ -298,7 +324,7 @@ function Arrow({
     <Pressable
       onPress={onPress}
       disabled={!onPress}
-      hitSlop={6}
+      hitSlop={{ top: 12, bottom: 12, left: 10, right: 10 }}
       accessibilityRole="button"
       accessibilityLabel={label}
       accessibilityState={{ disabled: !onPress }}
@@ -320,7 +346,7 @@ const makeStyles = (c: Palette) =>
   },
   cell: {
     width: '31.4%', // 3 columns with two 10pt gaps
-    height: 140,
+    minHeight: 140,
     borderRadius: 18,
     borderCurve: 'continuous',
     alignItems: 'center',
@@ -341,12 +367,27 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     justifyContent: 'center',
   },
+  cellLarge: {
+    justifyContent: 'flex-start',
+    paddingTop: 6,
+    paddingBottom: 34,
+  },
   caption: {
     position: 'absolute',
     left: 8,
     top: 6,
     right: 30,
-    fontSize: 11,
+    fontSize: 12,
+  },
+  captionLarge: {
+    position: 'relative',
+    left: 0,
+    top: 0,
+    right: 0,
+    alignSelf: 'stretch',
+    marginLeft: 8,
+    marginRight: 30,
+    marginBottom: 6,
   },
   remove: {
     position: 'absolute',

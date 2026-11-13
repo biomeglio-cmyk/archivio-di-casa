@@ -70,12 +70,15 @@ export function BackupReminder() {
 
   return (
     <View style={styles.box}>
-      <View style={styles.icon}>
+      <View style={styles.icon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <SymbolView name="icloud.and.arrow.up" tintColor={theme.indigo} size={20} />
       </View>
       <View style={styles.texts}>
         <Text style={styles.title}>{text}</Text>
-        <Pressable onPress={() => router.push('/backup')} accessibilityRole="link" hitSlop={10}>
+        <Pressable
+          onPress={() => router.push('/backup')}
+          accessibilityRole="link"
+          hitSlop={{ top: 13, bottom: 13, left: 10, right: 10 }}>
           <Text style={styles.link}>{t('backupReminder.link')}</Text>
         </Pressable>
       </View>

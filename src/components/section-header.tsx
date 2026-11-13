@@ -10,8 +10,9 @@ type Props = {
   action?: { label: string; onPress: () => void; accessibilityLabel?: string }; // "Vedi tutto", "Riordina"
 };
 
-// Section title of Home: 13/400 grey capitals, and on the right a 10/600 blue capitals link
-// (its touch area is 44 high even if the text is small)
+// Section title of Home: 13/400 grey capitals, and on the right a 12/600 blue capitals link
+// (its touch area is 44 high even if the text is small). With larger text the link goes under
+// the title when both don't fit.
 export function SectionHeader({ title, action }: Props) {
   const styles = useThemedStyles(makeStyles);
   return (
@@ -26,7 +27,7 @@ export function SectionHeader({ title, action }: Props) {
           accessibilityLabel={action.accessibilityLabel ?? action.label}
           hitSlop={{ top: 16, bottom: 16, left: 12, right: 12 }}
           style={styles.action}>
-          <Text style={styles.actionLabel} maxFontSizeMultiplier={1.6}>
+          <Text style={styles.actionLabel} maxFontSizeMultiplier={2}>
             {action.label}
           </Text>
         </Pressable>
@@ -39,11 +40,14 @@ const makeStyles = (c: Palette) =>
   StyleSheet.create({
   row: {
     flexDirection: 'row',
+    flexWrap: 'wrap',
     alignItems: 'center',
     justifyContent: 'space-between',
-    gap: 12,
+    columnGap: 12,
+    rowGap: 4,
   },
   title: {
+    flexShrink: 1,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase', // +0.1em letter spacing from the app Text
@@ -53,7 +57,7 @@ const makeStyles = (c: Palette) =>
     paddingVertical: 2,
   },
   actionLabel: {
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
     color: c.accent,

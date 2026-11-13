@@ -33,7 +33,8 @@ const OPEN_MS = 260;
 const CLOSE_MS = 200;
 const PANEL_SHARE = 0.79; // 308 of 390 in the design
 const PANEL_MAX = 340;
-const BACKUP_DOT = '#F5824A';
+// "Backup da fare": an orange "!" (not just a dot), 3:1 on the white and on the dark panel
+const BACKUP_DUE = (p: Palette) => (p.isDark ? '#F5824A' : '#D9622B');
 
 // Side menu (docs/design/Menu.dc.html), opened by ≡ in Home (and the menu button of the other
 // tabs). It slides in from the left over the dimmed screen; a tap outside, ✕, a swipe to the
@@ -113,28 +114,25 @@ export default function MenuScreen() {
   const version = Constants.expoConfig?.version ?? '1.0';
 
   return (
-    <View style={styles.screen}>
-      <Animated.View style={[StyleSheet.absoluteFill, styles.dim, dimStyle]}>
-        <Pressable
-          style={StyleSheet.absoluteFill}
-          onPress={() => close()}
-          accessibilityRole="button"
-          accessibilityLabel={t('menu.close')}
-        />
+    // VoiceOver: the whole screen is the modal (nothing of the screen below is reachable); the
+    // backdrop is hidden, ✕ and the escape gesture close
+    <View style={styles.screen} accessibilityViewIsModal onAccessibilityEscape={() => close()} onMagicTap={() => close()}>
+      <Animated.View
+        style={[StyleSheet.absoluteFill, styles.dim, dimStyle]}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants">
+        <Pressable style={StyleSheet.absoluteFill} onPress={() => close()} />
       </Animated.View>
 
       <Animated.View
         {...swipe.panHandlers}
-        accessibilityViewIsModal
-        onAccessibilityEscape={() => close()}
-        onMagicTap={() => close()}
         style={[
           styles.panel,
           { width, paddingTop: insets.top + 12, paddingBottom: insets.bottom + 16 },
           panelStyle,
         ]}>
         <View style={styles.header}>
-          <View style={styles.logo}>
+          <View style={styles.logo} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
             <LogoMark size={42} radius={9} />
           </View>
           <Text style={styles.brand} accessibilityRole="header" numberOfLines={1}>
@@ -186,7 +184,7 @@ export default function MenuScreen() {
             symbol="icloud.and.arrow.up"
             accessibilityLabel={backupDue ? t('menu.backupDue') : t('menu.backup')}
             onPress={() => openScreen('/backup')}
-            trailing={backupDue ? <View style={styles.dot} /> : null}
+            trailing={backupDue ? <SymbolView name="exclamationmark.circle.fill" tintColor={BACKUP_DUE(theme)} size={18} /> : null}
           />
           <MenuItem label={t('menu.help')} symbol="questionmark.circle" onPress={() => openScreen('/onboarding')} />
           <MenuItem label={t('menu.rate')} symbol="star" onPress={rateApp} />
@@ -255,7 +253,7 @@ function Badge({ count }: { count: number }) {
   const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.badge}>
-      <Text style={styles.badgeText} maxFontSizeMultiplier={1.3}>
+      <Text style={styles.badgeText} maxFontSizeMultiplier={2}>
         {count > 99 ? '99+' : String(count)}
       </Text>
     </View>
@@ -360,7 +358,7 @@ const makeStyles = (c: Palette) =>
   },
   badge: {
     minWidth: 22,
-    height: 22,
+    minHeight: 22,
     paddingHorizontal: 6,
     borderRadius: 11,
     backgroundColor: c.badge,
@@ -373,12 +371,6 @@ const makeStyles = (c: Palette) =>
     lineHeight: 14,
     fontFamily: FONTS.bold,
     letterSpacing: 0,
-  },
-  dot: {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    backgroundColor: BACKUP_DOT,
   },
   value: {
     flexShrink: 1,

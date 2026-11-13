@@ -30,7 +30,9 @@ export default function DocumentVersionScreen() {
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         {version && document && files && (
           <>
-            <ThemedText style={styles.title}>{document.title}</ThemedText>
+            <ThemedText style={styles.title} accessibilityRole="header">
+              {document.title}
+            </ThemedText>
             <ThemedText themeColor="textSecondary">
               {[
                 t('documentVersion.replacedOn', { date: fmt.date(toISODate(new Date(version.archivedAt))) }),

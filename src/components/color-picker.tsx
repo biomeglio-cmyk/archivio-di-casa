@@ -103,7 +103,7 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
           <Pressable
             onPress={openCustom}
             accessibilityRole="radio"
-            accessibilityLabel={t('colorPicker.custom')}
+            accessibilityLabel={custom ? `${t('colorPicker.custom')}, ${custom}` : t('colorPicker.custom')}
             accessibilityState={{ checked: customOn || custom !== null }}
             hitSlop={4}
             style={[round, custom !== null && ring(custom)]}>
@@ -122,9 +122,12 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
             <ColorWheel hue={wheel.hue} radius={wheel.radius} onChange={pickWheel} onDraggingChange={onDraggingChange} />
           </View>
           <View style={styles.hexRow}>
-            <View style={[styles.hexSwatch, { backgroundColor: shown }]} />
+            <View style={[styles.hexSwatch, { backgroundColor: shown }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
             <View style={styles.hexField}>
-              <Text style={styles.hexLabel}>{t('colorPicker.hex')}</Text>
+              {/* The field says "Codice colore" itself */}
+              <Text style={styles.hexLabel} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                {t('colorPicker.hex')}
+              </Text>
               <TextInput
                 value={typed}
                 onChangeText={type}
@@ -190,7 +193,7 @@ const makeStyles = (c: Palette) =>
   },
   hexField: {
     flex: 1,
-    height: 40,
+    minHeight: 44,
     paddingHorizontal: 12,
     borderRadius: 12,
     backgroundColor: c.surface,
@@ -205,6 +208,7 @@ const makeStyles = (c: Palette) =>
   },
   hexInput: {
     flex: 1,
+    paddingVertical: 8,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
     color: c.text,

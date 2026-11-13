@@ -33,9 +33,11 @@ async function loadPdf() {
 export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
-  const { width } = useWindowDimensions();
+  const { width, fontScale } = useWindowDimensions();
   const { t } = useI18n();
-  const tileWidth = (width - Spacing.side * 2 - 12) / 2;
+  const large = fontScale > 1.3;
+  // Larger text: one folder per row, names in full
+  const tileWidth = large ? width - Spacing.side * 2 : (width - Spacing.side * 2 - 12) / 2;
   return (
     <>
       <View style={styles.card}>
@@ -61,7 +63,9 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
         </Pressable>
       </View>
 
-      <Text style={styles.section}>{t('homeEmpty.folders')}</Text>
+      <Text style={styles.section} accessibilityRole="header">
+        {t('homeEmpty.folders')}
+      </Text>
       <View style={styles.grid}>
         {categories.map((category) => {
           const { tint, onTint } = categoryTint(category.colors, theme);
@@ -74,7 +78,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
               style={({ pressed }) => [styles.folder, { width: tileWidth, backgroundColor: tint }, pressed && styles.pressed]}>
               <SymbolView name={category.symbol} tintColor={onTint} size={22} />
               <View>
-                <Text style={[styles.folderName, { color: onTint }]} numberOfLines={1}>
+                <Text style={[styles.folderName, { color: onTint }]} numberOfLines={large ? undefined : 1}>
                   {category.name}
                 </Text>
                 <Text style={[styles.folderCount, { color: onTint }]}>{t('homeEmpty.empty')}</Text>
@@ -172,7 +176,7 @@ const makeStyles = (c: Palette) =>
   },
   pdf: {
     marginTop: 8,
-    height: 44,
+    minHeight: 44,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
@@ -199,7 +203,8 @@ const makeStyles = (c: Palette) =>
     gap: 12,
   },
   folder: {
-    height: 96,
+    minHeight: 96,
+    gap: 8,
     padding: 14,
     borderRadius: 20,
     borderCurve: 'continuous',

@@ -28,6 +28,7 @@ export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
   const inputRef = useRef<TextInputInstance>(null);
   const [focused, setFocused] = useState(false);
   const active = focused || value.length > 0;
+  const lens = theme.isDark ? theme.indigo : LENS_COLOR; // the design violet is too dark on dark lilac
 
   function cancel() {
     onChangeText('');
@@ -46,14 +47,19 @@ export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
         <Text style={[styles.input, { color: theme.textSecondary }]} numberOfLines={1}>
           {placeholder}
         </Text>
-        <SymbolView name="magnifyingglass" tintColor={LENS_COLOR} size={19} weight="semibold" />
+        <SymbolView name="magnifyingglass" tintColor={lens} size={19} weight="semibold" />
       </Pressable>
     );
   }
 
   return (
     <View style={styles.row}>
-      <Pressable onPress={() => inputRef.current?.focus()} style={[styles.field, { backgroundColor: theme.lilac }]}>
+      {/* A tap anywhere on the pill focuses the field; for VoiceOver the field and "Cancella testo"
+          are separate elements (accessible={false}: the pill must not swallow them) */}
+      <Pressable
+        onPress={() => inputRef.current?.focus()}
+        accessible={false}
+        style={[styles.field, { backgroundColor: theme.lilac }]}>
         <TextInput
           ref={inputRef}
           value={value}
@@ -66,18 +72,21 @@ export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
           autoCorrect={false}
           autoCapitalize="none"
           accessibilityLabel={placeholder}
+          accessibilityRole="search"
           style={[styles.input, { color: theme.text }]}
         />
         {value.length > 0 && (
           <Pressable
             onPress={() => onChangeText('')}
-            hitSlop={10}
+            hitSlop={13}
             accessibilityRole="button"
             accessibilityLabel={t('searchBar.clear')}>
             <SymbolView name="xmark.circle.fill" tintColor={theme.textSecondary} size={18} />
           </Pressable>
         )}
-        <SymbolView name="magnifyingglass" tintColor={LENS_COLOR} size={19} weight="semibold" />
+        <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+          <SymbolView name="magnifyingglass" tintColor={lens} size={19} weight="semibold" />
+        </View>
       </Pressable>
       {active && (
         <Pressable onPress={cancel} hitSlop={8} accessibilityRole="button" style={styles.cancelButton}>

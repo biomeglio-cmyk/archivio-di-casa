@@ -2,7 +2,7 @@ import * as Haptics from 'expo-haptics';
 import { Image } from 'expo-image';
 import { SymbolView } from 'expo-symbols';
 import { useRef, type ComponentRef } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import type { QuickAction } from '@/actions/quick-actions';
 import { accessibilityActionsOf, runAccessibilityAction } from '@/actions/quick-actions';
@@ -21,7 +21,7 @@ import { useI18n } from '@/i18n';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { folderRowSubtitle } from '@/utils/folder';
 import { formatEuro } from '@/utils/money';
-import { isLightColor } from '@/utils/colors';
+import { textOn } from '@/utils/colors';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const LONG_PRESS_MS = 400;
@@ -43,6 +43,8 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n(); // also re-renders the subtitle when the language changes
   const { pressed, handlers } = usePressed();
+  const { fontScale } = useWindowDimensions();
+  const large = fontScale > 1.3; // larger text: full name and subtitle, the amount under them
   const ref = useRef<ComponentRef<typeof View>>(null);
   const { category } = document;
   const subtitle = folderRowSubtitle(document);
@@ -67,6 +69,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
         accessibilityRole={selection ? 'checkbox' : 'button'}
         accessibilityState={selection ? { checked: selection.selected, disabled: selection.disabled } : undefined}
         accessibilityLabel={[document.title, subtitle, amount, status].filter(Boolean).join(', ')}
+        accessibilityHint={selection?.disabled ? t('a11y.folderRow.disabledHint') : undefined}
         accessibilityActions={selection ? undefined : accessibilityActionsOf(actions)}
         onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
         style={[styles.row, pressed && styles.pressed, selection?.disabled && styles.disabled]}>
@@ -82,18 +85,24 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
           />
         ) : solid ? (
           <View style={[styles.photo, styles.center, { backgroundColor: solid }]}>
-            <SymbolView name={category.symbol} tintColor={isLightColor(solid) ? '#1C1E2E' : '#FFFFFF'} size={22} />
+            <SymbolView name={category.symbol} tintColor={textOn(solid)} size={22} />
           </View>
         ) : (
           <IconSquare symbol={category.symbol} colors={category.colors} size={44} shadow />
         )}
         <View style={styles.texts}>
-          <Text style={styles.title} numberOfLines={2}>
+          <Text style={styles.title} numberOfLines={large ? undefined : 2}>
             {document.title}
           </Text>
-          <Text style={styles.subtitle} numberOfLines={2}>
+          <Text style={styles.subtitle} numberOfLines={large ? undefined : 2}>
             {subtitle}
           </Text>
+          {large && !selection && (amount || document.paymentStatus) && (
+            <View style={styles.rightBelow}>
+              {amount && <Text style={styles.amount}>{amount}</Text>}
+              {document.paymentStatus && <StatusBadge status={document.paymentStatus} />}
+            </View>
+          )}
         </View>
         {selection ? (
           <SymbolView
@@ -102,6 +111,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
             size={24}
           />
         ) : (
+          !large &&
           (amount || document.paymentStatus) && (
             <View style={styles.right}>
               {amount && <Text style={styles.amount}>{amount}</Text>}
@@ -155,6 +165,13 @@ const makeStyles = (c: Palette) =>
   right: {
     alignItems: 'flex-end',
     gap: 5,
+  },
+  rightBelow: {
+    marginTop: 6,
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    gap: 8,
   },
   amount: {
     fontSize: 16,

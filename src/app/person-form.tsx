@@ -126,7 +126,10 @@ function PersonForm({ person }: { person: Person | null }) {
           </Pressable>
         </View>
 
-        <Text style={styles.section}>{t('personForm.name')}</Text>
+        {/* The field says "Nome" itself */}
+        <Text style={styles.section} accessibilityElementsHidden importantForAccessibility="no">
+          {t('personForm.name')}
+        </Text>
         <View style={styles.field}>
           <TextInput
             value={name}
@@ -141,7 +144,10 @@ function PersonForm({ person }: { person: Person | null }) {
           />
         </View>
 
-        <Text style={styles.section}>{t('personForm.role')}</Text>
+        {/* The button says "Chi è: …" itself */}
+        <Text style={styles.section} accessibilityElementsHidden importantForAccessibility="no">
+          {t('personForm.role')}
+        </Text>
         <Pressable
           onPress={() => setRolesOpen(true)}
           accessibilityRole="button"
@@ -204,20 +210,22 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
   },
   photo: {
-    width: 112,
-    height: 112,
+    minWidth: 112,
+    minHeight: 112,
     borderRadius: 56,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 4,
   },
   photoEmpty: {
+    padding: 8, // larger text: the circle grows around "Aggiungi foto"
     borderWidth: 2,
     borderStyle: 'dashed',
     borderColor: c.dashed,
     backgroundColor: c.paleLilac,
   },
   photoLabel: {
+    textAlign: 'center',
     fontSize: 13,
     fontFamily: FONTS.semiBold,
     color: c.indigo,
@@ -235,7 +243,8 @@ const makeStyles = (c: Palette) =>
   field: {
     ...cardSurface(c),
     marginTop: 10,
-    height: 56,
+    minHeight: 56,
+    paddingVertical: 8,
     borderRadius: 18,
     paddingHorizontal: 18,
     justifyContent: 'center',
@@ -249,8 +258,10 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 10,
   },
   selectText: {
+    flexShrink: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
     color: c.text,

@@ -2,11 +2,12 @@ import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView } from 'expo-symbols';
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import type Animated from 'react-native-reanimated';
 import type { AnimatedRef } from 'react-native-reanimated';
 import Sortable from 'react-native-sortables';
 
+import { announce } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, BRAND_SHADOW, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { cardSurface, type Palette } from '@/constants/theme';
@@ -28,7 +29,8 @@ type Props<T> = {
 
 // The rows of "Riordina" (docs/design/RiordinaLista.dc.html): one column, 10pt apart. Touch a row
 // and drag it: it lifts (a little bigger, with a shadow), the others make room, the order is saved
-// on release. VoiceOver: "Sposta prima" / "Sposta dopo".
+// on release. VoiceOver: "Sposta prima" / "Sposta dopo", which say the new place ("Spostato in
+// posizione 3 di 7").
 export function SortableList<T>({ items, keyFor, labelFor, renderRow, onReorder, scrollableRef }: Props<T>) {
   const { t } = useI18n();
   function moveBy(item: T, delta: number) {
@@ -39,6 +41,7 @@ export function SortableList<T>({ items, keyFor, labelFor, renderRow, onReorder,
     next.splice(from, 1);
     next.splice(to, 0, item);
     onReorder(next);
+    announce(t('a11y.reorder.moved', { position: to + 1, count: items.length }));
   }
 
   return (
@@ -85,20 +88,24 @@ type RowProps = {
 export function ReorderRow({ thumb, title, subtitle }: RowProps) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { fontScale } = useWindowDimensions();
+  const lines = fontScale > 1.3 ? undefined : 1; // larger text: the whole name
   return (
     <View style={styles.row}>
       {thumb}
       <View style={styles.texts}>
-        <Text style={styles.title} numberOfLines={1}>
+        <Text style={styles.title} numberOfLines={lines}>
           {title}
         </Text>
         {subtitle ? (
-          <Text style={styles.subtitle} numberOfLines={1}>
+          <Text style={styles.subtitle} numberOfLines={lines}>
             {subtitle}
           </Text>
         ) : null}
       </View>
-      <SymbolView name="line.3.horizontal" tintColor={theme.textSecondary} size={20} weight="semibold" />
+      <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        <SymbolView name="line.3.horizontal" tintColor={theme.textSecondary} size={20} weight="semibold" />
+      </View>
     </View>
   );
 }
@@ -120,7 +127,7 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
         <Text style={styles.heading} accessibilityRole="header">
           {title}
         </Text>
-        <Pressable onPress={onDone} accessibilityRole="button" style={({ pressed }) => [styles.done, pressed && styles.pressed]}>
+        <Pressable onPress={onDone} accessibilityRole="button" hitSlop={4} style={({ pressed }) => [styles.done, pressed && styles.pressed]}>
           <LinearGradient
             colors={BRAND_GRADIENT}
             start={GRADIENT_START}
@@ -131,7 +138,9 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
         </Pressable>
       </View>
       <View style={styles.hint}>
-        <SymbolView name="hand.draw" tintColor={theme.indigo} size={20} />
+        <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+          <SymbolView name="hand.draw" tintColor={theme.indigo} size={20} />
+        </View>
         <Text style={styles.hintText}>{hint}</Text>
       </View>
     </View>
@@ -150,7 +159,8 @@ const makeStyles = (c: Palette) =>
   StyleSheet.create({
   row: {
     ...cardSurface(c),
-    height: 76,
+    minHeight: 76,
+    paddingVertical: 8,
     borderRadius: 20,
     paddingLeft: 10,
     paddingRight: 14,
@@ -176,6 +186,7 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    gap: 12,
     minHeight: 44,
   },
   heading: {
@@ -185,7 +196,7 @@ const makeStyles = (c: Palette) =>
     color: c.text,
   },
   done: {
-    height: 40,
+    minHeight: 40,
     paddingHorizontal: 20,
     borderRadius: 20,
     justifyContent: 'center',

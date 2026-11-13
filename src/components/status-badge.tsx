@@ -21,7 +21,7 @@ export function StatusBadge({ status }: { status: PaymentStatus }) {
           ? { color: theme.error, backgroundColor: theme.errorBackground }
           : { color: theme.success, backgroundColor: theme.successBackground },
       ]}
-      maxFontSizeMultiplier={1.4}>
+      maxFontSizeMultiplier={2}>
       {due ? t('statusBadge.due') : t('statusBadge.paid')}
     </Text>
   );

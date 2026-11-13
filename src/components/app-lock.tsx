@@ -4,7 +4,7 @@ import { AppState, Pressable, StyleSheet, View } from 'react-native';
 import { FullWindowOverlay } from 'react-native-screens';
 
 import { Text } from '@/components/text';
-import { BRAND_COLOR } from '@/constants/brand';
+import { BRAND_COLOR, BRAND_GRADIENT } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import { t as translate, useI18n } from '@/i18n';
 import { LOCK_AFTER_MS, authenticate, isAppLockEnabled, unlockMethod, useAppLockEnabled, type UnlockMethod } from '@/security/app-lock';
@@ -82,7 +82,9 @@ export function AppLock() {
   return (
     <FullWindowOverlay unstable_accessibilityContainerViewIsModal>
       <View style={styles.screen}>
-        <SymbolView name="lock.fill" tintColor="#FFFFFF" size={56} />
+        <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+          <SymbolView name="lock.fill" tintColor="#FFFFFF" size={56} />
+        </View>
         <Text style={styles.name} maxFontSizeMultiplier={1.5}>
           {'Sottomano' /* i18n-ignore: brand */}
         </Text>
@@ -104,11 +106,14 @@ export function AppLock() {
   );
 }
 
+// White text needs a deep blue: the dark-mode accent (#8E9BFF) is too light under it
+const LOCK_COLOR = (c: Palette) => (c.isDark ? BRAND_GRADIENT[0] : BRAND_COLOR(c));
+
 const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: BRAND_COLOR(c),
+    backgroundColor: LOCK_COLOR(c),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 32,
@@ -122,7 +127,7 @@ const makeStyles = (c: Palette) =>
     fontFamily: FONTS.wordmark,
   },
   message: {
-    color: 'rgba(255, 255, 255, 0.9)',
+    color: '#FFFFFF',
     fontSize: 17,
     textAlign: 'center',
     fontFamily: FONTS.medium,
@@ -140,7 +145,7 @@ const makeStyles = (c: Palette) =>
     opacity: 0.8,
   },
   buttonText: {
-    color: BRAND_COLOR(c),
+    color: LOCK_COLOR(c),
     fontSize: 17,
     fontFamily: FONTS.semiBold,
     textAlign: 'center',

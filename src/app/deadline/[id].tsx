@@ -92,7 +92,9 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
   return (
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-        <ThemedText style={styles.intro}>{document.title}</ThemedText>
+        <ThemedText style={styles.intro} accessibilityRole="header">
+          {document.title}
+        </ThemedText>
 
         <View style={styles.dateGroup}>
           <Group title={t('deadlineScreen.date')}>

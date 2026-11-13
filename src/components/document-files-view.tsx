@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
+import { announce } from '@/a11y/accessibility';
 import { Segmented } from '@/components/segmented';
 import { ThemedText } from '@/components/themed-text';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
@@ -60,9 +61,11 @@ export function DocumentFilesView({ title, category, files }: Props) {
               horizontal
               pagingEnabled
               showsHorizontalScrollIndicator={false}
-              onMomentumScrollEnd={(event) =>
-                setImageIndex(Math.round(event.nativeEvent.contentOffset.x / pagerWidth))
-              }>
+              onMomentumScrollEnd={(event) => {
+                const index = Math.round(event.nativeEvent.contentOffset.x / pagerWidth);
+                if (index !== imageIndex) announce(t('viewDocument.pageOf', { number: index + 1, total: images.length }));
+                setImageIndex(index);
+              }}>
               {images.map((image, index) => (
                 <View key={image.id} style={{ width: pagerWidth }}>
                   <ImageFile file={image} label={labelAt(index)} aspectRatio={PAGE_ASPECT_RATIO} onPress={openImages} />
@@ -106,12 +109,13 @@ function ImageFile({ file, label, aspectRatio, onPress }: ImageFileProps) {
   if (!stored.exists) return <MissingFile />;
 
   return (
-    <Pressable onPress={onPress} accessibilityLabel={t('documentFilesView.openFullScreen', { label })}>
+    <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={t('documentFilesView.openFullScreen', { label })}>
       <Image
         source={{ uri: stored.uri }}
         style={[styles.image, { aspectRatio, backgroundColor: theme.surface }]}
         contentFit="contain"
         transition={150}
+        accessibilityIgnoresInvertColors
       />
     </Pressable>
   );
@@ -142,9 +146,11 @@ function MissingFile() {
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   return (
-    <View style={[styles.missing, { backgroundColor: theme.surface }]}>
+    <View style={[styles.missing, { backgroundColor: theme.surface }]} accessible>
       <SymbolView name="exclamationmark.triangle" tintColor={theme.textSecondary} size={24} />
-      <ThemedText themeColor="textSecondary">{t('documentFilesView.missingFile')}</ThemedText>
+      <ThemedText themeColor="textSecondary" style={styles.missingText}>
+        {t('documentFilesView.missingFile')}
+      </ThemedText>
     </View>
   );
 }
@@ -172,6 +178,9 @@ const makeStyles = (c: Palette) =>
   },
   pdf: {
     flex: 1,
+  },
+  missingText: {
+    flexShrink: 1,
   },
   missing: {
     flexDirection: 'row',

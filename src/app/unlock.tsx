@@ -1,6 +1,6 @@
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LogoMark } from '@/components/logo-mark';
@@ -38,6 +38,7 @@ export default function UnlockScreen() {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
+  const large = useWindowDimensions().fontScale > 1.3; // larger text: the price goes under its texts
   const { data: usage } = useDbQuery(getFreeUsage, []);
   const used = usage?.used ?? 0;
   const limit = usage?.limit ?? 7;
@@ -71,7 +72,12 @@ export default function UnlockScreen() {
 
       <WhiteCard style={styles.benefits}>
         {BENEFITS.map((benefit) => (
-          <View key={benefit} style={styles.benefit}>
+          // One element for VoiceOver: "Documenti illimitati, …"
+          <View
+            key={benefit}
+            style={styles.benefit}
+            accessible
+            accessibilityLabel={`${t(`unlock.benefits.${benefit}.title`)}, ${t(`unlock.benefits.${benefit}.text`)}`}>
             <View style={styles.check}>
               <SymbolView name="checkmark" tintColor={MINT_INK(theme)} size={13} weight="bold" />
             </View>
@@ -87,7 +93,10 @@ export default function UnlockScreen() {
         {t('unlock.sectionTitle')}
       </Text>
       <WhiteCard style={styles.usage}>
-        <View style={styles.usageRow}>
+        <View
+          style={styles.usageRow}
+          accessible
+          accessibilityLabel={`${t('unlock.usageLabel')}, ${t('unlock.usageValue', { used, limit })}`}>
           <Text style={styles.usageLabel}>{t('unlock.usageLabel')}</Text>
           <Text style={styles.usageValue}>{t('unlock.usageValue', { used, limit })}</Text>
         </View>
@@ -105,7 +114,10 @@ export default function UnlockScreen() {
         </Text>
       </WhiteCard>
 
-      <View style={styles.price}>
+      <View
+        style={[styles.price, large && styles.priceLarge]}
+        accessible
+        accessibilityLabel={`${t('unlock.priceTitle')}, ${unlockPrice()}, ${t('unlock.priceText')}`}>
         <View style={styles.priceTexts}>
           <Text style={styles.priceTitle}>{t('unlock.priceTitle')}</Text>
           <Text style={styles.priceText}>{t('unlock.priceText')}</Text>
@@ -120,7 +132,7 @@ export default function UnlockScreen() {
         <Text style={styles.freeText}>{t('unlock.continueFree')}</Text>
       </Pressable>
       <View style={styles.links}>
-        <Link label={t('unlock.restore')} onPress={storeOnly} />
+        <Link label={t('unlock.restore')} onPress={storeOnly} role="button" />
         <Link label={t('unlock.terms')} onPress={() => router.push('/terms')} />
         <Link label={t('unlock.privacy')} onPress={() => router.push('/about')} />
       </View>
@@ -128,10 +140,11 @@ export default function UnlockScreen() {
   );
 }
 
-function Link({ label, onPress }: { label: string; onPress: () => void }) {
+// role: "link" for the pages it opens, "button" for an action ("Ripristina acquisto")
+function Link({ label, onPress, role = 'link' }: { label: string; onPress: () => void; role?: 'link' | 'button' }) {
   const styles = useThemedStyles(makeStyles);
   return (
-    <Pressable onPress={onPress} accessibilityRole="link" hitSlop={{ top: 14, bottom: 14, left: 6, right: 6 }}>
+    <Pressable onPress={onPress} accessibilityRole={role} hitSlop={{ top: 14, bottom: 14, left: 6, right: 6 }}>
       <Text style={styles.link}>{label}</Text>
     </Pressable>
   );
@@ -243,6 +256,7 @@ const makeStyles = (c: Palette) =>
   },
   usageRow: {
     flexDirection: 'row',
+    flexWrap: 'wrap', // larger text: the value goes under the label
     alignItems: 'baseline',
     justifyContent: 'space-between',
     gap: 12,
@@ -281,6 +295,10 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'space-between',
     gap: 12,
   },
+  priceLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
   priceTexts: {
     flexShrink: 1,
   },
@@ -316,8 +334,10 @@ const makeStyles = (c: Palette) =>
   links: {
     marginTop: 6,
     flexDirection: 'row',
+    flexWrap: 'wrap', // larger text: the links go on more lines
     justifyContent: 'center',
-    gap: 18,
+    columnGap: 18,
+    rowGap: 14,
   },
   link: {
     fontSize: 13,

@@ -2,12 +2,13 @@ import * as Haptics from 'expo-haptics';
 import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
-import { useState } from 'react';
-import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { Alert, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { accessibilityActionsOf, documentQuickActions, runAccessibilityAction } from '@/actions/quick-actions';
 import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
 import { DocumentThumb } from '@/components/document-thumb';
@@ -69,6 +70,14 @@ export default function FavoritesScreen() {
     searchOpen && needle
       ? items.filter((d) => findMatch(d.title, needle) || findMatch(d.category.name, needle) || findMatch(d.docType, needle))
       : items;
+  const searching = searchOpen && needle.length > 0;
+
+  // VoiceOver: how many favorites the search leaves, once the typing settles
+  useEffect(() => {
+    if (!searching) return;
+    const timer = setTimeout(() => announce(t('favorites.count', { count: shown.length })), 600);
+    return () => clearTimeout(timer);
+  }, [searching, needle, shown.length, t]);
 
   async function saveOrder(ordered: DocumentListItem[]) {
     try {
@@ -84,6 +93,16 @@ export default function FavoritesScreen() {
     setSearchOpen(false);
     setQuery('');
     setReordering(true);
+    announce(t('a11y.browse.reorderOn'));
+  }
+
+  function endReorder() {
+    setReordering(false);
+    announce(t('a11y.browse.reorderOff'));
+  }
+
+  function unpin(document: DocumentListItem) {
+    void setPinned(db, document.id, false).then(() => announce(t('a11y.favorites.removed', { title: document.title })));
   }
 
   return (
@@ -98,14 +117,16 @@ export default function FavoritesScreen() {
             <ReorderHeader
               title={t('favorites.reorderTitle')}
               hint={t('favorites.reorderHint')}
-              onDone={() => setReordering(false)}
+              onDone={endReorder}
             />
-            <Text style={styles.section}>{t('favorites.yourFavorites')}</Text>
+            <Text style={styles.section} accessibilityRole="header">
+              {t('favorites.yourFavorites')}
+            </Text>
             <View style={styles.list}>
               <SortableList
                 items={items}
                 keyFor={(document) => document.id}
-                labelFor={(document) => document.title}
+                labelFor={(document) => `${document.title}, ${favoriteSubtitle(document)}`}
                 renderRow={(document) => (
                   <ReorderRow
                     thumb={<DocumentThumb document={document} />}
@@ -153,7 +174,9 @@ export default function FavoritesScreen() {
               </View>
             )}
 
-            <Text style={styles.section}>{pinned ? t('favorites.count', { count: items.length }) : ' '}</Text>
+            <Text style={styles.section} accessibilityRole="header">
+              {pinned ? t('favorites.count', { count: items.length }) : ' '}
+            </Text>
             {view === 'grid' && items.length > 0 ? (
               <View style={styles.grid}>
                 {shown.length < items.length ? (
@@ -169,7 +192,7 @@ export default function FavoritesScreen() {
                   <SortableTileGrid
                     items={items}
                     keyFor={(document) => document.id}
-                    labelFor={(document) => document.title}
+                    labelFor={(document) => `${document.title}, ${favoriteSubtitle(document)}`}
                     renderTile={(document) => <DocumentTileFace document={document} />}
                     actionsFor={(document) => documentQuickActions(db, document, documentHref(document.id))}
                     onOpen={(document) => router.push(documentHref(document.id))}
@@ -186,8 +209,8 @@ export default function FavoritesScreen() {
                     key={document.id}
                     document={document}
                     onOpen={() => router.push(documentHref(document.id))}
-                    onRemove={() => void setPinned(db, document.id, false)}
-                    onLongPress={startReorder}
+                    onRemove={() => unpin(document)}
+                    onLongPress={items.length > 1 ? startReorder : undefined}
                   />
                 ))}
                 {pinned && items.length === 0 && <Text style={styles.empty}>{t('favorites.empty')}</Text>}
@@ -215,7 +238,7 @@ type RowProps = {
   document: DocumentListItem;
   onOpen: () => void;
   onRemove: () => void;
-  onLongPress: () => void;
+  onLongPress?: () => void; // "Riordina" (2 favorites or more)
 };
 
 function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
@@ -224,9 +247,18 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
   const { t } = useI18n();
   const db = useSQLiteContext();
   const { pressed, handlers } = usePressed();
+  const { fontScale } = useWindowDimensions();
+  const lines = fontScale > 1.3 ? undefined : 1; // larger text: the whole name and subtitle
   const subtitle = favoriteSubtitle(document);
-  // VoiceOver: the same actions as the long-press menu of the tiles
-  const actions = documentQuickActions(db, document, documentHref(document.id)).filter((a) => a.key !== 'pin');
+  // VoiceOver: the same actions as the long-press menu of the tiles, and "Riordina" (the long press here)
+  const quick = documentQuickActions(db, document, documentHref(document.id)).filter((a) => a.key !== 'pin');
+  const actions = [
+    ...quick.filter((a) => !a.destructive),
+    ...(onLongPress
+      ? [{ key: 'reorder', label: t('favorites.reorderTitle'), symbol: 'arrow.up.arrow.down' as const, onPress: onLongPress }]
+      : []),
+    ...quick.filter((a) => a.destructive),
+  ];
 
   return (
     <View style={styles.row}>
@@ -237,7 +269,7 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
         delayLongPress={400}
         accessibilityRole="button"
         accessibilityLabel={`${document.title}, ${subtitle}`}
-        accessibilityHint={t('favorites.rowHint')}
+        accessibilityHint={onLongPress ? t('favorites.rowHint') : undefined}
         accessibilityActions={accessibilityActionsOf(actions)}
         onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
         style={[styles.rowMain, pressed && styles.rowPressed]}>
@@ -247,10 +279,10 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
           <IconSquare symbol={document.category.symbol} colors={document.category.colors} size={52} radius={16} shadow />
         )}
         <View style={styles.texts}>
-          <Text style={styles.name} numberOfLines={1}>
+          <Text style={styles.name} numberOfLines={lines}>
             {document.title}
           </Text>
-          <Text style={styles.sub} numberOfLines={1}>
+          <Text style={styles.sub} numberOfLines={lines}>
             {subtitle}
           </Text>
         </View>

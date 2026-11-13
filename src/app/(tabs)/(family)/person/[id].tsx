@@ -8,6 +8,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { confirmDeletePerson } from '@/actions/delete-actions';
 import { documentQuickActions } from '@/actions/quick-actions';
 import { pickPersonPhoto } from '@/capture/pick-files';
@@ -28,6 +29,7 @@ import type { DocumentListItem, Person } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
+import { folderRowSubtitle } from '@/utils/folder';
 import { deletePersonPhoto, storePersonPhoto } from '@/storage/person-photos';
 import { whenBelowLimit } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -98,6 +100,17 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
     }
   }
 
+  // "Seleziona e invia" on / off, said to VoiceOver (the tiles become checkboxes)
+  function startSelecting() {
+    selection.start();
+    announce(t('a11y.browse.selecting'));
+  }
+
+  function cancelSelecting() {
+    selection.cancel();
+    announce(t('a11y.browse.selectionOff'));
+  }
+
   function sendTogether() {
     router.push({ pathname: '/send', params: { ids: selectedIds.join(','), label: person.name } });
     selection.cancel();
@@ -106,7 +119,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
   const sheetActions: SheetAction[] = [
     { key: 'edit', label: t('personScreen.editPerson'), symbol: 'pencil', onPress: edit },
     ...(documents.some((d) => d.imageCount > 0)
-      ? [{ key: 'select', label: t('personScreen.selectAndSend'), symbol: 'checkmark.circle' as const, onPress: selection.start }]
+      ? [{ key: 'select', label: t('personScreen.selectAndSend'), symbol: 'checkmark.circle' as const, onPress: startSelecting }]
       : []),
     { key: 'delete', label: t('personScreen.deletePerson'), symbol: 'trash', destructive: true, onPress: () => confirmDeletePerson(person) },
   ];
@@ -120,7 +133,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
         <View style={styles.bar}>
           <RoundIconButton symbol="chevron.left" accessibilityLabel={t('common.back')} color={theme.text} onPress={() => router.back()} />
           {selection.selecting ? (
-            <Pressable onPress={selection.cancel} accessibilityRole="button" style={styles.cancel}>
+            <Pressable onPress={cancelSelecting} accessibilityRole="button" style={styles.cancel}>
               <Text style={styles.cancelText}>{t('common.cancel')}</Text>
             </Pressable>
           ) : (
@@ -135,10 +148,10 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
 
         <View style={styles.profile}>
           <View style={styles.avatarBox}>
-            <View style={styles.avatarRing}>
+            <View style={styles.avatarRing} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
               <PersonAvatar name={person.name} photoPath={person.photoPath} size={116} />
             </View>
-            <Pressable onPress={changePhoto} accessibilityRole="button" accessibilityLabel={t('personScreen.changePhoto')} style={styles.camera}>
+            <Pressable onPress={changePhoto} accessibilityRole="button" accessibilityLabel={t('personScreen.changePhoto')} hitSlop={6} style={styles.camera}>
               <SymbolView name="camera" tintColor={theme.indigo} size={16} weight="semibold" />
             </Pressable>
           </View>
@@ -146,12 +159,14 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
             {person.name}
           </Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
-          <Pressable onPress={edit} accessibilityRole="button" style={({ pressed }) => [styles.editButton, pressed && styles.pressed]}>
+          <Pressable onPress={edit} accessibilityRole="button" hitSlop={6} style={({ pressed }) => [styles.editButton, pressed && styles.pressed]}>
             <Text style={styles.editText}>{t('personScreen.editProfile')}</Text>
           </Pressable>
         </View>
 
-        <Text style={styles.section}>{t('personScreen.documentsSection', { count: documents.length })}</Text>
+        <Text style={styles.section} accessibilityRole="header">
+          {t('personScreen.documentsSection', { count: documents.length })}
+        </Text>
         <View style={styles.grid}>
           {selection.selecting ? (
             <TileGrid
@@ -174,7 +189,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
             <SortableTileGrid
               items={documents}
               keyFor={(document) => document.id}
-              labelFor={(document) => document.title}
+              labelFor={(document) => `${document.title}, ${folderRowSubtitle(document)}`}
               renderTile={(document) => <DocumentTileFace document={document} />}
               actionsFor={(document) => documentQuickActions(db, document, documentHref(document.id))}
               onOpen={(document) => router.push(documentHref(document.id))}
@@ -224,7 +239,7 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'space-between',
   },
   cancel: {
-    height: 44,
+    minHeight: 44,
     paddingHorizontal: 18,
     borderRadius: 22,
     justifyContent: 'center',
@@ -283,7 +298,8 @@ const makeStyles = (c: Palette) =>
   },
   editButton: {
     marginTop: 14,
-    height: 38,
+    minHeight: 38,
+    paddingVertical: 8,
     paddingHorizontal: 18,
     borderRadius: 19,
     justifyContent: 'center',

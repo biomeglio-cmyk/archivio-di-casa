@@ -44,7 +44,7 @@ export function HomeHeader() {
           <SymbolView name="bell" tintColor={theme.text} size={21} weight="medium" />
           {count > 0 && (
             <View style={styles.badge} accessibilityElementsHidden>
-              <Text style={styles.badgeText} maxFontSizeMultiplier={1.2}>
+              <Text style={styles.badgeText} maxFontSizeMultiplier={2}>
                 {count > 99 ? '99+' : String(count)}
               </Text>
             </View>
@@ -90,19 +90,19 @@ const makeStyles = (c: Palette) =>
     top: 4,
     right: 3,
     minWidth: 18,
-    height: 18,
+    minHeight: 18,
     paddingHorizontal: 4,
     borderRadius: 9,
     borderWidth: 2,
-    borderColor: '#FFFFFF',
+    borderColor: c.background, // the page around the bell
     backgroundColor: c.badge,
     alignItems: 'center',
     justifyContent: 'center',
   },
   badgeText: {
     color: '#FFFFFF',
-    fontSize: 11,
-    lineHeight: 13,
+    fontSize: 12,
+    lineHeight: 14,
     fontFamily: FONTS.bold,
     letterSpacing: 0,
   },

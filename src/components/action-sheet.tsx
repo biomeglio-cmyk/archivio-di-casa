@@ -3,6 +3,7 @@ import { useRef } from 'react';
 import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { modalAnimation, useReduceMotion } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -14,6 +15,7 @@ export type SheetAction = {
   label: string;
   symbol: SFSymbol;
   destructive?: boolean; // red on soft red (e.g. "Cancella categoria")
+  selected?: boolean; // the current choice: a checkmark on the right, "selected" for VoiceOver
   onPress: () => void;
 };
 
@@ -34,6 +36,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const pending = useRef<(() => void) | null>(null);
+  const reduceMotion = useReduceMotion();
 
   function choose(action: SheetAction) {
     pending.current = action.onPress;
@@ -44,7 +47,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
     <Modal
       visible={visible}
       transparent
-      animationType="slide"
+      animationType={modalAnimation(reduceMotion)}
       onRequestClose={onClose}
       onDismiss={() => {
         const action = pending.current;
@@ -52,14 +55,15 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
         action?.();
       }}>
       <View style={styles.fill} accessibilityViewIsModal onAccessibilityEscape={onClose}>
+        {/* Tap outside closes; VoiceOver has "Annulla" and the escape gesture instead */}
         <Pressable
           style={StyleSheet.absoluteFill}
           onPress={onClose}
-          accessibilityRole="button"
-          accessibilityLabel={t('common.close')}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants"
         />
         <View style={[styles.sheet, { paddingBottom: Math.max(insets.bottom, 20) + 14 }]} accessibilityRole="menu">
-          <View style={styles.grabber} />
+          <View style={styles.grabber} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
           <Text style={styles.title} accessibilityRole="header">
             {title}
           </Text>
@@ -72,6 +76,8 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
                   key={action.key}
                   onPress={() => choose(action)}
                   accessibilityRole="menuitem"
+                  accessibilityLabel={action.label}
+                  accessibilityState={action.selected === undefined ? undefined : { selected: action.selected }}
                   style={({ pressed }) => [
                     styles.action,
                     { backgroundColor: action.destructive ? theme.errorBackground : theme.paleLilac },
@@ -79,6 +85,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
                   ]}>
                   <SymbolView name={action.symbol} tintColor={color} size={20} />
                   <Text style={[styles.actionLabel, { color }]}>{action.label}</Text>
+                  {action.selected && <SymbolView name="checkmark" tintColor={theme.indigo} size={17} weight="semibold" />}
                 </Pressable>
               );
             })}

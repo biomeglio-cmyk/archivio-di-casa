@@ -1609,5 +1609,104 @@
     "rateMessage": "You’ll be able to leave a rating once Sottomano is on the App Store.",
     "lockUnavailableTitle": "Lock not available",
     "lockUnavailableMessage": "To lock Sottomano you need a passcode on your iPhone. Set one in Settings › Face ID & Passcode, then try again."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Reordering on: on each item, choose an action to move it.",
+      "reorderOff": "Reordering done",
+      "selecting": "Selecting: tap the documents to send as one PDF.",
+      "selectionOff": "Selection cancelled"
+    },
+    "notificationsPanel": {
+      "allRead": "All notifications marked as read"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} deadline",
+      "dayCount_other": "{{date}}: {{count}} deadlines"
+    },
+    "favorites": {
+      "removed": "{{title}} removed from favorites"
+    },
+    "folderRow": {
+      "disabledHint": "Only documents with photos go into the PDF."
+    },
+    "categoryForm": {
+      "iconNumber": "Icon {{number}}",
+      "selected": "Selected",
+      "icons": {
+        "folder": "Folder",
+        "tag": "Tag",
+        "star": "Star",
+        "gift": "Gift",
+        "tools": "Tools",
+        "cart": "Cart",
+        "stethoscope": "Doctor visits",
+        "fitness": "Gym",
+        "music": "Music",
+        "book": "Book",
+        "idCard": "ID card",
+        "card": "Card",
+        "lightbulb": "Light bulb",
+        "shield": "Shield",
+        "receipt": "Receipt",
+        "firstAid": "First aid",
+        "cleaning": "Cleaning",
+        "backpack": "Backpack"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, today"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Week of {{date}}"
+    },
+    "reorder": {
+      "moved": "Moved to position {{position}} of {{count}}"
+    },
+    "colorWheel": {
+      "value": "Hue {{hue}}°, intensity {{intensity}}%",
+      "moreIntense": "More intense",
+      "lessIntense": "Less intense"
+    },
+    "deadlineListRow": {
+      "actions": "Edit or remove the deadline"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} expiring",
+      "alertCount_other": "{{count}} expiring"
+    },
+    "formField": {
+      "required": "required"
+    },
+    "walletCard": {
+      "number": "Number {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zoom {{percent}}%"
+    },
+    "filesEditor": {
+      "added_one": "{{count}} page added",
+      "added_other": "{{count}} pages added",
+      "removed": "Page removed: {{name}}",
+      "movedTo": "Moved to position {{position}} of {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Page {{number}} added"
+    },
+    "passwordForm": {
+      "shown": "Password shown",
+      "generated": "Password generated: {{strength}}",
+      "imageRemoved": "Image removed"
+    },
+    "onboarding": {
+      "pageChanged": "Page {{page}} of {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Files ready: {{meta}}"
+    },
+    "trash": {
+      "restored": "Restored: {{title}}",
+      "deleted": "Deleted permanently: {{title}}"
+    }
   }
 }

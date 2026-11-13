@@ -1,6 +1,6 @@
 import * as Haptics from 'expo-haptics';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { DateSquare } from '@/components/date-square';
 import { StatusBadge } from '@/components/status-badge';
@@ -33,37 +33,52 @@ export function DeadlineListRow({ document, near, onPress, onLongPress }: Props)
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
+  const { fontScale } = useWindowDimensions();
+  const large = fontScale > 1.3; // larger text: full title and line, the badge under them
   const days = daysUntil(document.expiresAt);
   const overdue = days < 0;
   const subtitle = rowSubtitle(document, days, near, fmt);
+  const actions = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+    onLongPress();
+  };
 
   return (
     <Pressable
       {...handlers}
       onPress={onPress}
-      onLongPress={() => {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-        onLongPress();
-      }}
+      onLongPress={actions}
       delayLongPress={400}
       accessibilityRole="button"
-      accessibilityLabel={[document.title, subtitle, statusLabel(document, t)].filter(Boolean).join(', ')}
-      accessibilityHint={t('deadlineListRow.hint')}
+      // "Bolletta luce, 12 marzo, € 84,20 · tra 3 giorni, da pagare": the date of the square too
+      accessibilityLabel={[document.title, fmt.date(document.expiresAt), subtitle, statusLabel(document, t)]
+        .filter(Boolean)
+        .join(', ')}
+      // The long-press menu as a VoiceOver action (swipe up / down)
+      accessibilityActions={[{ name: 'deadlineActions', label: t('a11y.deadlineListRow.actions') }]}
+      onAccessibilityAction={(event) => {
+        if (event.nativeEvent.actionName === 'deadlineActions') onLongPress();
+      }}
       style={[styles.row, pressed && styles.pressed]}>
       <DateSquare iso={document.expiresAt} highlighted={near && !overdue} />
       <View style={styles.texts}>
-        <Text style={styles.title} numberOfLines={2}>
+        <Text style={styles.title} numberOfLines={large ? undefined : 2}>
           {document.title}
         </Text>
         {subtitle ? (
           <Text
             style={[styles.subtitle, near && styles.subtitleNear, overdue && styles.subtitleOverdue]}
-            numberOfLines={1}>
+            numberOfLines={large ? undefined : 1}>
             {subtitle}
           </Text>
         ) : null}
+        {large && document.paymentStatus && (
+          <View style={styles.badgeBelow}>
+            <StatusBadge status={document.paymentStatus} />
+          </View>
+        )}
       </View>
-      {document.paymentStatus && <StatusBadge status={document.paymentStatus} />}
+      {!large && document.paymentStatus && <StatusBadge status={document.paymentStatus} />}
       <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={15} weight="semibold" />
     </Pressable>
   );
@@ -100,6 +115,10 @@ const makeStyles = (c: Palette) =>
   },
   texts: {
     flex: 1,
+  },
+  badgeBelow: {
+    marginTop: 4,
+    alignSelf: 'flex-start',
   },
   title: {
     fontSize: 16,

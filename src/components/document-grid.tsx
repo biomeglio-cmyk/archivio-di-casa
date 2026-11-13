@@ -6,7 +6,7 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
 import { documentQuickActions } from '@/actions/quick-actions';
-import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
+import { DocumentTile, DocumentTileFace, documentTileLabel } from '@/components/document-tile';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import type { DocumentListItem } from '@/db/types';
@@ -60,7 +60,7 @@ export function DocumentGrid({ documents, hrefFor, selection, onAdd, onReorder, 
             <SortableTileGrid
               items={documents}
               keyFor={(document) => document.id}
-              labelFor={(document) => document.title}
+              labelFor={documentTileLabel}
               renderTile={(document) => <DocumentTileFace document={document} />}
               actionsFor={(document) => documentQuickActions(db, document, hrefFor(document))}
               onOpen={(document) => router.push(hrefFor(document))}

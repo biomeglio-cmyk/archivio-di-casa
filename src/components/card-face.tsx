@@ -8,7 +8,7 @@ import { FONTS } from '@/constants/typography';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
-import { isLightColor } from '@/utils/colors';
+import { textOn } from '@/utils/colors';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
 
@@ -38,16 +38,16 @@ export function CardFace({ card, width, showPerson = false, large = false, showP
         />
       ) : (
         <TileTitle
-          style={[styles.title, large && styles.titleLarge, isLightColor(card.cardColor ?? DEFAULT_CARD_COLOR) && styles.dark]}
+          style={[styles.title, large && styles.titleLarge, textOn(card.cardColor ?? DEFAULT_CARD_COLOR) !== '#FFFFFF' && styles.dark]}
           numberOfLines={large ? 3 : 2}
-          maxFontSizeMultiplier={1.4} // the card has a fixed shape: text grows a little, then stops
+          maxFontSizeMultiplier={1.6} // the card has a fixed shape: text grows a little, then stops
         >
           {card.title}
         </TileTitle>
       )}
       {showPerson && card.personName && (
         <View style={styles.person}>
-          <Text style={styles.personText} numberOfLines={1} maxFontSizeMultiplier={1.3}>
+          <Text style={styles.personText} numberOfLines={1} maxFontSizeMultiplier={1.6}>
             {card.personName}
           </Text>
         </View>

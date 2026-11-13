@@ -46,14 +46,18 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
     action?.();
   }
 
+  // Larger text: taller rows (the labels wrap) and a menu as wide as the screen
+  const large = window.fontScale > 1.3;
+  const rowHeight = Math.max(ROW_HEIGHT, Math.round(17 * 1.3 * window.fontScale + 24));
+  const menuWidth = large ? window.width - 2 * EDGE : MENU_WIDTH;
   let menu = { left: EDGE, top: 0 };
   if (target) {
     const { rect, actions } = target;
-    const height = actions.length * ROW_HEIGHT;
+    const height = actions.length * rowHeight;
     const below = rect.y + rect.height + GAP;
     const fitsBelow = below + height <= window.height - insets.bottom - EDGE;
     menu = {
-      left: Math.min(Math.max(EDGE, rect.x), window.width - MENU_WIDTH - EDGE),
+      left: Math.min(Math.max(EDGE, rect.x), window.width - menuWidth - EDGE),
       top: fitsBelow ? below : Math.max(insets.top + EDGE, rect.y - GAP - height),
     };
   }
@@ -74,8 +78,11 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
             accessibilityRole="button"
             accessibilityLabel={t('quickActionMenu.close')}
           />
+          {/* The lit copy of the tile: only a picture, VoiceOver skips it */}
           <View
             pointerEvents="none"
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
             style={[
               styles.tile,
               { left: target.rect.x, top: target.rect.y, width: target.rect.width, height: target.rect.height },
@@ -83,7 +90,7 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
             {target.tile}
           </View>
           <View
-            style={[styles.menu, { left: menu.left, top: menu.top, backgroundColor: theme.surface }]}
+            style={[styles.menu, { left: menu.left, top: menu.top, width: menuWidth, backgroundColor: theme.surface }]}
             accessibilityRole="menu">
             {target.actions.map((action, index) => {
               const color = action.destructive ? DANGER_COLOR(theme) : theme.text;
@@ -92,12 +99,13 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
                   key={action.key}
                   onPress={() => choose(action)}
                   accessibilityRole="menuitem"
+                  accessibilityLabel={action.label}
                   style={({ pressed }) => [
                     styles.row,
                     index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator },
                     pressed && { backgroundColor: theme.backgroundSelected },
                   ]}>
-                  <Text style={[styles.label, { color }]} numberOfLines={1} maxFontSizeMultiplier={1.4}>
+                  <Text style={[styles.label, { color }]} numberOfLines={large ? undefined : 1}>
                     {action.label}
                   </Text>
                   <SymbolView name={action.symbol} tintColor={color} size={18} />
@@ -122,7 +130,6 @@ const makeStyles = (c: Palette) =>
   },
   menu: {
     position: 'absolute',
-    width: MENU_WIDTH,
     borderRadius: Radius.card,
     borderCurve: 'continuous',
     overflow: 'hidden',
@@ -130,6 +137,7 @@ const makeStyles = (c: Palette) =>
   },
   row: {
     minHeight: ROW_HEIGHT,
+    paddingVertical: 10,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',

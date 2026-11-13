@@ -2,6 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { announce } from '@/a11y/accessibility';
 import { useHorizontalSwipe } from '@/components/calendar-parts';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
@@ -27,50 +28,64 @@ type WeekProps = {
 };
 
 // "Settimana" of Scadenze: L M M G V S D in a white card, 38pt days (today in the main gradient,
-// the chosen day on lilac), a 6pt dot under the days with deadlines. Swipe for the next week.
+// the chosen day on lilac with a ring), a 6pt dot under the days with deadlines. Swipe for the next
+// week, or the ‹ › buttons around the month of the week (no swipe needed, VoiceOver included).
 export function WeekCalendar({ weekStartIso, todayIso, selectedIso, markers, onSelect, onPrevious, onNext }: WeekProps) {
   const { t } = useI18n();
   const fmt = useFormat();
   const styles = useThemedStyles(makeStyles);
-  const swipe = useHorizontalSwipe(onPrevious, onNext);
+  // The buttons and the swipe say the new week to VoiceOver ("Settimana del 16 novembre")
+  const previous = () => {
+    onPrevious();
+    announce(t('a11y.deadlineCalendar.weekOf', { date: fmt.dayMonth(parseISODate(addDaysIso(weekStartIso, -7))) }));
+  };
+  const next = () => {
+    onNext();
+    announce(t('a11y.deadlineCalendar.weekOf', { date: fmt.dayMonth(parseISODate(addDaysIso(weekStartIso, 7))) }));
+  };
+  const swipe = useHorizontalSwipe(previous, next);
+  const thursday = parseISODate(addDaysIso(weekStartIso, 3)); // the month most of the week is in
+  const weekdays = fmt.weekdayNamesFromMonday();
   return (
-    <WhiteCard
-      style={styles.weekCard}
-      {...swipe}
-      accessibilityActions={[
-        { name: 'increment', label: t('deadlineCalendar.nextWeek') },
-        { name: 'decrement', label: t('deadlineCalendar.previousWeek') },
-      ]}
-      onAccessibilityAction={(event) => (event.nativeEvent.actionName === 'increment' ? onNext() : onPrevious())}>
-      {fmt.weekdayLetters().map((letter, index) => {
-        const iso = addDaysIso(weekStartIso, index);
-        const today = iso === todayIso;
-        const selected = iso === selectedIso && !today;
-        const marker = markers.get(iso);
-        const day = parseISODate(iso).getDate();
-        return (
-          <Pressable
-            key={iso}
-            onPress={() => onSelect(iso)}
-            accessibilityRole="button"
-            accessibilityState={{ selected: iso === selectedIso }}
-            accessibilityLabel={dayLabel(t, fmt, iso, marker?.count ?? 0, fmt.weekdayNamesFromMonday()[index])}
-            style={styles.weekDay}>
-            <Text style={styles.weekLetter} maxFontSizeMultiplier={1.3}>
-              {letter}
-            </Text>
-            <View style={[styles.weekCircle, selected && styles.weekSelected]}>
-              {today && <Gradient style={styles.weekCircleFill} />}
-              <Text
-                maxFontSizeMultiplier={1.3}
-                style={[styles.weekNumber, today && styles.numberOnGradient, selected && styles.numberToday]}>
-                {day}
+    <WhiteCard style={styles.weekCard} {...swipe}>
+      <View style={styles.weekHeader}>
+        <MonthArrow symbol="chevron.left" label={t('deadlineCalendar.previousWeek')} onPress={previous} />
+        <Text style={styles.monthTitle} accessibilityRole="header">
+          {fmt.monthTitle(thursday.getFullYear(), thursday.getMonth())}
+        </Text>
+        <MonthArrow symbol="chevron.right" label={t('deadlineCalendar.nextWeek')} onPress={next} />
+      </View>
+      <View style={styles.weekRow}>
+        {fmt.weekdayLetters().map((letter, index) => {
+          const iso = addDaysIso(weekStartIso, index);
+          const today = iso === todayIso;
+          const selected = iso === selectedIso && !today;
+          const marker = markers.get(iso);
+          const day = parseISODate(iso).getDate();
+          return (
+            <Pressable
+              key={iso}
+              onPress={() => onSelect(iso)}
+              accessibilityRole="button"
+              accessibilityState={{ selected: iso === selectedIso }}
+              accessibilityLabel={dayLabel(t, fmt, iso, marker?.count ?? 0, today, weekdays[index])}
+              style={styles.weekDay}>
+              <Text style={styles.weekLetter} maxFontSizeMultiplier={2}>
+                {letter}
               </Text>
-            </View>
-            <View style={[styles.weekDot, { backgroundColor: marker?.color ?? 'transparent' }]} />
-          </Pressable>
-        );
-      })}
+              <View style={[styles.weekCircle, selected && styles.weekSelected]}>
+                {today && <Gradient style={styles.weekCircleFill} />}
+                <Text
+                  maxFontSizeMultiplier={2}
+                  style={[styles.weekNumber, today && styles.numberOnGradient, selected && styles.numberToday]}>
+                  {day}
+                </Text>
+              </View>
+              <View style={[styles.weekDot, { backgroundColor: marker?.color ?? 'transparent' }]} />
+            </Pressable>
+          );
+        })}
+      </View>
     </WhiteCard>
   );
 }
@@ -93,7 +108,16 @@ export function MonthCalendar({ year, month, todayIso, selectedIso, markers, onS
   const { t } = useI18n();
   const fmt = useFormat();
   const styles = useThemedStyles(makeStyles);
-  const swipe = useHorizontalSwipe(onPrevious, onNext);
+  // The buttons and the swipe say the new month to VoiceOver
+  const previous = () => {
+    onPrevious();
+    announce(fmt.monthTitle(month === 0 ? year - 1 : year, (month + 11) % 12));
+  };
+  const next = () => {
+    onNext();
+    announce(fmt.monthTitle(month === 11 ? year + 1 : year, (month + 1) % 12));
+  };
+  const swipe = useHorizontalSwipe(previous, next);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const blanks = (new Date(year, month, 1).getDay() + 6) % 7; // Monday first
   const cells: (number | null)[] = [...Array<null>(blanks).fill(null)];
@@ -103,15 +127,15 @@ export function MonthCalendar({ year, month, todayIso, selectedIso, markers, onS
     <WhiteCard style={styles.monthCard}>
       <View {...swipe}>
         <View style={styles.monthHeader}>
-          <MonthArrow symbol="chevron.left" label={t('dateCalendar.previousMonth')} onPress={onPrevious} />
+          <MonthArrow symbol="chevron.left" label={t('dateCalendar.previousMonth')} onPress={previous} />
           <Text style={styles.monthTitle} accessibilityRole="header">
             {fmt.monthTitle(year, month)}
           </Text>
-          <MonthArrow symbol="chevron.right" label={t('dateCalendar.nextMonth')} onPress={onNext} />
+          <MonthArrow symbol="chevron.right" label={t('dateCalendar.nextMonth')} onPress={next} />
         </View>
         <View style={styles.letters} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
           {fmt.weekdayLetters().map((letter, index) => (
-            <Text key={index} style={styles.letter} maxFontSizeMultiplier={1.3}>
+            <Text key={index} style={styles.letter} maxFontSizeMultiplier={2}>
               {letter}
             </Text>
           ))}
@@ -129,11 +153,11 @@ export function MonthCalendar({ year, month, todayIso, selectedIso, markers, onS
                   onPress={() => onSelect(iso)}
                   accessibilityRole="button"
                   accessibilityState={{ selected }}
-                  accessibilityLabel={dayLabel(t, fmt, iso, marker?.count ?? 0)}
+                  accessibilityLabel={dayLabel(t, fmt, iso, marker?.count ?? 0, iso === todayIso)}
                   style={[styles.monthDay, today && styles.monthToday]}>
                   {selected && <Gradient style={[StyleSheet.absoluteFill, styles.monthSelected]} />}
                   <Text
-                    maxFontSizeMultiplier={1.3}
+                    maxFontSizeMultiplier={2}
                     style={[
                       styles.monthNumber,
                       selected && styles.numberOnGradient,
@@ -158,16 +182,18 @@ export function MonthCalendar({ year, month, todayIso, selectedIso, markers, onS
   );
 }
 
-// "14 novembre, 2 scadenze"
+// "14 novembre, oggi, 2 scadenze"
 function dayLabel(
   t: ReturnType<typeof useI18n>['t'],
   fmt: ReturnType<typeof useFormat>,
   iso: string,
   count: number,
+  today: boolean,
   weekday?: string,
 ): string {
   const date = fmt.dayMonth(parseISODate(iso));
-  const base = weekday ? t('deadlineCalendar.weekdayDate', { weekday, date }) : date;
+  const day = weekday ? t('deadlineCalendar.weekdayDate', { weekday, date }) : date;
+  const base = today ? t('a11y.calendar.today', { date: day }) : day;
   if (count === 0) return base;
   return t('deadlineCalendar.dayWithDeadlines', { day: base, count });
 }
@@ -198,9 +224,19 @@ const makeStyles = (c: Palette) =>
   StyleSheet.create({
   weekCard: {
     marginTop: 12,
-    flexDirection: 'row',
-    paddingVertical: 12,
+    paddingTop: 10,
+    paddingBottom: 12,
     paddingHorizontal: 8,
+  },
+  weekHeader: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 8,
+    marginBottom: 8,
+  },
+  weekRow: {
+    flexDirection: 'row',
   },
   weekDay: {
     flex: 1,
@@ -208,14 +244,14 @@ const makeStyles = (c: Palette) =>
     gap: 6,
   },
   weekLetter: {
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
     color: c.textSecondary,
   },
   weekCircle: {
-    width: 38,
-    height: 38,
+    minWidth: 38,
+    minHeight: 38,
     borderRadius: 19,
     alignItems: 'center',
     justifyContent: 'center',
@@ -231,6 +267,8 @@ const makeStyles = (c: Palette) =>
   },
   weekSelected: {
     backgroundColor: c.lilac,
+    borderWidth: 1.5, // a ring, not only a color (Differenzia senza colore)
+    borderColor: c.indigo,
   },
   weekNumber: {
     fontSize: 16,
@@ -263,8 +301,8 @@ const makeStyles = (c: Palette) =>
     paddingHorizontal: 4,
   },
   arrow: {
-    width: 36,
-    height: 36,
+    minWidth: 36,
+    minHeight: 36,
     borderRadius: 18,
     backgroundColor: c.paleLilac,
     alignItems: 'center',
@@ -282,7 +320,7 @@ const makeStyles = (c: Palette) =>
   letter: {
     flex: 1,
     textAlign: 'center',
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
     color: c.textSecondary,
@@ -298,8 +336,8 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
   },
   monthDay: {
-    width: 40,
-    height: 44,
+    minWidth: 40,
+    minHeight: 44,
     borderRadius: 14,
     borderCurve: 'continuous',
     alignItems: 'center',
@@ -308,6 +346,8 @@ const makeStyles = (c: Palette) =>
   },
   monthToday: {
     backgroundColor: c.lilac,
+    borderWidth: 1.5, // a ring, not only a color (Differenzia senza colore)
+    borderColor: c.indigo,
   },
   monthSelected: {
     borderRadius: 14,

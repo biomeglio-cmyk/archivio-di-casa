@@ -10,7 +10,8 @@ import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { confirmDeleteCategory } from '@/actions/delete-actions';
-import { documentQuickActions } from '@/actions/quick-actions';
+import { documentQuickActions, runAccessibilityAction, type QuickAction } from '@/actions/quick-actions';
+import { useReduceMotion } from '@/a11y/accessibility';
 import { startAddCard } from '@/capture/start-add-card';
 import { ActionSheet, type SheetAction } from '@/components/action-sheet';
 import { BarcodeFullScreen, GeneratedCode } from '@/components/barcode-view';
@@ -58,11 +59,12 @@ export function CardsScreen({ category, cards }: Props) {
   const [reordering, setReordering] = useState(false);
   const [menuFor, setMenuFor] = useState<DocumentListItem | null>(null);
   const [categoryMenu, setCategoryMenu] = useState(false);
+  const reduceMotion = useReduceMotion();
 
   useMaxBrightness(openId !== null);
 
   function toggle(id: number) {
-    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    if (!reduceMotion) LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
     setOpenId((current) => (current === id ? null : id));
   }
 
@@ -99,12 +101,14 @@ export function CardsScreen({ category, cards }: Props) {
               hint={t('cardsScreen.reorderHint')}
               onDone={() => setReordering(false)}
             />
-            <Text style={styles.section}>{t('cardsScreen.yourCards')}</Text>
+            <Text style={styles.section} accessibilityRole="header">
+              {t('cardsScreen.yourCards')}
+            </Text>
             <View style={styles.reorderList}>
               <SortableList
                 items={cards}
                 keyFor={(card) => card.id}
-                labelFor={(card) => card.title}
+                labelFor={(card) => [card.title, card.docType ?? card.personName].filter(Boolean).join(', ')}
                 renderRow={(card) => (
                   <ReorderRow
                     thumb={
@@ -163,6 +167,9 @@ export function CardsScreen({ category, cards }: Props) {
                   open={card.id === openId}
                   tint={tint}
                   onTint={onTint}
+                  actions={documentQuickActions(db, card, detailHref(card.id)).map((action) =>
+                    action.key === 'open' ? { ...action, label: t('cardsScreen.cardDetails') } : action,
+                  )}
                   onToggle={() => toggle(card.id)}
                   onLongPress={() => {
                     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
@@ -176,7 +183,7 @@ export function CardsScreen({ category, cards }: Props) {
               onPress={add}
               accessibilityRole="button"
               style={({ pressed }) => [styles.add, { borderColor: dashed }, pressed && { backgroundColor: tint }]}>
-              <SymbolView name="plus" tintColor={onTint} size={22} />
+              <SymbolView name="plus" tintColor={onTint} size={22} accessibilityElementsHidden importantForAccessibility="no" />
               <Text style={[styles.addLabel, { color: onTint }]}>{t('cardsScreen.newCard')}</Text>
             </Pressable>
           </>
@@ -212,15 +219,24 @@ type CardProps = {
   open: boolean;
   tint: string;
   onTint: string;
+  actions: QuickAction[]; // the long-press menu, also as VoiceOver actions
   onToggle: () => void;
   onLongPress: () => void;
 };
 
 // One card of the stack: closed = the top 86pt of its face; open = the whole face, then the code
-function WalletCard({ card, open, tint, onTint, onToggle, onLongPress }: CardProps) {
+function WalletCard({ card, open, tint, onTint, actions, onToggle, onLongPress }: CardProps) {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
-  const label = card.docType ? `${card.title}, ${card.docType}` : card.title;
+  // Everything the face shows (also on a photo cover, which VoiceOver can't read)
+  const label = [
+    card.title,
+    card.docType,
+    card.barcodeValue ? t('a11y.walletCard.number', { number: spacedNumber(card.barcodeValue) }) : null,
+    card.personName,
+  ]
+    .filter(Boolean)
+    .join(', ');
   return (
     <View style={styles.card}>
       <Pressable
@@ -230,6 +246,9 @@ function WalletCard({ card, open, tint, onTint, onToggle, onLongPress }: CardPro
         accessibilityRole="button"
         accessibilityState={{ expanded: open }}
         accessibilityLabel={open ? t('cardsScreen.cardOpenLabel', { label }) : t('cardsScreen.cardClosedLabel', { label })}
+        // The long-press menu: "Dettagli della tessera", preferiti, Modifica, Sposta nel cestino
+        accessibilityActions={actions.map((a) => ({ name: a.key, label: a.label }))}
+        onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
         style={{ height: open ? WALLET_CARD_HEIGHT : WALLET_CARD_PEEK, overflow: 'hidden' }}>
         <WalletCardFace card={{ ...card, holder: card.personName }} />
       </Pressable>
@@ -270,17 +289,21 @@ function CardCode({ card, tint, onTint, onClose }: { card: DocumentListItem; tin
         <Text style={styles.noCode}>{t('cardsScreen.noCode')}</Text>
       )}
       {card.barcodeValue ? (
-        <Text style={styles.codeNumber} selectable>
+        <Text
+          style={styles.codeNumber}
+          selectable
+          accessibilityLabel={t('a11y.walletCard.number', { number: card.barcodeValue.split('').join(' ') })}>
           {spacedNumber(card.barcodeValue)}
         </Text>
       ) : null}
       <View style={styles.codeButtons}>
-        <Pressable onPress={onClose} accessibilityRole="button" style={({ pressed }) => [styles.pill, { backgroundColor: tint }, pressed && styles.pressed]}>
+        <Pressable onPress={onClose} accessibilityRole="button" hitSlop={4} style={({ pressed }) => [styles.pill, { backgroundColor: tint }, pressed && styles.pressed]}>
           <Text style={[styles.pillText, { color: onTint }]}>{t('common.close')}</Text>
         </Pressable>
         <Pressable
           onPress={() => router.push(detailHref(card.id))}
           accessibilityRole="button"
+          hitSlop={4}
           style={({ pressed }) => [styles.pill, { backgroundColor: tint }, pressed && styles.pressed]}>
           <Text style={[styles.pillText, { color: onTint }]}>{t('cardsScreen.details')}</Text>
         </Pressable>
@@ -312,7 +335,7 @@ const makeStyles = (c: Palette) =>
     alignItems: 'flex-end',
   },
   reorderText: {
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
     color: c.accent,
@@ -324,7 +347,7 @@ const makeStyles = (c: Palette) =>
   card: {
     borderRadius: 22,
     borderCurve: 'continuous',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: c.surface, // white in light; the code itself always sits on white (GeneratedCode)
     boxShadow: '0 8px 22px rgba(28, 30, 70, 0.10)',
     overflow: 'hidden',
   },
@@ -334,7 +357,7 @@ const makeStyles = (c: Palette) =>
     paddingBottom: 14,
     alignItems: 'center',
     gap: 8,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: c.surface,
   },
   codeTouch: {
     alignSelf: 'stretch',
@@ -361,10 +384,13 @@ const makeStyles = (c: Palette) =>
   codeButtons: {
     marginTop: 4,
     flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
     gap: 10,
   },
   pill: {
-    height: 36,
+    minHeight: 36,
+    paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 18,
     justifyContent: 'center',
@@ -378,7 +404,8 @@ const makeStyles = (c: Palette) =>
   },
   add: {
     marginTop: 10,
-    height: 72,
+    minHeight: 72,
+    paddingVertical: 12,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderRadius: 22,

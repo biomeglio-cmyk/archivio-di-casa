@@ -14,12 +14,14 @@ import { useI18n } from '@/i18n';
 const BARCODE_BACKGROUND = '#FFFFFF';
 const BARCODE_TEXT = '#000000';
 
-// The generated code, as large as fits the box, never stretched
+const QUIET_ZONE = 8; // white margin around the code, so it reads on a dark card too
+
+// The generated code, as large as fits the box, never stretched, on white (also in the dark theme)
 export function GeneratedCode({ barcode, maxWidth, maxHeight }: { barcode: GeneratedBarcode; maxWidth: number; maxHeight: number }) {
   const styles = useThemedStyles(makeStyles);
-  const width = Math.min(maxWidth, maxHeight * barcode.aspect);
+  const width = Math.min(maxWidth - QUIET_ZONE * 2, (maxHeight - QUIET_ZONE * 2) * barcode.aspect);
   return (
-    <View style={styles.codeBox} accessibilityIgnoresInvertColors>
+    <View style={styles.codeBox} accessibilityIgnoresInvertColors accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <SvgXml xml={barcode.xml} width={width} height={width / barcode.aspect} />
     </View>
   );
@@ -47,7 +49,13 @@ export function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: Ful
   return (
     <Modal visible={visible} animationType="fade" presentationStyle="fullScreen" onRequestClose={onClose}>
       <StatusBar hidden />
-      <Pressable style={styles.fullScreen} onPress={onClose} accessibilityRole="button" accessibilityLabel={t('barcodeView.close')}>
+      <Pressable
+        style={styles.fullScreen}
+        onPress={onClose}
+        onAccessibilityEscape={onClose}
+        accessibilityRole="button"
+        accessibilityLabel={t('barcodeView.close')}
+        accessibilityValue={value ? { text: value.split('').join(' ') } : undefined}>
         <View style={[styles.rotated, box, sideways && { transform: [{ rotate: '90deg' }] }]}>
           {barcode ? (
             <GeneratedCode barcode={barcode} maxWidth={box.width - 48} maxHeight={box.height - 120} />
@@ -61,7 +69,7 @@ export function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: Ful
           )}
         </View>
         <View style={styles.close}>
-          <SymbolView name="xmark.circle.fill" tintColor="#8E8E93" size={32} />
+          <SymbolView name="xmark.circle.fill" tintColor="#6E6E73" size={32} />
         </View>
       </Pressable>
     </Modal>
@@ -74,6 +82,8 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: BARCODE_BACKGROUND,
+    padding: QUIET_ZONE,
+    borderRadius: 8,
   },
   fullScreen: {
     flex: 1,

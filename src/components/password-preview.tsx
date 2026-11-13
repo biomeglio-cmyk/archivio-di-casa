@@ -29,10 +29,26 @@ export function PasswordPreviewTile({ info, size, imageUri, shadow = true }: Pro
   const box = { width: size, height: size, borderRadius: radius };
 
   if (uri) {
-    return <Image source={{ uri }} style={[styles.square, box, glow]} contentFit="cover" accessibilityIgnoresInvertColors />;
+    return (
+      <Image
+        source={{ uri }}
+        style={[styles.square, box, glow]}
+        contentFit="cover"
+        accessibilityIgnoresInvertColors
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      />
+    );
   }
   return (
-    <LinearGradient colors={[top, bottom]} start={GRADIENT_START} end={GRADIENT_END} style={[styles.square, box, glow]}>
+    // A picture: the row or tile around it says the name
+    <LinearGradient
+      colors={[top, bottom]}
+      start={GRADIENT_START}
+      end={GRADIENT_END}
+      style={[styles.square, box, glow]}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants">
       <SymbolView name={previewSymbol(info.preview, info.type)} tintColor="#FFFFFF" size={Math.round(size * 0.44)} />
     </LinearGradient>
   );

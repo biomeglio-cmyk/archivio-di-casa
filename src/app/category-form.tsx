@@ -4,7 +4,7 @@ import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActionSheet } from '@/components/action-sheet';
@@ -30,7 +30,7 @@ import { listPeople } from '@/db/people';
 import type { Category, CategoryColors } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { builtinColorsFor, getPalette } from '@/settings/palette';
-import { categoryShadowRgb, categoryTint, colorsFromHex } from '@/utils/colors';
+import { categoryShadowRgb, categoryTint, colorsFromHex, readableColors, readableGradient } from '@/utils/colors';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
@@ -48,6 +48,29 @@ const DESIGN_SYMBOLS: { symbol: SFSymbol; name: string }[] = [
   { symbol: 'airplane', name: 'travel' },
   { symbol: 'banknote', name: 'expenses' },
 ];
+
+// VoiceOver names of the other icons (ours and the built-ins' own), never the SF Symbol name:
+// keys in a11y.categoryForm.icons
+const OTHER_SYMBOL_NAMES: Partial<Record<SFSymbol, string>> = {
+  folder: 'folder',
+  tag: 'tag',
+  star: 'star',
+  gift: 'gift',
+  'wrench.and.screwdriver': 'tools',
+  cart: 'cart',
+  stethoscope: 'stethoscope',
+  dumbbell: 'fitness',
+  'music.note': 'music',
+  book: 'book',
+  'person.text.rectangle': 'idCard',
+  creditcard: 'card',
+  lightbulb: 'lightbulb',
+  shield: 'shield',
+  receipt: 'receipt',
+  'cross.case': 'firstAid',
+  'bubbles.and.sparkles': 'cleaning',
+  backpack: 'backpack',
+};
 
 // "Nuova categoria" (no id) or "Modifica categoria" (?id=…)
 export default function CategoryFormScreen() {
@@ -96,12 +119,18 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   const paletteColors = builtinKey ? builtinColorsFor(builtinKey) : null;
   const shown = followPalette && paletteColors ? paletteColors : colors; // what the tile will look like
   const { tint, onTint } = categoryTint(shown, theme);
-  const gradient = [shown.top, shown.bottom] as const;
+  // As Home shows it: readable at WCAG AA (dark ink on the pastel ones, see utils/colors.ts)
+  const look = readableColors(shown);
+  const gradient = [look.top, look.bottom] as const;
+  const { fontScale } = useWindowDimensions();
   const shadow = tintedShadow(categoryShadowRgb(shown));
   // Our 13 colors (the palette of Aspetto), without repeats
   const swatches = palette.colors.filter((c, index, all) => all.findIndex((other) => other.bottom === c.bottom) === index);
   // The icons: this category's own first (a built-in's original icon included), the design's, then ours
-  const named = new Map(DESIGN_SYMBOLS.map((d) => [d.symbol, t(`categoryForm.icons.${d.name}`)]));
+  const named = new Map<SFSymbol, string>(DESIGN_SYMBOLS.map((d) => [d.symbol, t(`categoryForm.icons.${d.name}`)]));
+  for (const [s, key] of Object.entries(OTHER_SYMBOL_NAMES) as [SFSymbol, string][]) {
+    if (!named.has(s)) named.set(s, t(`a11y.categoryForm.icons.${key}`));
+  }
   const symbols = [
     ...new Set([category?.symbol, builtinKey as SFSymbol | null, ...DESIGN_SYMBOLS.map((d) => d.symbol), ...CATEGORY_SYMBOLS]),
   ].filter((s): s is SFSymbol => Boolean(s));
@@ -155,7 +184,9 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
         {/* New category only: the built-ins removed with "Cancella categoria" can come back */}
         {!category && hiddenBuiltins && hiddenBuiltins.length > 0 && (
           <>
-            <Text style={styles.section}>{t('categoryForm.restoreSection')}</Text>
+            <Text style={styles.section} accessibilityRole="header">
+              {t('categoryForm.restoreSection')}
+            </Text>
             <View style={styles.restoreCard}>
               {hiddenBuiltins.map((builtin, index) => (
                 <Pressable
@@ -165,7 +196,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
                   accessibilityLabel={t('categoryForm.restoreA11y', { name: builtin.name })}
                   style={({ pressed }) => [styles.restoreRow, index > 0 && styles.restoreDivider, pressed && styles.pressed]}>
                   <IconSquare symbol={builtin.symbol} colors={builtin.colors} size={40} />
-                  <Text style={styles.restoreName} numberOfLines={1}>
+                  <Text style={styles.restoreName} numberOfLines={fontScale > 1.3 ? undefined : 1}>
                     {builtin.name}
                   </Text>
                   <Text style={styles.restoreAction}>{t('common.restore')}</Text>
@@ -185,20 +216,23 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
             style={[styles.preview, { boxShadow: shadow }]}
             accessible
             accessibilityRole="image"
-            accessibilityLabel={t('categoryForm.previewA11y')}>
-            <SymbolView name={symbol} tintColor={shown.text} size={30} />
+            accessibilityLabel={[t('categoryForm.previewA11y'), name.trim(), t('common.documents', { count })].filter(Boolean).join(', ')}>
+            <SymbolView name={symbol} tintColor={look.text} size={30} />
             <View>
-              <Text style={[styles.previewName, { color: shown.text }]} numberOfLines={2}>
+              <Text style={[styles.previewName, { color: look.text }]} numberOfLines={fontScale > 1.3 ? undefined : 2}>
                 {name.trim() || t('personForm.name')}
               </Text>
-              <Text style={[styles.previewCount, { color: shown.text }]}>
+              <Text style={[styles.previewCount, { color: look.text }]}>
                 {t('common.documents', { count })}
               </Text>
             </View>
           </LinearGradient>
         </View>
 
-        <Text style={styles.section}>{t('personForm.name')}</Text>
+        {/* The field says "Nome della categoria" itself */}
+        <Text style={styles.section} accessibilityElementsHidden importantForAccessibility="no">
+          {t('personForm.name')}
+        </Text>
         <View style={styles.field}>
           <TextInput
             value={name}
@@ -212,7 +246,9 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           />
         </View>
 
-        <Text style={styles.section}>{t('categoryForm.color')}</Text>
+        <Text style={styles.section} accessibilityRole="header">
+          {t('categoryForm.color')}
+        </Text>
         <View style={styles.colors}>
           <ColorPicker
             presets={[
@@ -255,46 +291,61 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           </Text>
         )}
 
-        <Text style={styles.section}>{t('categoryForm.icon')}</Text>
+        <Text style={styles.section} accessibilityRole="header">
+          {t('categoryForm.icon')}
+        </Text>
         <View style={styles.icons} accessibilityRole="radiogroup" accessibilityLabel={t('categoryForm.icon')}>
-          {symbols.map((s) => {
+          {symbols.map((s, index) => {
             const selected = s === symbol;
             return (
               <View key={s} style={styles.iconCell}>
                 <Pressable
                   onPress={() => setSymbol(s)}
                   accessibilityRole="radio"
-                  accessibilityLabel={named.get(s) ?? s}
+                  accessibilityLabel={named.get(s) ?? t('a11y.categoryForm.iconNumber', { number: index + 1 })}
                   accessibilityState={{ checked: selected }}
                   style={[styles.icon, { backgroundColor: tint }, selected && { boxShadow: shadow }]}>
                   {selected && (
                     <LinearGradient colors={gradient} start={GRADIENT_START} end={GRADIENT_END} style={[StyleSheet.absoluteFill, styles.iconFill]} />
                   )}
-                  <SymbolView name={s} tintColor={selected ? shown.text : onTint} size={22} />
+                  <SymbolView name={s} tintColor={selected ? look.text : onTint} size={22} />
+                  {/* The chosen one: a tick too, not only the gradient */}
+                  {selected && (
+                    <View style={styles.iconTick}>
+                      <SymbolView name="checkmark.circle.fill" tintColor={look.text} size={14} />
+                    </View>
+                  )}
                 </Pressable>
               </View>
             );
           })}
         </View>
 
-        <Text style={styles.section}>{t('categoryForm.forWhom')}</Text>
+        {/* The button says "Per chi è questa categoria: …" itself */}
+        <Text style={styles.section} accessibilityElementsHidden importantForAccessibility="no">
+          {t('categoryForm.forWhom')}
+        </Text>
         <Pressable
           onPress={() => setPeopleOpen(true)}
           accessibilityRole="button"
           accessibilityLabel={t('categoryForm.forWhomA11y', { name: personName })}
+          accessibilityHint={t('categoryForm.forWhomHint')}
           style={({ pressed }) => [styles.field, styles.select, pressed && styles.pressed]}>
-          <Text style={styles.selectText} numberOfLines={1}>
+          <Text style={styles.selectText} numberOfLines={fontScale > 1.3 ? undefined : 1}>
             {personName}
           </Text>
           <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={15} weight="semibold" />
         </Pressable>
-        <Text style={styles.hint}>{t('categoryForm.forWhomHint')}</Text>
+        {/* Read as the hint of the button above */}
+        <Text style={styles.hint} accessibilityElementsHidden importantForAccessibility="no">
+          {t('categoryForm.forWhomHint')}
+        </Text>
 
         <PrimaryButton
           label={category ? t('common.save') : t('categoryForm.create')}
           disabled={!canSave}
           onPress={save}
-          gradient={gradient}
+          gradient={readableGradient(gradient)}
           shadow={`0 10px 22px rgba(${categoryShadowRgb(shown)}, 0.28)`}
           style={styles.save}
         />
@@ -352,7 +403,7 @@ const makeStyles = (c: Palette) =>
   },
   preview: {
     width: 172,
-    height: 140,
+    minHeight: 140,
     padding: 16,
     borderRadius: 24,
     borderCurve: 'continuous',
@@ -376,7 +427,8 @@ const makeStyles = (c: Palette) =>
   field: {
     ...cardSurface(c),
     marginTop: 10,
-    height: 56,
+    minHeight: 56,
+    paddingVertical: 8,
     borderRadius: 18,
     paddingHorizontal: 18,
     justifyContent: 'center',
@@ -417,6 +469,11 @@ const makeStyles = (c: Palette) =>
   },
   iconFill: {
     borderRadius: 16,
+  },
+  iconTick: {
+    position: 'absolute',
+    top: 5,
+    right: 5,
   },
   select: {
     flexDirection: 'row',

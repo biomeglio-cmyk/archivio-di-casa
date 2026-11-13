@@ -2,9 +2,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import { useEffect, useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { Chip, ChipGroup } from '@/components/chip';
 import { Text, TextInput } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
@@ -21,7 +22,7 @@ import { categoryShadowRgb } from '@/utils/colors';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const DEBOUNCE_MS = 150;
-const LENS = '#6D5CE6';
+const LENS = (p: Palette) => (p.isDark ? p.indigo : '#6D5CE6');
 const MARK_BACKGROUND = (p: Palette) => softTint(p, '#E8E5FD', '#262849');
 const MARK_TEXT = (p: Palette) => onSoftTint(p, '#3A2BC8', '#B3A8FF');
 
@@ -49,6 +50,14 @@ export default function SearchScreen() {
   const all = searchEverything(documents ?? [], categories ?? [], searched);
   const results = filter === 'all' ? all : all.filter((r) => r.kind === filter);
   const typed = searched.trim().length > 0;
+  const count = results.length;
+
+  // VoiceOver: the number of results once the search (or the filter) settles
+  useEffect(() => {
+    if (!typed) return;
+    const timer = setTimeout(() => announce(t('search.results', { count })), 600);
+    return () => clearTimeout(timer);
+  }, [typed, count, searched, filter, t]);
 
   return (
     <ScrollView
@@ -58,7 +67,9 @@ export default function SearchScreen() {
       contentContainerStyle={[styles.page, { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 40 }]}>
       <View style={styles.bar}>
         <View style={styles.field}>
-          <SymbolView name="magnifyingglass" tintColor={LENS} size={20} />
+          <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+            <SymbolView name="magnifyingglass" tintColor={LENS(theme)} size={20} />
+          </View>
           <TextInput
             value={query}
             onChangeText={setQuery}
@@ -71,12 +82,12 @@ export default function SearchScreen() {
             style={styles.input}
           />
         </View>
-        <Pressable onPress={() => router.back()} accessibilityRole="button" hitSlop={8}>
+        <Pressable onPress={() => router.back()} accessibilityRole="button" hitSlop={8} style={styles.cancelButton}>
           <Text style={styles.cancel}>{t('common.cancel')}</Text>
         </Pressable>
       </View>
 
-      <View style={styles.filters} accessibilityLabel={t('search.filter')}>
+      <View style={styles.filters}>
         <ChipGroup>
           {SEARCH_FILTERS.map((f) => (
             <Chip key={f.key} label={t(f.labelKey)} selected={filter === f.key} onPress={() => setFilter(f.key)} />
@@ -86,7 +97,7 @@ export default function SearchScreen() {
 
       {typed ? (
         <>
-          <Text style={styles.count} accessibilityLiveRegion="polite">
+          <Text style={styles.count} accessibilityRole="header" accessibilityLiveRegion="polite">
             {t('search.results', { count: results.length })}
           </Text>
           <View style={styles.list}>
@@ -136,8 +147,9 @@ function ResultRow({ result }: { result: SearchResult }) {
 // Text with the found part on a soft lilac mark, bold indigo
 function Marked({ text, match, style }: { text: string; match: MatchRange | null; style: object }) {
   const styles = useThemedStyles(makeStyles);
+  const { fontScale } = useWindowDimensions();
   return (
-    <Text style={style} numberOfLines={2}>
+    <Text style={style} numberOfLines={fontScale > 1.3 ? undefined : 2}>
       {highlight(text, match).map((segment, index) =>
         segment.bold ? (
           <Text key={index} style={styles.mark}>
@@ -167,7 +179,7 @@ const makeStyles = (c: Palette) =>
   },
   field: {
     flex: 1,
-    height: 52,
+    minHeight: 52,
     paddingHorizontal: 16,
     borderRadius: 26,
     backgroundColor: c.lilac,
@@ -181,6 +193,10 @@ const makeStyles = (c: Palette) =>
     fontSize: 16,
     fontFamily: FONTS.medium,
     color: c.text,
+  },
+  cancelButton: {
+    minHeight: 44,
+    justifyContent: 'center',
   },
   cancel: {
     fontSize: 15,

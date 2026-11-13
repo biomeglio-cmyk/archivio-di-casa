@@ -2,9 +2,10 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
 import { Fragment, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { ActionSheet, type SheetAction } from '@/components/action-sheet';
 import { MonthCalendar, WeekCalendar, type DayMarkers } from '@/components/deadline-calendar';
 import { DEADLINE_ROW_INSET, DeadlineListRow } from '@/components/deadline-list-row';
@@ -63,9 +64,22 @@ export default function DeadlinesScreen() {
   }
   const dayItems = dated.filter((d) => d.expiresAt === selected);
 
+  // VoiceOver: the chosen day and how many deadlines it has (the box under the calendar changes)
+  function sayDay(iso: string) {
+    const count = dated.filter((d) => d.expiresAt === iso).length;
+    const date = fmt.dayMonth(parseISODate(iso));
+    announce(count > 0 ? t('a11y.deadlines.dayCount', { date, count }) : `${date}, ${t('deadlines.dayEmpty')}`);
+  }
+
   function pickDay(iso: string) {
     setSelected(iso);
     setWeekStart(mondayOfIso(iso));
+    sayDay(iso);
+  }
+
+  function pickMonthDay(iso: string) {
+    setSelected(iso);
+    sayDay(iso);
   }
 
   function changeView(next: 'week' | 'month') {
@@ -169,7 +183,7 @@ export default function DeadlinesScreen() {
             todayIso={todayIso}
             selectedIso={selected}
             markers={markers}
-            onSelect={setSelected}
+            onSelect={pickMonthDay}
             onPrevious={() => shiftMonth(-1)}
             onNext={() => shiftMonth(1)}>
             <View style={styles.monthDayBox}>{dayBox}</View>
@@ -201,8 +215,12 @@ export default function DeadlinesScreen() {
 
         {documents && sections.length === 0 && (
           <View style={styles.empty}>
-            <SymbolView name="calendar.badge.checkmark" tintColor={theme.textSecondary} size={40} />
-            <Text style={styles.emptyTitle}>{t('deadlines.emptyTitle')}</Text>
+            <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+              <SymbolView name="calendar.badge.checkmark" tintColor={theme.textSecondary} size={40} />
+            </View>
+            <Text style={styles.emptyTitle} accessibilityRole="header">
+              {t('deadlines.emptyTitle')}
+            </Text>
             <Text style={styles.emptyText}>{t('deadlines.emptyText')}</Text>
           </View>
         )}
@@ -225,25 +243,34 @@ function DayDeadlines({ iso, items, onOpen }: { iso: string; items: Dated[]; onO
   const { t } = useI18n();
   const fmt = useFormat();
   const styles = useThemedStyles(makeStyles);
+  const { fontScale } = useWindowDimensions();
+  const large = fontScale > 1.3; // larger text: the name on more lines, the amount under it
   const date = parseISODate(iso);
   return (
     <View style={styles.dayBox}>
-      <Text style={styles.dayTitle}>{fmt.dayMonth(date)}</Text>
-      {items.map((item) => (
-        <Pressable
-          key={item.id}
-          onPress={() => onOpen(item)}
-          accessibilityRole="button"
-          style={({ pressed }) => [styles.dayItem, pressed && styles.pressed]}>
-          <View style={[styles.dayDot, { backgroundColor: item.category.colors.bottom }]} />
-          <Text style={styles.dayItemTitle} numberOfLines={1}>
-            {item.title}
-          </Text>
-          <Text style={styles.dayItemSide} numberOfLines={1}>
-            {item.amountCents !== null ? fmt.euro(item.amountCents) : item.repeat ? t('deadlines.dayRepeats') : t('deadlines.dayReminder')}
-          </Text>
-        </Pressable>
-      ))}
+      <Text style={styles.dayTitle} accessibilityRole="header">
+        {fmt.dayMonth(date)}
+      </Text>
+      {items.map((item) => {
+        const side = item.amountCents !== null ? fmt.euro(item.amountCents) : item.repeat ? t('deadlines.dayRepeats') : t('deadlines.dayReminder');
+        return (
+          <Pressable
+            key={item.id}
+            onPress={() => onOpen(item)}
+            accessibilityRole="button"
+            accessibilityLabel={`${item.title}, ${side}`}
+            hitSlop={{ top: 4, bottom: 4 }}
+            style={({ pressed }) => [styles.dayItem, large && styles.dayItemWrap, pressed && styles.pressed]}>
+            <View style={[styles.dayDot, { backgroundColor: item.category.colors.bottom }]} />
+            <Text style={styles.dayItemTitle} numberOfLines={large ? undefined : 1}>
+              {item.title}
+            </Text>
+            <Text style={[styles.dayItemSide, large && styles.dayItemSideWrap]} numberOfLines={large ? undefined : 1}>
+              {side}
+            </Text>
+          </Pressable>
+        );
+      })}
       {items.length === 0 && <Text style={styles.dayEmpty}>{t('deadlines.dayEmpty')}</Text>}
     </View>
   );
@@ -287,13 +314,21 @@ const makeStyles = (c: Palette) =>
   },
   dayItem: {
     marginTop: 8,
-    minHeight: 30,
+    minHeight: 36,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
   },
   pressed: {
     opacity: 0.6,
+  },
+  dayItemWrap: {
+    flexWrap: 'wrap',
+    paddingVertical: 4,
+  },
+  dayItemSideWrap: {
+    flexBasis: '100%',
+    paddingLeft: 18, // under the name, after the dot
   },
   dayDot: {
     width: 8,

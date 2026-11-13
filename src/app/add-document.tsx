@@ -6,6 +6,7 @@ import { useEffect, useEffectEvent, useRef, useState } from 'react';
 import { Linking, Pressable, StyleSheet, View, type LayoutChangeEvent } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { addFromFiles, addFromPhotos } from '@/capture/add-actions';
 import { cropToGuideFrame } from '@/capture/crop-photo';
 import type { FrameRect } from '@/capture/guide-frame';
@@ -78,6 +79,7 @@ export default function AddDocumentScreen() {
       const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
       const page = await cropToGuideFrame(photo, frame, box);
       setPages((current) => [...current, page]);
+      announce(t('a11y.cameraCapture.pageAdded', { number: pages.length + 1 }));
     } finally {
       setBusy(false);
     }
@@ -102,7 +104,10 @@ export default function AddDocumentScreen() {
       : t('addDocument.hintNext', { number: pages.length });
 
   return (
-    <View style={[styles.screen, { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 16 }]}>
+    <View
+      style={[styles.screen, { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 16 }]}
+      accessibilityViewIsModal
+      onAccessibilityEscape={() => router.back()}>
       {/* Dark screen: light clock and battery in both themes */}
       <StatusBar style="light" />
       <View style={styles.bar}>
@@ -139,7 +144,7 @@ export default function AddDocumentScreen() {
             </View>
             <View style={styles.sheetFrame} pointerEvents="none" />
             <View style={styles.hint} pointerEvents="none">
-              <SymbolView name="doc.viewfinder" tintColor="#FFFFFF" size={16} />
+              <SymbolView name="doc.viewfinder" tintColor="#FFFFFF" size={16} accessibilityElementsHidden />
               <Text style={styles.hintText}>{t('addDocument.tapToScan')}</Text>
             </View>
           </Pressable>
@@ -162,7 +167,7 @@ export default function AddDocumentScreen() {
                 style={[styles.frame, { left: frame.x, top: frame.y, width: frame.width, height: frame.height }]}
               />
             )}
-            <View style={styles.hint} pointerEvents="none">
+            <View style={styles.hint} pointerEvents="none" accessible>
               <SymbolView name={pages.length ? 'checkmark.circle.fill' : 'viewfinder'} tintColor="#FFFFFF" size={16} />
               <Text style={styles.hintText}>{hint}</Text>
             </View>
@@ -170,7 +175,7 @@ export default function AddDocumentScreen() {
         ) : (
           permission && (
             <View style={styles.permission}>
-              <SymbolView name="camera" tintColor="#FFFFFF" size={40} />
+              <SymbolView name="camera" tintColor="#FFFFFF" size={40} accessibilityElementsHidden />
               <Text style={styles.permissionTitle}>{t('addDocument.permissionTitle')}</Text>
               <Text style={styles.permissionText}>{t('addDocument.permissionText')}</Text>
               <Pressable
@@ -193,7 +198,10 @@ export default function AddDocumentScreen() {
               onPress={mode.onPress}
               accessibilityRole="tab"
               accessibilityState={{ selected: active }}
+              hitSlop={4}
               style={[styles.mode, active && styles.modeActive]}>
+              {/* The current mode: a check mark too, not only the white pill */}
+              {active && <SymbolView name="checkmark" tintColor="#1C1E2E" size={12} weight="bold" />}
               <Text style={[styles.modeText, active && styles.modeTextActive]}>{mode.label}</Text>
             </Pressable>
           );
@@ -209,6 +217,7 @@ export default function AddDocumentScreen() {
           disabled={useOwnCamera && (!ready || busy)}
           accessibilityRole="button"
           accessibilityLabel={useOwnCamera ? t('addDocument.shoot') : t('addDocument.modes.scan')}
+          accessibilityState={{ disabled: useOwnCamera && (!ready || busy), busy: useOwnCamera && busy }}
           style={({ pressed }) => [styles.shutter, (pressed || (useOwnCamera && (busy || !ready))) && styles.dimmed]}>
           <View style={styles.shutterInner} />
         </Pressable>
@@ -362,7 +371,8 @@ const makeStyles = (c: Palette) =>
   },
   permissionButton: {
     marginTop: 6,
-    height: 44,
+    minHeight: 44,
+    paddingVertical: 8,
     paddingHorizontal: 22,
     borderRadius: 22,
     backgroundColor: '#FFFFFF',
@@ -380,10 +390,14 @@ const makeStyles = (c: Palette) =>
     gap: 6,
   },
   mode: {
-    height: 36,
+    minHeight: 36,
+    paddingVertical: 6,
     paddingHorizontal: 16,
     borderRadius: 18,
+    flexDirection: 'row',
+    alignItems: 'center',
     justifyContent: 'center',
+    gap: 5,
   },
   modeActive: {
     backgroundColor: '#FFFFFF',
@@ -427,7 +441,9 @@ const makeStyles = (c: Palette) =>
     backgroundColor: '#FFFFFF',
   },
   count: {
-    width: 64,
+    minWidth: 64,
+    minHeight: 44,
+    justifyContent: 'center',
     alignItems: 'center',
     gap: 2,
   },

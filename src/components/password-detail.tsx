@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react';
 import { Alert, AppState, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { ActionSheet } from '@/components/action-sheet';
 import { GeneratedCode } from '@/components/barcode-view';
@@ -75,9 +76,16 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
   async function toggleShow() {
     if (shown !== null) {
       setShown(null);
+      announce(t('passwordDetail.hidden'));
       return;
     }
-    setShown(await unlocked(t(`passwordDetail.showPrompt.${info.type}`)));
+    const value = await unlocked(t(`passwordDetail.showPrompt.${info.type}`));
+    setShown(value);
+    if (value !== null) {
+      // VoiceOver reads the password just shown, and how strong it is
+      const level = passwordStrength(value, info.type, theme);
+      announce(level ? `${value}, ${level.label}` : value);
+    }
   }
 
   async function copy() {
@@ -99,7 +107,9 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
       setQr(null);
       return;
     }
-    setQr(await unlocked(t('passwordDetail.qrPrompt')));
+    const value = await unlocked(t('passwordDetail.qrPrompt'));
+    setQr(value);
+    if (value !== null) announce(t('passwordDetail.wifiQrLabel'));
   }
 
   function openSite() {
@@ -151,7 +161,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
             <>
               <View style={styles.row}>
                 <IconBox symbol={meta.userSymbol} />
-                <View style={styles.flex}>
+                <View style={styles.flex} accessible accessibilityLabel={`${meta.userLabel}, ${document.username ?? t('common.none')}`}>
                   <Text style={styles.label}>{meta.userLabel}</Text>
                   <Text style={styles.value} selectable>
                     {document.username ?? '—'}
@@ -168,12 +178,12 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
           )}
           <View style={[styles.row, styles.passwordRow]}>
             <IconBox symbol={info.type === 'pin' ? 'circle.grid.3x3' : 'key'} />
-            <View style={styles.flex}>
+            <View
+              style={styles.flex}
+              accessible
+              accessibilityLabel={`${meta.passwordLabel}, ${shown === null ? t('passwordDetail.hidden') : shown}`}>
               <Text style={styles.label}>{meta.passwordLabel}</Text>
-              <Text
-                style={[styles.value, styles.password, shown === null && styles.masked]}
-                accessibilityLabel={shown === null ? t('passwordDetail.hidden') : shown}
-                selectable={shown !== null}>
+              <Text style={[styles.value, styles.password, shown === null && styles.masked]} selectable={shown !== null}>
                 {shown ?? '••••••••'}
               </Text>
             </View>
@@ -206,10 +216,10 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
             <WhiteCard style={styles.card}>
               <Pressable onPress={openSite} accessibilityRole="link" style={styles.row}>
                 <IconBox symbol="link" />
-                <Text style={[styles.flex, styles.link]} numberOfLines={2}>
+                <Text style={[styles.flex, styles.link]} numberOfLines={4}>
                   {info.url}
                 </Text>
-                <SymbolView name="arrow.up.right.square" tintColor={theme.textSecondary} size={18} />
+                <SymbolView name="arrow.up.right.square" tintColor={theme.textSecondary} size={18} accessibilityElementsHidden />
               </Pressable>
             </WhiteCard>
           </>
@@ -235,7 +245,11 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
                 </Text>
               )}
               {document.username ? (
-                <Pressable onPress={toggleQr} accessibilityRole="button" style={({ pressed }) => [styles.qrButton, pressed && styles.pressed]}>
+                <Pressable
+                  onPress={toggleQr}
+                  accessibilityRole="button"
+                  hitSlop={4}
+                  style={({ pressed }) => [styles.qrButton, pressed && styles.pressed]}>
                   <SymbolView name={qr ? 'eye.slash' : 'qrcode'} tintColor={PASSWORD_INK(theme)} size={17} />
                   <Text style={styles.qrButtonText}>{qr ? t('passwordDetail.hideQr') : t('passwordDetail.showQr')}</Text>
                 </Pressable>
@@ -246,7 +260,10 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
 
         <Section>{t('passwordDetail.sections.whose')}</Section>
         <WhiteCard style={styles.card}>
-          <View style={styles.row}>
+          <View
+            style={styles.row}
+            accessible
+            accessibilityLabel={`${t('passwordDetail.person')}, ${document.person?.name ?? t('common.wholeFamily')}`}>
             <View style={[styles.iconBox, { backgroundColor: theme.lilac }]}>
               <SymbolView name="person" tintColor={theme.indigo} size={19} />
             </View>
@@ -267,7 +284,14 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
         ) : null}
 
         <WhiteCard style={[styles.card, styles.favCard]}>
-          <Pressable onPress={() => setPinned(db, document.id, !document.isPinned)} accessible={false} style={styles.row}>
+          {/* One element for VoiceOver: "Aggiungi ai preferiti, interruttore, attivo" */}
+          <Pressable
+            onPress={() => setPinned(db, document.id, !document.isPinned)}
+            accessibilityRole="switch"
+            accessibilityLabel={t('passwordDetail.favoriteTitle')}
+            accessibilityHint={t('passwordDetail.favoriteSubtitle')}
+            accessibilityState={{ checked: document.isPinned }}
+            style={styles.row}>
             <View style={[styles.iconBox, { backgroundColor: PIN_TINT(theme) }]}>
               <SymbolView name={document.isPinned ? 'heart.fill' : 'heart'} tintColor={theme.heart} size={19} />
             </View>
@@ -324,7 +348,7 @@ function IconBox({ symbol }: { symbol: SFSymbol }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   return (
-    <View style={styles.iconBox}>
+    <View style={styles.iconBox} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <SymbolView name={symbol} tintColor={PASSWORD_INK(theme)} size={19} />
     </View>
   );
@@ -483,7 +507,8 @@ const makeStyles = (c: Palette) =>
     textAlign: 'center',
   },
   qrButton: {
-    height: 40,
+    minHeight: 40,
+    paddingVertical: 8,
     paddingHorizontal: 16,
     borderRadius: 20,
     backgroundColor: PASSWORD_TINT(c),
@@ -500,7 +525,7 @@ const makeStyles = (c: Palette) =>
     opacity: 0.7,
   },
   personLabel: {
-    width: 72,
+    minWidth: 72,
     fontSize: 15,
     fontFamily: FONTS.regular,
     color: c.textSecondary,
@@ -526,7 +551,8 @@ const makeStyles = (c: Palette) =>
   },
   edit: {
     marginTop: 24,
-    height: 52,
+    minHeight: 52,
+    paddingVertical: 12,
     borderRadius: 26,
     backgroundColor: PASSWORD_TINT(c),
     flexDirection: 'row',

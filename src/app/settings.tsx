@@ -185,7 +185,8 @@ export default function SettingsScreen() {
           label={t('settings.faceId')}
           subtitle={t('settings.faceIdSubtitle')}
           onPress={() => toggleLock(!lockEnabled)}
-          trailing={<Switch value={lockEnabled} onValueChange={toggleLock} accessibilityLabel={t('settings.faceId')} />}
+          checked={lockEnabled}
+          trailing={<Switch value={lockEnabled} onValueChange={toggleLock} />}
         />
         <SettingsRow
           symbol="eye.slash"
@@ -193,13 +194,8 @@ export default function SettingsScreen() {
           label={t('settings.hidePreviews')}
           subtitle={t('settings.hidePreviewsSubtitle')}
           onPress={() => update({ hidePreviews: !preferences.hidePreviews })}
-          trailing={
-            <Switch
-              value={preferences.hidePreviews}
-              onValueChange={(value) => update({ hidePreviews: value })}
-              accessibilityLabel={t('settings.hidePreviews')}
-            />
-          }
+          checked={preferences.hidePreviews}
+          trailing={<Switch value={preferences.hidePreviews} onValueChange={(value) => update({ hidePreviews: value })} />}
         />
       </Section>
 
@@ -209,9 +205,8 @@ export default function SettingsScreen() {
           tint={TINTS(theme).reminders}
           label={t('settings.notifications')}
           onPress={() => toggleReminders(!preferences.remindersEnabled)}
-          trailing={
-            <Switch value={preferences.remindersEnabled} onValueChange={toggleReminders} accessibilityLabel={t('settings.notifications')} />
-          }
+          checked={preferences.remindersEnabled}
+          trailing={<Switch value={preferences.remindersEnabled} onValueChange={toggleReminders} />}
         />
         <SettingsRow
           symbol="clock"
@@ -247,12 +242,9 @@ export default function SettingsScreen() {
           label={t('settings.iconBadge')}
           subtitle={t('settings.iconBadgeSubtitle')}
           onPress={() => update({ iconBadgeEnabled: !preferences.iconBadgeEnabled })}
+          checked={preferences.iconBadgeEnabled}
           trailing={
-            <Switch
-              value={preferences.iconBadgeEnabled}
-              onValueChange={(value) => update({ iconBadgeEnabled: value })}
-              accessibilityLabel={t('settings.iconBadge')}
-            />
+            <Switch value={preferences.iconBadgeEnabled} onValueChange={(value) => update({ iconBadgeEnabled: value })} />
           }
         />
         <SettingsRow
@@ -302,9 +294,9 @@ export default function SettingsScreen() {
             tint={TINTS(theme).info}
             label={t('settings.debug.limitPreview')}
             subtitle={t('settings.debug.limitPreviewSubtitle')}
-            trailing={
-              <Switch value={limitPreview} onValueChange={setLimitPreview} accessibilityLabel={t('settings.debug.limitPreview')} />
-            }
+            onPress={() => setLimitPreview(!limitPreview)}
+            checked={limitPreview}
+            trailing={<Switch value={limitPreview} onValueChange={setLimitPreview} />}
           />
         )}
         {showDebug && (
@@ -313,9 +305,9 @@ export default function SettingsScreen() {
             tint={TINTS(theme).info}
             label={t('settings.debug.emptyHome')}
             subtitle={t('settings.debug.emptyHomeSubtitle')}
-            trailing={
-              <Switch value={emptyHomePreview} onValueChange={setEmptyHomePreview} accessibilityLabel={t('settings.debug.emptyHome')} />
-            }
+            onPress={() => setEmptyHomePreview(!emptyHomePreview)}
+            checked={emptyHomePreview}
+            trailing={<Switch value={emptyHomePreview} onValueChange={setEmptyHomePreview} />}
           />
         )}
         {showDebug && (
@@ -413,23 +405,25 @@ type RowProps = {
   subtitle?: string;
   value?: string; // grey value on the right, before the chevron
   trailing?: ReactNode; // a switch instead of the chevron
+  checked?: boolean; // with a switch: its value (VoiceOver reads the row as one switch)
   expanded?: boolean; // a row that opens something below it
   onPress?: () => void;
 };
 
 // One row: 36pt icon square in the section color, label 16/500 (and 12 subtitle), then a value
-// with a chevron, or a switch (the whole row toggles it)
-function SettingsRow({ symbol, tint, label, subtitle, value, trailing, expanded, onPress }: RowProps) {
+// with a chevron, or a switch (the whole row toggles it). For VoiceOver the row is one element: a
+// button ("Lingua, Italiano") or, with a switch, one switch with its state (the drawn one is hidden).
+function SettingsRow({ symbol, tint, label, subtitle, value, trailing, checked, expanded, onPress }: RowProps) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const isSwitch = checked !== undefined;
   return (
     <Pressable
       onPress={onPress}
-      accessibilityRole="button"
+      accessibilityRole={isSwitch ? 'switch' : 'button'}
       accessibilityLabel={value ? `${label}, ${value}` : label}
       accessibilityHint={subtitle}
-      accessibilityState={expanded === undefined ? undefined : { expanded }}
-      accessible={trailing === undefined}
+      accessibilityState={isSwitch ? { checked } : expanded === undefined ? undefined : { expanded }}
       style={({ pressed }) => [styles.row, pressed && onPress && styles.rowPressed]}>
       <View style={[styles.icon, { backgroundColor: tint.background }]}>
         <SymbolView name={symbol} tintColor={tint.icon} size={19} />
@@ -461,7 +455,11 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, expanded,
             <Text style={styles.rowLabel}>{label}</Text>
             {subtitle && <Text style={styles.rowSubtitle}>{subtitle}</Text>}
           </View>
-          {trailing ?? (
+          {trailing !== undefined ? (
+            <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+              {trailing}
+            </View>
+          ) : (
             <SymbolView
               name={expanded ? 'chevron.down' : 'chevron.right'}
               tintColor={theme.textSecondary}

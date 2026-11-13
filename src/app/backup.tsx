@@ -7,9 +7,10 @@ import * as Sharing from 'expo-sharing';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useEffect, useEffectEvent, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { reloadApp } from '@/backup/app-reload';
 import { BackupError } from '@/backup/backup-crypto';
 import {
@@ -98,6 +99,7 @@ export default function BackupScreen() {
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
+  const large = useWindowDimensions().fontScale > 1.3; // larger text: rows stack, names wrap
   const { t } = useI18n();
   const [step, setStep] = useState<Step>({ kind: 'idle' });
   const [password, setPassword] = useState('');
@@ -120,6 +122,12 @@ export default function BackupScreen() {
   }, [action]);
 
   const working = step.kind === 'working';
+
+  // VoiceOver: each phase of the work ("Protezione con la password…", "Creazione…", "Ripristino…")
+  const workingLabel = step.kind === 'working' ? step.label : null;
+  useEffect(() => {
+    announce(workingLabel);
+  }, [workingLabel]);
 
   function reset() {
     if (step.kind === 'restore') discardPickedFile(step.uri);
@@ -171,6 +179,7 @@ export default function BackupScreen() {
       setSaved(kept);
       setJustCreated(true);
       reset();
+      announce(t('backup.completed'));
     } catch (e) {
       reset();
       Alert.alert(t('backup.alerts.createFailed'), e instanceof Error ? e.message : String(e));
@@ -219,8 +228,10 @@ export default function BackupScreen() {
       });
     } catch (e) {
       // Nothing of the current data was touched: back to the password, with the reason
+      const reason = e instanceof Error ? e.message : String(e);
       setStep({ kind: 'restore', uri, name });
-      setError(e instanceof Error ? e.message : String(e));
+      setError(reason);
+      announce(reason);
       if (e instanceof BackupError && e.kind !== 'wrong-password') setPassword('');
       return;
     }
@@ -283,6 +294,8 @@ export default function BackupScreen() {
         {step.fraction !== null && (
           <View
             style={[styles.track, { backgroundColor: theme.backgroundSelected }]}
+            accessible
+            accessibilityLabel={step.label}
             accessibilityRole="progressbar"
             accessibilityValue={{ min: 0, max: 100, now: Math.round(step.fraction * 100) }}>
             <View style={[styles.fill, { width: `${Math.min(100, Math.round(step.fraction * 100))}%` }]} />
@@ -301,6 +314,7 @@ export default function BackupScreen() {
           value={password}
           onChangeText={setPassword}
           placeholder={t('backup.passwordPlaceholder', { min: MIN_PASSWORD })}
+          accessibilityLabel={t('backup.passwordPlaceholder', { min: MIN_PASSWORD })}
           secureTextEntry
           textContentType="newPassword"
           autoCapitalize="none"
@@ -311,6 +325,7 @@ export default function BackupScreen() {
           value={repeat}
           onChangeText={setRepeat}
           placeholder={t('backup.repeatPlaceholder')}
+          accessibilityLabel={t('backup.repeatPlaceholder')}
           secureTextEntry
           textContentType="newPassword"
           autoCapitalize="none"
@@ -333,7 +348,7 @@ export default function BackupScreen() {
   } else if (step.kind === 'restore') {
     body = (
       <View style={styles.form}>
-        <ThemedText type="small" themeColor="textSecondary" numberOfLines={2}>
+        <ThemedText type="small" themeColor="textSecondary" numberOfLines={large ? undefined : 2}>
           {step.name}
         </ThemedText>
         <TextField
@@ -343,6 +358,7 @@ export default function BackupScreen() {
             setError(null);
           }}
           placeholder={t('backup.backupPassword')}
+          accessibilityLabel={t('backup.backupPassword')}
           secureTextEntry
           textContentType="password"
           autoCapitalize="none"
@@ -350,7 +366,13 @@ export default function BackupScreen() {
           autoFocus
           onSubmitEditing={() => password.length > 0 && openBackup(step.uri, step.name)}
         />
-        {error && <ThemedText style={{ color: DANGER_COLOR(theme) }}>{error}</ThemedText>}
+        {/* The reason in red with a warning sign (not only the color) */}
+        {error && (
+          <View style={styles.error} accessible accessibilityLabel={error}>
+            <SymbolView name="exclamationmark.triangle.fill" tintColor={DANGER_COLOR(theme)} size={16} />
+            <ThemedText style={[styles.errorText, { color: DANGER_COLOR(theme) }]}>{error}</ThemedText>
+          </View>
+        )}
         <PrimaryButton
           label={t('backup.openBackup')}
           symbol="lock.open"
@@ -366,26 +388,36 @@ export default function BackupScreen() {
       <>
         {saved ? (
           <WhiteCard style={styles.statusCard}>
-            <LinearGradient colors={['#6FD3AE', '#45B68E']} start={GRADIENT_START} end={GRADIENT_END} style={styles.doneCircle}>
+            <LinearGradient
+              colors={['#6FD3AE', '#45B68E']}
+              start={GRADIENT_START}
+              end={GRADIENT_END}
+              style={styles.doneCircle}
+              accessibilityElementsHidden
+              importantForAccessibility="no-hide-descendants">
               <SymbolView name="checkmark" tintColor="#FFFFFF" size={30} weight="bold" />
             </LinearGradient>
-            <Text style={styles.statusTitle}>{justCreated ? t('backup.completed') : t('backup.lastBackup')}</Text>
+            <Text style={styles.statusTitle} accessibilityRole="header">
+              {justCreated ? t('backup.completed') : t('backup.lastBackup')}
+            </Text>
             <Text style={styles.statusText}>{`${documents} · ${formatBytes(saved.bytes)} · ${whenText(saved.createdAt)}`}</Text>
             <View style={styles.path}>
-              <SymbolView name="folder" tintColor={theme.indigo} size={18} />
+              <SymbolView name="folder" tintColor={theme.indigo} size={18} accessibilityElementsHidden />
               <Text style={styles.pathText}>{t('backup.path', { name: saved.name })}</Text>
             </View>
             <SoftButton symbol="square.and.arrow.up" label={t('backup.copyElsewhere')} onPress={copyElsewhere} />
-            <Pressable onPress={() => setStep({ kind: 'create' })} accessibilityRole="button" hitSlop={8} style={styles.again}>
+            <Pressable onPress={() => setStep({ kind: 'create' })} accessibilityRole="button" style={styles.again}>
               <Text style={styles.againText}>{t('backup.createNew')}</Text>
             </Pressable>
           </WhiteCard>
         ) : (
           <WhiteCard style={styles.statusCard}>
-            <View style={styles.idleCircle}>
+            <View style={styles.idleCircle} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
               <SymbolView name="externaldrive.badge.icloud" tintColor={APRICOT} size={30} />
             </View>
-            <Text style={styles.statusTitle}>{t('backup.noneTitle')}</Text>
+            <Text style={styles.statusTitle} accessibilityRole="header">
+              {t('backup.noneTitle')}
+            </Text>
             <Text style={styles.statusText}>{t('backup.noneText')}</Text>
             <PrimaryButton
               label={t('backup.createNow')}
@@ -396,23 +428,34 @@ export default function BackupScreen() {
           </WhiteCard>
         )}
 
-        <Text style={styles.section}>{t('backup.restoreSection')}</Text>
+        <Text style={styles.section} accessibilityRole="header">
+          {t('backup.restoreSection')}
+        </Text>
         <WhiteCard style={styles.restoreCard}>
           <Text style={styles.restoreTitle}>{t('backup.restoreTitle')}</Text>
           <Text style={styles.restoreText}>{t('backup.restoreText')}</Text>
           <SoftButton symbol="arrow.counterclockwise" label={t('backup.chooseFile')} onPress={pickBackup} plain />
         </WhiteCard>
 
-        <Text style={styles.section}>{t('backup.remindersSection')}</Text>
-        <WhiteCard style={styles.reminder}>
-          <View style={styles.reminderIcon}>
+        <Text style={styles.section} accessibilityRole="header">
+          {t('backup.remindersSection')}
+        </Text>
+        <WhiteCard style={[styles.reminder, large && styles.reminderLarge]}>
+          <View style={styles.reminderIcon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
             <SymbolView name="bell" tintColor={APRICOT} size={18} />
           </View>
-          <Text style={styles.reminderLabel}>{t('backup.remindMe')}</Text>
+          {/* Read by VoiceOver with the value, on the button */}
+          <Text
+            style={[styles.reminderLabel, large && styles.reminderLabelLarge]}
+            accessibilityElementsHidden
+            importantForAccessibility="no">
+            {t('backup.remindMe')}
+          </Text>
           <Pressable
             onPress={() => setFrequencyOpen(true)}
             accessibilityRole="button"
             accessibilityLabel={t('backup.remindMeValue', { value: backupFrequencyLabel(frequency) })}
+            hitSlop={4}
             style={styles.select}>
             <Text style={styles.selectText}>{backupFrequencyLabel(frequency)}</Text>
             <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={12} weight="semibold" />
@@ -564,7 +607,9 @@ const makeStyles = (c: Palette) =>
   soft: {
     marginTop: 14,
     alignSelf: 'stretch',
-    height: 52,
+    minHeight: 52,
+    paddingVertical: 12,
+    paddingHorizontal: 16,
     borderRadius: 26,
     backgroundColor: c.lilac,
     flexDirection: 'row',
@@ -573,6 +618,8 @@ const makeStyles = (c: Palette) =>
     gap: 8,
   },
   softText: {
+    flexShrink: 1,
+    textAlign: 'center',
     fontSize: 15,
     fontFamily: FONTS.semiBold,
   },
@@ -580,7 +627,9 @@ const makeStyles = (c: Palette) =>
     opacity: 0.7,
   },
   again: {
-    marginTop: 12,
+    marginTop: 0,
+    minHeight: 44, // touch target (the design's 12pt gap is inside it)
+    justifyContent: 'center',
   },
   againText: {
     fontSize: 14,
@@ -618,6 +667,9 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     gap: 14,
   },
+  reminderLarge: {
+    flexWrap: 'wrap', // larger text: the choice goes under the label
+  },
   reminderIcon: {
     width: 36,
     height: 36,
@@ -632,8 +684,11 @@ const makeStyles = (c: Palette) =>
     fontFamily: FONTS.medium,
     color: c.text,
   },
+  reminderLabelLarge: {
+    flexBasis: '70%',
+  },
   select: {
-    height: 38,
+    minHeight: 38,
     paddingHorizontal: 12,
     borderRadius: 12,
     backgroundColor: c.paleLilac,
@@ -659,6 +714,14 @@ const makeStyles = (c: Palette) =>
   warning: {
     color: DANGER_COLOR(c),
     fontWeight: 600,
+  },
+  error: {
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  errorText: {
+    flex: 1,
   },
   working: {
     alignItems: 'center',

@@ -18,13 +18,15 @@ type Props = {
 export function ProgressBar({ share, height = 6, onGradient = false, accessibilityLabel, max, now }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
-  const width = `${Math.round(Math.min(1, Math.max(0, share)) * 100)}%` as const;
+  const percent = Math.round(Math.min(1, Math.max(0, share)) * 100);
+  const width = `${percent}%` as const;
   return (
     <View
       accessible={accessibilityLabel !== undefined}
       accessibilityRole="progressbar"
       accessibilityLabel={accessibilityLabel}
-      accessibilityValue={max !== undefined ? { min: 0, max, now } : undefined}
+      // "5 di 7" when given; otherwise the share in percent
+      accessibilityValue={max !== undefined ? { min: 0, max, now } : { min: 0, max: 100, now: percent }}
       style={[
         styles.track,
         { height, borderRadius: height / 2 },

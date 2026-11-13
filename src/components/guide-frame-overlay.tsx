@@ -15,7 +15,11 @@ type Props = {
 export function GuideFrameOverlay({ frame }: Props) {
   const styles = useThemedStyles(makeStyles);
   return (
-    <View style={StyleSheet.absoluteFill} pointerEvents="none">
+    <View
+      style={StyleSheet.absoluteFill}
+      pointerEvents="none"
+      accessibilityElementsHidden // decoration over the camera
+      importantForAccessibility="no-hide-descendants">
       <View style={[styles.mask, { top: 0, left: 0, right: 0, height: frame.y }]} />
       <View style={[styles.mask, { top: frame.y + frame.height, left: 0, right: 0, bottom: 0 }]} />
       <View style={[styles.mask, { top: frame.y, left: 0, width: frame.x, height: frame.height }]} />

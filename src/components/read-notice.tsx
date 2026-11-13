@@ -18,7 +18,8 @@ type Props = {
 export function ReadNotice({ title, text }: Props) {
   const styles = useThemedStyles(makeStyles);
   return (
-    <View style={styles.box}>
+    // One element for VoiceOver: title and text; the sparkles are decoration
+    <View style={styles.box} accessible accessibilityLabel={`${title}, ${text}`}>
       <LinearGradient colors={BRAND_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={styles.icon}>
         <SymbolView name="sparkles" tintColor="#FFFFFF" size={17} />
       </LinearGradient>

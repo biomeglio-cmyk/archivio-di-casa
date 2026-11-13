@@ -1,20 +1,20 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Alert, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, View } from 'react-native';
 
 import { pickPdf } from '@/capture/pick-files';
 import { useIconRow } from '@/components/icon-row';
+import { CATEGORY_TILE_HEIGHT, CategoryTile } from '@/components/category-tile';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
+import { TileGrid } from '@/components/tile-grid';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { type Palette, Spacing } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { CategoryWithCount } from '@/db/types';
 import { encodePendingFiles } from '@/storage/pending-files';
-import { categoryTint } from '@/utils/colors';
 import { whenBelowLimit } from '@/settings/free-limit';
-import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { t, useI18n } from '@/i18n';
 
@@ -35,13 +35,9 @@ async function loadPdf() {
 export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
-  const { width } = useWindowDimensions();
   const { t } = useI18n();
-  const large = useLargeText(); // one folder per row (the shared column rule)
   // Large text: "Carica un PDF" with its icon above, centered like the empty state and its button
   const iconRow = useIconRow();
-  // Larger text: one folder per row, names in full
-  const tileWidth = large ? width - Spacing.side * 2 : (width - Spacing.side * 2 - 12) / 2;
   return (
     <>
       <View style={styles.card}>
@@ -70,34 +66,22 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
       <Text style={styles.section} accessibilityRole="header">
         {t('homeEmpty.folders')}
       </Text>
-      <View style={styles.grid}>
-        {categories.map((category) => {
-          const { tint, onTint } = categoryTint(category.colors, theme);
-          return (
-            <Pressable
-              key={category.id}
-              onPress={() => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
-              accessibilityRole="button"
-              accessibilityLabel={t('homeEmpty.emptyAccessibility', { name: category.name })}
-              style={({ pressed }) => [styles.folder, { width: tileWidth, backgroundColor: tint }, pressed && styles.pressed]}>
-              <SymbolView name={category.symbol} tintColor={onTint} size={22} />
-              <View>
-                <Text style={[styles.folderName, { color: onTint }]} numberOfLines={large ? undefined : 1}>
-                  {category.name}
-                </Text>
-                <Text style={[styles.folderCount, { color: onTint }]}>{t('homeEmpty.empty')}</Text>
-              </View>
-            </Pressable>
-          );
-        })}
-        <Pressable
-          onPress={() => router.push('/category-form')}
-          accessibilityRole="button"
-          style={({ pressed }) => [styles.folder, styles.add, { width: tileWidth }, iconRow.addRow, pressed && { backgroundColor: theme.paleLilac }]}>
-          <SymbolView name="plus" tintColor={theme.textSecondary} size={22} />
-          <Text style={styles.addText}>{t('homeEmpty.newCategory')}</Text>
-        </Pressable>
-      </View>
+      {/* The tiles of Home (same component, size and colors), so nothing moves when the first
+          document arrives; "Vuota" in place of the count */}
+      <TileGrid
+        items={categories}
+        keyFor={(category) => category.id}
+        renderTile={(category, size) => (
+          <Pressable
+            onPress={() => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
+            accessibilityRole="button"
+            accessibilityLabel={t('homeEmpty.emptyAccessibility', { name: category.name })}
+            style={({ pressed }) => [{ ...size, minHeight: CATEGORY_TILE_HEIGHT }, pressed && styles.pressed]}>
+            <CategoryTile category={category} documentCount={0} emptyLabel={t('homeEmpty.empty')} />
+          </Pressable>
+        )}
+        add={{ label: t('homeEmpty.newCategory'), onPress: () => router.push('/category-form') }}
+      />
     </>
   );
 }
@@ -201,41 +185,6 @@ const makeStyles = (c: Palette) =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: c.textSecondary,
-  },
-  grid: {
-    marginTop: 12,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    gap: 12,
-  },
-  folder: {
-    minHeight: 96,
-    gap: 8,
-    padding: 14,
-    borderRadius: 20,
-    borderCurve: 'continuous',
-    justifyContent: 'space-between',
-  },
-  folderName: {
-    fontSize: 15,
-    fontFamily: FONTS.semiBold,
-  },
-  folderCount: {
-    fontSize: 12,
-    fontFamily: FONTS.medium,
-  },
-  add: {
-    borderWidth: 2,
-    borderStyle: 'dashed',
-    borderColor: c.dashed,
-    alignItems: 'center',
-    justifyContent: 'center',
-    gap: 6,
-  },
-  addText: {
-    fontSize: 15,
-    fontFamily: FONTS.medium,
     color: c.textSecondary,
   },
 });

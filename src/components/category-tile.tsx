@@ -14,6 +14,7 @@ import { useThemedStyles } from '@/hooks/use-theme';
 type Props = {
   category: Category;
   documentCount: number;
+  emptyLabel?: string; // Home vuota: "Vuota" in place of the count
 };
 
 export const CATEGORY_TILE_HEIGHT = 132; // Home squares of the guide
@@ -29,7 +30,7 @@ export function describeCategoryCount(category: Pick<Category, 'isCards'>, count
 // with a shadow of its own color; icon 28 at the top-left with the number of documents next to
 // it (17/600, nothing when empty), name 17/600 at the bottom (never broken inside a word).
 // The look only: the sortable grid around it handles tap (open) and drag (reorder).
-export function CategoryTile({ category, documentCount }: Props) {
+export function CategoryTile({ category, documentCount, emptyLabel }: Props) {
   const styles = useThemedStyles(makeStyles);
   const { colors } = category;
 
@@ -41,14 +42,14 @@ export function CategoryTile({ category, documentCount }: Props) {
       <View style={styles.top}>
         <SymbolView name={category.symbol} tintColor={colors.text} size={28} />
         {/* The number only when there is something; VoiceOver reads "N documenti" from the grid label */}
-        {documentCount > 0 && (
+        {(documentCount > 0 || emptyLabel) && (
           <Text
-            style={[styles.count, { color: colors.text }]}
+            style={[styles.count, { color: colors.text }, documentCount === 0 && styles.emptyLabel]}
             numberOfLines={1}
             maxFontSizeMultiplier={2}
             accessibilityElementsHidden
             importantForAccessibility="no-hide-descendants">
-            {documentCount}
+            {documentCount > 0 ? documentCount : emptyLabel}
           </Text>
         )}
       </View>
@@ -81,5 +82,9 @@ const makeStyles = (c: Palette) =>
     lineHeight: 28, // the height of the icon, so the number sits centered on its line
     fontFamily: FONTS.semiBold,
     fontVariant: ['tabular-nums'],
+  },
+  emptyLabel: {
+    flexShrink: 1,
+    fontFamily: FONTS.medium,
   },
 });

@@ -9,7 +9,7 @@ import { daysUntil } from '@/utils/deadlines';
 const RED = Colors.current.error;
 const RED_SOFT = Colors.current.errorBackground;
 const AMBER = onSoftTint('#8A5A00', '#F5CB6B');
-const AMBER_SOFT = softTint('#FFF1D6', '235, 170, 69');
+const AMBER_SOFT = softTint('#FFF1D6', '#352A12');
 // Behind the tile's own text color: translucent white under dark text (pastel tiles),
 // translucent black under light text (palette "Notte", dark cover colors)
 const NEUTRAL_ON_LIGHT = 'rgba(255, 255, 255, 0.55)';

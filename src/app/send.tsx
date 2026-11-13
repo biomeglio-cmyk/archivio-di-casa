@@ -31,7 +31,7 @@ import {
 } from '@/send/send-preferences';
 
 // Warnings: soft orange box, dark orange text
-const WARNING_COLORS = { text: onSoftTint('#B35400', '#FFA36E'), background: softTint('#FFF1E0', '245, 130, 74') };
+const WARNING_COLORS = { text: onSoftTint('#B35400', '#FFB48A'), background: softTint('#FFF1E0', '#3A2418') };
 
 // Sheet "Invia" (docs/design/Invia.dc.html): /send?ids=12 for one document, /send?ids=3,7,9&label=…
 // for several. The document with "PDF unico · 2 pagine · 1,2 MB", PDF / Foto, then Email, WhatsApp,

@@ -31,21 +31,20 @@ import { chooseAction } from '@/utils/action-sheet';
 import { daysBefore } from '@/constants/deadline-options';
 import { readThemeMode, saveThemeMode, type ThemeMode } from '@/settings/theme-mode';
 import { Segmented } from '@/components/segmented';
-import { hexToRgb } from '@/utils/colors';
 
 // "Avviso predefinito": how many days before a deadline, for documents without their own value
 const DAYS_OPTIONS = [1, 2, 3, 7, 15, 30, 60];
 
 // Icon square colors of each section, from docs/design/Impostazioni.dc.html
-// The icon squares of the sections; in the dark theme the icon color at 18% and a lighter icon
-const tint = (background: string, icon: string, darkIcon: string) =>
-  Colors.current.isDark ? { background: `rgba(${hexToRgb(darkIcon)}, 0.18)`, icon: darkIcon } : { background, icon };
+// The icon squares of the sections: light and "Tema notte" values of the design guide
+const tint = (background: string, icon: string, darkBackground: string, darkIcon: string) =>
+  Colors.current.isDark ? { background: darkBackground, icon: darkIcon } : { background, icon };
 const TINTS = {
   security: { background: Colors.current.lilac, icon: Colors.current.indigo },
-  grey: tint('#F0F1F5', '#4B5068', '#A9AFC4'),
-  reminders: tint('#FFF0E7', '#C2530F', '#FFA36E'),
-  backup: tint('#EAF2FE', '#2F62C8', '#86B4F7'),
-  info: tint('#E6F7F0', '#1F7A5A', '#6FD3AE'),
+  grey: tint('#F0F1F5', '#4B5068', '#24263F', '#B4B7CC'),
+  reminders: tint('#FFF0E7', '#C2530F', '#3A2418', '#FFB48A'),
+  backup: tint('#EAF2FE', '#2F62C8', '#16263F', '#8DB6FF'),
+  info: tint('#E6F7F0', '#1F7A5A', '#15332A', '#7FE0BC'),
 } as const;
 type Tint = (typeof TINTS)[keyof typeof TINTS];
 

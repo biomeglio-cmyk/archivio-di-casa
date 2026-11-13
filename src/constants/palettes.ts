@@ -18,30 +18,33 @@ type Triple = [top: string, bottom: string, text: string];
 const toColors = ([top, bottom, text]: Triple): CategoryColors => ({ top, bottom, text });
 
 // "Sottomano": 135° gradient from → to, white text and icons, colored shadow, light tint and
-// the text on it (table "Adattamento per Sottomano" of the design guide)
-type GuideRow = [from: string, to: string, shadow: string, tint: string, onTint: string];
+// the text on it (table "Adattamento per Sottomano" of the design guide), and the same two in the
+// "Tema notte" (its table; the categories it doesn't list follow its rule)
+type GuideRow = [from: string, to: string, shadow: string, tint: string, onTint: string, darkTint: string, darkOnTint: string];
 const SOTTOMANO: GuideRow[] = [
-  ['#8F9BF8', '#6C7BEF', '108, 123, 239', '#EEF0FE', '#3A47C2'], // Documenti
-  ['#6FD3AE', '#45B68E', '69, 182, 142', '#E6F7F0', '#1F7A5A'], // Tessere e card
-  ['#FFA36E', '#F5824A', '245, 130, 74', '#FFF0E7', '#B5541C'], // Utenze
-  ['#A59AF7', '#8778EE', '135, 120, 238', '#F1EFFD', '#5B4BD6'], // Casa
-  ['#6CCAD6', '#3FAFBF', '63, 175, 191', '#E4F6F8', '#17707C'], // Assicurazioni
-  ['#F5CB6B', '#EBAA45', '235, 170, 69', '#FDF5E2', '#8A5A0B'], // Garanzie e scontrini
-  ['#86B4F7', '#6494EE', '100, 148, 238', '#EAF2FE', '#2F62C8'], // Auto
-  ['#F79BBA', '#EE7499', '238, 116, 153', '#FDEBF1', '#B42A5A'], // Spese 730
-  ['#F2A08A', '#E07A5F', '224, 122, 95', '#FCEEE9', '#A9472C'], // Colf
-  ['#E79BD9', '#D274C2', '210, 116, 194', '#FCEDF9', '#9A2F88'], // Scuola
-  ['#A8CF6E', '#86B347', '134, 179, 71', '#F0F7E5', '#4F7420'], // Pet
-  ['#5CC8D8', '#2FA3B8', '47, 163, 184', '#E3F6F9', '#1A6F7E'], // Password (aqua of NuovaPassword.dc.html)
-  ['#A9AFC4', '#858CA6', '110, 118, 145', '#F0F1F5', '#4B5068'], // Altro
+  ['#8F9BF8', '#6C7BEF', '108, 123, 239', '#EEF0FE', '#3A47C2', '#1E2346', '#A9B3FF'], // Documenti
+  ['#6FD3AE', '#45B68E', '69, 182, 142', '#E6F7F0', '#1F7A5A', '#15332A', '#7FE0BC'], // Tessere e card
+  ['#FFA36E', '#F5824A', '245, 130, 74', '#FFF0E7', '#B5541C', '#3A2418', '#FFB48A'], // Utenze
+  ['#A59AF7', '#8778EE', '135, 120, 238', '#F1EFFD', '#5B4BD6', '#262849', '#B3A8FF'], // Casa
+  ['#6CCAD6', '#3FAFBF', '63, 175, 191', '#E4F6F8', '#17707C', '#123038', '#8ADCE8'], // Assicurazioni
+  ['#F5CB6B', '#EBAA45', '235, 170, 69', '#FDF5E2', '#8A5A0B', '#352A12', '#F5CB6B'], // Garanzie e scontrini
+  ['#86B4F7', '#6494EE', '100, 148, 238', '#EAF2FE', '#2F62C8', '#16263F', '#8DB6FF'], // Auto
+  ['#F79BBA', '#EE7499', '238, 116, 153', '#FDEBF1', '#B42A5A', '#3A1A28', '#FF9CC0'], // Spese 730
+  ['#F2A08A', '#E07A5F', '224, 122, 95', '#FCEEE9', '#A9472C', '#3A201B', '#FFB09B'], // Colf
+  ['#E79BD9', '#D274C2', '210, 116, 194', '#FCEDF9', '#9A2F88', '#36183A', '#F2A6E6'], // Scuola
+  ['#A8CF6E', '#86B347', '134, 179, 71', '#F0F7E5', '#4F7420', '#253015', '#C2E58F'], // Pet
+  ['#5CC8D8', '#2FA3B8', '47, 163, 184', '#E3F6F9', '#1A6F7E', '#12313A', '#7FD6E4'], // Password (aqua of NuovaPassword.dc.html)
+  ['#A9AFC4', '#858CA6', '110, 118, 145', '#F0F1F5', '#4B5068', '#24263F', '#C3C7D9'], // Altro
 ];
-const fromGuide = ([top, bottom, shadow, tint, onTint]: GuideRow): CategoryColors => ({
+const fromGuide = ([top, bottom, shadow, tint, onTint, darkTint, darkOnTint]: GuideRow): CategoryColors => ({
   top,
   bottom,
   text: '#FFFFFF',
   shadow,
   tint,
   onTint,
+  darkTint,
+  darkOnTint,
 });
 
 const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [

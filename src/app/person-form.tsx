@@ -127,7 +127,7 @@ function PersonForm({ person }: { person: Person | null }) {
             value={name}
             onChangeText={setName}
             placeholder="Come si chiama?"
-            placeholderTextColor={Colors.current.textSecondary}
+            placeholderTextColor={Colors.current.placeholder}
             autoFocus={!person}
             autoCapitalize="words"
             returnKeyType="done"

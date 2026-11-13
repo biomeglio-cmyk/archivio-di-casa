@@ -290,7 +290,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                 accessibilityState={{ checked: on }}
                 style={[styles.typeButton, on && styles.typeOn]}>
                 {on && <LinearGradient colors={PASSWORD_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={[StyleSheet.absoluteFill, styles.typeFill]} />}
-                <SymbolView name={t.symbol} tintColor={on ? '#FFFFFF' : Colors.current.textSecondary} size={22} />
+                <SymbolView name={t.symbol} tintColor={on ? '#FFFFFF' : Colors.current.iconGrey} size={22} />
                 <Text style={[styles.typeName, on && styles.typeNameOn]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
                   {t.name}
                 </Text>
@@ -307,7 +307,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
               value={customType}
               onChangeText={setCustomType}
               placeholder="Che cos'è? Allarme, cassaforte, lucchetto…"
-              placeholderTextColor={Colors.current.textSecondary}
+              placeholderTextColor={Colors.current.placeholder}
               accessibilityLabel="Che cos'è"
               style={styles.input}
             />
@@ -322,7 +322,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           value={title}
           onChangeText={setTitle}
           placeholder={meta.namePlaceholder}
-          placeholderTextColor={Colors.current.textSecondary}
+          placeholderTextColor={Colors.current.placeholder}
           accessibilityLabel="Nome"
           style={styles.input}
         />
@@ -377,7 +377,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                       style={[StyleSheet.absoluteFill, styles.iconFill]}
                     />
                   )}
-                  <SymbolView name={i.symbol} tintColor={on ? '#FFFFFF' : Colors.current.textSecondary} size={20} />
+                  <SymbolView name={i.symbol} tintColor={on ? '#FFFFFF' : Colors.current.iconGrey} size={20} />
                 </Pressable>
               </View>
             );
@@ -408,7 +408,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                   value={user}
                   onChangeText={setUser}
                   placeholder={meta.userPlaceholder}
-                  placeholderTextColor={Colors.current.textSecondary}
+                  placeholderTextColor={Colors.current.placeholder}
                   autoCapitalize="none"
                   autoCorrect={false}
                   textContentType="none"
@@ -442,10 +442,10 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             />
           </View>
           <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={show ? 'Nascondi' : 'Mostra'} style={styles.eye}>
-            <SymbolView name={show ? 'eye.slash' : 'eye'} tintColor={Colors.current.textSecondary} size={20} />
+            <SymbolView name={show ? 'eye.slash' : 'eye'} tintColor={Colors.current.iconGrey} size={20} />
           </Pressable>
           <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel="Copia" style={styles.eye}>
-            <SymbolView name="doc.on.doc" tintColor={Colors.current.textSecondary} size={19} />
+            <SymbolView name="doc.on.doc" tintColor={Colors.current.iconGrey} size={19} />
           </Pressable>
         </View>
         <View style={styles.strength}>
@@ -477,7 +477,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
               value={url}
               onChangeText={setUrl}
               placeholder="www.esempio.it"
-              placeholderTextColor={Colors.current.textSecondary}
+              placeholderTextColor={Colors.current.placeholder}
               keyboardType="url"
               autoCapitalize="none"
               autoCorrect={false}
@@ -521,7 +521,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           value={notes}
           onChangeText={setNotes}
           placeholder={meta.notePlaceholder}
-          placeholderTextColor={Colors.current.textSecondary}
+          placeholderTextColor={Colors.current.placeholder}
           multiline
           accessibilityLabel="Note"
           style={styles.notes}
@@ -531,7 +531,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       <WhiteCard style={[styles.card, styles.favCard]}>
         <Pressable onPress={() => setPinnedState(!pinned)} accessible={false} style={styles.switchRow}>
           <View style={[styles.iconBox, { backgroundColor: PIN_TINT }]}>
-            <SymbolView name={pinned ? 'heart.fill' : 'heart'} tintColor="#E8457A" size={19} />
+            <SymbolView name={pinned ? 'heart.fill' : 'heart'} tintColor={Colors.current.heart} size={19} />
           </View>
           <View style={styles.flex}>
             <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>

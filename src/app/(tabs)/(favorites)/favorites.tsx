@@ -32,7 +32,7 @@ import { getFavoritesView, saveFavoritesView, type FolderView } from '@/settings
 import { describeDistance } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
-const HEART = '#E8457A';
+const HEART = Colors.current.heart;
 
 const documentHref = (id: number) =>
   ({ pathname: '/(tabs)/(favorites)/document/[id]', params: { id: String(id) } }) as const;

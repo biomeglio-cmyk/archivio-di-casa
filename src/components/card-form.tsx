@@ -26,8 +26,8 @@ import { barcodeTypeName, codeKindOf, generateBarcode, typeForKind, type CodeKin
 
 const NONE = 0; // no person (ids start at 1)
 const DARK = '#12142A';
-const MINT_TINT = softTint('#E6F7F0', '69, 182, 142');
-const MINT_TEXT = onSoftTint('#1F7A5A', '#6FD3AE');
+const MINT_TINT = softTint('#E6F7F0', '#15332A');
+const MINT_TEXT = onSoftTint('#1F7A5A', '#7FE0BC');
 
 export type CardFormValues = {
   title: string;
@@ -279,7 +279,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Es. Supermercato"
-                placeholderTextColor={Colors.current.textSecondary}
+                placeholderTextColor={Colors.current.placeholder}
                 style={styles.input}
                 accessibilityLabel="Nome"
               />
@@ -289,7 +289,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 value={docType}
                 onChangeText={setDocType}
                 placeholder="Es. Carta fedeltà"
-                placeholderTextColor={Colors.current.textSecondary}
+                placeholderTextColor={Colors.current.placeholder}
                 style={styles.input}
                 accessibilityLabel="Tipo"
               />
@@ -299,7 +299,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 value={number}
                 onChangeText={setNumber}
                 placeholder="Es. 0400 2219 8876"
-                placeholderTextColor={Colors.current.textSecondary}
+                placeholderTextColor={Colors.current.placeholder}
                 autoCapitalize="characters"
                 autoCorrect={false}
                 style={styles.input}

@@ -41,7 +41,7 @@ export function TextField(props: TextInputProps) {
 
   return (
     <TextInput
-      placeholderTextColor={theme.textSecondary}
+      placeholderTextColor={theme.placeholder}
       {...props}
       style={[styles.input, { backgroundColor: theme.lilac, color: theme.text }, props.style]}
     />

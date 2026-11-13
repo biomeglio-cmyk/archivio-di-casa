@@ -39,7 +39,7 @@ import { PIN_TINT } from '@/constants/brand';
 
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 const PIN_BACKGROUND = PIN_TINT;
-const PIN_COLOR = '#E8457A';
+const PIN_COLOR = Colors.current.heart;
 const STATUSES: { label: string; value: PaymentStatus | null }[] = [
   { label: 'Nessuno', value: null },
   { label: 'Da pagare', value: 'due' },
@@ -233,7 +233,7 @@ export function DocumentForm({
           value={title}
           onChangeText={setTitle}
           placeholder="Nome del documento"
-          placeholderTextColor={Colors.current.textSecondary}
+          placeholderTextColor={Colors.current.placeholder}
           autoFocus={autoFocusTitle}
           returnKeyType="done"
           accessibilityLabel="Nome del documento"
@@ -365,7 +365,7 @@ export function DocumentForm({
               value={notes}
               onChangeText={setNotes}
               placeholder="Per esempio: pagata con domiciliazione, chiedere il rimborso…"
-              placeholderTextColor={Colors.current.textSecondary}
+              placeholderTextColor={Colors.current.placeholder}
               multiline
               accessibilityLabel="Note"
               style={styles.notes}
@@ -397,7 +397,7 @@ export function DocumentForm({
                   value={amount}
                   onChangeText={setAmount}
                   placeholder="0,00"
-                  placeholderTextColor={Colors.current.textSecondary}
+                  placeholderTextColor={Colors.current.placeholder}
                   keyboardType="decimal-pad"
                   accessibilityLabel="Importo in euro"
                   style={styles.amountInput}
@@ -441,7 +441,7 @@ export function DocumentForm({
                       value={username}
                       onChangeText={setUsername}
                       placeholder="nome@esempio.it"
-                      placeholderTextColor={Colors.current.textSecondary}
+                      placeholderTextColor={Colors.current.placeholder}
                       autoCapitalize="none"
                       autoCorrect={false}
                       textContentType="none"
@@ -457,7 +457,7 @@ export function DocumentForm({
                       value={password}
                       onChangeText={setPassword}
                       placeholder={hasSavedPassword ? '•••••••• (invariata)' : 'Password'}
-                      placeholderTextColor={Colors.current.textSecondary}
+                      placeholderTextColor={Colors.current.placeholder}
                       secureTextEntry
                       autoCapitalize="none"
                       autoCorrect={false}
@@ -479,7 +479,7 @@ export function DocumentForm({
               value={number ?? ''}
               onChangeText={setNumber}
               placeholder="Es. CA12345AB"
-              placeholderTextColor={Colors.current.textSecondary}
+              placeholderTextColor={Colors.current.placeholder}
               autoCapitalize="characters"
               accessibilityLabel="Numero del documento"
               style={styles.nameInput}

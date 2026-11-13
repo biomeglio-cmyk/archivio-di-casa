@@ -198,7 +198,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
             value={name}
             onChangeText={setName}
             placeholder="Es. Animali"
-            placeholderTextColor={Colors.current.textSecondary}
+            placeholderTextColor={Colors.current.placeholder}
             autoFocus={!category}
             returnKeyType="done"
             accessibilityLabel="Nome della categoria"

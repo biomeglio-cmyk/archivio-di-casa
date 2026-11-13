@@ -119,7 +119,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
               symbol={document.isPinned ? 'heart.fill' : 'heart'}
               accessibilityLabel={document.isPinned ? 'Togli dai preferiti' : 'Aggiungi ai preferiti'}
               background={PASSWORD_TINT}
-              color="#E8457A"
+              color={Colors.current.heart}
               onPress={() => setPinned(db, document.id, !document.isPinned)}
             />
             <RoundIconButton
@@ -154,7 +154,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
                 </View>
                 {document.username ? (
                   <Pressable onPress={() => copyText(document.username!)} accessibilityRole="button" accessibilityLabel={`Copia ${meta.userLabel}`} style={styles.round}>
-                    <SymbolView name="doc.on.doc" tintColor={Colors.current.textSecondary} size={19} />
+                    <SymbolView name="doc.on.doc" tintColor={Colors.current.iconGrey} size={19} />
                   </Pressable>
                 ) : null}
               </View>
@@ -173,10 +173,10 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
               </Text>
             </View>
             <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={shown === null ? 'Mostra' : 'Nascondi'} style={styles.round}>
-              <SymbolView name={shown === null ? 'eye' : 'eye.slash'} tintColor={Colors.current.textSecondary} size={20} />
+              <SymbolView name={shown === null ? 'eye' : 'eye.slash'} tintColor={Colors.current.iconGrey} size={20} />
             </Pressable>
             <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel="Copia" style={styles.round}>
-              <SymbolView name="doc.on.doc" tintColor={Colors.current.textSecondary} size={19} />
+              <SymbolView name="doc.on.doc" tintColor={Colors.current.iconGrey} size={19} />
             </Pressable>
           </View>
           <View style={styles.strength}>
@@ -264,7 +264,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
         <WhiteCard style={[styles.card, styles.favCard]}>
           <Pressable onPress={() => setPinned(db, document.id, !document.isPinned)} accessible={false} style={styles.row}>
             <View style={[styles.iconBox, { backgroundColor: PIN_TINT }]}>
-              <SymbolView name={document.isPinned ? 'heart.fill' : 'heart'} tintColor="#E8457A" size={19} />
+              <SymbolView name={document.isPinned ? 'heart.fill' : 'heart'} tintColor={Colors.current.heart} size={19} />
             </View>
             <View style={styles.flex}>
               <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>

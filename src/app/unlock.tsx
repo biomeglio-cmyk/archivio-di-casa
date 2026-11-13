@@ -13,8 +13,8 @@ import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { getFreeUsage, UNLOCK_PRICE } from '@/settings/free-limit';
 
-const MINT_TINT = softTint('#E6F7F0', '69, 182, 142');
-const MINT_INK = onSoftTint('#1F7A5A', '#6FD3AE');
+const MINT_TINT = softTint('#E6F7F0', '#15332A');
+const MINT_INK = onSoftTint('#1F7A5A', '#7FE0BC');
 const BENEFITS = [
   { title: 'Documenti senza limiti', text: 'Bollette, tessere, garanzie e tutto il resto' },
   { title: 'Promemoria delle scadenze', text: 'Ti avvisiamo prima che sia tardi' },

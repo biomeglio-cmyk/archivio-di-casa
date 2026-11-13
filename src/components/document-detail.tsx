@@ -49,7 +49,7 @@ import { formatEuro } from '@/utils/money';
 import { PIN_TINT } from '@/constants/brand';
 
 const PIN_BACKGROUND = PIN_TINT;
-const PIN_COLOR = '#E8457A';
+const PIN_COLOR = Colors.current.heart;
 
 // Detail of one document (or of a card). Used by the document/[id] screen of every tab.
 export default function DocumentDetail() {

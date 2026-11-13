@@ -24,6 +24,8 @@ const LIGHT = {
   cardBorder: 'transparent', // light: cards are set apart by their shadow
   textSecondary: '#6A6D80', // subtitles, labels, dates
   textOnLilac: '#4B4E63', // notes and explanations on paleLilac
+  placeholder: '#8A8DA0', // placeholder text of the fields
+  iconGrey: '#4B5068', // grey icons (eye, copy, inactive choices)
   accent: '#3B4FE0', // links, active item, "Vedi tutto"
   indigo: '#4A3FD9', // icons and text on lilac
   lilac: '#F1EFFD', // round buttons, fields, inactive filters
@@ -38,36 +40,40 @@ const LIGHT = {
   success: '#0B6B4F', // "Pagata", confirmations (on successBackground)
   successBackground: '#E3F6EE',
   badge: '#E5243B', // dot with a number
+  heart: '#E8457A', // the favorites heart
   dashed: '#C9CCDA', // border of the dashed "add" tiles
   scrim: 'rgba(28, 30, 70, 0.38)', // dimmed page behind sheets and menus
 };
 
-// The dark theme: exactly the tokens of the design, nothing invented
+// "Tema notte" of docs/design-guide.md: the official dark palette
 const DARK: typeof LIGHT = {
   isDark: true,
-  text: '#F2F3F8',
-  background: '#121320',
-  surface: '#1C1E2E',
-  backgroundSelected: '#26283A',
-  elevated: '#26283A',
-  cardBorder: 'rgba(255, 255, 255, 0.06)',
-  textSecondary: '#A3A6B8',
-  textOnLilac: '#C9C2FF',
-  accent: '#8B9BFF',
+  text: '#F2F3FA',
+  background: '#0F1020',
+  surface: '#1B1D33',
+  backgroundSelected: '#24263F',
+  elevated: '#24263F',
+  cardBorder: 'rgba(255, 255, 255, 0.07)',
+  textSecondary: '#A3A6BD',
+  textOnLilac: '#C3C5D9',
+  placeholder: '#6F7290',
+  iconGrey: '#B4B7CC',
+  accent: '#8E9BFF',
   indigo: '#B3A8FF',
-  lilac: 'rgba(139, 108, 240, 0.16)',
-  paleLilac: 'rgba(139, 108, 240, 0.10)',
-  separator: '#2E3044',
-  switchOff: '#3A3D52',
-  segmentedActive: '#2E3044',
-  segmentedActiveText: '#F2F3F8',
+  lilac: '#262849',
+  paleLilac: '#1F2140',
+  separator: '#2C2F4D',
+  switchOff: '#3A3D5C',
+  segmentedActive: '#1B1D33',
+  segmentedActiveText: '#F2F3FA',
   error: '#FF8A80',
-  errorBackground: 'rgba(229, 36, 59, 0.16)',
+  errorBackground: '#3A1A1E',
   destructive: '#D92D20',
-  success: '#5EE0A8',
-  successBackground: 'rgba(11, 107, 79, 0.25)',
-  badge: '#E5243B',
-  dashed: '#3A3D52',
+  success: '#7FE0BC',
+  successBackground: '#15332A',
+  badge: '#FF4D5E',
+  heart: '#FF6F9B',
+  dashed: '#4A4D6E',
   scrim: 'rgba(0, 0, 0, 0.55)',
 };
 
@@ -96,15 +102,13 @@ export const Colors = {
   current: startTheme(),
 } as const;
 
-// A light tint of an accent: the pastel of the light theme, or the accent at 18% on the dark one
-// (the same rule as the category tints)
-export function softTint(lightTint: string, accentRgb: string): string {
-  return Colors.current.isDark ? `rgba(${accentRgb}, 0.18)` : lightTint;
+// A section tint and the text on it, light and "Tema notte" values (design guide)
+export function softTint(light: string, dark: string): string {
+  return Colors.current.isDark ? dark : light;
 }
 
-// Text or icons on that tint: the dark ink of the light theme, a light one on the dark theme
-export function onSoftTint(lightInk: string, darkInk: string): string {
-  return Colors.current.isDark ? darkInk : lightInk;
+export function onSoftTint(light: string, dark: string): string {
+  return Colors.current.isDark ? dark : light;
 }
 
 export type ThemeColor = Exclude<keyof typeof Colors.current, 'isDark'>;
@@ -185,7 +189,7 @@ export const CardSurface = {
   borderRadius: Radius.card,
   borderCurve: 'continuous',
   boxShadow: Shadows.card,
-  borderWidth: Colors.current.isDark ? 1 : 0,
+  borderWidth: Colors.current.isDark ? 1 : 0, // dark: a 1px border, white 7%, instead of the shadow
   borderColor: Colors.current.cardBorder,
 } as const;
 

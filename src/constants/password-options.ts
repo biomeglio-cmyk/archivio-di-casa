@@ -115,7 +115,7 @@ export function previewSymbol(preview: PasswordPreview, type: PasswordType): SFS
 }
 
 // The section colors (aqua) of the Password screens
-export const PASSWORD_TINT = softTint('#E3F6F9', '47, 163, 184');
-export const PASSWORD_INK = onSoftTint('#1A6F7E', '#5CC8D8');
-export const PASSWORD_NOTE = onSoftTint('#1A5E6B', '#5CC8D8');
+export const PASSWORD_TINT = softTint('#E3F6F9', '#12313A');
+export const PASSWORD_INK = onSoftTint('#1A6F7E', '#7FD6E4');
+export const PASSWORD_NOTE = onSoftTint('#1A5E6B', '#7FD6E4');
 export const PASSWORD_GRADIENT = ['#5CC8D8', '#2FA3B8'] as const;

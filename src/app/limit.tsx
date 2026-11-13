@@ -11,8 +11,8 @@ import { Colors, softTint, onSoftTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { FREE_LIMIT, UNLOCK_PRICE } from '@/settings/free-limit';
 
-const MINT_TINT = softTint('#E6F7F0', '69, 182, 142');
-const MINT_INK = onSoftTint('#1F7A5A', '#6FD3AE');
+const MINT_TINT = softTint('#E6F7F0', '#15332A');
+const MINT_INK = onSoftTint('#1F7A5A', '#7FE0BC');
 const STILL_WORKS = ['Consultare i tuoi documenti', 'Inviarli e condividerli', 'Mostrare le tessere alla cassa', 'Ricevere i promemoria'];
 
 // The limit panel (docs/design/ProvaFinita.dc.html), a sheet over the screen that tried to add:

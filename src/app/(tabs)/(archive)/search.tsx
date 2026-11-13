@@ -20,8 +20,8 @@ import { categoryShadowRgb } from '@/utils/colors';
 
 const DEBOUNCE_MS = 150;
 const LENS = '#6D5CE6';
-const MARK_BACKGROUND = softTint('#E8E5FD', '139, 108, 240');
-const MARK_TEXT = onSoftTint('#3A2BC8', '#C9C2FF');
+const MARK_BACKGROUND = softTint('#E8E5FD', '#262849');
+const MARK_TEXT = onSoftTint('#3A2BC8', '#B3A8FF');
 
 // "Ricerca" (docs/design/Ricerca.dc.html), opened by the field in Home: the field (lilac, ringed)
 // with "Annulla", the filters Tutto / Documenti / Tessere / Scadenze, "N RISULTATI" and the results
@@ -58,7 +58,7 @@ export default function SearchScreen() {
             value={query}
             onChangeText={setQuery}
             placeholder="Cerca un documento"
-            placeholderTextColor={Colors.current.textSecondary}
+            placeholderTextColor={Colors.current.placeholder}
             autoFocus
             returnKeyType="search"
             clearButtonMode="while-editing"

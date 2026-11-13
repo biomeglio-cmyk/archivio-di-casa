@@ -56,7 +56,7 @@ export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
           value={value}
           onChangeText={onChangeText}
           placeholder={placeholder}
-          placeholderTextColor={theme.textSecondary}
+          placeholderTextColor={theme.placeholder}
           onFocus={() => setFocused(true)}
           onBlur={() => setFocused(false)}
           returnKeyType="search"

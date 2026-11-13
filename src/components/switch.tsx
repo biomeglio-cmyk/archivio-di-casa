@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
     height: HEIGHT,
     borderRadius: HEIGHT / 2,
     overflow: 'hidden',
-    backgroundColor: Colors.light.switchOff,
+    backgroundColor: Colors.current.switchOff,
     justifyContent: 'center',
     paddingHorizontal: (HEIGHT - KNOB) / 2,
   },

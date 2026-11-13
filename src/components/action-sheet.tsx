@@ -61,7 +61,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
           {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
           <View style={styles.actions}>
             {actions.map((action) => {
-              const color = action.destructive ? Colors.light.error : Colors.light.text;
+              const color = action.destructive ? Colors.current.error : Colors.current.text;
               return (
                 <Pressable
                   key={action.key}
@@ -69,7 +69,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
                   accessibilityRole="menuitem"
                   style={({ pressed }) => [
                     styles.action,
-                    { backgroundColor: action.destructive ? Colors.light.errorBackground : Colors.light.paleLilac },
+                    { backgroundColor: action.destructive ? Colors.current.errorBackground : Colors.current.paleLilac },
                     pressed && styles.pressed,
                   ]}>
                   <SymbolView name={action.symbol} tintColor={color} size={20} />
@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(28, 30, 70, 0.35)',
   },
   sheet: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderCurve: 'continuous',
@@ -107,21 +107,21 @@ const styles = StyleSheet.create({
     width: 40,
     height: 5,
     borderRadius: 3,
-    backgroundColor: Colors.light.switchOff,
+    backgroundColor: Colors.current.switchOff,
   },
   title: {
     marginTop: 18,
     marginHorizontal: 4,
     fontSize: 18,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   subtitle: {
     marginTop: 2,
     marginHorizontal: 4,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   actions: {
     marginTop: 16,
@@ -154,6 +154,6 @@ const styles = StyleSheet.create({
   cancelLabel: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
 });

@@ -1,3 +1,4 @@
+import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
@@ -11,6 +12,7 @@ type Props = {
   enabled?: boolean;
   tint?: string; // the pill: lilac by default, or a section tint
   activeColor?: string; // text of the chosen segment: indigo by default
+  symbols?: (SFSymbol | undefined)[]; // an icon before a label (Tema: ☀ Chiaro, ☾ Scuro)
 };
 
 const SEGMENT_HEIGHT = 38;
@@ -18,7 +20,7 @@ const INSET = 4;
 
 // Choice between a few options (PDF/Foto, Foto/Colore…): 38-high segments inside a lilac pill,
 // the chosen one a white pill with a shadow and indigo text
-export function Segmented({ values, selectedIndex, onChange, enabled = true, tint, activeColor }: Props) {
+export function Segmented({ values, selectedIndex, onChange, enabled = true, tint, activeColor, symbols }: Props) {
   return (
     <View
       style={[styles.pill, tint !== undefined && { backgroundColor: tint }, !enabled && styles.disabled]}
@@ -33,6 +35,14 @@ export function Segmented({ values, selectedIndex, onChange, enabled = true, tin
             accessibilityRole="tab"
             accessibilityState={{ selected, disabled: !enabled }}
             style={[styles.segment, selected && styles.selected]}>
+            {symbols?.[index] && (
+              <SymbolView
+                name={symbols[index]!}
+                tintColor={selected ? (activeColor ?? Colors.current.segmentedActiveText) : Colors.current.textSecondary}
+                size={14}
+                weight="semibold"
+              />
+            )}
             <Text
               style={[
                 styles.label,
@@ -58,13 +68,15 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: INSET,
     borderRadius: Radius.pill,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
   },
   disabled: {
     opacity: 0.5,
   },
   segment: {
     flex: 1,
+    flexDirection: 'row',
+    gap: 5,
     minHeight: SEGMENT_HEIGHT,
     borderRadius: Radius.pill,
     alignItems: 'center',
@@ -72,18 +84,18 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   selected: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.segmentedActive,
     boxShadow: '0 2px 8px rgba(28, 30, 70, 0.12)',
   },
   label: {
     fontSize: 15,
   },
   labelSelected: {
-    color: Colors.light.indigo,
+    color: Colors.current.segmentedActiveText,
     fontFamily: FONTS.semiBold,
   },
   labelIdle: {
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     fontFamily: FONTS.medium,
   },
 });

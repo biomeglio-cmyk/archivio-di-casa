@@ -1,7 +1,6 @@
 import { Colors } from '@/constants/theme';
 
-// The app colors. Sottomano is drawn in light mode only (app.json "userInterfaceStyle": "light"
-// and Appearance.setColorScheme('light') in the root layout), even when the iPhone is in dark mode.
+// The app colors of the theme chosen at start (Impostazioni › Aspetto › Tema; constants/theme.ts)
 export function useTheme() {
-  return Colors.light;
+  return Colors.current;
 }

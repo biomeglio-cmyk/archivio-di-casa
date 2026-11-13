@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/theme';
 import type { CategoryColors } from '@/db/types';
 
 // Whether a hex color (#RRGGBB) is light, by its perceived luminance: light text sits on a dark
@@ -28,6 +29,7 @@ export function categoryShadowRgb(colors: CategoryColors): string {
 // A category color that reads on white (calendar dots, small marks): the text on its tint, or
 // its text color, or the gradient end when the text is light (white, palette "Notte")
 export function categoryInk(colors: CategoryColors): string {
+  if (Colors.current.isDark) return colors.darkOnTint ?? darkTintOf(colors.bottom).onTint; // reads on the dark pages
   return colors.onTint ?? (isLightColor(colors.text) ? mixWithBlack(colors.bottom, 0.25) : colors.text);
 }
 
@@ -46,6 +48,15 @@ export function mixWithWhite(hex: string, amount: number): string {
 // The light tint of a category (round buttons, inactive chips of its screens) and the text on it:
 // from the palette ("Sottomano"), or derived from the gradient end for the other palettes
 export function categoryTint(colors: CategoryColors): { tint: string; onTint: string; dashed: string } {
+  // "Tema notte": the tint and text of the design guide, or derived the same way
+  if (Colors.current.isDark) {
+    const derived = darkTintOf(colors.bottom);
+    return {
+      tint: colors.darkTint ?? derived.tint,
+      onTint: colors.darkOnTint ?? derived.onTint,
+      dashed: `rgba(${hexToRgb(colors.bottom)}, 0.45)`,
+    };
+  }
   return {
     tint: colors.tint ?? mixWithWhite(colors.bottom, 0.86),
     onTint: categoryInk(colors),
@@ -102,4 +113,22 @@ export function hexToWheel(hex: string): { hue: number; radius: number } {
     if (hue < 0) hue += 360;
   }
   return { hue, radius: Math.min(1, Math.max(0, (1 - lightness) * 2)) };
+}
+
+function hslHex(h: number, s: number, l: number): string {
+  const a = s * Math.min(l, 1 - l);
+  const k = (n: number) => (n + h / 30) % 12;
+  const f = (n: number) =>
+    Math.round(255 * (l - a * Math.max(-1, Math.min(k(n) - 3, 9 - k(n), 1))))
+      .toString(16)
+      .padStart(2, '0');
+  return `#${f(0)}${f(8)}${f(4)}`.toUpperCase();
+}
+
+// "Tema notte" for a color the guide doesn't list (other palettes, "Il tuo colore"): a dark tint of
+// its hue with the lightness of the guide's tints, and a light text of the same hue
+export function darkTintOf(hex: string): { tint: string; onTint: string } {
+  const { hue, radius } = hexToWheel(hex);
+  const saturation = Math.max(0.25, Math.min(0.55, radius)); // grey colors stay grey
+  return { tint: hslHex(hue, saturation * 0.6, 0.15), onTint: hslHex(hue, 0.9, 0.78) };
 }

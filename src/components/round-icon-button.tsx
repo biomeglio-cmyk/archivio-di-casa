@@ -17,8 +17,8 @@ export function RoundIconButton({
   symbol,
   accessibilityLabel,
   onPress,
-  background = Colors.light.lilac,
-  color = Colors.light.indigo,
+  background = Colors.current.lilac,
+  color = Colors.current.indigo,
 }: Props) {
   const { pressed, handlers } = usePressed();
   return (

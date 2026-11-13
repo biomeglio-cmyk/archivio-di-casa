@@ -256,3 +256,50 @@ Questa sezione ha la precedenza sulla guida dove le due non coincidono.
 - **Barra in basso**: menu a vetro della guida (Home, Preferiti, Scadenze, Famiglia, "+", solo icone), con il badge su Scadenze.
 - **Prezzo**: 7 elementi gratis (documenti + tessere) e sblocco unico da 0,99 €. La logica del limite si prepara in Expo Go; l'acquisto vero (StoreKit / Google Play Billing) si collega con la prima development build.
 - **Ridisegno a passi**: 1) fondamenta (colori, Onest, ombre, componenti condivisi); 2) Home; 3) Cartella, Documento, Nuovo/Modifica; 4) Scadenze, Preferiti, Tessere, Famiglia, Persona; 5) Menu laterale, Notifiche, Impostazioni, Backup, Ricerca, Benvenuto; 6) Sblocca e limite. Ogni passo si prova sull'iPhone prima del successivo.
+
+## Tema notte
+
+Palette ufficiale del tema scuro (Impostazioni › Aspetto › Tema: Automatico / Chiaro / Scuro). Ogni colore è una variabile del tema con lo stesso nome e due valori.
+
+| Ruolo | Chiaro | Notte |
+|---|---|---|
+| Sfondo | #FFFFFF | #0F1020 |
+| Scheda | #FFFFFF | #1B1D33 |
+| Lilla chiaro (pulsanti, campi) | #F1EFFD | #262849 |
+| Lilla chiarissimo (riquadri informativi) | #F7F6FE | #1F2140 |
+| Testo principale | #1C1E2E | #F2F3FA |
+| Testo secondario | #6A6D80 | #A3A6BD |
+| Testo su riquadro | #4B4E63 | #C3C5D9 |
+| Accento e link | #3B4FE0 | #8E9BFF |
+| Indaco testo e icone | #4A3FD9 | #B3A8FF |
+| Separatore | #EEF0F5 | #2C2F4D |
+| Interruttore spento | #D6D8E4 | #3A3D5C |
+| Tratteggio | #C9CCDA | #4A4D6E |
+| Tinta Bollette (Utenze) / testo | #FFF0E7 / #C2530F | #3A2418 / #FFB48A |
+| Tinta Tessere / testo | #E6F7F0 / #1F7A5A | #15332A / #7FE0BC |
+| Tinta Casa / testo | #F1EFFD / #5B4BD6 | #262849 / #B3A8FF |
+| Tinta Auto / testo | #EAF2FE / #2F62C8 | #16263F / #8DB6FF |
+| Tinta Salute (Spese 730) / testo | #FDEBF1 / #B42A5A | #3A1A28 / #FF9CC0 |
+| Tinta Garanzie / testo | #FDF5E2 / #8A5A0B | #352A12 / #F5CB6B |
+| Tinta Password / testo | #E3F6F9 / #1A6F7E | #12313A / #7FD6E4 |
+| Grigio pulsanti (scelte inattive) | #F4F5F8 | #24263F |
+| Icone grigie | #4B5068 | #B4B7CC |
+| Segnaposto | #8A8DA0 | #6F7290 |
+| Badge notifiche | #E5243B | #FF4D5E |
+| Cuore preferiti | #E8457A | #FF6F9B |
+| Errore fondo / testo | #FDECEC / #B42318 | #3A1A1E / #FF8A80 |
+| Successo fondo / testo | #E3F6EE / #0B6B4F | #15332A / #7FE0BC |
+| Menu a vetro | bianco 72% → 42% | #282A4A 78% → #1C1E38 60%, bordo bianco 12% |
+
+**Regole:** tutti i colori sono variabili del tema. Le sfumature delle cartelle, la sfumatura principale e quella delle Password (#5CC8D8 → #2FA3B8) restano uguali; i colori scelti dall'utente per l'anteprima e le copertine non cambiano; codici a barre e QR sempre su fondo bianco. Le ombre delle schede diventano un bordo interno di 1 px bianco al 7%.
+
+**Categorie non presenti nella guida** (stessa regola: tinta scura della tonalità con la luminosità della guida, testo chiaro della tonalità):
+
+| Categoria | Tinta notte | Testo notte |
+|---|---|---|
+| Documenti | #1E2346 | #A9B3FF |
+| Assicurazioni | #123038 | #8ADCE8 |
+| Colf | #3A201B | #FFB09B |
+| Scuola | #36183A | #F2A6E6 |
+| Pet | #253015 | #C2E58F |
+| Altro | #24263F | #C3C7D9 |

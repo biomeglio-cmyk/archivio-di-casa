@@ -131,7 +131,7 @@ export default function DeadlinesScreen() {
           title="Scadenze"
           subtitle={documents ? upcomingSummary(upcoming) : ' '}
           onBack={goHome}
-          right={<RoundIconButton symbol="plus" accessibilityLabel="Nuovo promemoria" color={Colors.light.text} onPress={addReminder} />}
+          right={<RoundIconButton symbol="plus" accessibilityLabel="Nuovo promemoria" color={Colors.current.text} onPress={addReminder} />}
         />
 
         <View style={styles.switch}>
@@ -195,7 +195,7 @@ export default function DeadlinesScreen() {
 
         {documents && sections.length === 0 && (
           <View style={styles.empty}>
-            <SymbolView name="calendar.badge.checkmark" tintColor={Colors.light.textSecondary} size={40} />
+            <SymbolView name="calendar.badge.checkmark" tintColor={Colors.current.textSecondary} size={40} />
             <Text style={styles.emptyTitle}>Nessuna scadenza in vista</Text>
             <Text style={styles.emptyText}>
               Tocca + per aggiungere un documento con una scadenza: comparirà qui e nel calendario.
@@ -250,7 +250,7 @@ function monthOf(iso: string) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -269,13 +269,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   dayTitle: {
     fontSize: 12,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   dayItem: {
     marginTop: 8,
@@ -296,28 +296,28 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   dayItemSide: {
     fontSize: 13,
     fontFamily: FONTS.medium,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   dayEmpty: {
     marginTop: 6,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   sectionTitle: {
     marginTop: 26,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   sectionOverdue: {
-    color: Colors.light.error,
+    color: Colors.current.error,
   },
   card: {
     marginTop: 12,
@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: DEADLINE_ROW_INSET,
     marginRight: 16,
-    backgroundColor: Colors.light.separator,
+    backgroundColor: Colors.current.separator,
   },
   empty: {
     alignItems: 'center',
@@ -338,14 +338,14 @@ const styles = StyleSheet.create({
   emptyTitle: {
     fontSize: 18,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlign: 'center',
   },
   emptyText: {
     fontSize: 15,
     lineHeight: 21,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
 });

@@ -38,7 +38,7 @@ import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, softTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatBytes } from '@/send/send-preferences';
 
@@ -52,7 +52,7 @@ type Step =
   | { kind: 'restore'; uri: string; name: string } // asking the password of the chosen file
   | { kind: 'working'; label: string; fraction: number | null }; // null = no percentage yet
 
-const APRICOT_TINT = '#FFF0E7';
+const APRICOT_TINT = softTint('#FFF0E7', '#3A2418');
 const APRICOT = '#F5824A';
 const BACKUP_FOLDER = 'Backup'; // in the app's own folder on the phone
 
@@ -267,7 +267,7 @@ export default function BackupScreen() {
         </ThemedText>
         {step.fraction !== null && (
           <View
-            style={[styles.track, { backgroundColor: Colors.light.backgroundSelected }]}
+            style={[styles.track, { backgroundColor: Colors.current.backgroundSelected }]}
             accessibilityRole="progressbar"
             accessibilityValue={{ min: 0, max: 100, now: Math.round(step.fraction * 100) }}>
             <View style={[styles.fill, { width: `${Math.min(100, Math.round(step.fraction * 100))}%` }]} />
@@ -357,7 +357,7 @@ export default function BackupScreen() {
             <Text style={styles.statusTitle}>{justCreated ? 'Backup completato' : 'Ultimo backup'}</Text>
             <Text style={styles.statusText}>{`${documents} · ${formatBytes(saved.bytes)} · ${whenText(saved.createdAt)}`}</Text>
             <View style={styles.path}>
-              <SymbolView name="folder" tintColor={Colors.light.indigo} size={18} />
+              <SymbolView name="folder" tintColor={Colors.current.indigo} size={18} />
               <Text style={styles.pathText}>{`Sottomano › Backup › ${saved.name}`}</Text>
             </View>
             <SoftButton symbol="square.and.arrow.up" label="Copia il file altrove" onPress={copyElsewhere} />
@@ -400,7 +400,7 @@ export default function BackupScreen() {
             accessibilityLabel={`Ricordami di fare il backup: ${BACKUP_FREQUENCIES.find((f) => f.value === frequency)?.label}`}
             style={styles.select}>
             <Text style={styles.selectText}>{BACKUP_FREQUENCIES.find((f) => f.value === frequency)?.label}</Text>
-            <SymbolView name="chevron.down" tintColor={Colors.light.textSecondary} size={12} weight="semibold" />
+            <SymbolView name="chevron.down" tintColor={Colors.current.textSecondary} size={12} weight="semibold" />
           </Pressable>
         </WhiteCard>
         <Text style={styles.footnote}>
@@ -425,7 +425,7 @@ export default function BackupScreen() {
             <RoundIconButton
               symbol="chevron.left"
               accessibilityLabel="Indietro"
-              color={Colors.light.text}
+              color={Colors.current.text}
               onPress={() => (step.kind === 'idle' ? router.back() : reset())}
             />
           )}
@@ -454,7 +454,7 @@ export default function BackupScreen() {
 
 // Lilac full-width button of the design ("Copia il file altrove", "Scegli un file di backup")
 function SoftButton({ symbol, label, onPress, plain = false }: { symbol: SFSymbol; label: string; onPress: () => void; plain?: boolean }) {
-  const color = plain ? Colors.light.text : Colors.light.indigo;
+  const color = plain ? Colors.current.text : Colors.current.indigo;
   return (
     <Pressable
       onPress={onPress}
@@ -469,7 +469,7 @@ function SoftButton({ symbol, label, onPress, plain = false }: { symbol: SFSymbo
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   content: {
     paddingHorizontal: Spacing.side,
@@ -479,14 +479,14 @@ const styles = StyleSheet.create({
     marginTop: 22,
     fontSize: 30,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     lineHeight: 22,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   statusCard: {
     paddingVertical: 22,
@@ -513,7 +513,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
     fontSize: 18,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlign: 'center',
   },
   statusText: {
@@ -521,7 +521,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   create: {
@@ -534,7 +534,7 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderRadius: 16,
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -544,14 +544,14 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.medium,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
   soft: {
     marginTop: 14,
     alignSelf: 'stretch',
     height: 52,
     borderRadius: 26,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -570,14 +570,14 @@ const styles = StyleSheet.create({
   againText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   section: {
     marginBottom: -10,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   restoreCard: {
     paddingTop: 18,
@@ -587,14 +587,14 @@ const styles = StyleSheet.create({
   restoreTitle: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   restoreText: {
     marginTop: 4,
     fontSize: 14,
     lineHeight: 21,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   reminder: {
     paddingVertical: 12,
@@ -615,13 +615,13 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   select: {
     height: 38,
     paddingHorizontal: 12,
     borderRadius: 12,
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
@@ -629,14 +629,14 @@ const styles = StyleSheet.create({
   selectText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   footnote: {
     marginHorizontal: 4,
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   form: {
     gap: 12,

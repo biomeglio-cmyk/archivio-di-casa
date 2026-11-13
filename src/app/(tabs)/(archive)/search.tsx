@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Chip, ChipGroup } from '@/components/chip';
 import { Text, TextInput } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { CardSurface, Colors, Spacing } from '@/constants/theme';
+import { CardSurface, Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategoriesWithCounts } from '@/db/categories';
 import { listAllDocuments } from '@/db/documents';
@@ -20,8 +20,8 @@ import { categoryShadowRgb } from '@/utils/colors';
 
 const DEBOUNCE_MS = 150;
 const LENS = '#6D5CE6';
-const MARK_BACKGROUND = '#E8E5FD';
-const MARK_TEXT = '#3A2BC8';
+const MARK_BACKGROUND = softTint('#E8E5FD', '#262849');
+const MARK_TEXT = onSoftTint('#3A2BC8', '#B3A8FF');
 
 // "Ricerca" (docs/design/Ricerca.dc.html), opened by the field in Home: the field (lilac, ringed)
 // with "Annulla", the filters Tutto / Documenti / Tessere / Scadenze, "N RISULTATI" and the results
@@ -58,7 +58,7 @@ export default function SearchScreen() {
             value={query}
             onChangeText={setQuery}
             placeholder="Cerca un documento"
-            placeholderTextColor={Colors.light.textSecondary}
+            placeholderTextColor={Colors.current.placeholder}
             autoFocus
             returnKeyType="search"
             clearButtonMode="while-editing"
@@ -149,7 +149,7 @@ function Marked({ text, match, style }: { text: string; match: MatchRange | null
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     height: 52,
     paddingHorizontal: 16,
     borderRadius: 26,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     boxShadow: '0 0 0 2px #C9C2FF',
     flexDirection: 'row',
     alignItems: 'center',
@@ -174,12 +174,12 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   cancel: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   filters: {
     marginTop: 16,
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   list: {
     marginTop: 12,
@@ -222,12 +222,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   subtitle: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   mark: {
     backgroundColor: MARK_BACKGROUND,
@@ -239,19 +239,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 22,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     alignItems: 'center',
   },
   noneTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   noneText: {
     marginTop: 6,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   hint: {
@@ -260,7 +260,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
 });

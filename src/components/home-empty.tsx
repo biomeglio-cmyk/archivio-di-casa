@@ -53,7 +53,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
         </Text>
         <PrimaryButton label="Fotografa un documento" symbol="camera" onPress={() => whenBelowLimit(() => router.push('/add-document'))} style={styles.button} />
         <Pressable onPress={() => whenBelowLimit(loadPdf)} accessibilityRole="button" style={({ pressed }) => [styles.pdf, pressed && styles.pressed]}>
-          <SymbolView name="doc" tintColor={Colors.light.accent} size={18} />
+          <SymbolView name="doc" tintColor={Colors.current.accent} size={18} />
           <Text style={styles.pdfText}>Carica un PDF</Text>
         </Pressable>
       </View>
@@ -82,8 +82,8 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
         <Pressable
           onPress={() => router.push('/category-form')}
           accessibilityRole="button"
-          style={({ pressed }) => [styles.folder, styles.add, { width: tileWidth }, pressed && { backgroundColor: Colors.light.paleLilac }]}>
-          <SymbolView name="plus" tintColor={Colors.light.textSecondary} size={22} />
+          style={({ pressed }) => [styles.folder, styles.add, { width: tileWidth }, pressed && { backgroundColor: Colors.current.paleLilac }]}>
+          <SymbolView name="plus" tintColor={Colors.current.textSecondary} size={22} />
           <Text style={styles.addText}>Nuova categoria</Text>
         </Pressable>
       </View>
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 26,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     alignItems: 'center',
   },
   art: {
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
     fontSize: 20,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlign: 'center',
   },
   text: {
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 21,
     fontFamily: FONTS.regular,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
     textAlign: 'center',
   },
   button: {
@@ -175,7 +175,7 @@ const styles = StyleSheet.create({
   pdfText: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   pressed: {
     opacity: 0.7,
@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   grid: {
     marginTop: 12,
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   add: {
     borderWidth: 2,
     borderStyle: 'dashed',
-    borderColor: Colors.light.dashed,
+    borderColor: Colors.current.dashed,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
@@ -219,6 +219,6 @@ const styles = StyleSheet.create({
   addText: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
 });

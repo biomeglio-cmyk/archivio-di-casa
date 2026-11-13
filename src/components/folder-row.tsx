@@ -93,7 +93,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
         {selection ? (
           <SymbolView
             name={selection.selected ? 'checkmark.circle.fill' : 'circle'}
-            tintColor={selection.selected ? BRAND_COLOR : Colors.light.dashed}
+            tintColor={selection.selected ? BRAND_COLOR : Colors.current.dashed}
             size={24}
           />
         ) : (
@@ -118,7 +118,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   pressed: {
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   disabled: {
     opacity: 0.4,
@@ -139,12 +139,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   subtitle: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   right: {
     alignItems: 'flex-end',
@@ -153,6 +153,6 @@ const styles = StyleSheet.create({
   amount: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
 });

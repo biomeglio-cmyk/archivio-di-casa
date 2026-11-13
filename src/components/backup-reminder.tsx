@@ -68,7 +68,7 @@ export function BackupReminder() {
   return (
     <View style={styles.box}>
       <View style={styles.icon}>
-        <SymbolView name="icloud.and.arrow.up" tintColor={Colors.light.indigo} size={20} />
+        <SymbolView name="icloud.and.arrow.up" tintColor={Colors.current.indigo} size={20} />
       </View>
       <View style={styles.texts}>
         <Text style={styles.title}>{text}</Text>
@@ -82,7 +82,7 @@ export function BackupReminder() {
         accessibilityLabel={notice.kind === 'none' ? 'Chiudi avviso' : 'Nascondi per 7 giorni'}
         hitSlop={4}
         style={styles.close}>
-        <SymbolView name="xmark" tintColor={Colors.light.textSecondary} size={16} weight="semibold" />
+        <SymbolView name="xmark" tintColor={Colors.current.textSecondary} size={16} weight="semibold" />
       </Pressable>
     </View>
   );
@@ -98,14 +98,14 @@ const styles = StyleSheet.create({
     paddingRight: 12,
     borderRadius: 20,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   icon: {
     width: 40,
     height: 40,
     borderRadius: 12,
     borderCurve: 'continuous',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0 4px 10px rgba(28, 30, 70, 0.06)',
@@ -117,12 +117,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   link: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   close: {
     width: 36,

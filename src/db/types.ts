@@ -22,6 +22,8 @@ export type CategoryColors = {
   shadow?: string; // "r, g, b" of the colored shadow under a tile
   tint?: string; // light tint: inactive filters and round buttons of the section
   onTint?: string; // text and icons on the light tint
+  darkTint?: string; // "Tema notte": the tint and the text on it (design guide)
+  darkOnTint?: string;
 };
 
 export type Category = {

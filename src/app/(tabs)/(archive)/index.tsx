@@ -182,7 +182,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 36,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   search: {
     marginTop: 18,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
   reorderHint: {
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
   favorites: {
     flexDirection: 'row',

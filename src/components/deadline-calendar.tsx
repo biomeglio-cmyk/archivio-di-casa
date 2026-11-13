@@ -174,7 +174,7 @@ function MonthArrow({
 }) {
   return (
     <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={label} hitSlop={4} style={styles.arrow}>
-      <SymbolView name={symbol} tintColor={Colors.light.text} size={15} weight="semibold" />
+      <SymbolView name={symbol} tintColor={Colors.current.text} size={15} weight="semibold" />
     </Pressable>
   );
 }
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   weekCircle: {
     width: 38,
@@ -214,12 +214,12 @@ const styles = StyleSheet.create({
     boxShadow: '0 6px 14px rgba(100, 90, 235, 0.28)',
   },
   weekSelected: {
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
   },
   weekNumber: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   weekDot: {
     width: 6,
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.bold,
   },
   numberToday: {
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
     fontFamily: FONTS.bold,
   },
   monthCard: {
@@ -250,14 +250,14 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   monthTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   letters: {
     marginTop: 10,
@@ -269,7 +269,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   grid: {
     marginTop: 6,
@@ -291,7 +291,7 @@ const styles = StyleSheet.create({
     gap: 3,
   },
   monthToday: {
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
   },
   monthSelected: {
     borderRadius: 14,
@@ -300,7 +300,7 @@ const styles = StyleSheet.create({
   monthNumber: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   monthDot: {
     width: 5,

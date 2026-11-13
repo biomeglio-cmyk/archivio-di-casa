@@ -60,8 +60,8 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
               label="Cancella"
               symbol="trash"
               onPress={onDelete}
-              background={Colors.light.errorBackground}
-              color={Colors.light.error}
+              background={Colors.current.errorBackground}
+              color={Colors.current.error}
               singleLine
               style={styles.half}
             />

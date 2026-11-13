@@ -16,7 +16,7 @@ import { RoundIconButton } from '@/components/round-icon-button';
 import { Switch } from '@/components/switch';
 import { Text, TextInput } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
-import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START, PIN_TINT } from '@/constants/brand';
 import {
   PASSWORD_COLORS,
   PASSWORD_GRADIENT,
@@ -264,7 +264,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       automaticallyAdjustKeyboardInsets
       contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 36 }]}>
       <View style={styles.bar}>
-        <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT} color={Colors.light.text} onPress={() => router.back()} />
+        <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT} color={Colors.current.text} onPress={() => router.back()} />
         <Text style={styles.heading} accessibilityRole="header">
           {existing ? 'Modifica password' : 'Nuova password'}
         </Text>
@@ -290,7 +290,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                 accessibilityState={{ checked: on }}
                 style={[styles.typeButton, on && styles.typeOn]}>
                 {on && <LinearGradient colors={PASSWORD_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={[StyleSheet.absoluteFill, styles.typeFill]} />}
-                <SymbolView name={t.symbol} tintColor={on ? '#FFFFFF' : '#4B5068'} size={22} />
+                <SymbolView name={t.symbol} tintColor={on ? '#FFFFFF' : Colors.current.iconGrey} size={22} />
                 <Text style={[styles.typeName, on && styles.typeNameOn]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
                   {t.name}
                 </Text>
@@ -307,7 +307,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
               value={customType}
               onChangeText={setCustomType}
               placeholder="Che cos'è? Allarme, cassaforte, lucchetto…"
-              placeholderTextColor={Colors.light.textSecondary}
+              placeholderTextColor={Colors.current.placeholder}
               accessibilityLabel="Che cos'è"
               style={styles.input}
             />
@@ -322,7 +322,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           value={title}
           onChangeText={setTitle}
           placeholder={meta.namePlaceholder}
-          placeholderTextColor={Colors.light.textSecondary}
+          placeholderTextColor={Colors.current.placeholder}
           accessibilityLabel="Nome"
           style={styles.input}
         />
@@ -377,7 +377,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                       style={[StyleSheet.absoluteFill, styles.iconFill]}
                     />
                   )}
-                  <SymbolView name={i.symbol} tintColor={on ? '#FFFFFF' : '#4B5068'} size={20} />
+                  <SymbolView name={i.symbol} tintColor={on ? '#FFFFFF' : Colors.current.iconGrey} size={20} />
                 </Pressable>
               </View>
             );
@@ -408,7 +408,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                   value={user}
                   onChangeText={setUser}
                   placeholder={meta.userPlaceholder}
-                  placeholderTextColor={Colors.light.textSecondary}
+                  placeholderTextColor={Colors.current.placeholder}
                   autoCapitalize="none"
                   autoCorrect={false}
                   textContentType="none"
@@ -431,7 +431,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                 setLoadedSaved(false);
               }}
               placeholder={masked || (isPin ? '••••' : 'Scrivi o genera')}
-              placeholderTextColor={masked ? Colors.light.text : Colors.light.textSecondary}
+              placeholderTextColor={masked ? Colors.current.text : Colors.current.textSecondary}
               secureTextEntry={!show}
               keyboardType={isPin ? 'number-pad' : 'default'}
               autoCapitalize="none"
@@ -442,16 +442,16 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             />
           </View>
           <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={show ? 'Nascondi' : 'Mostra'} style={styles.eye}>
-            <SymbolView name={show ? 'eye.slash' : 'eye'} tintColor="#4B5068" size={20} />
+            <SymbolView name={show ? 'eye.slash' : 'eye'} tintColor={Colors.current.iconGrey} size={20} />
           </Pressable>
           <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel="Copia" style={styles.eye}>
-            <SymbolView name="doc.on.doc" tintColor="#4B5068" size={19} />
+            <SymbolView name="doc.on.doc" tintColor={Colors.current.iconGrey} size={19} />
           </Pressable>
         </View>
         <View style={styles.strength}>
           <View style={styles.bars} accessibilityElementsHidden>
             {[0, 1, 2, 3].map((i) => (
-              <View key={i} style={[styles.barPiece, { backgroundColor: !isPin && i < strength.level ? strength.color : '#E6E8F0' }]} />
+              <View key={i} style={[styles.barPiece, { backgroundColor: !isPin && i < strength.level ? strength.color : Colors.current.separator }]} />
             ))}
           </View>
           <Text style={[styles.strengthLabel, { color: strength.color }]}>
@@ -472,12 +472,12 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         <>
           <Section>Sito o app</Section>
           <View style={[styles.field, styles.whiteField]}>
-            <SymbolView name="link" tintColor={Colors.light.textSecondary} size={18} />
+            <SymbolView name="link" tintColor={Colors.current.textSecondary} size={18} />
             <TextInput
               value={url}
               onChangeText={setUrl}
               placeholder="www.esempio.it"
-              placeholderTextColor={Colors.light.textSecondary}
+              placeholderTextColor={Colors.current.placeholder}
               keyboardType="url"
               autoCapitalize="none"
               autoCorrect={false}
@@ -504,13 +504,13 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       <Section>Di chi è</Section>
       <WhiteCard style={styles.card}>
         <View style={styles.personRow}>
-          <View style={[styles.iconBox, { backgroundColor: Colors.light.lilac }]}>
-            <SymbolView name="person" tintColor={Colors.light.indigo} size={19} />
+          <View style={[styles.iconBox, { backgroundColor: Colors.current.lilac }]}>
+            <SymbolView name="person" tintColor={Colors.current.indigo} size={19} />
           </View>
           <Text style={styles.personLabel}>Persona</Text>
           <Pressable onPress={choosePerson} accessibilityRole="button" accessibilityLabel={`Persona, ${personName}`} style={styles.select}>
             <Text style={styles.selectText}>{personName}</Text>
-            <SymbolView name="chevron.down" tintColor={Colors.light.textSecondary} size={13} weight="semibold" />
+            <SymbolView name="chevron.down" tintColor={Colors.current.textSecondary} size={13} weight="semibold" />
           </Pressable>
         </View>
       </WhiteCard>
@@ -521,7 +521,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           value={notes}
           onChangeText={setNotes}
           placeholder={meta.notePlaceholder}
-          placeholderTextColor={Colors.light.textSecondary}
+          placeholderTextColor={Colors.current.placeholder}
           multiline
           accessibilityLabel="Note"
           style={styles.notes}
@@ -530,8 +530,8 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
 
       <WhiteCard style={[styles.card, styles.favCard]}>
         <Pressable onPress={() => setPinnedState(!pinned)} accessible={false} style={styles.switchRow}>
-          <View style={[styles.iconBox, { backgroundColor: '#FDEBF1' }]}>
-            <SymbolView name={pinned ? 'heart.fill' : 'heart'} tintColor="#E8457A" size={19} />
+          <View style={[styles.iconBox, { backgroundColor: PIN_TINT }]}>
+            <SymbolView name={pinned ? 'heart.fill' : 'heart'} tintColor={Colors.current.heart} size={19} />
           </View>
           <View style={styles.flex}>
             <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>
@@ -580,7 +580,7 @@ function ImageButton({ label, symbol, on, onPress }: { label: string; symbol: SF
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -600,7 +600,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 17,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   barSpace: {
     width: 44,
@@ -635,7 +635,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   types: {
     marginTop: 10,
@@ -652,7 +652,7 @@ const styles = StyleSheet.create({
     height: 74,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: '#F4F5F8',
+    backgroundColor: Colors.current.elevated,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
@@ -667,7 +667,7 @@ const styles = StyleSheet.create({
   typeName: {
     fontSize: 13,
     fontFamily: FONTS.semiBold,
-    color: '#4B5068',
+    color: Colors.current.textSecondary,
   },
   typeNameOn: {
     color: '#FFFFFF',
@@ -694,14 +694,14 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   hint: {
     marginTop: 8,
     marginHorizontal: 4,
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   previewCard: {
     marginTop: 10,
@@ -715,20 +715,20 @@ const styles = StyleSheet.create({
   previewTitle: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   previewText: {
     marginTop: 2,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   small: {
     marginTop: 18,
     fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
-    color: '#8A8DA0',
+    color: Colors.current.textSecondary,
   },
   colors: {
     marginTop: 10,
@@ -748,7 +748,7 @@ const styles = StyleSheet.create({
     height: 44,
     borderRadius: 14,
     borderCurve: 'continuous',
-    backgroundColor: '#F4F5F8',
+    backgroundColor: Colors.current.elevated,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -788,7 +788,7 @@ const styles = StyleSheet.create({
   removeImageText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: '#4B5068',
+    color: Colors.current.textSecondary,
   },
   card: {
     marginTop: 10,
@@ -815,13 +815,13 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   accessInput: {
     paddingVertical: 2,
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   passwordInput: {
     fontFamily: FONTS.semiBold,
@@ -837,7 +837,7 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: 70,
     marginRight: 16,
-    backgroundColor: Colors.light.separator,
+    backgroundColor: Colors.current.separator,
   },
   strength: {
     marginLeft: 70,
@@ -897,12 +897,12 @@ const styles = StyleSheet.create({
   rowTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   rowSubtitle: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   personRow: {
     flexDirection: 'row',
@@ -915,14 +915,14 @@ const styles = StyleSheet.create({
     width: 72,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   select: {
     flex: 1,
     minHeight: 44,
     paddingHorizontal: 14,
     borderRadius: 14,
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
@@ -931,7 +931,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   notesCard: {
     marginTop: 10,
@@ -943,7 +943,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     fontFamily: FONTS.regular,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlignVertical: 'top',
   },
   favCard: {
@@ -956,7 +956,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
 });

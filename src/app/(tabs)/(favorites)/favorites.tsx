@@ -32,7 +32,7 @@ import { getFavoritesView, saveFavoritesView, type FolderView } from '@/settings
 import { describeDistance } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
-const HEART = '#E8457A';
+const HEART = Colors.current.heart;
 
 const documentHref = (id: number) =>
   ({ pathname: '/(tabs)/(favorites)/document/[id]', params: { id: String(id) } }) as const;
@@ -124,7 +124,7 @@ export default function FavoritesScreen() {
                 <RoundIconButton
                   symbol="magnifyingglass"
                   accessibilityLabel="Cerca nei preferiti"
-                  color={Colors.light.text}
+                  color={Colors.current.text}
                   onPress={() => {
                     setSearchOpen((open) => !open);
                     setQuery('');
@@ -273,7 +273,7 @@ function favoriteSubtitle(document: DocumentListItem): string {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   list: {
     marginTop: 12,
@@ -324,12 +324,12 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   sub: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   heart: {
     width: 44,
@@ -345,10 +345,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     borderCurve: 'continuous',
     overflow: 'hidden',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   footer: {
@@ -357,7 +357,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
 });

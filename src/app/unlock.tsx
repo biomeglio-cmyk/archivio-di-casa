@@ -8,11 +8,13 @@ import { PrimaryButton } from '@/components/primary-button';
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { getFreeUsage, UNLOCK_PRICE } from '@/settings/free-limit';
 
+const MINT_TINT = softTint('#E6F7F0', '#15332A');
+const MINT_INK = onSoftTint('#1F7A5A', '#7FE0BC');
 const BENEFITS = [
   { title: 'Documenti senza limiti', text: 'Bollette, tessere, garanzie e tutto il resto' },
   { title: 'Promemoria delle scadenze', text: 'Ti avvisiamo prima che sia tardi' },
@@ -48,7 +50,7 @@ export default function UnlockScreen() {
           accessibilityRole="button"
           accessibilityLabel="Chiudi"
           style={({ pressed }) => [styles.close, pressed && styles.pressed]}>
-          <SymbolView name="xmark" tintColor={Colors.light.text} size={18} weight="semibold" />
+          <SymbolView name="xmark" tintColor={Colors.current.text} size={18} weight="semibold" />
         </Pressable>
       </View>
 
@@ -73,7 +75,7 @@ export default function UnlockScreen() {
         {BENEFITS.map((benefit) => (
           <View key={benefit.title} style={styles.benefit}>
             <View style={styles.check}>
-              <SymbolView name="checkmark" tintColor="#1F7A5A" size={13} weight="bold" />
+              <SymbolView name="checkmark" tintColor={MINT_INK} size={13} weight="bold" />
             </View>
             <View style={styles.benefitTexts}>
               <Text style={styles.benefitTitle}>{benefit.title}</Text>
@@ -141,7 +143,7 @@ function Link({ label, onPress }: { label: string; onPress: () => void }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   content: {
     paddingHorizontal: Spacing.side,
@@ -154,7 +156,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -173,11 +175,11 @@ const styles = StyleSheet.create({
     minHeight: 30,
     paddingHorizontal: 12,
     borderRadius: 15,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     justifyContent: 'center',
   },
   tagText: {
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
     fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
@@ -189,7 +191,7 @@ const styles = StyleSheet.create({
     lineHeight: 34,
     fontFamily: FONTS.bold,
     textAlign: 'center',
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   intro: {
     marginTop: 10,
@@ -197,7 +199,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     fontFamily: FONTS.regular,
     textAlign: 'center',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   benefits: {
     marginTop: 22,
@@ -213,7 +215,7 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: '#E6F7F0',
+    backgroundColor: MINT_TINT,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -223,19 +225,19 @@ const styles = StyleSheet.create({
   benefitTitle: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   benefitText: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   sectionTitle: {
     marginTop: 24,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   usage: {
     marginTop: 12,
@@ -251,12 +253,12 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   usageValue: {
     fontSize: 15,
     fontFamily: FONTS.bold,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
   usageBar: {
     marginTop: 10,
@@ -266,7 +268,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   price: {
     marginTop: 14,
@@ -275,7 +277,7 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     borderWidth: 2,
     borderColor: '#6D5CE6',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -287,17 +289,17 @@ const styles = StyleSheet.create({
   priceTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   priceText: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   priceValue: {
     fontSize: 30,
     fontFamily: FONTS.bold,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
   buy: {
     marginTop: 18,
@@ -311,7 +313,7 @@ const styles = StyleSheet.create({
   freeText: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   links: {
     marginTop: 6,
@@ -322,6 +324,6 @@ const styles = StyleSheet.create({
   link: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
 });

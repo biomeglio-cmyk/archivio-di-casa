@@ -138,7 +138,7 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
             symbol="calendar.badge.minus"
             onPress={remove}
             disabled={saving}
-            background={Colors.light.errorBackground}
+            background={Colors.current.errorBackground}
             color={theme.error}
           />
         )}

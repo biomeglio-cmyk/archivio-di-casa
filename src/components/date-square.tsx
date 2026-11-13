@@ -15,7 +15,7 @@ type Props = {
 // Day and month in a 46 × 50 square (lists of deadlines)
 export function DateSquare({ iso, highlighted = false }: Props) {
   const date = parseISODate(iso);
-  const color = highlighted ? '#FFFFFF' : Colors.light.indigo;
+  const color = highlighted ? '#FFFFFF' : Colors.current.indigo;
   const content = (
     <>
       <Text style={[styles.day, { color }]} maxFontSizeMultiplier={1.2}>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     boxShadow: '0 6px 12px rgba(100, 90, 235, 0.25)',
   },
   idle: {
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
   },
   day: {
     fontSize: 18,

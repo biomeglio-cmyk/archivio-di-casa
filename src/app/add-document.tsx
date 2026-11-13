@@ -1,4 +1,5 @@
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { StatusBar } from 'expo-status-bar';
 import { router } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useEffect, useEffectEvent, useRef, useState } from 'react';
@@ -97,6 +98,8 @@ export default function AddDocumentScreen() {
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 16 }]}>
+      {/* Dark screen: light clock and battery in both themes */}
+      <StatusBar style="light" />
       <View style={styles.bar}>
         <DarkButton symbol="xmark" label="Chiudi" onPress={() => router.back()} />
         <Text style={styles.title} accessibilityRole="header">

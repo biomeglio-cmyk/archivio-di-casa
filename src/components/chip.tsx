@@ -26,8 +26,8 @@ export function Chip({
   onPress,
   accessibilityLabel,
   gradient = BRAND_GRADIENT,
-  tint = Colors.light.lilac,
-  tintText = Colors.light.text,
+  tint = Colors.current.lilac,
+  tintText = Colors.current.text,
 }: Props) {
   return (
     <Pressable

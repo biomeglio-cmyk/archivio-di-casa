@@ -101,7 +101,7 @@ function MonthButton({
       accessibilityLabel={label}
       hitSlop={4}
       style={styles.monthButton}>
-      <SymbolView name={symbol} tintColor={Colors.light.text} size={15} weight="semibold" />
+      <SymbolView name={symbol} tintColor={Colors.current.text} size={15} weight="semibold" />
     </Pressable>
   );
 }
@@ -116,14 +116,14 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   month: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   week: {
     marginTop: 10,
@@ -135,7 +135,7 @@ const styles = StyleSheet.create({
     fontSize: 11,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   grid: {
     marginTop: 6,
@@ -159,19 +159,19 @@ const styles = StyleSheet.create({
     boxShadow: '0 6px 12px rgba(100, 90, 235, 0.28)',
   },
   today: {
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
   },
   number: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   numberSelected: {
     color: '#FFFFFF',
     fontFamily: FONTS.bold,
   },
   numberToday: {
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
     fontFamily: FONTS.bold,
   },
 });

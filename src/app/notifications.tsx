@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     borderRadius: 28,
     borderCurve: 'continuous',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     boxShadow: '0 20px 50px rgba(28, 30, 70, 0.25)',
   },
   arrow: {
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     borderRadius: 3,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     transform: [{ rotate: '45deg' }],
   },
   head: {
@@ -156,13 +156,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   markAll: {
     fontSize: 10,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   content: {
     paddingBottom: 2,
@@ -172,7 +172,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   section: {
     marginTop: 16,
@@ -181,7 +181,7 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   items: {
     gap: 4,
@@ -192,10 +192,10 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
   },
   itemUnread: {
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   pressed: {
     opacity: 0.7,
@@ -221,18 +221,18 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   when: {
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   body: {
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
   dot: {
     width: 9,
@@ -247,13 +247,13 @@ const styles = StyleSheet.create({
     marginTop: 10,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   settingsText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
 });

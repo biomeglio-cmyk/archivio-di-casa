@@ -46,7 +46,7 @@ export function ConfirmDialog({
         accessibilityRole="alert"
         onAccessibilityEscape={onCancel}>
         <View style={styles.icon}>
-          <SymbolView name={symbol} tintColor={Colors.light.error} size={26} />
+          <SymbolView name={symbol} tintColor={Colors.current.error} size={26} />
         </View>
         <Text style={styles.title} accessibilityRole="header">
           {title}
@@ -91,10 +91,10 @@ export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) 
         styles.choice,
         {
           borderColor: checked ? accent : 'transparent',
-          backgroundColor: checked ? Colors.light.paleLilac : '#F7F7FA',
+          backgroundColor: checked ? Colors.current.paleLilac : Colors.current.elevated,
         },
       ]}>
-      <View style={[styles.ring, { borderColor: checked ? accent : Colors.light.dashed }]}>
+      <View style={[styles.ring, { borderColor: checked ? accent : Colors.current.dashed }]}>
         {checked && <View style={[styles.dot, { backgroundColor: accent }]} />}
       </View>
       <View style={styles.choiceTexts}>
@@ -119,14 +119,14 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     borderRadius: 30,
     borderCurve: 'continuous',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     boxShadow: '0 20px 50px rgba(28, 30, 70, 0.25)',
   },
   icon: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: Colors.light.errorBackground,
+    backgroundColor: Colors.current.errorBackground,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     lineHeight: 27,
     fontFamily: FONTS.bold,
     textAlign: 'center',
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   message: {
     marginTop: 8,
@@ -144,14 +144,14 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     fontFamily: FONTS.regular,
     textAlign: 'center',
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
   confirm: {
     marginTop: 18,
     alignSelf: 'stretch',
     minHeight: 54,
     borderRadius: 27,
-    backgroundColor: Colors.light.destructive,
+    backgroundColor: Colors.current.destructive,
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0 8px 18px rgba(217, 45, 32, 0.25)',
@@ -166,12 +166,12 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     minHeight: 52,
     borderRadius: 26,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   cancelLabel: {
-    color: Colors.light.text,
+    color: Colors.current.text,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
   },
@@ -208,11 +208,11 @@ const styles = StyleSheet.create({
   choiceLabel: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   choiceDetail: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
 });

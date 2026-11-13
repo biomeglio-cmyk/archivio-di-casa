@@ -1,40 +1,117 @@
 /**
- * The app colors, from docs/design-guide.md (Fondamenta grafiche). Sottomano is light only
- * (app.json userInterfaceStyle "light"), so there is one set: white pages with white cards
+ * The app colors, from docs/design-guide.md (Fondamenta grafiche): white pages with white cards
  * (a soft shadow sets them apart), lilac for fields and quiet buttons, indigo-lilac gradient
- * (constants/brand.ts) for the main actions.
+ * (constants/brand.ts) for the main actions; and the dark theme of the Impostazioni design (cards
+ * with a thin border instead of shadows). Both sets have the same keys.
+ *
+ * The theme is chosen ONCE, when the app starts (Impostazioni › Aspetto › Tema: Automatico follows
+ * the phone): every StyleSheet of the app is built from `Colors.current` when its file loads.
+ * Changing it restarts the JavaScript (settings/theme-mode.ts).
  */
 
 import '@/global.css';
 
-import { Platform } from 'react-native';
+import Storage from 'expo-sqlite/kv-store';
+import { Appearance, Platform } from 'react-native';
+
+const LIGHT = {
+  isDark: false,
+  text: '#1C1E2E', // "Inchiostro": main text, icons
+  background: '#FFFFFF', // every page
+  surface: '#FFFFFF', // cards, tiles, sheets (white on white, with the card shadow)
+  backgroundSelected: '#EEF0F5', // pressed rows; same as the separator
+  elevated: '#F4F5F8', // neutral fills inside a card (type buttons, inactive icons)
+  cardBorder: 'transparent', // light: cards are set apart by their shadow
+  textSecondary: '#6A6D80', // subtitles, labels, dates
+  textOnLilac: '#4B4E63', // notes and explanations on paleLilac
+  placeholder: '#8A8DA0', // placeholder text of the fields
+  iconGrey: '#4B5068', // grey icons (eye, copy, inactive choices)
+  accent: '#3B4FE0', // links, active item, "Vedi tutto"
+  indigo: '#4A3FD9', // icons and text on lilac
+  lilac: '#F1EFFD', // round buttons, fields, inactive filters
+  paleLilac: '#F7F6FE', // info boxes, notices
+  separator: '#EEF0F5', // lines between the rows of a card
+  switchOff: '#D6D8E4', // track of a switch that is off
+  segmentedActive: '#FFFFFF', // the chosen segment (a white pill)
+  segmentedActiveText: '#4A3FD9',
+  error: '#B42318', // destructive actions, "Da pagare" (on errorBackground)
+  errorBackground: '#FDECEC',
+  destructive: '#D92D20', // filled button of a delete confirmation
+  success: '#0B6B4F', // "Pagata", confirmations (on successBackground)
+  successBackground: '#E3F6EE',
+  badge: '#E5243B', // dot with a number
+  heart: '#E8457A', // the favorites heart
+  dashed: '#C9CCDA', // border of the dashed "add" tiles
+  scrim: 'rgba(28, 30, 70, 0.38)', // dimmed page behind sheets and menus
+};
+
+// "Tema notte" of docs/design-guide.md: the official dark palette
+const DARK: typeof LIGHT = {
+  isDark: true,
+  text: '#F2F3FA',
+  background: '#0F1020',
+  surface: '#1B1D33',
+  backgroundSelected: '#24263F',
+  elevated: '#24263F',
+  cardBorder: 'rgba(255, 255, 255, 0.07)',
+  textSecondary: '#A3A6BD',
+  textOnLilac: '#C3C5D9',
+  placeholder: '#6F7290',
+  iconGrey: '#B4B7CC',
+  accent: '#8E9BFF',
+  indigo: '#B3A8FF',
+  lilac: '#262849',
+  paleLilac: '#1F2140',
+  separator: '#2C2F4D',
+  switchOff: '#3A3D5C',
+  segmentedActive: '#1B1D33',
+  segmentedActiveText: '#F2F3FA',
+  error: '#FF8A80',
+  errorBackground: '#3A1A1E',
+  destructive: '#D92D20',
+  success: '#7FE0BC',
+  successBackground: '#15332A',
+  badge: '#FF4D5E',
+  heart: '#FF6F9B',
+  dashed: '#4A4D6E',
+  scrim: 'rgba(0, 0, 0, 0.55)',
+};
+
+// "Tema" of Impostazioni: kept on the phone
+export type ThemeMode = 'auto' | 'light' | 'dark';
+export const THEME_KEY = 'app.theme';
+
+export function readThemeMode(): ThemeMode {
+  try {
+    const saved = Storage.getItemSync(THEME_KEY);
+    return saved === 'light' || saved === 'dark' ? saved : 'auto';
+  } catch {
+    return 'auto';
+  }
+}
+
+// At start: tell iOS (tab bar, system sheets, alerts follow it), then pick the set
+function startTheme() {
+  const mode = readThemeMode();
+  Appearance.setColorScheme(mode === 'auto' ? 'unspecified' : mode);
+  const scheme = mode === 'auto' ? Appearance.getColorScheme() : mode;
+  return scheme === 'dark' ? DARK : LIGHT;
+}
 
 export const Colors = {
-  light: {
-    text: '#1C1E2E', // "Inchiostro": main text, icons
-    background: '#FFFFFF', // every page
-    surface: '#FFFFFF', // cards, tiles, sheets (white on white, with the card shadow)
-    backgroundSelected: '#EEF0F5', // pressed rows; same as the separator
-    textSecondary: '#6A6D80', // subtitles, labels, dates
-    textOnLilac: '#4B4E63', // notes and explanations on paleLilac
-    accent: '#3B4FE0', // links, active item, "Vedi tutto"
-    indigo: '#4A3FD9', // icons and text on lilac
-    lilac: '#F1EFFD', // round buttons, fields, inactive filters
-    paleLilac: '#F7F6FE', // info boxes, notices
-    separator: '#EEF0F5', // lines between the rows of a card
-    switchOff: '#D6D8E4', // track of a switch that is off
-    error: '#B42318', // destructive actions, "Da pagare" (on errorBackground)
-    errorBackground: '#FDECEC',
-    destructive: '#D92D20', // filled button of a delete confirmation
-    success: '#0B6B4F', // "Pagata", confirmations (on successBackground)
-    successBackground: '#E3F6EE',
-    badge: '#E5243B', // dot with a number
-    dashed: '#C9CCDA', // border of the dashed "add" tiles
-    scrim: 'rgba(28, 30, 70, 0.38)', // dimmed page behind sheets and menus
-  },
+  current: startTheme(),
 } as const;
 
-export type ThemeColor = keyof typeof Colors.light;
+// A section tint and the text on it, light and "Tema notte" values (design guide)
+export function softTint(light: string, dark: string): string {
+  return Colors.current.isDark ? dark : light;
+}
+
+export function onSoftTint(light: string, dark: string): string {
+  return Colors.current.isDark ? dark : light;
+}
+
+export type ThemeColor = Exclude<keyof typeof Colors.current, 'isDark'>;
 
 export const Fonts = Platform.select({
   ios: {
@@ -91,7 +168,7 @@ export const Radius = {
 
 // Shadows of the guide (CSS boxShadow strings, React Native 0.76+)
 export const Shadows = {
-  card: '0 6px 22px rgba(28, 30, 70, 0.08)',
+  card: Colors.current.isDark ? 'none' : '0 6px 22px rgba(28, 30, 70, 0.08)', // dark: a border instead
   sheet: '0 -10px 30px rgba(28, 30, 70, 0.15)',
   dialog: '0 20px 50px rgba(28, 30, 70, 0.25)',
 } as const;
@@ -108,16 +185,18 @@ export function iconShadow(rgb: string): string {
 
 // A white card: white, rounded 22, soft shadow. Spread it into a style array.
 export const CardSurface = {
-  backgroundColor: Colors.light.surface,
+  backgroundColor: Colors.current.surface,
   borderRadius: Radius.card,
   borderCurve: 'continuous',
   boxShadow: Shadows.card,
+  borderWidth: Colors.current.isDark ? 1 : 0, // dark: a 1px border, white 7%, instead of the shadow
+  borderColor: Colors.current.cardBorder,
 } as const;
 
 // A row of a white card drawn row by row (SectionList sections cannot have a container, so no
 // shared shadow): a thin separator-colored outline and rounded corners on the first and last row.
 export function cardRowEdge(first: boolean, last: boolean) {
-  const border = Colors.light.separator;
+  const border = Colors.current.separator;
   return {
     borderLeftWidth: 1,
     borderRightWidth: 1,

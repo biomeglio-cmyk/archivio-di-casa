@@ -59,7 +59,7 @@ export function DeadlineListRow({ document, near, onPress, onLongPress }: Props)
         ) : null}
       </View>
       {document.paymentStatus && <StatusBadge status={document.paymentStatus} />}
-      <SymbolView name="chevron.right" tintColor={Colors.light.textSecondary} size={15} weight="semibold" />
+      <SymbolView name="chevron.right" tintColor={Colors.current.textSecondary} size={15} weight="semibold" />
     </Pressable>
   );
 }
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   pressed: {
-    backgroundColor: Colors.light.backgroundSelected,
+    backgroundColor: Colors.current.backgroundSelected,
   },
   texts: {
     flex: 1,
@@ -101,18 +101,18 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 21,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   subtitle: {
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   subtitleNear: {
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
   subtitleOverdue: {
-    color: Colors.light.error,
+    color: Colors.current.error,
   },
 });

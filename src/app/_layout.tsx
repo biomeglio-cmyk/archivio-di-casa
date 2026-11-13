@@ -5,13 +5,12 @@ import {
   Onest_700Bold,
   useFonts,
 } from '@expo-google-fonts/onest';
-import { DefaultTheme, ThemeProvider } from 'expo-router';
+import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { SQLiteProvider } from 'expo-sqlite';
 import { Fragment } from 'react';
-import { Appearance } from 'react-native';
 
 import { useAppGeneration } from '@/backup/app-reload';
 import { AppLock } from '@/components/app-lock';
@@ -20,18 +19,29 @@ import { FONTS } from '@/constants/typography';
 import { Colors, Radius } from '@/constants/theme';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
 import { AppNotifications } from '@/notifications/app-notifications';
+import { followSystemTheme } from '@/settings/theme-mode';
 
-// Navigation theme with the app page color (white) behind every screen
-const LIGHT_THEME = { ...DefaultTheme, colors: { ...DefaultTheme.colors, background: Colors.light.background, card: Colors.light.surface } };
+// Navigation theme with the app page color behind every screen (light or dark, chosen at start)
+const APP_THEME = {
+  ...(Colors.current.isDark ? DarkTheme : DefaultTheme),
+  colors: {
+    ...(Colors.current.isDark ? DarkTheme : DefaultTheme).colors,
+    background: Colors.current.background,
+    card: Colors.current.surface,
+    text: Colors.current.text,
+    border: Colors.current.separator,
+    primary: Colors.current.accent,
+  },
+};
 
 // The root Stack starts on the tabs; sheets and modals are pushed on top of them
 export const unstable_settings = { anchor: '(tabs)' };
 
 SplashScreen.preventAutoHideAsync();
 
-// Light mode only, even when the iPhone is in dark mode: app.json says "light", and this also
-// forces the native parts (tab bar, sheets, alerts, pickers) where app.json is not applied (Expo Go)
-Appearance.setColorScheme('light');
+// The theme (Impostazioni › Aspetto › Tema) is applied by constants/theme.ts when the app starts;
+// with "Automatico" a change of the phone's appearance restarts the screens with the new colors
+followSystemTheme();
 
 // Root Stack: it holds the tab bar and the screens that slide up above the tabs.
 export default function RootLayout() {
@@ -60,10 +70,10 @@ export default function RootLayout() {
       databaseName={DATABASE_NAME}
       onInit={initDatabase}
       options={{ enableChangeListener: true }}>
-      <ThemeProvider value={LIGHT_THEME}>
+      <ThemeProvider value={APP_THEME}>
         <Fragment key={generation}>
-        {/* Dark clock and battery on the light screens */}
-        <StatusBar style="dark" />
+        {/* Clock and battery: dark on the light theme, light on the dark one */}
+        <StatusBar style={Colors.current.isDark ? 'light' : 'dark'} />
         {/* Reminders: scheduled at start, tapping one opens its document */}
         <AppNotifications />
         <Stack>

@@ -11,7 +11,7 @@ import { Segmented } from '@/components/segmented';
 import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { copyToClipboard, emailFiles, printFiles, saveToFiles, shareFiles } from '@/send/deliver';
@@ -31,7 +31,7 @@ import {
 } from '@/send/send-preferences';
 
 // Warnings: soft orange box, dark orange text
-const WARNING_COLORS = { text: '#B35400', background: '#FFF1E0' };
+const WARNING_COLORS = { text: onSoftTint('#B35400', '#FFB48A'), background: softTint('#FFF1E0', '#3A2418') };
 
 // Sheet "Invia" (docs/design/Invia.dc.html): /send?ids=12 for one document, /send?ids=3,7,9&label=…
 // for several. The document with "PDF unico · 2 pagine · 1,2 MB", PDF / Foto, then Email, WhatsApp,
@@ -191,7 +191,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       : 'Preparazione…';
   const ready = Boolean(prepared) && !delivering;
   const firstPhoto = single?.files.find((f) => f.kind === 'image');
-  const { tint, onTint } = single ? categoryTint(single.category.colors) : { tint: Colors.light.lilac, onTint: Colors.light.indigo };
+  const { tint, onTint } = single ? categoryTint(single.category.colors) : { tint: Colors.current.lilac, onTint: Colors.current.indigo };
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { paddingBottom: insets.bottom + 24 }]}>
@@ -247,8 +247,8 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
                 <SymbolView name={action.symbol} tintColor="#FFFFFF" size={26} />
               </LinearGradient>
             ) : (
-              <View style={[styles.actionIcon, { backgroundColor: Colors.light.lilac }]}>
-                <SymbolView name={action.symbol} tintColor={Colors.light.indigo} size={26} />
+              <View style={[styles.actionIcon, { backgroundColor: Colors.current.lilac }]}>
+                <SymbolView name={action.symbol} tintColor={Colors.current.indigo} size={26} />
               </View>
             )}
             <Text style={styles.actionLabel} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
@@ -301,7 +301,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
         <View style={styles.files}>
           {prepared.files.map((file) => (
             <View key={file.name} style={styles.fileRow}>
-              <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={Colors.light.indigo} size={20} />
+              <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={Colors.current.indigo} size={20} />
               <Text style={styles.fileName} numberOfLines={1}>
                 {file.name}
               </Text>
@@ -391,7 +391,7 @@ const styles = StyleSheet.create({
     width: 22,
     height: 3,
     borderRadius: 2,
-    backgroundColor: '#E6E8F0',
+    backgroundColor: Colors.current.separator,
   },
   miniShort: {
     width: 18,
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   metaRow: {
     flexDirection: 'row',
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   format: {
     marginTop: 18,
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
   actionLabel: {
     fontSize: 13,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   noteRow: {
     marginTop: 22,
@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   section: {
     marginTop: 22,
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   small: {
     marginTop: 6,
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   files: {
     marginTop: 14,
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   warning: {
     marginTop: 12,
@@ -510,13 +510,13 @@ const styles = StyleSheet.create({
     marginTop: 18,
     height: 50,
     borderRadius: 25,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   cancelText: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
 });

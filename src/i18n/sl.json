@@ -1,1 +1,1701 @@
-{}
+{
+  "common": {
+    "cancel": "Prekliči",
+    "ok": "V redu",
+    "done": "Končano",
+    "save": "Shrani",
+    "delete": "Izbriši",
+    "edit": "Uredi",
+    "close": "Zapri",
+    "confirm": "Potrdi",
+    "back": "Nazaj",
+    "next": "Naprej",
+    "share": "Deli",
+    "send": "Pošlji",
+    "search": "Iskanje",
+    "add": "Dodaj",
+    "remove": "Odstrani",
+    "retry": "Poskusi znova",
+    "continue": "Nadaljuj",
+    "yes": "Da",
+    "no": "Ne",
+    "restore": "Obnovi",
+    "settings": "Nastavitve",
+    "more": "Več",
+    "none": "Brez",
+    "documents_one": "{{count}} dokument",
+    "documents_two": "{{count}} dokumenta",
+    "documents_few": "{{count}} dokumenti",
+    "documents_other": "{{count}} dokumentov",
+    "pages_one": "{{count}} stran",
+    "pages_two": "{{count}} strani",
+    "pages_few": "{{count}} strani",
+    "pages_other": "{{count}} strani",
+    "photos_one": "{{count}} fotografija",
+    "photos_two": "{{count}} fotografiji",
+    "photos_few": "{{count}} fotografije",
+    "photos_other": "{{count}} fotografij",
+    "wholeFamily": "Vsa družina"
+  },
+  "dates": {
+    "today": "danes",
+    "tomorrow": "jutri",
+    "yesterday": "včeraj",
+    "inSpan": "čez {{span}}",
+    "spanAgo": "{{span}} nazaj",
+    "expiredYesterday": "poteklo včeraj",
+    "expiredFor": "poteklo {{span}} nazaj",
+    "days_one": "{{count}} dan",
+    "days_two": "{{count}} dneva",
+    "days_few": "{{count}} dni",
+    "days_other": "{{count}} dni",
+    "months_one": "{{count}} mesec",
+    "months_two": "{{count}} meseca",
+    "months_few": "{{count}} mesece",
+    "months_other": "{{count}} mesecev",
+    "years_one": "{{count}} leto",
+    "years_two": "{{count}} leti",
+    "years_few": "{{count}} leta",
+    "years_other": "{{count}} let"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Dokumenti",
+      "cards": "Kartice",
+      "utilities": "Položnice",
+      "home": "Dom",
+      "insurance": "Zavarovanja",
+      "warranties": "Garancije in računi",
+      "car": "Avto",
+      "tax": "Davčne olajšave",
+      "householdStaff": "Gospodinjska pomoč",
+      "school": "Šola",
+      "pet": "Ljubljenčki",
+      "password": "Gesla",
+      "other": "Drugo"
+    }
+  },
+  "language": {
+    "title": "Jezik",
+    "auto": "Samodejno",
+    "autoSubtitle": "Sledi jeziku telefona",
+    "search": "Iskanje jezikov",
+    "autoDetail": "Jezik iPhona: {{language}}",
+    "noResults": "Ni jezikov za „{{query}}“"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastelna",
+    "vivid": "Živahna",
+    "earth": "Zemlja",
+    "sea": "Morje",
+    "sunset": "Sončni zahod",
+    "night": "Noč"
+  },
+  "home": {
+    "welcome": "Dobrodošli v Sottomanu",
+    "hello": "Živjo!",
+    "searchPlaceholder": "Poišči dokument",
+    "favorites": "Priljubljeno",
+    "seeAll": "Pokaži vse",
+    "seeAllFavorites": "Vse priljubljeno",
+    "deadlines": "Roki",
+    "seeAllDeadlines": "Vsi roki",
+    "archive": "Arhiv",
+    "reorderDone": "Vrstni red končan",
+    "reorder": "Razvrsti",
+    "reorderCategories": "Razvrsti kategorije",
+    "reorderHint": "Povleci kategorije v vrstni red, ki ti ustreza.",
+    "alerts": {
+      "orderNotSaved": "Vrstnega reda ni bilo mogoče shraniti"
+    },
+    "newCategory": "Nova kategorija"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} kartica",
+    "cards_two": "{{count}} kartici",
+    "cards_few": "{{count}} kartice",
+    "cards_other": "{{count}} kartic"
+  },
+  "folder": {
+    "paidOn": "Plačano {{date}}",
+    "expiredOn": "Poteklo {{date}}",
+    "expiresOn": "Poteče {{date}}",
+    "addedOn": "Dodano {{date}}",
+    "newItem": {
+      "bill": "Nov račun",
+      "card": "Nova kartica",
+      "warranty": "Nova garancija",
+      "password": "Novo geslo",
+      "document": "Nov dokument"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Vse",
+      "documents": "Dokumenti",
+      "cards": "Kartice",
+      "deadlines": "Roki"
+    },
+    "paid": "plačano",
+    "expiresOn": "poteče {{date}}",
+    "folderSubtitle_one": "Mapa · {{count}} dokument",
+    "folderSubtitle_two": "Mapa · {{count}} dokumenta",
+    "folderSubtitle_few": "Mapa · {{count}} dokumenti",
+    "folderSubtitle_other": "Mapa · {{count}} dokumentov",
+    "card": "Kartica",
+    "deadlineSubtitle": "Rok · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Poišči dokument",
+    "fieldLabel": "Išči po svojih dokumentih",
+    "filter": "Filter",
+    "results_one": "{{count}} zadetek",
+    "results_two": "{{count}} zadetka",
+    "results_few": "{{count}} zadetki",
+    "results_other": "{{count}} zadetkov",
+    "noResults": "Ni zadetkov",
+    "noResultsHint": "Poskusi z drugo besedo, na primer z imenom trgovine.",
+    "hint": "Išči po imenih, mapah, vrstah, opombah, karticah in rokih."
+  },
+  "navigation": {
+    "home": "Domov",
+    "favorites": "Priljubljeno",
+    "family": "Družina",
+    "deadlines": "Roki",
+    "deadlinesToCheck_one": "Roki, {{count}} za preverjanje",
+    "deadlinesToCheck_two": "Roki, {{count}} za preverjanje",
+    "deadlinesToCheck_few": "Roki, {{count}} za preverjanje",
+    "deadlinesToCheck_other": "Roki, {{count}} za preverjanje",
+    "addLocked": "Dodajanje dokumenta zaklenjeno: dosežena je brezplačna omejitev",
+    "addDocument": "Dodaj dokument",
+    "titles": {
+      "editDocument": "Uredi dokument",
+      "pages": "Strani",
+      "deadline": "Rok",
+      "renewed": "Obnovljeno",
+      "previousVersion": "Prejšnja različica",
+      "newDocument": "Nov dokument",
+      "appearance": "Videz",
+      "backup": "Varnostna kopija",
+      "taxPackage": "Pošlji računovodji",
+      "trash": "Koš",
+      "terms": "Pogoji uporabe",
+      "about": "Info in zasebnost",
+      "newCard": "Nova kartica",
+      "editCard": "Uredi kartico"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Povleci za premik ali uporabi dejanji Premakni gor in Premakni dol",
+    "moveEarlier": "Premakni gor",
+    "moveLater": "Premakni dol",
+    "footer": "Kartice, osebe v Družini in Priljubljeno razvrščaš enako: pridrži vrstico in jo povleci za ročico na desni."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Pridrži: povleci za premik ali spusti za dejanja"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Vrstnega reda ni bilo mogoče shraniti"
+    },
+    "reorderTitle": "Razvrsti priljubljeno",
+    "reorderHint": "Pridrži priljubljeni element in ga povleci, kamor želiš.",
+    "yourFavorites": "Tvoje priljubljeno",
+    "title": "Priljubljeno",
+    "subtitle": "Kar želiš imeti pri roki",
+    "searchPlaceholder": "Išči v priljubljenih",
+    "viewList": "Seznam",
+    "viewGrid": "Mreža",
+    "count_one": "{{count}} priljubljeni",
+    "count_two": "{{count}} priljubljena",
+    "count_few": "{{count}} priljubljeni",
+    "count_other": "{{count}} priljubljenih",
+    "noMatch": "Ni priljubljenih za „{{query}}“.",
+    "empty": "Še nimaš priljubljenih.",
+    "footer": "Tapni srce na kateremkoli dokumentu, da ga dodaš sem.",
+    "footerGrid": "Tapni srce na kateremkoli dokumentu, da ga dodaš sem. Za razvrščanje pridrži ploščico in jo povleci.",
+    "footerList": "Tapni srce na kateremkoli dokumentu, da ga dodaš sem. Za razvrščanje pridrži vrstico.",
+    "rowHint": "Pridrži za razvrščanje priljubljenih",
+    "unpin": "Odstrani iz priljubljenih",
+    "expires": "poteče {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} za plačilo",
+    "alerts": {
+      "orderNotSaved": "Vrstnega reda ni bilo mogoče shraniti"
+    },
+    "actions": {
+      "editCategory": "Uredi kategorijo",
+      "sendToAccountant": "Pošlji računovodji",
+      "selectAndSend": "Izberi in pošlji",
+      "reorder": "Razvrsti",
+      "deleteCategory": "Izbriši kategorijo"
+    },
+    "moreLabel": "Uredi ali izbriši kategorijo {{name}}",
+    "searchIn": "Išči v: {{name}}",
+    "viewList": "Seznam",
+    "viewGrid": "Mreža",
+    "reorderHint": "Pridrži in povleci dokumente v vrstni red, ki ti ustreza.",
+    "allTypes": "Vse",
+    "noDocumentsFound": "Ni najdenih dokumentov.",
+    "sendTogether": "Pošlji skupaj ({{count}})",
+    "sheetTitle": "Kategorija {{name}}"
+  },
+  "folderRow": {
+    "due": "za plačilo",
+    "paid": "plačano"
+  },
+  "homeSections": {
+    "expired": "Poteklo",
+    "expiresToday": "Poteče danes",
+    "expiresTomorrow": "Poteče jutri",
+    "expiresInDays_one": "Poteče čez {{count}} dan",
+    "expiresInDays_two": "Poteče čez {{count}} dneva",
+    "expiresInDays_few": "Poteče čez {{count}} dni",
+    "expiresInDays_other": "Poteče čez {{count}} dni",
+    "expiresOn": "Poteče {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Odstrani iz priljubljenih",
+    "pin": "Dodaj med priljubljene"
+  },
+  "searchBar": {
+    "clear": "Počisti besedilo"
+  },
+  "documentGrid": {
+    "addDocument": "Dodaj dokument"
+  },
+  "homeHeader": {
+    "menu": "Meni",
+    "notifications": "Obvestila",
+    "notificationsUnread_one": "Obvestila, {{count}} neprebrano",
+    "notificationsUnread_two": "Obvestila, {{count}} neprebrani",
+    "notificationsUnread_few": "Obvestila, {{count}} neprebrana",
+    "notificationsUnread_other": "Obvestila, {{count}} neprebranih"
+  },
+  "demoData": {
+    "people": {
+      "step": "Korak",
+      "mom": "Mama",
+      "dad": "Oče"
+    },
+    "documents": {
+      "idCard": "Osebna izkaznica",
+      "drivingLicence": "Vozniško dovoljenje",
+      "passport": "Potni list",
+      "electricityBill": "Račun za elektriko",
+      "carInsurance": "Avtomobilsko zavarovanje",
+      "carTax": "Registracija avta",
+      "washingMachineWarranty": "Garancija pralnega stroja",
+      "gymCard": "Kartica za fitnes",
+      "rentalContract": "Najemna pogodba",
+      "pharmacyReceipt": "Račun iz lekarne",
+      "reportCard": "Šolsko spričevalo"
+    },
+    "notes": {
+      "electricityBill": "Trajnik pri banki"
+    }
+  },
+  "documentTypes": {
+    "documents": "Osebna izkaznica|Vozniško dovoljenje|Potni list|Kartica zdravstvenega zavarovanja|Davčna številka",
+    "cards": "Zvestoba|Fitnes|Knjižnica|Prevoz|Članstvo",
+    "utilities": "Elektrika|Plin|Voda|Internet|Telefon|Odpadki",
+    "home": "Najemnina|Kredit|Rezervni sklad|Vzdrževanje|Pogodba",
+    "insurance": "Avto|Dom|Zdravstveno|Življenjsko|Potovalno",
+    "warranties": "Gospodinjski aparat|Elektronika|Pohištvo|Račun",
+    "car": "Vinjeta|Zavarovanje|Tehnični pregled|Servis|Prometno dovoljenje",
+    "tax": "Lekarna|Pregled|Zobozdravnik|Laboratorij|Šport|Šola",
+    "householdStaff": "Plačilna lista|Prispevki|Pogodba",
+    "school": "Vpis|Spričevalo|Potrdilo|Kosilo|Ekskurzija",
+    "pet": "Potni list živali|Cepljenje|Veterinar|Mikročip",
+    "password": "E-pošta|Banka|Družbena omrežja|Wi‑Fi|Služba"
+  },
+  "pageLabels": {
+    "front": "Spredaj",
+    "back": "Zadaj",
+    "page": "Stran {{number}}"
+  },
+  "statusBadge": {
+    "due": "Za plačilo",
+    "paid": "Plačano"
+  },
+  "addActions": {
+    "openFileFailed": "Datoteke ni bilo mogoče odpreti"
+  },
+  "pickFiles": {
+    "takePhoto": "Fotografiraj",
+    "choosePhoto": "Izberi iz fotografij",
+    "removePhoto": "Odstrani fotografijo"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Več strani",
+      "text": "Več strani lahko optično prebereš zapored: preden tapneš Shrani, umesti naslednjo stran v kader."
+    },
+    "cardTip": {
+      "title": "Prave barve",
+      "text": "Za prave barve kartice tapni gumb za filtre v skenerju in izberi „Fotografija“."
+    },
+    "gotIt": "Razumem"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Potreben je dostop do kamere",
+    "permissionText": "Sottomano uporablja kamero samo za fotografiranje tvojih dokumentov.",
+    "allow": "Dovoli",
+    "openSettings": "Odpri Nastavitve",
+    "readable": "Je berljivo?",
+    "pageReadable": "Stran {{number}}: je berljiva?",
+    "retake": "Ponovi",
+    "addPage": "Dodaj stran",
+    "frameDocument": "Umesti dokument v kader",
+    "framePage": "Umesti stran {{number}} v kader",
+    "shoot": "Fotografiraj",
+    "finishWithPages_one": "Končano, {{count}} stran",
+    "finishWithPages_two": "Končano, {{count}} strani",
+    "finishWithPages_few": "Končano, {{count}} strani",
+    "finishWithPages_other": "Končano, {{count}} strani"
+  },
+  "coverField": {
+    "label": "Naslovnica",
+    "photo": "Fotografija",
+    "color": "Barva",
+    "noPhotoHint": "Brez fotografije je prikazana barva: dodaj stran, da bo njena fotografija naslovnica.",
+    "categoryColor": "Barva mape",
+    "colorNumber": "Barva {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Strani",
+    "pinned": "Priljubljeno",
+    "pin": "Priljubi",
+    "renewed": "Obnovljeno",
+    "delete": "Izbriši"
+  },
+  "documentFilesView": {
+    "document": "Dokument",
+    "openFailed": "Dokumenta ni bilo mogoče odpreti",
+    "pageOfSwipe": "Stran {{number}} od {{total}} · podrsaj za listanje",
+    "openFullScreen": "{{label}}, odpri v celozaslonskem načinu",
+    "missingFile": "Datoteke ni v tem telefonu."
+  },
+  "filesEditor": {
+    "addBack": "Dodaj hrbtno stran",
+    "addPage": "Dodaj stran",
+    "scan": "Skeniraj",
+    "photograph": "Fotografiraj",
+    "fromPhotos": "Iz fotografij",
+    "scannerUnavailableTitle": "Skener ni na voljo",
+    "scannerUnavailableMessage": "Odstrani strani z ✕ in dodaj nove.",
+    "replacePdf": "Zamenjaj PDF",
+    "importPdf": "Uvozi PDF",
+    "rescanAll": "Znova skeniraj vse",
+    "openFileFailed": "Datoteke ni bilo mogoče odpreti",
+    "page": "Stran",
+    "newTag": "novo",
+    "moveBefore": "Premakni {{name}} gor",
+    "moveAfter": "Premakni {{name}} dol",
+    "removePage": "Odstrani {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Dokumenta ni mogoče najti.",
+    "noPages": "Ni strani",
+    "photoPages_one": "Fotografija, {{count}} stran",
+    "photoPages_two": "Fotografije, {{count}} strani",
+    "photoPages_few": "Fotografije, {{count}} strani",
+    "photoPages_other": "Fotografije, {{count}} strani",
+    "amount": "Znesek",
+    "expired": "poteklo",
+    "inDays_one": "čez {{count}} dan",
+    "inDays_two": "čez {{count}} dneva",
+    "inDays_few": "čez {{count}} dni",
+    "inDays_other": "čez {{count}} dni",
+    "deadline": "Rok",
+    "folder": "Mapa",
+    "status": "Stanje",
+    "person": "Oseba",
+    "number": "Številka",
+    "notes": "Opombe",
+    "inCalendar": "V koledarju",
+    "view": "Prikaži dokument",
+    "unpin": "Odstrani iz priljubljenih",
+    "pin": "Dodaj med priljubljene",
+    "addPages": "Dodaj strani",
+    "renewed": "Obnovljeno",
+    "delete": "Izbriši",
+    "details": "Podrobnosti",
+    "remindMe": "Opomni me",
+    "reminderNeedsDeadline": "Dodaj rok, da dobiš opomnik",
+    "reminderWhen": "Opomnik: {{when}}",
+    "noReminder": "Brez opomnika",
+    "previousVersions": "Prejšnje različice",
+    "versionUntil": "Do {{date}}",
+    "versionExpired": "poteklo {{date}}",
+    "paidOnMarkDue": "Plačano {{date}} · označi kot neplačano",
+    "markDue": "Označi kot neplačano",
+    "markPaid": "Označi kot plačano",
+    "firstOf": "1 od {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Za plačilo",
+    "statusPaid": "Plačano",
+    "saveFailed": "Shranjevanje ni uspelo",
+    "folder": "Mapa",
+    "person": "Oseba",
+    "type": "Vrsta",
+    "otherType": "Vnesi drugo …",
+    "noType": "Brez vrste",
+    "typeExample": "Na primer: Elektrika, Vinjeta, Zobozdravnik",
+    "dueOn": "Dne {{date}}",
+    "noDeadline": "Brez roka",
+    "nameSection": "Ime",
+    "namePlaceholder": "Ime dokumenta",
+    "whereSection": "Kam ga shraniti",
+    "choose": "Izberi …",
+    "deadlineSection": "Rok",
+    "addDeadline": "Dodaj rok",
+    "remindMe": "Opomni me",
+    "whenToRemind": "Kdaj te opomniti",
+    "repeats": "Ponavljanje",
+    "never": "Nikoli",
+    "everySpan": "Vsakih {{span}}",
+    "every": "Vsakih",
+    "notesSection": "Opombe",
+    "notesPlaceholder": "Na primer: plačano s trajnikom, zahtevaj vračilo …",
+    "pin": "Dodaj med priljubljene",
+    "pinSubtitle": "Takoj ga najdeš na začetnem zaslonu",
+    "amountSection": "Znesek in stanje",
+    "amount": "Znesek",
+    "amountInEuro": "Znesek v evrih",
+    "accessSection": "Prijava",
+    "username": "Uporabniško ime",
+    "usernamePlaceholder": "ime@primer.si",
+    "password": "Geslo",
+    "passwordUnchanged": "•••••••• (nespremenjeno)",
+    "passwordNote": "Geslo ostane samo v obesku za ključe v iPhonu.",
+    "numberSection": "Številka dokumenta",
+    "numberPlaceholder": "Npr. 001234567",
+    "saveChanges": "Shrani spremembe",
+    "saveDocument": "Shrani dokument",
+    "amountHint": "Vnesi znesek tako: {{example}}.",
+    "missingNameAndFolder": "Za shranjevanje vnesi ime in izberi mapo.",
+    "missingName": "Za shranjevanje vnesi ime.",
+    "missingFolder": "Za shranjevanje izberi mapo.",
+    "deleteDocument": "Izbriši dokument"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Skeniraj",
+      "photos": "Iz fotografij",
+      "pdf": "Iz datoteke PDF",
+      "card": "Kartica",
+      "manual": "Ročno"
+    },
+    "hintFirst": "Umesti dokument v kader · telefon drži pri miru",
+    "hintNext": "Stran {{number}} zajeta · umesti naslednjo",
+    "title": "Nov dokument",
+    "flashOff": "Izklopi bliskavico",
+    "flashOn": "Vklopi bliskavico",
+    "scanWithIos": "Skeniraj s skenerjem iOS",
+    "tapToScan": "Tapni za skeniranje: robove najde sam",
+    "permissionTitle": "Potreben je dostop do kamere",
+    "permissionText": "Sottomano jo uporablja samo za fotografiranje tvojih dokumentov.",
+    "allow": "Dovoli",
+    "openSettings": "Odpri Nastavitve",
+    "howToAdd": "Kako dodati",
+    "chooseFromGallery": "Izberi iz knjižnice",
+    "shoot": "Fotografiraj",
+    "goOnWith_one": "Nadaljuj z {{count}} stranjo",
+    "goOnWith_two": "Nadaljuj z {{count}} stranema",
+    "goOnWith_few": "Nadaljuj s {{count}} stranmi",
+    "goOnWith_other": "Nadaljuj s {{count}} stranmi",
+    "noPages": "Ni strani",
+    "countNext": "naprej ›",
+    "countPages": "strani"
+  },
+  "newDocument": {
+    "readTitle": "Prebrano iz dokumenta",
+    "readText": "Ime iz datoteke: {{name}}. Preveri ga in po potrebi popravi.",
+    "checkTitle": "Preveri podatke",
+    "checkText_one": "Zajeta je {{count}} stran. Vnesi ime in, če obstaja, rok: najdeš ga v Rokih.",
+    "checkText_two": "Zajeti sta {{count}} strani. Vnesi ime in, če obstaja, rok: najdeš ga v Rokih.",
+    "checkText_few": "Zajete so {{count}} strani. Vnesi ime in, če obstaja, rok: najdeš ga v Rokih.",
+    "checkText_other": "Zajetih je {{count}} strani. Vnesi ime in, če obstaja, rok: najdeš ga v Rokih.",
+    "heading": "Nov dokument"
+  },
+  "editDocument": {
+    "heading": "Uredi dokument"
+  },
+  "documentVersion": {
+    "replacedOn": "Zamenjano {{date}}",
+    "expiredOn": "poteklo {{date}}",
+    "previewTitle": "{{title}} (prejšnja različica)"
+  },
+  "documentPages": {
+    "saveFailed": "Strani ni bilo mogoče shraniti"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Brisanje ni uspelo",
+    "title": "Izbrišem {{title}}?",
+    "message_one": "Dokument in njegov opomnik gresta v Koš. Iz Meni › Koš ga lahko obnoviš še {{count}} dan.",
+    "message_two": "Dokument in njegov opomnik gresta v Koš. Iz Meni › Koš ga lahko obnoviš še {{count}} dneva.",
+    "message_few": "Dokument in njegov opomnik gresta v Koš. Iz Meni › Koš ga lahko obnoviš še {{count}} dni.",
+    "message_other": "Dokument in njegov opomnik gresta v Koš. Iz Meni › Koš ga lahko obnoviš še {{count}} dni.",
+    "confirm": "Izbriši dokument"
+  },
+  "renew": {
+    "saveFailed": "Shranjevanje ni uspelo",
+    "deadline": "Rok",
+    "repeatFooter": "{{repeat}}: nov datum se izračuna iz starega.",
+    "was": "Prej",
+    "newDeadline": "Nov rok",
+    "newDocument": "Nov dokument",
+    "withScanFooter": "Trenutne strani postanejo „Prejšnja različica“, ki jo najdeš v podrobnostih.",
+    "withoutScanFooter": "Vklopi, če imaš nov dokument za skeniranje.",
+    "addNewScan": "Dodaj nov sken"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · pomakni se navzdol",
+    "pagesSubtitle_one": "{{count}} stran",
+    "pagesSubtitle_two": "{{count}} strani · pomakni se navzdol",
+    "pagesSubtitle_few": "{{count}} strani · pomakni se navzdol",
+    "pagesSubtitle_other": "{{count}} strani · pomakni se navzdol",
+    "pageOf": "Stran {{number}} od {{total}}",
+    "noPages": "Ta dokument nima strani.",
+    "zoom": "Povečava",
+    "zoomOut": "Pomanjšaj",
+    "zoomIn": "Povečaj",
+    "pageShort": "{{number}} od {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "dan",
+      "day_two": "dneva",
+      "day_few": "dni",
+      "day_other": "dni",
+      "week_one": "teden",
+      "week_two": "tedna",
+      "week_few": "tedne",
+      "week_other": "tednov",
+      "month_one": "mesec",
+      "month_two": "meseca",
+      "month_few": "mesece",
+      "month_other": "mesecev",
+      "year_one": "leto",
+      "year_two": "leti",
+      "year_few": "leta",
+      "year_other": "let"
+    },
+    "count": {
+      "day_one": "{{count}} dan",
+      "day_two": "{{count}} dneva",
+      "day_few": "{{count}} dni",
+      "day_other": "{{count}} dni",
+      "week_one": "{{count}} teden",
+      "week_two": "{{count}} tedna",
+      "week_few": "{{count}} tedne",
+      "week_other": "{{count}} tednov",
+      "month_one": "{{count}} mesec",
+      "month_two": "{{count}} meseca",
+      "month_few": "{{count}} mesece",
+      "month_other": "{{count}} mesecev",
+      "year_one": "{{count}} leto",
+      "year_two": "{{count}} leti",
+      "year_few": "{{count}} leta",
+      "year_other": "{{count}} let"
+    },
+    "every": {
+      "day_one": "Vsak dan",
+      "day_two": "Vsaka {{count}} dneva",
+      "day_few": "Vsake {{count}} dni",
+      "day_other": "Vsakih {{count}} dni",
+      "week_one": "Vsak teden",
+      "week_two": "Vsaka {{count}} tedna",
+      "week_few": "Vsake {{count}} tedne",
+      "week_other": "Vsakih {{count}} tednov",
+      "month_one": "Vsak mesec",
+      "month_two": "Vsaka {{count}} meseca",
+      "month_few": "Vsake {{count}} mesece",
+      "month_other": "Vsakih {{count}} mesecev",
+      "year_one": "Vsako leto",
+      "year_two": "Vsaki {{count}} leti",
+      "year_few": "Vsaka {{count}} leta",
+      "year_other": "Vsakih {{count}} let"
+    },
+    "repeats": {
+      "day_one": "Ponovi se vsak dan",
+      "day_two": "Ponovi se vsaka {{count}} dneva",
+      "day_few": "Ponovi se vsake {{count}} dni",
+      "day_other": "Ponovi se vsakih {{count}} dni",
+      "week_one": "Ponovi se vsak teden",
+      "week_two": "Ponovi se vsaka {{count}} tedna",
+      "week_few": "Ponovi se vsake {{count}} tedne",
+      "week_other": "Ponovi se vsakih {{count}} tednov",
+      "month_one": "Ponovi se vsak mesec",
+      "month_two": "Ponovi se vsaka {{count}} meseca",
+      "month_few": "Ponovi se vsake {{count}} mesece",
+      "month_other": "Ponovi se vsakih {{count}} mesecev",
+      "year_one": "Ponovi se vsako leto",
+      "year_two": "Ponovi se vsaki {{count}} leti",
+      "year_few": "Ponovi se vsaka {{count}} leta",
+      "year_other": "Ponovi se vsakih {{count}} let"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Zahteva pozornost",
+    "thisWeek": "Ta teden",
+    "upcomingNone": "V prihodnjih mesecih ni ničesar",
+    "upcoming_one": "{{count}} opravilo v prihodnjih mesecih",
+    "upcoming_two": "{{count}} opravili v prihodnjih mesecih",
+    "upcoming_few": "{{count}} opravila v prihodnjih mesecih",
+    "upcoming_other": "{{count}} opravil v prihodnjih mesecih"
+  },
+  "deadlineOptions": {
+    "sameDay": "Na dan roka",
+    "daysBefore_one": "{{count}} dan prej",
+    "daysBefore_two": "{{count}} dneva prej",
+    "daysBefore_few": "{{count}} dni prej",
+    "daysBefore_other": "{{count}} dni prej",
+    "defaultChoice": "{{label}} (privzeto)"
+  },
+  "personRoles": {
+    "you": "Ti",
+    "choice": {
+      "me": "To sem jaz",
+      "partner": "Partner",
+      "child": "Sin ali hči",
+      "parent": "Starš",
+      "sibling": "Brat ali sestra",
+      "other": "Drugo"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Kategorija „Drugo“ ne obstaja.",
+    "otherNotDeletable": "Kategorije „Drugo“ ni mogoče izbrisati."
+  },
+  "deadlineChip": {
+    "overdue": "Poteklo",
+    "today": "Danes",
+    "dueToday": "Zapade danes",
+    "dueIn_one": "Čez {{count}} dan",
+    "dueIn_two": "Čez {{count}} dneva",
+    "dueIn_few": "Čez {{count}} dni",
+    "dueIn_other": "Čez {{count}} dni"
+  },
+  "deadlineListRow": {
+    "hint": "Pridrži za urejanje ali odstranitev roka",
+    "statusDue": "za plačilo",
+    "statusPaid": "plačano"
+  },
+  "deadlineSection": {
+    "title": "Rok",
+    "emptyFooter": "Z opomnikom v telefonu in, če je vklopljen, v koledarju „Sottomano“.",
+    "add": "Dodaj rok",
+    "expiresOn": "Zapade",
+    "repeats": "Ponavljanje",
+    "never": "Nikoli",
+    "reminder": "Opomnik"
+  },
+  "dateCalendar": {
+    "previousMonth": "Prejšnji mesec",
+    "nextMonth": "Naslednji mesec"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Naslednji teden",
+    "previousWeek": "Prejšnji teden",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} rok",
+    "dayWithDeadlines_two": "{{day}}, {{count}} roka",
+    "dayWithDeadlines_few": "{{day}}, {{count}} roki",
+    "dayWithDeadlines_other": "{{day}}, {{count}} rokov"
+  },
+  "deadlines": {
+    "title": "Roki",
+    "newReminder": "Nov opomnik",
+    "week": "Teden",
+    "month": "Mesec",
+    "openDocument": "Odpri dokument",
+    "editDeadline": "Uredi rok",
+    "markDue": "Označi kot neplačano",
+    "markPaid": "Označi kot plačano",
+    "removeDeadline": "Odstrani rok",
+    "removeAlert": {
+      "title": "Odstranim rok?",
+      "message": "Dokument ostane; odstranita se njegov opomnik in dogodek v koledarju.",
+      "confirm": "Odstrani"
+    },
+    "emptyTitle": "Ni prihajajočih rokov",
+    "emptyText": "Tapni +, da dodaš dokument z rokom: prikazal se bo tukaj in v koledarju.",
+    "sheetSubtitle": "Zapade {{date}}",
+    "dayRepeats": "se ponavlja",
+    "dayReminder": "opomnik",
+    "dayEmpty": "Na ta dan ni rokov"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Shranjevanje ni uspelo",
+    "date": "Datum",
+    "footer": "Opomnik pride v telefon; z vklopljenim koledarjem je rok tudi v „Sottomano“.",
+    "every": "Vsakih"
+  },
+  "family": {
+    "title": "Družina",
+    "subtitle": "Profil za vsakogar doma",
+    "addPerson": "Dodaj osebo",
+    "members": "Člani",
+    "orderSaveFailed": "Vrstnega reda ni bilo mogoče shraniti",
+    "reorderTitle": "Razvrsti družino",
+    "reorderHint": "Pridrži osebo in jo povleci, kamor želiš.",
+    "privacyNote": "Vse ostane v tem telefonu. Če želiš komu poslati dokument, ga odpri in tapni Pošlji.",
+    "youSpoken": "ti",
+    "reorderA11yHint": "Pridrži za razvrščanje družine",
+    "expiring_one": "{{count}} poteka",
+    "expiring_two": "{{count}} potekata",
+    "expiring_few": "{{count}} potekajo",
+    "expiring_other": "{{count}} poteka"
+  },
+  "personScreen": {
+    "photoFailed": "Fotografije ni bilo mogoče uporabiti",
+    "editPerson": "Uredi osebo",
+    "selectAndSend": "Izberi in pošlji",
+    "deletePerson": "Izbriši osebo",
+    "moreA11y": "Uredi ali izbriši: {{name}}",
+    "changePhoto": "Spremeni fotografijo",
+    "editProfile": "Uredi profil",
+    "documentsSection": "Dokumenti · {{count}}",
+    "addDocument": "Dodaj dokument",
+    "sendTogether": "Pošlji skupaj ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Shranjevanje ni uspelo",
+    "newPerson": "Nova oseba",
+    "addPhoto": "Dodaj fotografijo",
+    "name": "Ime",
+    "namePlaceholder": "Kako je ime?",
+    "role": "Kdo je",
+    "roleA11y": "Kdo ti je: {{role}}",
+    "note": "Profil ostane v tem telefonu. Pomaga ti imeti dokumente vseh v redu.",
+    "addToFamily": "Dodaj v družino",
+    "roleSheetTitle": "Kdo ti je"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Brisanje ni uspelo",
+    "title": "Izbrišem kategorijo {{name}}?",
+    "messageWithDocuments_one": "Vsebuje {{count}} dokument. Kaj želiš storiti z njim?",
+    "messageWithDocuments_two": "Vsebuje {{count}} dokumenta. Kaj želiš storiti z njima?",
+    "messageWithDocuments_few": "Vsebuje {{count}} dokumente. Kaj želiš storiti z njimi?",
+    "messageWithDocuments_other": "Vsebuje {{count}} dokumentov. Kaj želiš storiti z njimi?",
+    "messageWithDocumentsRestorable_one": "Vsebuje {{count}} dokument. Kaj želiš storiti z njim? Kategorijo lahko obnoviš v Nova kategorija.",
+    "messageWithDocumentsRestorable_two": "Vsebuje {{count}} dokumenta. Kaj želiš storiti z njima? Kategorijo lahko obnoviš v Nova kategorija.",
+    "messageWithDocumentsRestorable_few": "Vsebuje {{count}} dokumente. Kaj želiš storiti z njimi? Kategorijo lahko obnoviš v Nova kategorija.",
+    "messageWithDocumentsRestorable_other": "Vsebuje {{count}} dokumentov. Kaj želiš storiti z njimi? Kategorijo lahko obnoviš v Nova kategorija.",
+    "messageEmpty": "Kategorija je prazna.",
+    "messageEmptyRestorable": "Kategorija je prazna. Obnoviš jo lahko v Nova kategorija.",
+    "deleteAll": "Izbriši vse",
+    "confirm": "Izbriši kategorijo",
+    "choicesA11y": "Kaj storiti z dokumenti",
+    "moveLabel": "Premakni v Drugo",
+    "moveDetailPassword": "Ostanejo v aplikaciji, v kategoriji Drugo, brez uporabniškega imena in gesla",
+    "moveDetail": "Ostanejo v aplikaciji, v splošni mapi",
+    "trashLabel": "Izbriši jih",
+    "trashDetail_one": "Gredo v Koš: obnoviš jih lahko še {{count}} dan",
+    "trashDetail_two": "Gredo v Koš: obnoviš jih lahko še {{count}} dneva",
+    "trashDetail_few": "Gredo v Koš: obnoviš jih lahko še {{count}} dni",
+    "trashDetail_other": "Gredo v Koš: obnoviš jih lahko še {{count}} dni"
+  },
+  "deletePerson": {
+    "title": "Odstranim osebo {{name}} iz družine?",
+    "messageWithDocuments_one": "{{name}} ima {{count}} dokument. Kaj želiš storiti z njim?",
+    "messageWithDocuments_two": "{{name}} ima {{count}} dokumenta. Kaj želiš storiti z njima?",
+    "messageWithDocuments_few": "{{name}} ima {{count}} dokumente. Kaj želiš storiti z njimi?",
+    "messageWithDocuments_other": "{{name}} ima {{count}} dokumentov. Kaj želiš storiti z njimi?",
+    "messageEmpty": "Profil bo odstranjen iz tega telefona.",
+    "familyLabel": "Premakni v Vsa družina",
+    "familyDetail": "Ostanejo v aplikaciji, vidni vsem",
+    "trashDetail_one": "Gredo s profilom: v Košu ostanejo {{count}} dan",
+    "trashDetail_two": "Gredo s profilom: v Košu ostanejo {{count}} dneva",
+    "trashDetail_few": "Gredo s profilom: v Košu ostanejo {{count}} dni",
+    "trashDetail_other": "Gredo s profilom: v Košu ostanejo {{count}} dni"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Ljubljenčki",
+      "document": "Dokument",
+      "home": "Dom",
+      "car": "Avto",
+      "health": "Zdravje",
+      "school": "Šola",
+      "work": "Služba",
+      "keys": "Ključi",
+      "travel": "Potovanja",
+      "expenses": "Stroški"
+    },
+    "restoreFailed": "Obnovitev ni uspela",
+    "editTitle": "Uredi kategorijo",
+    "newTitle": "Nova kategorija",
+    "restoreSection": "Obnovi privzeto kategorijo",
+    "restoreA11y": "Obnovi {{name}}",
+    "restoreHint": "Vrne se taka, kot je bila, z barvami, ikono in polji. Ali pa spodaj ustvari novo.",
+    "previewA11y": "Predogled kategorije",
+    "namePlaceholder": "Npr. Ljubljenčki",
+    "nameA11y": "Ime kategorije",
+    "color": "Barva",
+    "paletteColor": "Barva iz Videza",
+    "colorNumber": "Barva {{number}}",
+    "followsPaletteHint": "Barva sledi paleti, izbrani v Videzu.",
+    "ownColorHint": "Tvoja barva: z Videzom se ne spreminja.",
+    "icon": "Ikona",
+    "forWhom": "Za koga",
+    "forWhomA11y": "Za koga je ta kategorija: {{name}}",
+    "forWhomHint": "Novi dokumenti v tej kategoriji se začnejo s to osebo.",
+    "create": "Ustvari kategorijo"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Spletno mesto ali aplikacija",
+        "namePlaceholder": "Na primer: Spletna banka",
+        "userLabel": "Uporabniško ime ali e-pošta",
+        "userPlaceholder": "ime@email.si",
+        "passwordLabel": "Geslo",
+        "notePlaceholder": "Na primer: varnostno vprašanje, obnovitvena koda …"
+      },
+      "wifi": {
+        "name": "Wi‑Fi",
+        "namePlaceholder": "Na primer: Domači Wi‑Fi",
+        "userLabel": "Ime omrežja",
+        "userPlaceholder": "DomNovak_5G",
+        "passwordLabel": "Geslo omrežja",
+        "notePlaceholder": "Na primer: usmerjevalnik je v dnevni sobi, za televizorjem …"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Na primer: Debetna kartica",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Na primer: Julijina kartica …"
+      },
+      "other": {
+        "name": "Drugo",
+        "namePlaceholder": "Na primer: Domači alarm",
+        "userLabel": "Uporabniško ime",
+        "userPlaceholder": "Neobvezno",
+        "passwordLabel": "Koda ali geslo",
+        "notePlaceholder": "Za kaj je, kje se uporablja …"
+      }
+    },
+    "colors": {
+      "aqua": "Akva",
+      "indigo": "Indigo",
+      "apricot": "Marelica",
+      "pink": "Roza",
+      "mint": "Meta",
+      "sky": "Nebo",
+      "graphite": "Grafit"
+    },
+    "icons": {
+      "key": "Ključ",
+      "lock": "Ključavnica",
+      "globe": "Globus",
+      "wifi": "Wi‑Fi",
+      "bank": "Banka",
+      "card": "Kartica",
+      "mail": "E-pošta",
+      "home": "Dom",
+      "car": "Avto",
+      "shield": "Ščit",
+      "cart": "Voziček",
+      "star": "Zvezda"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Samo števke",
+    "strength": {
+      "weak": "Šibko",
+      "fair": "Srednje",
+      "good": "Dobro",
+      "strong": "Močno"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Potrdi za vklop zaklepanja"
+  },
+  "appLock": {
+    "prompt": "Odkleni Sottomano",
+    "unlock": "Odkleni",
+    "unlockWith": {
+      "faceId": "Odkleni s Face ID",
+      "touchId": "Odkleni s Touch ID",
+      "passcode": "Odkleni s kodo"
+    },
+    "message": "Tvoji dokumenti so zaščiteni"
+  },
+  "passwordForm": {
+    "showPrompt": "Pokaži geslo",
+    "copyPrompt": "Kopiraj geslo",
+    "copiedTitle": "Kopirano",
+    "copiedMessage": "Iz odložišča bo izbrisano čez 1 minuto.",
+    "scannerUnavailableTitle": "Skener ni na voljo",
+    "scannerUnavailableMessage": "Izberi sliko iz knjižnice fotografij.",
+    "saveFailed": "Shranjevanje ni uspelo",
+    "editTitle": "Uredi geslo",
+    "newTitle": "Novo geslo",
+    "privacy": "Ostanejo samo v tem telefonu in se odprejo s Face ID.",
+    "sections": {
+      "what": "Kaj shranjuješ",
+      "name": "Ime",
+      "preview": "Predogled",
+      "access": "Prijava",
+      "site": "Spletno mesto ali aplikacija",
+      "whose": "Čigavo je",
+      "notes": "Opombe"
+    },
+    "typesLabel": "Vrsta gesla",
+    "customTypePlaceholder": "Kaj je to? Alarm, sef, ključavnica …",
+    "customTypeLabel": "Kaj je to",
+    "customTypeHint": "Postane nova vrsta in naslednjič jo najdeš med izbirami.",
+    "previewTitle": "Kako je videti na seznamu",
+    "previewText": "Barva in ikona ali slika.",
+    "color": "Barva",
+    "colorLabel": "Barva predogleda",
+    "icon": "Ikona",
+    "iconLabel": "Ikona predogleda",
+    "image": "Slika",
+    "scan": "Skeniraj",
+    "gallery": "Iz Fotografij",
+    "removeImage": "Odstrani sliko in uporabi barvo in ikono",
+    "passwordPlaceholder": "Vnesi ali ustvari",
+    "show": "Pokaži",
+    "hide": "Skrij",
+    "copy": "Kopiraj",
+    "saved": "Shranjeno",
+    "generate": "Ustvari močno geslo",
+    "urlPlaceholder": "www.primer.si",
+    "urlLabel": "Naslov spletnega mesta",
+    "wifiQrTitle": "Koda QR za goste",
+    "wifiQrSubtitle": "Optično jo preberejo in se povežejo",
+    "person": "Oseba",
+    "personA11y": "Oseba, {{name}}",
+    "favoriteTitle": "Dodaj med priljubljene",
+    "favoriteSubtitle": "Takoj ga najdeš na začetnem zaslonu",
+    "saveButton": "Shrani geslo",
+    "saveHint": "Za shranjevanje vnesi ime."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Ni gesla",
+    "noPasswordMessage": "Dodaj ga z Uredi.",
+    "showPrompt": {
+      "site": "Pokaži geslo",
+      "wifi": "Pokaži geslo omrežja",
+      "pin": "Pokaži PIN",
+      "other": "Pokaži kodo ali geslo"
+    },
+    "copyPrompt": {
+      "site": "Kopiraj geslo",
+      "wifi": "Kopiraj geslo omrežja",
+      "pin": "Kopiraj PIN",
+      "other": "Kopiraj kodo ali geslo"
+    },
+    "copyUser": {
+      "site": "Kopiraj uporabniško ime ali e-pošto",
+      "wifi": "Kopiraj ime omrežja",
+      "pin": "Kopiraj uporabniško ime",
+      "other": "Kopiraj uporabniško ime"
+    },
+    "copiedTitle": "Kopirano",
+    "copiedMessage": "Iz odložišča bo izbrisano čez 1 minuto.",
+    "copiedTextTitle": "Kopirano",
+    "qrPrompt": "Pokaži kodo QR za goste",
+    "invalidAddress": "Neveljaven naslov",
+    "removeFavorite": "Odstrani iz priljubljenih",
+    "favoriteTitle": "Dodaj med priljubljene",
+    "favoriteSubtitle": "Takoj ga najdeš na začetnem zaslonu",
+    "moreActions": "Več dejanj",
+    "sections": {
+      "access": "Prijava",
+      "site": "Spletno mesto ali aplikacija",
+      "wifiQr": "Koda QR za goste",
+      "whose": "Čigavo je",
+      "notes": "Opombe"
+    },
+    "hidden": "Skrito",
+    "show": "Pokaži",
+    "hide": "Skrij",
+    "copy": "Kopiraj",
+    "locked": "Vidno po Face ID ali kodi iPhona",
+    "wifiQrLabel": "Koda QR omrežja Wi‑Fi",
+    "qrHint": "Optično jo preberejo s kamero in se povežejo.",
+    "qrLocked": "Koda QR vsebuje geslo: vidna je po Face ID ali kodi iPhona.",
+    "qrNoNetwork": "Z Uredi dodaj ime omrežja, da dobiš kodo QR.",
+    "showQr": "Pokaži kodo QR",
+    "hideQr": "Skrij kodo QR",
+    "person": "Oseba",
+    "moveToTrash": "Premakni v Koš"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Ni gesla",
+    "noPasswordMessage": "Dodaj ga z Uredi.",
+    "showPrompt": "Pokaži geslo",
+    "copyPrompt": "Kopiraj geslo",
+    "copiedTitle": "Geslo kopirano",
+    "copiedMessage": "Iz odložišča bo izbrisano čez 1 minuto.",
+    "user": "Uporabniško ime",
+    "password": "Geslo",
+    "hidden": "Geslo skrito",
+    "show": "Pokaži",
+    "hide": "Skrij",
+    "copy": "Kopiraj"
+  },
+  "cardForm": {
+    "found": "Najdeno: {{name}}",
+    "foundBarcode": "Najdeno: črtna koda {{name}}",
+    "handwritten": "Ročno vnesena koda",
+    "noCode": "Koda ni prebrana",
+    "photoOpenFailed": "Fotografije ni bilo mogoče odpreti",
+    "saveFailed": "Shranjevanje ni uspelo",
+    "retakeFront": "Fotografiraj znova",
+    "retakePhoto": "Ponovi fotografijo",
+    "recognized": "Kartica prepoznana",
+    "tapRetake": "Tapni Fotografiraj znova, da jo fotografiraš",
+    "fromPhotos": "Iz Fotografij",
+    "cover": "Naslovnica",
+    "coverPhotoCaption": "Obrezano in poravnano iz fotografije kartice",
+    "coverColorCaption": "Barva kartice z imenom in številko",
+    "codeSection": "Koda za prikaz na blagajni",
+    "photographCode": "Fotografiraj kodo",
+    "barcode": "Črtna koda",
+    "qrCode": "Koda QR",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Kartica",
+    "typeNumber": "Spodaj vnesi številko",
+    "explain": "Sottomano sam prepozna, ali ima kartica črtno kodo ali kodo QR. Na blagajni jo pokaže veliko, s polno svetlostjo zaslona.",
+    "readTitle": "Podatki, prebrani s kartice",
+    "readText": "Preveri jih in po potrebi popravi.",
+    "name": "Ime",
+    "namePlaceholder": "Npr. Supermarket",
+    "type": "Vrsta",
+    "typePlaceholder": "Npr. Kartica zvestobe",
+    "number": "Številka",
+    "numberPlaceholder": "Npr. 0400 2219 8876",
+    "holder": "Imetnik",
+    "saveButton": "Shrani kartico",
+    "saveHint": "Za shranjevanje vnesi ime kartice."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Fotografija sprednje strani",
+      "barcode": "Fotografiraj črtno kodo"
+    },
+    "photoOpenFailed": "Fotografije ni bilo mogoče odpreti",
+    "permissionTitle": "Potreben je dostop do kamere",
+    "permissionText": "Sottomano uporablja kamero za fotografiranje tvojih kartic in branje njihove črtne kode.",
+    "allow": "Dovoli",
+    "openSettings": "Odpri Nastavitve",
+    "frontCheck": "Sprednja stran: je ostra?",
+    "read": "Prebrano: {{value}}",
+    "notRead": "Koda ni prebrana",
+    "notReadHint": "Obdrži fotografijo: številko vneseš v naslednjem koraku.",
+    "retake": "Ponovi",
+    "use": "Uporabi",
+    "focus": "Izostri",
+    "stepCount": "{{current}} od {{total}}",
+    "frameHint": "Umesti kartico v okvir",
+    "searching": "Iščem kodo …",
+    "chooseFromPhotos": "Izberi iz Fotografij",
+    "shoot": "Fotografiraj",
+    "skip": "Preskoči"
+  },
+  "cardDetail": {
+    "code": "Koda",
+    "photo": "Fotografija",
+    "barcodeLabel": "Črtna koda",
+    "barcodePhotoLabel": "Fotografija črtne kode",
+    "fullScreenHint": "Odpre kodo v celozaslonskem načinu",
+    "noCode": "Ni kode. Tapni „Uredi“, da jo fotografiraš ali vneseš.",
+    "tapHint": "Tapni kodo, da jo povečaš",
+    "person": "Oseba"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Vrstnega reda ni bilo mogoče shraniti",
+    "editCategory": "Uredi kategorijo",
+    "deleteCategory": "Izbriši kategorijo",
+    "reorderTitle": "Razvrsti kartice",
+    "reorderHint": "Pridrži kartico in jo povleci, kamor želiš.",
+    "yourCards": "Tvoje kartice",
+    "title": "Kartice",
+    "subtitle": "Tapni kartico, da na blagajni pokažeš njeno kodo",
+    "categoryMenuLabel": "Uredi ali izbriši kategorijo {{name}}",
+    "addCard": "Dodaj kartico",
+    "reorder": "Razvrsti",
+    "newCard": "Nova kartica",
+    "cardDetails": "Podrobnosti kartice",
+    "categoryMenuTitle": "Kategorija {{name}}",
+    "cardCount_one": "{{count}} kartica",
+    "cardCount_two": "{{count}} kartici",
+    "cardCount_few": "{{count}} kartice",
+    "cardCount_other": "{{count}} kartic",
+    "cardOpenLabel": "{{label}}, zapri",
+    "cardClosedLabel": "{{label}}, pokaži kodo",
+    "qrLabel": "Koda QR kartice",
+    "barcodeLabel": "Črtna koda kartice",
+    "fullScreenHint": "Odpre kodo v celozaslonskem načinu",
+    "noCode": "Ni kode: tapni Podrobnosti › Uredi, da jo fotografiraš ali vneseš.",
+    "details": "Podrobnosti"
+  },
+  "walletCard": {
+    "untitled": "Nova kartica"
+  },
+  "barcodeView": {
+    "close": "Zapri kodo"
+  },
+  "colorPicker": {
+    "color": "Barva",
+    "custom": "Tvoja barva",
+    "hex": "Koda",
+    "hexLabel": "Koda barve"
+  },
+  "colorWheel": {
+    "label": "Barvni krog: tapni ali povleci za izbiro",
+    "nextHue": "Naslednji odtenek",
+    "previousHue": "Prejšnji odtenek"
+  },
+  "newCard": {
+    "title": "Nova kartica",
+    "missingCategory": "Kategorija „Kartice“ ne obstaja več."
+  },
+  "editCard": {
+    "title": "Uredi kartico"
+  },
+  "unlock": {
+    "storeOnly": "Na voljo v različici iz App Stora",
+    "remainingNone": "Vsa brezplačna mesta so porabljena.",
+    "remaining_one": "Dodaš lahko še {{count}}.",
+    "remaining_two": "Dodaš lahko še {{count}}.",
+    "remaining_few": "Dodaš lahko še {{count}}.",
+    "remaining_other": "Dodaš lahko še {{count}}.",
+    "tag": "Brezplačna različica · porabljeno {{used}} od {{limit}}",
+    "title": "Vsi tvoji dokumenti, brez omejitev",
+    "intro": "Brezplačno do {{limit}} dokumentov in kartic. Če želiš dodati, kolikor hočeš, odkleni z enkratnim plačilom.",
+    "benefits": {
+      "unlimited": {
+        "title": "Neomejeno dokumentov",
+        "text": "Računi, kartice, garancije in vse ostalo"
+      },
+      "reminders": {
+        "title": "Opomniki za roke",
+        "text": "Opomnimo te, preden je prepozno"
+      },
+      "offline": {
+        "title": "Deluje brez interneta",
+        "text": "Vse ostane v tvojem telefonu, tudi varnostna kopija"
+      },
+      "family": {
+        "title": "Vsa družina",
+        "text": "Profil za vsakogar doma"
+      }
+    },
+    "sectionTitle": "Tvoja brezplačna različica",
+    "usageLabel": "Dokumenti in kartice",
+    "usageValue": "{{used}} od {{limit}}",
+    "usageA11y": "Porabljena brezplačna mesta",
+    "keptNote": "Že shranjeni ostanejo vedno tvoji, tudi brez odklepanja.",
+    "priceTitle": "Za vedno",
+    "priceText": "Brez omejitev · enkratno plačilo",
+    "buy": "Odkleni za {{price}}",
+    "continueFree": "Nadaljuj brezplačno",
+    "restore": "Obnovi nakup",
+    "terms": "Pogoji",
+    "privacy": "Zasebnost"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Kategorija „Drugo“",
+    "otherCategoryMessage": "Ni je mogoče izbrisati: vsebuje dokumente izbrisanih kategorij."
+  },
+  "quickActionMenu": {
+    "close": "Zapri meni"
+  },
+  "quickActions": {
+    "open": "Odpri",
+    "unpin": "Odstrani iz priljubljenih",
+    "pin": "Dodaj med priljubljene",
+    "moveToTrash": "Premakni v Koš",
+    "editCategory": "Uredi kategorijo",
+    "deleteCategory": "Izbriši kategorijo",
+    "editPerson": "Uredi osebo",
+    "deletePerson": "Izbriši osebo"
+  },
+  "shareCopies": {
+    "defaultName": "Dokument",
+    "fileNotFound": "Datoteke ni v telefonu."
+  },
+  "sendCompression": {
+    "tooBig": "Tudi pri največjem stiskanju presega omejitev: razmisli o razdelitvi na več datotek.",
+    "lowPpi": "Drobno besedilo morda ne bo berljivo."
+  },
+  "sendPreferences": {
+    "original": "Izvirnik"
+  },
+  "sendFileName": {
+    "fallback": "dokument"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Sprednje in hrbtne strani trenutno ni mogoče združiti.",
+    "noPhotos": "Ni fotografij za pošiljanje.",
+    "fileFront": "spredaj",
+    "fileBack": "zadaj",
+    "filePage": "stran-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "dokumenti",
+    "title": "Pošlji {{title}}",
+    "formatPhotos": "Fotografije",
+    "actions": {
+      "email": "E-pošta",
+      "whatsapp": "WhatsApp",
+      "print": "Natisni",
+      "save": "Shrani v Datoteke",
+      "copy": "Kopiraj",
+      "other": "Več"
+    },
+    "alerts": {
+      "savedToFiles": "Shranjeno v Datoteke",
+      "imageCopied": "Slika kopirana",
+      "textCopied": "Besedilo kopirano",
+      "firstPageCopied": "Prva stran je kopirana: prilepi jo v sporočilo.",
+      "pasteImage": "Prilepi jo v sporočilo ali opombo.",
+      "pdfNotCopied": "PDF-ja ni mogoče kopirati: kopirana sta ime in opomba. Za datoteko uporabi Več.",
+      "failed": "Ni bilo mogoče dokončati"
+    },
+    "meta": {
+      "pdfs": "PDF-jev: {{number}}",
+      "singlePdf": "En PDF",
+      "failed": "Datoteke ni bilo mogoče pripraviti",
+      "preparing": "Pripravljam …"
+    },
+    "includeNote": "Vključi opombo dokumenta",
+    "noNote": "Ta dokument nima opombe.",
+    "frontBackPage": "Sprednja in hrbtna stran na eni strani",
+    "frontBackImage": "Sprednja in hrbtna stran na eni sliki",
+    "maxSize": "Največja velikost",
+    "pdfAsIs": "PDF se pošlje tak, kot je.",
+    "severalInfo": "En PDF: dokumenti drug za drugim, s sprednjo in hrbtno stranjo izkaznic in kartic na isti strani.",
+    "quality": {
+      "high": "Visoka kakovost",
+      "good": "Dobra kakovost",
+      "low": "Nizka kakovost",
+      "minimum": "Najnižja kakovost",
+      "original": "Izvirna kakovost"
+    },
+    "skipped_one": "{{count}} dokument brez fotografij ni vključen (uvoženih PDF-jev še ni mogoče združevati).",
+    "skipped_two": "{{count}} dokumenta brez fotografij nista vključena (uvoženih PDF-jev še ni mogoče združevati).",
+    "skipped_few": "{{count}} dokumenti brez fotografij niso vključeni (uvoženih PDF-jev še ni mogoče združevati).",
+    "skipped_other": "{{count}} dokumentov brez fotografij ni vključenih (uvoženih PDF-jev še ni mogoče združevati)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Pripravljam PDF …",
+    "progressRetry": "Zmanjšujem fotografije ({{attempt}}. poskus) …",
+    "subtitle": "Pripravljeno {{date}} s Sottomanom · {{documents}}",
+    "subtitleWithTotal": "Pripravljeno {{date}} s Sottomanom · {{documents}} · skupaj {{total}}",
+    "columns": {
+      "number": "Št.",
+      "document": "Dokument",
+      "date": "Datum",
+      "person": "Oseba",
+      "amount": "Znesek",
+      "page": "Stran"
+    },
+    "sentApart": "poslano ločeno",
+    "noPages": "brez strani",
+    "paid": "plačano",
+    "due": "za plačilo",
+    "invalidIndex": "Neveljavno kazalo"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "{{count}} PDF-ja ni mogoče združiti (zaščiten z geslom ali poškodovan): {{titles}}. Kazalo ga označi kot „poslano ločeno“ in gre skupaj z drugimi.",
+    "sentApart_two": "{{count}} PDF-jev ni mogoče združiti (zaščitena z geslom ali poškodovana): {{titles}}. Kazalo ju označi kot „poslano ločeno“ in gresta skupaj z drugimi.",
+    "sentApart_few": "{{count}} PDF-jev ni mogoče združiti (zaščiteni z geslom ali poškodovani): {{titles}}. Kazalo jih označi kot „poslano ločeno“ in gredo skupaj z drugimi.",
+    "sentApart_other": "{{count}} PDF-jev ni mogoče združiti (zaščiteni z geslom ali poškodovani): {{titles}}. Kazalo jih označi kot „poslano ločeno“ in gredo skupaj z drugimi.",
+    "alerts": {
+      "prepareFailed": "PDF-ja ni bilo mogoče pripraviti",
+      "ready": "PDF je pripravljen",
+      "noMailTitle": "Mail ni nastavljen",
+      "noMailMessage": "Dodaj račun v Mail ali shrani PDF-je v Datoteke.",
+      "savedToFiles": "Shranjeno v Datoteke",
+      "sendFailed": "Pošiljanje ni uspelo"
+    },
+    "readyMany": "Pripravljeni PDF-ji: {{number}}",
+    "choices": {
+      "email": "E-pošta: vsi PDF-ji v enem sporočilu",
+      "save": "Shrani v Datoteke: vsi v isto mapo",
+      "oneByOne": "Deli enega za drugim"
+    },
+    "intro": "Vsi dokumenti v kategoriji {{category}}, razdeljeni po letih: en PDF za vsako leto, s kazalom (dokument, datum, oseba, znesek, stran) in skupnim zneskom. Leto je leto roka ali plačila; če ni nastavljeno nobeno, leto, ko so bili dodani.",
+    "noDocuments": "V tem letu ni dokumentov.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_two": "{{count}} PDF-ja",
+    "pdfs_few": "{{count}} PDF-ji",
+    "pdfs_other": "{{count}} PDF-jev",
+    "year": "Leto",
+    "allYears": "Vsa leta",
+    "maxPhotoSize": "Največja velikost fotografij",
+    "limitInfo": "Fotografije se zmanjšajo, da ostanejo znotraj omejitve; uvoženi PDF-ji ostanejo taki, kot so.",
+    "prepare": "Pripravi in pošlji"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Prišlo je do napake",
+      "restoredToOther": "Obnovljeno v Drugo",
+      "restoredPassword": "Njegova kategorija ne obstaja več: dokument je v kategoriji Drugo, brez uporabniškega imena in gesla.",
+      "restoredMessage": "Njegova kategorija ne obstaja več: dokument je v kategoriji Drugo.",
+      "deleteTitle": "Trajno izbrišem „{{title}}“?",
+      "deleteMessage": "Izbrisane bodo tudi njegove fotografije in PDF-ji. Tega ni mogoče razveljaviti.",
+      "emptyTitle": "Izpraznim Koš?",
+      "emptyMessage_one": "Dokument bo izbrisan skupaj s fotografijami in PDF-ji. Tega ni mogoče razveljaviti.",
+      "emptyMessage_two": "{{count}} dokumenta bosta izbrisana skupaj s fotografijami in PDF-ji. Tega ni mogoče razveljaviti.",
+      "emptyMessage_few": "{{count}} dokumenti bodo izbrisani skupaj s fotografijami in PDF-ji. Tega ni mogoče razveljaviti.",
+      "emptyMessage_other": "{{count}} dokumentov bo izbrisanih skupaj s fotografijami in PDF-ji. Tega ni mogoče razveljaviti.",
+      "emptyConfirm": "Izprazni"
+    },
+    "intro": "Izbrisani dokumenti ostanejo tukaj {{days}} dni, nato se izbrišejo skupaj s fotografijami in PDF-ji.",
+    "empty": "Koš je prazen",
+    "deletedSoon": "Kmalu bo izbrisano",
+    "deletedIn": "Izbrisano bo čez {{days}} dni",
+    "restoreLabel": "Obnovi {{title}}",
+    "deleteForeverLabel": "Trajno izbriši {{title}}",
+    "deleteForever": "Trajno izbriši",
+    "emptyTrash": "Izprazni Koš"
+  },
+  "menu": {
+    "close": "Zapri meni",
+    "home": "Domov",
+    "favorites": "Priljubljeno",
+    "deadlines": "Roki",
+    "deadlinesUrgent": "Roki, {{number}} za preverjanje",
+    "family": "Družina",
+    "cards": "Kartice",
+    "backup": "Varnostna kopija",
+    "backupDue": "Varnostna kopija, čas je",
+    "help": "Pomoč in stik",
+    "rate": "Oceni Sottomano",
+    "recommend": "Priporoči prijatelju",
+    "trash": "Koš",
+    "trashCount": "Koš, {{number}}",
+    "password": "Gesla",
+    "scan": "Skeniraj",
+    "fromPhotos": "Iz fotografij",
+    "importFiles": "Uvozi datoteke",
+    "version": "Različica {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Zapri obvestila",
+    "title": "Obvestila",
+    "markAllRead": "Označi kot prebrano",
+    "empty": "V zadnjih 7 dneh ni obvestil.",
+    "today": "Danes",
+    "thisWeek": "Ta teden",
+    "settings": "Nastavitve obvestil",
+    "unreadItem": "Neprebrano. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Poteklo je {{date}}.",
+    "expiresToday": "Poteče danes.",
+    "expiresOn": "Poteče {{distance}}, {{date}}.",
+    "amount": "Znesek {{amount}}.",
+    "backupTitle": "Varnostna kopija",
+    "backupLate": "Od zadnje varnostne kopije tvojih dokumentov je minilo že nekaj časa.",
+    "backupNever": "Varnostne kopije tvojih dokumentov še ni."
+  },
+  "deadlineReminders": {
+    "title": "Bližnji rok",
+    "hiddenBody": "Dokument poteče {{date}} ({{distance}}). Odpri Sottomano, da ga vidiš.",
+    "body": "{{name}} poteče {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Videz",
+      "security": "Varnost",
+      "reminders": "Opomniki",
+      "backup": "Varnostna kopija",
+      "info": "Informacije"
+    },
+    "calendarOff": "Izklopljeno",
+    "alerts": {
+      "notificationsOffTitle": "Obvestila so izklopljena",
+      "notificationsOffMessage": "Za opomnike dovoli obvestila za Sottomano v Nastavitvah iPhona.",
+      "openSettings": "Odpri Nastavitve"
+    },
+    "lastBackup": {
+      "never": "Nikoli",
+      "today": "Danes",
+      "yesterday": "Včeraj",
+      "daysAgo_one": "Pred {{count}} dnem",
+      "daysAgo_two": "Pred {{count}} dnevoma",
+      "daysAgo_few": "Pred {{count}} dnevi",
+      "daysAgo_other": "Pred {{count}} dnevi"
+    },
+    "categoryColors": "Barve kategorij",
+    "faceId": "Zakleni s Face ID",
+    "faceIdSubtitle": "Ob vsakem odprtju aplikacije zahteva tvoj obraz",
+    "hidePreviews": "Skrij predoglede",
+    "hidePreviewsSubtitle": "Obvestila ne prikažejo dokumenta",
+    "notifications": "Obvestila",
+    "reminderTime": "Čas opomnika",
+    "defaultReminder": "Privzeti opomnik",
+    "iconBadge": "Značka na ikoni aplikacije",
+    "iconBadgeSubtitle": "Potekli roki ali tisti v 7 dneh",
+    "calendar": "Koledar „Sottomano“",
+    "notificationsBlocked": "Obvestila so blokirana",
+    "notificationsBlockedSubtitle": "Dovoli jih v Nastavitvah iPhona",
+    "backupNote": "Varnostna kopija je datoteka, shranjena v telefonu, v aplikaciji Datoteke. Kopiraš jo lahko, kamor želiš. Sottomano deluje tudi brez interneta.",
+    "createBackup": "Ustvari kopijo zdaj",
+    "restoreBackup": "Obnovi iz varnostne kopije",
+    "help": "Pomoč in stik",
+    "privacy": "Zasebnost",
+    "terms": "Pogoji uporabe",
+    "rate": "Oceni Sottomano",
+    "debug": {
+      "limitPreview": "Predogled brezplačne omejitve",
+      "limitPreviewSubtitle": "Samo za testiranje: prikaže zaklenjeni +, ploščo omejitve in kartico na Domov",
+      "emptyHome": "Predogled praznega zaslona Domov",
+      "emptyHomeSubtitle": "Samo za testiranje: Domov, kot da ni dokumentov (tvoji podatki ostanejo)",
+      "onboarding": "Znova prikaži dobrodošlico",
+      "onboardingSubtitle": "Samo za testiranje: strani dobrodošlice 1–4"
+    },
+    "version": "Sottomano · različica {{version}}",
+    "theme": {
+      "title": "Tema",
+      "autoSubtitle": "Sledi nastavitvi telefona",
+      "auto": "Samodejno",
+      "light": "Svetla",
+      "dark": "Temna"
+    }
+  },
+  "backup": {
+    "title": "Varnostna kopija",
+    "subtitle": "Kopija vseh tvojih dokumentov, shranjena v telefonu.",
+    "keyProgress": "Zaščita s tvojim geslom … to lahko traja do minute",
+    "whenToday": "danes ob {{time}}",
+    "whenDate": "{{date}} ob {{time}}",
+    "minLength": "Vsaj {{min}} znakov.",
+    "mismatch": "Gesli se ne ujemata.",
+    "creating": "Ustvarjam varnostno kopijo …",
+    "copyDialogTitle": "Kopiraj varnostno kopijo",
+    "opening": "Odpiram varnostno kopijo …",
+    "checking": "Preverjam dokumente …",
+    "restoring": "Obnavljam …",
+    "keepOpen": "Aplikacija naj ostane odprta, dokler se ne konča.",
+    "forgotWarning": "Če pozabiš geslo, varnostne kopije ne bo mogoče odpreti.",
+    "passwordPlaceholder": "Geslo (vsaj {{min}} znakov)",
+    "repeatPlaceholder": "Ponovi geslo",
+    "createAndSave": "Ustvari in shrani",
+    "backupPassword": "Geslo varnostne kopije",
+    "openBackup": "Odpri varnostno kopijo",
+    "completed": "Varnostna kopija končana",
+    "lastBackup": "Zadnja kopija",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Kopiraj datoteko drugam",
+    "createNew": "Ustvari novo kopijo",
+    "noneTitle": "Varnostne kopije še ni",
+    "noneText": "Če izgubiš ali zamenjaš telefon, varnostna kopija vrne vse.",
+    "createNow": "Ustvari kopijo zdaj",
+    "restoreSection": "Obnovitev",
+    "restoreTitle": "Imaš nov telefon?",
+    "restoreText": "Izberi datoteko varnostne kopije, da dobiš nazaj dokumente, kartice in opomnike.",
+    "chooseFile": "Izberi datoteko kopije",
+    "remindersSection": "Opomniki",
+    "remindMe": "Opomni me na kopijo",
+    "remindMeValue": "Opomni me na kopijo: {{value}}",
+    "footnote": "Varnostna kopija je ena datoteka, zaščitena z geslom, ki ga izbereš: dokumenti, fotografije, kartice, osebe in opomniki. Kopiraj jo še drugam (Datoteke, iCloud Drive, računalnik), da jo imaš tudi, če izgubiš telefon.",
+    "alerts": {
+      "createFailed": "Varnostna kopija ni uspela",
+      "copyFailed": "Kopiranje ni uspelo",
+      "restoreTitle": "Obnovim varnostno kopijo z dne {{date}}?",
+      "restoreMessage_one": "Vsebuje {{count}} dokument. Trenutna vsebina aplikacije bo zamenjana.",
+      "restoreMessage_two": "Vsebuje {{count}} dokumenta. Trenutna vsebina aplikacije bo zamenjana.",
+      "restoreMessage_few": "Vsebuje {{count}} dokumente. Trenutna vsebina aplikacije bo zamenjana.",
+      "restoreMessage_other": "Vsebuje {{count}} dokumentov. Trenutna vsebina aplikacije bo zamenjana.",
+      "restoreFailed": "Obnovitev ni uspela",
+      "restoreFailedMessage": "V aplikaciji se ni nič spremenilo.\n\n{{reason}}",
+      "restored": "Varnostna kopija obnovljena",
+      "restoredMessage": "Tvoji dokumenti so spet tu."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Vsak teden",
+      "month": "Vsak mesec",
+      "never": "Nikoli"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Ta datoteka ni varnostna kopija Sottomana.",
+    "newerVersion": "To kopijo je ustvarila novejša različica Sottomana. Posodobi aplikacijo in poskusi znova.",
+    "empty": "Datoteka kopije je prazna ali nepopolna.",
+    "incomplete": "Datoteka kopije je nepopolna.",
+    "wrongPassword": "Napačno geslo. Preveri velike in male črke ter poskusi znova.",
+    "damaged": "Datoteka kopije je poškodovana ali nepopolna."
+  },
+  "createBackup": {
+    "incompleteFile": "Nepopolna datoteka: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Vsebina varnostne kopije ni veljavna.",
+    "newerApp": "Ta kopija je iz novejše različice Sottomana. Posodobi aplikacijo in poskusi znova."
+  },
+  "zipReader": {
+    "invalid": "Neveljaven arhiv",
+    "incomplete": "Nepopoln arhiv"
+  },
+  "backupReminder": {
+    "none": "Varnostne kopije še ni",
+    "old_one": "Zadnja kopija je bila narejena pred {{count}} dnem",
+    "old_two": "Zadnja kopija je bila narejena pred {{count}} dnevoma",
+    "old_few": "Zadnja kopija je bila narejena pred {{count}} dnevi",
+    "old_other": "Zadnja kopija je bila narejena pred {{count}} dnevi",
+    "link": "Ustvari kopijo zdaj",
+    "close": "Zapri obvestilo",
+    "snooze_one": "Skrij za {{count}} dan",
+    "snooze_two": "Skrij za {{count}} dneva",
+    "snooze_few": "Skrij za {{count}} dni",
+    "snooze_other": "Skrij za {{count}} dni"
+  },
+  "calendarSettings": {
+    "title": "Koledar",
+    "intro": "Roki gredo v ločen koledar, „Sottomano“. V aplikaciji Koledar ga lahko skriješ; če ga tukaj izklopiš, se izbriše.",
+    "details": "Vsak rok je celodnevni dogodek „Poteče: naslov“, brez drugih podatkov iz dokumenta. Če so opomniki Sottomana izklopljeni, te dogodek opozori ob 9:00 na dan opomnika; če so vklopljeni, te opozori samo aplikacija, zato ne dobiš dveh opozoril.",
+    "allowAccess": "Dovoli dostop do Koledarja",
+    "denied": "Dostop do Koledarja je bil zavrnjen. Vklopiš ga lahko v Nastavitvah iPhona.",
+    "openSettings": "Odpri Nastavitve",
+    "switchLabel": "Roki v koledarju „Sottomano“",
+    "enabled_one": "{{count}} rok v koledarju „Sottomano“",
+    "enabled_two": "{{count}} roka v koledarju „Sottomano“",
+    "enabled_few": "{{count}} roki v koledarju „Sottomano“",
+    "enabled_other": "{{count}} rokov v koledarju „Sottomano“",
+    "removeConfirm": "Odstranim koledar Sottomano in vse njegove roke iz Koledarja?",
+    "remove": "Odstrani",
+    "removed": "Koledar „Sottomano“ izbrisan"
+  },
+  "calendarSync": {
+    "eventTitle": "Poteče: {{title}}",
+    "cannotCreate": "Koledarja „Sottomano“ ni bilo mogoče ustvariti v tem iPhonu."
+  },
+  "appearance": {
+    "intro": "Barve privzetih kategorij. Tvoje lastne kategorije obdržijo svojo barvo.",
+    "restoreButton": "Obnovi privzete kategorije",
+    "restoreHint": "Vrne izbrisane privzete kategorije.",
+    "paletteLabel": "Paleta {{name}}",
+    "alerts": {
+      "restoreTitle": "Obnovim privzete kategorije?",
+      "restoreMessage": "Izbrisane se vrnejo z izvirnim imenom, ikono in barvo. Tvoji dokumenti in lastne kategorije se ne spremenijo.",
+      "nothingTitle": "Ničesar ni za obnovo",
+      "nothingMessage": "Vse privzete kategorije so že na zaslonu Domov.",
+      "restoredTitle": "Kategorije obnovljene",
+      "restoredMessage_one": "{{count}} kategorija je spet na zaslonu Domov, pred „Drugo“.",
+      "restoredMessage_two": "{{count}} kategoriji sta spet na zaslonu Domov, pred „Drugo“.",
+      "restoredMessage_few": "{{count}} kategorije so spet na zaslonu Domov, pred „Drugo“.",
+      "restoredMessage_other": "{{count}} kategorij je spet na zaslonu Domov, pred „Drugo“.",
+      "restoreFailed": "Obnovitev ni uspela"
+    }
+  },
+  "about": {
+    "version": "Različica {{version}}",
+    "privacy": "Zasebnost",
+    "privacyFooter": "Če vklopiš Koledar, se roki zapišejo v koledar iPhona, ki ga izbereš. Ko pošlješ dokument, ti odločaš, s kom ga deliš.",
+    "onPhone": "Tvoji dokumenti ostanejo v tvojem telefonu",
+    "offline": "Brez računa in brez strežnika: deluje tudi brez povezave",
+    "noTracking": "Brez sledenja in brez oglasov"
+  },
+  "terms": {
+    "intro": "Celotni pogoji uporabe bodo objavljeni z različico iz App Stora. Na kratko:",
+    "free": "Sottomano je brezplačen do {{limit}} dokumentov in kartic",
+    "oneTime": "Odklepanje je enkraten nakup, brez naročnine",
+    "yours": "Tvoji dokumenti ostanejo v tvojem telefonu in so tvoji",
+    "backup": "Ustvari varnostno kopijo, da jih ne izgubiš ob menjavi telefona"
+  },
+  "limit": {
+    "later": "Pozneje",
+    "title": "Brezplačna mesta so porabljena ({{limit}})",
+    "text": "Vse shranjeno ostane tukaj in deluje kot vedno. Za dodajanje novih dokumentov in kartic odkleni Sottomano.",
+    "stillWorks": {
+      "view": "Ogled tvojih dokumentov",
+      "send": "Pošiljanje in deljenje",
+      "cards": "Prikaz kartic na blagajni",
+      "reminders": "Prejemanje opomnikov"
+    },
+    "blocked": "Dodajanje novih dokumentov ali kartic",
+    "unlock": "Odkleni brez omejitev za {{price}}"
+  },
+  "limitCard": {
+    "title": "Porabljeno {{used}} od {{limit}} brezplačnih mest",
+    "accessibility": "{{title}}. Odkleni",
+    "unlock": "Odkleni"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Brezplačna različica: porabljeno {{used}} od {{limit}}",
+    "titleMenu": "Brezplačno: porabljeno {{used}} od {{limit}}",
+    "subtitle": "Odkleni brez omejitev za {{price}}",
+    "accessibility": "{{title}}. Odkleni brez omejitev za {{price}}",
+    "unlock": "Odkleni"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Dobrodošli v Sottomanu",
+        "text": "Osebne izkaznice, kartice zvestobe, računi, garancije: vsi domači dokumenti na enem mestu, vedno pri roki.",
+        "info": "Ostanejo v tvojem telefonu in delujejo tudi brez interneta"
+      },
+      "scan": {
+        "title": "Fotografiraj enkrat",
+        "text": "Skeniraj tudi več strani ali uvozi fotografije in PDF-je. Najdeš jih urejene in jih pošlješ tako lahke, kot je treba."
+      },
+      "deadlines": {
+        "title": "Pazimo na roke",
+        "text": "Opomnimo te, preden račun ali dokument poteče. Če želiš, tudi v Koledarju."
+      },
+      "cards": {
+        "title": "Kartice vedno v žepu",
+        "text": "Fotografiraj kartice zvestobe: na blagajni z enim tapom pokaži črtno kodo ali kodo QR."
+      }
+    },
+    "skip": "Preskoči",
+    "pageOf": "Stran {{page}} od {{total}}",
+    "start": "Začni",
+    "restore": "Obnovi iz varnostne kopije",
+    "art": {
+      "bills": "Računi",
+      "cards": "Kartice",
+      "health": "Zdravje",
+      "car": "Avto",
+      "pdfReady": "PDF pripravljen",
+      "billTitle": "Račun za elektriko",
+      "billExpires": "Zapade čez 2 dni",
+      "gym": "Fitnes",
+      "library": "Knjižnica",
+      "supermarket": "Trgovina"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Datoteke ni bilo mogoče odpreti",
+    "title": "Fotografiraj svoj prvi dokument",
+    "text": "Račun, osebna izkaznica ali garancija pralnega stroja: v nekaj sekundah je na varnem in vedno pri roki.",
+    "snap": "Fotografiraj dokument",
+    "pdf": "Naloži PDF",
+    "folders": "Tvoje mape",
+    "emptyAccessibility": "{{name}}, prazno",
+    "empty": "Prazno",
+    "newCategory": "Nova kategorija"
+  },
+  "splashOverlay": {
+    "tagline": "Tvoji domači dokumenti, pripravljeni za pošiljanje"
+  },
+  "appActions": {
+    "shareText": "Priporočam Sottomano: domači dokumenti, kartice in roki vedno pri roki, v telefonu in tudi brez interneta.",
+    "rateTitle": "Oceni Sottomano",
+    "rateMessage": "Oceno bo mogoče oddati, ko bo Sottomano v App Storu.",
+    "lockUnavailableTitle": "Zaklepanje ni na voljo",
+    "lockUnavailableMessage": "Za zaklepanje Sottomana potrebuješ kodo v iPhonu. Nastavi jo v Nastavitve › Face ID in koda, nato poskusi znova."
+  }
+}

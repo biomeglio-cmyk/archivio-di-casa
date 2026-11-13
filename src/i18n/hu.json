@@ -1,1 +1,1585 @@
-{}
+{
+  "common": {
+    "cancel": "Mégse",
+    "ok": "OK",
+    "done": "Kész",
+    "save": "Mentés",
+    "delete": "Törlés",
+    "edit": "Szerkesztés",
+    "close": "Bezárás",
+    "confirm": "Megerősítés",
+    "back": "Vissza",
+    "next": "Tovább",
+    "share": "Megosztás",
+    "send": "Küldés",
+    "search": "Keresés",
+    "add": "Hozzáadás",
+    "remove": "Eltávolítás",
+    "retry": "Újra",
+    "continue": "Folytatás",
+    "yes": "Igen",
+    "no": "Nem",
+    "restore": "Visszaállítás",
+    "settings": "Beállítások",
+    "more": "Továbbiak",
+    "none": "Nincs",
+    "documents_one": "{{count}} dokumentum",
+    "documents_other": "{{count}} dokumentum",
+    "pages_one": "{{count}} oldal",
+    "pages_other": "{{count}} oldal",
+    "photos_one": "{{count}} fotó",
+    "photos_other": "{{count}} fotó",
+    "wholeFamily": "Az egész család"
+  },
+  "dates": {
+    "today": "ma",
+    "tomorrow": "holnap",
+    "yesterday": "tegnap",
+    "inSpan": "{{span}} múlva",
+    "spanAgo": "{{span}} ezelőtt",
+    "expiredYesterday": "tegnap lejárt",
+    "expiredFor": "{{span}} ezelőtt lejárt",
+    "days_one": "{{count}} nap",
+    "days_other": "{{count}} nap",
+    "months_one": "{{count}} hónap",
+    "months_other": "{{count}} hónap",
+    "years_one": "{{count}} év",
+    "years_other": "{{count}} év"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Iratok",
+      "cards": "Kártyák",
+      "utilities": "Rezsi",
+      "home": "Otthon",
+      "insurance": "Biztosítások",
+      "warranties": "Garancia és blokkok",
+      "car": "Autó",
+      "tax": "Adóügyek",
+      "householdStaff": "Háztartási segítő",
+      "school": "Iskola",
+      "pet": "Háziállatok",
+      "password": "Jelszavak",
+      "other": "Egyéb"
+    }
+  },
+  "language": {
+    "title": "Nyelv",
+    "auto": "Automatikus",
+    "autoSubtitle": "A telefon nyelvét követi",
+    "search": "Nyelvek keresése",
+    "autoDetail": "iPhone nyelve: {{language}}",
+    "noResults": "Nincs nyelv erre: „{{query}}”"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pasztell",
+    "vivid": "Élénk",
+    "earth": "Föld",
+    "sea": "Tenger",
+    "sunset": "Naplemente",
+    "night": "Éjszaka"
+  },
+  "home": {
+    "welcome": "Üdv a Sottomanóban!",
+    "hello": "Szia!",
+    "searchPlaceholder": "Dokumentum keresése",
+    "favorites": "Kedvencek",
+    "seeAll": "Összes",
+    "seeAllFavorites": "Összes kedvenc",
+    "deadlines": "Határidők",
+    "seeAllDeadlines": "Összes határidő",
+    "archive": "Archívum",
+    "reorderDone": "Sorrend kész",
+    "reorder": "Átrendezés",
+    "reorderCategories": "Kategóriák átrendezése",
+    "reorderHint": "Húzd a kategóriákat a kívánt sorrendbe.",
+    "alerts": {
+      "orderNotSaved": "Nem sikerült menteni a sorrendet"
+    },
+    "newCategory": "Új kategória"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} kártya",
+    "cards_other": "{{count}} kártya"
+  },
+  "folder": {
+    "paidOn": "Fizetve: {{date}}",
+    "expiredOn": "Lejárt: {{date}}",
+    "expiresOn": "Lejár: {{date}}",
+    "addedOn": "Hozzáadva: {{date}}",
+    "newItem": {
+      "bill": "Új számla",
+      "card": "Új kártya",
+      "warranty": "Új garancia",
+      "password": "Új jelszó",
+      "document": "Új dokumentum"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Mind",
+      "documents": "Dokumentumok",
+      "cards": "Kártyák",
+      "deadlines": "Határidők"
+    },
+    "paid": "fizetve",
+    "expiresOn": "lejár: {{date}}",
+    "folderSubtitle_one": "Mappa · {{count}} dokumentum",
+    "folderSubtitle_other": "Mappa · {{count}} dokumentum",
+    "card": "Kártya",
+    "deadlineSubtitle": "Határidő · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Dokumentum keresése",
+    "fieldLabel": "Keresés a dokumentumaid között",
+    "filter": "Szűrő",
+    "results_one": "{{count}} találat",
+    "results_other": "{{count}} találat",
+    "noResults": "Nincs találat",
+    "noResultsHint": "Próbálj egy másik szót, például egy bolt nevét.",
+    "hint": "Keress nevekre, mappákra, típusokra, jegyzetekre, kártyákra és határidőkre."
+  },
+  "navigation": {
+    "home": "Kezdőlap",
+    "favorites": "Kedvencek",
+    "family": "Család",
+    "deadlines": "Határidők",
+    "deadlinesToCheck_one": "Határidők, {{count}} ellenőrizendő",
+    "deadlinesToCheck_other": "Határidők, {{count}} ellenőrizendő",
+    "addLocked": "Dokumentum hozzáadása zárolva: elérted az ingyenes korlátot",
+    "addDocument": "Dokumentum hozzáadása",
+    "titles": {
+      "editDocument": "Szerkesztés",
+      "pages": "Oldalak",
+      "deadline": "Határidő",
+      "renewed": "Megújítva",
+      "previousVersion": "Előző verzió",
+      "newDocument": "Új dokumentum",
+      "appearance": "Megjelenés",
+      "backup": "Biztonsági mentés",
+      "taxPackage": "Küldés a könyvelőnek",
+      "trash": "Kuka",
+      "terms": "Felhasználási feltételek",
+      "about": "Névjegy, adatvédelem",
+      "newCard": "Új kártya",
+      "editCard": "Kártya szerkesztése"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Húzd az áthelyezéshez, vagy használd az Előrébb és Hátrébb műveleteket",
+    "moveEarlier": "Előrébb",
+    "moveLater": "Hátrébb",
+    "footer": "A kártyákat, a Család tagjait és a Kedvenceket ugyanígy rendezheted át: tartsd lenyomva a sort, és húzd a jobb oldali fogantyúnál fogva."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Tartsd lenyomva: húzd az áthelyezéshez, vagy engedd el a műveletekhez"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Nem sikerült menteni a sorrendet"
+    },
+    "reorderTitle": "Kedvencek átrendezése",
+    "reorderHint": "Tarts lenyomva egy kedvencet, és húzd oda, ahová szeretnéd.",
+    "yourFavorites": "Kedvenceid",
+    "title": "Kedvencek",
+    "subtitle": "Amit kéznél akarsz tartani",
+    "searchPlaceholder": "Keresés a kedvencek között",
+    "viewList": "Lista",
+    "viewGrid": "Rács",
+    "count_one": "{{count}} kedvenc",
+    "count_other": "{{count}} kedvenc",
+    "noMatch": "Nincs kedvenc erre: „{{query}}”.",
+    "empty": "Még nincsenek kedvenceid.",
+    "footer": "Koppints a szívre egy dokumentumon, hogy ide kerüljön.",
+    "footerGrid": "Koppints a szívre egy dokumentumon, hogy ide kerüljön. Az átrendezéshez tarts lenyomva egy csempét, és húzd el.",
+    "footerList": "Koppints a szívre egy dokumentumon, hogy ide kerüljön. Az átrendezéshez tarts lenyomva egy sort.",
+    "rowHint": "Tartsd lenyomva a kedvencek átrendezéséhez",
+    "unpin": "Eltávolítás a kedvencekből",
+    "expires": "lejár: {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} fizetendő",
+    "alerts": {
+      "orderNotSaved": "Nem sikerült menteni a sorrendet"
+    },
+    "actions": {
+      "editCategory": "Kategória szerkesztése",
+      "sendToAccountant": "Küldés a könyvelőnek",
+      "selectAndSend": "Kijelölés és küldés",
+      "reorder": "Átrendezés",
+      "deleteCategory": "Kategória törlése"
+    },
+    "moreLabel": "{{name}} kategória szerkesztése vagy törlése",
+    "searchIn": "Keresés itt: {{name}}",
+    "viewList": "Lista",
+    "viewGrid": "Rács",
+    "reorderHint": "Tartsd lenyomva, és húzd a dokumentumokat a kívánt sorrendbe.",
+    "allTypes": "Mind",
+    "noDocumentsFound": "Nincs ilyen dokumentum.",
+    "sendTogether": "Küldés együtt ({{count}})",
+    "sheetTitle": "{{name}} kategória"
+  },
+  "folderRow": {
+    "due": "fizetendő",
+    "paid": "fizetve"
+  },
+  "homeSections": {
+    "expired": "Lejárt",
+    "expiresToday": "Ma jár le",
+    "expiresTomorrow": "Holnap jár le",
+    "expiresInDays_one": "{{count}} nap múlva lejár",
+    "expiresInDays_other": "{{count}} nap múlva lejár",
+    "expiresOn": "Lejár: {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Eltávolítás a kedvencekből",
+    "pin": "Hozzáadás a kedvencekhez"
+  },
+  "searchBar": {
+    "clear": "Szöveg törlése"
+  },
+  "documentGrid": {
+    "addDocument": "Dokumentum hozzáadása"
+  },
+  "homeHeader": {
+    "menu": "Menü",
+    "notifications": "Értesítések",
+    "notificationsUnread_one": "Értesítések, {{count}} olvasatlan",
+    "notificationsUnread_other": "Értesítések, {{count}} olvasatlan"
+  },
+  "demoData": {
+    "people": {
+      "step": "Lépés",
+      "mom": "Anya",
+      "dad": "Apa"
+    },
+    "documents": {
+      "idCard": "Személyi igazolvány",
+      "drivingLicence": "Jogosítvány",
+      "passport": "Útlevél",
+      "electricityBill": "Villanyszámla",
+      "carInsurance": "Autóbiztosítás",
+      "carTax": "Gépjárműadó",
+      "washingMachineWarranty": "Mosógép garancia",
+      "gymCard": "Edzőtermi bérlet",
+      "rentalContract": "Bérleti szerződés",
+      "pharmacyReceipt": "Gyógyszertári blokk",
+      "reportCard": "Bizonyítvány"
+    },
+    "notes": {
+      "electricityBill": "Csoportos beszedés a bankból"
+    }
+  },
+  "documentTypes": {
+    "documents": "Személyi|Jogosítvány|Útlevél|TAJ-kártya|Adókártya",
+    "cards": "Hűségkártya|Edzőterem|Könyvtár|Bérlet|Tagság",
+    "utilities": "Villany|Gáz|Víz|Internet|Telefon|Szemét",
+    "home": "Bérleti díj|Jelzálog|Közös költség|Karbantartás|Szerződés",
+    "insurance": "Autó|Lakás|Egészség|Élet|Utazás",
+    "warranties": "Háztartási gép|Elektronika|Bútor|Blokk",
+    "car": "Gépjárműadó|Biztosítás|Műszaki vizsga|Szerviz|Forgalmi",
+    "tax": "Gyógyszertár|Orvosi vizit|Fogorvos|Laborvizsgálat|Sport|Iskola",
+    "householdStaff": "Bérjegyzék|Járulékok|Szerződés",
+    "school": "Beiratkozás|Bizonyítvány|Igazolás|Menza|Osztálykirándulás",
+    "pet": "Oltási könyv|Oltás|Állatorvos|Mikrochip",
+    "password": "E-mail|Bank|Közösségi|Wi‑Fi|Munka"
+  },
+  "pageLabels": {
+    "front": "Előlap",
+    "back": "Hátlap",
+    "page": "{{number}}. oldal"
+  },
+  "statusBadge": {
+    "due": "Fizetendő",
+    "paid": "Fizetve"
+  },
+  "addActions": {
+    "openFileFailed": "Nem sikerült megnyitni a fájlt"
+  },
+  "pickFiles": {
+    "takePhoto": "Fotó készítése",
+    "choosePhoto": "Választás a fotók közül",
+    "removePhoto": "Fotó eltávolítása"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Több oldal",
+      "text": "Több oldalt is beszkennelhetsz egymás után: a Mentés előtt igazítsd be a következő oldalt."
+    },
+    "cardTip": {
+      "title": "Valódi színek",
+      "text": "A kártya valódi színeiért koppints a szkenner szűrők gombjára, és válaszd a „Fotó” lehetőséget."
+    },
+    "gotIt": "Értem"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Kamera-hozzáférés szükséges",
+    "permissionText": "A Sottomano a kamerát csak a dokumentumaid lefotózására használja.",
+    "allow": "Engedélyezés",
+    "openSettings": "Beállítások megnyitása",
+    "readable": "Olvasható?",
+    "pageReadable": "{{number}}. oldal: olvasható?",
+    "retake": "Újra",
+    "addPage": "Oldal hozzáadása",
+    "frameDocument": "Igazítsd be a dokumentumot",
+    "framePage": "Igazítsd be a(z) {{number}}. oldalt",
+    "shoot": "Fotó készítése",
+    "finishWithPages_one": "Kész, {{count}} oldal",
+    "finishWithPages_other": "Kész, {{count}} oldal"
+  },
+  "coverField": {
+    "label": "Borító",
+    "photo": "Fotó",
+    "color": "Szín",
+    "noPhotoHint": "Fotó nélkül a szín látszik: adj hozzá egy oldalt, hogy a fotója legyen a borító.",
+    "categoryColor": "Mappa színe",
+    "colorNumber": "{{number}}. szín"
+  },
+  "detailActionBar": {
+    "addPages": "Oldalak",
+    "pinned": "Kedvenc",
+    "pin": "Kedvencekhez",
+    "renewed": "Megújítva",
+    "delete": "Törlés"
+  },
+  "documentFilesView": {
+    "document": "Dokumentum",
+    "openFailed": "Nem sikerült megnyitni a dokumentumot",
+    "pageOfSwipe": "{{number}}. oldal / {{total}} · lapozz",
+    "openFullScreen": "{{label}}, megnyitás teljes képernyőn",
+    "missingFile": "A fájl nem található ezen a telefonon."
+  },
+  "filesEditor": {
+    "addBack": "Hátlap hozzáadása",
+    "addPage": "Oldal hozzáadása",
+    "scan": "Szkennelés",
+    "photograph": "Fotó készítése",
+    "fromPhotos": "Fotókból",
+    "scannerUnavailableTitle": "A szkenner nem érhető el",
+    "scannerUnavailableMessage": "Távolítsd el az oldalakat a ✕ gombbal, és adj hozzá újakat.",
+    "replacePdf": "PDF cseréje",
+    "importPdf": "PDF importálása",
+    "rescanAll": "Összes újraszkennelése",
+    "openFileFailed": "Nem sikerült megnyitni a fájlt",
+    "page": "Oldal",
+    "newTag": "új",
+    "moveBefore": "{{name}} előrébb",
+    "moveAfter": "{{name}} hátrébb",
+    "removePage": "{{name}} eltávolítása"
+  },
+  "documentDetail": {
+    "notFound": "A dokumentum nem található.",
+    "noPages": "Nincsenek oldalak",
+    "photoPages_one": "Fotó, {{count}} oldal",
+    "photoPages_other": "Fotók, {{count}} oldal",
+    "amount": "Összeg",
+    "expired": "lejárt",
+    "inDays_one": "{{count}} nap múlva",
+    "inDays_other": "{{count}} nap múlva",
+    "deadline": "Határidő",
+    "folder": "Mappa",
+    "status": "Állapot",
+    "person": "Személy",
+    "number": "Szám",
+    "notes": "Jegyzetek",
+    "inCalendar": "A naptárban",
+    "view": "Dokumentum megtekintése",
+    "unpin": "Eltávolítás a kedvencekből",
+    "pin": "Hozzáadás a kedvencekhez",
+    "addPages": "Oldalak hozzáadása",
+    "renewed": "Megújítva",
+    "delete": "Törlés",
+    "details": "Részletek",
+    "remindMe": "Emlékeztess",
+    "reminderNeedsDeadline": "Adj meg határidőt, hogy emlékeztetőt kapj",
+    "reminderWhen": "Emlékeztető: {{when}}",
+    "noReminder": "Nincs emlékeztető",
+    "previousVersions": "Előző verziók",
+    "versionUntil": "Eddig: {{date}}",
+    "versionExpired": "lejárt: {{date}}",
+    "paidOnMarkDue": "Fizetve: {{date}} · jelölés fizetendőként",
+    "markDue": "Jelölés fizetendőként",
+    "markPaid": "Jelölés fizetettként",
+    "firstOf": "1 / {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Fizetendő",
+    "statusPaid": "Fizetve",
+    "saveFailed": "Nem sikerült menteni",
+    "folder": "Mappa",
+    "person": "Személy",
+    "type": "Típus",
+    "otherType": "Másik megadása…",
+    "noType": "Nincs típus",
+    "typeExample": "Például: Villany, Gépjárműadó, Fogorvos",
+    "dueOn": "Dátum: {{date}}",
+    "noDeadline": "Nincs határidő",
+    "nameSection": "Név",
+    "namePlaceholder": "Dokumentum neve",
+    "whereSection": "Hová mentsem",
+    "choose": "Válassz…",
+    "deadlineSection": "Határidő",
+    "addDeadline": "Határidő hozzáadása",
+    "remindMe": "Emlékeztess",
+    "whenToRemind": "Mikor emlékeztesselek",
+    "repeats": "Ismétlés",
+    "never": "Soha",
+    "everySpan": "Ismétlés: {{span}}",
+    "every": "Gyakoriság",
+    "notesSection": "Jegyzetek",
+    "notesPlaceholder": "Például: csoportos beszedéssel fizetve, visszatérítést kérni…",
+    "pin": "Hozzáadás a kedvencekhez",
+    "pinSubtitle": "Rögtön megtalálod a kezdőlapon",
+    "amountSection": "Összeg és állapot",
+    "amount": "Összeg",
+    "amountInEuro": "Összeg euróban",
+    "accessSection": "Bejelentkezés",
+    "username": "Felhasználónév",
+    "usernamePlaceholder": "nev@pelda.hu",
+    "password": "Jelszó",
+    "passwordUnchanged": "•••••••• (változatlan)",
+    "passwordNote": "A jelszó csak az iPhone Kulcskarikájában marad.",
+    "numberSection": "Dokumentumszám",
+    "numberPlaceholder": "Pl. 123456AB",
+    "saveChanges": "Módosítások mentése",
+    "saveDocument": "Dokumentum mentése",
+    "amountHint": "Add meg az összeget így: {{example}}.",
+    "missingNameAndFolder": "A mentéshez add meg a nevet, és válassz mappát.",
+    "missingName": "A mentéshez add meg a nevet.",
+    "missingFolder": "A mentéshez válassz mappát.",
+    "deleteDocument": "Dokumentum törlése"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Szkennelés",
+      "photos": "Fotókból",
+      "pdf": "PDF-fájlból",
+      "card": "Kártya",
+      "manual": "Kézi"
+    },
+    "hintFirst": "Igazítsd be a dokumentumot · tartsd stabilan a telefont",
+    "hintNext": "{{number}}. oldal kész · igazítsd be a következőt",
+    "title": "Új dokumentum",
+    "flashOff": "Vaku kikapcsolása",
+    "flashOn": "Vaku bekapcsolása",
+    "scanWithIos": "Szkennelés az iOS szkennerrel",
+    "tapToScan": "Koppints a szkenneléshez: magától megtalálja a széleket",
+    "permissionTitle": "Kamera-hozzáférés szükséges",
+    "permissionText": "A Sottomano csak a dokumentumaid lefotózására használja.",
+    "allow": "Engedélyezés",
+    "openSettings": "Beállítások megnyitása",
+    "howToAdd": "Hozzáadás módja",
+    "chooseFromGallery": "Választás a könyvtárból",
+    "shoot": "Fotó készítése",
+    "goOnWith_one": "Tovább {{count}} oldallal",
+    "goOnWith_other": "Tovább {{count}} oldallal",
+    "noPages": "Nincsenek oldalak",
+    "countNext": "tovább ›",
+    "countPages": "oldal"
+  },
+  "newDocument": {
+    "readTitle": "A dokumentumból kiolvasva",
+    "readText": "A fájlból vett név: {{name}}. Ellenőrizd, és szükség esetén javítsd.",
+    "checkTitle": "Ellenőrizd az adatokat",
+    "checkText_one": "{{count}} oldal rögzítve. Add meg a nevet és, ha van, a határidőt: a Határidők között találod.",
+    "checkText_other": "{{count}} oldal rögzítve. Add meg a nevet és, ha van, a határidőt: a Határidők között találod.",
+    "heading": "Új dokumentum"
+  },
+  "editDocument": {
+    "heading": "Dokumentum szerkesztése"
+  },
+  "documentVersion": {
+    "replacedOn": "Lecserélve: {{date}}",
+    "expiredOn": "lejárt: {{date}}",
+    "previewTitle": "{{title}} (előző verzió)"
+  },
+  "documentPages": {
+    "saveFailed": "Nem sikerült menteni az oldalakat"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Nem sikerült törölni",
+    "title": "Törlöd: {{title}}?",
+    "message_one": "A dokumentum és az emlékeztetője a Kukába kerül. {{count}} napig visszaállíthatod a Menü › Kuka részben.",
+    "message_other": "A dokumentum és az emlékeztetője a Kukába kerül. {{count}} napig visszaállíthatod a Menü › Kuka részben.",
+    "confirm": "Dokumentum törlése"
+  },
+  "renew": {
+    "saveFailed": "Nem sikerült menteni",
+    "deadline": "Határidő",
+    "repeatFooter": "{{repeat}}: az új dátum a régiből számolódik.",
+    "was": "Korábban",
+    "newDeadline": "Új határidő",
+    "newDocument": "Új dokumentum",
+    "withScanFooter": "A jelenlegi oldalak „Előző verzió” lesznek, amelyet a részleteknél találsz.",
+    "withoutScanFooter": "Kapcsold be, ha be akarod szkennelni az új dokumentumot.",
+    "addNewScan": "Új szkennelés hozzáadása"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · görgess lefelé",
+    "pagesSubtitle_one": "{{count}} oldal",
+    "pagesSubtitle_other": "{{count}} oldal · görgess lefelé",
+    "pageOf": "{{number}}. oldal / {{total}}",
+    "noPages": "Ennek a dokumentumnak nincsenek oldalai.",
+    "zoom": "Nagyítás",
+    "zoomOut": "Kicsinyítés",
+    "zoomIn": "Nagyítás",
+    "pageShort": "{{number}} / {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "nap",
+      "day_other": "nap",
+      "week_one": "hét",
+      "week_other": "hét",
+      "month_one": "hónap",
+      "month_other": "hónap",
+      "year_one": "év",
+      "year_other": "év"
+    },
+    "count": {
+      "day_one": "{{count}} nap",
+      "day_other": "{{count}} nap",
+      "week_one": "{{count}} hét",
+      "week_other": "{{count}} hét",
+      "month_one": "{{count}} hónap",
+      "month_other": "{{count}} hónap",
+      "year_one": "{{count}} év",
+      "year_other": "{{count}} év"
+    },
+    "every": {
+      "day_one": "Naponta",
+      "day_other": "{{count}} naponta",
+      "week_one": "Hetente",
+      "week_other": "{{count}} hetente",
+      "month_one": "Havonta",
+      "month_other": "{{count}} havonta",
+      "year_one": "Évente",
+      "year_other": "{{count}} évente"
+    },
+    "repeats": {
+      "day_one": "Naponta ismétlődik",
+      "day_other": "{{count}} naponta ismétlődik",
+      "week_one": "Hetente ismétlődik",
+      "week_other": "{{count}} hetente ismétlődik",
+      "month_one": "Havonta ismétlődik",
+      "month_other": "{{count}} havonta ismétlődik",
+      "year_one": "Évente ismétlődik",
+      "year_other": "{{count}} évente ismétlődik"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Figyelmet igényel",
+    "thisWeek": "Ezen a héten",
+    "upcomingNone": "Nincs teendő a következő hónapokban",
+    "upcoming_one": "{{count}} teendő a következő hónapokban",
+    "upcoming_other": "{{count}} teendő a következő hónapokban"
+  },
+  "deadlineOptions": {
+    "sameDay": "Aznap",
+    "daysBefore_one": "{{count}} nappal előtte",
+    "daysBefore_other": "{{count}} nappal előtte",
+    "defaultChoice": "{{label}} (alapértelmezett)"
+  },
+  "personRoles": {
+    "you": "Te",
+    "choice": {
+      "me": "Én vagyok",
+      "partner": "Társ",
+      "child": "Gyermek",
+      "parent": "Szülő",
+      "sibling": "Testvér",
+      "other": "Egyéb"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Az „Egyéb” kategória nem létezik.",
+    "otherNotDeletable": "Az „Egyéb” kategória nem törölhető."
+  },
+  "deadlineChip": {
+    "overdue": "Lejárt",
+    "today": "Ma",
+    "dueToday": "Ma esedékes",
+    "dueIn_one": "{{count}} nap múlva",
+    "dueIn_other": "{{count}} nap múlva"
+  },
+  "deadlineListRow": {
+    "hint": "Tartsd lenyomva a határidő szerkesztéséhez vagy eltávolításához",
+    "statusDue": "fizetendő",
+    "statusPaid": "fizetve"
+  },
+  "deadlineSection": {
+    "title": "Határidő",
+    "emptyFooter": "Emlékeztetővel a telefonodon és, ha be van kapcsolva, a „Sottomano” naptárban.",
+    "add": "Határidő hozzáadása",
+    "expiresOn": "Esedékes",
+    "repeats": "Ismétlés",
+    "never": "Soha",
+    "reminder": "Emlékeztető"
+  },
+  "dateCalendar": {
+    "previousMonth": "Előző hónap",
+    "nextMonth": "Következő hónap"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Következő hét",
+    "previousWeek": "Előző hét",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} határidő",
+    "dayWithDeadlines_other": "{{day}}, {{count}} határidő"
+  },
+  "deadlines": {
+    "title": "Határidők",
+    "newReminder": "Új emlékeztető",
+    "week": "Hét",
+    "month": "Hónap",
+    "openDocument": "Dokumentum megnyitása",
+    "editDeadline": "Határidő szerkesztése",
+    "markDue": "Jelölés fizetendőként",
+    "markPaid": "Jelölés fizetettként",
+    "removeDeadline": "Határidő eltávolítása",
+    "removeAlert": {
+      "title": "Eltávolítod a határidőt?",
+      "message": "A dokumentum megmarad; az emlékeztetője és a naptáreseménye törlődik.",
+      "confirm": "Eltávolítás"
+    },
+    "emptyTitle": "Nincsenek közelgő határidők",
+    "emptyText": "Koppints a + gombra egy határidős dokumentum hozzáadásához: itt és a naptárban is megjelenik.",
+    "sheetSubtitle": "Esedékes: {{date}}",
+    "dayRepeats": "ismétlődik",
+    "dayReminder": "emlékeztető",
+    "dayEmpty": "Ezen a napon nincs határidő"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Nem sikerült menteni",
+    "date": "Dátum",
+    "footer": "Az emlékeztető a telefonodra érkezik; bekapcsolt naptárral a határidő a „Sottomano” naptárban is megjelenik.",
+    "every": "Gyakoriság"
+  },
+  "family": {
+    "title": "Család",
+    "subtitle": "Profil mindenkinek otthon",
+    "addPerson": "Személy hozzáadása",
+    "members": "Tagok",
+    "orderSaveFailed": "Nem sikerült menteni a sorrendet",
+    "reorderTitle": "Család átrendezése",
+    "reorderHint": "Tarts lenyomva egy személyt, és húzd oda, ahová szeretnéd.",
+    "privacyNote": "Minden ezen a telefonon marad. Ha valakinek dokumentumot küldenél, nyisd meg, és koppints a Küldés gombra.",
+    "youSpoken": "te",
+    "reorderA11yHint": "Tartsd lenyomva a család átrendezéséhez",
+    "expiring_one": "{{count}} lejáró",
+    "expiring_other": "{{count}} lejáró"
+  },
+  "personScreen": {
+    "photoFailed": "Nem sikerült használni a fotót",
+    "editPerson": "Személy szerkesztése",
+    "selectAndSend": "Kijelölés és küldés",
+    "deletePerson": "Személy törlése",
+    "moreA11y": "{{name}} szerkesztése vagy törlése",
+    "changePhoto": "Fotó módosítása",
+    "editProfile": "Profil szerkesztése",
+    "documentsSection": "Dokumentumai · {{count}}",
+    "addDocument": "Dokumentum hozzáadása",
+    "sendTogether": "Küldés együtt ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Nem sikerült menteni",
+    "newPerson": "Új személy",
+    "addPhoto": "Fotó hozzáadása",
+    "name": "Név",
+    "namePlaceholder": "Mi a neve?",
+    "role": "Ki ő",
+    "roleA11y": "Ki ő neked: {{role}}",
+    "note": "A profil ezen a telefonon marad. Segít mindenki dokumentumait rendben tartani.",
+    "addToFamily": "Hozzáadás a családhoz",
+    "roleSheetTitle": "Ki ő neked"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Nem sikerült törölni",
+    "title": "Törlöd a(z) {{name}} kategóriát?",
+    "messageWithDocuments_one": "{{count}} dokumentumot tartalmaz. Mit szeretnél vele tenni?",
+    "messageWithDocuments_other": "{{count}} dokumentumot tartalmaz. Mit szeretnél velük tenni?",
+    "messageWithDocumentsRestorable_one": "{{count}} dokumentumot tartalmaz. Mit szeretnél vele tenni? A kategóriát az Új kategória részben állíthatod vissza.",
+    "messageWithDocumentsRestorable_other": "{{count}} dokumentumot tartalmaz. Mit szeretnél velük tenni? A kategóriát az Új kategória részben állíthatod vissza.",
+    "messageEmpty": "A kategória üres.",
+    "messageEmptyRestorable": "A kategória üres. Az Új kategória részben állíthatod vissza.",
+    "deleteAll": "Minden törlése",
+    "confirm": "Kategória törlése",
+    "choicesA11y": "Mi legyen a dokumentumokkal",
+    "moveLabel": "Áthelyezés az Egyéb kategóriába",
+    "moveDetailPassword": "Az appban maradnak, az Egyéb kategóriában, felhasználónév és jelszó nélkül",
+    "moveDetail": "Az appban maradnak, egy általános mappában",
+    "trashLabel": "Törlés",
+    "trashDetail_one": "A Kukába kerülnek: {{count}} napig visszaállíthatod őket",
+    "trashDetail_other": "A Kukába kerülnek: {{count}} napig visszaállíthatod őket"
+  },
+  "deletePerson": {
+    "title": "Eltávolítod a családból: {{name}}?",
+    "messageWithDocuments_one": "{{name}} profiljához {{count}} dokumentum tartozik. Mit szeretnél vele tenni?",
+    "messageWithDocuments_other": "{{name}} profiljához {{count}} dokumentum tartozik. Mit szeretnél velük tenni?",
+    "messageEmpty": "A profil törlődik erről a telefonról.",
+    "familyLabel": "Áthelyezés: Az egész család",
+    "familyDetail": "Az appban maradnak, mindenki számára láthatóan",
+    "trashDetail_one": "A profillal együtt törlődnek: {{count}} napig a Kukában maradnak",
+    "trashDetail_other": "A profillal együtt törlődnek: {{count}} napig a Kukában maradnak"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Háziállatok",
+      "document": "Dokumentum",
+      "home": "Otthon",
+      "car": "Autó",
+      "health": "Egészség",
+      "school": "Iskola",
+      "work": "Munka",
+      "keys": "Kulcsok",
+      "travel": "Utazás",
+      "expenses": "Kiadások"
+    },
+    "restoreFailed": "Nem sikerült visszaállítani",
+    "editTitle": "Kategória szerkesztése",
+    "newTitle": "Új kategória",
+    "restoreSection": "Alapkategória visszaállítása",
+    "restoreA11y": "{{name}} visszaállítása",
+    "restoreHint": "Úgy tér vissza, ahogy volt, a színeivel, ikonjával és mezőivel. Vagy hozz létre lent egy újat.",
+    "previewA11y": "Kategória előnézete",
+    "namePlaceholder": "Pl. Háziállatok",
+    "nameA11y": "Kategória neve",
+    "color": "Szín",
+    "paletteColor": "Megjelenés színe",
+    "colorNumber": "{{number}}. szín",
+    "followsPaletteHint": "A szín a Megjelenésben választott palettát követi.",
+    "ownColorHint": "Saját szín: nem változik a Megjelenéssel.",
+    "icon": "Ikon",
+    "forWhom": "Kinek",
+    "forWhomA11y": "Kinek szól ez a kategória: {{name}}",
+    "forWhomHint": "A kategória új dokumentumai ehhez a személyhez kerülnek.",
+    "create": "Kategória létrehozása"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Weboldal vagy app",
+        "namePlaceholder": "Például: Netbank",
+        "userLabel": "Felhasználónév vagy e-mail",
+        "userPlaceholder": "nev@email.hu",
+        "passwordLabel": "Jelszó",
+        "notePlaceholder": "Például: biztonsági kérdés, helyreállító kód…"
+      },
+      "wifi": {
+        "name": "Wi‑Fi",
+        "namePlaceholder": "Például: Otthoni Wi‑Fi",
+        "userLabel": "Hálózat neve",
+        "userPlaceholder": "KovacsOtthon_5G",
+        "passwordLabel": "Hálózati jelszó",
+        "notePlaceholder": "Például: a router a nappaliban van, a tévé mögött…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Például: Bankkártya",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Például: Júlia kártyája…"
+      },
+      "other": {
+        "name": "Egyéb",
+        "namePlaceholder": "Például: Otthoni riasztó",
+        "userLabel": "Felhasználónév",
+        "userPlaceholder": "Nem kötelező",
+        "passwordLabel": "Kód vagy jelszó",
+        "notePlaceholder": "Mire való, hol használod…"
+      }
+    },
+    "colors": {
+      "aqua": "Akvamarin",
+      "indigo": "Indigó",
+      "apricot": "Barack",
+      "pink": "Rózsaszín",
+      "mint": "Menta",
+      "sky": "Égkék",
+      "graphite": "Grafit"
+    },
+    "icons": {
+      "key": "Kulcs",
+      "lock": "Lakat",
+      "globe": "Földgömb",
+      "wifi": "Wi‑Fi",
+      "bank": "Bank",
+      "card": "Kártya",
+      "mail": "E-mail",
+      "home": "Otthon",
+      "car": "Autó",
+      "shield": "Pajzs",
+      "cart": "Kosár",
+      "star": "Csillag"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Csak számjegyek",
+    "strength": {
+      "weak": "Gyenge",
+      "fair": "Közepes",
+      "good": "Jó",
+      "strong": "Erős"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Erősítsd meg a zár bekapcsolásához"
+  },
+  "appLock": {
+    "prompt": "Sottomano feloldása",
+    "unlock": "Feloldás",
+    "unlockWith": {
+      "faceId": "Feloldás Face ID-val",
+      "touchId": "Feloldás Touch ID-val",
+      "passcode": "Feloldás jelkóddal"
+    },
+    "message": "A dokumentumaid védve vannak"
+  },
+  "passwordForm": {
+    "showPrompt": "Jelszó megjelenítése",
+    "copyPrompt": "Jelszó másolása",
+    "copiedTitle": "Kimásolva",
+    "copiedMessage": "1 perc múlva törlődik a vágólapról.",
+    "scannerUnavailableTitle": "A szkenner nem érhető el",
+    "scannerUnavailableMessage": "Válaszd ki a képet a fotókönyvtárból.",
+    "saveFailed": "Nem sikerült menteni",
+    "editTitle": "Jelszó szerkesztése",
+    "newTitle": "Új jelszó",
+    "privacy": "Csak ezen a telefonon maradnak, és Face ID-val nyílnak meg.",
+    "sections": {
+      "what": "Mit mentesz",
+      "name": "Név",
+      "preview": "Előnézet",
+      "access": "Bejelentkezés",
+      "site": "Weboldal vagy app",
+      "whose": "Kié",
+      "notes": "Jegyzetek"
+    },
+    "typesLabel": "Jelszó típusa",
+    "customTypePlaceholder": "Mi ez? Riasztó, széf, lakat…",
+    "customTypeLabel": "Mi ez",
+    "customTypeHint": "Új típus lesz belőle, és legközelebb a választható lehetőségek között találod.",
+    "previewTitle": "Így néz ki a listában",
+    "previewText": "Egy szín és egy ikon, vagy egy kép.",
+    "color": "Szín",
+    "colorLabel": "Előnézet színe",
+    "icon": "Ikon",
+    "iconLabel": "Előnézet ikonja",
+    "image": "Kép",
+    "scan": "Szkennelés",
+    "gallery": "Fotókból",
+    "removeImage": "Kép eltávolítása, szín és ikon használata",
+    "passwordPlaceholder": "Írd be vagy generáld",
+    "show": "Mutasd",
+    "hide": "Elrejtés",
+    "copy": "Másolás",
+    "saved": "Mentve",
+    "generate": "Erős jelszó generálása",
+    "urlPlaceholder": "www.pelda.hu",
+    "urlLabel": "Weboldal címe",
+    "wifiQrTitle": "QR-kód vendégeknek",
+    "wifiQrSubtitle": "Beolvassák, és csatlakoznak",
+    "person": "Személy",
+    "personA11y": "Személy, {{name}}",
+    "favoriteTitle": "Hozzáadás a kedvencekhez",
+    "favoriteSubtitle": "Rögtön megtalálod a kezdőlapon",
+    "saveButton": "Jelszó mentése",
+    "saveHint": "A mentéshez adj meg egy nevet."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Nincs jelszó",
+    "noPasswordMessage": "Add hozzá a Szerkesztéssel.",
+    "showPrompt": {
+      "site": "Jelszó megjelenítése",
+      "wifi": "Hálózati jelszó megjelenítése",
+      "pin": "PIN megjelenítése",
+      "other": "Kód vagy jelszó megjelenítése"
+    },
+    "copyPrompt": {
+      "site": "Jelszó másolása",
+      "wifi": "Hálózati jelszó másolása",
+      "pin": "PIN másolása",
+      "other": "Kód vagy jelszó másolása"
+    },
+    "copyUser": {
+      "site": "Felhasználónév vagy e-mail másolása",
+      "wifi": "Hálózat nevének másolása",
+      "pin": "Felhasználónév másolása",
+      "other": "Felhasználónév másolása"
+    },
+    "copiedTitle": "Kimásolva",
+    "copiedMessage": "1 perc múlva törlődik a vágólapról.",
+    "copiedTextTitle": "Kimásolva",
+    "qrPrompt": "QR-kód megjelenítése vendégeknek",
+    "invalidAddress": "Érvénytelen cím",
+    "removeFavorite": "Eltávolítás a kedvencekből",
+    "favoriteTitle": "Hozzáadás a kedvencekhez",
+    "favoriteSubtitle": "Rögtön megtalálod a kezdőlapon",
+    "moreActions": "További műveletek",
+    "sections": {
+      "access": "Bejelentkezés",
+      "site": "Weboldal vagy app",
+      "wifiQr": "QR-kód vendégeknek",
+      "whose": "Kié",
+      "notes": "Jegyzetek"
+    },
+    "hidden": "Rejtett",
+    "show": "Mutasd",
+    "hide": "Elrejtés",
+    "copy": "Másolás",
+    "locked": "Face ID vagy az iPhone jelkódja után látható",
+    "wifiQrLabel": "Wi‑Fi-hálózat QR-kódja",
+    "qrHint": "Beolvassák a kamerával, és csatlakoznak.",
+    "qrLocked": "A QR-kód tartalmazza a jelszót: Face ID vagy az iPhone jelkódja után látható.",
+    "qrNoNetwork": "Add meg a hálózat nevét a Szerkesztéssel, hogy QR-kódot kapj.",
+    "showQr": "QR-kód megjelenítése",
+    "hideQr": "QR-kód elrejtése",
+    "person": "Személy",
+    "moveToTrash": "Áthelyezés a Kukába"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Nincs jelszó",
+    "noPasswordMessage": "Add hozzá a Szerkesztéssel.",
+    "showPrompt": "Jelszó megjelenítése",
+    "copyPrompt": "Jelszó másolása",
+    "copiedTitle": "Jelszó kimásolva",
+    "copiedMessage": "1 perc múlva törlődik a vágólapról.",
+    "user": "Felhasználónév",
+    "password": "Jelszó",
+    "hidden": "Jelszó elrejtve",
+    "show": "Mutasd",
+    "hide": "Elrejtés",
+    "copy": "Másolás"
+  },
+  "cardForm": {
+    "found": "Megtalálva: {{name}}",
+    "foundBarcode": "Megtalálva: {{name}} vonalkód",
+    "handwritten": "Kézzel beírt kód",
+    "noCode": "Nincs beolvasott kód",
+    "photoOpenFailed": "Nem sikerült megnyitni a fotót",
+    "saveFailed": "Nem sikerült menteni",
+    "retakeFront": "Újrafotózás",
+    "retakePhoto": "Fotó újra",
+    "recognized": "Kártya felismerve",
+    "tapRetake": "Koppints az Újrafotózásra a lefotózáshoz",
+    "fromPhotos": "Fotókból",
+    "cover": "Borító",
+    "coverPhotoCaption": "A kártya fotójából kivágva és kiegyenesítve",
+    "coverColorCaption": "A kártya színe a nevével és számával",
+    "codeSection": "A pénztárnál mutatandó kód",
+    "photographCode": "Kód lefotózása",
+    "barcode": "Vonalkód",
+    "qrCode": "QR-kód",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Kártya",
+    "typeNumber": "Írd be lent a számot",
+    "explain": "A Sottomano magától felismeri, hogy a kártyán vonalkód vagy QR-kód van. A pénztárnál nagyban mutatja, teljes fényerővel.",
+    "readTitle": "A kártyáról kiolvasott adatok",
+    "readText": "Ellenőrizd, és szükség esetén javítsd.",
+    "name": "Név",
+    "namePlaceholder": "Pl. Szupermarket",
+    "type": "Típus",
+    "typePlaceholder": "Pl. Hűségkártya",
+    "number": "Szám",
+    "numberPlaceholder": "Pl. 0400 2219 8876",
+    "holder": "Tulajdonos",
+    "saveButton": "Kártya mentése",
+    "saveHint": "A mentéshez add meg a kártya nevét."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Az előlap fotója",
+      "barcode": "Vonalkód lefotózása"
+    },
+    "photoOpenFailed": "Nem sikerült megnyitni a fotót",
+    "permissionTitle": "Kamera-hozzáférés szükséges",
+    "permissionText": "A Sottomano a kamerával fotózza le a kártyáidat és olvassa be a vonalkódjukat.",
+    "allow": "Engedélyezés",
+    "openSettings": "Beállítások megnyitása",
+    "frontCheck": "Előlap: éles?",
+    "read": "Beolvasva: {{value}}",
+    "notRead": "A kód nincs beolvasva",
+    "notReadHint": "Tartsd meg a fotót: a következő lépésben beírod a számot.",
+    "retake": "Újra",
+    "use": "Használat",
+    "focus": "Fókusz",
+    "stepCount": "{{current}} / {{total}}",
+    "frameHint": "Igazítsd a kártyát a keretbe",
+    "searching": "Kód keresése…",
+    "chooseFromPhotos": "Választás a Fotókból",
+    "shoot": "Fotó készítése",
+    "skip": "Kihagyás"
+  },
+  "cardDetail": {
+    "code": "Kód",
+    "photo": "Fotó",
+    "barcodeLabel": "Vonalkód",
+    "barcodePhotoLabel": "A vonalkód fotója",
+    "fullScreenHint": "Teljes képernyőn nyitja meg a kódot",
+    "noCode": "Nincs kód. Koppints a „Szerkesztés” gombra a lefotózáshoz vagy beíráshoz.",
+    "tapHint": "Koppints a kódra a nagyításhoz",
+    "person": "Személy"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Nem sikerült menteni a sorrendet",
+    "editCategory": "Kategória szerkesztése",
+    "deleteCategory": "Kategória törlése",
+    "reorderTitle": "Kártyák átrendezése",
+    "reorderHint": "Tarts lenyomva egy kártyát, majd húzd oda, ahová szeretnéd.",
+    "yourCards": "Kártyáid",
+    "title": "Kártyák",
+    "subtitle": "Koppints egy kártyára, hogy a pénztárnál megmutasd a kódját",
+    "categoryMenuLabel": "{{name}} kategória szerkesztése vagy törlése",
+    "addCard": "Kártya hozzáadása",
+    "reorder": "Átrendezés",
+    "newCard": "Új kártya",
+    "cardDetails": "Kártya adatai",
+    "categoryMenuTitle": "{{name}} kategória",
+    "cardCount_one": "{{count}} kártya",
+    "cardCount_other": "{{count}} kártya",
+    "cardOpenLabel": "{{label}}, bezárás",
+    "cardClosedLabel": "{{label}}, kód megjelenítése",
+    "qrLabel": "A kártya QR-kódja",
+    "barcodeLabel": "A kártya vonalkódja",
+    "fullScreenHint": "Teljes képernyőn nyitja meg a kódot",
+    "noCode": "Nincs kód: koppints a Részletek › Szerkesztés elemre a lefotózáshoz vagy beíráshoz.",
+    "details": "Részletek"
+  },
+  "walletCard": {
+    "untitled": "Új kártya"
+  },
+  "barcodeView": {
+    "close": "Kód bezárása"
+  },
+  "colorPicker": {
+    "color": "Szín",
+    "custom": "Saját szín",
+    "hex": "Kód",
+    "hexLabel": "Színkód"
+  },
+  "colorWheel": {
+    "label": "Színkör: koppints vagy húzd a választáshoz",
+    "nextHue": "Következő árnyalat",
+    "previousHue": "Előző árnyalat"
+  },
+  "newCard": {
+    "title": "Új kártya",
+    "missingCategory": "A „Kártyák” kategória már nem létezik."
+  },
+  "editCard": {
+    "title": "Kártya szerkesztése"
+  },
+  "unlock": {
+    "storeOnly": "Az App Store-verzióban érhető el",
+    "remainingNone": "Elhasználtad az összes ingyenes helyet.",
+    "remaining_one": "Még {{count}} elemet adhatsz hozzá.",
+    "remaining_other": "Még {{count}} elemet adhatsz hozzá.",
+    "tag": "Ingyenes verzió · {{used}} / {{limit}} felhasználva",
+    "title": "Minden dokumentumod, korlátok nélkül",
+    "intro": "Ingyenes legfeljebb {{limit}} dokumentumig és kártyáig. Ha korlátlanul szeretnél hozzáadni, oldd fel egyetlen fizetéssel.",
+    "benefits": {
+      "unlimited": {
+        "title": "Korlátlan dokumentum",
+        "text": "Számlák, kártyák, garanciák és minden más"
+      },
+      "reminders": {
+        "title": "Határidő-emlékeztetők",
+        "text": "Szólunk, mielőtt túl késő lenne"
+      },
+      "offline": {
+        "title": "Internet nélkül is működik",
+        "text": "Minden a telefonodon marad, a mentéssel együtt"
+      },
+      "family": {
+        "title": "Az egész család",
+        "text": "Profil mindenkinek otthon"
+      }
+    },
+    "sectionTitle": "Ingyenes verziód",
+    "usageLabel": "Dokumentumok és kártyák",
+    "usageValue": "{{used}} / {{limit}}",
+    "usageA11y": "Felhasznált ingyenes helyek",
+    "keptNote": "A már elmentettek mindig a tieid maradnak, feloldás nélkül is.",
+    "priceTitle": "Örökre",
+    "priceText": "Korlátok nélkül · egyszeri fizetés",
+    "buy": "Feloldás: {{price}}",
+    "continueFree": "Folytatás ingyen",
+    "restore": "Vásárlás visszaállítása",
+    "terms": "Feltételek",
+    "privacy": "Adatvédelem"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Az „Egyéb” kategória",
+    "otherCategoryMessage": "Nem törölhető: a törölt kategóriák dokumentumait tárolja."
+  },
+  "quickActionMenu": {
+    "close": "Menü bezárása"
+  },
+  "quickActions": {
+    "open": "Megnyitás",
+    "unpin": "Eltávolítás a kedvencekből",
+    "pin": "Hozzáadás a kedvencekhez",
+    "moveToTrash": "Áthelyezés a Kukába",
+    "editCategory": "Kategória szerkesztése",
+    "deleteCategory": "Kategória törlése",
+    "editPerson": "Személy szerkesztése",
+    "deletePerson": "Személy törlése"
+  },
+  "shareCopies": {
+    "defaultName": "Dokumentum",
+    "fileNotFound": "A fájl nem található a telefonon."
+  },
+  "sendCompression": {
+    "tooBig": "Még maximális tömörítéssel is meghaladja a korlátot: érdemes több fájlra bontani.",
+    "lowPpi": "Az apró szöveg nem biztos, hogy olvasható lesz."
+  },
+  "sendPreferences": {
+    "original": "Eredeti"
+  },
+  "sendFileName": {
+    "fallback": "dokumentum"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Az előlapot és a hátlapot most nem lehet egyesíteni.",
+    "noPhotos": "Nincs küldhető fotó.",
+    "fileFront": "elolap",
+    "fileBack": "hatlap",
+    "filePage": "oldal-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "dokumentumok",
+    "title": "Küldés: {{title}}",
+    "formatPhotos": "Fotók",
+    "actions": {
+      "email": "E-mail",
+      "whatsapp": "WhatsApp",
+      "print": "Nyomtatás",
+      "save": "Mentés a Fájlokba",
+      "copy": "Másolás",
+      "other": "Továbbiak"
+    },
+    "alerts": {
+      "savedToFiles": "Elmentve a Fájlokba",
+      "imageCopied": "Kép kimásolva",
+      "textCopied": "Szöveg kimásolva",
+      "firstPageCopied": "Az első oldal kimásolva: illeszd be egy üzenetbe.",
+      "pasteImage": "Illeszd be egy üzenetbe vagy jegyzetbe.",
+      "pdfNotCopied": "PDF-et nem lehet másolni: a név és a jegyzet lett kimásolva. A fájlhoz használd a Továbbiak lehetőséget.",
+      "failed": "Nem sikerült befejezni"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDF",
+      "singlePdf": "Egyetlen PDF",
+      "failed": "Nem sikerült előkészíteni a fájlt",
+      "preparing": "Előkészítés…"
+    },
+    "includeNote": "A dokumentum jegyzetének csatolása",
+    "noNote": "Ennek a dokumentumnak nincs jegyzete.",
+    "frontBackPage": "Elő- és hátlap egy oldalon",
+    "frontBackImage": "Elő- és hátlap egy képen",
+    "maxSize": "Maximális méret",
+    "pdfAsIs": "A PDF változatlanul kerül elküldésre.",
+    "severalInfo": "Egyetlen PDF: a dokumentumok egymás után, az igazolványok és kártyák elő- és hátlapjával ugyanazon az oldalon.",
+    "quality": {
+      "high": "Magas minőség",
+      "good": "Jó minőség",
+      "low": "Alacsony minőség",
+      "minimum": "Minimális minőség",
+      "original": "Eredeti minőség"
+    },
+    "skipped_one": "{{count}} fotó nélküli dokumentum nincs benne (az importált PDF-ek még nem egyesíthetők).",
+    "skipped_other": "{{count}} fotó nélküli dokumentum nincs benne (az importált PDF-ek még nem egyesíthetők)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "PDF előkészítése…",
+    "progressRetry": "Fotók kicsinyítése ({{attempt}}. próbálkozás)…",
+    "subtitle": "Készült: {{date}}, Sottomano · {{documents}}",
+    "subtitleWithTotal": "Készült: {{date}}, Sottomano · {{documents}} · összesen {{total}}",
+    "columns": {
+      "number": "Sz.",
+      "document": "Dokumentum",
+      "date": "Dátum",
+      "person": "Személy",
+      "amount": "Összeg",
+      "page": "Oldal"
+    },
+    "sentApart": "külön küldve",
+    "noPages": "nincs oldal",
+    "paid": "fizetve",
+    "due": "fizetendő",
+    "invalidIndex": "Érvénytelen tartalomjegyzék"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Egy PDF nem egyesíthető (jelszóval védett vagy sérült): {{titles}}. A tartalomjegyzék „külön küldve” jelöléssel látja el, és a többivel együtt megy.",
+    "sentApart_other": "{{count}} PDF nem egyesíthető (jelszóval védett vagy sérült): {{titles}}. A tartalomjegyzék „külön küldve” jelöléssel látja el őket, és a többivel együtt mennek.",
+    "alerts": {
+      "prepareFailed": "Nem sikerült előkészíteni a PDF-et",
+      "ready": "A PDF kész",
+      "noMailTitle": "A Mail nincs beállítva",
+      "noMailMessage": "Adj hozzá egy fiókot a Mailben, vagy mentsd a PDF-eket a Fájlokba.",
+      "savedToFiles": "Elmentve a Fájlokba",
+      "sendFailed": "Nem sikerült elküldeni"
+    },
+    "readyMany": "{{number}} PDF kész",
+    "choices": {
+      "email": "E-mail: minden PDF egy üzenetben",
+      "save": "Mentés a Fájlokba: mind ugyanabba a mappába",
+      "oneByOne": "Megosztás egyenként"
+    },
+    "intro": "A(z) {{category}} összes dokumentuma évek szerint: évente egy PDF, tartalomjegyzékkel (dokumentum, dátum, személy, összeg, oldal) és végösszeggel. Az év a határidő vagy a fizetés éve; ha egyik sincs megadva, a hozzáadás éve.",
+    "noDocuments": "Ebben az évben nincs dokumentum.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF",
+    "year": "Év",
+    "allYears": "Minden év",
+    "maxPhotoSize": "Fotók maximális mérete",
+    "limitInfo": "A fotók kicsinyítve lesznek, hogy beleférjenek a korlátba; az importált PDF-ek változatlanok maradnak.",
+    "prepare": "Előkészítés és küldés"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Hiba történt",
+      "restoredToOther": "Visszaállítva az Egyéb kategóriába",
+      "restoredPassword": "A kategóriája már nem létezik: a dokumentum az Egyéb kategóriában van, felhasználónév és jelszó nélkül.",
+      "restoredMessage": "A kategóriája már nem létezik: a dokumentum az Egyéb kategóriában van.",
+      "deleteTitle": "Végleg törlöd: „{{title}}”?",
+      "deleteMessage": "A fotói és PDF-jei is törlődnek. Ez nem vonható vissza.",
+      "emptyTitle": "Kiüríted a Kukát?",
+      "emptyMessage_one": "A dokumentum a fotóival és PDF-jeivel együtt törlődik. Ez nem vonható vissza.",
+      "emptyMessage_other": "A(z) {{count}} dokumentum a fotóival és PDF-jeivel együtt törlődik. Ez nem vonható vissza.",
+      "emptyConfirm": "Kiürítés"
+    },
+    "intro": "A törölt dokumentumok {{days}} napig itt maradnak, utána a fotóikkal és PDF-jeikkel együtt törlődnek.",
+    "empty": "A Kuka üres",
+    "deletedSoon": "Hamarosan törlődik",
+    "deletedIn": "{{days}} nap múlva törlődik",
+    "restoreLabel": "{{title}} visszaállítása",
+    "deleteForeverLabel": "{{title}} végleges törlése",
+    "deleteForever": "Végleges törlés",
+    "emptyTrash": "Kuka kiürítése"
+  },
+  "menu": {
+    "close": "Menü bezárása",
+    "home": "Kezdőlap",
+    "favorites": "Kedvencek",
+    "deadlines": "Határidők",
+    "deadlinesUrgent": "Határidők, {{number}} ellenőrizendő",
+    "family": "Család",
+    "cards": "Kártyák",
+    "backup": "Biztonsági mentés",
+    "backupDue": "Biztonsági mentés esedékes",
+    "help": "Súgó és kapcsolat",
+    "rate": "Sottomano értékelése",
+    "recommend": "Ajánld egy barátnak",
+    "trash": "Kuka",
+    "trashCount": "Kuka, {{number}}",
+    "password": "Jelszavak",
+    "scan": "Szkennelés",
+    "fromPhotos": "Fotókból",
+    "importFiles": "Fájlok importálása",
+    "version": "Verzió: {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Értesítések bezárása",
+    "title": "Értesítések",
+    "markAllRead": "Olvasottnak jelöl",
+    "empty": "Nincs értesítés az elmúlt 7 napban.",
+    "today": "Ma",
+    "thisWeek": "Ezen a héten",
+    "settings": "Értesítési beállítások",
+    "unreadItem": "Olvasatlan. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Lejárt: {{date}}.",
+    "expiresToday": "Ma jár le.",
+    "expiresOn": "Lejár {{distance}}, {{date}}.",
+    "amount": "Összeg: {{amount}}.",
+    "backupTitle": "Biztonsági mentés",
+    "backupLate": "Régóta nem készült biztonsági mentés a dokumentumaidról.",
+    "backupNever": "Még nem készítettél biztonsági mentést a dokumentumaidról."
+  },
+  "deadlineReminders": {
+    "title": "Közelgő határidő",
+    "hiddenBody": "Egy dokumentum lejár: {{date}} ({{distance}}). Nyisd meg a Sottomanót a megtekintéshez.",
+    "body": "{{name}} lejár: {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Megjelenés",
+      "security": "Biztonság",
+      "reminders": "Emlékeztetők",
+      "backup": "Biztonsági mentés",
+      "info": "Névjegy"
+    },
+    "calendarOff": "Ki",
+    "alerts": {
+      "notificationsOffTitle": "Az értesítések ki vannak kapcsolva",
+      "notificationsOffMessage": "Az emlékeztetőkhöz engedélyezd a Sottomano értesítéseit az iPhone Beállításaiban.",
+      "openSettings": "Beállítások megnyitása"
+    },
+    "lastBackup": {
+      "never": "Soha",
+      "today": "Ma",
+      "yesterday": "Tegnap",
+      "daysAgo_one": "{{count}} napja",
+      "daysAgo_other": "{{count}} napja"
+    },
+    "categoryColors": "Kategóriák színei",
+    "faceId": "Zárolás Face ID-val",
+    "faceIdSubtitle": "Az app minden megnyitásakor kéri az arcodat",
+    "hidePreviews": "Előnézetek elrejtése",
+    "hidePreviewsSubtitle": "Az értesítések nem mutatják a dokumentumot",
+    "notifications": "Értesítések",
+    "reminderTime": "Emlékeztető ideje",
+    "defaultReminder": "Alap emlékeztető",
+    "iconBadge": "Jelvény az app ikonján",
+    "iconBadgeSubtitle": "Lejárt vagy 7 napon belül esedékes határidők",
+    "calendar": "„Sottomano” naptár",
+    "notificationsBlocked": "Az értesítések le vannak tiltva",
+    "notificationsBlockedSubtitle": "Engedélyezd őket az iPhone Beállításaiban",
+    "backupNote": "A biztonsági mentés egy fájl a telefonodon, a Fájlok appban. Bárhová átmásolhatod. A Sottomano internet nélkül is működik.",
+    "createBackup": "Mentés most",
+    "restoreBackup": "Visszaállítás mentésből",
+    "help": "Súgó és kapcsolat",
+    "privacy": "Adatvédelem",
+    "terms": "Felhasználási feltételek",
+    "rate": "Sottomano értékelése",
+    "debug": {
+      "limitPreview": "Ingyenes korlát előnézete",
+      "limitPreviewSubtitle": "Csak teszteléshez: a zárolt +, a korlát panel és a kártya a kezdőlapon",
+      "emptyHome": "Üres kezdőlap előnézete",
+      "emptyHomeSubtitle": "Csak teszteléshez: a kezdőlap, mintha nem lennének dokumentumok (az adataid megmaradnak)",
+      "onboarding": "Üdvözlés újra",
+      "onboardingSubtitle": "Csak teszteléshez: az üdvözlő oldalak 1–4"
+    },
+    "version": "Sottomano · verzió: {{version}}",
+    "theme": {
+      "title": "Téma",
+      "autoSubtitle": "A telefon beállítását követi",
+      "auto": "Automatikus",
+      "light": "Világos",
+      "dark": "Sötét"
+    }
+  },
+  "backup": {
+    "title": "Biztonsági mentés",
+    "subtitle": "Minden dokumentumod másolata, a telefonodra mentve.",
+    "keyProgress": "Védelem a jelszavaddal… ez akár egy percig is tarthat",
+    "whenToday": "ma {{time}}",
+    "whenDate": "{{date}} {{time}}",
+    "minLength": "Legalább {{min}} karakter.",
+    "mismatch": "A két jelszó nem egyezik.",
+    "creating": "Mentés készítése…",
+    "copyDialogTitle": "Mentés másolása",
+    "opening": "Mentés megnyitása…",
+    "checking": "Dokumentumok ellenőrzése…",
+    "restoring": "Visszaállítás…",
+    "keepOpen": "Tartsd nyitva az appot, amíg be nem fejeződik.",
+    "forgotWarning": "Ha elfelejted a jelszót, a mentést nem lehet megnyitni.",
+    "passwordPlaceholder": "Jelszó (legalább {{min}} karakter)",
+    "repeatPlaceholder": "Jelszó ismét",
+    "createAndSave": "Létrehozás és mentés",
+    "backupPassword": "Mentés jelszava",
+    "openBackup": "Mentés megnyitása",
+    "completed": "A mentés kész",
+    "lastBackup": "Utolsó mentés",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Fájl másolása máshová",
+    "createNew": "Új mentés készítése",
+    "noneTitle": "Még nem készítettél mentést",
+    "noneText": "Ha elveszíted vagy lecseréled a telefonod, a mentés mindent visszahoz.",
+    "createNow": "Mentés most",
+    "restoreSection": "Visszaállítás",
+    "restoreTitle": "Új telefonod van?",
+    "restoreText": "Válaszd ki a mentésfájlt, hogy visszakapd a dokumentumaidat, kártyáidat és emlékeztetőidet.",
+    "chooseFile": "Mentésfájl kiválasztása",
+    "remindersSection": "Emlékeztetők",
+    "remindMe": "Emlékeztess a mentésre",
+    "remindMeValue": "Emlékeztess a mentésre: {{value}}",
+    "footnote": "A mentés egyetlen fájl, amelyet a választott jelszó véd: dokumentumok, fotók, kártyák, személyek és emlékeztetők. Másold máshová is (Fájlok, iCloud Drive, számítógép), hogy akkor is meglegyen, ha elveszíted a telefonod.",
+    "alerts": {
+      "createFailed": "A mentés nem sikerült",
+      "copyFailed": "Nem sikerült másolni",
+      "restoreTitle": "Visszaállítod a mentést ({{date}})?",
+      "restoreMessage_one": "{{count}} dokumentumot tartalmaz. Ami most az appban van, lecserélődik.",
+      "restoreMessage_other": "{{count}} dokumentumot tartalmaz. Ami most az appban van, lecserélődik.",
+      "restoreFailed": "A visszaállítás nem sikerült",
+      "restoreFailedMessage": "Az appban semmi sem változott.\n\n{{reason}}",
+      "restored": "Mentés visszaállítva",
+      "restoredMessage": "A dokumentumaid visszakerültek."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Hetente",
+      "month": "Havonta",
+      "never": "Soha"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Ez a fájl nem Sottomano-mentés.",
+    "newerVersion": "Ezt a mentést a Sottomano egy újabb verziója készítette. Frissítsd az appot, és próbáld újra.",
+    "empty": "A mentésfájl üres vagy hiányos.",
+    "incomplete": "A mentésfájl hiányos.",
+    "wrongPassword": "Hibás jelszó. Figyelj a kis- és nagybetűkre, és próbáld újra.",
+    "damaged": "A mentésfájl sérült vagy hiányos."
+  },
+  "createBackup": {
+    "incompleteFile": "Hiányos fájl: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "A mentés tartalma érvénytelen.",
+    "newerApp": "Ez a mentés a Sottomano egy újabb verziójából származik. Frissítsd az appot, és próbáld újra."
+  },
+  "zipReader": {
+    "invalid": "Érvénytelen archívum",
+    "incomplete": "Hiányos archívum"
+  },
+  "backupReminder": {
+    "none": "Még nem készítettél mentést",
+    "old_one": "Az utolsó mentésed {{count}} napja készült",
+    "old_other": "Az utolsó mentésed {{count}} napja készült",
+    "link": "Mentés most",
+    "close": "Értesítés bezárása",
+    "snooze_one": "Elrejtés {{count}} napra",
+    "snooze_other": "Elrejtés {{count}} napra"
+  },
+  "calendarSettings": {
+    "title": "Naptár",
+    "intro": "A határidők egy külön naptárba kerülnek: „Sottomano”. A Naptár appban elrejtheted; ha itt kikapcsolod, törlődik.",
+    "details": "Minden határidő egy egész napos esemény „Lejár: cím” néven, a dokumentum egyéb adatai nélkül. Ha a Sottomano emlékeztetői ki vannak kapcsolva, az esemény az emlékeztető napján 9:00-kor jelez; ha be vannak kapcsolva, csak az app jelez, így nem kapsz két értesítést.",
+    "allowAccess": "Hozzáférés engedélyezése a Naptárhoz",
+    "denied": "A Naptárhoz való hozzáférés el lett utasítva. Az iPhone Beállításaiban bekapcsolhatod.",
+    "openSettings": "Beállítások megnyitása",
+    "switchLabel": "Határidők a „Sottomano” naptárban",
+    "enabled_one": "{{count}} határidő a „Sottomano” naptárban",
+    "enabled_other": "{{count}} határidő a „Sottomano” naptárban",
+    "removeConfirm": "Eltávolítod a Sottomano naptárt és minden határidejét a Naptárból?",
+    "remove": "Eltávolítás",
+    "removed": "„Sottomano” naptár törölve"
+  },
+  "calendarSync": {
+    "eventTitle": "Lejár: {{title}}",
+    "cannotCreate": "Nem sikerült létrehozni a „Sottomano” naptárt ezen az iPhone-on."
+  },
+  "appearance": {
+    "intro": "Az alapkategóriák színei. Az általad létrehozott kategóriák megtartják a saját színüket.",
+    "restoreButton": "Alapkategóriák visszaállítása",
+    "restoreHint": "Visszahozza a törölt alapkategóriákat.",
+    "paletteLabel": "{{name}} paletta",
+    "alerts": {
+      "restoreTitle": "Visszaállítod az alapkategóriákat?",
+      "restoreMessage": "A töröltek az eredeti nevükkel, ikonjukkal és színükkel térnek vissza. A dokumentumaid és a saját kategóriáid nem változnak.",
+      "nothingTitle": "Nincs mit visszaállítani",
+      "nothingMessage": "Minden alapkategória már a kezdőlapon van.",
+      "restoredTitle": "Kategóriák visszaállítva",
+      "restoredMessage_one": "{{count}} kategória visszakerült a kezdőlapra, az „Egyéb” elé.",
+      "restoredMessage_other": "{{count}} kategória visszakerült a kezdőlapra, az „Egyéb” elé.",
+      "restoreFailed": "Nem sikerült visszaállítani"
+    }
+  },
+  "about": {
+    "version": "Verzió: {{version}}",
+    "privacy": "Adatvédelem",
+    "privacyFooter": "Ha bekapcsolod a Naptárat, a határidők a választott iPhone-naptárba kerülnek. Amikor dokumentumot küldesz, te döntöd el, kivel osztod meg.",
+    "onPhone": "A dokumentumaid a telefonodon maradnak",
+    "offline": "Nincs fiók és nincs szerver: offline is működik",
+    "noTracking": "Nincs követés és nincsenek hirdetések"
+  },
+  "terms": {
+    "intro": "A teljes felhasználási feltételek az App Store-verzióval együtt jelennek meg. Röviden:",
+    "free": "A Sottomano ingyenes legfeljebb {{limit}} dokumentumig és kártyáig",
+    "oneTime": "A feloldás egyszeri vásárlás, előfizetés nélkül",
+    "yours": "A dokumentumaid a telefonodon maradnak, és a tieid",
+    "backup": "Készíts biztonsági mentést, hogy telefoncserénél se veszítsd el őket"
+  },
+  "limit": {
+    "later": "Később",
+    "title": "Elhasználtad a(z) {{limit}} ingyenes helyet",
+    "text": "Minden, amit elmentettél, itt marad és ugyanúgy működik. További dokumentumok és kártyák hozzáadásához oldd fel a Sottomanót.",
+    "stillWorks": {
+      "view": "Dokumentumaid megtekintése",
+      "send": "Küldés és megosztás",
+      "cards": "Kártyáid felmutatása a pénztárnál",
+      "reminders": "Emlékeztetők fogadása"
+    },
+    "blocked": "További dokumentumok vagy kártyák hozzáadása",
+    "unlock": "Korlátlan feloldás: {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}} / {{limit}} ingyenes hely felhasználva",
+    "accessibility": "{{title}}. Feloldás",
+    "unlock": "Feloldás"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Ingyenes verzió: {{used}} / {{limit}} felhasználva",
+    "titleMenu": "Ingyenes: {{used}} / {{limit}} felhasználva",
+    "subtitle": "Korlátlan feloldás: {{price}}",
+    "accessibility": "{{title}}. Korlátlan feloldás: {{price}}",
+    "unlock": "Feloldás"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Üdv a Sottomanóban!",
+        "text": "Személyi igazolvány, hűségkártyák, számlák, garanciák: a háztartás minden irata egy helyen, mindig kéznél.",
+        "info": "A telefonodon maradnak, és internet nélkül is működnek"
+      },
+      "scan": {
+        "title": "Elég egyszer lefotózni",
+        "text": "Több oldalt is beszkennelhetsz, vagy importálhatsz fotókat és PDF-eket. Rendben megtalálod és olyan kis méretben küldöd őket, amilyenre szükség van."
+      },
+      "deadlines": {
+        "title": "Figyeljük a határidőket",
+        "text": "Szólunk, mielőtt egy számla vagy dokumentum lejár. Ha szeretnéd, a Naptáradban is."
+      },
+      "cards": {
+        "title": "A kártyáid mindig a zsebedben",
+        "text": "Fotózd le a hűségkártyáidat: a pénztárnál egy koppintással mutathatod a vonalkódot vagy a QR-kódot."
+      }
+    },
+    "skip": "Kihagyás",
+    "pageOf": "{{page}}. oldal / {{total}}",
+    "start": "Kezdés",
+    "restore": "Visszaállítás mentésből",
+    "art": {
+      "bills": "Számlák",
+      "cards": "Kártyák",
+      "health": "Egészség",
+      "car": "Autó",
+      "pdfReady": "PDF kész",
+      "billTitle": "Villanyszámla",
+      "billExpires": "2 nap múlva esedékes",
+      "gym": "Edzőterem",
+      "library": "Könyvtár",
+      "supermarket": "Szupermarket"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Nem sikerült megnyitni a fájlt",
+    "title": "Fotózd le az első dokumentumod",
+    "text": "Egy számla, a személyid vagy a mosógép garanciája: pár másodperc, és biztonságban van, mindig kéznél.",
+    "snap": "Dokumentum fotózása",
+    "pdf": "PDF feltöltése",
+    "folders": "Mappáid",
+    "emptyAccessibility": "{{name}}, üres",
+    "empty": "Üres",
+    "newCategory": "Új kategória"
+  },
+  "splashOverlay": {
+    "tagline": "A háztartás iratai, küldésre készen"
+  },
+  "appActions": {
+    "shareText": "Ajánlom a Sottomanót: a háztartás iratai, kártyái és határidői mindig kéznél, a telefonodon, internet nélkül is.",
+    "rateTitle": "Sottomano értékelése",
+    "rateMessage": "Értékelést akkor hagyhatsz, amikor a Sottomano megjelenik az App Store-ban.",
+    "lockUnavailableTitle": "A zár nem érhető el",
+    "lockUnavailableMessage": "A Sottomano zárolásához jelkód kell az iPhone-odon. Állíts be egyet a Beállítások › Face ID és jelkód menüben, majd próbáld újra."
+  }
+}

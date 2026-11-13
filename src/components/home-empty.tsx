@@ -32,12 +32,18 @@ async function loadPdf() {
 // "Fotografa il tuo primo documento", "Fotografa un documento" (the "+") and "Carica un PDF";
 // then LE TUE CARTELLE: every category on its light tint with "Vuota". Our extra: the dashed
 // "Nuova categoria" at the end.
+// The folders of Home vuota: these built-in ones only, in this order (by their key, so a renamed or
+// recolored one keeps the user's name and color; a hidden one is not in the list and is skipped).
+// The others still exist and show up in Home as soon as there is a document.
+const EMPTY_HOME_FOLDERS = ['person.text.rectangle', 'house', 'creditcard', 'cross.case', 'key'] as const; // Documenti, Casa, Tessere e card, Spese 730, Password
+
 export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   // Large text: "Carica un PDF" with its icon above, centered like the empty state and its button
   const iconRow = useIconRow();
+  const folders = EMPTY_HOME_FOLDERS.flatMap((key) => categories.filter((c) => c.builtinKey === key).slice(0, 1));
   return (
     <>
       <View style={styles.card}>
@@ -69,7 +75,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
       {/* The tiles of Home (same component, size and colors), so nothing moves when the first
           document arrives; "Vuota" in place of the count */}
       <TileGrid
-        items={categories}
+        items={folders}
         keyFor={(category) => category.id}
         renderTile={(category, size) => (
           <Pressable

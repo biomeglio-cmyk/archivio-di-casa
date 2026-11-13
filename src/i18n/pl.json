@@ -1,1 +1,1701 @@
-{}
+{
+  "common": {
+    "cancel": "Anuluj",
+    "ok": "OK",
+    "done": "Gotowe",
+    "save": "Zapisz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "close": "Zamknij",
+    "confirm": "Potwierdź",
+    "back": "Wstecz",
+    "next": "Dalej",
+    "share": "Udostępnij",
+    "send": "Wyślij",
+    "search": "Szukaj",
+    "add": "Dodaj",
+    "remove": "Usuń",
+    "retry": "Spróbuj ponownie",
+    "continue": "Kontynuuj",
+    "yes": "Tak",
+    "no": "Nie",
+    "restore": "Przywróć",
+    "settings": "Ustawienia",
+    "more": "Więcej",
+    "none": "Brak",
+    "documents_one": "{{count}} dokument",
+    "documents_few": "{{count}} dokumenty",
+    "documents_many": "{{count}} dokumentów",
+    "documents_other": "{{count}} dokumentu",
+    "pages_one": "{{count}} strona",
+    "pages_few": "{{count}} strony",
+    "pages_many": "{{count}} stron",
+    "pages_other": "{{count}} strony",
+    "photos_one": "{{count}} zdjęcie",
+    "photos_few": "{{count}} zdjęcia",
+    "photos_many": "{{count}} zdjęć",
+    "photos_other": "{{count}} zdjęcia",
+    "wholeFamily": "Cała rodzina"
+  },
+  "dates": {
+    "today": "dziś",
+    "tomorrow": "jutro",
+    "yesterday": "wczoraj",
+    "inSpan": "za {{span}}",
+    "spanAgo": "{{span}} temu",
+    "expiredYesterday": "termin minął wczoraj",
+    "expiredFor": "termin minął {{span}} temu",
+    "days_one": "{{count}} dzień",
+    "days_few": "{{count}} dni",
+    "days_many": "{{count}} dni",
+    "days_other": "{{count}} dnia",
+    "months_one": "{{count}} miesiąc",
+    "months_few": "{{count}} miesiące",
+    "months_many": "{{count}} miesięcy",
+    "months_other": "{{count}} miesiąca",
+    "years_one": "{{count}} rok",
+    "years_few": "{{count}} lata",
+    "years_many": "{{count}} lat",
+    "years_other": "{{count}} roku"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Dokumenty",
+      "cards": "Karty",
+      "utilities": "Rachunki",
+      "home": "Dom",
+      "insurance": "Ubezpieczenia",
+      "warranties": "Gwarancje i paragony",
+      "car": "Samochód",
+      "tax": "Ulgi podatkowe",
+      "householdStaff": "Pomoc domowa",
+      "school": "Szkoła",
+      "pet": "Zwierzęta",
+      "password": "Hasła",
+      "other": "Inne"
+    }
+  },
+  "language": {
+    "title": "Język",
+    "auto": "Automatycznie",
+    "autoSubtitle": "Zgodnie z językiem telefonu",
+    "search": "Szukaj języków",
+    "autoDetail": "Język iPhone’a: {{language}}",
+    "noResults": "Brak języków dla „{{query}}”"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastele",
+    "vivid": "Żywe",
+    "earth": "Ziemia",
+    "sea": "Morze",
+    "sunset": "Zachód",
+    "night": "Noc"
+  },
+  "home": {
+    "welcome": "Witaj w Sottomano",
+    "hello": "Cześć!",
+    "searchPlaceholder": "Szukaj dokumentu",
+    "favorites": "Ulubione",
+    "seeAll": "Pokaż wszystko",
+    "seeAllFavorites": "Pokaż wszystkie ulubione",
+    "deadlines": "Terminy",
+    "seeAllDeadlines": "Pokaż wszystkie terminy",
+    "archive": "Archiwum",
+    "reorderDone": "Zakończ porządkowanie",
+    "reorder": "Zmień kolejność",
+    "reorderCategories": "Zmień kolejność kategorii",
+    "reorderHint": "Przeciągnij kategorie w wybranej kolejności.",
+    "alerts": {
+      "orderNotSaved": "Nie udało się zapisać kolejności"
+    },
+    "newCategory": "Nowa kategoria"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} karta",
+    "cards_few": "{{count}} karty",
+    "cards_many": "{{count}} kart",
+    "cards_other": "{{count}} karty"
+  },
+  "folder": {
+    "paidOn": "Zapłacono {{date}}",
+    "expiredOn": "Termin minął {{date}}",
+    "expiresOn": "Termin: {{date}}",
+    "addedOn": "Dodano {{date}}",
+    "newItem": {
+      "bill": "Nowy rachunek",
+      "card": "Nowa karta",
+      "warranty": "Nowa gwarancja",
+      "password": "Nowe hasło",
+      "document": "Nowy dokument"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Wszystko",
+      "documents": "Dokumenty",
+      "cards": "Karty",
+      "deadlines": "Terminy"
+    },
+    "paid": "zapłacone",
+    "expiresOn": "termin {{date}}",
+    "folderSubtitle_one": "Folder · {{count}} dokument",
+    "folderSubtitle_few": "Folder · {{count}} dokumenty",
+    "folderSubtitle_many": "Folder · {{count}} dokumentów",
+    "folderSubtitle_other": "Folder · {{count}} dokumentu",
+    "card": "Karta",
+    "deadlineSubtitle": "Termin · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Szukaj dokumentu",
+    "fieldLabel": "Szukaj w dokumentach",
+    "filter": "Filtr",
+    "results_one": "{{count}} wynik",
+    "results_few": "{{count}} wyniki",
+    "results_many": "{{count}} wyników",
+    "results_other": "{{count}} wyniku",
+    "noResults": "Brak wyników",
+    "noResultsHint": "Spróbuj innego słowa, na przykład nazwy sklepu.",
+    "hint": "Szukaj w nazwach, folderach, typach, notatkach, kartach i terminach."
+  },
+  "navigation": {
+    "home": "Start",
+    "favorites": "Ulubione",
+    "family": "Rodzina",
+    "deadlines": "Terminy",
+    "deadlinesToCheck_one": "Terminy, {{count}} do sprawdzenia",
+    "deadlinesToCheck_few": "Terminy, {{count}} do sprawdzenia",
+    "deadlinesToCheck_many": "Terminy, {{count}} do sprawdzenia",
+    "deadlinesToCheck_other": "Terminy, {{count}} do sprawdzenia",
+    "addLocked": "Dodaj dokument, zablokowane: osiągnięto darmowy limit",
+    "addDocument": "Dodaj dokument",
+    "titles": {
+      "editDocument": "Edytuj dokument",
+      "pages": "Strony",
+      "deadline": "Termin",
+      "renewed": "Odnowiono",
+      "previousVersion": "Poprzednia wersja",
+      "newDocument": "Nowy dokument",
+      "appearance": "Wygląd",
+      "backup": "Kopia zapasowa",
+      "taxPackage": "Wyślij do księgowego",
+      "trash": "Kosz",
+      "terms": "Warunki korzystania",
+      "about": "Info i prywatność",
+      "newCard": "Nowa karta",
+      "editCard": "Edytuj kartę"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Przeciągnij, aby przenieść, lub użyj czynności Przenieś wyżej i Przenieś niżej",
+    "moveEarlier": "Przenieś wyżej",
+    "moveLater": "Przenieś niżej",
+    "footer": "Tak samo zmieniasz kolejność kart, osób w Rodzinie i Ulubionych: przytrzymaj wiersz i przeciągnij go za uchwyt po prawej."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Przytrzymaj: przeciągnij, aby przenieść, lub puść, aby zobaczyć czynności"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Nie udało się zapisać kolejności"
+    },
+    "reorderTitle": "Zmień kolejność ulubionych",
+    "reorderHint": "Przytrzymaj ulubiony element i przeciągnij go, gdzie chcesz.",
+    "yourFavorites": "Twoje ulubione",
+    "title": "Ulubione",
+    "subtitle": "To, co chcesz mieć zawsze pod ręką",
+    "searchPlaceholder": "Szukaj w ulubionych",
+    "viewList": "Lista",
+    "viewGrid": "Siatka",
+    "count_one": "{{count}} ulubiony",
+    "count_few": "{{count}} ulubione",
+    "count_many": "{{count}} ulubionych",
+    "count_other": "{{count}} ulubionego",
+    "noMatch": "Brak ulubionych pasujących do „{{query}}”.",
+    "empty": "Nie masz jeszcze ulubionych.",
+    "footer": "Stuknij serce przy dowolnym dokumencie, aby dodać go tutaj.",
+    "footerGrid": "Stuknij serce przy dowolnym dokumencie, aby dodać go tutaj. Przytrzymaj kafelek i przeciągnij, aby zmienić kolejność.",
+    "footerList": "Stuknij serce przy dowolnym dokumencie, aby dodać go tutaj. Przytrzymaj wiersz, aby zmienić kolejność.",
+    "rowHint": "Przytrzymaj, aby zmienić kolejność ulubionych",
+    "unpin": "Usuń z ulubionych",
+    "expires": "termin {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "do zapłaty: {{count}}",
+    "alerts": {
+      "orderNotSaved": "Nie udało się zapisać kolejności"
+    },
+    "actions": {
+      "editCategory": "Edytuj kategorię",
+      "sendToAccountant": "Wyślij do księgowego",
+      "selectAndSend": "Zaznacz i wyślij",
+      "reorder": "Zmień kolejność",
+      "deleteCategory": "Usuń kategorię"
+    },
+    "moreLabel": "Edytuj lub usuń kategorię {{name}}",
+    "searchIn": "Szukaj w: {{name}}",
+    "viewList": "Lista",
+    "viewGrid": "Siatka",
+    "reorderHint": "Przytrzymaj i przeciągnij dokumenty w wybranej kolejności.",
+    "allTypes": "Wszystkie",
+    "noDocumentsFound": "Nie znaleziono dokumentów.",
+    "sendTogether": "Wyślij razem ({{count}})",
+    "sheetTitle": "Kategoria {{name}}"
+  },
+  "folderRow": {
+    "due": "do zapłaty",
+    "paid": "zapłacone"
+  },
+  "homeSections": {
+    "expired": "Po terminie",
+    "expiresToday": "Termin dziś",
+    "expiresTomorrow": "Termin jutro",
+    "expiresInDays_one": "Termin za {{count}} dzień",
+    "expiresInDays_few": "Termin za {{count}} dni",
+    "expiresInDays_many": "Termin za {{count}} dni",
+    "expiresInDays_other": "Termin za {{count}} dnia",
+    "expiresOn": "Termin {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Usuń z ulubionych",
+    "pin": "Dodaj do ulubionych"
+  },
+  "searchBar": {
+    "clear": "Wyczyść tekst"
+  },
+  "documentGrid": {
+    "addDocument": "Dodaj dokument"
+  },
+  "homeHeader": {
+    "menu": "Menu",
+    "notifications": "Powiadomienia",
+    "notificationsUnread_one": "Powiadomienia, {{count}} nieprzeczytane",
+    "notificationsUnread_few": "Powiadomienia, {{count}} nieprzeczytane",
+    "notificationsUnread_many": "Powiadomienia, {{count}} nieprzeczytanych",
+    "notificationsUnread_other": "Powiadomienia, {{count}} nieprzeczytanego"
+  },
+  "demoData": {
+    "people": {
+      "step": "Krok",
+      "mom": "Mama",
+      "dad": "Tata"
+    },
+    "documents": {
+      "idCard": "Dowód osobisty",
+      "drivingLicence": "Prawo jazdy",
+      "passport": "Paszport",
+      "electricityBill": "Rachunek za prąd",
+      "carInsurance": "Ubezpieczenie OC",
+      "carTax": "Opłata za auto",
+      "washingMachineWarranty": "Gwarancja pralki",
+      "gymCard": "Karnet na siłownię",
+      "rentalContract": "Umowa najmu",
+      "pharmacyReceipt": "Paragon z apteki",
+      "reportCard": "Świadectwo szkolne"
+    },
+    "notes": {
+      "electricityBill": "Polecenie zapłaty z banku"
+    }
+  },
+  "documentTypes": {
+    "documents": "Dowód osobisty|Prawo jazdy|Paszport|Karta EKUZ|Legitymacja",
+    "cards": "Lojalnościowa|Siłownia|Biblioteka|Komunikacja|Członkowska",
+    "utilities": "Prąd|Gaz|Woda|Internet|Telefon|Śmieci",
+    "home": "Czynsz|Kredyt hipoteczny|Opłaty wspólnoty|Konserwacja|Umowa",
+    "insurance": "Samochód|Dom|Zdrowie|Na życie|Podróż",
+    "warranties": "AGD|Elektronika|Meble|Paragon",
+    "car": "Przegląd|OC/AC|Badanie techniczne|Serwis|Rejestracja",
+    "tax": "Apteka|Wizyta lekarska|Dentysta|Badania|Sport|Szkoła",
+    "householdStaff": "Pasek wypłaty|Składki ZUS|Umowa",
+    "school": "Zapisy|Świadectwo|Zaświadczenie|Stołówka|Wycieczka",
+    "pet": "Książeczka zdrowia|Szczepienie|Weterynarz|Mikrochip",
+    "password": "E-mail|Bank|Media społecznościowe|Wi‑Fi|Praca"
+  },
+  "pageLabels": {
+    "front": "Przód",
+    "back": "Tył",
+    "page": "Strona {{number}}"
+  },
+  "statusBadge": {
+    "due": "Do zapłaty",
+    "paid": "Zapłacone"
+  },
+  "addActions": {
+    "openFileFailed": "Nie udało się otworzyć pliku"
+  },
+  "pickFiles": {
+    "takePhoto": "Zrób zdjęcie",
+    "choosePhoto": "Wybierz ze zdjęć",
+    "removePhoto": "Usuń zdjęcie"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Wiele stron",
+      "text": "Możesz zeskanować kilka stron pod rząd: ustaw w kadrze kolejną stronę, zanim stukniesz Zapisz."
+    },
+    "cardTip": {
+      "title": "Prawdziwe kolory",
+      "text": "Aby zachować prawdziwe kolory karty, stuknij w skanerze przycisk filtrów i wybierz „Zdjęcie”."
+    },
+    "gotIt": "Rozumiem"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Potrzebny dostęp do aparatu",
+    "permissionText": "Sottomano używa aparatu tylko do fotografowania Twoich dokumentów.",
+    "allow": "Zezwól",
+    "openSettings": "Otwórz Ustawienia",
+    "readable": "Czy jest czytelne?",
+    "pageReadable": "Strona {{number}}: czy jest czytelna?",
+    "retake": "Powtórz",
+    "addPage": "Dodaj stronę",
+    "frameDocument": "Ustaw dokument w kadrze",
+    "framePage": "Ustaw w kadrze stronę {{number}}",
+    "shoot": "Zrób zdjęcie",
+    "finishWithPages_one": "Gotowe, {{count}} strona",
+    "finishWithPages_few": "Gotowe, {{count}} strony",
+    "finishWithPages_many": "Gotowe, {{count}} stron",
+    "finishWithPages_other": "Gotowe, {{count}} strony"
+  },
+  "coverField": {
+    "label": "Okładka",
+    "photo": "Zdjęcie",
+    "color": "Kolor",
+    "noPhotoHint": "Bez zdjęcia widać kolor: dodaj stronę, aby użyć jej zdjęcia jako okładki.",
+    "categoryColor": "Kolor folderu",
+    "colorNumber": "Kolor {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Dodaj strony",
+    "pinned": "W ulubionych",
+    "pin": "Do ulubionych",
+    "renewed": "Odnowiono",
+    "delete": "Usuń"
+  },
+  "documentFilesView": {
+    "document": "Dokument",
+    "openFailed": "Nie udało się otworzyć dokumentu",
+    "pageOfSwipe": "Strona {{number}} z {{total}} · przesuń, aby przeglądać",
+    "openFullScreen": "{{label}}, otwórz na pełnym ekranie",
+    "missingFile": "Nie znaleziono pliku na tym telefonie."
+  },
+  "filesEditor": {
+    "addBack": "Dodaj tył",
+    "addPage": "Dodaj stronę",
+    "scan": "Skanuj",
+    "photograph": "Zrób zdjęcie",
+    "fromPhotos": "Ze zdjęć",
+    "scannerUnavailableTitle": "Skaner niedostępny",
+    "scannerUnavailableMessage": "Usuń strony za pomocą ✕ i dodaj nowe.",
+    "replacePdf": "Zastąp PDF",
+    "importPdf": "Importuj PDF",
+    "rescanAll": "Zeskanuj od nowa",
+    "openFileFailed": "Nie udało się otworzyć pliku",
+    "page": "Strona",
+    "newTag": "nowa",
+    "moveBefore": "Przenieś {{name}} wyżej",
+    "moveAfter": "Przenieś {{name}} niżej",
+    "removePage": "Usuń {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Nie znaleziono dokumentu.",
+    "noPages": "Brak stron",
+    "photoPages_one": "Zdjęcie, {{count}} strona",
+    "photoPages_few": "Zdjęcia, {{count}} strony",
+    "photoPages_many": "Zdjęcia, {{count}} stron",
+    "photoPages_other": "Zdjęcia, {{count}} strony",
+    "amount": "Kwota",
+    "expired": "po terminie",
+    "inDays_one": "za {{count}} dzień",
+    "inDays_few": "za {{count}} dni",
+    "inDays_many": "za {{count}} dni",
+    "inDays_other": "za {{count}} dnia",
+    "deadline": "Termin",
+    "folder": "Folder",
+    "status": "Status",
+    "person": "Osoba",
+    "number": "Numer",
+    "notes": "Notatki",
+    "inCalendar": "W kalendarzu",
+    "view": "Pokaż dokument",
+    "unpin": "Usuń z ulubionych",
+    "pin": "Dodaj do ulubionych",
+    "addPages": "Dodaj strony",
+    "renewed": "Odnowiono",
+    "delete": "Usuń",
+    "details": "Szczegóły",
+    "remindMe": "Przypomnij mi",
+    "reminderNeedsDeadline": "Dodaj termin, aby otrzymać przypomnienie",
+    "reminderWhen": "Przypomnienie: {{when}}",
+    "noReminder": "Bez przypomnienia",
+    "previousVersions": "Poprzednie wersje",
+    "versionUntil": "Do {{date}}",
+    "versionExpired": "termin minął {{date}}",
+    "paidOnMarkDue": "Zapłacono {{date}} · oznacz jako do zapłaty",
+    "markDue": "Oznacz jako do zapłaty",
+    "markPaid": "Oznacz jako zapłacone",
+    "firstOf": "1 z {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Do zapłaty",
+    "statusPaid": "Zapłacone",
+    "saveFailed": "Nie udało się zapisać",
+    "folder": "Folder",
+    "person": "Osoba",
+    "type": "Typ",
+    "otherType": "Wpisz inny…",
+    "noType": "Bez typu",
+    "typeExample": "Na przykład: Prąd, Przegląd, Dentysta",
+    "dueOn": "Dnia {{date}}",
+    "noDeadline": "Bez terminu",
+    "nameSection": "Nazwa",
+    "namePlaceholder": "Nazwa dokumentu",
+    "whereSection": "Gdzie zapisać",
+    "choose": "Wybierz…",
+    "deadlineSection": "Termin",
+    "addDeadline": "Dodaj termin",
+    "remindMe": "Przypomnij mi",
+    "whenToRemind": "Kiedy przypomnieć",
+    "repeats": "Powtarzaj",
+    "never": "Nigdy",
+    "everySpan": "Co {{span}}",
+    "every": "Co",
+    "notesSection": "Notatki",
+    "notesPlaceholder": "Na przykład: płatne poleceniem zapłaty, poprosić o zwrot…",
+    "pin": "Dodaj do ulubionych",
+    "pinSubtitle": "Znajdziesz go od razu na ekranie głównym",
+    "amountSection": "Kwota i status",
+    "amount": "Kwota",
+    "amountInEuro": "Kwota w euro",
+    "accessSection": "Logowanie",
+    "username": "Nazwa użytkownika",
+    "usernamePlaceholder": "imie@przyklad.pl",
+    "password": "Hasło",
+    "passwordUnchanged": "•••••••• (bez zmian)",
+    "passwordNote": "Hasło jest przechowywane tylko w pęku kluczy iPhone’a.",
+    "numberSection": "Numer dokumentu",
+    "numberPlaceholder": "Np. ABC123456",
+    "saveChanges": "Zapisz zmiany",
+    "saveDocument": "Zapisz dokument",
+    "amountHint": "Wpisz kwotę w formacie {{example}}.",
+    "missingNameAndFolder": "Aby zapisać, wpisz nazwę i wybierz folder.",
+    "missingName": "Aby zapisać, wpisz nazwę.",
+    "missingFolder": "Aby zapisać, wybierz folder.",
+    "deleteDocument": "Usuń dokument"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Skanuj",
+      "photos": "Ze zdjęć",
+      "pdf": "Z pliku PDF",
+      "card": "Karta",
+      "manual": "Ręcznie"
+    },
+    "hintFirst": "Ustaw dokument w kadrze · trzymaj telefon nieruchomo",
+    "hintNext": "Strona {{number}} gotowa · ustaw w kadrze następną",
+    "title": "Nowy dokument",
+    "flashOff": "Wyłącz lampę błyskową",
+    "flashOn": "Włącz lampę błyskową",
+    "scanWithIos": "Skanuj skanerem iOS",
+    "tapToScan": "Stuknij, aby skanować: sam wykryje krawędzie",
+    "permissionTitle": "Potrzebny dostęp do aparatu",
+    "permissionText": "Sottomano używa go tylko do fotografowania Twoich dokumentów.",
+    "allow": "Zezwól",
+    "openSettings": "Otwórz Ustawienia",
+    "howToAdd": "Jak dodać",
+    "chooseFromGallery": "Wybierz z biblioteki",
+    "shoot": "Zrób zdjęcie",
+    "goOnWith_one": "Kontynuuj z {{count}} stroną",
+    "goOnWith_few": "Kontynuuj z {{count}} stronami",
+    "goOnWith_many": "Kontynuuj z {{count}} stronami",
+    "goOnWith_other": "Kontynuuj z {{count}} strony",
+    "noPages": "Brak stron",
+    "countNext": "dalej ›",
+    "countPages": "strony"
+  },
+  "newDocument": {
+    "readTitle": "Odczytane z dokumentu",
+    "readText": "Nazwa pobrana z pliku: {{name}}. Sprawdź ją i w razie potrzeby popraw.",
+    "checkTitle": "Sprawdź dane",
+    "checkText_one": "Zapisano {{count}} stronę. Wpisz nazwę i, jeśli jest, termin: znajdziesz go w Terminach.",
+    "checkText_few": "Zapisano {{count}} strony. Wpisz nazwę i, jeśli jest, termin: znajdziesz go w Terminach.",
+    "checkText_many": "Zapisano {{count}} stron. Wpisz nazwę i, jeśli jest, termin: znajdziesz go w Terminach.",
+    "checkText_other": "Zapisano {{count}} strony. Wpisz nazwę i, jeśli jest, termin: znajdziesz go w Terminach.",
+    "heading": "Nowy dokument"
+  },
+  "editDocument": {
+    "heading": "Edytuj dokument"
+  },
+  "documentVersion": {
+    "replacedOn": "Zastąpiono {{date}}",
+    "expiredOn": "termin minął {{date}}",
+    "previewTitle": "{{title}} (poprzednia wersja)"
+  },
+  "documentPages": {
+    "saveFailed": "Nie udało się zapisać stron"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Nie udało się usunąć",
+    "title": "Usunąć {{title}}?",
+    "message_one": "Dokument i jego przypomnienie trafią do Kosza. Możesz go odzyskać w Menu › Kosz przez {{count}} dzień.",
+    "message_few": "Dokument i jego przypomnienie trafią do Kosza. Możesz go odzyskać w Menu › Kosz przez {{count}} dni.",
+    "message_many": "Dokument i jego przypomnienie trafią do Kosza. Możesz go odzyskać w Menu › Kosz przez {{count}} dni.",
+    "message_other": "Dokument i jego przypomnienie trafią do Kosza. Możesz go odzyskać w Menu › Kosz przez {{count}} dnia.",
+    "confirm": "Usuń dokument"
+  },
+  "renew": {
+    "saveFailed": "Nie udało się zapisać",
+    "deadline": "Termin",
+    "repeatFooter": "{{repeat}}: nowa data jest liczona od poprzedniej.",
+    "was": "Było",
+    "newDeadline": "Nowy termin",
+    "newDocument": "Nowy dokument",
+    "withScanFooter": "Obecne strony staną się „Poprzednią wersją”, którą znajdziesz w szczegółach.",
+    "withoutScanFooter": "Włącz, jeśli masz nowy dokument do zeskanowania.",
+    "addNewScan": "Dodaj nowy skan"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · przewiń w dół",
+    "pagesSubtitle_one": "{{count}} strona",
+    "pagesSubtitle_few": "{{count}} strony · przewiń w dół",
+    "pagesSubtitle_many": "{{count}} stron · przewiń w dół",
+    "pagesSubtitle_other": "{{count}} strony · przewiń w dół",
+    "pageOf": "Strona {{number}} z {{total}}",
+    "noPages": "Ten dokument nie ma stron.",
+    "zoom": "Powiększenie",
+    "zoomOut": "Pomniejsz",
+    "zoomIn": "Powiększ",
+    "pageShort": "Str. {{number}} z {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "dzień",
+      "day_few": "dni",
+      "day_many": "dni",
+      "day_other": "dnia",
+      "week_one": "tydzień",
+      "week_few": "tygodnie",
+      "week_many": "tygodni",
+      "week_other": "tygodnia",
+      "month_one": "miesiąc",
+      "month_few": "miesiące",
+      "month_many": "miesięcy",
+      "month_other": "miesiąca",
+      "year_one": "rok",
+      "year_few": "lata",
+      "year_many": "lat",
+      "year_other": "roku"
+    },
+    "count": {
+      "day_one": "{{count}} dzień",
+      "day_few": "{{count}} dni",
+      "day_many": "{{count}} dni",
+      "day_other": "{{count}} dnia",
+      "week_one": "{{count}} tydzień",
+      "week_few": "{{count}} tygodnie",
+      "week_many": "{{count}} tygodni",
+      "week_other": "{{count}} tygodnia",
+      "month_one": "{{count}} miesiąc",
+      "month_few": "{{count}} miesiące",
+      "month_many": "{{count}} miesięcy",
+      "month_other": "{{count}} miesiąca",
+      "year_one": "{{count}} rok",
+      "year_few": "{{count}} lata",
+      "year_many": "{{count}} lat",
+      "year_other": "{{count}} roku"
+    },
+    "every": {
+      "day_one": "Codziennie",
+      "day_few": "Co {{count}} dni",
+      "day_many": "Co {{count}} dni",
+      "day_other": "Co {{count}} dnia",
+      "week_one": "Co tydzień",
+      "week_few": "Co {{count}} tygodnie",
+      "week_many": "Co {{count}} tygodni",
+      "week_other": "Co {{count}} tygodnia",
+      "month_one": "Co miesiąc",
+      "month_few": "Co {{count}} miesiące",
+      "month_many": "Co {{count}} miesięcy",
+      "month_other": "Co {{count}} miesiąca",
+      "year_one": "Co roku",
+      "year_few": "Co {{count}} lata",
+      "year_many": "Co {{count}} lat",
+      "year_other": "Co {{count}} roku"
+    },
+    "repeats": {
+      "day_one": "Powtarza się codziennie",
+      "day_few": "Powtarza się co {{count}} dni",
+      "day_many": "Powtarza się co {{count}} dni",
+      "day_other": "Powtarza się co {{count}} dnia",
+      "week_one": "Powtarza się co tydzień",
+      "week_few": "Powtarza się co {{count}} tygodnie",
+      "week_many": "Powtarza się co {{count}} tygodni",
+      "week_other": "Powtarza się co {{count}} tygodnia",
+      "month_one": "Powtarza się co miesiąc",
+      "month_few": "Powtarza się co {{count}} miesiące",
+      "month_many": "Powtarza się co {{count}} miesięcy",
+      "month_other": "Powtarza się co {{count}} miesiąca",
+      "year_one": "Powtarza się co roku",
+      "year_few": "Powtarza się co {{count}} lata",
+      "year_many": "Powtarza się co {{count}} lat",
+      "year_other": "Powtarza się co {{count}} roku"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Wymaga uwagi",
+    "thisWeek": "W tym tygodniu",
+    "upcomingNone": "Nic do zrobienia w najbliższych miesiącach",
+    "upcoming_one": "{{count}} sprawa do załatwienia w najbliższych miesiącach",
+    "upcoming_few": "{{count}} sprawy do załatwienia w najbliższych miesiącach",
+    "upcoming_many": "{{count}} spraw do załatwienia w najbliższych miesiącach",
+    "upcoming_other": "{{count}} sprawy do załatwienia w najbliższych miesiącach"
+  },
+  "deadlineOptions": {
+    "sameDay": "W dniu terminu",
+    "daysBefore_one": "{{count}} dzień wcześniej",
+    "daysBefore_few": "{{count}} dni wcześniej",
+    "daysBefore_many": "{{count}} dni wcześniej",
+    "daysBefore_other": "{{count}} dnia wcześniej",
+    "defaultChoice": "{{label}} (domyślnie)"
+  },
+  "personRoles": {
+    "you": "Ty",
+    "choice": {
+      "me": "To ja",
+      "partner": "Partner/partnerka",
+      "child": "Syn lub córka",
+      "parent": "Rodzic",
+      "sibling": "Brat lub siostra",
+      "other": "Inna osoba"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Kategoria „Inne” nie istnieje.",
+    "otherNotDeletable": "Kategorii „Inne” nie można usunąć."
+  },
+  "deadlineChip": {
+    "overdue": "Po terminie",
+    "today": "Dziś",
+    "dueToday": "Termin dziś",
+    "dueIn_one": "Termin za {{count}} dzień",
+    "dueIn_few": "Termin za {{count}} dni",
+    "dueIn_many": "Termin za {{count}} dni",
+    "dueIn_other": "Termin za {{count}} dnia"
+  },
+  "deadlineListRow": {
+    "hint": "Przytrzymaj, aby edytować lub usunąć termin",
+    "statusDue": "do zapłaty",
+    "statusPaid": "zapłacone"
+  },
+  "deadlineSection": {
+    "title": "Termin",
+    "emptyFooter": "Z przypomnieniem na telefonie i, jeśli jest włączony, w kalendarzu „Sottomano”.",
+    "add": "Dodaj termin",
+    "expiresOn": "Termin",
+    "repeats": "Powtarzaj",
+    "never": "Nigdy",
+    "reminder": "Przypomnienie"
+  },
+  "dateCalendar": {
+    "previousMonth": "Poprzedni miesiąc",
+    "nextMonth": "Następny miesiąc"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Następny tydzień",
+    "previousWeek": "Poprzedni tydzień",
+    "weekdayDate": "{{weekday}}, {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} termin",
+    "dayWithDeadlines_few": "{{day}}, {{count}} terminy",
+    "dayWithDeadlines_many": "{{day}}, {{count}} terminów",
+    "dayWithDeadlines_other": "{{day}}, {{count}} terminu"
+  },
+  "deadlines": {
+    "title": "Terminy",
+    "newReminder": "Nowe przypomnienie",
+    "week": "Tydzień",
+    "month": "Miesiąc",
+    "openDocument": "Otwórz dokument",
+    "editDeadline": "Edytuj termin",
+    "markDue": "Oznacz jako do zapłaty",
+    "markPaid": "Oznacz jako zapłacone",
+    "removeDeadline": "Usuń termin",
+    "removeAlert": {
+      "title": "Usunąć termin?",
+      "message": "Dokument zostaje; jego przypomnienie i wydarzenie w kalendarzu zostaną usunięte.",
+      "confirm": "Usuń"
+    },
+    "emptyTitle": "Brak nadchodzących terminów",
+    "emptyText": "Stuknij +, aby dodać dokument z terminem: pojawi się tutaj i w kalendarzu.",
+    "sheetSubtitle": "Termin {{date}}",
+    "dayRepeats": "powtarza się",
+    "dayReminder": "przypomnienie",
+    "dayEmpty": "Brak terminów w tym dniu"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Nie udało się zapisać",
+    "date": "Data",
+    "footer": "Przypomnienie przyjdzie na telefon; gdy kalendarz jest włączony, termin pojawi się też w „Sottomano”.",
+    "every": "Co"
+  },
+  "family": {
+    "title": "Rodzina",
+    "subtitle": "Profil dla każdego domownika",
+    "addPerson": "Dodaj osobę",
+    "members": "Członkowie",
+    "orderSaveFailed": "Nie udało się zapisać kolejności",
+    "reorderTitle": "Zmień kolejność rodziny",
+    "reorderHint": "Przytrzymaj osobę i przeciągnij ją, gdzie chcesz.",
+    "privacyNote": "Wszystko zostaje na tym telefonie. Aby wysłać komuś dokument, otwórz go i stuknij Wyślij.",
+    "youSpoken": "ty",
+    "reorderA11yHint": "Przytrzymaj, aby zmienić kolejność rodziny",
+    "expiring_one": "{{count}} wygasa",
+    "expiring_few": "{{count}} wygasają",
+    "expiring_many": "{{count}} wygasa",
+    "expiring_other": "{{count}} wygasa"
+  },
+  "personScreen": {
+    "photoFailed": "Nie udało się użyć zdjęcia",
+    "editPerson": "Edytuj osobę",
+    "selectAndSend": "Zaznacz i wyślij",
+    "deletePerson": "Usuń osobę",
+    "moreA11y": "Edytuj lub usuń: {{name}}",
+    "changePhoto": "Zmień zdjęcie",
+    "editProfile": "Edytuj profil",
+    "documentsSection": "Dokumenty · {{count}}",
+    "addDocument": "Dodaj dokument",
+    "sendTogether": "Wyślij razem ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Nie udało się zapisać",
+    "newPerson": "Nowa osoba",
+    "addPhoto": "Dodaj zdjęcie",
+    "name": "Imię",
+    "namePlaceholder": "Jak ma na imię?",
+    "role": "Kim jest",
+    "roleA11y": "Kim jest dla Ciebie: {{role}}",
+    "note": "Profil zostaje na tym telefonie. Pomaga utrzymać porządek w dokumentach każdego.",
+    "addToFamily": "Dodaj do rodziny",
+    "roleSheetTitle": "Kim jest dla Ciebie"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Nie udało się usunąć",
+    "title": "Usunąć kategorię {{name}}?",
+    "messageWithDocuments_one": "Zawiera {{count}} dokument. Co chcesz z nim zrobić?",
+    "messageWithDocuments_few": "Zawiera {{count}} dokumenty. Co chcesz z nimi zrobić?",
+    "messageWithDocuments_many": "Zawiera {{count}} dokumentów. Co chcesz z nimi zrobić?",
+    "messageWithDocuments_other": "Zawiera {{count}} dokumentu. Co chcesz z nimi zrobić?",
+    "messageWithDocumentsRestorable_one": "Zawiera {{count}} dokument. Co chcesz z nim zrobić? Kategorię możesz przywrócić w Nowa kategoria.",
+    "messageWithDocumentsRestorable_few": "Zawiera {{count}} dokumenty. Co chcesz z nimi zrobić? Kategorię możesz przywrócić w Nowa kategoria.",
+    "messageWithDocumentsRestorable_many": "Zawiera {{count}} dokumentów. Co chcesz z nimi zrobić? Kategorię możesz przywrócić w Nowa kategoria.",
+    "messageWithDocumentsRestorable_other": "Zawiera {{count}} dokumentu. Co chcesz z nimi zrobić? Kategorię możesz przywrócić w Nowa kategoria.",
+    "messageEmpty": "Kategoria jest pusta.",
+    "messageEmptyRestorable": "Kategoria jest pusta. Możesz ją przywrócić w Nowa kategoria.",
+    "deleteAll": "Usuń wszystko",
+    "confirm": "Usuń kategorię",
+    "choicesA11y": "Co zrobić z dokumentami",
+    "moveLabel": "Przenieś do Inne",
+    "moveDetailPassword": "Zostaną w aplikacji, w Inne, bez nazwy użytkownika i hasła",
+    "moveDetail": "Zostaną w aplikacji, w ogólnym folderze",
+    "trashLabel": "Usuń je",
+    "trashDetail_one": "Trafią do Kosza: możesz je odzyskać przez {{count}} dzień",
+    "trashDetail_few": "Trafią do Kosza: możesz je odzyskać przez {{count}} dni",
+    "trashDetail_many": "Trafią do Kosza: możesz je odzyskać przez {{count}} dni",
+    "trashDetail_other": "Trafią do Kosza: możesz je odzyskać przez {{count}} dnia"
+  },
+  "deletePerson": {
+    "title": "Usunąć osobę {{name}} z rodziny?",
+    "messageWithDocuments_one": "{{name}} ma {{count}} dokument. Co chcesz z nim zrobić?",
+    "messageWithDocuments_few": "{{name}} ma {{count}} dokumenty. Co chcesz z nimi zrobić?",
+    "messageWithDocuments_many": "{{name}} ma {{count}} dokumentów. Co chcesz z nimi zrobić?",
+    "messageWithDocuments_other": "{{name}} ma {{count}} dokumentu. Co chcesz z nimi zrobić?",
+    "messageEmpty": "Profil zostanie usunięty z tego telefonu.",
+    "familyLabel": "Przenieś do Cała rodzina",
+    "familyDetail": "Zostaną w aplikacji, widoczne dla wszystkich",
+    "trashDetail_one": "Znikną razem z profilem: zostaną w Koszu przez {{count}} dzień",
+    "trashDetail_few": "Znikną razem z profilem: zostaną w Koszu przez {{count}} dni",
+    "trashDetail_many": "Znikną razem z profilem: zostaną w Koszu przez {{count}} dni",
+    "trashDetail_other": "Znikną razem z profilem: zostaną w Koszu przez {{count}} dnia"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Zwierzęta",
+      "document": "Dokument",
+      "home": "Dom",
+      "car": "Samochód",
+      "health": "Zdrowie",
+      "school": "Szkoła",
+      "work": "Praca",
+      "keys": "Klucze",
+      "travel": "Podróże",
+      "expenses": "Wydatki"
+    },
+    "restoreFailed": "Nie udało się przywrócić",
+    "editTitle": "Edytuj kategorię",
+    "newTitle": "Nowa kategoria",
+    "restoreSection": "Przywróć domyślną kategorię",
+    "restoreA11y": "Przywróć {{name}}",
+    "restoreHint": "Wróci taka, jak była, ze swoimi kolorami, ikoną i polami. Albo utwórz nową poniżej.",
+    "previewA11y": "Podgląd kategorii",
+    "namePlaceholder": "Np. Zwierzęta",
+    "nameA11y": "Nazwa kategorii",
+    "color": "Kolor",
+    "paletteColor": "Kolor z Wyglądu",
+    "colorNumber": "Kolor {{number}}",
+    "followsPaletteHint": "Kolor zależy od palety wybranej w Wyglądzie.",
+    "ownColorHint": "Twój własny kolor: nie zmienia się razem z Wyglądem.",
+    "icon": "Ikona",
+    "forWhom": "Dla kogo",
+    "forWhomA11y": "Dla kogo jest ta kategoria: {{name}}",
+    "forWhomHint": "Nowe dokumenty w tej kategorii będą przypisane do tej osoby.",
+    "create": "Utwórz kategorię"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Strona lub aplikacja",
+        "namePlaceholder": "Na przykład: Bankowość internetowa",
+        "userLabel": "Nazwa użytkownika lub e-mail",
+        "userPlaceholder": "imie@email.pl",
+        "passwordLabel": "Hasło",
+        "notePlaceholder": "Na przykład: pytanie bezpieczeństwa, kod odzyskiwania…"
+      },
+      "wifi": {
+        "name": "Wi‑Fi",
+        "namePlaceholder": "Na przykład: Wi‑Fi w domu",
+        "userLabel": "Nazwa sieci",
+        "userPlaceholder": "DomKowalskich_5G",
+        "passwordLabel": "Hasło sieci",
+        "notePlaceholder": "Na przykład: router jest w salonie, za telewizorem…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Na przykład: Karta debetowa",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Na przykład: karta Julii…"
+      },
+      "other": {
+        "name": "Inne",
+        "namePlaceholder": "Na przykład: Alarm w domu",
+        "userLabel": "Nazwa użytkownika",
+        "userPlaceholder": "Opcjonalnie",
+        "passwordLabel": "Kod lub hasło",
+        "notePlaceholder": "Do czego służy, gdzie się go używa…"
+      }
+    },
+    "colors": {
+      "aqua": "Akwamaryna",
+      "indigo": "Indygo",
+      "apricot": "Morela",
+      "pink": "Róż",
+      "mint": "Mięta",
+      "sky": "Niebo",
+      "graphite": "Grafit"
+    },
+    "icons": {
+      "key": "Klucz",
+      "lock": "Kłódka",
+      "globe": "Globus",
+      "wifi": "Wi‑Fi",
+      "bank": "Bank",
+      "card": "Karta",
+      "mail": "E-mail",
+      "home": "Dom",
+      "car": "Samochód",
+      "shield": "Tarcza",
+      "cart": "Koszyk",
+      "star": "Gwiazdka"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Tylko cyfry",
+    "strength": {
+      "weak": "Słabe",
+      "fair": "Średnie",
+      "good": "Dobre",
+      "strong": "Silne"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Potwierdź, aby włączyć blokadę"
+  },
+  "appLock": {
+    "prompt": "Odblokuj Sottomano",
+    "unlock": "Odblokuj",
+    "unlockWith": {
+      "faceId": "Odblokuj za pomocą Face ID",
+      "touchId": "Odblokuj za pomocą Touch ID",
+      "passcode": "Odblokuj kodem"
+    },
+    "message": "Twoje dokumenty są chronione"
+  },
+  "passwordForm": {
+    "showPrompt": "Pokaż hasło",
+    "copyPrompt": "Kopiuj hasło",
+    "copiedTitle": "Skopiowano",
+    "copiedMessage": "Zostanie usunięte ze schowka za 1 minutę.",
+    "scannerUnavailableTitle": "Skaner niedostępny",
+    "scannerUnavailableMessage": "Wybierz obraz z biblioteki zdjęć.",
+    "saveFailed": "Nie udało się zapisać",
+    "editTitle": "Edytuj hasło",
+    "newTitle": "Nowe hasło",
+    "privacy": "Zostają tylko na tym telefonie i otwierają się za pomocą Face ID.",
+    "sections": {
+      "what": "Co zapisujesz",
+      "name": "Nazwa",
+      "preview": "Podgląd",
+      "access": "Logowanie",
+      "site": "Strona lub aplikacja",
+      "whose": "Czyje to jest",
+      "notes": "Notatki"
+    },
+    "typesLabel": "Typ hasła",
+    "customTypePlaceholder": "Co to jest? Alarm, sejf, kłódka…",
+    "customTypeLabel": "Co to jest",
+    "customTypeHint": "Stanie się nowym typem i następnym razem znajdziesz go wśród opcji.",
+    "previewTitle": "Jak wygląda na liście",
+    "previewText": "Kolor i ikona albo obraz.",
+    "color": "Kolor",
+    "colorLabel": "Kolor podglądu",
+    "icon": "Ikona",
+    "iconLabel": "Ikona podglądu",
+    "image": "Obraz",
+    "scan": "Skanuj",
+    "gallery": "Ze Zdjęć",
+    "removeImage": "Usuń obraz i użyj koloru oraz ikony",
+    "passwordPlaceholder": "Wpisz lub wygeneruj",
+    "show": "Pokaż",
+    "hide": "Ukryj",
+    "copy": "Kopiuj",
+    "saved": "Zapisane",
+    "generate": "Wygeneruj silne hasło",
+    "urlPlaceholder": "www.przyklad.pl",
+    "urlLabel": "Adres strony",
+    "wifiQrTitle": "Kod QR dla gości",
+    "wifiQrSubtitle": "Skanują go i się łączą",
+    "person": "Osoba",
+    "personA11y": "Osoba, {{name}}",
+    "favoriteTitle": "Dodaj do ulubionych",
+    "favoriteSubtitle": "Znajdziesz je od razu na ekranie głównym",
+    "saveButton": "Zapisz hasło",
+    "saveHint": "Wpisz nazwę, aby zapisać."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Brak hasła",
+    "noPasswordMessage": "Dodaj je przez Edytuj.",
+    "showPrompt": {
+      "site": "Pokaż hasło",
+      "wifi": "Pokaż hasło sieci",
+      "pin": "Pokaż PIN",
+      "other": "Pokaż kod lub hasło"
+    },
+    "copyPrompt": {
+      "site": "Kopiuj hasło",
+      "wifi": "Kopiuj hasło sieci",
+      "pin": "Kopiuj PIN",
+      "other": "Kopiuj kod lub hasło"
+    },
+    "copyUser": {
+      "site": "Kopiuj nazwę użytkownika lub e-mail",
+      "wifi": "Kopiuj nazwę sieci",
+      "pin": "Kopiuj nazwę użytkownika",
+      "other": "Kopiuj nazwę użytkownika"
+    },
+    "copiedTitle": "Skopiowano",
+    "copiedMessage": "Zostanie usunięte ze schowka za 1 minutę.",
+    "copiedTextTitle": "Skopiowano",
+    "qrPrompt": "Pokaż kod QR dla gości",
+    "invalidAddress": "Nieprawidłowy adres",
+    "removeFavorite": "Usuń z ulubionych",
+    "favoriteTitle": "Dodaj do ulubionych",
+    "favoriteSubtitle": "Znajdziesz je od razu na ekranie głównym",
+    "moreActions": "Więcej czynności",
+    "sections": {
+      "access": "Logowanie",
+      "site": "Strona lub aplikacja",
+      "wifiQr": "Kod QR dla gości",
+      "whose": "Czyje to jest",
+      "notes": "Notatki"
+    },
+    "hidden": "Ukryte",
+    "show": "Pokaż",
+    "hide": "Ukryj",
+    "copy": "Kopiuj",
+    "locked": "Widoczne po Face ID lub kodzie iPhone’a",
+    "wifiQrLabel": "Kod QR sieci Wi‑Fi",
+    "qrHint": "Skanują go aparatem i się łączą.",
+    "qrLocked": "Kod QR zawiera hasło: jest widoczny po Face ID lub kodzie iPhone’a.",
+    "qrNoNetwork": "Dodaj nazwę sieci przez Edytuj, aby uzyskać kod QR.",
+    "showQr": "Pokaż kod QR",
+    "hideQr": "Ukryj kod QR",
+    "person": "Osoba",
+    "moveToTrash": "Przenieś do Kosza"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Brak hasła",
+    "noPasswordMessage": "Dodaj je przez Edytuj.",
+    "showPrompt": "Pokaż hasło",
+    "copyPrompt": "Kopiuj hasło",
+    "copiedTitle": "Skopiowano hasło",
+    "copiedMessage": "Zostanie usunięte ze schowka za 1 minutę.",
+    "user": "Nazwa użytkownika",
+    "password": "Hasło",
+    "hidden": "Hasło ukryte",
+    "show": "Pokaż",
+    "hide": "Ukryj",
+    "copy": "Kopiuj"
+  },
+  "cardForm": {
+    "found": "Znaleziono: {{name}}",
+    "foundBarcode": "Znaleziono: kod kreskowy {{name}}",
+    "handwritten": "Kod wpisany ręcznie",
+    "noCode": "Nie odczytano kodu",
+    "photoOpenFailed": "Nie udało się otworzyć zdjęcia",
+    "saveFailed": "Nie udało się zapisać",
+    "retakeFront": "Zrób ponownie",
+    "retakePhoto": "Powtórz zdjęcie",
+    "recognized": "Rozpoznano kartę",
+    "tapRetake": "Stuknij Zrób ponownie, aby ją sfotografować",
+    "fromPhotos": "Ze Zdjęć",
+    "cover": "Okładka",
+    "coverPhotoCaption": "Przycięta i wyprostowana ze zdjęcia karty",
+    "coverColorCaption": "Kolor karty z jej nazwą i numerem",
+    "codeSection": "Kod do pokazania przy kasie",
+    "photographCode": "Sfotografuj kod",
+    "barcode": "Kod kreskowy",
+    "qrCode": "Kod QR",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Karta",
+    "typeNumber": "Wpisz numer poniżej",
+    "explain": "Sottomano samo rozpoznaje, czy karta ma kod kreskowy, czy kod QR. Przy kasie pokazuje go w dużym rozmiarze, z ekranem na pełnej jasności.",
+    "readTitle": "Dane odczytane z karty",
+    "readText": "Sprawdź je i w razie potrzeby popraw.",
+    "name": "Nazwa",
+    "namePlaceholder": "Np. Supermarket",
+    "type": "Typ",
+    "typePlaceholder": "Np. Karta lojalnościowa",
+    "number": "Numer",
+    "numberPlaceholder": "Np. 0400 2219 8876",
+    "holder": "Posiadacz",
+    "saveButton": "Zapisz kartę",
+    "saveHint": "Wpisz nazwę karty, aby zapisać."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Zdjęcie przodu",
+      "barcode": "Sfotografuj kod kreskowy"
+    },
+    "photoOpenFailed": "Nie udało się otworzyć zdjęcia",
+    "permissionTitle": "Potrzebny dostęp do aparatu",
+    "permissionText": "Sottomano używa aparatu, aby fotografować Twoje karty i odczytywać ich kod kreskowy.",
+    "allow": "Zezwól",
+    "openSettings": "Otwórz Ustawienia",
+    "frontCheck": "Przód: czy jest wyraźny?",
+    "read": "Odczytano: {{value}}",
+    "notRead": "Nie odczytano kodu",
+    "notReadHint": "Zachowaj zdjęcie: numer wpiszesz w następnym kroku.",
+    "retake": "Powtórz",
+    "use": "Użyj",
+    "focus": "Ostrość",
+    "stepCount": "{{current}} z {{total}}",
+    "frameHint": "Umieść kartę w ramce",
+    "searching": "Szukam kodu…",
+    "chooseFromPhotos": "Wybierz ze Zdjęć",
+    "shoot": "Zrób zdjęcie",
+    "skip": "Pomiń"
+  },
+  "cardDetail": {
+    "code": "Kod",
+    "photo": "Zdjęcie",
+    "barcodeLabel": "Kod kreskowy",
+    "barcodePhotoLabel": "Zdjęcie kodu kreskowego",
+    "fullScreenHint": "Otwiera kod na pełnym ekranie",
+    "noCode": "Brak kodu. Stuknij „Edytuj”, aby go sfotografować lub wpisać.",
+    "tapHint": "Stuknij kod, aby go powiększyć",
+    "person": "Osoba"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Nie udało się zapisać kolejności",
+    "editCategory": "Edytuj kategorię",
+    "deleteCategory": "Usuń kategorię",
+    "reorderTitle": "Zmień kolejność kart",
+    "reorderHint": "Przytrzymaj kartę, a potem przeciągnij ją, gdzie chcesz.",
+    "yourCards": "Twoje karty",
+    "title": "Karty",
+    "subtitle": "Stuknij kartę, aby pokazać jej kod przy kasie",
+    "categoryMenuLabel": "Edytuj lub usuń kategorię {{name}}",
+    "addCard": "Dodaj kartę",
+    "reorder": "Zmień kolejność",
+    "newCard": "Nowa karta",
+    "cardDetails": "Szczegóły karty",
+    "categoryMenuTitle": "Kategoria {{name}}",
+    "cardCount_one": "{{count}} karta",
+    "cardCount_few": "{{count}} karty",
+    "cardCount_many": "{{count}} kart",
+    "cardCount_other": "{{count}} karty",
+    "cardOpenLabel": "{{label}}, zamknij",
+    "cardClosedLabel": "{{label}}, pokaż kod",
+    "qrLabel": "Kod QR karty",
+    "barcodeLabel": "Kod kreskowy karty",
+    "fullScreenHint": "Otwiera kod na pełnym ekranie",
+    "noCode": "Brak kodu: stuknij Szczegóły › Edytuj, aby go sfotografować lub wpisać.",
+    "details": "Szczegóły"
+  },
+  "walletCard": {
+    "untitled": "Nowa karta"
+  },
+  "barcodeView": {
+    "close": "Zamknij kod"
+  },
+  "colorPicker": {
+    "color": "Kolor",
+    "custom": "Twój kolor",
+    "hex": "Kod",
+    "hexLabel": "Kod koloru"
+  },
+  "colorWheel": {
+    "label": "Koło kolorów: stuknij lub przeciągnij, aby wybrać",
+    "nextHue": "Następny odcień",
+    "previousHue": "Poprzedni odcień"
+  },
+  "newCard": {
+    "title": "Nowa karta",
+    "missingCategory": "Kategoria „Karty” już nie istnieje."
+  },
+  "editCard": {
+    "title": "Edytuj kartę"
+  },
+  "unlock": {
+    "storeOnly": "Dostępne w wersji z App Store",
+    "remainingNone": "Wykorzystano wszystkie darmowe miejsca.",
+    "remaining_one": "Możesz dodać jeszcze {{count}}.",
+    "remaining_few": "Możesz dodać jeszcze {{count}}.",
+    "remaining_many": "Możesz dodać jeszcze {{count}}.",
+    "remaining_other": "Możesz dodać jeszcze {{count}}.",
+    "tag": "Wersja darmowa · wykorzystano {{used}} z {{limit}}",
+    "title": "Wszystkie Twoje dokumenty, bez limitów",
+    "intro": "Za darmo do {{limit}} dokumentów i kart. Aby dodać ich, ile chcesz, odblokuj aplikację jedną płatnością.",
+    "benefits": {
+      "unlimited": {
+        "title": "Nieograniczone dokumenty",
+        "text": "Rachunki, karty, gwarancje i wszystko inne"
+      },
+      "reminders": {
+        "title": "Przypomnienia o terminach",
+        "text": "Przypomnimy Ci, zanim będzie za późno"
+      },
+      "offline": {
+        "title": "Działa bez internetu",
+        "text": "Wszystko zostaje na telefonie, łącznie z kopią zapasową"
+      },
+      "family": {
+        "title": "Cała rodzina",
+        "text": "Profil dla każdego domownika"
+      }
+    },
+    "sectionTitle": "Twoja darmowa wersja",
+    "usageLabel": "Dokumenty i karty",
+    "usageValue": "{{used}} z {{limit}}",
+    "usageA11y": "Wykorzystane darmowe miejsca",
+    "keptNote": "Te, które już zapisano, zawsze należą do Ciebie, nawet bez odblokowania.",
+    "priceTitle": "Na zawsze",
+    "priceText": "Bez limitów · jedna płatność",
+    "buy": "Odblokuj za {{price}}",
+    "continueFree": "Kontynuuj za darmo",
+    "restore": "Przywróć zakup",
+    "terms": "Warunki",
+    "privacy": "Prywatność"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Kategoria „Inne”",
+    "otherCategoryMessage": "Nie można jej usunąć: przechowuje dokumenty z usuniętych kategorii."
+  },
+  "quickActionMenu": {
+    "close": "Zamknij menu"
+  },
+  "quickActions": {
+    "open": "Otwórz",
+    "unpin": "Usuń z ulubionych",
+    "pin": "Dodaj do ulubionych",
+    "moveToTrash": "Przenieś do Kosza",
+    "editCategory": "Edytuj kategorię",
+    "deleteCategory": "Usuń kategorię",
+    "editPerson": "Edytuj osobę",
+    "deletePerson": "Usuń osobę"
+  },
+  "shareCopies": {
+    "defaultName": "Dokument",
+    "fileNotFound": "Nie znaleziono pliku na telefonie."
+  },
+  "sendCompression": {
+    "tooBig": "Nawet przy maksymalnej kompresji przekracza limit: rozważ podzielenie go na kilka plików.",
+    "lowPpi": "Drobny tekst może być nieczytelny."
+  },
+  "sendPreferences": {
+    "original": "Oryginał"
+  },
+  "sendFileName": {
+    "fallback": "dokument"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Nie można teraz połączyć przodu i tyłu.",
+    "noPhotos": "Brak zdjęć do wysłania.",
+    "fileFront": "przod",
+    "fileBack": "tyl",
+    "filePage": "strona-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "dokumenty",
+    "title": "Wyślij {{title}}",
+    "formatPhotos": "Zdjęcia",
+    "actions": {
+      "email": "E-mail",
+      "whatsapp": "WhatsApp",
+      "print": "Drukuj",
+      "save": "Zachowaj w Plikach",
+      "copy": "Kopiuj",
+      "other": "Więcej"
+    },
+    "alerts": {
+      "savedToFiles": "Zachowano w Plikach",
+      "imageCopied": "Skopiowano obraz",
+      "textCopied": "Skopiowano tekst",
+      "firstPageCopied": "Skopiowano pierwszą stronę: wklej ją do wiadomości.",
+      "pasteImage": "Wklej go do wiadomości lub notatki.",
+      "pdfNotCopied": "Pliku PDF nie można skopiować: skopiowano nazwę i notatkę. Aby wysłać plik, użyj opcji Więcej.",
+      "failed": "Nie udało się dokończyć"
+    },
+    "meta": {
+      "pdfs": "Pliki PDF: {{number}}",
+      "singlePdf": "Jeden PDF",
+      "failed": "Nie udało się przygotować pliku",
+      "preparing": "Przygotowywanie…"
+    },
+    "includeNote": "Dołącz notatkę dokumentu",
+    "noNote": "Ten dokument nie ma notatki.",
+    "frontBackPage": "Przód i tył na jednej stronie",
+    "frontBackImage": "Przód i tył na jednym obrazie",
+    "maxSize": "Maksymalny rozmiar",
+    "pdfAsIs": "PDF zostanie wysłany bez zmian.",
+    "severalInfo": "Jeden PDF: dokumenty jeden po drugim, z przodem i tyłem dowodów i kart na tej samej stronie.",
+    "quality": {
+      "high": "Wysoka jakość",
+      "good": "Dobra jakość",
+      "low": "Niska jakość",
+      "minimum": "Minimalna jakość",
+      "original": "Oryginalna jakość"
+    },
+    "skipped_one": "{{count}} dokument bez zdjęć nie został dołączony (importowanych plików PDF nie można jeszcze łączyć).",
+    "skipped_few": "{{count}} dokumenty bez zdjęć nie zostały dołączone (importowanych plików PDF nie można jeszcze łączyć).",
+    "skipped_many": "{{count}} dokumentów bez zdjęć nie zostało dołączonych (importowanych plików PDF nie można jeszcze łączyć).",
+    "skipped_other": "{{count}} dokumentu bez zdjęć nie dołączono (importowanych plików PDF nie można jeszcze łączyć)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Przygotowywanie PDF…",
+    "progressRetry": "Zmniejszanie zdjęć (próba {{attempt}})…",
+    "subtitle": "Przygotowano {{date}} w Sottomano · {{documents}}",
+    "subtitleWithTotal": "Przygotowano {{date}} w Sottomano · {{documents}} · razem {{total}}",
+    "columns": {
+      "number": "Nr",
+      "document": "Dokument",
+      "date": "Data",
+      "person": "Osoba",
+      "amount": "Kwota",
+      "page": "Strona"
+    },
+    "sentApart": "wysłany osobno",
+    "noPages": "brak stron",
+    "paid": "zapłacone",
+    "due": "do zapłaty",
+    "invalidIndex": "Nieprawidłowy spis"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Jednego pliku PDF nie można połączyć (chroniony hasłem lub uszkodzony): {{titles}}. W spisie jest oznaczony jako „wysłany osobno” i zostanie dołączony do pozostałych.",
+    "sentApart_few": "{{count}} plików PDF nie można połączyć (chronione hasłem lub uszkodzone): {{titles}}. W spisie są oznaczone jako „wysłany osobno” i zostaną dołączone do pozostałych.",
+    "sentApart_many": "{{count}} plików PDF nie można połączyć (chronione hasłem lub uszkodzone): {{titles}}. W spisie są oznaczone jako „wysłany osobno” i zostaną dołączone do pozostałych.",
+    "sentApart_other": "{{count}} pliku PDF nie można połączyć (chronione hasłem lub uszkodzone): {{titles}}. W spisie są oznaczone jako „wysłany osobno” i zostaną dołączone do pozostałych.",
+    "alerts": {
+      "prepareFailed": "Nie udało się przygotować PDF",
+      "ready": "PDF gotowy",
+      "noMailTitle": "Poczta nie jest skonfigurowana",
+      "noMailMessage": "Dodaj konto w aplikacji Mail albo zachowaj pliki PDF w Plikach.",
+      "savedToFiles": "Zachowano w Plikach",
+      "sendFailed": "Nie udało się wysłać"
+    },
+    "readyMany": "Gotowe pliki PDF: {{number}}",
+    "choices": {
+      "email": "E-mail: wszystkie pliki PDF w jednej wiadomości",
+      "save": "Zachowaj w Plikach: wszystko w jednym folderze",
+      "oneByOne": "Udostępniaj po jednym"
+    },
+    "intro": "Wszystkie dokumenty z kategorii {{category}}, podzielone według lat: jeden PDF na każdy rok, ze spisem (dokument, data, osoba, kwota, strona) i sumą. Rok to rok terminu lub płatności; jeśli żadnego nie ustawiono, rok dodania.",
+    "noDocuments": "Brak dokumentów w tym roku.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_few": "{{count}} pliki PDF",
+    "pdfs_many": "{{count}} plików PDF",
+    "pdfs_other": "{{count}} pliku PDF",
+    "year": "Rok",
+    "allYears": "Wszystkie lata",
+    "maxPhotoSize": "Maksymalny rozmiar zdjęć",
+    "limitInfo": "Zdjęcia są zmniejszane, aby zmieścić się w limicie; importowane pliki PDF pozostają bez zmian.",
+    "prepare": "Przygotuj i wyślij"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Coś poszło nie tak",
+      "restoredToOther": "Przywrócono do Inne",
+      "restoredPassword": "Jego kategoria już nie istnieje: dokument jest w Inne, bez nazwy użytkownika i hasła.",
+      "restoredMessage": "Jego kategoria już nie istnieje: dokument jest w Inne.",
+      "deleteTitle": "Usunąć „{{title}}” na zawsze?",
+      "deleteMessage": "Jego zdjęcia i pliki PDF również zostaną usunięte. Tej czynności nie można cofnąć.",
+      "emptyTitle": "Opróżnić Kosz?",
+      "emptyMessage_one": "Dokument zostanie usunięty razem ze zdjęciami i plikami PDF. Tej czynności nie można cofnąć.",
+      "emptyMessage_few": "{{count}} dokumenty zostaną usunięte razem ze zdjęciami i plikami PDF. Tej czynności nie można cofnąć.",
+      "emptyMessage_many": "{{count}} dokumentów zostanie usuniętych razem ze zdjęciami i plikami PDF. Tej czynności nie można cofnąć.",
+      "emptyMessage_other": "{{count}} dokumentu zostanie usunięte razem ze zdjęciami i plikami PDF. Tej czynności nie można cofnąć.",
+      "emptyConfirm": "Opróżnij"
+    },
+    "intro": "Usunięte dokumenty zostają tu przez {{days}} dni, a potem są kasowane razem ze zdjęciami i plikami PDF.",
+    "empty": "Kosz jest pusty",
+    "deletedSoon": "Wkrótce zostanie usunięty",
+    "deletedIn": "Zostanie usunięty za {{days}} dni",
+    "restoreLabel": "Przywróć {{title}}",
+    "deleteForeverLabel": "Usuń {{title}} na zawsze",
+    "deleteForever": "Usuń na zawsze",
+    "emptyTrash": "Opróżnij Kosz"
+  },
+  "menu": {
+    "close": "Zamknij menu",
+    "home": "Start",
+    "favorites": "Ulubione",
+    "deadlines": "Terminy",
+    "deadlinesUrgent": "Terminy, {{number}} do sprawdzenia",
+    "family": "Rodzina",
+    "cards": "Karty",
+    "backup": "Kopia zapasowa",
+    "backupDue": "Kopia zapasowa, czas ją zrobić",
+    "help": "Pomoc i kontakt",
+    "rate": "Oceń Sottomano",
+    "recommend": "Poleć znajomemu",
+    "trash": "Kosz",
+    "trashCount": "Kosz, {{number}}",
+    "password": "Hasła",
+    "scan": "Skanuj",
+    "fromPhotos": "Ze zdjęć",
+    "importFiles": "Importuj pliki",
+    "version": "Wersja {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Zamknij powiadomienia",
+    "title": "Powiadomienia",
+    "markAllRead": "Oznacz jako przeczytane",
+    "empty": "Brak powiadomień z ostatnich 7 dni.",
+    "today": "Dziś",
+    "thisWeek": "W tym tygodniu",
+    "settings": "Ustawienia powiadomień",
+    "unreadItem": "Nieprzeczytane. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Termin minął {{date}}.",
+    "expiresToday": "Termin mija dziś.",
+    "expiresOn": "Termin mija {{distance}}, {{date}}.",
+    "amount": "Kwota {{amount}}.",
+    "backupTitle": "Kopia zapasowa",
+    "backupLate": "Minęło sporo czasu od ostatniej kopii zapasowej Twoich dokumentów.",
+    "backupNever": "Nie masz jeszcze kopii zapasowej swoich dokumentów."
+  },
+  "deadlineReminders": {
+    "title": "Zbliża się termin",
+    "hiddenBody": "Termin dokumentu mija {{date}} ({{distance}}). Otwórz Sottomano, aby go zobaczyć.",
+    "body": "{{name}}: termin mija {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Wygląd",
+      "security": "Bezpieczeństwo",
+      "reminders": "Przypomnienia",
+      "backup": "Kopia zapasowa",
+      "info": "Informacje"
+    },
+    "calendarOff": "Wył.",
+    "alerts": {
+      "notificationsOffTitle": "Powiadomienia są wyłączone",
+      "notificationsOffMessage": "Aby otrzymywać przypomnienia, zezwól na powiadomienia dla Sottomano w Ustawieniach iPhone’a.",
+      "openSettings": "Otwórz Ustawienia"
+    },
+    "lastBackup": {
+      "never": "Nigdy",
+      "today": "Dziś",
+      "yesterday": "Wczoraj",
+      "daysAgo_one": "{{count}} dzień temu",
+      "daysAgo_few": "{{count}} dni temu",
+      "daysAgo_many": "{{count}} dni temu",
+      "daysAgo_other": "{{count}} dnia temu"
+    },
+    "categoryColors": "Kolory kategorii",
+    "faceId": "Blokada Face ID",
+    "faceIdSubtitle": "Prosi o twarz przy każdym otwarciu aplikacji",
+    "hidePreviews": "Ukryj podglądy",
+    "hidePreviewsSubtitle": "Powiadomienia nie pokazują dokumentu",
+    "notifications": "Powiadomienia",
+    "reminderTime": "Godzina przypomnienia",
+    "defaultReminder": "Domyślne przypomnienie",
+    "iconBadge": "Plakietka na ikonie",
+    "iconBadgeSubtitle": "Terminy minione lub w ciągu 7 dni",
+    "calendar": "Kalendarz „Sottomano”",
+    "notificationsBlocked": "Powiadomienia są zablokowane",
+    "notificationsBlockedSubtitle": "Zezwól na nie w Ustawieniach iPhone’a",
+    "backupNote": "Kopia zapasowa to plik zapisany na telefonie, w aplikacji Pliki. Możesz go skopiować, gdzie chcesz. Sottomano działa też bez internetu.",
+    "createBackup": "Utwórz kopię teraz",
+    "restoreBackup": "Przywróć z kopii zapasowej",
+    "help": "Pomoc i kontakt",
+    "privacy": "Prywatność",
+    "terms": "Warunki korzystania",
+    "rate": "Oceń Sottomano",
+    "debug": {
+      "limitPreview": "Podgląd darmowego limitu",
+      "limitPreviewSubtitle": "Tylko do testów: pokazuje zablokowany +, panel limitu i kartę na ekranie Start",
+      "emptyHome": "Podgląd pustego ekranu Start",
+      "emptyHomeSubtitle": "Tylko do testów: Start tak, jakby nie było dokumentów (Twoje dane zostają)",
+      "onboarding": "Pokaż powitanie ponownie",
+      "onboardingSubtitle": "Tylko do testów: strony powitania 1–4"
+    },
+    "version": "Sottomano · wersja {{version}}",
+    "theme": {
+      "title": "Motyw",
+      "autoSubtitle": "Zgodnie z ustawieniem telefonu",
+      "auto": "Automatyczny",
+      "light": "Jasny",
+      "dark": "Ciemny"
+    }
+  },
+  "backup": {
+    "title": "Kopia zapasowa",
+    "subtitle": "Kopia wszystkich Twoich dokumentów, zapisana na telefonie.",
+    "keyProgress": "Zabezpieczanie hasłem… może to potrwać do minuty",
+    "whenToday": "dziś o {{time}}",
+    "whenDate": "{{date}} o {{time}}",
+    "minLength": "Co najmniej {{min}} znaków.",
+    "mismatch": "Hasła nie są zgodne.",
+    "creating": "Tworzenie kopii zapasowej…",
+    "copyDialogTitle": "Skopiuj kopię zapasową",
+    "opening": "Otwieranie kopii zapasowej…",
+    "checking": "Sprawdzanie dokumentów…",
+    "restoring": "Przywracanie…",
+    "keepOpen": "Nie zamykaj aplikacji do końca operacji.",
+    "forgotWarning": "Jeśli zapomnisz hasła, kopii zapasowej nie da się otworzyć.",
+    "passwordPlaceholder": "Hasło (co najmniej {{min}} znaków)",
+    "repeatPlaceholder": "Powtórz hasło",
+    "createAndSave": "Utwórz i zapisz",
+    "backupPassword": "Hasło kopii zapasowej",
+    "openBackup": "Otwórz kopię",
+    "completed": "Kopia zapasowa gotowa",
+    "lastBackup": "Ostatnia kopia",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Skopiuj plik w inne miejsce",
+    "createNew": "Utwórz nową kopię",
+    "noneTitle": "Nie masz jeszcze kopii zapasowej",
+    "noneText": "Jeśli zgubisz lub zmienisz telefon, kopia zapasowa przywróci wszystko.",
+    "createNow": "Utwórz kopię teraz",
+    "restoreSection": "Przywracanie",
+    "restoreTitle": "Masz nowy telefon?",
+    "restoreText": "Wybierz plik kopii zapasowej, aby odzyskać dokumenty, karty i przypomnienia.",
+    "chooseFile": "Wybierz plik kopii",
+    "remindersSection": "Przypomnienia",
+    "remindMe": "Przypominaj o kopii zapasowej",
+    "remindMeValue": "Przypominaj o kopii zapasowej: {{value}}",
+    "footnote": "Kopia zapasowa to jeden plik chroniony wybranym przez Ciebie hasłem: dokumenty, zdjęcia, karty, osoby i przypomnienia. Skopiuj go w inne miejsce (Pliki, iCloud Drive, komputer), aby mieć go nawet po utracie telefonu.",
+    "alerts": {
+      "createFailed": "Nie udało się utworzyć kopii",
+      "copyFailed": "Nie udało się skopiować",
+      "restoreTitle": "Przywrócić kopię zapasową z {{date}}?",
+      "restoreMessage_one": "Zawiera {{count}} dokument. To, co jest teraz w aplikacji, zostanie zastąpione.",
+      "restoreMessage_few": "Zawiera {{count}} dokumenty. To, co jest teraz w aplikacji, zostanie zastąpione.",
+      "restoreMessage_many": "Zawiera {{count}} dokumentów. To, co jest teraz w aplikacji, zostanie zastąpione.",
+      "restoreMessage_other": "Zawiera {{count}} dokumentu. To, co jest teraz w aplikacji, zostanie zastąpione.",
+      "restoreFailed": "Nie udało się przywrócić",
+      "restoreFailedMessage": "Nic w aplikacji się nie zmieniło.\n\n{{reason}}",
+      "restored": "Przywrócono kopię zapasową",
+      "restoredMessage": "Twoje dokumenty wróciły."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Co tydzień",
+      "month": "Co miesiąc",
+      "never": "Nigdy"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Ten plik nie jest kopią zapasową Sottomano.",
+    "newerVersion": "Ta kopia zapasowa została utworzona w nowszej wersji Sottomano. Zaktualizuj aplikację i spróbuj ponownie.",
+    "empty": "Plik kopii zapasowej jest pusty lub niekompletny.",
+    "incomplete": "Plik kopii zapasowej jest niekompletny.",
+    "wrongPassword": "Nieprawidłowe hasło. Sprawdź wielkość liter i spróbuj ponownie.",
+    "damaged": "Plik kopii zapasowej jest uszkodzony lub niekompletny."
+  },
+  "createBackup": {
+    "incompleteFile": "Niekompletny plik: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Zawartość kopii zapasowej jest nieprawidłowa.",
+    "newerApp": "Ta kopia zapasowa pochodzi z nowszej wersji Sottomano. Zaktualizuj aplikację i spróbuj ponownie."
+  },
+  "zipReader": {
+    "invalid": "Nieprawidłowe archiwum",
+    "incomplete": "Niekompletne archiwum"
+  },
+  "backupReminder": {
+    "none": "Nie masz jeszcze kopii zapasowej",
+    "old_one": "Ostatnia kopia zapasowa: {{count}} dzień temu",
+    "old_few": "Ostatnia kopia zapasowa: {{count}} dni temu",
+    "old_many": "Ostatnia kopia zapasowa: {{count}} dni temu",
+    "old_other": "Ostatnia kopia zapasowa: {{count}} dnia temu",
+    "link": "Utwórz kopię teraz",
+    "close": "Zamknij komunikat",
+    "snooze_one": "Ukryj na {{count}} dzień",
+    "snooze_few": "Ukryj na {{count}} dni",
+    "snooze_many": "Ukryj na {{count}} dni",
+    "snooze_other": "Ukryj na {{count}} dnia"
+  },
+  "calendarSettings": {
+    "title": "Kalendarz",
+    "intro": "Terminy trafiają do osobnego kalendarza „Sottomano”. Możesz go ukryć w aplikacji Kalendarz; wyłączenie tutaj go usuwa.",
+    "details": "Każdy termin to całodniowe wydarzenie „Termin: tytuł”, bez innych danych z dokumentu. Jeśli przypomnienia Sottomano są wyłączone, wydarzenie powiadomi Cię o 9:00 w dniu przypomnienia; jeśli są włączone, powiadamia tylko aplikacja, więc nie dostaniesz dwóch powiadomień.",
+    "allowAccess": "Zezwól na dostęp do Kalendarza",
+    "denied": "Odmówiono dostępu do Kalendarza. Możesz go włączyć w Ustawieniach iPhone’a.",
+    "openSettings": "Otwórz Ustawienia",
+    "switchLabel": "Terminy w kalendarzu „Sottomano”",
+    "enabled_one": "{{count}} termin w kalendarzu „Sottomano”",
+    "enabled_few": "{{count}} terminy w kalendarzu „Sottomano”",
+    "enabled_many": "{{count}} terminów w kalendarzu „Sottomano”",
+    "enabled_other": "{{count}} terminu w kalendarzu „Sottomano”",
+    "removeConfirm": "Usunąć kalendarz Sottomano i wszystkie jego terminy z Kalendarza?",
+    "remove": "Usuń",
+    "removed": "Usunięto kalendarz „Sottomano”"
+  },
+  "calendarSync": {
+    "eventTitle": "Termin: {{title}}",
+    "cannotCreate": "Nie udało się utworzyć kalendarza „Sottomano” na tym iPhonie."
+  },
+  "appearance": {
+    "intro": "Kolory domyślnych kategorii. Kategorie utworzone przez Ciebie zachowują własny kolor.",
+    "restoreButton": "Przywróć domyślne kategorie",
+    "restoreHint": "Przywraca usunięte domyślne kategorie.",
+    "paletteLabel": "Paleta {{name}}",
+    "alerts": {
+      "restoreTitle": "Przywrócić domyślne kategorie?",
+      "restoreMessage": "Usunięte kategorie wrócą z pierwotną nazwą, ikoną i kolorem. Twoje dokumenty i utworzone przez Ciebie kategorie się nie zmienią.",
+      "nothingTitle": "Nie ma czego przywracać",
+      "nothingMessage": "Wszystkie domyślne kategorie są już na ekranie Start.",
+      "restoredTitle": "Przywrócono kategorie",
+      "restoredMessage_one": "{{count}} kategoria wróciła na ekran Start, przed „Inne”.",
+      "restoredMessage_few": "{{count}} kategorie wróciły na ekran Start, przed „Inne”.",
+      "restoredMessage_many": "{{count}} kategorii wróciło na ekran Start, przed „Inne”.",
+      "restoredMessage_other": "{{count}} kategorii wróciło na ekran Start, przed „Inne”.",
+      "restoreFailed": "Nie udało się przywrócić"
+    }
+  },
+  "about": {
+    "version": "Wersja {{version}}",
+    "privacy": "Prywatność",
+    "privacyFooter": "Jeśli włączysz Kalendarz, terminy zostaną zapisane w wybranym kalendarzu iPhone’a. Gdy wysyłasz dokument, to Ty decydujesz, komu go udostępnić.",
+    "onPhone": "Twoje dokumenty zostają na telefonie",
+    "offline": "Bez konta i bez serwera: działa też offline",
+    "noTracking": "Bez śledzenia i bez reklam"
+  },
+  "terms": {
+    "intro": "Pełne warunki korzystania zostaną opublikowane wraz z wersją z App Store. W skrócie:",
+    "free": "Sottomano jest darmowe do {{limit}} dokumentów i kart",
+    "oneTime": "Odblokowanie to jednorazowy zakup, bez subskrypcji",
+    "yours": "Twoje dokumenty zostają na telefonie i należą do Ciebie",
+    "backup": "Rób kopię zapasową, aby ich nie stracić przy zmianie telefonu"
+  },
+  "limit": {
+    "later": "Później",
+    "title": "Wykorzystano {{limit}} darmowych miejsc",
+    "text": "Wszystko, co zapisano, zostaje tutaj i działa jak zawsze. Aby dodać więcej dokumentów i kart, odblokuj Sottomano.",
+    "stillWorks": {
+      "view": "Przeglądaj swoje dokumenty",
+      "send": "Wysyłaj je i udostępniaj",
+      "cards": "Pokazuj karty przy kasie",
+      "reminders": "Otrzymuj przypomnienia"
+    },
+    "blocked": "Dodawanie kolejnych dokumentów i kart",
+    "unlock": "Odblokuj bez limitów za {{price}}"
+  },
+  "limitCard": {
+    "title": "Wykorzystano {{used}} z {{limit}} darmowych miejsc",
+    "accessibility": "{{title}}. Odblokuj",
+    "unlock": "Odblokuj"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Wersja darmowa: wykorzystano {{used}} z {{limit}}",
+    "titleMenu": "Za darmo: {{used}} z {{limit}}",
+    "subtitle": "Odblokuj bez limitów za {{price}}",
+    "accessibility": "{{title}}. Odblokuj bez limitów za {{price}}",
+    "unlock": "Odblokuj"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Witaj w Sottomano",
+        "text": "Dowody, karty lojalnościowe, rachunki, gwarancje: wszystkie domowe dokumenty w jednym miejscu, zawsze pod ręką.",
+        "info": "Zostają na telefonie i działają nawet bez internetu"
+      },
+      "scan": {
+        "title": "Jedno zdjęcie wystarczy",
+        "text": "Skanuj też wiele stron albo importuj zdjęcia i pliki PDF. Znajdziesz je uporządkowane i wyślesz tak lekkie, jak trzeba."
+      },
+      "deadlines": {
+        "title": "Pilnujemy terminów",
+        "text": "Przypomnimy Ci, zanim minie termin rachunku lub ważność dokumentu. Jeśli chcesz, także w Kalendarzu."
+      },
+      "cards": {
+        "title": "Karty zawsze w kieszeni",
+        "text": "Sfotografuj karty lojalnościowe: przy kasie pokażesz kod kreskowy lub QR jednym stuknięciem."
+      }
+    },
+    "skip": "Pomiń",
+    "pageOf": "Strona {{page}} z {{total}}",
+    "start": "Zaczynamy",
+    "restore": "Przywróć z kopii zapasowej",
+    "art": {
+      "bills": "Rachunki",
+      "cards": "Karty",
+      "health": "Zdrowie",
+      "car": "Samochód",
+      "pdfReady": "PDF gotowy",
+      "billTitle": "Rachunek za prąd",
+      "billExpires": "Termin za 2 dni",
+      "gym": "Siłownia",
+      "library": "Biblioteka",
+      "supermarket": "Supermarket"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Nie udało się otworzyć pliku",
+    "title": "Sfotografuj pierwszy dokument",
+    "text": "Rachunek, dowód osobisty albo gwarancja pralki: w kilka sekund są bezpieczne i zawsze pod ręką.",
+    "snap": "Sfotografuj dokument",
+    "pdf": "Wczytaj PDF",
+    "folders": "Twoje foldery",
+    "emptyAccessibility": "{{name}}, pusty",
+    "empty": "Pusty",
+    "newCategory": "Nowa kategoria"
+  },
+  "splashOverlay": {
+    "tagline": "Twoje domowe dokumenty, gotowe do wysłania"
+  },
+  "appActions": {
+    "shareText": "Polecam Sottomano: domowe dokumenty, karty i terminy zawsze pod ręką, na telefonie, nawet bez internetu.",
+    "rateTitle": "Oceń Sottomano",
+    "rateMessage": "Ocenę wystawisz, gdy Sottomano pojawi się w App Store.",
+    "lockUnavailableTitle": "Blokada niedostępna",
+    "lockUnavailableMessage": "Aby zablokować Sottomano, potrzebujesz kodu na iPhonie. Ustaw go w Ustawienia › Face ID i kod, a potem spróbuj ponownie."
+  }
+}

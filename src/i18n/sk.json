@@ -1,1 +1,1643 @@
-{}
+{
+  "common": {
+    "cancel": "Zrušiť",
+    "ok": "OK",
+    "done": "Hotovo",
+    "save": "Uložiť",
+    "delete": "Vymazať",
+    "edit": "Upraviť",
+    "close": "Zavrieť",
+    "confirm": "Potvrdiť",
+    "back": "Späť",
+    "next": "Ďalej",
+    "share": "Zdieľať",
+    "send": "Poslať",
+    "search": "Hľadať",
+    "add": "Pridať",
+    "remove": "Odstrániť",
+    "retry": "Skúsiť znova",
+    "continue": "Pokračovať",
+    "yes": "Áno",
+    "no": "Nie",
+    "restore": "Obnoviť",
+    "settings": "Nastavenia",
+    "more": "Viac",
+    "none": "Žiadne",
+    "documents_one": "{{count}} dokument",
+    "documents_few": "{{count}} dokumenty",
+    "documents_other": "{{count}} dokumentov",
+    "pages_one": "{{count}} strana",
+    "pages_few": "{{count}} strany",
+    "pages_other": "{{count}} strán",
+    "photos_one": "{{count}} fotka",
+    "photos_few": "{{count}} fotky",
+    "photos_other": "{{count}} fotiek",
+    "wholeFamily": "Celá rodina"
+  },
+  "dates": {
+    "today": "dnes",
+    "tomorrow": "zajtra",
+    "yesterday": "včera",
+    "inSpan": "o {{span}}",
+    "spanAgo": "{{span}} dozadu",
+    "expiredYesterday": "termín bol včera",
+    "expiredFor": "{{span}} po termíne",
+    "days_one": "{{count}} deň",
+    "days_few": "{{count}} dni",
+    "days_other": "{{count}} dní",
+    "months_one": "{{count}} mesiac",
+    "months_few": "{{count}} mesiace",
+    "months_other": "{{count}} mesiacov",
+    "years_one": "{{count}} rok",
+    "years_few": "{{count}} roky",
+    "years_other": "{{count}} rokov"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Doklady",
+      "cards": "Karty",
+      "utilities": "Energie",
+      "home": "Domov",
+      "insurance": "Poistenie",
+      "warranties": "Záruky a bločky",
+      "car": "Auto",
+      "tax": "Daňové odpočty",
+      "householdStaff": "Pomoc v domácnosti",
+      "school": "Škola",
+      "pet": "Zvieratá",
+      "password": "Heslá",
+      "other": "Ostatné"
+    }
+  },
+  "language": {
+    "title": "Jazyk",
+    "auto": "Automaticky",
+    "autoSubtitle": "Podľa jazyka telefónu",
+    "search": "Hľadať jazyky",
+    "autoDetail": "Jazyk iPhonu: {{language}}",
+    "noResults": "Žiadne jazyky pre „{{query}}“"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastel",
+    "vivid": "Živé",
+    "earth": "Zem",
+    "sea": "More",
+    "sunset": "Západ slnka",
+    "night": "Noc"
+  },
+  "home": {
+    "welcome": "Vitaj v Sottomano",
+    "hello": "Ahoj!",
+    "searchPlaceholder": "Hľadať dokument",
+    "favorites": "Obľúbené",
+    "seeAll": "Zobraziť všetko",
+    "seeAllFavorites": "Zobraziť všetky obľúbené",
+    "deadlines": "Termíny",
+    "seeAllDeadlines": "Zobraziť všetky termíny",
+    "archive": "Archív",
+    "reorderDone": "Dokončiť radenie",
+    "reorder": "Zmeniť poradie",
+    "reorderCategories": "Zmeniť poradie kategórií",
+    "reorderHint": "Potiahni kategórie do poradia, ktoré ti vyhovuje.",
+    "alerts": {
+      "orderNotSaved": "Poradie sa nepodarilo uložiť"
+    },
+    "newCategory": "Nová kategória"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} karta",
+    "cards_few": "{{count}} karty",
+    "cards_other": "{{count}} kariet"
+  },
+  "folder": {
+    "paidOn": "Zaplatené {{date}}",
+    "expiredOn": "Platnosť skončila {{date}}",
+    "expiresOn": "Termín {{date}}",
+    "addedOn": "Pridané {{date}}",
+    "newItem": {
+      "bill": "Nový účet",
+      "card": "Nová karta",
+      "warranty": "Nová záruka",
+      "password": "Nové heslo",
+      "document": "Nový dokument"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Všetko",
+      "documents": "Dokumenty",
+      "cards": "Karty",
+      "deadlines": "Termíny"
+    },
+    "paid": "zaplatené",
+    "expiresOn": "termín {{date}}",
+    "folderSubtitle_one": "Priečinok · {{count}} dokument",
+    "folderSubtitle_few": "Priečinok · {{count}} dokumenty",
+    "folderSubtitle_other": "Priečinok · {{count}} dokumentov",
+    "card": "Karta",
+    "deadlineSubtitle": "Termín · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Hľadať dokument",
+    "fieldLabel": "Hľadať v dokumentoch",
+    "filter": "Filter",
+    "results_one": "{{count}} výsledok",
+    "results_few": "{{count}} výsledky",
+    "results_other": "{{count}} výsledkov",
+    "noResults": "Žiadne výsledky",
+    "noResultsHint": "Skús iné slovo, napríklad názov obchodu.",
+    "hint": "Hľadaj v názvoch, priečinkoch, typoch, poznámkach, kartách a termínoch."
+  },
+  "navigation": {
+    "home": "Domov",
+    "favorites": "Obľúbené",
+    "family": "Rodina",
+    "deadlines": "Termíny",
+    "deadlinesToCheck_one": "Termíny, {{count}} na kontrolu",
+    "deadlinesToCheck_few": "Termíny, {{count}} na kontrolu",
+    "deadlinesToCheck_other": "Termíny, {{count}} na kontrolu",
+    "addLocked": "Pridať dokument, zamknuté: bezplatný limit je vyčerpaný",
+    "addDocument": "Pridať dokument",
+    "titles": {
+      "editDocument": "Upraviť dokument",
+      "pages": "Strany",
+      "deadline": "Termín",
+      "renewed": "Obnovené",
+      "previousVersion": "Predchádzajúca verzia",
+      "newDocument": "Nový dokument",
+      "appearance": "Vzhľad",
+      "backup": "Záloha",
+      "taxPackage": "Poslať účtovníkovi",
+      "trash": "Kôš",
+      "terms": "Podmienky používania",
+      "about": "O aplikácii a súkromie",
+      "newCard": "Nová karta",
+      "editCard": "Upraviť kartu"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Potiahnutím presunieš, alebo použi akcie Posunúť vyššie a Posunúť nižšie",
+    "moveEarlier": "Posunúť vyššie",
+    "moveLater": "Posunúť nižšie",
+    "footer": "Rovnako meníš poradie kariet, ľudí v Rodine a Obľúbených: podrž riadok a potiahni ho za úchyt vpravo."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Podrž: potiahnutím presunieš, po uvoľnení sa zobrazia akcie"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Poradie sa nepodarilo uložiť"
+    },
+    "reorderTitle": "Zmeniť poradie obľúbených",
+    "reorderHint": "Podrž obľúbenú položku a potiahni ju, kam chceš.",
+    "yourFavorites": "Tvoje obľúbené",
+    "title": "Obľúbené",
+    "subtitle": "Čo chceš mať vždy poruke",
+    "searchPlaceholder": "Hľadať v obľúbených",
+    "viewList": "Zoznam",
+    "viewGrid": "Mriežka",
+    "count_one": "{{count}} obľúbená položka",
+    "count_few": "{{count}} obľúbené položky",
+    "count_other": "{{count}} obľúbených položiek",
+    "noMatch": "Žiadne obľúbené položky pre „{{query}}“.",
+    "empty": "Zatiaľ nemáš žiadne obľúbené.",
+    "footer": "Ťuknutím na srdiečko pri ľubovoľnom dokumente ho pridáš sem.",
+    "footerGrid": "Ťuknutím na srdiečko pri ľubovoľnom dokumente ho pridáš sem. Poradie zmeníš podržaním a potiahnutím dlaždice.",
+    "footerList": "Ťuknutím na srdiečko pri ľubovoľnom dokumente ho pridáš sem. Poradie zmeníš podržaním riadka.",
+    "rowHint": "Podržaním zmeníš poradie obľúbených",
+    "unpin": "Odstrániť z obľúbených",
+    "expires": "termín {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "na zaplatenie: {{count}}",
+    "alerts": {
+      "orderNotSaved": "Poradie sa nepodarilo uložiť"
+    },
+    "actions": {
+      "editCategory": "Upraviť kategóriu",
+      "sendToAccountant": "Poslať účtovníkovi",
+      "selectAndSend": "Vybrať a poslať",
+      "reorder": "Zmeniť poradie",
+      "deleteCategory": "Vymazať kategóriu"
+    },
+    "moreLabel": "Upraviť alebo vymazať kategóriu {{name}}",
+    "searchIn": "Hľadať v: {{name}}",
+    "viewList": "Zoznam",
+    "viewGrid": "Mriežka",
+    "reorderHint": "Podrž a potiahni dokumenty do poradia, ktoré ti vyhovuje.",
+    "allTypes": "Všetko",
+    "noDocumentsFound": "Nenašli sa žiadne dokumenty.",
+    "sendTogether": "Poslať spolu ({{count}})",
+    "sheetTitle": "Kategória {{name}}"
+  },
+  "folderRow": {
+    "due": "na zaplatenie",
+    "paid": "zaplatené"
+  },
+  "homeSections": {
+    "expired": "Po termíne",
+    "expiresToday": "Termín dnes",
+    "expiresTomorrow": "Termín zajtra",
+    "expiresInDays_one": "Termín o {{count}} deň",
+    "expiresInDays_few": "Termín o {{count}} dni",
+    "expiresInDays_other": "Termín o {{count}} dní",
+    "expiresOn": "Termín {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Odstrániť z obľúbených",
+    "pin": "Pridať do obľúbených"
+  },
+  "searchBar": {
+    "clear": "Vymazať text"
+  },
+  "documentGrid": {
+    "addDocument": "Pridať dokument"
+  },
+  "homeHeader": {
+    "menu": "Menu",
+    "notifications": "Hlásenia",
+    "notificationsUnread_one": "Hlásenia, {{count}} neprečítané",
+    "notificationsUnread_few": "Hlásenia, {{count}} neprečítané",
+    "notificationsUnread_other": "Hlásenia, {{count}} neprečítaných"
+  },
+  "demoData": {
+    "people": {
+      "step": "Krok",
+      "mom": "Mama",
+      "dad": "Otec"
+    },
+    "documents": {
+      "idCard": "Občiansky preukaz",
+      "drivingLicence": "Vodičský preukaz",
+      "passport": "Cestovný pas",
+      "electricityBill": "Faktúra za elektrinu",
+      "carInsurance": "PZP",
+      "carTax": "Diaľničná známka",
+      "washingMachineWarranty": "Záruka na práčku",
+      "gymCard": "Karta do posilňovne",
+      "rentalContract": "Nájomná zmluva",
+      "pharmacyReceipt": "Bloček z lekárne",
+      "reportCard": "Vysvedčenie"
+    },
+    "notes": {
+      "electricityBill": "Inkaso z banky"
+    }
+  },
+  "documentTypes": {
+    "documents": "Občiansky preukaz|Vodičský preukaz|Cestovný pas|Preukaz poistenca|DIČ",
+    "cards": "Vernostná|Posilňovňa|Knižnica|Doprava|Členská",
+    "utilities": "Elektrina|Plyn|Voda|Internet|Telefón|Odpad",
+    "home": "Nájom|Hypotéka|Fond opráv|Údržba|Zmluva",
+    "insurance": "Auto|Domácnosť|Zdravie|Životné|Cestovné",
+    "warranties": "Spotrebič|Elektronika|Nábytok|Bloček",
+    "car": "Diaľničná známka|Poistenie|STK|Servis|Technický preukaz",
+    "tax": "Lekáreň|Lekár|Zubár|Vyšetrenie|Šport|Škola",
+    "householdStaff": "Výplatná páska|Odvody|Zmluva",
+    "school": "Zápis|Vysvedčenie|Potvrdenie|Jedáleň|Výlet",
+    "pet": "Očkovací preukaz|Očkovanie|Veterinár|Čip",
+    "password": "E-mail|Banka|Sociálne siete|Wi‑Fi|Práca"
+  },
+  "pageLabels": {
+    "front": "Predná strana",
+    "back": "Zadná strana",
+    "page": "Strana {{number}}"
+  },
+  "statusBadge": {
+    "due": "Na zaplatenie",
+    "paid": "Zaplatené"
+  },
+  "addActions": {
+    "openFileFailed": "Súbor sa nepodarilo otvoriť"
+  },
+  "pickFiles": {
+    "takePhoto": "Odfotiť",
+    "choosePhoto": "Vybrať z fotiek",
+    "removePhoto": "Odstrániť fotku"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Viac strán",
+      "text": "Môžeš naskenovať niekoľko strán za sebou: pred ťuknutím na Uložiť zameraj ďalšiu stranu."
+    },
+    "cardTip": {
+      "title": "Skutočné farby",
+      "text": "Pre skutočné farby karty ťukni v skeneri na tlačidlo filtrov a vyber „Fotka“."
+    },
+    "gotIt": "Rozumiem"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Je potrebný prístup k fotoaparátu",
+    "permissionText": "Sottomano používa fotoaparát len na fotenie tvojich dokumentov.",
+    "allow": "Povoliť",
+    "openSettings": "Otvoriť Nastavenia",
+    "readable": "Je to čitateľné?",
+    "pageReadable": "Strana {{number}}: je čitateľná?",
+    "retake": "Znova",
+    "addPage": "Pridať stranu",
+    "frameDocument": "Zameraj dokument",
+    "framePage": "Zameraj stranu {{number}}",
+    "shoot": "Odfotiť",
+    "finishWithPages_one": "Hotovo, {{count}} strana",
+    "finishWithPages_few": "Hotovo, {{count}} strany",
+    "finishWithPages_other": "Hotovo, {{count}} strán"
+  },
+  "coverField": {
+    "label": "Obálka",
+    "photo": "Fotka",
+    "color": "Farba",
+    "noPhotoHint": "Bez fotky sa zobrazí farba: pridaj stranu a jej fotka bude obálkou.",
+    "categoryColor": "Farba priečinka",
+    "colorNumber": "Farba {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Pridať strany",
+    "pinned": "V obľúbených",
+    "pin": "Do obľúbených",
+    "renewed": "Obnovené",
+    "delete": "Vymazať"
+  },
+  "documentFilesView": {
+    "document": "Dokument",
+    "openFailed": "Dokument sa nepodarilo otvoriť",
+    "pageOfSwipe": "Strana {{number}} z {{total}} · listuj potiahnutím",
+    "openFullScreen": "{{label}}, otvoriť na celú obrazovku",
+    "missingFile": "Súbor sa v tomto telefóne nenašiel."
+  },
+  "filesEditor": {
+    "addBack": "Pridať zadnú stranu",
+    "addPage": "Pridať stranu",
+    "scan": "Skenovať",
+    "photograph": "Odfotiť",
+    "fromPhotos": "Z fotiek",
+    "scannerUnavailableTitle": "Skener nie je k dispozícii",
+    "scannerUnavailableMessage": "Odstráň strany pomocou ✕ a pridaj nové.",
+    "replacePdf": "Nahradiť PDF",
+    "importPdf": "Importovať PDF",
+    "rescanAll": "Naskenovať všetko znova",
+    "openFileFailed": "Súbor sa nepodarilo otvoriť",
+    "page": "Strana",
+    "newTag": "nová",
+    "moveBefore": "Posunúť {{name}} vyššie",
+    "moveAfter": "Posunúť {{name}} nižšie",
+    "removePage": "Odstrániť {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Dokument sa nenašiel.",
+    "noPages": "Žiadne strany",
+    "photoPages_one": "Fotka, {{count}} strana",
+    "photoPages_few": "Fotky, {{count}} strany",
+    "photoPages_other": "Fotky, {{count}} strán",
+    "amount": "Suma",
+    "expired": "po termíne",
+    "inDays_one": "o {{count}} deň",
+    "inDays_few": "o {{count}} dni",
+    "inDays_other": "o {{count}} dní",
+    "deadline": "Termín",
+    "folder": "Priečinok",
+    "status": "Stav",
+    "person": "Osoba",
+    "number": "Číslo",
+    "notes": "Poznámky",
+    "inCalendar": "V kalendári",
+    "view": "Zobraziť dokument",
+    "unpin": "Odstrániť z obľúbených",
+    "pin": "Pridať do obľúbených",
+    "addPages": "Pridať strany",
+    "renewed": "Obnovené",
+    "delete": "Vymazať",
+    "details": "Podrobnosti",
+    "remindMe": "Pripomenúť",
+    "reminderNeedsDeadline": "Na pripomenutie pridaj termín",
+    "reminderWhen": "Pripomenutie: {{when}}",
+    "noReminder": "Bez pripomenutia",
+    "previousVersions": "Predchádzajúce verzie",
+    "versionUntil": "Do {{date}}",
+    "versionExpired": "platnosť skončila {{date}}",
+    "paidOnMarkDue": "Zaplatené {{date}} · označiť na zaplatenie",
+    "markDue": "Označiť na zaplatenie",
+    "markPaid": "Označiť ako zaplatené",
+    "firstOf": "1 z {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Na zaplatenie",
+    "statusPaid": "Zaplatené",
+    "saveFailed": "Uloženie sa nepodarilo",
+    "folder": "Priečinok",
+    "person": "Osoba",
+    "type": "Typ",
+    "otherType": "Napísať iný…",
+    "noType": "Bez typu",
+    "typeExample": "Napríklad: Elektrina, STK, Zubár",
+    "dueOn": "Dňa {{date}}",
+    "noDeadline": "Bez termínu",
+    "nameSection": "Názov",
+    "namePlaceholder": "Názov dokumentu",
+    "whereSection": "Kam uložiť",
+    "choose": "Vybrať…",
+    "deadlineSection": "Termín",
+    "addDeadline": "Pridať termín",
+    "remindMe": "Pripomenúť",
+    "whenToRemind": "Kedy pripomenúť",
+    "repeats": "Opakovanie",
+    "never": "Nikdy",
+    "everySpan": "Raz za {{span}}",
+    "every": "Interval",
+    "notesSection": "Poznámky",
+    "notesPlaceholder": "Napríklad: platené inkasom, požiadať o vrátenie…",
+    "pin": "Pridať do obľúbených",
+    "pinSubtitle": "Nájdeš ho hneď na úvodnej obrazovke",
+    "amountSection": "Suma a stav",
+    "amount": "Suma",
+    "amountInEuro": "Suma v eurách",
+    "accessSection": "Prihlásenie",
+    "username": "Používateľské meno",
+    "usernamePlaceholder": "meno@priklad.sk",
+    "password": "Heslo",
+    "passwordUnchanged": "•••••••• (bez zmeny)",
+    "passwordNote": "Heslo zostáva len v Kľúčenke iPhonu.",
+    "numberSection": "Číslo dokladu",
+    "numberPlaceholder": "Napr. EA123456",
+    "saveChanges": "Uložiť zmeny",
+    "saveDocument": "Uložiť dokument",
+    "amountHint": "Zadaj sumu v tvare {{example}}.",
+    "missingNameAndFolder": "Na uloženie zadaj názov a vyber priečinok.",
+    "missingName": "Na uloženie zadaj názov.",
+    "missingFolder": "Na uloženie vyber priečinok.",
+    "deleteDocument": "Vymazať dokument"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Skenovať",
+      "photos": "Z fotiek",
+      "pdf": "Zo súboru PDF",
+      "card": "Karta",
+      "manual": "Ručne"
+    },
+    "hintFirst": "Zameraj dokument · drž telefón v pokoji",
+    "hintNext": "Strana {{number}} odfotená · zameraj ďalšiu",
+    "title": "Nový dokument",
+    "flashOff": "Vypnúť blesk",
+    "flashOn": "Zapnúť blesk",
+    "scanWithIos": "Skenovať skenerom iOS",
+    "tapToScan": "Ťukni na skenovanie: okraje nájde sám",
+    "permissionTitle": "Je potrebný prístup k fotoaparátu",
+    "permissionText": "Sottomano ho používa len na fotenie tvojich dokumentov.",
+    "allow": "Povoliť",
+    "openSettings": "Otvoriť Nastavenia",
+    "howToAdd": "Ako pridať",
+    "chooseFromGallery": "Vybrať z knižnice",
+    "shoot": "Odfotiť",
+    "goOnWith_one": "Pokračovať s {{count}} stranou",
+    "goOnWith_few": "Pokračovať s {{count}} stranami",
+    "goOnWith_other": "Pokračovať s {{count}} stranami",
+    "noPages": "Žiadne strany",
+    "countNext": "ďalej ›",
+    "countPages": "strany"
+  },
+  "newDocument": {
+    "readTitle": "Načítané z dokumentu",
+    "readText": "Názov prevzatý zo súboru: {{name}}. Skontroluj ho a v prípade potreby oprav.",
+    "checkTitle": "Skontroluj údaje",
+    "checkText_one": "Odfotená {{count}} strana. Zadaj názov a termín, ak nejaký je: nájdeš ho v Termínoch.",
+    "checkText_few": "Odfotené {{count}} strany. Zadaj názov a termín, ak nejaký je: nájdeš ho v Termínoch.",
+    "checkText_other": "Odfotených {{count}} strán. Zadaj názov a termín, ak nejaký je: nájdeš ho v Termínoch.",
+    "heading": "Nový dokument"
+  },
+  "editDocument": {
+    "heading": "Upraviť dokument"
+  },
+  "documentVersion": {
+    "replacedOn": "Nahradené {{date}}",
+    "expiredOn": "platnosť skončila {{date}}",
+    "previewTitle": "{{title}} (predchádzajúca verzia)"
+  },
+  "documentPages": {
+    "saveFailed": "Strany sa nepodarilo uložiť"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Vymazanie sa nepodarilo",
+    "title": "Vymazať {{title}}?",
+    "message_one": "Dokument a jeho pripomenutie sa presunú do Koša. Obnoviť ho môžeš v Menu › Kôš počas {{count}} dňa.",
+    "message_few": "Dokument a jeho pripomenutie sa presunú do Koša. Obnoviť ho môžeš v Menu › Kôš počas {{count}} dní.",
+    "message_other": "Dokument a jeho pripomenutie sa presunú do Koša. Obnoviť ho môžeš v Menu › Kôš počas {{count}} dní.",
+    "confirm": "Vymazať dokument"
+  },
+  "renew": {
+    "saveFailed": "Uloženie sa nepodarilo",
+    "deadline": "Termín",
+    "repeatFooter": "{{repeat}}: nový dátum sa počíta od pôvodného.",
+    "was": "Pôvodne",
+    "newDeadline": "Nový termín",
+    "newDocument": "Nový dokument",
+    "withScanFooter": "Súčasné strany sa stanú „Predchádzajúcou verziou“, ktorú nájdeš v podrobnostiach.",
+    "withoutScanFooter": "Zapni, ak máš nový dokument na naskenovanie.",
+    "addNewScan": "Pridať nový sken"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · posuň nadol",
+    "pagesSubtitle_one": "{{count}} strana",
+    "pagesSubtitle_few": "{{count}} strany · posuň nadol",
+    "pagesSubtitle_other": "{{count}} strán · posuň nadol",
+    "pageOf": "Strana {{number}} z {{total}}",
+    "noPages": "Tento dokument nemá žiadne strany.",
+    "zoom": "Zväčšenie",
+    "zoomOut": "Zmenšiť",
+    "zoomIn": "Zväčšiť",
+    "pageShort": "Str. {{number}} z {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "deň",
+      "day_few": "dni",
+      "day_other": "dní",
+      "week_one": "týždeň",
+      "week_few": "týždne",
+      "week_other": "týždňov",
+      "month_one": "mesiac",
+      "month_few": "mesiace",
+      "month_other": "mesiacov",
+      "year_one": "rok",
+      "year_few": "roky",
+      "year_other": "rokov"
+    },
+    "count": {
+      "day_one": "{{count}} deň",
+      "day_few": "{{count}} dni",
+      "day_other": "{{count}} dní",
+      "week_one": "{{count}} týždeň",
+      "week_few": "{{count}} týždne",
+      "week_other": "{{count}} týždňov",
+      "month_one": "{{count}} mesiac",
+      "month_few": "{{count}} mesiace",
+      "month_other": "{{count}} mesiacov",
+      "year_one": "{{count}} rok",
+      "year_few": "{{count}} roky",
+      "year_other": "{{count}} rokov"
+    },
+    "every": {
+      "day_one": "Každý deň",
+      "day_few": "Každé {{count}} dni",
+      "day_other": "Každých {{count}} dní",
+      "week_one": "Každý týždeň",
+      "week_few": "Každé {{count}} týždne",
+      "week_other": "Každých {{count}} týždňov",
+      "month_one": "Každý mesiac",
+      "month_few": "Každé {{count}} mesiace",
+      "month_other": "Každých {{count}} mesiacov",
+      "year_one": "Každý rok",
+      "year_few": "Každé {{count}} roky",
+      "year_other": "Každých {{count}} rokov"
+    },
+    "repeats": {
+      "day_one": "Opakuje sa každý deň",
+      "day_few": "Opakuje sa každé {{count}} dni",
+      "day_other": "Opakuje sa každých {{count}} dní",
+      "week_one": "Opakuje sa každý týždeň",
+      "week_few": "Opakuje sa každé {{count}} týždne",
+      "week_other": "Opakuje sa každých {{count}} týždňov",
+      "month_one": "Opakuje sa každý mesiac",
+      "month_few": "Opakuje sa každé {{count}} mesiace",
+      "month_other": "Opakuje sa každých {{count}} mesiacov",
+      "year_one": "Opakuje sa každý rok",
+      "year_few": "Opakuje sa každé {{count}} roky",
+      "year_other": "Opakuje sa každých {{count}} rokov"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Vyžaduje pozornosť",
+    "thisWeek": "Tento týždeň",
+    "upcomingNone": "V najbližších mesiacoch nič nevyprší",
+    "upcoming_one": "{{count}} vec na vybavenie v najbližších mesiacoch",
+    "upcoming_few": "{{count}} veci na vybavenie v najbližších mesiacoch",
+    "upcoming_other": "{{count}} vecí na vybavenie v najbližších mesiacoch"
+  },
+  "deadlineOptions": {
+    "sameDay": "V deň termínu",
+    "daysBefore_one": "{{count}} deň vopred",
+    "daysBefore_few": "{{count}} dni vopred",
+    "daysBefore_other": "{{count}} dní vopred",
+    "defaultChoice": "{{label}} (predvolené)"
+  },
+  "personRoles": {
+    "you": "Ty",
+    "choice": {
+      "me": "To som ja",
+      "partner": "Partner/partnerka",
+      "child": "Syn alebo dcéra",
+      "parent": "Rodič",
+      "sibling": "Brat alebo sestra",
+      "other": "Iný vzťah"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Kategória „Ostatné“ neexistuje.",
+    "otherNotDeletable": "Kategóriu „Ostatné“ nemožno vymazať."
+  },
+  "deadlineChip": {
+    "overdue": "Po termíne",
+    "today": "Dnes",
+    "dueToday": "Termín dnes",
+    "dueIn_one": "Termín o {{count}} deň",
+    "dueIn_few": "Termín o {{count}} dni",
+    "dueIn_other": "Termín o {{count}} dní"
+  },
+  "deadlineListRow": {
+    "hint": "Podržaním termín upravíš alebo odstrániš",
+    "statusDue": "na zaplatenie",
+    "statusPaid": "zaplatené"
+  },
+  "deadlineSection": {
+    "title": "Termín",
+    "emptyFooter": "S pripomenutím v telefóne a, ak je zapnutý, v kalendári „Sottomano“.",
+    "add": "Pridať termín",
+    "expiresOn": "Termín",
+    "repeats": "Opakovanie",
+    "never": "Nikdy",
+    "reminder": "Pripomenutie"
+  },
+  "dateCalendar": {
+    "previousMonth": "Predchádzajúci mesiac",
+    "nextMonth": "Ďalší mesiac"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Ďalší týždeň",
+    "previousWeek": "Predchádzajúci týždeň",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} termín",
+    "dayWithDeadlines_few": "{{day}}, {{count}} termíny",
+    "dayWithDeadlines_other": "{{day}}, {{count}} termínov"
+  },
+  "deadlines": {
+    "title": "Termíny",
+    "newReminder": "Nové pripomenutie",
+    "week": "Týždeň",
+    "month": "Mesiac",
+    "openDocument": "Otvoriť dokument",
+    "editDeadline": "Upraviť termín",
+    "markDue": "Označiť na zaplatenie",
+    "markPaid": "Označiť ako zaplatené",
+    "removeDeadline": "Odstrániť termín",
+    "removeAlert": {
+      "title": "Odstrániť termín?",
+      "message": "Dokument zostane; jeho pripomenutie a udalosť v kalendári sa odstránia.",
+      "confirm": "Odstrániť"
+    },
+    "emptyTitle": "Žiadne nadchádzajúce termíny",
+    "emptyText": "Ťuknutím na + pridáš dokument s termínom: zobrazí sa tu a v kalendári.",
+    "sheetSubtitle": "Termín {{date}}",
+    "dayRepeats": "opakuje sa",
+    "dayReminder": "pripomenutie",
+    "dayEmpty": "V tento deň nie sú žiadne termíny"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Uloženie sa nepodarilo",
+    "date": "Dátum",
+    "footer": "Pripomenutie príde do telefónu; so zapnutým kalendárom je termín aj v „Sottomano“.",
+    "every": "Interval"
+  },
+  "family": {
+    "title": "Rodina",
+    "subtitle": "Profil pre každého v domácnosti",
+    "addPerson": "Pridať osobu",
+    "members": "Členovia",
+    "orderSaveFailed": "Poradie sa nepodarilo uložiť",
+    "reorderTitle": "Zmeniť poradie rodiny",
+    "reorderHint": "Podrž osobu a potiahni ju, kam chceš.",
+    "privacyNote": "Všetko zostáva v tomto telefóne. Ak chceš niekomu poslať dokument, otvor ho a ťukni na Poslať.",
+    "youSpoken": "ty",
+    "reorderA11yHint": "Podržaním zmeníš poradie rodiny",
+    "expiring_one": "{{count}} končí",
+    "expiring_few": "{{count}} končia",
+    "expiring_other": "{{count}} končí"
+  },
+  "personScreen": {
+    "photoFailed": "Fotku sa nepodarilo použiť",
+    "editPerson": "Upraviť osobu",
+    "selectAndSend": "Vybrať a poslať",
+    "deletePerson": "Vymazať osobu",
+    "moreA11y": "Upraviť alebo vymazať: {{name}}",
+    "changePhoto": "Zmeniť fotku",
+    "editProfile": "Upraviť profil",
+    "documentsSection": "Dokumenty · {{count}}",
+    "addDocument": "Pridať dokument",
+    "sendTogether": "Poslať spolu ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Uloženie sa nepodarilo",
+    "newPerson": "Nová osoba",
+    "addPhoto": "Pridať fotku",
+    "name": "Meno",
+    "namePlaceholder": "Ako sa volá?",
+    "role": "Kto to je",
+    "roleA11y": "Kto to pre teba je: {{role}}",
+    "note": "Profil zostáva v tomto telefóne. Pomáha ti udržať v poriadku dokumenty všetkých.",
+    "addToFamily": "Pridať do rodiny",
+    "roleSheetTitle": "Kto to pre teba je"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Vymazanie sa nepodarilo",
+    "title": "Vymazať kategóriu {{name}}?",
+    "messageWithDocuments_one": "Obsahuje {{count}} dokument. Čo s ním chceš urobiť?",
+    "messageWithDocuments_few": "Obsahuje {{count}} dokumenty. Čo s nimi chceš urobiť?",
+    "messageWithDocuments_other": "Obsahuje {{count}} dokumentov. Čo s nimi chceš urobiť?",
+    "messageWithDocumentsRestorable_one": "Obsahuje {{count}} dokument. Čo s ním chceš urobiť? Kategóriu môžeš obnoviť v Novej kategórii.",
+    "messageWithDocumentsRestorable_few": "Obsahuje {{count}} dokumenty. Čo s nimi chceš urobiť? Kategóriu môžeš obnoviť v Novej kategórii.",
+    "messageWithDocumentsRestorable_other": "Obsahuje {{count}} dokumentov. Čo s nimi chceš urobiť? Kategóriu môžeš obnoviť v Novej kategórii.",
+    "messageEmpty": "Kategória je prázdna.",
+    "messageEmptyRestorable": "Kategória je prázdna. Môžeš ju obnoviť v Novej kategórii.",
+    "deleteAll": "Vymazať všetko",
+    "confirm": "Vymazať kategóriu",
+    "choicesA11y": "Čo urobiť s dokumentmi",
+    "moveLabel": "Presunúť do Ostatné",
+    "moveDetailPassword": "Zostanú v aplikácii, v Ostatné, bez používateľského mena a hesla",
+    "moveDetail": "Zostanú v aplikácii, vo všeobecnom priečinku",
+    "trashLabel": "Vymazať ich",
+    "trashDetail_one": "Presunú sa do Koša: obnoviť ich môžeš počas {{count}} dňa",
+    "trashDetail_few": "Presunú sa do Koša: obnoviť ich môžeš počas {{count}} dní",
+    "trashDetail_other": "Presunú sa do Koša: obnoviť ich môžeš počas {{count}} dní"
+  },
+  "deletePerson": {
+    "title": "Odstrániť osobu {{name}} z rodiny?",
+    "messageWithDocuments_one": "{{name}} má {{count}} dokument. Čo s ním chceš urobiť?",
+    "messageWithDocuments_few": "{{name}} má {{count}} dokumenty. Čo s nimi chceš urobiť?",
+    "messageWithDocuments_other": "{{name}} má {{count}} dokumentov. Čo s nimi chceš urobiť?",
+    "messageEmpty": "Profil sa z tohto telefónu odstráni.",
+    "familyLabel": "Presunúť do Celá rodina",
+    "familyDetail": "Zostanú v aplikácii, viditeľné pre všetkých",
+    "trashDetail_one": "Odídu s profilom: v Koši zostanú {{count}} deň",
+    "trashDetail_few": "Odídu s profilom: v Koši zostanú {{count}} dni",
+    "trashDetail_other": "Odídu s profilom: v Koši zostanú {{count}} dní"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Zvieratá",
+      "document": "Dokument",
+      "home": "Domov",
+      "car": "Auto",
+      "health": "Zdravie",
+      "school": "Škola",
+      "work": "Práca",
+      "keys": "Kľúče",
+      "travel": "Cestovanie",
+      "expenses": "Výdavky"
+    },
+    "restoreFailed": "Obnovenie sa nepodarilo",
+    "editTitle": "Upraviť kategóriu",
+    "newTitle": "Nová kategória",
+    "restoreSection": "Obnoviť predvolenú kategóriu",
+    "restoreA11y": "Obnoviť {{name}}",
+    "restoreHint": "Vráti sa taká, aká bola, so svojimi farbami, ikonou a poľami. Alebo nižšie vytvor novú.",
+    "previewA11y": "Náhľad kategórie",
+    "namePlaceholder": "Napr. Zvieratá",
+    "nameA11y": "Názov kategórie",
+    "color": "Farba",
+    "paletteColor": "Farba zo Vzhľadu",
+    "colorNumber": "Farba {{number}}",
+    "followsPaletteHint": "Farba sa riadi paletou vybranou vo Vzhľade.",
+    "ownColorHint": "Tvoja vlastná farba: so Vzhľadom sa nemení.",
+    "icon": "Ikona",
+    "forWhom": "Pre koho",
+    "forWhomA11y": "Pre koho je táto kategória: {{name}}",
+    "forWhomHint": "Nové dokumenty v tejto kategórii budú priradené tejto osobe.",
+    "create": "Vytvoriť kategóriu"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Web alebo aplikácia",
+        "namePlaceholder": "Napríklad: Internet banking",
+        "userLabel": "Používateľské meno alebo e-mail",
+        "userPlaceholder": "meno@email.sk",
+        "passwordLabel": "Heslo",
+        "notePlaceholder": "Napríklad: bezpečnostná otázka, kód na obnovenie…"
+      },
+      "wifi": {
+        "name": "Wi‑Fi",
+        "namePlaceholder": "Napríklad: Wi‑Fi doma",
+        "userLabel": "Názov siete",
+        "userPlaceholder": "KovacoviDoma_5G",
+        "passwordLabel": "Heslo siete",
+        "notePlaceholder": "Napríklad: router je v obývačke za televízorom…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Napríklad: Debetná karta",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Napríklad: Juliina karta…"
+      },
+      "other": {
+        "name": "Ostatné",
+        "namePlaceholder": "Napríklad: Alarm doma",
+        "userLabel": "Používateľské meno",
+        "userPlaceholder": "Voliteľné",
+        "passwordLabel": "Kód alebo heslo",
+        "notePlaceholder": "Na čo slúži, kde sa používa…"
+      }
+    },
+    "colors": {
+      "aqua": "Akvamarín",
+      "indigo": "Indigo",
+      "apricot": "Marhuľa",
+      "pink": "Ružová",
+      "mint": "Mäta",
+      "sky": "Nebo",
+      "graphite": "Grafit"
+    },
+    "icons": {
+      "key": "Kľúč",
+      "lock": "Zámok",
+      "globe": "Glóbus",
+      "wifi": "Wi‑Fi",
+      "bank": "Banka",
+      "card": "Karta",
+      "mail": "E-mail",
+      "home": "Domov",
+      "car": "Auto",
+      "shield": "Štít",
+      "cart": "Košík",
+      "star": "Hviezda"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Len číslice",
+    "strength": {
+      "weak": "Slabé",
+      "fair": "Priemerné",
+      "good": "Dobré",
+      "strong": "Silné"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Potvrď zapnutie zámku"
+  },
+  "appLock": {
+    "prompt": "Odomknúť Sottomano",
+    "unlock": "Odomknúť",
+    "unlockWith": {
+      "faceId": "Odomknúť pomocou Face ID",
+      "touchId": "Odomknúť pomocou Touch ID",
+      "passcode": "Odomknúť kódom"
+    },
+    "message": "Tvoje dokumenty sú chránené"
+  },
+  "passwordForm": {
+    "showPrompt": "Zobraziť heslo",
+    "copyPrompt": "Skopírovať heslo",
+    "copiedTitle": "Skopírované",
+    "copiedMessage": "O 1 minútu sa zo schránky vymaže.",
+    "scannerUnavailableTitle": "Skener nie je k dispozícii",
+    "scannerUnavailableMessage": "Vyber obrázok z knižnice fotiek.",
+    "saveFailed": "Uloženie sa nepodarilo",
+    "editTitle": "Upraviť heslo",
+    "newTitle": "Nové heslo",
+    "privacy": "Zostávajú len v tomto telefóne a otvárajú sa pomocou Face ID.",
+    "sections": {
+      "what": "Čo ukladáš",
+      "name": "Názov",
+      "preview": "Náhľad",
+      "access": "Prihlásenie",
+      "site": "Web alebo aplikácia",
+      "whose": "Čie to je",
+      "notes": "Poznámky"
+    },
+    "typesLabel": "Typ hesla",
+    "customTypePlaceholder": "Čo to je? Alarm, trezor, zámok…",
+    "customTypeLabel": "Čo to je",
+    "customTypeHint": "Stane sa z toho nový typ a nabudúce ho nájdeš medzi možnosťami.",
+    "previewTitle": "Ako to vyzerá v zozname",
+    "previewText": "Farba a ikona, alebo obrázok.",
+    "color": "Farba",
+    "colorLabel": "Farba náhľadu",
+    "icon": "Ikona",
+    "iconLabel": "Ikona náhľadu",
+    "image": "Obrázok",
+    "scan": "Skenovať",
+    "gallery": "Z Fotiek",
+    "removeImage": "Odstrániť obrázok a použiť farbu a ikonu",
+    "passwordPlaceholder": "Napíš alebo vygeneruj",
+    "show": "Zobraziť",
+    "hide": "Skryť",
+    "copy": "Kopírovať",
+    "saved": "Uložené",
+    "generate": "Vygenerovať silné heslo",
+    "urlPlaceholder": "www.priklad.sk",
+    "urlLabel": "Adresa webu",
+    "wifiQrTitle": "QR kód pre hostí",
+    "wifiQrSubtitle": "Naskenujú ho a pripoja sa",
+    "person": "Osoba",
+    "personA11y": "Osoba, {{name}}",
+    "favoriteTitle": "Pridať do obľúbených",
+    "favoriteSubtitle": "Nájdeš ho hneď na úvodnej obrazovke",
+    "saveButton": "Uložiť heslo",
+    "saveHint": "Na uloženie zadaj názov."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Žiadne heslo",
+    "noPasswordMessage": "Pridaj ho cez Upraviť.",
+    "showPrompt": {
+      "site": "Zobraziť heslo",
+      "wifi": "Zobraziť heslo siete",
+      "pin": "Zobraziť PIN",
+      "other": "Zobraziť kód alebo heslo"
+    },
+    "copyPrompt": {
+      "site": "Skopírovať heslo",
+      "wifi": "Skopírovať heslo siete",
+      "pin": "Skopírovať PIN",
+      "other": "Skopírovať kód alebo heslo"
+    },
+    "copyUser": {
+      "site": "Skopírovať používateľské meno alebo e-mail",
+      "wifi": "Skopírovať názov siete",
+      "pin": "Skopírovať používateľské meno",
+      "other": "Skopírovať používateľské meno"
+    },
+    "copiedTitle": "Skopírované",
+    "copiedMessage": "O 1 minútu sa zo schránky vymaže.",
+    "copiedTextTitle": "Skopírované",
+    "qrPrompt": "Zobraziť QR kód pre hostí",
+    "invalidAddress": "Neplatná adresa",
+    "removeFavorite": "Odstrániť z obľúbených",
+    "favoriteTitle": "Pridať do obľúbených",
+    "favoriteSubtitle": "Nájdeš ho hneď na úvodnej obrazovke",
+    "moreActions": "Ďalšie akcie",
+    "sections": {
+      "access": "Prihlásenie",
+      "site": "Web alebo aplikácia",
+      "wifiQr": "QR kód pre hostí",
+      "whose": "Čie to je",
+      "notes": "Poznámky"
+    },
+    "hidden": "Skryté",
+    "show": "Zobraziť",
+    "hide": "Skryť",
+    "copy": "Kopírovať",
+    "locked": "Viditeľné po overení Face ID alebo kódom iPhonu",
+    "wifiQrLabel": "QR kód siete Wi‑Fi",
+    "qrHint": "Naskenujú ho fotoaparátom a pripoja sa.",
+    "qrLocked": "QR kód obsahuje heslo: zobrazí sa po overení Face ID alebo kódom iPhonu.",
+    "qrNoNetwork": "Ak chceš QR kód, pridaj cez Upraviť názov siete.",
+    "showQr": "Zobraziť QR kód",
+    "hideQr": "Skryť QR kód",
+    "person": "Osoba",
+    "moveToTrash": "Presunúť do Koša"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Žiadne heslo",
+    "noPasswordMessage": "Pridaj ho cez Upraviť.",
+    "showPrompt": "Zobraziť heslo",
+    "copyPrompt": "Skopírovať heslo",
+    "copiedTitle": "Heslo skopírované",
+    "copiedMessage": "O 1 minútu sa zo schránky vymaže.",
+    "user": "Používateľské meno",
+    "password": "Heslo",
+    "hidden": "Heslo skryté",
+    "show": "Zobraziť",
+    "hide": "Skryť",
+    "copy": "Kopírovať"
+  },
+  "cardForm": {
+    "found": "Nájdené: {{name}}",
+    "foundBarcode": "Nájdené: čiarový kód {{name}}",
+    "handwritten": "Kód zadaný ručne",
+    "noCode": "Kód sa nenačítal",
+    "photoOpenFailed": "Fotku sa nepodarilo otvoriť",
+    "saveFailed": "Uloženie sa nepodarilo",
+    "retakeFront": "Odfotiť znova",
+    "retakePhoto": "Odfotiť znova",
+    "recognized": "Karta rozpoznaná",
+    "tapRetake": "Ťuknutím na Odfotiť znova ju odfotíš",
+    "fromPhotos": "Z Fotiek",
+    "cover": "Obálka",
+    "coverPhotoCaption": "Orezané a vyrovnané z fotky karty",
+    "coverColorCaption": "Farba karty s jej názvom a číslom",
+    "codeSection": "Kód na ukázanie pri pokladni",
+    "photographCode": "Odfotiť kód",
+    "barcode": "Čiarový kód",
+    "qrCode": "QR kód",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Karta",
+    "typeNumber": "Zadaj číslo nižšie",
+    "explain": "Sottomano samo rozpozná, či má karta čiarový kód, alebo QR kód. Pri pokladni ho ukáže veľký, s displejom na plný jas.",
+    "readTitle": "Údaje načítané z karty",
+    "readText": "Skontroluj ich a v prípade potreby oprav.",
+    "name": "Názov",
+    "namePlaceholder": "Napr. Supermarket",
+    "type": "Typ",
+    "typePlaceholder": "Napr. Vernostná karta",
+    "number": "Číslo",
+    "numberPlaceholder": "Napr. 0400 2219 8876",
+    "holder": "Držiteľ",
+    "saveButton": "Uložiť kartu",
+    "saveHint": "Na uloženie zadaj názov karty."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Fotka prednej strany",
+      "barcode": "Odfoť čiarový kód"
+    },
+    "photoOpenFailed": "Fotku sa nepodarilo otvoriť",
+    "permissionTitle": "Je potrebný prístup k fotoaparátu",
+    "permissionText": "Sottomano používa fotoaparát na fotenie tvojich kariet a čítanie ich čiarového kódu.",
+    "allow": "Povoliť",
+    "openSettings": "Otvoriť Nastavenia",
+    "frontCheck": "Predná strana: je ostrá?",
+    "read": "Načítané: {{value}}",
+    "notRead": "Kód sa nenačítal",
+    "notReadHint": "Fotku si nechaj: číslo zadáš v ďalšom kroku.",
+    "retake": "Znova",
+    "use": "Použiť",
+    "focus": "Zaostriť",
+    "stepCount": "{{current}} z {{total}}",
+    "frameHint": "Umiestni kartu do rámčeka",
+    "searching": "Hľadám kód…",
+    "chooseFromPhotos": "Vybrať z Fotiek",
+    "shoot": "Odfotiť",
+    "skip": "Preskočiť"
+  },
+  "cardDetail": {
+    "code": "Kód",
+    "photo": "Fotka",
+    "barcodeLabel": "Čiarový kód",
+    "barcodePhotoLabel": "Fotka čiarového kódu",
+    "fullScreenHint": "Otvorí kód na celú obrazovku",
+    "noCode": "Žiadny kód. Ťuknutím na „Upraviť“ ho odfotíš alebo zadáš.",
+    "tapHint": "Ťuknutím na kód ho zväčšíš",
+    "person": "Osoba"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Poradie sa nepodarilo uložiť",
+    "editCategory": "Upraviť kategóriu",
+    "deleteCategory": "Vymazať kategóriu",
+    "reorderTitle": "Zmeniť poradie kariet",
+    "reorderHint": "Podrž kartu a potiahni ju, kam chceš.",
+    "yourCards": "Tvoje karty",
+    "title": "Karty",
+    "subtitle": "Ťuknutím na kartu ukážeš pri pokladni jej kód",
+    "categoryMenuLabel": "Upraviť alebo vymazať kategóriu {{name}}",
+    "addCard": "Pridať kartu",
+    "reorder": "Zmeniť poradie",
+    "newCard": "Nová karta",
+    "cardDetails": "Podrobnosti karty",
+    "categoryMenuTitle": "Kategória {{name}}",
+    "cardCount_one": "{{count}} karta",
+    "cardCount_few": "{{count}} karty",
+    "cardCount_other": "{{count}} kariet",
+    "cardOpenLabel": "{{label}}, zavrieť",
+    "cardClosedLabel": "{{label}}, zobraziť kód",
+    "qrLabel": "QR kód karty",
+    "barcodeLabel": "Čiarový kód karty",
+    "fullScreenHint": "Otvorí kód na celú obrazovku",
+    "noCode": "Žiadny kód: ťukni na Podrobnosti › Upraviť a odfoť ho alebo zadaj.",
+    "details": "Podrobnosti"
+  },
+  "walletCard": {
+    "untitled": "Nová karta"
+  },
+  "barcodeView": {
+    "close": "Zavrieť kód"
+  },
+  "colorPicker": {
+    "color": "Farba",
+    "custom": "Tvoja farba",
+    "hex": "Kód",
+    "hexLabel": "Kód farby"
+  },
+  "colorWheel": {
+    "label": "Farebné koleso: ťuknutím alebo potiahnutím vyberieš",
+    "nextHue": "Ďalší odtieň",
+    "previousHue": "Predchádzajúci odtieň"
+  },
+  "newCard": {
+    "title": "Nová karta",
+    "missingCategory": "Kategória „Karty“ už neexistuje."
+  },
+  "editCard": {
+    "title": "Upraviť kartu"
+  },
+  "unlock": {
+    "storeOnly": "Dostupné vo verzii z App Storu",
+    "remainingNone": "Všetky bezplatné miesta sú využité.",
+    "remaining_one": "Môžeš pridať ešte {{count}}.",
+    "remaining_few": "Môžeš pridať ešte {{count}}.",
+    "remaining_other": "Môžeš pridať ešte {{count}}.",
+    "tag": "Bezplatná verzia · využité {{used}} z {{limit}}",
+    "title": "Všetky tvoje dokumenty bez obmedzení",
+    "intro": "Zadarmo až pre {{limit}} dokumentov a kariet. Ak ich chceš pridať, koľko chceš, odomkni aplikáciu jednorazovou platbou.",
+    "benefits": {
+      "unlimited": {
+        "title": "Neobmedzene dokumentov",
+        "text": "Účty, karty, záruky a všetko ostatné"
+      },
+      "reminders": {
+        "title": "Pripomienky termínov",
+        "text": "Pripomenieme ti to skôr, než bude neskoro"
+      },
+      "offline": {
+        "title": "Funguje bez internetu",
+        "text": "Všetko zostáva v telefóne, vrátane zálohy"
+      },
+      "family": {
+        "title": "Celá rodina",
+        "text": "Profil pre každého v domácnosti"
+      }
+    },
+    "sectionTitle": "Tvoja bezplatná verzia",
+    "usageLabel": "Dokumenty a karty",
+    "usageValue": "{{used}} z {{limit}}",
+    "usageA11y": "Využité bezplatné miesta",
+    "keptNote": "Tie už uložené zostanú vždy tvoje, aj bez odomknutia.",
+    "priceTitle": "Navždy",
+    "priceText": "Bez obmedzení · jedna platba",
+    "buy": "Odomknúť za {{price}}",
+    "continueFree": "Pokračovať zadarmo",
+    "restore": "Obnoviť nákup",
+    "terms": "Podmienky",
+    "privacy": "Súkromie"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Kategória „Ostatné“",
+    "otherCategoryMessage": "Nemožno ju vymazať: obsahuje dokumenty z vymazaných kategórií."
+  },
+  "quickActionMenu": {
+    "close": "Zavrieť menu"
+  },
+  "quickActions": {
+    "open": "Otvoriť",
+    "unpin": "Odstrániť z obľúbených",
+    "pin": "Pridať do obľúbených",
+    "moveToTrash": "Presunúť do Koša",
+    "editCategory": "Upraviť kategóriu",
+    "deleteCategory": "Vymazať kategóriu",
+    "editPerson": "Upraviť osobu",
+    "deletePerson": "Vymazať osobu"
+  },
+  "shareCopies": {
+    "defaultName": "Dokument",
+    "fileNotFound": "Súbor sa v telefóne nenašiel."
+  },
+  "sendCompression": {
+    "tooBig": "Ani pri maximálnej kompresii sa nezmestí do limitu: zváž rozdelenie do viacerých súborov.",
+    "lowPpi": "Drobný text nemusí byť čitateľný."
+  },
+  "sendPreferences": {
+    "original": "Originál"
+  },
+  "sendFileName": {
+    "fallback": "dokument"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Prednú a zadnú stranu teraz nemožno spojiť.",
+    "noPhotos": "Žiadne fotky na poslanie.",
+    "fileFront": "predna",
+    "fileBack": "zadna",
+    "filePage": "strana-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "dokumenty",
+    "title": "Poslať {{title}}",
+    "formatPhotos": "Fotky",
+    "actions": {
+      "email": "E-mail",
+      "whatsapp": "WhatsApp",
+      "print": "Tlačiť",
+      "save": "Uložiť do Súborov",
+      "copy": "Kopírovať",
+      "other": "Viac"
+    },
+    "alerts": {
+      "savedToFiles": "Uložené do Súborov",
+      "imageCopied": "Obrázok skopírovaný",
+      "textCopied": "Text skopírovaný",
+      "firstPageCopied": "Prvá strana bola skopírovaná: vlož ju do správy.",
+      "pasteImage": "Vlož ho do správy alebo poznámky.",
+      "pdfNotCopied": "PDF nemožno skopírovať: skopíroval sa názov a poznámka. Na súbor použi Viac.",
+      "failed": "Nepodarilo sa dokončiť"
+    },
+    "meta": {
+      "pdfs": "PDF: {{number}}",
+      "singlePdf": "Jedno PDF",
+      "failed": "Súbor sa nepodarilo pripraviť",
+      "preparing": "Pripravujem…"
+    },
+    "includeNote": "Priložiť poznámku dokumentu",
+    "noNote": "Tento dokument nemá poznámku.",
+    "frontBackPage": "Predná a zadná strana na jednej strane",
+    "frontBackImage": "Predná a zadná strana v jednom obrázku",
+    "maxSize": "Maximálna veľkosť",
+    "pdfAsIs": "PDF sa pošle tak, ako je.",
+    "severalInfo": "Jedno PDF: dokumenty jeden za druhým, predná a zadná strana preukazov a kariet na tej istej strane.",
+    "quality": {
+      "high": "Vysoká kvalita",
+      "good": "Dobrá kvalita",
+      "low": "Nízka kvalita",
+      "minimum": "Minimálna kvalita",
+      "original": "Pôvodná kvalita"
+    },
+    "skipped_one": "{{count}} dokument bez fotiek nie je zahrnutý (importované PDF sa zatiaľ nedajú spojiť).",
+    "skipped_few": "{{count}} dokumenty bez fotiek nie sú zahrnuté (importované PDF sa zatiaľ nedajú spojiť).",
+    "skipped_other": "{{count}} dokumentov bez fotiek nie je zahrnutých (importované PDF sa zatiaľ nedajú spojiť)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Pripravujem PDF…",
+    "progressRetry": "Zmenšujem fotky (pokus {{attempt}})…",
+    "subtitle": "Pripravené {{date}} v Sottomano · {{documents}}",
+    "subtitleWithTotal": "Pripravené {{date}} v Sottomano · {{documents}} · spolu {{total}}",
+    "columns": {
+      "number": "Č.",
+      "document": "Dokument",
+      "date": "Dátum",
+      "person": "Osoba",
+      "amount": "Suma",
+      "page": "Strana"
+    },
+    "sentApart": "poslané zvlášť",
+    "noPages": "žiadne strany",
+    "paid": "zaplatené",
+    "due": "na zaplatenie",
+    "invalidIndex": "Neplatný prehľad"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Jedno PDF nemožno spojiť (chránené heslom alebo poškodené): {{titles}}. V prehľade je označené „poslané zvlášť“ a odíde spolu s ostatnými.",
+    "sentApart_few": "{{count}} PDF nemožno spojiť (chránené heslom alebo poškodené): {{titles}}. V prehľade sú označené „poslané zvlášť“ a odídu spolu s ostatnými.",
+    "sentApart_other": "{{count}} PDF nemožno spojiť (chránené heslom alebo poškodené): {{titles}}. V prehľade sú označené „poslané zvlášť“ a odídu spolu s ostatnými.",
+    "alerts": {
+      "prepareFailed": "PDF sa nepodarilo pripraviť",
+      "ready": "PDF je pripravené",
+      "noMailTitle": "Mail nie je nastavený",
+      "noMailMessage": "Pridaj účet v aplikácii Mail alebo ulož PDF do Súborov.",
+      "savedToFiles": "Uložené do Súborov",
+      "sendFailed": "Poslanie sa nepodarilo"
+    },
+    "readyMany": "Pripravené PDF: {{number}}",
+    "choices": {
+      "email": "E-mail: všetky PDF v jednej správe",
+      "save": "Uložiť do Súborov: všetko do rovnakého priečinka",
+      "oneByOne": "Zdieľať po jednom"
+    },
+    "intro": "Všetky dokumenty v kategórii {{category}}, rozdelené podľa roka: jedno PDF na každý rok, s prehľadom (dokument, dátum, osoba, suma, strana) a súčtom. Rok je rok termínu alebo platby; ak nie je zadaný ani jeden, rok pridania.",
+    "noDocuments": "V tomto roku nie sú žiadne dokumenty.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_few": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF",
+    "year": "Rok",
+    "allYears": "Všetky roky",
+    "maxPhotoSize": "Maximálna veľkosť fotiek",
+    "limitInfo": "Fotky sa zmenšia, aby sa zmestili do limitu; importované PDF zostanú, ako sú.",
+    "prepare": "Pripraviť a poslať"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Niečo sa pokazilo",
+      "restoredToOther": "Obnovené do Ostatné",
+      "restoredPassword": "Jeho kategória už neexistuje: dokument je v Ostatné, bez používateľského mena a hesla.",
+      "restoredMessage": "Jeho kategória už neexistuje: dokument je v Ostatné.",
+      "deleteTitle": "Natrvalo vymazať „{{title}}“?",
+      "deleteMessage": "Vymažú sa aj jeho fotky a PDF. Túto akciu nemožno vrátiť.",
+      "emptyTitle": "Vyprázdniť Kôš?",
+      "emptyMessage_one": "Dokument sa vymaže aj s fotkami a PDF. Túto akciu nemožno vrátiť.",
+      "emptyMessage_few": "{{count}} dokumenty sa vymažú aj s fotkami a PDF. Túto akciu nemožno vrátiť.",
+      "emptyMessage_other": "{{count}} dokumentov sa vymaže aj s fotkami a PDF. Túto akciu nemožno vrátiť.",
+      "emptyConfirm": "Vyprázdniť"
+    },
+    "intro": "Vymazané dokumenty tu zostanú {{days}} dní, potom sa vymažú aj s fotkami a PDF.",
+    "empty": "Kôš je prázdny",
+    "deletedSoon": "Čoskoro sa vymaže",
+    "deletedIn": "Vymaže sa o {{days}} dní",
+    "restoreLabel": "Obnoviť {{title}}",
+    "deleteForeverLabel": "Natrvalo vymazať {{title}}",
+    "deleteForever": "Vymazať natrvalo",
+    "emptyTrash": "Vyprázdniť Kôš"
+  },
+  "menu": {
+    "close": "Zavrieť menu",
+    "home": "Domov",
+    "favorites": "Obľúbené",
+    "deadlines": "Termíny",
+    "deadlinesUrgent": "Termíny, {{number}} na kontrolu",
+    "family": "Rodina",
+    "cards": "Karty",
+    "backup": "Záloha",
+    "backupDue": "Záloha, je čas ju urobiť",
+    "help": "Pomoc a kontakt",
+    "rate": "Ohodnotiť Sottomano",
+    "recommend": "Odporučiť kamarátovi",
+    "trash": "Kôš",
+    "trashCount": "Kôš, {{number}}",
+    "password": "Heslá",
+    "scan": "Skenovať",
+    "fromPhotos": "Z fotiek",
+    "importFiles": "Importovať súbory",
+    "version": "Verzia {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Zavrieť hlásenia",
+    "title": "Hlásenia",
+    "markAllRead": "Označiť ako prečítané",
+    "empty": "Za posledných 7 dní žiadne hlásenia.",
+    "today": "Dnes",
+    "thisWeek": "Tento týždeň",
+    "settings": "Nastavenia hlásení",
+    "unreadItem": "Neprečítané. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Platnosť skončila {{date}}.",
+    "expiresToday": "Platnosť končí dnes.",
+    "expiresOn": "Platnosť končí {{distance}}, {{date}}.",
+    "amount": "Suma {{amount}}.",
+    "backupTitle": "Záloha",
+    "backupLate": "Od poslednej zálohy tvojich dokumentov už uplynul nejaký čas.",
+    "backupNever": "Tvoje dokumenty zatiaľ nemajú zálohu."
+  },
+  "deadlineReminders": {
+    "title": "Blíži sa termín",
+    "hiddenBody": "Termín dokumentu je {{date}} ({{distance}}). Otvor Sottomano a pozri sa.",
+    "body": "{{name}}: termín {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Vzhľad",
+      "security": "Zabezpečenie",
+      "reminders": "Pripomienky",
+      "backup": "Záloha",
+      "info": "Informácie"
+    },
+    "calendarOff": "Vyp.",
+    "alerts": {
+      "notificationsOffTitle": "Hlásenia sú vypnuté",
+      "notificationsOffMessage": "Ak chceš dostávať pripomienky, povoľ hlásenia pre Sottomano v Nastaveniach iPhonu.",
+      "openSettings": "Otvoriť Nastavenia"
+    },
+    "lastBackup": {
+      "never": "Nikdy",
+      "today": "Dnes",
+      "yesterday": "Včera",
+      "daysAgo_one": "Pred {{count}} dňom",
+      "daysAgo_few": "Pred {{count}} dňami",
+      "daysAgo_other": "Pred {{count}} dňami"
+    },
+    "categoryColors": "Farby kategórií",
+    "faceId": "Zamykať pomocou Face ID",
+    "faceIdSubtitle": "Pri každom otvorení aplikácie overí tvoju tvár",
+    "hidePreviews": "Skryť náhľady",
+    "hidePreviewsSubtitle": "Hlásenia nezobrazujú dokument",
+    "notifications": "Hlásenia",
+    "reminderTime": "Čas pripomenutia",
+    "defaultReminder": "Predvolené pripomenutie",
+    "iconBadge": "Odznak na ikone",
+    "iconBadgeSubtitle": "Termíny po splatnosti alebo do 7 dní",
+    "calendar": "Kalendár „Sottomano“",
+    "notificationsBlocked": "Hlásenia sú zablokované",
+    "notificationsBlockedSubtitle": "Povoľ ich v Nastaveniach iPhonu",
+    "backupNote": "Záloha je súbor uložený v telefóne, v aplikácii Súbory. Môžeš ho skopírovať, kam chceš. Sottomano funguje aj bez internetu.",
+    "createBackup": "Zálohovať teraz",
+    "restoreBackup": "Obnoviť zo zálohy",
+    "help": "Pomoc a kontakt",
+    "privacy": "Súkromie",
+    "terms": "Podmienky používania",
+    "rate": "Ohodnotiť Sottomano",
+    "debug": {
+      "limitPreview": "Náhľad bezplatného limitu",
+      "limitPreviewSubtitle": "Len na testovanie: zobrazí zamknuté +, panel limitu a kartu na obrazovke Domov",
+      "emptyHome": "Náhľad prázdnej obrazovky Domov",
+      "emptyHomeSubtitle": "Len na testovanie: Domov, ako keby neboli žiadne dokumenty (tvoje dáta zostanú)",
+      "onboarding": "Znova prehrať uvítanie",
+      "onboardingSubtitle": "Len na testovanie: uvítacie strany 1–4"
+    },
+    "version": "Sottomano · verzia {{version}}",
+    "theme": {
+      "title": "Motív",
+      "autoSubtitle": "Podľa nastavenia telefónu",
+      "auto": "Automaticky",
+      "light": "Svetlý",
+      "dark": "Tmavý"
+    }
+  },
+  "backup": {
+    "title": "Záloha",
+    "subtitle": "Kópia všetkých tvojich dokumentov, uložená v telefóne.",
+    "keyProgress": "Zabezpečujem tvojím heslom… môže to trvať až minútu",
+    "whenToday": "dnes o {{time}}",
+    "whenDate": "{{date}} o {{time}}",
+    "minLength": "Aspoň {{min}} znakov.",
+    "mismatch": "Heslá sa nezhodujú.",
+    "creating": "Vytváram zálohu…",
+    "copyDialogTitle": "Skopírovať zálohu",
+    "opening": "Otváram zálohu…",
+    "checking": "Kontrolujem dokumenty…",
+    "restoring": "Obnovujem…",
+    "keepOpen": "Nechaj aplikáciu otvorenú, kým sa to neskončí.",
+    "forgotWarning": "Ak heslo zabudneš, zálohu nebude možné otvoriť.",
+    "passwordPlaceholder": "Heslo (aspoň {{min}} znakov)",
+    "repeatPlaceholder": "Zopakuj heslo",
+    "createAndSave": "Vytvoriť a uložiť",
+    "backupPassword": "Heslo zálohy",
+    "openBackup": "Otvoriť zálohu",
+    "completed": "Záloha dokončená",
+    "lastBackup": "Posledná záloha",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Skopírovať súbor inam",
+    "createNew": "Vytvoriť novú zálohu",
+    "noneTitle": "Zatiaľ nemáš žiadnu zálohu",
+    "noneText": "Ak telefón stratíš alebo vymeníš, záloha ti všetko vráti.",
+    "createNow": "Zálohovať teraz",
+    "restoreSection": "Obnovenie",
+    "restoreTitle": "Máš nový telefón?",
+    "restoreText": "Vyber súbor zálohy a získaš späť svoje dokumenty, karty a pripomienky.",
+    "chooseFile": "Vybrať súbor zálohy",
+    "remindersSection": "Pripomienky",
+    "remindMe": "Pripomínať zálohu",
+    "remindMeValue": "Pripomínať zálohu: {{value}}",
+    "footnote": "Záloha je jediný súbor chránený heslom, ktoré si zvolíš: dokumenty, fotky, karty, osoby a pripomienky. Skopíruj ho inam (Súbory, iCloud Drive, počítač), aby ti zostal, aj keď telefón stratíš.",
+    "alerts": {
+      "createFailed": "Zálohovanie sa nepodarilo",
+      "copyFailed": "Kopírovanie sa nepodarilo",
+      "restoreTitle": "Obnoviť zálohu z {{date}}?",
+      "restoreMessage_one": "Obsahuje {{count}} dokument. To, čo je teraz v aplikácii, sa nahradí.",
+      "restoreMessage_few": "Obsahuje {{count}} dokumenty. To, čo je teraz v aplikácii, sa nahradí.",
+      "restoreMessage_other": "Obsahuje {{count}} dokumentov. To, čo je teraz v aplikácii, sa nahradí.",
+      "restoreFailed": "Obnovenie sa nepodarilo",
+      "restoreFailedMessage": "V aplikácii sa nič nezmenilo.\n\n{{reason}}",
+      "restored": "Záloha obnovená",
+      "restoredMessage": "Tvoje dokumenty sú späť."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Každý týždeň",
+      "month": "Každý mesiac",
+      "never": "Nikdy"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Tento súbor nie je záloha Sottomano.",
+    "newerVersion": "Táto záloha bola vytvorená novšou verziou Sottomano. Aktualizuj aplikáciu a skús to znova.",
+    "empty": "Súbor zálohy je prázdny alebo neúplný.",
+    "incomplete": "Súbor zálohy je neúplný.",
+    "wrongPassword": "Nesprávne heslo. Skontroluj veľké a malé písmená a skús to znova.",
+    "damaged": "Súbor zálohy je poškodený alebo neúplný."
+  },
+  "createBackup": {
+    "incompleteFile": "Neúplný súbor: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Obsah zálohy nie je platný.",
+    "newerApp": "Táto záloha pochádza z novšej verzie Sottomano. Aktualizuj aplikáciu a skús to znova."
+  },
+  "zipReader": {
+    "invalid": "Neplatný archív",
+    "incomplete": "Neúplný archív"
+  },
+  "backupReminder": {
+    "none": "Zatiaľ nemáš žiadnu zálohu",
+    "old_one": "Posledná záloha bola pred {{count}} dňom",
+    "old_few": "Posledná záloha bola pred {{count}} dňami",
+    "old_other": "Posledná záloha bola pred {{count}} dňami",
+    "link": "Zálohovať teraz",
+    "close": "Zavrieť upozornenie",
+    "snooze_one": "Skryť na {{count}} deň",
+    "snooze_few": "Skryť na {{count}} dni",
+    "snooze_other": "Skryť na {{count}} dní"
+  },
+  "calendarSettings": {
+    "title": "Kalendár",
+    "intro": "Termíny sa ukladajú do samostatného kalendára „Sottomano“. V aplikácii Kalendár ho môžeš skryť; vypnutím tu sa vymaže.",
+    "details": "Každý termín je celodenná udalosť „Termín: názov“, bez ďalších údajov z dokumentu. Ak sú pripomienky Sottomano vypnuté, udalosť ťa upozorní o 9:00 v deň pripomenutia; ak sú zapnuté, upozorní ťa len aplikácia, takže nedostaneš dve upozornenia.",
+    "allowAccess": "Povoliť prístup ku Kalendáru",
+    "denied": "Prístup ku Kalendáru bol zamietnutý. Môžeš ho zapnúť v Nastaveniach iPhonu.",
+    "openSettings": "Otvoriť Nastavenia",
+    "switchLabel": "Termíny v kalendári „Sottomano“",
+    "enabled_one": "{{count}} termín v kalendári „Sottomano“",
+    "enabled_few": "{{count}} termíny v kalendári „Sottomano“",
+    "enabled_other": "{{count}} termínov v kalendári „Sottomano“",
+    "removeConfirm": "Odstrániť kalendár Sottomano a všetky jeho termíny z Kalendára?",
+    "remove": "Odstrániť",
+    "removed": "Kalendár „Sottomano“ vymazaný"
+  },
+  "calendarSync": {
+    "eventTitle": "Termín: {{title}}",
+    "cannotCreate": "Kalendár „Sottomano“ sa v tomto iPhone nepodarilo vytvoriť."
+  },
+  "appearance": {
+    "intro": "Farby predvolených kategórií. Vlastné kategórie si ponechajú svoju farbu.",
+    "restoreButton": "Obnoviť predvolené kategórie",
+    "restoreHint": "Vráti vymazané predvolené kategórie.",
+    "paletteLabel": "Paleta {{name}}",
+    "alerts": {
+      "restoreTitle": "Obnoviť predvolené kategórie?",
+      "restoreMessage": "Vymazané kategórie sa vrátia s pôvodným názvom, ikonou a farbou. Tvoje dokumenty a vlastné kategórie sa nezmenia.",
+      "nothingTitle": "Nie je čo obnoviť",
+      "nothingMessage": "Všetky predvolené kategórie už sú na obrazovke Domov.",
+      "restoredTitle": "Kategórie obnovené",
+      "restoredMessage_one": "{{count}} kategória je späť na obrazovke Domov, pred „Ostatné“.",
+      "restoredMessage_few": "{{count}} kategórie sú späť na obrazovke Domov, pred „Ostatné“.",
+      "restoredMessage_other": "{{count}} kategórií je späť na obrazovke Domov, pred „Ostatné“.",
+      "restoreFailed": "Obnovenie sa nepodarilo"
+    }
+  },
+  "about": {
+    "version": "Verzia {{version}}",
+    "privacy": "Súkromie",
+    "privacyFooter": "Keď zapneš Kalendár, termíny sa zapíšu do kalendára iPhonu, ktorý vyberieš. Keď posielaš dokument, s kým ho zdieľaš, rozhoduješ ty.",
+    "onPhone": "Tvoje dokumenty zostávajú v telefóne",
+    "offline": "Žiadny účet ani server: funguje aj offline",
+    "noTracking": "Žiadne sledovanie a žiadne reklamy"
+  },
+  "terms": {
+    "intro": "Úplné podmienky používania budú zverejnené s verziou z App Storu. V skratke:",
+    "free": "Sottomano je zadarmo až pre {{limit}} dokumentov a kariet",
+    "oneTime": "Odomknutie je jednorazový nákup, bez predplatného",
+    "yours": "Tvoje dokumenty zostávajú v telefóne a patria tebe",
+    "backup": "Zálohuj, nech o ne pri výmene telefónu neprídeš"
+  },
+  "limit": {
+    "later": "Neskôr",
+    "title": "Všetkých {{limit}} bezplatných miest je využitých",
+    "text": "Všetko, čo máš uložené, tu zostane a funguje ako vždy. Ak chceš pridať ďalšie dokumenty a karty, odomkni Sottomano.",
+    "stillWorks": {
+      "view": "Prezerať svoje dokumenty",
+      "send": "Posielať ich a zdieľať",
+      "cards": "Ukazovať karty pri pokladni",
+      "reminders": "Dostávať pripomienky"
+    },
+    "blocked": "Pridávať ďalšie dokumenty a karty",
+    "unlock": "Odomknúť bez obmedzení za {{price}}"
+  },
+  "limitCard": {
+    "title": "Využité {{used}} z {{limit}} bezplatných miest",
+    "accessibility": "{{title}}. Odomknúť",
+    "unlock": "Odomknúť"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Bezplatná verzia: využité {{used}} z {{limit}}",
+    "titleMenu": "Zadarmo: {{used}} z {{limit}}",
+    "subtitle": "Odomknúť bez obmedzení za {{price}}",
+    "accessibility": "{{title}}. Odomknúť bez obmedzení za {{price}}",
+    "unlock": "Odomknúť"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Vitaj v Sottomano",
+        "text": "Preukazy, vernostné karty, účty, záruky: všetky dokumenty domácnosti na jednom mieste, vždy poruke.",
+        "info": "Zostávajú v telefóne a fungujú aj bez internetu"
+      },
+      "scan": {
+        "title": "Stačí jedna fotka",
+        "text": "Naskenuj aj viac strán alebo importuj fotky a PDF. Nájdeš ich zoradené a pošleš ich také ľahké, aké treba."
+      },
+      "deadlines": {
+        "title": "Strážime termíny",
+        "text": "Pripomenieme ti, skôr než vyprší účet alebo platnosť dokumentu. Ak chceš, aj v Kalendári."
+      },
+      "cards": {
+        "title": "Karty vždy vo vrecku",
+        "text": "Odfoť svoje vernostné karty: pri pokladni ukážeš čiarový alebo QR kód jedným ťuknutím."
+      }
+    },
+    "skip": "Preskočiť",
+    "pageOf": "Strana {{page}} z {{total}}",
+    "start": "Začať",
+    "restore": "Obnoviť zo zálohy",
+    "art": {
+      "bills": "Účty",
+      "cards": "Karty",
+      "health": "Zdravie",
+      "car": "Auto",
+      "pdfReady": "PDF pripravené",
+      "billTitle": "Faktúra za elektrinu",
+      "billExpires": "Splatné o 2 dni",
+      "gym": "Posilňovňa",
+      "library": "Knižnica",
+      "supermarket": "Supermarket"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Súbor sa nepodarilo otvoriť",
+    "title": "Odfoť svoj prvý dokument",
+    "text": "Účet, občiansky preukaz alebo záruku na práčku: za pár sekúnd je v bezpečí a vždy poruke.",
+    "snap": "Odfotiť dokument",
+    "pdf": "Nahrať PDF",
+    "folders": "Tvoje priečinky",
+    "emptyAccessibility": "{{name}}, prázdne",
+    "empty": "Prázdne",
+    "newCategory": "Nová kategória"
+  },
+  "splashOverlay": {
+    "tagline": "Dokumenty tvojej domácnosti, pripravené na poslanie"
+  },
+  "appActions": {
+    "shareText": "Odporúčam Sottomano: dokumenty domácnosti, karty a termíny vždy poruke, v telefóne a aj bez internetu.",
+    "rateTitle": "Ohodnotiť Sottomano",
+    "rateMessage": "Hodnotenie budeš môcť zanechať, keď bude Sottomano v App Store.",
+    "lockUnavailableTitle": "Zámok nie je k dispozícii",
+    "lockUnavailableMessage": "Na zamknutie Sottomano potrebuješ v iPhone nastavený kód. Nastav ho v Nastavenia › Face ID a kód a skús to znova."
+  }
+}

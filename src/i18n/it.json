@@ -626,7 +626,6 @@
     "dueIn_other": "Scade tra {{count}} giorni"
   },
   "deadlineListRow": {
-    "hint": "Tieni premuto per modificare o togliere la scadenza",
     "statusDue": "da pagare",
     "statusPaid": "pagata"
   },
@@ -1707,6 +1706,15 @@
     "trash": {
       "restored": "Ripristinato: {{title}}",
       "deleted": "Eliminato definitivamente: {{title}}"
+    },
+    "segmented": {
+      "format": "Formato",
+      "calendarView": "Vista",
+      "layout": "Visualizzazione",
+      "codeType": "Tipo di codice",
+      "show": "Mostra",
+      "side": "Lato",
+      "status": "Stato"
     }
   }
 }

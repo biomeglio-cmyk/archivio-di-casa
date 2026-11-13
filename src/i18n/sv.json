@@ -626,7 +626,6 @@
     "dueIn_other": "Förfaller om {{count}} dagar"
   },
   "deadlineListRow": {
-    "hint": "Håll kvar för att ändra eller ta bort förfallodagen",
     "statusDue": "att betala",
     "statusPaid": "betald"
   },
@@ -1609,5 +1608,113 @@
     "rateMessage": "Du kan lämna ett betyg när Sottomano finns i App Store.",
     "lockUnavailableTitle": "Låset är inte tillgängligt",
     "lockUnavailableMessage": "För att låsa Sottomano behöver du en lösenkod på din iPhone. Ställ in en i Inställningar › Face ID och lösenkod och försök sedan igen."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Ändra ordning på: välj en åtgärd på varje objekt för att flytta det.",
+      "reorderOff": "Ordningen klar",
+      "selecting": "Väljer: tryck på dokumenten som ska skickas som en PDF.",
+      "selectionOff": "Markeringen avbröts"
+    },
+    "notificationsPanel": {
+      "allRead": "Alla notiser markerade som lästa"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} förfallodag",
+      "dayCount_other": "{{date}}: {{count}} förfallodagar"
+    },
+    "favorites": {
+      "removed": "{{title}} borttagen från favoriter"
+    },
+    "folderRow": {
+      "disabledHint": "Bara dokument med foton kommer med i PDF:en."
+    },
+    "categoryForm": {
+      "iconNumber": "Symbol {{number}}",
+      "selected": "Vald",
+      "icons": {
+        "folder": "Mapp",
+        "tag": "Etikett",
+        "star": "Stjärna",
+        "gift": "Present",
+        "tools": "Verktyg",
+        "cart": "Kundvagn",
+        "stethoscope": "Läkarbesök",
+        "fitness": "Gym",
+        "music": "Musik",
+        "book": "Bok",
+        "idCard": "ID-kort",
+        "card": "Kort",
+        "lightbulb": "Glödlampa",
+        "shield": "Sköld",
+        "receipt": "Kvitto",
+        "firstAid": "Första hjälpen",
+        "cleaning": "Städning",
+        "backpack": "Ryggsäck"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, i dag"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Veckan från {{date}}"
+    },
+    "reorder": {
+      "moved": "Flyttad till position {{position}} av {{count}}"
+    },
+    "colorWheel": {
+      "value": "Nyans {{hue}}°, intensitet {{intensity}} %",
+      "moreIntense": "Mer intensiv",
+      "lessIntense": "Mindre intensiv"
+    },
+    "deadlineListRow": {
+      "actions": "Redigera eller ta bort förfallodagen"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} går ut snart",
+      "alertCount_other": "{{count}} går ut snart"
+    },
+    "formField": {
+      "required": "obligatoriskt"
+    },
+    "walletCard": {
+      "number": "Nummer {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zoom {{percent}} %"
+    },
+    "filesEditor": {
+      "added_one": "{{count}} sida tillagd",
+      "added_other": "{{count}} sidor tillagda",
+      "removed": "Sida borttagen: {{name}}",
+      "movedTo": "Flyttad till position {{position}} av {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Sida {{number}} tillagd"
+    },
+    "passwordForm": {
+      "shown": "Lösenordet visas",
+      "generated": "Lösenord skapat: {{strength}}",
+      "imageRemoved": "Bild borttagen"
+    },
+    "onboarding": {
+      "pageChanged": "Sida {{page}} av {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Filerna är klara: {{meta}}"
+    },
+    "trash": {
+      "restored": "Återställt: {{title}}",
+      "deleted": "Raderat permanent: {{title}}"
+    },
+    "segmented": {
+      "format": "Format",
+      "calendarView": "Vy",
+      "layout": "Layout",
+      "codeType": "Kodtyp",
+      "show": "Visa",
+      "side": "Sida",
+      "status": "Status"
+    }
   }
 }

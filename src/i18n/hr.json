@@ -672,7 +672,6 @@
     "dueIn_other": "Za {{count}} dana"
   },
   "deadlineListRow": {
-    "hint": "Zadrži prst za uređivanje ili uklanjanje roka",
     "statusDue": "za platiti",
     "statusPaid": "plaćeno"
   },
@@ -1682,5 +1681,116 @@
     "rateMessage": "Ocjenu ćeš moći ostaviti kad Sottomano bude u App Storeu.",
     "lockUnavailableTitle": "Zaključavanje nije dostupno",
     "lockUnavailableMessage": "Za zaključavanje Sottomana potrebna je šifra na iPhoneu. Postavi je u Postavke › Face ID i šifra, zatim pokušaj ponovno."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Promjena redoslijeda uključena: na svakoj stavci odaberi radnju da je premjestiš.",
+      "reorderOff": "Promjena redoslijeda završena",
+      "selecting": "Odabir: dodirni dokumente koje želiš poslati kao jedan PDF.",
+      "selectionOff": "Odabir otkazan"
+    },
+    "notificationsPanel": {
+      "allRead": "Sve obavijesti označene su kao pročitane"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} rok",
+      "dayCount_few": "{{date}}: {{count}} roka",
+      "dayCount_other": "{{date}}: {{count}} rokova"
+    },
+    "favorites": {
+      "removed": "Uklonjeno iz Omiljenog: {{title}}"
+    },
+    "folderRow": {
+      "disabledHint": "U PDF idu samo dokumenti s fotografijama."
+    },
+    "categoryForm": {
+      "iconNumber": "Ikona {{number}}",
+      "selected": "Odabrano",
+      "icons": {
+        "folder": "Mapa",
+        "tag": "Oznaka",
+        "star": "Zvjezdica",
+        "gift": "Poklon",
+        "tools": "Alat",
+        "cart": "Košarica",
+        "stethoscope": "Liječnički pregledi",
+        "fitness": "Teretana",
+        "music": "Glazba",
+        "book": "Knjiga",
+        "idCard": "Osobna iskaznica",
+        "card": "Kartica",
+        "lightbulb": "Žarulja",
+        "shield": "Štit",
+        "receipt": "Račun",
+        "firstAid": "Prva pomoć",
+        "cleaning": "Čišćenje",
+        "backpack": "Ruksak"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, danas"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Tjedan od {{date}}"
+    },
+    "reorder": {
+      "moved": "Premješteno na mjesto {{position}} od {{count}}"
+    },
+    "colorWheel": {
+      "value": "Nijansa {{hue}}°, intenzitet {{intensity}} %",
+      "moreIntense": "Veći intenzitet",
+      "lessIntense": "Manji intenzitet"
+    },
+    "deadlineListRow": {
+      "actions": "Uredi ili ukloni rok"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} uskoro ističe",
+      "alertCount_few": "{{count}} uskoro ističu",
+      "alertCount_other": "{{count}} uskoro ističe"
+    },
+    "formField": {
+      "required": "obavezno"
+    },
+    "walletCard": {
+      "number": "Broj {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zumiranje {{percent}} %"
+    },
+    "filesEditor": {
+      "added_one": "Dodana je {{count}} stranica",
+      "added_few": "Dodane su {{count}} stranice",
+      "added_other": "Dodano je {{count}} stranica",
+      "removed": "Stranica uklonjena: {{name}}",
+      "movedTo": "Premješteno na mjesto {{position}} od {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Dodana stranica {{number}}"
+    },
+    "passwordForm": {
+      "shown": "Lozinka prikazana",
+      "generated": "Lozinka generirana: {{strength}}",
+      "imageRemoved": "Slika uklonjena"
+    },
+    "onboarding": {
+      "pageChanged": "Stranica {{page}} od {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Datoteke spremne: {{meta}}"
+    },
+    "trash": {
+      "restored": "Vraćeno: {{title}}",
+      "deleted": "Trajno izbrisano: {{title}}"
+    },
+    "segmented": {
+      "format": "Format",
+      "calendarView": "Prikaz",
+      "layout": "Raspored",
+      "codeType": "Vrsta koda",
+      "show": "Prikaži",
+      "side": "Strana",
+      "status": "Status"
+    }
   }
 }

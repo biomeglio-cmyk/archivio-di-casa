@@ -626,7 +626,6 @@
     "dueIn_other": "Venç d’aquí a {{count}} dies"
   },
   "deadlineListRow": {
-    "hint": "Mantén premut per editar o treure el venciment",
     "statusDue": "per pagar",
     "statusPaid": "pagat"
   },
@@ -1609,5 +1608,113 @@
     "rateMessage": "Podràs deixar una valoració quan Sottomano sigui a l’App Store.",
     "lockUnavailableTitle": "Bloqueig no disponible",
     "lockUnavailableMessage": "Per bloquejar Sottomano necessites un codi a l’iPhone. Configura’l a Configuració › Face ID i codi i torna-ho a provar."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Ordenació activada: a cada element, tria una acció per moure’l.",
+      "reorderOff": "Ordenació acabada",
+      "selecting": "Selecció activada: toca els documents que vulguis enviar en un sol PDF.",
+      "selectionOff": "Selecció cancel·lada"
+    },
+    "notificationsPanel": {
+      "allRead": "Totes les notificacions marcades com a llegides"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} venciment",
+      "dayCount_other": "{{date}}: {{count}} venciments"
+    },
+    "favorites": {
+      "removed": "{{title}} tret dels preferits"
+    },
+    "folderRow": {
+      "disabledHint": "Al PDF només hi van els documents amb fotos."
+    },
+    "categoryForm": {
+      "iconNumber": "Icona {{number}}",
+      "selected": "Seleccionat",
+      "icons": {
+        "folder": "Carpeta",
+        "tag": "Etiqueta",
+        "star": "Estrella",
+        "gift": "Regal",
+        "tools": "Eines",
+        "cart": "Carretó",
+        "stethoscope": "Visites mèdiques",
+        "fitness": "Gimnàs",
+        "music": "Música",
+        "book": "Llibre",
+        "idCard": "Document d’identitat",
+        "card": "Targeta",
+        "lightbulb": "Bombeta",
+        "shield": "Escut",
+        "receipt": "Rebut",
+        "firstAid": "Primers auxilis",
+        "cleaning": "Neteja",
+        "backpack": "Motxilla"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, avui"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Setmana del {{date}}"
+    },
+    "reorder": {
+      "moved": "Mogut a la posició {{position}} de {{count}}"
+    },
+    "colorWheel": {
+      "value": "To {{hue}}°, intensitat {{intensity}} %",
+      "moreIntense": "Més intens",
+      "lessIntense": "Menys intens"
+    },
+    "deadlineListRow": {
+      "actions": "Edita o treu el venciment"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} per vèncer",
+      "alertCount_other": "{{count}} per vèncer"
+    },
+    "formField": {
+      "required": "obligatori"
+    },
+    "walletCard": {
+      "number": "Número {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zoom {{percent}} %"
+    },
+    "filesEditor": {
+      "added_one": "{{count}} pàgina afegida",
+      "added_other": "{{count}} pàgines afegides",
+      "removed": "Pàgina treta: {{name}}",
+      "movedTo": "Moguda a la posició {{position}} de {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Pàgina {{number}} afegida"
+    },
+    "passwordForm": {
+      "shown": "Contrasenya visible",
+      "generated": "Contrasenya generada: {{strength}}",
+      "imageRemoved": "Imatge treta"
+    },
+    "onboarding": {
+      "pageChanged": "Pàgina {{page}} de {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Fitxers a punt: {{meta}}"
+    },
+    "trash": {
+      "restored": "Restaurat: {{title}}",
+      "deleted": "Eliminat definitivament: {{title}}"
+    },
+    "segmented": {
+      "format": "Format",
+      "calendarView": "Vista",
+      "layout": "Visualització",
+      "codeType": "Tipus de codi",
+      "show": "Mostrar",
+      "side": "Cara",
+      "status": "Estat"
+    }
   }
 }

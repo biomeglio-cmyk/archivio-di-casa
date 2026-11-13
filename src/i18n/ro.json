@@ -672,7 +672,6 @@
     "dueIn_other": "Scadent peste {{count}} de zile"
   },
   "deadlineListRow": {
-    "hint": "Ține apăsat pentru a edita sau elimina termenul",
     "statusDue": "de plătit",
     "statusPaid": "plătit"
   },
@@ -1682,5 +1681,116 @@
     "rateMessage": "Vei putea lăsa o evaluare după ce Sottomano va fi în App Store.",
     "lockUnavailableTitle": "Blocarea nu este disponibilă",
     "lockUnavailableMessage": "Pentru a bloca Sottomano ai nevoie de un cod de acces pe iPhone. Setează unul în Configurări › Face ID și cod, apoi încearcă din nou."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Reordonare activă: la fiecare element, alege o acțiune ca să-l muți.",
+      "reorderOff": "Reordonare terminată",
+      "selecting": "Selecție activă: atinge documentele de trimis într-un singur PDF.",
+      "selectionOff": "Selecție anulată"
+    },
+    "notificationsPanel": {
+      "allRead": "Toate notificările au fost marcate ca citite"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} termen",
+      "dayCount_few": "{{date}}: {{count}} termene",
+      "dayCount_other": "{{date}}: {{count}} de termene"
+    },
+    "favorites": {
+      "removed": "{{title}} eliminat din favorite"
+    },
+    "folderRow": {
+      "disabledHint": "În PDF intră doar documentele cu poze."
+    },
+    "categoryForm": {
+      "iconNumber": "Pictograma {{number}}",
+      "selected": "Selectat",
+      "icons": {
+        "folder": "Dosar",
+        "tag": "Etichetă",
+        "star": "Stea",
+        "gift": "Cadou",
+        "tools": "Unelte",
+        "cart": "Cărucior",
+        "stethoscope": "Consultații medicale",
+        "fitness": "Sală de sport",
+        "music": "Muzică",
+        "book": "Carte",
+        "idCard": "Act de identitate",
+        "card": "Card",
+        "lightbulb": "Bec",
+        "shield": "Scut",
+        "receipt": "Bon",
+        "firstAid": "Prim ajutor",
+        "cleaning": "Curățenie",
+        "backpack": "Rucsac"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, azi"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Săptămâna din {{date}}"
+    },
+    "reorder": {
+      "moved": "Mutat pe poziția {{position}} din {{count}}"
+    },
+    "colorWheel": {
+      "value": "Nuanță {{hue}}°, intensitate {{intensity}}%",
+      "moreIntense": "Mai intens",
+      "lessIntense": "Mai puțin intens"
+    },
+    "deadlineListRow": {
+      "actions": "Editează sau elimină termenul"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} expiră curând",
+      "alertCount_few": "{{count}} expiră curând",
+      "alertCount_other": "{{count}} expiră curând"
+    },
+    "formField": {
+      "required": "obligatoriu"
+    },
+    "walletCard": {
+      "number": "Numărul {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zoom {{percent}}%"
+    },
+    "filesEditor": {
+      "added_one": "{{count}} pagină adăugată",
+      "added_few": "{{count}} pagini adăugate",
+      "added_other": "{{count}} de pagini adăugate",
+      "removed": "Pagină eliminată: {{name}}",
+      "movedTo": "Mutată pe poziția {{position}} din {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Pagina {{number}} adăugată"
+    },
+    "passwordForm": {
+      "shown": "Parolă vizibilă",
+      "generated": "Parolă generată: {{strength}}",
+      "imageRemoved": "Imagine eliminată"
+    },
+    "onboarding": {
+      "pageChanged": "Pagina {{page}} din {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Fișiere gata: {{meta}}"
+    },
+    "trash": {
+      "restored": "Restaurat: {{title}}",
+      "deleted": "Șters definitiv: {{title}}"
+    },
+    "segmented": {
+      "format": "Format",
+      "calendarView": "Vizualizare",
+      "layout": "Aspect",
+      "codeType": "Tip de cod",
+      "show": "Afișează",
+      "side": "Partea",
+      "status": "Stare"
+    }
   }
 }

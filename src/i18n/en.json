@@ -626,7 +626,6 @@
     "dueIn_other": "Due in {{count}} days"
   },
   "deadlineListRow": {
-    "hint": "Touch and hold to edit or remove the deadline",
     "statusDue": "to pay",
     "statusPaid": "paid"
   },
@@ -1707,6 +1706,15 @@
     "trash": {
       "restored": "Restored: {{title}}",
       "deleted": "Deleted permanently: {{title}}"
+    },
+    "segmented": {
+      "format": "Format",
+      "calendarView": "View",
+      "layout": "Layout",
+      "codeType": "Code type",
+      "show": "Show",
+      "side": "Side",
+      "status": "Status"
     }
   }
 }

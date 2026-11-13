@@ -626,7 +626,6 @@
     "dueIn_other": "Over {{count}} dagen"
   },
   "deadlineListRow": {
-    "hint": "Houd ingedrukt om de deadline te wijzigen of te verwijderen",
     "statusDue": "te betalen",
     "statusPaid": "betaald"
   },
@@ -1609,5 +1608,113 @@
     "rateMessage": "Je kunt een beoordeling geven zodra Sottomano in de App Store staat.",
     "lockUnavailableTitle": "Vergrendeling niet beschikbaar",
     "lockUnavailableMessage": "Om Sottomano te vergrendelen heb je een toegangscode op je iPhone nodig. Stel er een in via Instellingen › Face ID en toegangscode en probeer het opnieuw."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Ordenen aan: kies bij elk item een actie om het te verplaatsen.",
+      "reorderOff": "Ordenen klaar",
+      "selecting": "Selecteren: tik op de documenten die je als één pdf wilt sturen.",
+      "selectionOff": "Selectie geannuleerd"
+    },
+    "notificationsPanel": {
+      "allRead": "Alle meldingen gemarkeerd als gelezen"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} deadline",
+      "dayCount_other": "{{date}}: {{count}} deadlines"
+    },
+    "favorites": {
+      "removed": "{{title}} verwijderd uit favorieten"
+    },
+    "folderRow": {
+      "disabledHint": "Alleen documenten met foto’s gaan in de pdf."
+    },
+    "categoryForm": {
+      "iconNumber": "Symbool {{number}}",
+      "selected": "Geselecteerd",
+      "icons": {
+        "folder": "Map",
+        "tag": "Label",
+        "star": "Ster",
+        "gift": "Cadeau",
+        "tools": "Gereedschap",
+        "cart": "Winkelwagen",
+        "stethoscope": "Doktersbezoek",
+        "fitness": "Sportschool",
+        "music": "Muziek",
+        "book": "Boek",
+        "idCard": "Identiteitskaart",
+        "card": "Pas",
+        "lightbulb": "Gloeilamp",
+        "shield": "Schild",
+        "receipt": "Bon",
+        "firstAid": "EHBO",
+        "cleaning": "Schoonmaak",
+        "backpack": "Rugzak"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, vandaag"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Week van {{date}}"
+    },
+    "reorder": {
+      "moved": "Verplaatst naar positie {{position}} van {{count}}"
+    },
+    "colorWheel": {
+      "value": "Tint {{hue}}°, intensiteit {{intensity}}%",
+      "moreIntense": "Intenser",
+      "lessIntense": "Minder intens"
+    },
+    "deadlineListRow": {
+      "actions": "Deadline wijzigen of verwijderen"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} verloopt",
+      "alertCount_other": "{{count}} verlopen"
+    },
+    "formField": {
+      "required": "verplicht"
+    },
+    "walletCard": {
+      "number": "Nummer {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zoom {{percent}}%"
+    },
+    "filesEditor": {
+      "added_one": "{{count}} pagina toegevoegd",
+      "added_other": "{{count}} pagina’s toegevoegd",
+      "removed": "Pagina verwijderd: {{name}}",
+      "movedTo": "Verplaatst naar positie {{position}} van {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Pagina {{number}} toegevoegd"
+    },
+    "passwordForm": {
+      "shown": "Wachtwoord zichtbaar",
+      "generated": "Wachtwoord aangemaakt: {{strength}}",
+      "imageRemoved": "Afbeelding verwijderd"
+    },
+    "onboarding": {
+      "pageChanged": "Pagina {{page}} van {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Bestanden klaar: {{meta}}"
+    },
+    "trash": {
+      "restored": "Teruggezet: {{title}}",
+      "deleted": "Definitief verwijderd: {{title}}"
+    },
+    "segmented": {
+      "format": "Formaat",
+      "calendarView": "Weergave",
+      "layout": "Indeling",
+      "codeType": "Codetype",
+      "show": "Toon",
+      "side": "Kant",
+      "status": "Status"
+    }
   }
 }

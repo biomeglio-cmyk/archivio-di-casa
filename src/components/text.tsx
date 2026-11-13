@@ -8,6 +8,7 @@ import {
   type TextProps,
 } from 'react-native';
 
+import { useAccessibilitySettings } from '@/a11y/accessibility';
 import { withOnest } from '@/constants/typography';
 
 // True inside a Text: a nested Text inherits font and spacing from its parent unless it sets its own
@@ -17,11 +18,12 @@ const InsideText = createContext(false);
 // Use it instead of the Text of react-native everywhere.
 export function Text({ style, children, ...rest }: TextProps) {
   const nested = use(InsideText);
+  const { boldText } = useAccessibilitySettings();
   const flat = StyleSheet.flatten(style) ?? {};
   const inherits =
     nested && flat.fontWeight === undefined && flat.fontFamily === undefined && flat.fontSize === undefined;
   return (
-    <NativeText {...rest} style={inherits ? flat : withOnest(flat, nested ? undefined : 17)}>
+    <NativeText {...rest} style={inherits ? flat : withOnest(flat, nested ? undefined : 17, boldText)}>
       {nested ? children : <InsideText value>{children}</InsideText>}
     </NativeText>
   );
@@ -29,5 +31,6 @@ export function Text({ style, children, ...rest }: TextProps) {
 
 // The app TextInput, with the same font
 export function TextInput({ style, ref, ...rest }: TextInputProps & { ref?: Ref<TextInputInstance> }) {
-  return <NativeTextInput {...rest} ref={ref} style={withOnest(StyleSheet.flatten(style) ?? {})} />;
+  const { boldText } = useAccessibilitySettings();
+  return <NativeTextInput {...rest} ref={ref} style={withOnest(StyleSheet.flatten(style) ?? {}, 17, boldText)} />;
 }

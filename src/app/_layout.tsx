@@ -14,6 +14,7 @@ import { SQLiteProvider } from 'expo-sqlite';
 import { Fragment } from 'react';
 
 import { useAppGeneration } from '@/backup/app-reload';
+import { AccessibilityProvider } from '@/a11y/accessibility';
 import { ThemeProvider as AppThemeProvider } from '@/theme/theme-provider';
 import { AppLock } from '@/components/app-lock';
 import { SplashOverlay } from '@/components/splash-overlay';
@@ -64,9 +65,11 @@ export default function RootLayout() {
 
   // The theme of the whole app (Impostazioni › Aspetto › Tema): switching re-renders in place
   return (
-    <AppThemeProvider>
-      <RootContent />
-    </AppThemeProvider>
+    <AccessibilityProvider>
+      <AppThemeProvider>
+        <RootContent />
+      </AppThemeProvider>
+    </AccessibilityProvider>
   );
 }
 

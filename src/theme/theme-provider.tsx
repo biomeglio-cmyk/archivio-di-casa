@@ -2,7 +2,17 @@ import Storage from 'expo-sqlite/kv-store';
 import { createContext, useState, type ReactNode } from 'react';
 import { Appearance, useColorScheme } from 'react-native';
 
-import { DARK, LIGHT, readThemeMode, THEME_KEY, type Palette, type ThemeMode } from '@/constants/theme';
+import { useAccessibilitySettings } from '@/a11y/accessibility';
+import {
+  DARK,
+  DARK_HIGH_CONTRAST,
+  LIGHT,
+  LIGHT_HIGH_CONTRAST,
+  readThemeMode,
+  THEME_KEY,
+  type Palette,
+  type ThemeMode,
+} from '@/constants/theme';
 
 type ThemeState = {
   palette: Palette; // the active colors: light or "Tema notte" (docs/design-guide.md)
@@ -25,7 +35,9 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const system = useColorScheme();
   const [mode, setModeState] = useState<ThemeMode>(readThemeMode);
   const dark = mode === 'auto' ? system === 'dark' : mode === 'dark';
-  const palette = dark ? DARK : LIGHT;
+  // iOS "Aumenta contrasto": the stronger version of the same palette
+  const { increaseContrast } = useAccessibilitySettings();
+  const palette = increaseContrast ? (dark ? DARK_HIGH_CONTRAST : LIGHT_HIGH_CONTRAST) : dark ? DARK : LIGHT;
 
   function setMode(next: ThemeMode) {
     try {

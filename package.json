@@ -72,7 +72,8 @@
     "web": "expo start --web",
     "lint": "expo lint",
     "check:i18n": "node ./scripts/check-i18n.js",
-    "check:fit": "node ./scripts/check-text-fit.js"
+    "check:fit": "node ./scripts/check-text-fit.js",
+    "check:contrast": "node ./scripts/check-contrast.js"
   },
   "private": true
 }

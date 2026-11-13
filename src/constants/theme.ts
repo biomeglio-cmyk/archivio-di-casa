@@ -26,14 +26,14 @@ export const LIGHT = {
   cardBorder: 'transparent', // light: cards are set apart by their shadow
   textSecondary: '#6A6D80', // subtitles, labels, dates
   textOnLilac: '#4B4E63', // notes and explanations on paleLilac
-  placeholder: '#8A8DA0', // placeholder text of the fields
+  placeholder: '#676A7F', // placeholder text of the fields (4.5:1 on lilac)
   iconGrey: '#4B5068', // grey icons (eye, copy, inactive choices)
   accent: '#3B4FE0', // links, active item, "Vedi tutto"
   indigo: '#4A3FD9', // icons and text on lilac
   lilac: '#F1EFFD', // round buttons, fields, inactive filters
   paleLilac: '#F7F6FE', // info boxes, notices
   separator: '#EEF0F5', // lines between the rows of a card
-  switchOff: '#D6D8E4', // track of a switch that is off
+  switchOff: '#8E91A8', // track of a switch that is off (3:1 on white, WCAG non-text)
   segmentedActive: '#FFFFFF', // the chosen segment (a white pill)
   segmentedActiveText: '#4A3FD9',
   error: '#B42318', // destructive actions, "Da pagare" (on errorBackground)
@@ -43,7 +43,7 @@ export const LIGHT = {
   successBackground: '#E3F6EE',
   badge: '#E5243B', // dot with a number
   heart: '#E8457A', // the favorites heart
-  dashed: '#C9CCDA', // border of the dashed "add" tiles
+  dashed: '#8E91A8', // border of the dashed "add" tiles (3:1 on white, WCAG non-text)
   scrim: 'rgba(28, 30, 70, 0.38)', // dimmed page behind sheets and menus
 };
 
@@ -58,14 +58,14 @@ export const DARK: Palette = {
   cardBorder: 'rgba(255, 255, 255, 0.07)',
   textSecondary: '#A3A6BD',
   textOnLilac: '#C3C5D9',
-  placeholder: '#6F7290',
+  placeholder: '#9396B4', // 4.5:1 on lilac
   iconGrey: '#B4B7CC',
   accent: '#8E9BFF',
   indigo: '#B3A8FF',
   lilac: '#262849',
   paleLilac: '#1F2140',
   separator: '#2C2F4D',
-  switchOff: '#3A3D5C',
+  switchOff: '#6E7193', // 3:1 on the cards
   segmentedActive: '#1B1D33',
   segmentedActiveText: '#F2F3FA',
   error: '#FF8A80',
@@ -73,9 +73,9 @@ export const DARK: Palette = {
   destructive: '#D92D20',
   success: '#7FE0BC',
   successBackground: '#15332A',
-  badge: '#FF4D5E',
+  badge: '#D81F35', // white number 5:1
   heart: '#FF6F9B',
-  dashed: '#4A4D6E',
+  dashed: '#6E7193', // 3:1 on the cards
   scrim: 'rgba(0, 0, 0, 0.55)',
 };
 
@@ -96,6 +96,40 @@ export function readThemeMode(): ThemeMode {
 export function isDarkMode(mode: ThemeMode, system: string | null | undefined = Appearance.getColorScheme()): boolean {
   return (mode === 'auto' ? system : mode) === 'dark';
 }
+
+// iOS "Aumenta contrasto": the same palettes with stronger greys, accents and visible borders
+export const LIGHT_HIGH_CONTRAST: Palette = {
+  ...LIGHT,
+  textSecondary: '#4B4E63',
+  textOnLilac: '#33364A',
+  placeholder: '#55586D',
+  iconGrey: '#33374D',
+  accent: '#2A3CC8',
+  indigo: '#3A2FC0',
+  segmentedActiveText: '#3A2FC0',
+  separator: '#C9CCDA',
+  cardBorder: '#C9CCDA',
+  dashed: '#8E91A8',
+  switchOff: '#6E7193',
+  error: '#8F1A12',
+  success: '#075239',
+};
+
+export const DARK_HIGH_CONTRAST: Palette = {
+  ...DARK,
+  textSecondary: '#CDCFE0',
+  textOnLilac: '#DDDFEE',
+  placeholder: '#B4B7CC',
+  iconGrey: '#D2D4E4',
+  accent: '#B4BDFF',
+  indigo: '#CEC6FF',
+  separator: '#4A4D6E',
+  cardBorder: 'rgba(255, 255, 255, 0.3)',
+  dashed: '#8E91A8',
+  switchOff: '#8E91A8',
+  error: '#FFB4AC',
+  success: '#A8F0D4',
+};
 
 // A section tint and the text on it, light and "Tema notte" values (design guide)
 export function softTint(p: Palette, light: string, dark: string): string {

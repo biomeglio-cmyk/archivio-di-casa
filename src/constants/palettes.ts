@@ -25,7 +25,7 @@ type GuideRow = [from: string, to: string, shadow: string, tint: string, onTint:
 const SOTTOMANO: GuideRow[] = [
   ['#8F9BF8', '#6C7BEF', '108, 123, 239', '#EEF0FE', '#3A47C2', '#1E2346', '#A9B3FF'], // Documenti
   ['#6FD3AE', '#45B68E', '69, 182, 142', '#E6F7F0', '#1F7A5A', '#15332A', '#7FE0BC'], // Tessere e card
-  ['#FFA36E', '#F5824A', '245, 130, 74', '#FFF0E7', '#B5541C', '#3A2418', '#FFB48A'], // Utenze
+  ['#FFA36E', '#F5824A', '245, 130, 74', '#FFF0E7', '#A94D17', '#3A2418', '#FFB48A'], // Utenze
   ['#A59AF7', '#8778EE', '135, 120, 238', '#F1EFFD', '#5B4BD6', '#262849', '#B3A8FF'], // Casa
   ['#6CCAD6', '#3FAFBF', '63, 175, 191', '#E4F6F8', '#17707C', '#123038', '#8ADCE8'], // Assicurazioni
   ['#F5CB6B', '#EBAA45', '235, 170, 69', '#FDF5E2', '#8A5A0B', '#352A12', '#F5CB6B'], // Garanzie e scontrini

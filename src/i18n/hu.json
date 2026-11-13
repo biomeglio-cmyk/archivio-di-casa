@@ -534,7 +534,14 @@
     "zoom": "Nagyítás",
     "zoomOut": "Kicsinyítés",
     "zoomIn": "Nagyítás",
-    "pageShort": "{{number}} / {{total}}"
+    "pageShort": "{{number}} / {{total}}",
+    "openWith": "Megnyitás ezzel…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} oldal",
+    "pages_other": "PDF, {{count}} oldal",
+    "protected": "Jelszóval védett",
+    "unreadable": "Nem olvasható"
   },
   "recurrence": {
     "unit": {

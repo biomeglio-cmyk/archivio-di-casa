@@ -45,6 +45,7 @@
     "fflate": "^0.8.3",
     "i18next": "^27.1.1",
     "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.5.438",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-i18next": "^18.0.1",
@@ -75,7 +76,8 @@
     "lint": "expo lint",
     "check:i18n": "node ./scripts/check-i18n.js",
     "check:fit": "node ./scripts/check-text-fit.js",
-    "check:contrast": "node ./scripts/check-contrast.js"
+    "check:contrast": "node ./scripts/check-contrast.js",
+    "pdfjs:copy": "node ./scripts/copy-pdfjs.js"
   },
   "private": true
 }

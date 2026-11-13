@@ -106,8 +106,14 @@ export type DocumentFile = {
   side: FileSide | null;
   kind: 'image' | 'pdf';
   page: number | null; // position of a photo among the pages (1 = front, 2 = back, 3…); null for PDFs and barcodes
+  pageCount: number | null; // imported PDF: its number of pages (null = not known yet)
+  thumbPath: string | null; // imported PDF: page 1 as a JPEG, relative to Paths.document (null = not drawn)
+  previewState: PdfPreviewState | null; // imported PDF: how drawing page 1 went (null = not tried yet)
   createdAt: string;
 };
+
+// Drawing page 1 of an imported PDF: done, protected by a password, or damaged
+export type PdfPreviewState = 'ok' | 'password' | 'invalid';
 
 // ---- Raw rows as returned by SQLite ----
 
@@ -197,5 +203,8 @@ export type DocumentFileRecord = {
   side: FileSide | null;
   kind: 'image' | 'pdf';
   page: number | null;
+  page_count: number | null;
+  thumb_path: string | null;
+  preview_state: PdfPreviewState | null;
   created_at: string;
 };

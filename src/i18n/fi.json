@@ -534,7 +534,14 @@
     "zoom": "Zoomaa",
     "zoomOut": "Loitonna",
     "zoomIn": "Lähennä",
-    "pageShort": "Sivu {{number}}/{{total}}"
+    "pageShort": "Sivu {{number}}/{{total}}",
+    "openWith": "Avaa sovelluksessa…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} sivu",
+    "pages_other": "PDF, {{count}} sivua",
+    "protected": "Suojattu salasanalla",
+    "unreadable": "Ei voi lukea"
   },
   "recurrence": {
     "unit": {

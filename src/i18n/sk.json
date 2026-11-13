@@ -561,7 +561,15 @@
     "zoom": "Zväčšenie",
     "zoomOut": "Zmenšiť",
     "zoomIn": "Zväčšiť",
-    "pageShort": "Str. {{number}} z {{total}}"
+    "pageShort": "Str. {{number}} z {{total}}",
+    "openWith": "Otvoriť v…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} strana",
+    "pages_few": "PDF, {{count}} strany",
+    "pages_other": "PDF, {{count}} strán",
+    "protected": "Chránené heslom",
+    "unreadable": "Nedá sa prečítať"
   },
   "recurrence": {
     "unit": {

@@ -561,7 +561,15 @@
     "zoom": "Zumiranje",
     "zoomOut": "Smanji",
     "zoomIn": "Povećaj",
-    "pageShort": "{{number}} od {{total}}"
+    "pageShort": "{{number}} od {{total}}",
+    "openWith": "Otvori pomoću…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} stranica",
+    "pages_few": "PDF, {{count}} stranice",
+    "pages_other": "PDF, {{count}} stranica",
+    "protected": "Zaštićeno lozinkom",
+    "unreadable": "Ne može se pročitati"
   },
   "recurrence": {
     "unit": {

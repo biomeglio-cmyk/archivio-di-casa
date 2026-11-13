@@ -534,7 +534,14 @@
     "zoom": "Zooma",
     "zoomOut": "Zooma ut",
     "zoomIn": "Zooma in",
-    "pageShort": "Sida {{number}} av {{total}}"
+    "pageShort": "Sida {{number}} av {{total}}",
+    "openWith": "Öppna med …"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} sida",
+    "pages_other": "PDF, {{count}} sidor",
+    "protected": "Lösenordsskyddad",
+    "unreadable": "Kan inte läsas"
   },
   "recurrence": {
     "unit": {

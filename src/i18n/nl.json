@@ -534,7 +534,14 @@
     "zoom": "Zoom",
     "zoomOut": "Zoom uit",
     "zoomIn": "Zoom in",
-    "pageShort": "Pagina {{number}} van {{total}}"
+    "pageShort": "Pagina {{number}} van {{total}}",
+    "openWith": "Open met…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} pagina",
+    "pages_other": "PDF, {{count}} pagina’s",
+    "protected": "Beveiligd met wachtwoord",
+    "unreadable": "Niet leesbaar"
   },
   "recurrence": {
     "unit": {

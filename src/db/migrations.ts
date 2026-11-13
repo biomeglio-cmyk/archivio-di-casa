@@ -408,6 +408,21 @@ const MIGRATIONS: Migration[] = [
       `);
     },
   },
+  {
+    version: 19,
+    name: 'imported PDFs: page count and page-1 image',
+    up: async (db) => {
+      await db.execAsync(`
+        -- Number of pages of an imported PDF (pdf-lib at import, pdf.js for the older ones)
+        ALTER TABLE document_files ADD COLUMN page_count INTEGER CHECK (page_count >= 0);
+        -- Page 1 drawn as a JPEG next to the PDF (relative path in documents/, backed up with it):
+        -- the image of the document in tiles, covers, detail and Preferiti
+        ALTER TABLE document_files ADD COLUMN thumb_path TEXT;
+        -- How drawing went: 'ok', 'password' (protected) or 'invalid' (damaged); NULL = not tried yet
+        ALTER TABLE document_files ADD COLUMN preview_state TEXT CHECK (preview_state IN ('ok', 'password', 'invalid'));
+      `);
+    },
+  },
 ];
 
 // The database version this app writes (a backup with a higher one comes from a newer app)

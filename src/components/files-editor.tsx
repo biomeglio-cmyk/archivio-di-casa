@@ -22,6 +22,7 @@ import { resolveDocumentFile } from '@/storage/document-files';
 import { pagesToFiles, type PendingFile } from '@/storage/pending-files';
 import { chooseAction } from '@/utils/action-sheet';
 import { pageLabel, usesFrontBack } from '@/utils/page-labels';
+import { pdfSummary } from '@/pdf/pdf-labels';
 import { type Palette } from '@/constants/theme';
 
 // A file in the form: either already saved (existing) or just captured (pending).
@@ -227,7 +228,10 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
   const { fontScale } = useWindowDimensions();
   const large = fontScale > 1.3; // larger text: the caption goes above the sheet, on up to 2 lines
   const perRow = usePagesPerRow(); // the shared column rule: 3 pages per row, 2 with large text, 1 from AX1
-  const name = label ?? (file.kind === 'pdf' ? 'PDF' : t('filesEditor.page'));
+  const name =
+    label ?? (file.kind === 'pdf' ? (file.existing ? pdfSummary(file.existing, t) : 'PDF') : t('filesEditor.page')); // i18n-ignore: format name
+  // A saved PDF shows its page 1 drawn as an image, once ready
+  const pdfThumb = file.kind === 'pdf' ? (file.existing?.thumbPath ?? null) : null;
   const canMove = Boolean(onMoveLeft || onMoveRight);
   const isNew = Boolean(file.pending && file.kind === 'image');
   const caption = [label, isNew ? t('filesEditor.newTag') : null].filter(Boolean).join(' · ');
@@ -264,6 +268,13 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
         }}>
         {file.kind === 'image' ? (
           <Image source={{ uri: file.uri }} style={styles.sheetImage} contentFit="cover" accessibilityIgnoresInvertColors />
+        ) : pdfThumb ? (
+          <Image
+            source={{ uri: resolveDocumentFile(pdfThumb).uri }}
+            style={styles.sheetImage}
+            contentFit="cover"
+            accessibilityIgnoresInvertColors
+          />
         ) : (
           <View style={[styles.sheetImage, styles.pdfThumb]}>
             <SymbolView name="doc.richtext" tintColor={BRAND_COLOR(theme)} size={28} />

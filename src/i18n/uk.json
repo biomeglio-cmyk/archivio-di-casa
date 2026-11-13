@@ -588,7 +588,16 @@
     "zoom": "Масштаб",
     "zoomOut": "Зменшити",
     "zoomIn": "Збільшити",
-    "pageShort": "Стор. {{number}} з {{total}}"
+    "pageShort": "Стор. {{number}} з {{total}}",
+    "openWith": "Відкрити в…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} сторінка",
+    "pages_few": "PDF, {{count}} сторінки",
+    "pages_many": "PDF, {{count}} сторінок",
+    "pages_other": "PDF, {{count}} сторінки",
+    "protected": "Захищено паролем",
+    "unreadable": "Не читається"
   },
   "recurrence": {
     "unit": {

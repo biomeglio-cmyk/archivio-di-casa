@@ -588,7 +588,16 @@
     "zoom": "Powiększenie",
     "zoomOut": "Pomniejsz",
     "zoomIn": "Powiększ",
-    "pageShort": "Str. {{number}} z {{total}}"
+    "pageShort": "Str. {{number}} z {{total}}",
+    "openWith": "Otwórz w…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} strona",
+    "pages_few": "PDF, {{count}} strony",
+    "pages_many": "PDF, {{count}} stron",
+    "pages_other": "PDF, {{count}} strony",
+    "protected": "Chroniony hasłem",
+    "unreadable": "Nie można odczytać"
   },
   "recurrence": {
     "unit": {

@@ -534,7 +534,14 @@
     "zoom": "Yakınlaştır",
     "zoomOut": "Uzaklaştır",
     "zoomIn": "Yakınlaştır",
-    "pageShort": "Sayfa {{number}}/{{total}}"
+    "pageShort": "Sayfa {{number}}/{{total}}",
+    "openWith": "Şununla aç…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} sayfa",
+    "pages_other": "PDF, {{count}} sayfa",
+    "protected": "Parola korumalı",
+    "unreadable": "Okunamıyor"
   },
   "recurrence": {
     "unit": {

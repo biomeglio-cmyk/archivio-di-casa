@@ -534,7 +534,14 @@
     "zoom": "Ζουμ",
     "zoomOut": "Σμίκρυνση",
     "zoomIn": "Μεγέθυνση",
-    "pageShort": "Σελ. {{number}} από {{total}}"
+    "pageShort": "Σελ. {{number}} από {{total}}",
+    "openWith": "Άνοιγμα με…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} σελίδα",
+    "pages_other": "PDF, {{count}} σελίδες",
+    "protected": "Προστατεύεται με κωδικό",
+    "unreadable": "Δεν διαβάζεται"
   },
   "recurrence": {
     "unit": {

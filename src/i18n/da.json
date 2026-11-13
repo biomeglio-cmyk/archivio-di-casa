@@ -534,7 +534,14 @@
     "zoom": "Zoom",
     "zoomOut": "Zoom ud",
     "zoomIn": "Zoom ind",
-    "pageShort": "Side {{number}} af {{total}}"
+    "pageShort": "Side {{number}} af {{total}}",
+    "openWith": "Åbn med…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} side",
+    "pages_other": "PDF, {{count}} sider",
+    "protected": "Beskyttet med adgangskode",
+    "unreadable": "Kan ikke læses"
   },
   "recurrence": {
     "unit": {

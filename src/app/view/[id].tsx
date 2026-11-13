@@ -3,8 +3,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StatusBar } from 'expo-status-bar';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
+import * as Sharing from 'expo-sharing';
 import { useRef, useState } from 'react';
 import {
+  ActivityIndicator,
+  PixelRatio,
   Pressable,
   ScrollView,
   StyleSheet,
@@ -23,6 +26,8 @@ import { FONTS } from '@/constants/typography';
 import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
 import type { DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { pdfNote } from '@/pdf/pdf-labels';
+import { usePdfPages } from '@/pdf/use-pdf-pages';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
@@ -40,7 +45,9 @@ const A4_RATIO = 210 / 297;
 // background; on top ✕, the name with "N pagine · scorri in basso" and Invia; at the bottom the
 // zoom (100–200%) and "Pag. X di N". At 100% every page fits between the bars, centered; the pages
 // are stacked and centered. Pinch or the buttons zoom around the center (the iOS scroll view zoom).
-// A PDF is drawn by iOS (WKWebView) in the same centered frame: its pages scroll inside it.
+// An imported PDF: its pages are drawn as images with pdf.js (offline), only when they come near
+// the screen, and behave like photos (zoom, "Pag. X di N"); "Apri con…" hands the file to another
+// app. A protected or damaged PDF is drawn by iOS (WKWebView) in the same centered frame instead.
 export default function ViewDocumentScreen() {
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
@@ -60,7 +67,6 @@ export default function ViewDocumentScreen() {
 
   const pdf = files?.find((f) => f.kind === 'pdf') ?? null;
   const images = (files ?? []).filter((f) => f.kind === 'image');
-  const pageCount = pdf ? null : images.length;
   const topBar = insets.top + 76;
   const bottomBar = insets.bottom + 30 + 56 + 16; // the zoom bar and a little room above it
 
@@ -72,9 +78,26 @@ export default function ViewDocumentScreen() {
     const width = Math.min(maxWidth, maxHeight * ratio);
     return { width, height: width / ratio };
   };
-  const sizes = images.map((file) => fit(ratios[file.id] ?? A4_RATIO));
 
-  const subtitle = pdf ? t('viewDocument.pdfSubtitle') : t('viewDocument.pagesSubtitle', { count: pageCount ?? 0 });
+  // PDF pages: drawn sharp enough for the 200% zoom, at most 2000 px wide
+  const renderWidth = Math.min(2000, Math.round(maxWidth * PixelRatio.get() * 1.5));
+  const drawable = pdf !== null && pdf.previewState !== 'password' && pdf.previewState !== 'invalid';
+  const pdfPages = usePdfPages(drawable ? pdf : null, renderWidth);
+  const nativePdf = pdf !== null && (!drawable || pdfPages.status === 'failed'); // iOS draws it
+  const pdfCount = pdf && !nativePdf ? pdfPages.pageCount || pdf.pageCount || 0 : 0;
+  const pdfRatio = (page: number) => pdfPages.images[page]?.ratio ?? pdfPages.images[1]?.ratio ?? A4_RATIO;
+  const pageCount = pdf ? (nativePdf ? null : pdfCount) : images.length;
+
+  const sizes = pdf
+    ? Array.from({ length: pdfCount }, (_, index) => fit(pdfRatio(index + 1)))
+    : images.map((file) => fit(ratios[file.id] ?? A4_RATIO));
+
+  const note = pdf ? pdfNote(pdf, t) : null;
+  const subtitle = pdf
+    ? nativePdf || !pdfCount
+      ? (note ?? t('viewDocument.pdfSubtitle'))
+      : t('viewDocument.pagesSubtitle', { count: pdfCount })
+    : t('viewDocument.pagesSubtitle', { count: pageCount ?? 0 });
 
   // Scroll or pinch: remember the visible area; the page is the one under the middle of the screen
   function onScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
@@ -85,14 +108,17 @@ export default function ViewDocumentScreen() {
     if (!pageCount) return;
     const middle = (contentOffset.y + screenHeight / 2) / scale;
     let top = topBar;
+    let current = sizes.length;
     for (let index = 0; index < sizes.length; index++) {
       top += sizes[index].height + PAGE_GAP;
       if (middle < top) {
-        setPage(index + 1);
-        return;
+        current = index + 1;
+        break;
       }
     }
-    setPage(sizes.length);
+    setPage(current);
+    // PDF: draw this page and its neighbours (the closest first)
+    if (pdf && !nativePdf) pdfPages.want([current, current + 1, current - 1, current + 2]);
   }
 
   // The zoom buttons: zoom around the center of what is on screen
@@ -116,6 +142,20 @@ export default function ViewDocumentScreen() {
 
   const send = () => router.push({ pathname: '/send', params: { ids: String(documentId) } });
 
+  // "Apri con…": the PDF itself to another app (Libri, File, a PDF reader…) or Quick Look
+  async function openWith() {
+    if (!pdf) return;
+    try {
+      await Sharing.shareAsync(resolveDocumentFile(pdf.path).uri, {
+        mimeType: 'application/pdf',
+        UTI: 'com.adobe.pdf',
+        dialogTitle: document?.title,
+      });
+    } catch {
+      // closed or not available: nothing to do
+    }
+  }
+
   return (
     <View style={styles.screen} accessibilityViewIsModal onAccessibilityEscape={() => router.back()}>
       {/* Dark screen: light clock and battery in both themes */}
@@ -133,8 +173,37 @@ export default function ViewDocumentScreen() {
         onScroll={onScroll}
         scrollEventThrottle={32}>
         <View style={[styles.pages, { width: screenWidth, paddingTop: topBar, paddingBottom: bottomBar }]}>
-          {pdf ? (
+          {pdf && nativePdf ? (
             <PdfPage file={pdf} width={maxWidth} height={maxHeight} />
+          ) : pdf ? (
+            sizes.map((size, index) => {
+              const number = index + 1;
+              const drawn = pdfPages.images[number];
+              // Page 1 already exists as an image (the cover): shown until the sharper one is ready
+              const uri = drawn?.uri ?? (number === 1 && pdf.thumbPath ? resolveDocumentFile(pdf.thumbPath).uri : null);
+              const label = t('viewDocument.pageOf', { number, total: pdfCount });
+              return uri ? (
+                <Image
+                  key={number}
+                  source={{ uri }}
+                  style={[styles.page, size]}
+                  contentFit="contain"
+                  transition={reduceMotion ? 0 : 150}
+                  accessibilityIgnoresInvertColors
+                  accessible
+                  accessibilityRole="image"
+                  accessibilityLabel={label}
+                />
+              ) : (
+                <View
+                  key={number}
+                  style={[styles.page, styles.pagePending, size]}
+                  accessible
+                  accessibilityLabel={label}>
+                  <ActivityIndicator color="#8A8DA6" />
+                </View>
+              );
+            })
           ) : (
             images.map((file, index) => (
               <Image
@@ -154,6 +223,7 @@ export default function ViewDocumentScreen() {
             ))
           )}
           {files && !pdf && images.length === 0 && <Text style={styles.empty}>{t('viewDocument.noPages')}</Text>}
+          {pdf && !nativePdf && pdfCount === 0 && <ActivityIndicator color="#C9CCDA" style={styles.loading} />}
         </View>
       </ScrollView>
 
@@ -168,6 +238,7 @@ export default function ViewDocumentScreen() {
           </Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
+        {pdf && <RoundButton symbol="arrow.up.forward.app" label={t('viewDocument.openWith')} onPress={openWith} />}
         <RoundButton symbol="square.and.arrow.up" label={t('common.send')} onPress={send} />
       </LinearGradient>
 
@@ -257,6 +328,13 @@ const makeStyles = (c: Palette) =>
     borderRadius: 6,
     backgroundColor: '#FFFFFF',
     boxShadow: '0 10px 30px rgba(0, 0, 0, 0.35)',
+  },
+  pagePending: {
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  loading: {
+    marginTop: 80,
   },
   empty: {
     marginTop: 80,

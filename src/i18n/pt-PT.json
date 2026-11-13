@@ -534,7 +534,14 @@
     "zoom": "Zoom",
     "zoomOut": "Reduzir",
     "zoomIn": "Ampliar",
-    "pageShort": "Pág. {{number}} de {{total}}"
+    "pageShort": "Pág. {{number}} de {{total}}",
+    "openWith": "Abrir com…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} página",
+    "pages_other": "PDF, {{count}} páginas",
+    "protected": "Protegido por palavra-passe",
+    "unreadable": "Não é possível ler"
   },
   "recurrence": {
     "unit": {

@@ -52,6 +52,7 @@ import { PIN_TINT } from '@/constants/brand';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 import { useFormat } from '@/i18n/use-format';
+import { pdfNote, pdfSummary } from '@/pdf/pdf-labels';
 
 const PAPER_TEXT = '#6A6D80'; // grey text on the white page of the preview (5:1)
 const PIN_BACKGROUND = (p: Palette) => PIN_TINT(p);
@@ -105,9 +106,10 @@ export default function DocumentDetail() {
   );
 }
 
-// "1 pagina", "PDF", "3 pagine"
+// "1 pagina", "PDF, 4 pagine", "3 pagine"
 function filesLabel(files: DocumentFile[], t: TFunction): string {
-  if (files.some((f) => f.kind === 'pdf')) return 'PDF';
+  const pdf = files.find((f) => f.kind === 'pdf');
+  if (pdf) return pdfSummary(pdf, t);
   const pages = files.filter((f) => f.kind === 'image').length;
   if (pages === 0) return t('documentDetail.noPages');
   return t('documentDetail.photoPages', { count: pages });
@@ -469,11 +471,16 @@ function Preview({
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   const images = files.filter((f) => f.kind === 'image');
-  const pdf = files.some((f) => f.kind === 'pdf');
-  const first = images[0];
-  const count = pdf ? null : images.length;
+  const pdfFile = files.find((f) => f.kind === 'pdf') ?? null;
+  const pdf = pdfFile !== null;
+  // The first photo, else page 1 of the PDF drawn as an image (like a scan)
+  const firstPath = images[0]?.path ?? pdfFile?.thumbPath ?? null;
+  const count = pdfFile ? pdfFile.pageCount : images.length;
+  const note = pdfFile ? pdfNote(pdfFile, t) : null; // "Protetto da password", "Non leggibile"
   // "Visualizza, 3 pagine": what the box shows, said in one element
-  const contents = pdf ? 'PDF' : t('documentDetail.photoPages', { count: images.length });
+  const contents = pdfFile
+    ? [pdfSummary(pdfFile, t), note].filter(Boolean).join(', ')
+    : t('documentDetail.photoPages', { count: images.length });
 
   return (
     <Pressable
@@ -484,9 +491,9 @@ function Preview({
       accessibilityLabel={onPress ? `${t('documentDetail.view')}, ${contents}` : t('documentDetail.noPages')}
       style={[styles.preview, { backgroundColor: tint }, pressed && styles.pressed]}>
       <View style={styles.page}>
-        {first ? (
+        {firstPath ? (
           <Image
-            source={{ uri: resolveDocumentFile(first.path).uri }}
+            source={{ uri: resolveDocumentFile(firstPath).uri }}
             style={styles.pageImage}
             contentFit="cover"
             accessibilityIgnoresInvertColors
@@ -500,6 +507,7 @@ function Preview({
             />
             {/* i18n-ignore */}
             {pdf && <Text style={styles.pdfLabel}>PDF</Text>}
+            {note && <Text style={styles.pdfNote}>{note}</Text>}
           </View>
         )}
       </View>
@@ -609,6 +617,13 @@ const makeStyles = (c: Palette) =>
     fontSize: 13,
     fontFamily: FONTS.semiBold,
     color: PAPER_TEXT, // the page is always white paper, also in the dark theme
+  },
+  pdfNote: {
+    paddingHorizontal: 8,
+    fontSize: 12,
+    textAlign: 'center',
+    fontFamily: FONTS.medium,
+    color: PAPER_TEXT,
   },
   pageCount: {
     position: 'absolute',

@@ -70,7 +70,8 @@ export default function NewDocumentScreen() {
         expiresAt: params.expiresAt && /^\d{4}-\d{2}-\d{2}$/.test(params.expiresAt) ? params.expiresAt : undefined,
       }}
       files={(category) => <FilesEditor files={files} category={category} onChange={setFiles} />}
-      hasPhoto={files.some((f) => f.kind === 'image')}
+      // A photo, or an imported PDF: its page 1 becomes the image, like a scan ("Foto" by default)
+      hasPhoto={files.some((f) => f.kind === 'image' || f.kind === 'pdf')}
       notice={notice ? <ReadNotice title={notice.title} text={notice.text} /> : null}
       autoFocusTitle={captured.length === 0}
       onSubmit={async (input, password, { pinned }) => {

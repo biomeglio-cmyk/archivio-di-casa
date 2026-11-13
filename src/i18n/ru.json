@@ -561,7 +561,15 @@
     "zoom": "Масштаб",
     "zoomOut": "Уменьшить",
     "zoomIn": "Увеличить",
-    "pageShort": "Стр. {{number}} из {{total}}"
+    "pageShort": "Стр. {{number}} из {{total}}",
+    "openWith": "Открыть в…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} страница",
+    "pages_few": "PDF, {{count}} страницы",
+    "pages_many": "PDF, {{count}} страниц",
+    "protected": "Защищён паролем",
+    "unreadable": "Не читается"
   },
   "recurrence": {
     "unit": {

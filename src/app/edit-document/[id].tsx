@@ -68,7 +68,11 @@ function EditDocumentContent({
       onDelete={() => confirmDeleteDocument(document)}
       files={(category) => <FilesEditor files={files} category={category} onChange={setFiles} />}
       hasSavedPassword={hasPassword}
-      hasPhoto={files.some((f) => f.kind === 'image')}
+      // A photo, or an imported PDF whose page 1 becomes the image (not a protected or damaged one)
+      hasPhoto={files.some(
+        (f) =>
+          f.kind === 'image' || (f.kind === 'pdf' && !['password', 'invalid'].includes(f.existing?.previewState ?? '')),
+      )}
       onSubmit={async (input, password, { pinned }) => {
         // Compare with what is saved: files no longer in the list are removed, new ones are added
         const kept = new Set(files.flatMap((f) => (f.existing ? [f.existing.id] : [])));

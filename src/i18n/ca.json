@@ -534,7 +534,14 @@
     "zoom": "Zoom",
     "zoomOut": "Allunyar",
     "zoomIn": "Apropar",
-    "pageShort": "Pàg. {{number}} de {{total}}"
+    "pageShort": "Pàg. {{number}} de {{total}}",
+    "openWith": "Obre amb…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} pàgina",
+    "pages_other": "PDF, {{count}} pàgines",
+    "protected": "Protegit amb contrasenya",
+    "unreadable": "No es pot llegir"
   },
   "recurrence": {
     "unit": {

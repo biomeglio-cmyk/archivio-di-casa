@@ -18,6 +18,7 @@ import type {
   PaymentStatus,
 } from '@/db/types';
 import { deletePassword } from '@/security/password-vault';
+import { countPdfPages } from '@/pdf/page-count';
 import { deleteStoredFile, storePendingFile } from '@/storage/document-files';
 import type { PendingFile } from '@/storage/pending-files';
 import { isRepeatUnit, type Repeat } from '@/utils/recurrence';
@@ -99,9 +100,15 @@ async function listDocumentsWhere(
     `SELECT d.*, ${CATEGORY_JOIN_COLUMNS},
             (SELECT COUNT(*) FROM document_files f
              WHERE f.document_id = d.id AND f.kind = 'image' AND f.version_id IS NULL) AS image_count,
-            (SELECT f.path FROM document_files f
-             WHERE f.document_id = d.id AND f.kind = 'image' AND f.side IS NOT 'barcode' AND f.version_id IS NULL
-             ORDER BY ${FILE_ORDER}, f.id LIMIT 1) AS first_image_path,
+            COALESCE(
+              (SELECT f.path FROM document_files f
+               WHERE f.document_id = d.id AND f.kind = 'image' AND f.side IS NOT 'barcode' AND f.version_id IS NULL
+               ORDER BY ${FILE_ORDER}, f.id LIMIT 1),
+              -- No photo: page 1 of its imported PDF, drawn as an image (like a scan)
+              (SELECT f.thumb_path FROM document_files f
+               WHERE f.document_id = d.id AND f.kind = 'pdf' AND f.thumb_path IS NOT NULL AND f.version_id IS NULL
+               ORDER BY f.id LIMIT 1)
+            ) AS first_image_path,
             pp.name AS person_name
      FROM documents d
      JOIN categories c ON c.id = d.category_id
@@ -214,15 +221,27 @@ function pageOf(file: PendingFile): number | null {
   return file.page ?? (file.side === 'back' ? 2 : 1);
 }
 
-function insertFileRow(db: SQLiteDatabase, documentId: number, path: string, file: PendingFile) {
+// A PDF gets its number of pages (read with pdf-lib when it was stored); page 1 is drawn as an
+// image later, in the background (pdf/pdf-previews.ts)
+function insertFileRow(db: SQLiteDatabase, documentId: number, stored: StoredFile) {
+  const { path, file, pageCount } = stored;
   return db.runAsync(
-    'INSERT INTO document_files (document_id, path, side, kind, page) VALUES (?, ?, ?, ?, ?)',
+    'INSERT INTO document_files (document_id, path, side, kind, page, page_count) VALUES (?, ?, ?, ?, ?, ?)',
     documentId,
     path,
     file.side,
     file.kind,
     pageOf(file),
+    pageCount,
   );
+}
+
+type StoredFile = { path: string; file: PendingFile; pageCount: number | null };
+
+// Copies a new file into documents/; for a PDF, also counts its pages (pdf-lib, null if unreadable)
+async function storeFile(file: PendingFile): Promise<StoredFile> {
+  const pageCount = file.kind === 'pdf' ? await countPdfPages(file.uri) : null;
+  return { path: await storePendingFile(file), file, pageCount };
 }
 
 // Saves the document and its files; returns the id of the new document.
@@ -234,11 +253,11 @@ export async function insertDocument(
   doc: DocumentInput,
   files: PendingFile[] = [],
 ): Promise<number> {
-  const stored: { path: string; file: PendingFile }[] = [];
+  const stored: StoredFile[] = [];
   let documentId = 0;
   try {
     for (const file of files) {
-      stored.push({ path: await storePendingFile(file), file });
+      stored.push(await storeFile(file));
     }
 
     await db.withTransactionAsync(async () => {
@@ -267,8 +286,8 @@ export async function insertDocument(
       );
       documentId = result.lastInsertRowId;
 
-      for (const { path, file } of stored) {
-        await insertFileRow(db, documentId, path, file);
+      for (const item of stored) {
+        await insertFileRow(db, documentId, item);
       }
     });
   } catch (error) {
@@ -343,10 +362,10 @@ export async function renewDocument(
   newExpiry: string,
   newPages: PendingFile[] | null,
 ): Promise<void> {
-  const stored: { path: string; file: PendingFile }[] = [];
+  const stored: StoredFile[] = [];
   try {
     for (const file of newPages ?? []) {
-      stored.push({ path: await storePendingFile(file), file });
+      stored.push(await storeFile(file));
     }
     await db.withTransactionAsync(async () => {
       if (stored.length > 0) {
@@ -361,7 +380,7 @@ export async function renewDocument(
           version.lastInsertRowId,
           id,
         );
-        for (const { path, file } of stored) await insertFileRow(db, id, path, file);
+        for (const item of stored) await insertFileRow(db, id, item);
       }
       await db.runAsync(
         `UPDATE documents SET expires_at = ?, updated_at = strftime('%Y-%m-%dT%H:%M:%fZ', 'now') WHERE id = ?`,
@@ -409,6 +428,9 @@ function mapFile(row: DocumentFileRecord): DocumentFile {
     side: row.side,
     kind: row.kind,
     page: row.page,
+    pageCount: row.page_count ?? null,
+    thumbPath: row.thumb_path ?? null,
+    previewState: row.preview_state ?? null,
     createdAt: row.created_at,
   };
 }
@@ -496,13 +518,19 @@ export function listTrashedDocuments(db: SQLiteDatabase): Promise<DocumentListIt
 // document_files rows with it (ON DELETE CASCADE), then the photos/PDFs, its Keychain item and
 // its calendar event. A normal "Elimina" only moves the document to the Cestino (db/trash.ts).
 export async function deleteDocumentForever(db: SQLiteDatabase, id: number): Promise<void> {
-  const files = await db.getAllAsync<{ path: string }>('SELECT path FROM document_files WHERE document_id = ?', id);
+  const files = await db.getAllAsync<{ path: string; thumb_path: string | null }>(
+    'SELECT path, thumb_path FROM document_files WHERE document_id = ?',
+    id,
+  );
   const event = await db.getFirstAsync<{ calendar_event_id: string | null; preview_image_path: string | null }>(
     'SELECT calendar_event_id, preview_image_path FROM documents WHERE id = ?',
     id,
   );
   await db.runAsync('DELETE FROM documents WHERE id = ?', id);
-  files.forEach((file) => deleteStoredFile(file.path));
+  files.forEach((file) => {
+    deleteStoredFile(file.path);
+    if (file.thumb_path) deleteStoredFile(file.thumb_path); // page 1 of a PDF, drawn as an image
+  });
   if (event?.preview_image_path) deleteStoredFile(event.preview_image_path); // a Password entry's image
   await deletePassword(id); // its Keychain item, if it was a "Password" document
   await removeCalendarEvent(event?.calendar_event_id ?? null);
@@ -556,18 +584,26 @@ async function changeFiles(
   addedFiles: PendingFile[],
   alsoInTransaction?: () => Promise<void>,
 ): Promise<void> {
-  const stored: { path: string; file: PendingFile }[] = [];
+  // The images of page 1 of removed PDFs (read now: the list on screen may be older than them)
+  const thumbs =
+    removedFiles.length > 0
+      ? await db.getAllAsync<{ thumb_path: string }>(
+          `SELECT thumb_path FROM document_files WHERE thumb_path IS NOT NULL AND id IN (${removedFiles.map(() => '?').join(', ')})`,
+          removedFiles.map((file) => file.id),
+        )
+      : [];
+  const stored: StoredFile[] = [];
   try {
     for (const file of addedFiles) {
-      stored.push({ path: await storePendingFile(file), file });
+      stored.push(await storeFile(file));
     }
     await db.withTransactionAsync(async () => {
       await alsoInTransaction?.();
       for (const file of removedFiles) {
         await db.runAsync('DELETE FROM document_files WHERE id = ?', file.id);
       }
-      for (const { path, file } of stored) {
-        await insertFileRow(db, id, path, file);
+      for (const item of stored) {
+        await insertFileRow(db, id, item);
       }
     });
   } catch (error) {
@@ -575,6 +611,7 @@ async function changeFiles(
     throw error;
   }
   removedFiles.forEach((file) => deleteStoredFile(file.path));
+  thumbs.forEach((row) => deleteStoredFile(row.thumb_path)); // page 1 of a removed PDF
 }
 
 // ---- "Preferiti" (pins) ----

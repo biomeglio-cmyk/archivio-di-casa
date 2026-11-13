@@ -22,6 +22,8 @@ import { AppLock } from '@/components/app-lock';
 import { ToastHost } from '@/components/toast';
 import { onAppCommit } from '@/dev/render-warning';
 import { SplashOverlay } from '@/components/splash-overlay';
+import { PdfPreviews } from '@/pdf/pdf-previews';
+import { PdfRendererHost } from '@/pdf/pdf-renderer';
 import { FONTS } from '@/constants/typography';
 import { Radius, type Palette } from '@/constants/theme';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
@@ -306,6 +308,9 @@ function RootContent() {
             importantForAccessibility="no-hide-descendants"
           />
         )}
+        {/* Hidden: draws PDF pages with pdf.js (offline), and page 1 of each imported PDF in the background */}
+        <PdfRendererHost />
+        <PdfPreviews />
         {/* After the Stack, so it is drawn on top of the first screen while it fades */}
         <SplashOverlay />
         {/* "Blocca con Face ID": above everything, even the open sheets and modals */}

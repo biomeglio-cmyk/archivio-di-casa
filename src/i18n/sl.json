@@ -588,7 +588,16 @@
     "zoom": "Povečava",
     "zoomOut": "Pomanjšaj",
     "zoomIn": "Povečaj",
-    "pageShort": "{{number}} od {{total}}"
+    "pageShort": "{{number}} od {{total}}",
+    "openWith": "Odpri z …"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} stran",
+    "pages_two": "PDF, {{count}} strani",
+    "pages_few": "PDF, {{count}} strani",
+    "pages_other": "PDF, {{count}} strani",
+    "protected": "Zaščiteno z geslom",
+    "unreadable": "Ni berljivo"
   },
   "recurrence": {
     "unit": {

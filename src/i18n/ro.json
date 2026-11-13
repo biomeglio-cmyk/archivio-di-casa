@@ -561,7 +561,15 @@
     "zoom": "Zoom",
     "zoomOut": "Micșorează",
     "zoomIn": "Mărește",
-    "pageShort": "Pag. {{number}} din {{total}}"
+    "pageShort": "Pag. {{number}} din {{total}}",
+    "openWith": "Deschide cu…"
+  },
+  "pdf": {
+    "pages_one": "PDF, {{count}} pagină",
+    "pages_few": "PDF, {{count}} pagini",
+    "pages_other": "PDF, {{count}} de pagini",
+    "protected": "Protejat cu parolă",
+    "unreadable": "Nu poate fi citit"
   },
   "recurrence": {
     "unit": {

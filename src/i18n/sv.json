@@ -169,7 +169,7 @@
       "newDocument": "Nytt dokument",
       "appearance": "Utseende",
       "backup": "Säkerhetskopia",
-      "taxPackage": "Skicka till revisorn",
+      "taxPackage": "Redovisningskonsult",
       "trash": "Papperskorg",
       "terms": "Användarvillkor",
       "about": "Om och integritet",
@@ -216,7 +216,7 @@
     },
     "actions": {
       "editCategory": "Redigera kategori",
-      "sendToAccountant": "Skicka till revisorn",
+      "sendToAccountant": "Skicka till redovisningskonsulten",
       "selectAndSend": "Välj och skicka",
       "reorder": "Ändra ordning",
       "deleteCategory": "Radera kategori"

@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { useRef, useState, type ReactNode } from 'react';
+import { useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type ScrollViewInstance } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -22,7 +22,8 @@ const ART_HEIGHT = 380;
 const SIDE = 26;
 
 // id: the texts are onboarding.pages.<id>.title / .text (/ .info)
-type Page = { id: 'welcome' | 'scan' | 'deadlines' | 'cards'; art: () => ReactNode; info?: boolean };
+// art: a component, always rendered as <Art /> (never called as a function: its hooks are its own)
+type Page = { id: 'welcome' | 'scan' | 'deadlines' | 'cards'; art: ComponentType; info?: boolean };
 
 const PAGES: Page[] = [
   { id: 'welcome', art: WelcomeArt, info: true },
@@ -36,7 +37,6 @@ const PAGES: Page[] = [
 // page dots, "Avanti" / "Inizia". Swiping works too. Our extra: "Ripristina da un backup" for who
 // already has one (it opens Backup and its file picker).
 export default function OnboardingScreen() {
-  const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
@@ -83,26 +83,7 @@ export default function OnboardingScreen() {
         onMomentumScrollEnd={(e) => setPage(Math.round(e.nativeEvent.contentOffset.x / width))}
         style={styles.pager}>
         {PAGES.map((p, index) => (
-          <ScrollView key={p.id} style={{ width }} contentContainerStyle={styles.page} showsVerticalScrollIndicator={false}>
-            <View style={{ height: ART_HEIGHT * scale, alignItems: 'center' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-              <View style={[styles.art, { transform: [{ scale }], marginTop: (ART_HEIGHT * (scale - 1)) / 2 }]}>{p.art()}</View>
-            </View>
-            <Text style={[styles.title, index === 0 && styles.titleFirst]} accessibilityRole="header">
-              {t(`onboarding.pages.${p.id}.title`)}
-            </Text>
-            <Text style={styles.text}>{t(`onboarding.pages.${p.id}.text`)}</Text>
-            {p.info && (
-              <View style={styles.info}>
-                <SymbolView name="lock.shield" tintColor={theme.indigo} size={22} />
-                <Text style={styles.infoText}>{t(`onboarding.pages.${p.id}.info`)}</Text>
-              </View>
-            )}
-            <View style={styles.dots} accessible accessibilityLabel={t('onboarding.pageOf', { page: index + 1, total: PAGES.length })}>
-              {PAGES.map((other, dot) => (
-                <View key={other.id} style={[styles.dot, dot === index && styles.dotActive]} />
-              ))}
-            </View>
-          </ScrollView>
+          <OnboardingPage key={p.id} page={p} index={index} width={width} scale={scale} />
         ))}
       </ScrollView>
 
@@ -115,6 +96,39 @@ export default function OnboardingScreen() {
         )}
       </View>
     </View>
+  );
+}
+
+// One page of the pager: illustration, title, text, (info), dots. A real component, so the hooks of
+// the illustration belong to it and run in the same order on every render.
+function OnboardingPage({ page: p, index, width, scale }: { page: Page; index: number; width: number; scale: number }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
+  const Art = p.art;
+  return (
+    <ScrollView style={{ width }} contentContainerStyle={styles.page} showsVerticalScrollIndicator={false}>
+      <View style={{ height: ART_HEIGHT * scale, alignItems: 'center' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        <View style={[styles.art, { transform: [{ scale }], marginTop: (ART_HEIGHT * (scale - 1)) / 2 }]}>
+          <Art />
+        </View>
+      </View>
+      <Text style={[styles.title, index === 0 && styles.titleFirst]} accessibilityRole="header">
+        {t(`onboarding.pages.${p.id}.title`)}
+      </Text>
+      <Text style={styles.text}>{t(`onboarding.pages.${p.id}.text`)}</Text>
+      {p.info && (
+        <View style={styles.info}>
+          <SymbolView name="lock.shield" tintColor={theme.indigo} size={22} />
+          <Text style={styles.infoText}>{t(`onboarding.pages.${p.id}.info`)}</Text>
+        </View>
+      )}
+      <View style={styles.dots} accessible accessibilityLabel={t('onboarding.pageOf', { page: index + 1, total: PAGES.length })}>
+        {PAGES.map((other, dot) => (
+          <View key={other.id} style={[styles.dot, dot === index && styles.dotActive]} />
+        ))}
+      </View>
+    </ScrollView>
   );
 }
 

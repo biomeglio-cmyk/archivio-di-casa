@@ -1716,5 +1716,15 @@
       "side": "Lato",
       "status": "Stato"
     }
+  },
+  "contact": {
+    "title": "Contatti",
+    "writeUs": "Scrivici",
+    "subject": "Sottomano – Aiuto",
+    "footerTitle": "Informazioni per l’assistenza:",
+    "noMailTitle": "Nessun account Mail",
+    "noMailMessage": "Puoi scriverci a {{email}}.",
+    "copyAddress": "Copia indirizzo",
+    "copied": "Indirizzo copiato"
   }
 }

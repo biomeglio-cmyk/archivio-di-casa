@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { ScrollView, StyleSheet } from 'react-native';
 
+import { SUPPORT_EMAIL, writeToSupport } from '@/actions/contact';
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
 import { type Palette, Spacing } from '@/constants/theme';
@@ -25,6 +26,10 @@ export default function TermsScreen() {
           <Row label={t('terms.oneTime')} symbol="checkmark.seal" />
           <Row label={t('terms.yours')} symbol="lock.iphone" />
           <Row label={t('terms.backup')} symbol="icloud.and.arrow.up" />
+        </Group>
+
+        <Group title={t('contact.title')}>
+          <Row label={t('contact.writeUs')} value={SUPPORT_EMAIL} symbol="envelope" onPress={() => void writeToSupport()} first />
         </Group>
       </ScrollView>
 

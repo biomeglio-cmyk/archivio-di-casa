@@ -1868,5 +1868,15 @@
       "side": "Strona",
       "status": "Status"
     }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "writeUs": "Napisz do nas",
+    "subject": "Sottomano – Pomoc",
+    "footerTitle": "Informacje dla pomocy technicznej:",
+    "noMailTitle": "Brak konta w Mailu",
+    "noMailMessage": "Możesz napisać do nas na {{email}}.",
+    "copyAddress": "Kopiuj adres",
+    "copied": "Adres skopiowany"
   }
 }

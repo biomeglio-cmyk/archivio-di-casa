@@ -8,6 +8,7 @@ import { Fragment, useCallback, useState, type ReactNode } from 'react';
 import { Alert, Linking, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { SUPPORT_EMAIL, writeToSupport } from '@/actions/contact';
 import { rateApp, turnOnAppLock } from '@/actions/app-actions';
 import { daysSinceLastBackup } from '@/backup/backup-layout';
 import { getCalendarSettings } from '@/calendar/calendar-settings';
@@ -286,6 +287,13 @@ export default function SettingsScreen() {
 
       <Section title={t('settings.sections.info')}>
         <SettingsRow symbol="questionmark.circle" tint={TINTS(theme).info} label={t('settings.help')} onPress={() => open('/onboarding')} />
+        <SettingsRow
+          symbol="envelope"
+          tint={TINTS(theme).info}
+          label={t('contact.writeUs')}
+          subtitle={SUPPORT_EMAIL}
+          onPress={() => void writeToSupport()}
+        />
         <SettingsRow symbol="lock" tint={TINTS(theme).info} label={t('settings.privacy')} onPress={() => open('/about')} />
         <SettingsRow symbol="doc.text" tint={TINTS(theme).info} label={t('settings.terms')} onPress={() => open('/terms')} />
         <SettingsRow symbol="star" tint={TINTS(theme).info} label={t('settings.rate')} onPress={rateApp} />

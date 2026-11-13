@@ -1792,5 +1792,15 @@
       "side": "Сторона",
       "status": "Статус"
     }
+  },
+  "contact": {
+    "title": "Контакты",
+    "writeUs": "Написать нам",
+    "subject": "Sottomano – Помощь",
+    "footerTitle": "Сведения для поддержки:",
+    "noMailTitle": "Нет учетной записи Почты",
+    "noMailMessage": "Напиши нам на {{email}}.",
+    "copyAddress": "Скопировать адрес",
+    "copied": "Адрес скопирован"
   }
 }

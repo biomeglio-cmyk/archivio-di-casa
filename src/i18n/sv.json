@@ -1716,5 +1716,15 @@
       "side": "Sida",
       "status": "Status"
     }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "writeUs": "Skriv till oss",
+    "subject": "Sottomano – Hjälp",
+    "footerTitle": "Information till supporten:",
+    "noMailTitle": "Inget Mail-konto",
+    "noMailMessage": "Du kan skriva till oss på {{email}}.",
+    "copyAddress": "Kopiera adress",
+    "copied": "Adressen kopierades"
   }
 }

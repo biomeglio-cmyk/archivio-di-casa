@@ -13,6 +13,7 @@ import {
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { SUPPORT_EMAIL, writeToSupport } from '@/actions/contact';
 import { rateApp, recommendApp } from '@/actions/app-actions';
 import { isBackupDue } from '@/backup/backup-layout';
 import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
@@ -191,6 +192,12 @@ export default function MenuScreen() {
             trailing={backupDue ? <SymbolView name="exclamationmark.circle.fill" tintColor={BACKUP_DUE(theme)} size={18} /> : null}
           />
           <MenuItem label={t('menu.help')} symbol="questionmark.circle" onPress={() => openScreen('/onboarding')} />
+          <MenuItem
+            label={t('contact.writeUs')}
+            symbol="envelope"
+            accessibilityHint={SUPPORT_EMAIL}
+            onPress={() => close(() => void writeToSupport())}
+          />
           <MenuItem label={t('menu.rate')} symbol="star" onPress={rateApp} />
           <MenuItem label={t('menu.recommend')} symbol="square.and.arrow.up" onPress={recommendApp} />
 

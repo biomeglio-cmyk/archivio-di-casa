@@ -1716,5 +1716,15 @@
       "side": "Cara",
       "status": "Estat"
     }
+  },
+  "contact": {
+    "title": "Contacte",
+    "writeUs": "Escriu-nos",
+    "subject": "Sottomano – Ajuda",
+    "footerTitle": "Informació per al suport:",
+    "noMailTitle": "No hi ha cap compte de Mail",
+    "noMailMessage": "Ens pots escriure a {{email}}.",
+    "copyAddress": "Copiar l’adreça",
+    "copied": "Adreça copiada"
   }
 }

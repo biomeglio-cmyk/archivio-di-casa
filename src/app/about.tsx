@@ -4,6 +4,7 @@ import { Stack } from 'expo-router/stack';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import { LogoMark } from '@/components/logo-mark';
+import { SUPPORT_EMAIL, writeToSupport } from '@/actions/contact';
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
 import { type Palette, Spacing } from '@/constants/theme';
@@ -32,6 +33,10 @@ export default function AboutScreen() {
           <Row label={t('about.onPhone')} symbol="lock.iphone" first />
           <Row label={t('about.offline')} symbol="wifi.slash" />
           <Row label={t('about.noTracking')} symbol="eye.slash" />
+        </Group>
+
+        <Group title={t('contact.title')}>
+          <Row label={t('contact.writeUs')} value={SUPPORT_EMAIL} symbol="envelope" onPress={() => void writeToSupport()} first />
         </Group>
       </ScrollView>
 

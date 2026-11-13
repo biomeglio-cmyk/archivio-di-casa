@@ -1792,5 +1792,15 @@
       "side": "Strana",
       "status": "Status"
     }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "writeUs": "Pišite nam",
+    "subject": "Sottomano – Pomoć",
+    "footerTitle": "Podaci za podršku:",
+    "noMailTitle": "Nema računa u Mailu",
+    "noMailMessage": "Možeš nam pisati na {{email}}.",
+    "copyAddress": "Kopiraj adresu",
+    "copied": "Adresa kopirana"
   }
 }

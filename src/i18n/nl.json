@@ -1716,5 +1716,15 @@
       "side": "Kant",
       "status": "Status"
     }
+  },
+  "contact": {
+    "title": "Contact",
+    "writeUs": "Schrijf ons",
+    "subject": "Sottomano – Hulp",
+    "footerTitle": "Informatie voor support:",
+    "noMailTitle": "Geen Mail-account",
+    "noMailMessage": "Je kunt ons mailen op {{email}}.",
+    "copyAddress": "Adres kopiëren",
+    "copied": "Adres gekopieerd"
   }
 }

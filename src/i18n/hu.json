@@ -1716,5 +1716,15 @@
       "side": "Oldal",
       "status": "Állapot"
     }
+  },
+  "contact": {
+    "title": "Kapcsolat",
+    "writeUs": "Írj nekünk",
+    "subject": "Sottomano – Súgó",
+    "footerTitle": "Információ az ügyfélszolgálatnak:",
+    "noMailTitle": "Nincs Mail-fiók",
+    "noMailMessage": "Írhatsz nekünk ide: {{email}}.",
+    "copyAddress": "Cím másolása",
+    "copied": "Cím kimásolva"
   }
 }

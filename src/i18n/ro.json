@@ -1792,5 +1792,15 @@
       "side": "Partea",
       "status": "Stare"
     }
+  },
+  "contact": {
+    "title": "Contact",
+    "writeUs": "Scrie-ne",
+    "subject": "Sottomano – Ajutor",
+    "footerTitle": "Informații pentru asistență:",
+    "noMailTitle": "Niciun cont Mail",
+    "noMailMessage": "Ne poți scrie la {{email}}.",
+    "copyAddress": "Copiază adresa",
+    "copied": "Adresă copiată"
   }
 }

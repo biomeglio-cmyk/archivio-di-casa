@@ -1792,5 +1792,15 @@
       "side": "Strana",
       "status": "Stav"
     }
+  },
+  "contact": {
+    "title": "Kontakt",
+    "writeUs": "Napište nám",
+    "subject": "Sottomano – Nápověda",
+    "footerTitle": "Informace pro podporu:",
+    "noMailTitle": "Žádný účet v Mailu",
+    "noMailMessage": "Můžeš nám napsat na {{email}}.",
+    "copyAddress": "Kopírovat adresu",
+    "copied": "Adresa zkopírována"
   }
 }

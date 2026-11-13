@@ -1716,5 +1716,15 @@
       "side": "Yüz",
       "status": "Durum"
     }
+  },
+  "contact": {
+    "title": "İletişim",
+    "writeUs": "Bize yaz",
+    "subject": "Sottomano – Yardım",
+    "footerTitle": "Destek için bilgiler:",
+    "noMailTitle": "Mail hesabı yok",
+    "noMailMessage": "Bize {{email}} adresinden yazabilirsin.",
+    "copyAddress": "Adresi kopyala",
+    "copied": "Adres kopyalandı"
   }
 }

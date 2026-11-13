@@ -1716,5 +1716,15 @@
       "side": "Puoli",
       "status": "Tila"
     }
+  },
+  "contact": {
+    "title": "Yhteystiedot",
+    "writeUs": "Kirjoita meille",
+    "subject": "Sottomano – Ohje",
+    "footerTitle": "Tiedot tukea varten:",
+    "noMailTitle": "Ei Mail-tiliä",
+    "noMailMessage": "Voit kirjoittaa meille osoitteeseen {{email}}.",
+    "copyAddress": "Kopioi osoite",
+    "copied": "Osoite kopioitu"
   }
 }

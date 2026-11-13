@@ -14,6 +14,7 @@ import type { CategoryWithCount } from '@/db/types';
 import { encodePendingFiles } from '@/storage/pending-files';
 import { categoryTint } from '@/utils/colors';
 import { whenBelowLimit } from '@/settings/free-limit';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { t, useI18n } from '@/i18n';
 
@@ -34,9 +35,9 @@ async function loadPdf() {
 export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
-  const { width, fontScale } = useWindowDimensions();
+  const { width } = useWindowDimensions();
   const { t } = useI18n();
-  const large = fontScale > 1.3;
+  const large = useLargeText(); // one folder per row (the shared column rule)
   // Large text: "Carica un PDF" with its icon above, centered like the empty state and its button
   const iconRow = useIconRow();
   // Larger text: one folder per row, names in full
@@ -92,7 +93,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
         <Pressable
           onPress={() => router.push('/category-form')}
           accessibilityRole="button"
-          style={({ pressed }) => [styles.folder, styles.add, { width: tileWidth }, pressed && { backgroundColor: theme.paleLilac }]}>
+          style={({ pressed }) => [styles.folder, styles.add, { width: tileWidth }, iconRow.addRow, pressed && { backgroundColor: theme.paleLilac }]}>
           <SymbolView name="plus" tintColor={theme.textSecondary} size={22} />
           <Text style={styles.addText}>{t('homeEmpty.newCategory')}</Text>
         </Pressable>

@@ -9,10 +9,13 @@ import { pickPdf, pickPhotos } from '@/capture/pick-files';
 import { isScannerAvailable, scanDocument } from '@/capture/scan-document';
 import { CameraCapture } from '@/components/camera-capture';
 import { SecondaryButton } from '@/components/secondary-button';
+import { useIconRow } from '@/components/icon-row';
+import { NoBreakText } from '@/components/tile-title';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import type { Category, DocumentFile, FileSide } from '@/db/types';
+import { usePagesPerRow } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 import { resolveDocumentFile } from '@/storage/document-files';
@@ -223,6 +226,7 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
   const theme = useTheme();
   const { fontScale } = useWindowDimensions();
   const large = fontScale > 1.3; // larger text: the caption goes above the sheet, on up to 2 lines
+  const perRow = usePagesPerRow(); // the shared column rule: 3 pages per row, 2 with large text, 1 from AX1
   const name = label ?? (file.kind === 'pdf' ? 'PDF' : t('filesEditor.page'));
   const canMove = Boolean(onMoveLeft || onMoveRight);
   const isNew = Boolean(file.pending && file.kind === 'image');
@@ -234,7 +238,7 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
   ];
 
   return (
-    <View style={[styles.cell, large && styles.cellLarge, { backgroundColor: theme.lilac }]}>
+    <View style={[styles.cell, CELL_WIDTH[perRow], large && styles.cellLarge, { backgroundColor: theme.lilac }]}>
       {caption.length > 0 && (
         <ThemedText
           type="smallBold"
@@ -288,9 +292,17 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
 }
 
 // The dashed tile at the end of the grid: "Aggiungi pagina" (or "Sostituisci PDF")
+// Width of a page cell for 3, 2 or 1 per row (10 pt gaps)
+const CELL_WIDTH = {
+  3: { width: '31.4%' },
+  2: { width: '48.4%' },
+  1: { width: '100%' },
+} as const;
+
 function AddTile({ label, symbol, onPress }: { label: string; symbol: 'plus' | 'doc'; onPress: () => void }) {
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
+  const iconRow = useIconRow(); // large text: full width, the icon and the label on one line
   return (
     <Pressable
       onPress={onPress}
@@ -298,13 +310,14 @@ function AddTile({ label, symbol, onPress }: { label: string; symbol: 'plus' | '
       style={({ pressed }) => [
         styles.cell,
         styles.add,
+        iconRow.addRow,
         { borderColor: theme.dashed },
         pressed && { backgroundColor: theme.paleLilac },
       ]}>
       <SymbolView name={symbol} tintColor={theme.textSecondary} size={22} />
-      <ThemedText style={styles.addLabel} themeColor="textSecondary">
+      <NoBreakText style={[styles.addLabel, { color: theme.textSecondary }, iconRow.addLabel]} containerStyle={styles.addLabelBox}>
         {label}
-      </ThemedText>
+      </NoBreakText>
     </Pressable>
   );
 }
@@ -345,7 +358,7 @@ const makeStyles = (c: Palette) =>
     gap: 10,
   },
   cell: {
-    width: '31.4%', // 3 columns with two 10pt gaps
+    // the width: CELL_WIDTH (3, 2 or 1 per row)
     minHeight: 140,
     borderRadius: 18,
     borderCurve: 'continuous',
@@ -416,6 +429,10 @@ const makeStyles = (c: Palette) =>
     borderStyle: 'dashed',
     gap: 6,
     padding: 8,
+  },
+  addLabelBox: {
+    flexShrink: 1,
+    alignSelf: 'stretch',
   },
   addLabel: {
     fontSize: 13,

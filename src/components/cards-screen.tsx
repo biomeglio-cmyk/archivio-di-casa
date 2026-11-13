@@ -18,6 +18,7 @@ import { BarcodeFullScreen, GeneratedCode } from '@/components/barcode-view';
 import { PageHeader } from '@/components/page-header';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { REORDER_FOOTER, ReorderHeader, ReorderRow, SortableList } from '@/components/sortable-list';
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { spacedNumber, WALLET_CARD_HEIGHT, WALLET_CARD_PEEK, WalletCardFace } from '@/components/wallet-card';
 import { type Palette, Spacing } from '@/constants/theme';
@@ -49,6 +50,7 @@ type Props = {
 // long press for the quick actions, "…" for the category.
 export function CardsScreen({ category, cards }: Props) {
   const theme = useTheme();
+  const iconRow = useIconRow(); // large text: "Nuova tessera" full width, "+" and label on one line
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const db = useSQLiteContext();
@@ -182,9 +184,9 @@ export function CardsScreen({ category, cards }: Props) {
             <Pressable
               onPress={add}
               accessibilityRole="button"
-              style={({ pressed }) => [styles.add, { borderColor: dashed }, pressed && { backgroundColor: tint }]}>
+              style={({ pressed }) => [styles.add, iconRow.addRow, { borderColor: dashed }, pressed && { backgroundColor: tint }]}>
               <SymbolView name="plus" tintColor={onTint} size={22} accessibilityElementsHidden importantForAccessibility="no" />
-              <Text style={[styles.addLabel, { color: onTint }]}>{t('cardsScreen.newCard')}</Text>
+              <Text style={[styles.addLabel, iconRow.addLabel, { color: onTint }]}>{t('cardsScreen.newCard')}</Text>
             </Pressable>
           </>
         )}

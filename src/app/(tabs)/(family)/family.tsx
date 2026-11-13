@@ -132,9 +132,9 @@ export default function FamilyScreen() {
             <Pressable
               onPress={addPerson}
               accessibilityRole="button"
-              style={({ pressed }) => [styles.add, pressed && styles.addPressed]}>
+              style={({ pressed }) => [styles.add, iconRow.addRow, pressed && styles.addPressed]}>
               <SymbolView name="plus" tintColor={theme.textSecondary} size={24} weight="semibold" />
-              <Text style={styles.addLabel}>{t('family.addPerson')}</Text>
+              <Text style={[styles.addLabel, iconRow.addLabel]}>{t('family.addPerson')}</Text>
             </Pressable>
 
             <View style={[styles.note, iconRow.row]}>

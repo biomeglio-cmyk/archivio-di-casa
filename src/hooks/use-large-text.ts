@@ -13,3 +13,16 @@ export function useLargeText(): boolean {
 export function useLayoutColumns(usual = 2): number {
   return useLargeText() ? 1 : usual;
 }
+
+// From the first accessibility size (AX1, 28 pt body)
+export const ACCESSIBILITY_TEXT_SCALE = 28 / 17 - 0.01;
+
+// Small grids of 3 (the pages of a document): 3 per row on a phone of 360 pt or more at the default
+// text (up to Large), 2 otherwise (a narrow phone, larger text: "Seite hinzufügen" needs the room),
+// 1 from AX1
+export function usePagesPerRow(): 1 | 2 | 3 {
+  const { fontScale, width } = useWindowDimensions();
+  if (fontScale >= ACCESSIBILITY_TEXT_SCALE) return 1;
+  if (fontScale > 1.01 || width < 360) return 2;
+  return 3;
+}

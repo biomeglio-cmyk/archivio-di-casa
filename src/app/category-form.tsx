@@ -232,19 +232,32 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           <LinearGradient
             colors={gradient}
             {...tileGradientPoints(look)}
-            style={[styles.preview, { boxShadow: shadow }, tileFrame(look)]}
+            style={[styles.preview, largeText && styles.previewLarge, { boxShadow: shadow }, tileFrame(look)]}
             accessible
             accessibilityRole="image"
             accessibilityLabel={[t('categoryForm.previewA11y'), name.trim(), t('common.documents', { count })].filter(Boolean).join(', ')}>
-            <SymbolView name={symbol} tintColor={look.text} size={30} />
-            <View>
-              <Text style={[styles.previewName, { color: look.text }]} numberOfLines={fontScale > 1.3 ? undefined : 2}>
-                {name.trim() || t('personForm.name')}
-              </Text>
-              <Text style={[styles.previewCount, { color: look.text }]}>
-                {t('common.documents', { count })}
-              </Text>
-            </View>
+            {largeText ? (
+              // As the Home tile in one column: icon and count at the top, the name at the bottom
+              <>
+                <View style={styles.previewTop}>
+                  <SymbolView name={symbol} tintColor={look.text} size={28} />
+                  <Text style={[styles.previewTopCount, { color: look.text }]}>{t('common.documents', { count })}</Text>
+                </View>
+                <Text style={[styles.previewName, { color: look.text }]}>{name.trim() || t('personForm.name')}</Text>
+              </>
+            ) : (
+              <>
+                <SymbolView name={symbol} tintColor={look.text} size={30} />
+                <View>
+                  <Text style={[styles.previewName, { color: look.text }]} numberOfLines={fontScale > 1.3 ? undefined : 2}>
+                    {name.trim() || t('personForm.name')}
+                  </Text>
+                  <Text style={[styles.previewCount, { color: look.text }]}>
+                    {t('common.documents', { count })}
+                  </Text>
+                </View>
+              </>
+            )}
           </LinearGradient>
         </View>
 
@@ -429,6 +442,23 @@ const makeStyles = (c: Palette) =>
     borderRadius: 24,
     borderCurve: 'continuous',
     justifyContent: 'space-between',
+  },
+  previewLarge: {
+    alignSelf: 'stretch',
+    width: undefined,
+    minHeight: 128,
+    gap: 14,
+  },
+  previewTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
+    gap: 8,
+  },
+  previewTopCount: {
+    flexShrink: 1,
+    fontSize: 17,
+    fontFamily: FONTS.semiBold,
   },
   previewName: {
     fontSize: 17,

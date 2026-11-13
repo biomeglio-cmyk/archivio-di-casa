@@ -434,11 +434,12 @@ export function FolderScreen({ category, documents }: Props) {
                     accessibilityRole="button"
                     style={({ pressed }) => [
                       styles.add,
+                      iconRow.addRow,
                       { borderColor: dashed },
                       pressed && { backgroundColor: tint },
                     ]}>
                     <SymbolView name="plus" tintColor={onTint} size={24} />
-                    <Text style={[styles.addLabel, { color: onTint }]}>{newItemLabel(category.builtinKey)}</Text>
+                    <Text style={[styles.addLabel, iconRow.addLabel, { color: onTint }]}>{newItemLabel(category.builtinKey)}</Text>
                   </Pressable>
                 )}
               </>

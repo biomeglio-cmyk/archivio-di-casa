@@ -1,7 +1,8 @@
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, useWindowDimensions } from 'react-native';
+import { Pressable, StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
+import { useIconRow } from '@/components/icon-row';
+import { NoBreakText } from '@/components/tile-title';
 import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
@@ -22,7 +23,7 @@ export function DashedAddTile({ label, size, onPress, radius = Radius.tile, colo
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const { pressed, handlers } = usePressed();
-  const { fontScale } = useWindowDimensions();
+  const iconRow = useIconRow(); // large text: full width, "+" and the label on one line
 
   return (
     <Pressable
@@ -33,13 +34,14 @@ export function DashedAddTile({ label, size, onPress, radius = Radius.tile, colo
       style={[
         size,
         styles.tile,
+        iconRow.addRow,
         { borderColor: color ?? theme.dashed, borderRadius: radius },
         pressed && { backgroundColor: theme.paleLilac },
       ]}>
       <SymbolView name="plus" tintColor={color ?? theme.textSecondary} size={24} />
-      <ThemedText style={[styles.label, { color: color ?? theme.textSecondary }]} numberOfLines={fontScale > 1.3 ? undefined : 2}>
+      <NoBreakText style={[styles.label, iconRow.addLabel, { color: color ?? theme.textSecondary }]} containerStyle={styles.labelBox}>
         {label}
-      </ThemedText>
+      </NoBreakText>
     </Pressable>
   );
 }
@@ -54,6 +56,10 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'center',
     gap: 6,
     padding: 14,
+  },
+  labelBox: {
+    flexShrink: 1,
+    alignSelf: 'stretch',
   },
   label: {
     fontSize: 15,

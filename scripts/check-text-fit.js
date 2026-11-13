@@ -21,6 +21,8 @@
  *    every word must fit at full size
  *  - icon rows (components/icon-row.ts: every row, button, banner or box with an icon next to its
  *    text): beside the icon, or with large text under it with the whole width, left-aligned
+ *  - dashed "add" tiles/buttons: under the "+" in a grid tile; with large text full width, "+" and
+ *    the label on one line. The Nuova categoria preview: 172 wide, full width with large text
  *  - form rows (documento, tessera, password, categoria, persona): beside the icon, or with large
  *    text under it with the whole card width
  *  - any other text (paragraphs, notes) in a card: every word must fit at full size
@@ -172,6 +174,24 @@ const PLACES = {
   // beside the icon (44 + 12) in a card by default; with large text the icon above, the text across
   iconRow: (W, scale) => ({ label: 'icon row', size: 16, weight: 500, mode: 'words', minScale: 0.5, autoFit: true,
     width: W - SIDE * 2 - CARD_PAD * 2 - (scale >= LARGE_TEXT_SCALE ? 0 : 44 + 12) }),
+  // Dashed "add" tiles and buttons (labels: NoBreakText, 85 % at most): with large text full width,
+  // "+" (24) and the label on one line
+  //  - in a tile grid (2 per row by default)
+  addTileGrid: (W, scale) => ({ label: 'add tile', size: 15, weight: 500, mode: 'words', minScale: 0.85,
+    width: scale >= LARGE_TEXT_SCALE ? W - SIDE * 2 - 32 - 24 - 10 : Math.floor((W - SIDE * 2 - 14) / 2) - 28 }),
+  //  - in the pages editor: 3 per row on 360 pt+ at the default text, else 2, from AX1 1
+  addTilePages: (W, scale) => {
+    const perRow = scale >= 28 / 17 - 0.01 ? 1 : scale > 1.01 || W < 360 ? 2 : 3;
+    return { label: 'add page tile', size: 15, weight: 500, mode: 'words', minScale: 0.85,
+      width: scale >= LARGE_TEXT_SCALE ? W - SIDE * 2 - 32 - 24 - 10 : Math.floor((W - SIDE * 2 - 10 * (perRow - 1)) / perRow) - 28 };
+  },
+  //  - full-width dashed buttons (Aggiungi una persona, Nuova tessera)
+  addButton: (W, scale) => ({ label: 'add button', size: 15, weight: 500, mode: 'words', minScale: 0.85,
+    width: W - SIDE * 2 - 32 - (scale >= LARGE_TEXT_SCALE ? 24 + 10 : 0) }),
+  // The preview of Nuova/Modifica categoria: 172 wide by default (name and "N documenti" under the
+  // icon); with large text full width like a Home tile in one column (the count next to the icon)
+  categoryPreview: (W, scale) => ({ label: 'category preview', size: 17, weight: 600, mode: 'words', minScale: 0.5, autoFit: true,
+    width: scale >= LARGE_TEXT_SCALE ? W - SIDE * 2 - 32 - 28 - 8 : 172 - 32 }),
   // Scadenze, the selected day panel (dayBox: page − 2×14 padding, dot 8 + gap 10): by default
   // the amount / "promemoria" on the name's line (at least 90 pt left for the name); with large
   // text under the name, left-aligned, with the whole width (FitLine)
@@ -284,6 +304,14 @@ for (const prefix of [
 ]) {
   slots.push({ prefix, place: 'iconRow', where: 'icon rows' });
 }
+// Dashed add tiles and buttons, and the category preview
+for (const key of ['home.newCategory', 'personScreen.addDocument', 'documentGrid.addDocument', 'homeEmpty.newCategory']) {
+  slots.push({ key, place: 'addTileGrid', where: 'add tiles' });
+}
+slots.push({ prefix: 'folder.newItem.', place: 'addTileGrid', where: 'add tiles' });
+for (const key of ['filesEditor.addPage', 'filesEditor.addBack', 'filesEditor.replacePdf']) slots.push({ key, place: 'addTilePages', where: 'pages editor' });
+for (const key of ['family.addPerson', 'cardsScreen.newCard']) slots.push({ key, place: 'addButton', where: 'add buttons' });
+slots.push({ prefix: 'common.documents', place: 'categoryPreview', where: 'category preview' });
 // Scadenze: the trailing label of the selected day's rows, and the section titles of the list
 for (const key of ['deadlines.dayRepeats', 'deadlines.dayReminder']) slots.push({ key, place: 'daySide', where: 'Scadenze day panel' });
 slots.push({ prefix: 'deadlineUtils.', place: 'sectionTitle', where: 'Scadenze sections' });

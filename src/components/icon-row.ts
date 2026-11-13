@@ -25,6 +25,10 @@ const TEXTS: ViewStyle = { flex: 0, flexShrink: 0, alignSelf: 'stretch' };
 const TEXT: TextStyle = { textAlign: 'left' };
 const TRAILING_END: ViewStyle = { alignSelf: 'flex-end' };
 const TRAILING_START: ViewStyle = { alignSelf: 'flex-start' };
+// A dashed "add" tile or button (Aggiungi pagina, Nuovo documento, Nuova categoria, Aggiungi una
+// persona, Nuova tessera): with large text full width, "+" and the label on one line
+const ADD_ROW: ViewStyle = { width: '100%', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 10, minHeight: 64, paddingHorizontal: 16 };
+const ADD_LABEL: TextStyle = { flexShrink: 1, textAlign: 'left' };
 
 export type IconRow = {
   large: boolean;
@@ -34,6 +38,8 @@ export type IconRow = {
   text: TextStyle | null; // a text that was centered or right-aligned: left-aligned when stacked
   trailingEnd: ViewStyle | null; // a switch or a check under the text, on the right
   trailingStart: ViewStyle | null; // a value, a link or a button under the text, on the left
+  addRow: ViewStyle | null; // a dashed "add" tile/button: full width, "+" and label on one line
+  addLabel: TextStyle | null;
 };
 
 export function useIconRow(): IconRow {
@@ -46,5 +52,7 @@ export function useIconRow(): IconRow {
     text: large ? TEXT : null,
     trailingEnd: large ? TRAILING_END : null,
     trailingStart: large ? TRAILING_START : null,
+    addRow: large ? ADD_ROW : null,
+    addLabel: large ? ADD_LABEL : null,
   };
 }

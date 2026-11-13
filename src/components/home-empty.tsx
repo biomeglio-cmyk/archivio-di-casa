@@ -37,9 +37,13 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
         <View style={styles.art} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
           <Sheet left={14} top={14} rotate="-10deg" accent="#FFA36E" />
           <Sheet right={12} top={4} rotate="8deg" accent="#6FD3AE" />
-          <LinearGradient colors={BRAND_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={styles.camera}>
+          {/* Shadow outside, the round gradient clipped inside (rounded on iOS too) */}
+          <View style={styles.camera}>
+            <View style={[StyleSheet.absoluteFill, styles.cameraClip]}>
+              <LinearGradient colors={BRAND_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={StyleSheet.absoluteFill} />
+            </View>
             <SymbolView name="camera" tintColor="#FFFFFF" size={24} />
-          </LinearGradient>
+          </View>
         </View>
         <Text style={styles.title} accessibilityRole="header">
           Fotografa il tuo primo documento
@@ -137,6 +141,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0 8px 16px rgba(100, 90, 235, 0.30)',
+  },
+  cameraClip: {
+    borderRadius: 26,
+    overflow: 'hidden',
   },
   title: {
     marginTop: 18,

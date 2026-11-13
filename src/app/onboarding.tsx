@@ -133,11 +133,19 @@ function Circle({ color }: { color: string }) {
   return <View style={[styles.circle, { backgroundColor: color }]} />;
 }
 
+// A gradient shape: the outer view carries place, size, rotation and shadow; the gradient is drawn
+// in a clip with the same corner radius (overflow hidden), so on iOS it is always rounded, also
+// next to a shadow
 function Gradient({ colors, style, children }: { colors: readonly [string, string]; style: object; children?: ReactNode }) {
+  const flat = StyleSheet.flatten(style) as { borderRadius?: number };
+  const clip = { borderRadius: flat.borderRadius ?? 0 };
   return (
-    <LinearGradient colors={colors} start={GRADIENT_START} end={GRADIENT_END} style={style}>
+    <View style={style}>
+      <View style={[StyleSheet.absoluteFill, styles.clip, clip]} pointerEvents="none">
+        <LinearGradient colors={colors} start={GRADIENT_START} end={GRADIENT_END} style={StyleSheet.absoluteFill} />
+      </View>
       {children}
-    </LinearGradient>
+    </View>
   );
 }
 
@@ -151,12 +159,14 @@ function MiniTile({ name, symbol, colors, shadow, left, top, rotate }: {
   rotate: string;
 }) {
   return (
-    <Gradient
-      colors={colors}
-      style={[styles.miniTile, { left, top, transform: [{ rotate }], boxShadow: `0 14px 26px rgba(${shadow}, 0.28)` }]}>
-      <SymbolView name={symbol} tintColor="#FFFFFF" size={24} />
-      <Text style={styles.miniTileName}>{name}</Text>
-    </Gradient>
+    // Outer view: place, rotation and colored shadow; inner view: the rounded clip of the gradient
+    <View style={[styles.miniTile, { left, top, transform: [{ rotate }], boxShadow: `0 14px 26px rgba(${shadow}, 0.28)` }]}>
+      <View style={styles.miniTileClip}>
+        <Gradient colors={colors} style={StyleSheet.absoluteFill} />
+        <SymbolView name={symbol} tintColor="#FFFFFF" size={24} />
+        <Text style={styles.miniTileName}>{name}</Text>
+      </View>
+    </View>
   );
 }
 
@@ -276,16 +286,20 @@ function WalletCard({ name, colors, accent, left, top, rotate }: {
   rotate: string;
 }) {
   return (
-    <Gradient colors={colors} style={[styles.wallet, { left, top, transform: [{ rotate }] }]}>
-      <View style={styles.walletCircleTop} />
-      <View style={[styles.walletCircleBottom, { backgroundColor: accent }]} />
-      <Text style={styles.walletName}>{name}</Text>
-      <View style={styles.walletCode}>
-        {Array.from({ length: 34 }, (_, i) => (
-          <View key={i} style={[styles.walletBar, { width: i % 3 === 0 ? 3 : 2 }]} />
-        ))}
+    // Outer view: place, rotation and shadow; inner view: the rounded clip of gradient and circles
+    <View style={[styles.wallet, { left, top, transform: [{ rotate }] }]}>
+      <View style={styles.walletClip}>
+        <Gradient colors={colors} style={StyleSheet.absoluteFill} />
+        <View style={styles.walletCircleTop} />
+        <View style={[styles.walletCircleBottom, { backgroundColor: accent }]} />
+        <Text style={styles.walletName}>{name}</Text>
+        <View style={styles.walletCode}>
+          {Array.from({ length: 34 }, (_, i) => (
+            <View key={i} style={[styles.walletBar, { width: i % 3 === 0 ? 3 : 2 }]} />
+          ))}
+        </View>
       </View>
-    </Gradient>
+    </View>
   );
 }
 
@@ -401,6 +415,10 @@ const styles = StyleSheet.create({
     color: Colors.light.accent,
   },
   // Illustrations
+  clip: {
+    overflow: 'hidden',
+    borderCurve: 'continuous',
+  },
   circle: {
     position: 'absolute',
     left: ART_WIDTH / 2 - 150,
@@ -413,8 +431,15 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 132,
     height: 112,
+    borderRadius: 24,
+    borderCurve: 'continuous',
+  },
+  miniTileClip: {
+    flex: 1,
     padding: 14,
     borderRadius: 24,
+    borderCurve: 'continuous',
+    overflow: 'hidden',
     justifyContent: 'space-between',
   },
   miniTileName: {
@@ -619,11 +644,17 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 230,
     height: 144,
+    borderRadius: 16,
+    borderCurve: 'continuous',
+    boxShadow: '0 14px 28px rgba(28, 30, 70, 0.14)',
+  },
+  walletClip: {
+    flex: 1,
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 16,
+    borderCurve: 'continuous',
     overflow: 'hidden',
-    boxShadow: '0 14px 28px rgba(28, 30, 70, 0.14)',
   },
   walletCircleTop: {
     position: 'absolute',

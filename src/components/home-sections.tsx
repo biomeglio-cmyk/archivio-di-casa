@@ -9,7 +9,7 @@ import { Text } from '@/components/text';
 import { TileTitle } from '@/components/tile-title';
 import { WhiteCard } from '@/components/white-card';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
-import { Colors, Radius, tintedShadow, themedStyles } from '@/constants/theme';
+import { type Palette, Radius, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
@@ -18,6 +18,7 @@ import { categoryShadowRgb, hexToRgb } from '@/utils/colors';
 import { describeDistance, formatShortDate } from '@/utils/dates';
 import { formatEuro } from '@/utils/money';
 import { daysUntil } from '@/utils/deadlines';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const FAVORITE_HEIGHT = 196;
 // The favorites of the design use a steeper gradient than the category squares (160°)
@@ -45,6 +46,7 @@ function favoriteSubtitle(document: DocumentListItem): string {
 // "Foto") the photo at the top; a picked color (or a card's color) as a solid background.
 // Name 17/600 and the deadline 13/400 at the bottom, in white.
 export function FavoriteTile({ document }: { document: DocumentListItem }) {
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   const { category } = document;
   const showPhoto = document.firstImagePath !== null && document.coverMode !== 'color';
@@ -109,6 +111,8 @@ function deadlineSubtitle(document: DocumentListItem, days: number): string {
 // The next deadline of Home: date square in the main gradient, name 16/600, distance 13 indigo,
 // chevron; in a white card. Tap opens the document.
 export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   if (!document.expiresAt) return null;
   const days = daysUntil(document.expiresAt);
@@ -129,13 +133,13 @@ export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
             {deadlineSubtitle(document, days)}
           </Text>
         </View>
-        <SymbolView name="chevron.right" tintColor={Colors.current.textSecondary} size={16} weight="semibold" />
+        <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={16} weight="semibold" />
       </Pressable>
     </WhiteCard>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   favorite: {
     flex: 1,
@@ -191,12 +195,12 @@ const styles = themedStyles(() =>
     fontSize: 16,
     lineHeight: 21,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   deadlineSubtitle: {
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.current.indigo,
+    color: c.indigo,
   },
-}));
+});

@@ -4,14 +4,17 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { LogoMark } from '@/components/logo-mark';
 import { Text } from '@/components/text';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
 import { useNotificationFeed } from '@/notifications/feed';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 // Top of Home (docs/design/Main.dc.html): ≡ menu on the left; on the right the bell, with the
 // number of unread notifications, which opens the Notifiche panel, and the logo.
 export function HomeHeader() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { unread } = useNotificationFeed();
   const menu = usePressed();
   const bell = usePressed();
@@ -25,7 +28,7 @@ export function HomeHeader() {
         accessibilityRole="button"
         accessibilityLabel="Menu"
         style={[styles.menu, menu.pressed && styles.pressed]}>
-        <SymbolView name="line.3.horizontal" tintColor={Colors.current.text} size={22} weight="medium" />
+        <SymbolView name="line.3.horizontal" tintColor={theme.text} size={22} weight="medium" />
       </Pressable>
       <View style={styles.right}>
         <Pressable
@@ -34,7 +37,7 @@ export function HomeHeader() {
           accessibilityRole="button"
           accessibilityLabel={count > 0 ? `Notifiche, ${count} non lette` : 'Notifiche'}
           style={[styles.bell, bell.pressed && styles.pressed]}>
-          <SymbolView name="bell" tintColor={Colors.current.text} size={21} weight="medium" />
+          <SymbolView name="bell" tintColor={theme.text} size={21} weight="medium" />
           {count > 0 && (
             <View style={styles.badge} accessibilityElementsHidden>
               <Text style={styles.badgeText} maxFontSizeMultiplier={1.2}>
@@ -51,7 +54,7 @@ export function HomeHeader() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -74,7 +77,7 @@ const styles = themedStyles(() =>
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -88,7 +91,7 @@ const styles = themedStyles(() =>
     borderRadius: 9,
     borderWidth: 2,
     borderColor: '#FFFFFF',
-    backgroundColor: Colors.current.badge,
+    backgroundColor: c.badge,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -106,4 +109,4 @@ const styles = themedStyles(() =>
   pressed: {
     opacity: 0.6,
   },
-}));
+});

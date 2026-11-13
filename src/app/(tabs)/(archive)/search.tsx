@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Chip, ChipGroup } from '@/components/chip';
 import { Text, TextInput } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { CardSurface, Colors, Spacing, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
+import { cardSurface, onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategoriesWithCounts } from '@/db/categories';
 import { listAllDocuments } from '@/db/documents';
@@ -17,15 +17,12 @@ import { usePressed } from '@/hooks/use-pressed';
 import { SEARCH_FILTERS, searchEverything, type SearchFilterKey, type SearchResult } from '@/search/search-all';
 import { highlight, type MatchRange } from '@/search/text-match';
 import { categoryShadowRgb } from '@/utils/colors';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const DEBOUNCE_MS = 150;
 const LENS = '#6D5CE6';
-let MARK_BACKGROUND = '';
-let MARK_TEXT = '';
-onTheme(() => {
-  MARK_BACKGROUND = softTint('#E8E5FD', '#262849');
-  MARK_TEXT = onSoftTint('#3A2BC8', '#B3A8FF');
-});
+const MARK_BACKGROUND = (p: Palette) => softTint(p, '#E8E5FD', '#262849');
+const MARK_TEXT = (p: Palette) => onSoftTint(p, '#3A2BC8', '#B3A8FF');
 
 // "Ricerca" (docs/design/Ricerca.dc.html), opened by the field in Home: the field (lilac, ringed)
 // with "Annulla", the filters Tutto / Documenti / Tessere / Scadenze, "N RISULTATI" and the results
@@ -33,6 +30,8 @@ onTheme(() => {
 // grey line), or "Nessun risultato". It searches names, folders, Tipo, numbers, people, notes,
 // cards and deadlines.
 export default function SearchScreen() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const { data: documents } = useDbQuery(listAllDocuments, []);
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
@@ -62,7 +61,7 @@ export default function SearchScreen() {
             value={query}
             onChangeText={setQuery}
             placeholder="Cerca un documento"
-            placeholderTextColor={Colors.current.placeholder}
+            placeholderTextColor={theme.placeholder}
             autoFocus
             returnKeyType="search"
             clearButtonMode="while-editing"
@@ -110,6 +109,7 @@ export default function SearchScreen() {
 }
 
 function ResultRow({ result }: { result: SearchResult }) {
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   return (
     <Pressable
@@ -135,6 +135,7 @@ function ResultRow({ result }: { result: SearchResult }) {
 
 // Text with the found part on a soft lilac mark, bold indigo
 function Marked({ text, match, style }: { text: string; match: MatchRange | null; style: object }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Text style={style} numberOfLines={2}>
       {highlight(text, match).map((segment, index) =>
@@ -150,11 +151,11 @@ function Marked({ text, match, style }: { text: string; match: MatchRange | null
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -169,7 +170,7 @@ const styles = themedStyles(() =>
     height: 52,
     paddingHorizontal: 16,
     borderRadius: 26,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
     boxShadow: '0 0 0 2px #C9C2FF',
     flexDirection: 'row',
     alignItems: 'center',
@@ -179,12 +180,12 @@ const styles = themedStyles(() =>
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   cancel: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.accent,
+    color: c.accent,
   },
   filters: {
     marginTop: 16,
@@ -194,14 +195,14 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   list: {
     marginTop: 12,
     gap: 10,
   },
   row: {
-    ...CardSurface,
+    ...cardSurface(c),
     borderRadius: 20,
     flexDirection: 'row',
     alignItems: 'center',
@@ -227,16 +228,16 @@ const styles = themedStyles(() =>
   title: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   subtitle: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   mark: {
-    backgroundColor: MARK_BACKGROUND,
-    color: MARK_TEXT,
+    backgroundColor: MARK_BACKGROUND(c),
+    color: MARK_TEXT(c),
     fontFamily: FONTS.bold,
   },
   none: {
@@ -244,19 +245,19 @@ const styles = themedStyles(() =>
     paddingHorizontal: 20,
     borderRadius: 22,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     alignItems: 'center',
   },
   noneTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   noneText: {
     marginTop: 6,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
   hint: {
@@ -265,7 +266,7 @@ const styles = themedStyles(() =>
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
-}));
+});

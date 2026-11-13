@@ -4,8 +4,9 @@ import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from '@/components/text';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 export type SheetAction = {
   key: string;
@@ -27,6 +28,8 @@ type Props = {
 // grabber, a title, 56-high rounded actions, "Annulla". Tap outside closes it. The chosen action
 // runs after the sheet is gone, so its alerts and screens are never hidden behind it.
 export function ActionSheet({ visible, title, subtitle, actions, onClose }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const pending = useRef<(() => void) | null>(null);
 
@@ -61,7 +64,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
           {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
           <View style={styles.actions}>
             {actions.map((action) => {
-              const color = action.destructive ? Colors.current.error : Colors.current.text;
+              const color = action.destructive ? theme.error : theme.text;
               return (
                 <Pressable
                   key={action.key}
@@ -69,7 +72,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
                   accessibilityRole="menuitem"
                   style={({ pressed }) => [
                     styles.action,
-                    { backgroundColor: action.destructive ? Colors.current.errorBackground : Colors.current.paleLilac },
+                    { backgroundColor: action.destructive ? theme.errorBackground : theme.paleLilac },
                     pressed && styles.pressed,
                   ]}>
                   <SymbolView name={action.symbol} tintColor={color} size={20} />
@@ -87,7 +90,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   fill: {
     flex: 1,
@@ -95,7 +98,7 @@ const styles = themedStyles(() =>
     backgroundColor: 'rgba(28, 30, 70, 0.35)',
   },
   sheet: {
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderCurve: 'continuous',
@@ -108,21 +111,21 @@ const styles = themedStyles(() =>
     width: 40,
     height: 5,
     borderRadius: 3,
-    backgroundColor: Colors.current.switchOff,
+    backgroundColor: c.switchOff,
   },
   title: {
     marginTop: 18,
     marginHorizontal: 4,
     fontSize: 18,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   subtitle: {
     marginTop: 2,
     marginHorizontal: 4,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   actions: {
     marginTop: 16,
@@ -155,6 +158,6 @@ const styles = themedStyles(() =>
   cancelLabel: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.indigo,
+    color: c.indigo,
   },
-}));
+});

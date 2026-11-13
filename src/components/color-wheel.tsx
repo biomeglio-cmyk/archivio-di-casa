@@ -4,7 +4,8 @@ import { GestureDetector, GestureHandlerRootView, usePanGesture } from 'react-na
 import Svg, { Circle, Defs, Path, RadialGradient, Stop } from 'react-native-svg';
 
 import { wheelHex } from '@/utils/password-tools';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const SIZE = 200;
 const R = SIZE / 2;
@@ -29,6 +30,7 @@ function wedge(index: number): string {
 // continuously and stays on the edge when the finger goes outside the circle. While the finger is
 // down the page around is told to stop scrolling (onDraggingChange); a light tap of haptics on release.
 export function ColorWheel({ hue, radius, onChange, onDraggingChange }: Props) {
+  const styles = useThemedStyles(makeStyles);
   function pick(x: number, y: number) {
     const dx = x - R;
     const dy = y - R;
@@ -95,7 +97,7 @@ export function ColorWheel({ hue, radius, onChange, onDraggingChange }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   root: {
     width: SIZE,
@@ -117,4 +119,4 @@ const styles = themedStyles(() =>
     borderColor: '#FFFFFF',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
   },
-}));
+});

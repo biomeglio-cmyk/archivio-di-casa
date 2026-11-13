@@ -14,14 +14,16 @@ import { PrimaryButton } from '@/components/primary-button';
 import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
-import { Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
 
 // Sheet "Calendario": permission and the sync switch. The deadlines go into the app's own
 // calendar "Sottomano"; turning the switch off deletes that calendar with all its events.
 export default function CalendarSettingsSheet() {
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const [permission, setPermission] = useState<PermissionState>('unknown');
   const [settings, setSettings] = useState<CalendarSettings>(getCalendarSettings);
@@ -126,7 +128,7 @@ export default function CalendarSettingsSheet() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   container: {
     paddingHorizontal: Spacing.side,
@@ -156,4 +158,4 @@ const styles = themedStyles(() =>
   status: {
     textAlign: 'center',
   },
-}));
+});

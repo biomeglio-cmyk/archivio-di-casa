@@ -11,7 +11,7 @@ import { Segmented } from '@/components/segmented';
 import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
+import { onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { copyToClipboard, emailFiles, printFiles, saveToFiles, shareFiles } from '@/send/deliver';
@@ -29,12 +29,10 @@ import {
   SIZE_LIMITS,
   type SendPreferences,
 } from '@/send/send-preferences';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 // Warnings: soft orange box, dark orange text
-let WARNING_COLORS = { text: '', background: '' };
-onTheme(() => {
-  WARNING_COLORS = { text: onSoftTint('#B35400', '#FFB48A'), background: softTint('#FFF1E0', '#3A2418') };
-});
+const WARNING_COLORS = (p: Palette) => ({ text: onSoftTint(p, '#B35400', '#FFB48A'), background: softTint(p, '#FFF1E0', '#3A2418') });
 
 // Sheet "Invia" (docs/design/Invia.dc.html): /send?ids=12 for one document, /send?ids=3,7,9&label=…
 // for several. The document with "PDF unico · 2 pagine · 1,2 MB", PDF / Foto, then Email, WhatsApp,
@@ -71,6 +69,8 @@ const ACTIONS: {
 ];
 
 function SendForm({ items, label }: { items: SendItem[]; label: string | null }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const composerRef = useRef<FrontBackComposerHandle>(null);
   const [preferences, setPreferences] = useState<SendPreferences>(loadSendPreferences);
@@ -194,7 +194,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       : 'Preparazione…';
   const ready = Boolean(prepared) && !delivering;
   const firstPhoto = single?.files.find((f) => f.kind === 'image');
-  const { tint, onTint } = single ? categoryTint(single.category.colors) : { tint: Colors.current.lilac, onTint: Colors.current.indigo };
+  const { tint, onTint } = single ? categoryTint(single.category.colors, theme) : { tint: theme.lilac, onTint: theme.indigo };
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { paddingBottom: insets.bottom + 24 }]}>
@@ -250,8 +250,8 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
                 <SymbolView name={action.symbol} tintColor="#FFFFFF" size={26} />
               </LinearGradient>
             ) : (
-              <View style={[styles.actionIcon, { backgroundColor: Colors.current.lilac }]}>
-                <SymbolView name={action.symbol} tintColor={Colors.current.indigo} size={26} />
+              <View style={[styles.actionIcon, { backgroundColor: theme.lilac }]}>
+                <SymbolView name={action.symbol} tintColor={theme.indigo} size={26} />
               </View>
             )}
             <Text style={styles.actionLabel} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
@@ -304,7 +304,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
         <View style={styles.files}>
           {prepared.files.map((file) => (
             <View key={file.name} style={styles.fileRow}>
-              <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={Colors.current.indigo} size={20} />
+              <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={theme.indigo} size={20} />
               <Text style={styles.fileName} numberOfLines={1}>
                 {file.name}
               </Text>
@@ -342,15 +342,17 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
 }
 
 function Warning({ text }: { text: string }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.warning}>
-      <SymbolView name="exclamationmark.triangle.fill" tintColor={WARNING_COLORS.text} size={16} />
+      <SymbolView name="exclamationmark.triangle.fill" tintColor={WARNING_COLORS(theme).text} size={16} />
       <Text style={styles.warningText}>{text}</Text>
     </View>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   container: {
     paddingHorizontal: Spacing.side,
@@ -395,7 +397,7 @@ const styles = themedStyles(() =>
     width: 22,
     height: 3,
     borderRadius: 2,
-    backgroundColor: Colors.current.separator,
+    backgroundColor: c.separator,
   },
   miniShort: {
     width: 18,
@@ -403,7 +405,7 @@ const styles = themedStyles(() =>
   title: {
     fontSize: 18,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   metaRow: {
     flexDirection: 'row',
@@ -414,7 +416,7 @@ const styles = themedStyles(() =>
     flexShrink: 1,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   format: {
     marginTop: 18,
@@ -444,7 +446,7 @@ const styles = themedStyles(() =>
   actionLabel: {
     fontSize: 13,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   noteRow: {
     marginTop: 22,
@@ -452,7 +454,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 14,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -461,7 +463,7 @@ const styles = themedStyles(() =>
     flex: 1,
     fontSize: 14,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   section: {
     marginTop: 22,
@@ -469,7 +471,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   small: {
     marginTop: 6,
@@ -477,7 +479,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   files: {
     marginTop: 14,
@@ -492,7 +494,7 @@ const styles = themedStyles(() =>
     flex: 1,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.text,
+    color: c.text,
   },
   warning: {
     marginTop: 12,
@@ -502,25 +504,25 @@ const styles = themedStyles(() =>
     padding: 12,
     borderRadius: 12,
     borderCurve: 'continuous',
-    backgroundColor: WARNING_COLORS.background,
+    backgroundColor: WARNING_COLORS(c).background,
   },
   warningText: {
     flex: 1,
     fontSize: 14,
     lineHeight: 19,
-    color: WARNING_COLORS.text,
+    color: WARNING_COLORS(c).text,
   },
   cancel: {
     marginTop: 18,
     height: 50,
     borderRadius: 25,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   cancelText: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
-}));
+});

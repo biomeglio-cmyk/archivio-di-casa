@@ -8,11 +8,11 @@ import { FilesEditor, filesToSave, type EditableFile } from '@/components/files-
 import { Group, Row } from '@/components/grouped-list';
 import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { getDocumentDetail, renewDocument } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { formatDate, parseISODate, toISODate } from '@/utils/dates';
 import { describeRepeat, nextOccurrence } from '@/utils/recurrence';
 import { DateCalendar } from '@/components/date-calendar';
@@ -37,6 +37,7 @@ export default function RenewScreen() {
 }
 
 function RenewContent({ document, expiresAt }: { document: DocumentDetail; expiresAt: string }) {
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const theme = useTheme();
   const { repeat } = document;
@@ -112,7 +113,7 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
@@ -132,4 +133,4 @@ const styles = themedStyles(() =>
   calendar: {
     paddingBottom: 12,
   },
-}));
+});

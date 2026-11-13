@@ -14,7 +14,8 @@ import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/typography';
 import { CARD_BARCODE_TYPES } from '@/constants/card-colors';
 import { useLargestPictureSize } from '@/capture/picture-size';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 export type CardStep = 'front' | 'barcode';
 
@@ -45,6 +46,7 @@ const STEP_TITLE: Record<CardStep, string> = {
 // iPhone Camera app.
 // Every shot gets a "Rifai / Usa" preview; both steps can use the photo library or be skipped.
 export function CardCapture({ steps, onDone, onCancel }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
   const picture = useLargestPictureSize(cameraRef); // full sensor resolution, not the preview size
@@ -251,7 +253,7 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   focusRing: {
     position: 'absolute',
@@ -404,4 +406,4 @@ const styles = themedStyles(() =>
   permissionButton: {
     alignSelf: 'stretch',
   },
-}));
+});

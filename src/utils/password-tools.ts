@@ -1,7 +1,7 @@
 import * as Crypto from 'expo-crypto';
 
 import type { PasswordType } from '@/db/types';
-import { Colors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
 
 // ——— "Forza" of a password: Debole / Media / Buona / Forte (PIN: "Solo numeri") ———
 
@@ -10,9 +10,9 @@ const LEVEL_COLORS = ['#E5243B', '#F59E0B', '#2FA3B8', '#1F9D6B'];
 
 export type Strength = { level: number; label: string; color: string }; // level 0 = nothing typed
 
-export function passwordStrength(password: string, type: PasswordType): Strength {
-  if (type === 'pin') return { level: 0, label: 'Solo numeri', color: Colors.current.textSecondary };
-  if (!password) return { level: 0, label: '', color: Colors.current.textSecondary };
+export function passwordStrength(password: string, type: PasswordType, p: Palette): Strength {
+  if (type === 'pin') return { level: 0, label: 'Solo numeri', color: p.textSecondary };
+  if (!password) return { level: 0, label: '', color: p.textSecondary };
   const classes = [/[a-z]/, /[A-Z]/, /\d/, /[^A-Za-z0-9]/].filter((re) => re.test(password)).length;
   let score = 1;
   if (password.length >= 10 && classes >= 2) score = 2;

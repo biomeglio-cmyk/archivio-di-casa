@@ -7,7 +7,8 @@ import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { CARD_COLORS } from '@/constants/card-colors';
 import type { CategoryColors, CoverMode } from '@/db/types';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const MODES: CoverMode[] = ['photo', 'color'];
 
@@ -28,6 +29,7 @@ type Props = {
 // Colore = a background color with the title large; the category color, a preset, or "Il tuo colore"
 // (wheel and hex code).
 export function CoverField({ mode, onModeChange, color, onColorChange, categoryColors, hasPhoto, onDraggingChange }: Props) {
+  const styles = useThemedStyles(makeStyles);
 
   return (
     <FormField label="Copertina">
@@ -73,11 +75,11 @@ export function CoverField({ mode, onModeChange, color, onColorChange, categoryC
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   colors: {
     padding: 12,
     borderRadius: 12,
     borderCurve: 'continuous',
   },
-}));
+});

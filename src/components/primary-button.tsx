@@ -4,9 +4,10 @@ import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-nat
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, BRAND_SHADOW, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Radius, themedStyles } from '@/constants/theme';
+import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   label: string;
@@ -32,6 +33,7 @@ export function PrimaryButton({
   singleLine = false,
   style,
 }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   return (
     <Pressable
@@ -62,7 +64,7 @@ export function PrimaryButton({
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   button: {
     minHeight: HEIGHT,
@@ -93,4 +95,4 @@ const styles = themedStyles(() =>
     fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
-}));
+});

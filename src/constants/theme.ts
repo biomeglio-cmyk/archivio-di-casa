@@ -4,10 +4,9 @@
  * (constants/brand.ts) for the main actions; and the dark theme of the Impostazioni design (cards
  * with a thin border instead of shadows). Both sets have the same keys.
  *
- * `Colors.current` is ONE object, updated in place when the theme changes (Impostazioni › Aspetto ›
- * Tema; Automatico follows the phone). Styles are built from it lazily, once per theme
- * (`themedStyles`), and module values that depend on it are refreshed with `onTheme`; then the
- * screens are mounted again (settings/theme-mode.ts). Nothing is reloaded: fonts and assets stay.
+ * The active set comes from the ThemeProvider (theme/theme-provider.tsx: Impostazioni › Aspetto ›
+ * Tema, Automatico follows the phone): components read it with useTheme() and build their styles
+ * with useThemedStyles(makeStyles). Nothing here is fixed at load: switching re-renders in place.
  */
 
 import '@/global.css';
@@ -15,7 +14,9 @@ import '@/global.css';
 import Storage from 'expo-sqlite/kv-store';
 import { Appearance, Platform } from 'react-native';
 
-const LIGHT = {
+export type Palette = typeof LIGHT;
+
+export const LIGHT = {
   isDark: false,
   text: '#1C1E2E', // "Inchiostro": main text, icons
   background: '#FFFFFF', // every page
@@ -47,7 +48,7 @@ const LIGHT = {
 };
 
 // "Tema notte" of docs/design-guide.md: the official dark palette
-const DARK: typeof LIGHT = {
+export const DARK: Palette = {
   isDark: true,
   text: '#F2F3FA',
   background: '#0F1020',
@@ -92,62 +93,20 @@ export function readThemeMode(): ThemeMode {
 }
 
 // Whether a mode is dark now: Automatico asks the phone
-export function isDarkMode(mode: ThemeMode): boolean {
-  return (mode === 'auto' ? Appearance.getColorScheme() : mode) === 'dark';
-}
-
-// At start: tell iOS (tab bar, system sheets, alerts follow it), then pick the set
-function startTheme(): typeof LIGHT {
-  const mode = readThemeMode();
-  Appearance.setColorScheme(mode === 'auto' ? 'unspecified' : mode);
-  return { ...(isDarkMode(mode) ? DARK : LIGHT) };
-}
-
-export const Colors = {
-  current: startTheme(), // mutable: always the active set
-} as const;
-
-const listeners = new Set<() => void>();
-
-// A module value that depends on the theme: computed now and again at every change
-export function onTheme(refresh: () => void): void {
-  refresh();
-  listeners.add(refresh);
-}
-
-// Switches the colors in place and refreshes the module values (the caller mounts the screens again)
-export function setDarkColors(dark: boolean): void {
-  if (Colors.current.isDark === dark) return;
-  Object.assign(Colors.current, dark ? DARK : LIGHT);
-  listeners.forEach((refresh) => refresh());
-}
-
-// A StyleSheet built lazily from the active colors, once per theme; used exactly like the object
-// StyleSheet.create returns (styles.row), the values follow the theme
-export function themedStyles<T extends object>(factory: () => T): T {
-  const cache: { light?: T; dark?: T } = {};
-  const current = () => {
-    const key = Colors.current.isDark ? 'dark' : 'light';
-    return (cache[key] ??= factory());
-  };
-  return new Proxy({} as T, {
-    get: (_, property) => current()[property as keyof T],
-    has: (_, property) => property in current(),
-    ownKeys: () => Reflect.ownKeys(current()),
-    getOwnPropertyDescriptor: (_, property) => Reflect.getOwnPropertyDescriptor(current(), property),
-  });
+export function isDarkMode(mode: ThemeMode, system: string | null | undefined = Appearance.getColorScheme()): boolean {
+  return (mode === 'auto' ? system : mode) === 'dark';
 }
 
 // A section tint and the text on it, light and "Tema notte" values (design guide)
-export function softTint(light: string, dark: string): string {
-  return Colors.current.isDark ? dark : light;
+export function softTint(p: Palette, light: string, dark: string): string {
+  return p.isDark ? dark : light;
 }
 
-export function onSoftTint(light: string, dark: string): string {
-  return Colors.current.isDark ? dark : light;
+export function onSoftTint(p: Palette, light: string, dark: string): string {
+  return p.isDark ? dark : light;
 }
 
-export type ThemeColor = Exclude<keyof typeof Colors.current, 'isDark'>;
+export type ThemeColor = Exclude<keyof Palette, 'isDark'>;
 
 export const Fonts = Platform.select({
   ios: {
@@ -204,12 +163,14 @@ export const Radius = {
 
 // Shadows of the guide (CSS boxShadow strings, React Native 0.76+)
 export const Shadows = {
-  get card() {
-    return Colors.current.isDark ? 'none' : '0 6px 22px rgba(28, 30, 70, 0.08)'; // dark: a border instead
-  },
   sheet: '0 -10px 30px rgba(28, 30, 70, 0.15)',
   dialog: '0 20px 50px rgba(28, 30, 70, 0.25)',
 } as const;
+
+// The shadow of a white card; on the dark theme a border instead (cardSurface)
+export function cardShadow(p: Palette): string {
+  return p.isDark ? 'none' : '0 6px 22px rgba(28, 30, 70, 0.08)';
+}
 
 // Colored shadow under a gradient square (category tile), from the "r, g, b" of its color
 export function tintedShadow(rgb: string): string {
@@ -222,28 +183,21 @@ export function iconShadow(rgb: string): string {
 }
 
 // A white card: white, rounded 22, soft shadow. Spread it into a style array.
-// (getters: spread inside a themed style, it takes the active colors)
-export const CardSurface = {
-  get backgroundColor() {
-    return Colors.current.surface;
-  },
-  borderRadius: Radius.card,
-  borderCurve: 'continuous' as const,
-  get boxShadow() {
-    return Shadows.card;
-  },
-  get borderWidth() {
-    return Colors.current.isDark ? 1 : 0; // dark: a 1px border, white 7%, instead of the shadow
-  },
-  get borderColor() {
-    return Colors.current.cardBorder;
-  },
-};
+export function cardSurface(p: Palette) {
+  return {
+    backgroundColor: p.surface,
+    borderRadius: Radius.card,
+    borderCurve: 'continuous' as const,
+    boxShadow: cardShadow(p),
+    borderWidth: p.isDark ? 1 : 0, // dark: a 1px border, white 7%, instead of the shadow
+    borderColor: p.cardBorder,
+  };
+}
 
 // A row of a white card drawn row by row (SectionList sections cannot have a container, so no
 // shared shadow): a thin separator-colored outline and rounded corners on the first and last row.
-export function cardRowEdge(first: boolean, last: boolean) {
-  const border = Colors.current.separator;
+export function cardRowEdge(first: boolean, last: boolean, p: Palette) {
+  const border = p.separator;
   return {
     borderLeftWidth: 1,
     borderRightWidth: 1,

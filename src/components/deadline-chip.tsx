@@ -2,20 +2,15 @@ import { SymbolView } from 'expo-symbols';
 import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
+import { onSoftTint, type Palette, softTint } from '@/constants/theme';
 import { isLightColor } from '@/utils/colors';
 import { daysUntil } from '@/utils/deadlines';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
-let RED = '';
-let RED_SOFT = '';
-let AMBER = '';
-let AMBER_SOFT = '';
-onTheme(() => {
-  RED = Colors.current.error;
-  RED_SOFT = Colors.current.errorBackground;
-  AMBER = onSoftTint('#8A5A00', '#F5CB6B');
-  AMBER_SOFT = softTint('#FFF1D6', '#352A12');
-});
+const RED = (p: Palette) => p.error;
+const RED_SOFT = (p: Palette) => p.errorBackground;
+const AMBER = (p: Palette) => onSoftTint(p, '#8A5A00', '#F5CB6B');
+const AMBER_SOFT = (p: Palette) => softTint(p, '#FFF1D6', '#352A12');
 // Behind the tile's own text color: translucent white under dark text (pastel tiles),
 // translucent black under light text (palette "Notte", dark cover colors)
 const NEUTRAL_ON_LIGHT = 'rgba(255, 255, 255, 0.55)';
@@ -30,6 +25,8 @@ type Props = {
 // Far (>30 days) neutral, ≤30 amber, ≤7 red, today "Oggi", past "Scaduta" in solid red.
 // Nothing when there is no deadline. The full date is on the document screen.
 export function DeadlineChip({ expiresAt, neutralColor }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   if (!expiresAt) return null;
   const days = daysUntil(expiresAt);
 
@@ -39,19 +36,19 @@ export function DeadlineChip({ expiresAt, neutralColor }: Props) {
   if (days < 0) {
     label = 'Scaduta';
     spoken = 'Scaduta';
-    colors = { background: RED, text: '#FFFFFF' };
+    colors = { background: RED(theme), text: '#FFFFFF' };
   } else if (days === 0) {
     label = 'Oggi';
     spoken = 'Scade oggi';
-    colors = { background: RED_SOFT, text: RED };
+    colors = { background: RED_SOFT(theme), text: RED(theme) };
   } else {
     label = `-${days}`;
     spoken = days === 1 ? 'Scade tra 1 giorno' : `Scade tra ${days} giorni`;
     colors =
       days <= 7
-        ? { background: RED_SOFT, text: RED }
+        ? { background: RED_SOFT(theme), text: RED(theme) }
         : days <= 30
-          ? { background: AMBER_SOFT, text: AMBER }
+          ? { background: AMBER_SOFT(theme), text: AMBER(theme) }
           : { background: isLightColor(neutralColor) ? NEUTRAL_ON_DARK : NEUTRAL_ON_LIGHT, text: neutralColor };
   }
 
@@ -69,7 +66,7 @@ export function DeadlineChip({ expiresAt, neutralColor }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   chip: {
     alignSelf: 'flex-start',
@@ -86,4 +83,4 @@ const styles = themedStyles(() =>
     fontWeight: 700,
     fontVariant: ['tabular-nums'],
   },
-}));
+});

@@ -5,9 +5,10 @@ import { StyleSheet } from 'react-native';
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { avatarGradient } from '@/constants/person-roles';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { personPhotoUri } from '@/storage/person-photos';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   name: string;
@@ -20,6 +21,7 @@ type Props = {
 // Round avatar: the person's photo, or their initial in white on a gradient (always the same one
 // for the same name), as in docs/design/Utenti.dc.html
 export function PersonAvatar({ name, photoPath, photoUri, size, shadow = false }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const circle = { width: size, height: size, borderRadius: size / 2 };
   const uri = photoUri ?? (photoPath ? personPhotoUri(photoPath) : null);
   const gradient = avatarGradient(name);
@@ -39,10 +41,10 @@ export function PersonAvatar({ name, photoPath, photoUri, size, shadow = false }
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   photo: {
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
   },
   placeholder: {
     alignItems: 'center',
@@ -52,4 +54,4 @@ const styles = themedStyles(() =>
     color: '#FFFFFF',
     fontFamily: FONTS.semiBold,
   },
-}));
+});

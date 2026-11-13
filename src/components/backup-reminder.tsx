@@ -6,8 +6,9 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { backupReminderDays, daysSinceLastBackup } from '@/backup/backup-layout';
 import { Text } from '@/components/text';
-import { Colors, Radius, themedStyles } from '@/constants/theme';
+import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const SNOOZE_DAYS = 7; // ✕ on the "old backup" notice hides it for a week
@@ -41,6 +42,8 @@ function noticeFor(now: number): Notice | null {
 // - last backup older than the chosen frequency (a week or a month; never with "Mai"): "Il tuo ultimo backup è di N giorni fa"; ✕ hides it for 7 days.
 // Checked again every time Home comes back on screen (so it goes away right after a backup).
 export function BackupReminder() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const [now, setNow] = useState(() => Date.now());
   useFocusEffect(useCallback(() => setNow(Date.now()), []));
 
@@ -68,7 +71,7 @@ export function BackupReminder() {
   return (
     <View style={styles.box}>
       <View style={styles.icon}>
-        <SymbolView name="icloud.and.arrow.up" tintColor={Colors.current.indigo} size={20} />
+        <SymbolView name="icloud.and.arrow.up" tintColor={theme.indigo} size={20} />
       </View>
       <View style={styles.texts}>
         <Text style={styles.title}>{text}</Text>
@@ -82,13 +85,13 @@ export function BackupReminder() {
         accessibilityLabel={notice.kind === 'none' ? 'Chiudi avviso' : 'Nascondi per 7 giorni'}
         hitSlop={4}
         style={styles.close}>
-        <SymbolView name="xmark" tintColor={Colors.current.textSecondary} size={16} weight="semibold" />
+        <SymbolView name="xmark" tintColor={theme.textSecondary} size={16} weight="semibold" />
       </Pressable>
     </View>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   box: {
     flexDirection: 'row',
@@ -99,14 +102,14 @@ const styles = themedStyles(() =>
     paddingRight: 12,
     borderRadius: 20,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
   },
   icon: {
     width: 40,
     height: 40,
     borderRadius: 12,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0 4px 10px rgba(28, 30, 70, 0.06)',
@@ -118,12 +121,12 @@ const styles = themedStyles(() =>
   title: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   link: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.accent,
+    color: c.accent,
   },
   close: {
     width: 36,
@@ -132,4 +135,4 @@ const styles = themedStyles(() =>
     alignItems: 'center',
     justifyContent: 'center',
   },
-}));
+});

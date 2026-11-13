@@ -14,7 +14,8 @@ import {
 import { moveToTrash, TRASH_DAYS } from '@/db/trash';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { deletePassword } from '@/security/password-vault';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Choice = 'move' | 'trash';
 
@@ -24,6 +25,7 @@ type Choice = 'move' | 'trash';
 // deleted (its "…" never offers it). A built-in category (Tessere e card, Password… with their own
 // forms) is only hidden: Nuova categoria › "Ripristina una categoria predefinita" brings it back.
 export default function DeleteCategoryScreen() {
+  const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const categoryId = Number(id);
   const db = useSQLiteContext();
@@ -89,7 +91,7 @@ export default function DeleteCategoryScreen() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   fill: {
     flex: 1,
@@ -99,4 +101,4 @@ const styles = themedStyles(() =>
     alignSelf: 'stretch',
     gap: 8,
   },
-}));
+});

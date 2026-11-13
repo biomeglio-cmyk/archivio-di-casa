@@ -6,11 +6,13 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { LogoMark } from '@/components/logo-mark';
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // "Info e privacy" (from the Menu): app version and what happens to the user's documents
 export default function AboutScreen() {
+  const styles = useThemedStyles(makeStyles);
   const version = Constants.expoConfig?.version ?? '1.0.0';
 
   return (
@@ -40,7 +42,7 @@ export default function AboutScreen() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
@@ -58,4 +60,4 @@ const styles = themedStyles(() =>
     lineHeight: 34,
     fontFamily: FONTS.bold,
   },
-}));
+});

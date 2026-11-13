@@ -29,7 +29,7 @@ import {
   previewSymbol,
   typeMeta,
 } from '@/constants/password-options';
-import { CardSurface, Colors, Spacing, themedStyles } from '@/constants/theme';
+import { cardSurface, type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import {
   insertDocument,
@@ -47,6 +47,7 @@ import { authenticate } from '@/security/app-lock';
 import { readPassword, savePassword } from '@/security/password-vault';
 import { chooseAction } from '@/utils/action-sheet';
 import { generatePassword, passwordStrength, wheelHex } from '@/utils/password-tools';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const CLIPBOARD_SECONDS = 60;
 
@@ -68,6 +69,8 @@ type Props = {
 // NOTE, "Aggiungi ai preferiti", "Salva password". The fields follow the type exactly as the design.
 // The password goes ONLY to the iOS Keychain.
 export function PasswordForm({ existing, categoryId, personId: initialPerson = null, hasSavedPassword = false }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const { data: people } = useDbQuery(listPeople, []);
@@ -107,7 +110,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
   const [gradientTop, gradientBottom] = previewGradient(preview);
   const chosenSymbol = previewSymbol(preview, type);
   const keepsSaved = Boolean(existing) && hasSavedPassword && password === '' && !loadedSaved;
-  const strength = passwordStrength(password, type);
+  const strength = passwordStrength(password, type, theme);
   const canSave = title.trim().length > 0 && !saving;
 
   function pickType(next: PasswordType, written?: string) {
@@ -264,7 +267,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       automaticallyAdjustKeyboardInsets
       contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 36 }]}>
       <View style={styles.bar}>
-        <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT} color={Colors.current.text} onPress={() => router.back()} />
+        <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT(theme)} color={theme.text} onPress={() => router.back()} />
         <Text style={styles.heading} accessibilityRole="header">
           {existing ? 'Modifica password' : 'Nuova password'}
         </Text>
@@ -290,7 +293,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                 accessibilityState={{ checked: on }}
                 style={[styles.typeButton, on && styles.typeOn]}>
                 {on && <LinearGradient colors={PASSWORD_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={[StyleSheet.absoluteFill, styles.typeFill]} />}
-                <SymbolView name={t.symbol} tintColor={on ? '#FFFFFF' : Colors.current.iconGrey} size={22} />
+                <SymbolView name={t.symbol} tintColor={on ? '#FFFFFF' : theme.iconGrey} size={22} />
                 <Text style={[styles.typeName, on && styles.typeNameOn]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
                   {t.name}
                 </Text>
@@ -302,12 +305,12 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       {type === 'other' && (
         <>
           <View style={[styles.field, styles.whatField]}>
-            <SymbolView name="questionmark.circle" tintColor={PASSWORD_INK} size={20} />
+            <SymbolView name="questionmark.circle" tintColor={PASSWORD_INK(theme)} size={20} />
             <TextInput
               value={customType}
               onChangeText={setCustomType}
               placeholder="Che cos'è? Allarme, cassaforte, lucchetto…"
-              placeholderTextColor={Colors.current.placeholder}
+              placeholderTextColor={theme.placeholder}
               accessibilityLabel="Che cos'è"
               style={styles.input}
             />
@@ -322,7 +325,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           value={title}
           onChangeText={setTitle}
           placeholder={meta.namePlaceholder}
-          placeholderTextColor={Colors.current.placeholder}
+          placeholderTextColor={theme.placeholder}
           accessibilityLabel="Nome"
           style={styles.input}
         />
@@ -377,7 +380,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                       style={[StyleSheet.absoluteFill, styles.iconFill]}
                     />
                   )}
-                  <SymbolView name={i.symbol} tintColor={on ? '#FFFFFF' : Colors.current.iconGrey} size={20} />
+                  <SymbolView name={i.symbol} tintColor={on ? '#FFFFFF' : theme.iconGrey} size={20} />
                 </Pressable>
               </View>
             );
@@ -408,7 +411,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                   value={user}
                   onChangeText={setUser}
                   placeholder={meta.userPlaceholder}
-                  placeholderTextColor={Colors.current.placeholder}
+                  placeholderTextColor={theme.placeholder}
                   autoCapitalize="none"
                   autoCorrect={false}
                   textContentType="none"
@@ -431,7 +434,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                 setLoadedSaved(false);
               }}
               placeholder={masked || (isPin ? '••••' : 'Scrivi o genera')}
-              placeholderTextColor={masked ? Colors.current.text : Colors.current.textSecondary}
+              placeholderTextColor={masked ? theme.text : theme.textSecondary}
               secureTextEntry={!show}
               keyboardType={isPin ? 'number-pad' : 'default'}
               autoCapitalize="none"
@@ -442,16 +445,16 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             />
           </View>
           <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={show ? 'Nascondi' : 'Mostra'} style={styles.eye}>
-            <SymbolView name={show ? 'eye.slash' : 'eye'} tintColor={Colors.current.iconGrey} size={20} />
+            <SymbolView name={show ? 'eye.slash' : 'eye'} tintColor={theme.iconGrey} size={20} />
           </Pressable>
           <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel="Copia" style={styles.eye}>
-            <SymbolView name="doc.on.doc" tintColor={Colors.current.iconGrey} size={19} />
+            <SymbolView name="doc.on.doc" tintColor={theme.iconGrey} size={19} />
           </Pressable>
         </View>
         <View style={styles.strength}>
           <View style={styles.bars} accessibilityElementsHidden>
             {[0, 1, 2, 3].map((i) => (
-              <View key={i} style={[styles.barPiece, { backgroundColor: !isPin && i < strength.level ? strength.color : Colors.current.separator }]} />
+              <View key={i} style={[styles.barPiece, { backgroundColor: !isPin && i < strength.level ? strength.color : theme.separator }]} />
             ))}
           </View>
           <Text style={[styles.strengthLabel, { color: strength.color }]}>
@@ -461,7 +464,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         {meta.canGenerate && (
           <View style={styles.generateRow}>
             <Pressable onPress={generate} accessibilityRole="button" style={({ pressed }) => [styles.generate, pressed && styles.pressed]}>
-              <SymbolView name="wand.and.stars" tintColor={PASSWORD_INK} size={16} />
+              <SymbolView name="wand.and.stars" tintColor={PASSWORD_INK(theme)} size={16} />
               <Text style={styles.generateText}>Genera una password sicura</Text>
             </Pressable>
           </View>
@@ -472,12 +475,12 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         <>
           <Section>Sito o app</Section>
           <View style={[styles.field, styles.whiteField]}>
-            <SymbolView name="link" tintColor={Colors.current.textSecondary} size={18} />
+            <SymbolView name="link" tintColor={theme.textSecondary} size={18} />
             <TextInput
               value={url}
               onChangeText={setUrl}
               placeholder="www.esempio.it"
-              placeholderTextColor={Colors.current.placeholder}
+              placeholderTextColor={theme.placeholder}
               keyboardType="url"
               autoCapitalize="none"
               autoCorrect={false}
@@ -504,13 +507,13 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       <Section>Di chi è</Section>
       <WhiteCard style={styles.card}>
         <View style={styles.personRow}>
-          <View style={[styles.iconBox, { backgroundColor: Colors.current.lilac }]}>
-            <SymbolView name="person" tintColor={Colors.current.indigo} size={19} />
+          <View style={[styles.iconBox, { backgroundColor: theme.lilac }]}>
+            <SymbolView name="person" tintColor={theme.indigo} size={19} />
           </View>
           <Text style={styles.personLabel}>Persona</Text>
           <Pressable onPress={choosePerson} accessibilityRole="button" accessibilityLabel={`Persona, ${personName}`} style={styles.select}>
             <Text style={styles.selectText}>{personName}</Text>
-            <SymbolView name="chevron.down" tintColor={Colors.current.textSecondary} size={13} weight="semibold" />
+            <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={13} weight="semibold" />
           </Pressable>
         </View>
       </WhiteCard>
@@ -521,7 +524,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           value={notes}
           onChangeText={setNotes}
           placeholder={meta.notePlaceholder}
-          placeholderTextColor={Colors.current.placeholder}
+          placeholderTextColor={theme.placeholder}
           multiline
           accessibilityLabel="Note"
           style={styles.notes}
@@ -530,8 +533,8 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
 
       <WhiteCard style={[styles.card, styles.favCard]}>
         <Pressable onPress={() => setPinnedState(!pinned)} accessible={false} style={styles.switchRow}>
-          <View style={[styles.iconBox, { backgroundColor: PIN_TINT }]}>
-            <SymbolView name={pinned ? 'heart.fill' : 'heart'} tintColor={Colors.current.heart} size={19} />
+          <View style={[styles.iconBox, { backgroundColor: PIN_TINT(theme) }]}>
+            <SymbolView name={pinned ? 'heart.fill' : 'heart'} tintColor={theme.heart} size={19} />
           </View>
           <View style={styles.flex}>
             <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>
@@ -548,6 +551,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
 }
 
 function Section({ children }: { children: string }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Text style={styles.section} accessibilityRole="header">
       {children}
@@ -556,14 +560,18 @@ function Section({ children }: { children: string }) {
 }
 
 function IconBox({ symbol }: { symbol: SFSymbol }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.iconBox}>
-      <SymbolView name={symbol} tintColor={PASSWORD_INK} size={19} />
+      <SymbolView name={symbol} tintColor={PASSWORD_INK(theme)} size={19} />
     </View>
   );
 }
 
 function ImageButton({ label, symbol, on, onPress }: { label: string; symbol: SFSymbol; on: boolean; onPress: () => void }): ReactNode {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -571,17 +579,17 @@ function ImageButton({ label, symbol, on, onPress }: { label: string; symbol: SF
       accessibilityState={{ selected: on }}
       style={({ pressed }) => [styles.imageButton, pressed && styles.pressed]}>
       {on && <LinearGradient colors={PASSWORD_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={[StyleSheet.absoluteFill, styles.imageFill]} />}
-      <SymbolView name={symbol} tintColor={on ? '#FFFFFF' : PASSWORD_INK} size={18} />
+      <SymbolView name={symbol} tintColor={on ? '#FFFFFF' : PASSWORD_INK(theme)} size={18} />
       <Text style={[styles.imageButtonText, on && { color: '#FFFFFF' }]}>{label}</Text>
     </Pressable>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -601,7 +609,7 @@ const styles = themedStyles(() =>
   heading: {
     fontSize: 17,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   barSpace: {
     width: 44,
@@ -611,7 +619,7 @@ const styles = themedStyles(() =>
     padding: 16,
     borderRadius: 22,
     borderCurve: 'continuous',
-    backgroundColor: PASSWORD_TINT,
+    backgroundColor: PASSWORD_TINT(c),
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
@@ -629,14 +637,14 @@ const styles = themedStyles(() =>
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: PASSWORD_NOTE,
+    color: PASSWORD_NOTE(c),
   },
   section: {
     marginTop: 24,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   types: {
     marginTop: 10,
@@ -653,7 +661,7 @@ const styles = themedStyles(() =>
     height: 74,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.elevated,
+    backgroundColor: c.elevated,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
@@ -668,7 +676,7 @@ const styles = themedStyles(() =>
   typeName: {
     fontSize: 13,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   typeNameOn: {
     color: '#FFFFFF',
@@ -684,10 +692,10 @@ const styles = themedStyles(() =>
   },
   whatField: {
     marginTop: 12,
-    backgroundColor: PASSWORD_TINT,
+    backgroundColor: PASSWORD_TINT(c),
   },
   whiteField: {
-    ...CardSurface,
+    ...cardSurface(c),
     marginTop: 10,
     borderRadius: 18,
   },
@@ -695,14 +703,14 @@ const styles = themedStyles(() =>
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   hint: {
     marginTop: 8,
     marginHorizontal: 4,
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   previewCard: {
     marginTop: 10,
@@ -716,20 +724,20 @@ const styles = themedStyles(() =>
   previewTitle: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   previewText: {
     marginTop: 2,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   small: {
     marginTop: 18,
     fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   colors: {
     marginTop: 10,
@@ -749,7 +757,7 @@ const styles = themedStyles(() =>
     height: 44,
     borderRadius: 14,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.elevated,
+    backgroundColor: c.elevated,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -766,7 +774,7 @@ const styles = themedStyles(() =>
     height: 48,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: PASSWORD_TINT,
+    backgroundColor: PASSWORD_TINT(c),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -778,7 +786,7 @@ const styles = themedStyles(() =>
   imageButtonText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: PASSWORD_INK,
+    color: PASSWORD_INK(c),
   },
   removeImage: {
     marginTop: 8,
@@ -789,7 +797,7 @@ const styles = themedStyles(() =>
   removeImageText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   card: {
     marginTop: 10,
@@ -809,20 +817,20 @@ const styles = themedStyles(() =>
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: PASSWORD_TINT,
+    backgroundColor: PASSWORD_TINT(c),
     alignItems: 'center',
     justifyContent: 'center',
   },
   fieldLabel: {
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   accessInput: {
     paddingVertical: 2,
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   passwordInput: {
     fontFamily: FONTS.semiBold,
@@ -838,7 +846,7 @@ const styles = themedStyles(() =>
     height: 1,
     marginLeft: 70,
     marginRight: 16,
-    backgroundColor: Colors.current.separator,
+    backgroundColor: c.separator,
   },
   strength: {
     marginLeft: 70,
@@ -872,7 +880,7 @@ const styles = themedStyles(() =>
     height: 38,
     paddingHorizontal: 14,
     borderRadius: 19,
-    backgroundColor: PASSWORD_TINT,
+    backgroundColor: PASSWORD_TINT(c),
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
@@ -880,7 +888,7 @@ const styles = themedStyles(() =>
   generateText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: PASSWORD_INK,
+    color: PASSWORD_INK(c),
   },
   pressed: {
     opacity: 0.7,
@@ -898,12 +906,12 @@ const styles = themedStyles(() =>
   rowTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   rowSubtitle: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   personRow: {
     flexDirection: 'row',
@@ -916,14 +924,14 @@ const styles = themedStyles(() =>
     width: 72,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   select: {
     flex: 1,
     minHeight: 44,
     paddingHorizontal: 14,
     borderRadius: 14,
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
@@ -932,7 +940,7 @@ const styles = themedStyles(() =>
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   notesCard: {
     marginTop: 10,
@@ -944,7 +952,7 @@ const styles = themedStyles(() =>
     fontSize: 15,
     lineHeight: 22,
     fontFamily: FONTS.regular,
-    color: Colors.current.text,
+    color: c.text,
     textAlignVertical: 'top',
   },
   favCard: {
@@ -957,7 +965,7 @@ const styles = themedStyles(() =>
     marginTop: 8,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
-}));
+});

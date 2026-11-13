@@ -2,9 +2,10 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors, Radius, themedStyles } from '@/constants/theme';
+import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   label: string;
@@ -27,14 +28,18 @@ export function SecondaryButton({
   symbol,
   disabled = false,
   onPress,
-  color = Colors.current.indigo,
+  color,
   symbolColor,
-  background = Colors.current.lilac,
+  background,
   selected,
   singleLine = false,
   style,
 }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
+  const ink = color ?? theme.indigo;
+  const fill = background ?? theme.lilac;
   return (
     <Pressable
       {...handlers}
@@ -44,14 +49,14 @@ export function SecondaryButton({
       onPress={onPress}
       style={[
         styles.button,
-        { backgroundColor: background },
+        { backgroundColor: fill },
         style,
         pressed && styles.pressed,
         disabled && styles.disabled,
       ]}>
-      {symbol && <SymbolView name={symbol} tintColor={symbolColor ?? color} size={18} />}
+      {symbol && <SymbolView name={symbol} tintColor={symbolColor ?? ink} size={18} />}
       <Text
-        style={[styles.label, { color }]}
+        style={[styles.label, { color: ink }]}
         numberOfLines={singleLine ? 1 : undefined}
         adjustsFontSizeToFit={singleLine}
         minimumFontScale={0.8}
@@ -62,7 +67,7 @@ export function SecondaryButton({
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   button: {
     minHeight: HEIGHT,
@@ -87,4 +92,4 @@ const styles = themedStyles(() =>
     fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
-}));
+});

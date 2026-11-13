@@ -3,9 +3,10 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { StyleSheet } from 'react-native';
 
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { iconShadow, Radius, themedStyles } from '@/constants/theme';
+import { iconShadow, type Palette, Radius } from '@/constants/theme';
 import type { CategoryColors } from '@/db/types';
 import { categoryShadowRgb } from '@/utils/colors';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   symbol: SFSymbol;
@@ -17,6 +18,7 @@ type Props = {
 
 // Icon in a small gradient square (135°), corners 12–14
 export function IconSquare({ symbol, colors, size = 44, shadow = false, radius: cornerRadius }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const gradient = colors ? ([colors.top, colors.bottom] as const) : BRAND_GRADIENT;
   const radius = cornerRadius ?? (size >= 40 ? Radius.iconSquare : Math.round(size * 0.3));
   return (
@@ -34,11 +36,11 @@ export function IconSquare({ symbol, colors, size = 44, shadow = false, radius: 
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   square: {
     alignItems: 'center',
     justifyContent: 'center',
     borderCurve: 'continuous',
   },
-}));
+});

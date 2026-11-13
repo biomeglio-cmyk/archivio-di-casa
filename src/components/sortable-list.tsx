@@ -9,8 +9,9 @@ import Sortable from 'react-native-sortables';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, BRAND_SHADOW, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { CardSurface, Colors, themedStyles } from '@/constants/theme';
+import { cardSurface, type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const DRAG_DELAY_MS = 120; // in "Riordina" a short touch is enough to pick a row up
 const ROW_GAP = 10;
@@ -80,6 +81,8 @@ type RowProps = {
 // A row of "Riordina": white, 76 high, a small picture, name 16/600 and a 13 line, the handle on
 // the right
 export function ReorderRow({ thumb, title, subtitle }: RowProps) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.row}>
       {thumb}
@@ -93,7 +96,7 @@ export function ReorderRow({ thumb, title, subtitle }: RowProps) {
           </Text>
         ) : null}
       </View>
-      <SymbolView name="line.3.horizontal" tintColor={Colors.current.textSecondary} size={20} weight="semibold" />
+      <SymbolView name="line.3.horizontal" tintColor={theme.textSecondary} size={20} weight="semibold" />
     </View>
   );
 }
@@ -106,6 +109,8 @@ type HeaderProps = {
 
 // Top of "Riordina": the title and "Fine" in the main gradient, then the hint on pale lilac
 export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View>
       <View style={styles.bar}>
@@ -123,7 +128,7 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
         </Pressable>
       </View>
       <View style={styles.hint}>
-        <SymbolView name="hand.draw" tintColor={Colors.current.indigo} size={20} />
+        <SymbolView name="hand.draw" tintColor={theme.indigo} size={20} />
         <Text style={styles.hintText}>{hint}</Text>
       </View>
     </View>
@@ -134,10 +139,10 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
 export const REORDER_FOOTER =
   'Allo stesso modo riordini le tessere, le persone in Famiglia e i Preferiti: tieni premuto una riga e trascinala con la maniglia a destra.';
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   row: {
-    ...CardSurface,
+    ...cardSurface(c),
     height: 76,
     borderRadius: 20,
     paddingLeft: 10,
@@ -153,12 +158,12 @@ const styles = themedStyles(() =>
   title: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   subtitle: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   bar: {
     flexDirection: 'row',
@@ -170,7 +175,7 @@ const styles = themedStyles(() =>
     flexShrink: 1,
     fontSize: 17,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   done: {
     height: 40,
@@ -196,7 +201,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 14,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -206,6 +211,6 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
   },
-}));
+});

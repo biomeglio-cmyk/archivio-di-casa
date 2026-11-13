@@ -20,12 +20,13 @@ import { FreeUsageCard } from '@/components/free-usage-card';
 import { LogoMark } from '@/components/logo-mark';
 import { Text } from '@/components/text';
 import type { MenuSection } from '@/constants/navigation';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getMenuCounts } from '@/db/menu-counts';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
 import { whenBelowLimit } from '@/settings/free-limit';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const OPEN_MS = 260;
 const CLOSE_MS = 200;
@@ -45,6 +46,8 @@ const BACKUP_DOT = '#F5824A';
 // screen brings back to where you were); "Aggiungi" rows keep the menu open while the scanner or
 // the picker is up (a cancel leaves you in the menu).
 export default function MenuScreen() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { current } = useLocalSearchParams<{ current?: MenuSection }>();
   const { width: screenWidth } = useWindowDimensions();
   const insets = useSafeAreaInsets();
@@ -141,7 +144,7 @@ export default function MenuScreen() {
             accessibilityRole="button"
             accessibilityLabel="Chiudi il menu"
             style={({ pressed }) => [styles.close, pressed && styles.pressed]}>
-            <SymbolView name="xmark" tintColor={Colors.current.text} size={18} weight="semibold" />
+            <SymbolView name="xmark" tintColor={theme.text} size={18} weight="semibold" />
           </Pressable>
         </View>
 
@@ -234,8 +237,10 @@ type ItemProps = {
 
 // One row: 50 high, icon 22, label 16/500 (600 indigo on lilac when it is the current screen)
 function MenuItem({ label, symbol, onPress, active = false, trailing, accessibilityLabel, accessibilityHint }: ItemProps) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
-  const color = active ? Colors.current.indigo : Colors.current.text;
+  const color = active ? theme.indigo : theme.text;
   return (
     <Pressable
       {...handlers}
@@ -253,6 +258,7 @@ function MenuItem({ label, symbol, onPress, active = false, trailing, accessibil
 }
 
 function Badge({ count }: { count: number }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.badge}>
       <Text style={styles.badgeText} maxFontSizeMultiplier={1.3}>
@@ -263,6 +269,7 @@ function Badge({ count }: { count: number }) {
 }
 
 function Value({ text }: { text: string }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Text style={styles.value} numberOfLines={1}>
       {text}
@@ -271,16 +278,17 @@ function Value({ text }: { text: string }) {
 }
 
 function Divider() {
+  const styles = useThemedStyles(makeStyles);
   return <View style={styles.divider} />;
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
   },
   dim: {
-    backgroundColor: Colors.current.scrim,
+    backgroundColor: c.scrim,
   },
   panel: {
     position: 'absolute',
@@ -288,7 +296,7 @@ const styles = themedStyles(() =>
     top: 0,
     bottom: 0,
     paddingHorizontal: 16,
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     borderTopRightRadius: 32,
     borderBottomRightRadius: 32,
     borderCurve: 'continuous',
@@ -308,13 +316,13 @@ const styles = themedStyles(() =>
     flex: 1,
     fontSize: 20,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   close: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -343,10 +351,10 @@ const styles = themedStyles(() =>
     borderCurve: 'continuous',
   },
   itemActive: {
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
   },
   itemPressed: {
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
   },
   itemLabel: {
     flex: 1,
@@ -361,7 +369,7 @@ const styles = themedStyles(() =>
     height: 22,
     paddingHorizontal: 6,
     borderRadius: 11,
-    backgroundColor: Colors.current.badge,
+    backgroundColor: c.badge,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -383,19 +391,19 @@ const styles = themedStyles(() =>
     maxWidth: '45%',
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   divider: {
     height: 1,
     marginVertical: 14,
     marginHorizontal: 8,
-    backgroundColor: Colors.current.separator,
+    backgroundColor: c.separator,
   },
   version: {
     paddingHorizontal: 14,
     paddingTop: 8,
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
-}));
+});

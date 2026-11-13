@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { DateSquare } from '@/components/date-square';
 import { StatusBadge } from '@/components/status-badge';
 import { Text } from '@/components/text';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
@@ -13,6 +13,7 @@ import { describeDistance } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 import { formatEuro } from '@/utils/money';
 import { describeRepeat } from '@/utils/recurrence';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 export const DEADLINE_ROW_INSET = 74; // separators start after the date square (16 + 46 + 14 - 2)
 
@@ -27,6 +28,8 @@ type Props = {
 // a 13 line under it, chevron. This week: "€ 84,20 · tra 3 giorni" in indigo; later: what repeats
 // ("Ogni 2 anni") or the note. The Da pagare / Pagata badge when the document has a status.
 export function DeadlineListRow({ document, near, onPress, onLongPress }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   const days = daysUntil(document.expiresAt);
   const overdue = days < 0;
@@ -59,7 +62,7 @@ export function DeadlineListRow({ document, near, onPress, onLongPress }: Props)
         ) : null}
       </View>
       {document.paymentStatus && <StatusBadge status={document.paymentStatus} />}
-      <SymbolView name="chevron.right" tintColor={Colors.current.textSecondary} size={15} weight="semibold" />
+      <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={15} weight="semibold" />
     </Pressable>
   );
 }
@@ -83,7 +86,7 @@ function statusLabel(document: DocumentListItem): string | null {
   return null;
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -93,7 +96,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 16,
   },
   pressed: {
-    backgroundColor: Colors.current.backgroundSelected,
+    backgroundColor: c.backgroundSelected,
   },
   texts: {
     flex: 1,
@@ -102,18 +105,18 @@ const styles = themedStyles(() =>
     fontSize: 16,
     lineHeight: 21,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   subtitle: {
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   subtitleNear: {
-    color: Colors.current.indigo,
+    color: c.indigo,
   },
   subtitleOverdue: {
-    color: Colors.current.error,
+    color: c.error,
   },
-}));
+});

@@ -1,6 +1,7 @@
 import { useState, type ReactNode } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   start: ReactNode; // the label
@@ -14,6 +15,7 @@ type Props = {
 // measured (onLayout of an invisible copy at natural size), never estimated, so it follows the
 // screen size and Dynamic Type.
 export function FitLine({ start, end, gap = 12, style }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const [available, setAvailable] = useState(0);
   const [startWidth, setStartWidth] = useState(0);
   const [endWidth, setEndWidth] = useState(0);
@@ -46,7 +48,7 @@ export function FitLine({ start, end, gap = 12, style }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   box: {
     flex: 1,
@@ -79,4 +81,4 @@ const styles = themedStyles(() =>
     alignSelf: 'flex-start',
     maxWidth: '100%',
   },
-}));
+});

@@ -4,8 +4,8 @@ import { StyleSheet, View, type TextInputProps } from 'react-native';
 import { TextInput } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
-import { useTheme } from '@/hooks/use-theme';
-import { themedStyles } from '@/constants/theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { type Palette } from '@/constants/theme';
 
 type FormFieldProps = {
   label: string;
@@ -15,6 +15,7 @@ type FormFieldProps = {
 
 // "Titolo *": the asterisk marks a required field (explained by a note under the form)
 export function FieldLabel({ label, required = false }: { label: string; required?: boolean }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <ThemedText>
       {label}
@@ -25,6 +26,7 @@ export function FieldLabel({ label, required = false }: { label: string; require
 
 // Small label above a form control
 export function FormField({ label, required = false, children }: FormFieldProps) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.field}>
       <ThemedText type="smallBold" themeColor="textSecondary" style={styles.label}>
@@ -38,6 +40,7 @@ export function FormField({ label, required = false, children }: FormFieldProps)
 
 // Text input styled like the other rows of the app
 export function TextField(props: TextInputProps) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
 
   return (
@@ -49,7 +52,7 @@ export function TextField(props: TextInputProps) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   field: {
     gap: 6,
@@ -58,7 +61,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 4,
   },
   asterisk: {
-    color: BRAND_COLOR,
+    color: BRAND_COLOR(c),
   },
   input: {
     fontSize: 17,
@@ -67,4 +70,4 @@ const styles = themedStyles(() =>
     borderRadius: 12,
     borderCurve: 'continuous',
   },
-}));
+});

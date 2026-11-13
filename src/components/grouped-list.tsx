@@ -8,8 +8,8 @@ import { FitLine } from '@/components/fit-line';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
-import { Spacing, themedStyles } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { type Palette, Spacing } from '@/constants/theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const PADDING = 16; // inside the card, left and right
 const ICON = 22; // width of the icon column
@@ -18,6 +18,7 @@ const GAP = 14; // between the icon and the text
 // A section of rows (Menu, settings screens): grey uppercase title, a white card of rows with
 // separators inset after the icon, an optional footer.
 export function Group({ title, footer, children }: { title?: string; footer?: string; children: ReactNode }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.group}>
       {title && (
@@ -59,11 +60,12 @@ export function Row({
   onPress,
   children,
 }: RowProps) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const content = (
     <>
       <View style={styles.icon}>
-        <SymbolView name={symbol} tintColor={disabled ? theme.textSecondary : BRAND_COLOR} size={20} />
+        <SymbolView name={symbol} tintColor={disabled ? theme.textSecondary : BRAND_COLOR(theme)} size={20} />
       </View>
       {/* The separator is the top line of this part, so it starts after the icon */}
       <View
@@ -81,7 +83,7 @@ export function Row({
               {count !== undefined && (
                 <ThemedText
                   themeColor="textSecondary"
-                  style={[styles.value, alert && count > 0 && { color: DANGER_COLOR, fontWeight: 600 }]}>
+                  style={[styles.value, alert && count > 0 && { color: DANGER_COLOR(theme), fontWeight: 600 }]}>
                   {String(count)}
                 </ThemedText>
               )}
@@ -110,7 +112,7 @@ export function Row({
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   group: {
     gap: Spacing.titleToContent,
@@ -158,7 +160,7 @@ const styles = themedStyles(() =>
   },
   choiceText: {
     flexShrink: 1,
-    color: BRAND_COLOR,
+    color: BRAND_COLOR(c),
   },
   choice: {
     flexDirection: 'row',
@@ -166,7 +168,7 @@ const styles = themedStyles(() =>
     gap: 6,
     minHeight: 32,
   },
-}));
+});
 
 type ChoiceProps<T> = {
   title: string; // of the iOS menu ("Promemoria")
@@ -180,6 +182,8 @@ type ChoiceProps<T> = {
 // The value of a row that opens a choice: our own text (complete, never cut by a native button)
 // with the iOS chevrons; a tap opens the native menu of the options
 export function Choice<T>({ title, value, options, labelFor, menuLabelFor = labelFor, onChange }: ChoiceProps<T>) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   async function open() {
     const index = await chooseAction(title, options.map(menuLabelFor));
     if (index !== null) onChange(options[index]);
@@ -193,7 +197,7 @@ export function Choice<T>({ title, value, options, labelFor, menuLabelFor = labe
       hitSlop={8}
       style={({ pressed }) => [styles.choice, pressed && { opacity: 0.6 }]}>
       <ThemedText style={styles.choiceText}>{label}</ThemedText>
-      <SymbolView name="chevron.up.chevron.down" tintColor={BRAND_COLOR} size={13} weight="semibold" />
+      <SymbolView name="chevron.up.chevron.down" tintColor={BRAND_COLOR(theme)} size={13} weight="semibold" />
     </Pressable>
   );
 }

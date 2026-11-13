@@ -3,13 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import { PrimaryButton } from '@/components/primary-button';
 import { SecondaryButton } from '@/components/secondary-button';
 import { PIN_COLOR } from '@/constants/brand';
-import { Colors, themedStyles, onTheme } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { type Palette } from '@/constants/theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
-let PIN_TINT = ''; // the heart color at 14%: "Nei preferiti" stands out from lilac
-onTheme(() => {
-  PIN_TINT = `${PIN_COLOR}24`;
-});
+// The heart color at 14%: "Nei preferiti" stands out from lilac
+const PIN_TINT = (p: Palette) => `${PIN_COLOR(p)}24`;
 
 type Props = {
   onAdd: (() => void) | null; // null = the button is not shown
@@ -24,6 +22,7 @@ type Props = {
 // side by side, at any text size (one line each, shrinking a little instead of wrapping).
 // They sit in the scroll content, right after the data, and scroll with the page.
 export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
 
   if (!onAdd && !onEdit && !onDelete && !pin) return null;
@@ -35,9 +34,9 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
         <SecondaryButton
           label={pin.pinned ? 'Nei preferiti' : 'Aggiungi ai preferiti'}
           symbol={pin.pinned ? 'heart.fill' : 'heart'}
-          symbolColor={PIN_COLOR}
+          symbolColor={PIN_COLOR(theme)}
           onPress={pin.onToggle}
-          background={pin.pinned ? PIN_TINT : theme.lilac}
+          background={pin.pinned ? PIN_TINT(theme) : theme.lilac}
           color={theme.text}
           selected={pin.pinned}
           singleLine
@@ -63,8 +62,8 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
               label="Cancella"
               symbol="trash"
               onPress={onDelete}
-              background={Colors.current.errorBackground}
-              color={Colors.current.error}
+              background={theme.errorBackground}
+              color={theme.error}
               singleLine
               style={styles.half}
             />
@@ -75,7 +74,7 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   container: {
     gap: 10,
@@ -88,4 +87,4 @@ const styles = themedStyles(() =>
     flex: 1, // two equal halves of the row
     paddingHorizontal: 12,
   },
-}));
+});

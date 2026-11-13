@@ -15,7 +15,7 @@ import { RoundIconButton } from '@/components/round-icon-button';
 import { Text, TextInput } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { CATEGORY_SYMBOLS } from '@/constants/category-options';
-import { CardSurface, Colors, Spacing, tintedShadow, themedStyles } from '@/constants/theme';
+import { cardSurface, type Palette, Spacing, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import {
   countDocumentsInCategory,
@@ -30,6 +30,7 @@ import type { Category, CategoryColors } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { builtinColorsFor, getPalette } from '@/settings/palette';
 import { categoryShadowRgb, categoryTint, colorsFromHex } from '@/utils/colors';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 // The 10 icons of the design first (Animali, Documento, Casa, Auto, Salute, Scuola, Lavoro, Chiavi,
 // Viaggi, Spese), then ours
@@ -71,6 +72,8 @@ export default function CategoryFormScreen() {
 // built-in can keep following Aspetto, more icons after the design's 10; names can hold emoji;
 // at the top, "Ripristina una categoria predefinita" for the built-ins removed with Cancella.
 function CategoryForm({ category, count }: { category: Category | null; count: number }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const { data: people } = useDbQuery(listPeople, []);
@@ -89,7 +92,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   const builtinKey = category?.builtinKey ?? null;
   const paletteColors = builtinKey ? builtinColorsFor(builtinKey) : null;
   const shown = followPalette && paletteColors ? paletteColors : colors; // what the tile will look like
-  const { tint, onTint } = categoryTint(shown);
+  const { tint, onTint } = categoryTint(shown, theme);
   const gradient = [shown.top, shown.bottom] as const;
   const shadow = tintedShadow(categoryShadowRgb(shown));
   // Our 13 colors (the palette of Aspetto), without repeats
@@ -139,7 +142,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
         automaticallyAdjustKeyboardInsets
         contentContainerStyle={[styles.page, { paddingBottom: insets.bottom + 36 }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.current.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={theme.text} onPress={() => router.back()} />
           <Text style={styles.heading} accessibilityRole="header">
             {category ? 'Modifica categoria' : 'Nuova categoria'}
           </Text>
@@ -198,7 +201,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
             value={name}
             onChangeText={setName}
             placeholder="Es. Animali"
-            placeholderTextColor={Colors.current.placeholder}
+            placeholderTextColor={theme.placeholder}
             autoFocus={!category}
             returnKeyType="done"
             accessibilityLabel="Nome della categoria"
@@ -280,7 +283,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           <Text style={styles.selectText} numberOfLines={1}>
             {personName}
           </Text>
-          <SymbolView name="chevron.down" tintColor={Colors.current.textSecondary} size={15} weight="semibold" />
+          <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={15} weight="semibold" />
         </Pressable>
         <Text style={styles.hint}>I nuovi documenti di questa categoria partono con questa persona.</Text>
 
@@ -317,11 +320,11 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingTop: 24,
@@ -335,7 +338,7 @@ const styles = themedStyles(() =>
   heading: {
     fontSize: 17,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   barSpace: {
     width: 44,
@@ -365,10 +368,10 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   field: {
-    ...CardSurface,
+    ...cardSurface(c),
     marginTop: 10,
     height: 56,
     borderRadius: 18,
@@ -378,7 +381,7 @@ const styles = themedStyles(() =>
   input: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   colors: {
     marginTop: 12,
@@ -389,7 +392,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   icons: {
     marginTop: 12,
@@ -422,7 +425,7 @@ const styles = themedStyles(() =>
     flexShrink: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   pressed: {
     opacity: 0.7,
@@ -431,7 +434,7 @@ const styles = themedStyles(() =>
     marginTop: 26,
   },
   restoreCard: {
-    ...CardSurface,
+    ...cardSurface(c),
     marginTop: 10,
     paddingVertical: 4,
   },
@@ -444,17 +447,17 @@ const styles = themedStyles(() =>
   },
   restoreDivider: {
     borderTopWidth: 1,
-    borderTopColor: Colors.current.separator,
+    borderTopColor: c.separator,
   },
   restoreName: {
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   restoreAction: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.accent,
+    color: c.accent,
   },
-}));
+});

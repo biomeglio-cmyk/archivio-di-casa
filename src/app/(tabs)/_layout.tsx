@@ -1,10 +1,11 @@
 import { router } from 'expo-router';
 import { NativeTabs } from 'expo-router/native-tabs';
 
-import { Colors } from '@/constants/theme';
+
 import { countUrgentDeadlines } from '@/db/urgent-count';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useFreeLimit, whenBelowLimit } from '@/settings/free-limit';
+import { useTheme } from '@/hooks/use-theme';
 
 // Home is the tab the app starts on, at every launch and for every deep link into the tabs
 export const unstable_settings = { anchor: '(archive)' };
@@ -14,6 +15,7 @@ export const unstable_settings = { anchor: '(archive)' };
 // Each trigger name matches a route (or route group) in this folder.
 // Home is first and owns "/" (its index.tsx), so the app opens there.
 export default function TabsLayout() {
+  const theme = useTheme();
   // Deadlines to check: overdue + due within 7 days (the same number as the Menu and the app icon;
   // the Home bell counts unread notifications instead). Kept live by the database change listener.
   const { data } = useDbQuery(countUrgentDeadlines, []);
@@ -22,7 +24,7 @@ export default function TabsLayout() {
   const { reached } = useFreeLimit();
 
   return (
-    <NativeTabs tintColor={Colors.current.indigo} badgeBackgroundColor={Colors.current.badge}>
+    <NativeTabs tintColor={theme.indigo} badgeBackgroundColor={theme.badge}>
       <NativeTabs.Trigger name="(archive)" accessibilityLabel="Home">
         <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
         <NativeTabs.Trigger.Label hidden>Home</NativeTabs.Trigger.Label>

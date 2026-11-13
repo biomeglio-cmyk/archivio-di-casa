@@ -16,12 +16,13 @@ import { REORDER_FOOTER, ReorderHeader, ReorderRow, SortableList } from '@/compo
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { roleLabel } from '@/constants/person-roles';
-import { Colors, Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPeopleWithCounts, savePeopleOrder } from '@/db/people';
 import type { PersonWithCount } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const ROW_INSET = 78; // separators start after the 48pt avatar
 
@@ -32,6 +33,8 @@ const documentsLabel = (count: number) => (count === 1 ? '1 documento' : `${coun
 // dashed "Aggiungi una persona" and the privacy note. Long press on a row: "Riordina"
 // (docs/design/RiordinaLista.dc.html). Our extra: "N in scadenza" in red.
 export default function FamilyScreen() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -96,7 +99,7 @@ export default function FamilyScreen() {
               subtitle="Un profilo per ogni persona di casa"
               onBack={goHome}
               right={
-                <RoundIconButton symbol="plus" accessibilityLabel="Aggiungi una persona" color={Colors.current.text} onPress={addPerson} />
+                <RoundIconButton symbol="plus" accessibilityLabel="Aggiungi una persona" color={theme.text} onPress={addPerson} />
               }
             />
             {people && people.length > 0 && (
@@ -117,12 +120,12 @@ export default function FamilyScreen() {
               onPress={addPerson}
               accessibilityRole="button"
               style={({ pressed }) => [styles.add, pressed && styles.addPressed]}>
-              <SymbolView name="plus" tintColor={Colors.current.textSecondary} size={24} weight="semibold" />
+              <SymbolView name="plus" tintColor={theme.textSecondary} size={24} weight="semibold" />
               <Text style={styles.addLabel}>Aggiungi una persona</Text>
             </Pressable>
 
             <View style={styles.note}>
-              <SymbolView name="lock" tintColor={Colors.current.indigo} size={18} />
+              <SymbolView name="lock" tintColor={theme.indigo} size={18} />
               <Text style={styles.noteText}>
                 Tutto resta su questo telefono. Per mandare un documento a qualcuno, aprilo e tocca Invia.
               </Text>
@@ -135,6 +138,8 @@ export default function FamilyScreen() {
 }
 
 function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPress: () => void }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const { pressed, handlers } = usePressed();
   const actions = personQuickActions(db, person);
@@ -166,16 +171,16 @@ function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPre
           {person.expiringCount > 0 && <Text style={styles.expiring}>{` · ${person.expiringCount} in scadenza`}</Text>}
         </Text>
       </View>
-      <SymbolView name="chevron.right" tintColor={Colors.current.textSecondary} size={15} weight="semibold" />
+      <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={15} weight="semibold" />
     </Pressable>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -185,7 +190,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   card: {
     marginTop: 12,
@@ -195,7 +200,7 @@ const styles = themedStyles(() =>
     height: 1,
     marginLeft: ROW_INSET,
     marginRight: 16,
-    backgroundColor: Colors.current.separator,
+    backgroundColor: c.separator,
   },
   row: {
     flexDirection: 'row',
@@ -205,7 +210,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 16,
   },
   rowPressed: {
-    backgroundColor: Colors.current.backgroundSelected,
+    backgroundColor: c.backgroundSelected,
   },
   texts: {
     flex: 1,
@@ -219,15 +224,15 @@ const styles = themedStyles(() =>
     flexShrink: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   me: {
     overflow: 'hidden',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
-    backgroundColor: Colors.current.lilac,
-    color: Colors.current.indigo,
+    backgroundColor: c.lilac,
+    color: c.indigo,
     fontSize: 11,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
@@ -235,17 +240,17 @@ const styles = themedStyles(() =>
   count: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   expiring: {
-    color: Colors.current.error,
+    color: c.error,
   },
   add: {
     marginTop: 14,
     height: 76,
     borderWidth: 2,
     borderStyle: 'dashed',
-    borderColor: Colors.current.dashed,
+    borderColor: c.dashed,
     borderRadius: 22,
     borderCurve: 'continuous',
     alignItems: 'center',
@@ -253,12 +258,12 @@ const styles = themedStyles(() =>
     gap: 6,
   },
   addPressed: {
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
   },
   addLabel: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   note: {
     marginTop: 20,
@@ -266,7 +271,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 16,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
@@ -276,7 +281,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
   },
   reorderList: {
     marginTop: 12,
@@ -293,7 +298,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
-}));
+});

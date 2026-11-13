@@ -5,7 +5,8 @@ import Animated, { type AnimatedRef } from 'react-native-reanimated';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import { DashedAddTile } from '@/components/dashed-add-tile';
 import { TILE_COLUMNS, TILE_GAP, TILE_PADDING, useTileSize, type TileSize } from '@/hooks/use-tile-size';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props<T> = {
   items: T[] | undefined; // undefined = loading: nothing is drawn, not even the dashed tile
@@ -19,6 +20,7 @@ type Props<T> = {
 // 2 columns, same gaps, width from the screen, and both tiles of a row as tall as the taller one.
 // It is a plain View (not a list): the grids are small, and Home can stack two of them.
 export function TileGrid<T>({ items, keyFor, renderTile, add, cardShaped = false }: Props<T>) {
+  const styles = useThemedStyles(makeStyles);
   const tileSize = useTileSize();
   if (!items) return null;
 
@@ -62,6 +64,7 @@ export function TileScrollView({
   ref,
   ...props
 }: ScrollViewProps & { ref?: AnimatedRef<Animated.ScrollView> }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Animated.ScrollView
       ref={ref}
@@ -72,7 +75,7 @@ export function TileScrollView({
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   page: {
     padding: TILE_PADDING,
@@ -87,4 +90,4 @@ const styles = themedStyles(() =>
     gap: TILE_GAP, // horizontal space between the columns
     alignItems: 'stretch', // both tiles of a row get the height of the taller one
   },
-}));
+});

@@ -8,7 +8,8 @@ import Animated, { FadeOut } from 'react-native-reanimated';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const HOLD_MS = 700; // logo on screen…
 const FADE_MS = 300; // …then a fade into the app: about one second in total
@@ -18,6 +19,7 @@ const GLYPH_ASPECT = 712 / 657; // logo-glyph.png is 712 × 657 px
 // In-app opening screen, shown right after the native splash: logo gradient, white hand with
 // document, "sottomano" and the tagline. It fades out on top of the first screen (Home).
 export function SplashOverlay() {
+  const styles = useThemedStyles(makeStyles);
   const [visible, setVisible] = useState(true);
   const [shown, setShown] = useState(false);
 
@@ -49,7 +51,7 @@ export function SplashOverlay() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   overlay: {
     zIndex: 1000,
@@ -78,4 +80,4 @@ const styles = themedStyles(() =>
     textAlign: 'center',
     fontFamily: FONTS.medium,
   },
-}));
+});

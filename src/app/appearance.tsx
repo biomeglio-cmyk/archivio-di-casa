@@ -8,18 +8,20 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
-import { CardSurface, Spacing, themedStyles } from '@/constants/theme';
+import { cardSurface, Spacing, type Palette as ThemePalette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { PALETTES, type Palette } from '@/constants/palettes';
 import { BUILTIN_ORDER } from '@/db/builtin-categories';
 import { restoreBuiltinCategories } from '@/db/categories';
 import { setPaletteId, usePaletteId } from '@/settings/palette';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const MINI_COLUMNS = 7; // 13 mini tiles: a row of 7 and a row of 6
 
 // "Aspetto" (Menu › Impostazioni): 7 palettes for the built-in categories ("Sottomano" first), each previewed as a
 // mini grid of the 13 category tiles. A tap applies it at once to the whole app.
 export default function AppearanceScreen() {
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const selected = usePaletteId();
 
@@ -86,6 +88,8 @@ export default function AppearanceScreen() {
 }
 
 function PaletteCard({ palette, selected, onPress }: { palette: Palette; selected: boolean; onPress: () => void }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -94,13 +98,13 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
       accessibilityLabel={`Palette ${palette.name}`}
       style={({ pressed }) => [
         styles.card,
-        CardSurface,
-        { borderColor: selected ? BRAND_COLOR : 'transparent' },
+        cardSurface(theme),
+        { borderColor: selected ? BRAND_COLOR(theme) : 'transparent' },
         pressed && styles.pressed,
       ]}>
       <View style={styles.cardHeader}>
         <ThemedText style={styles.name}>{palette.name}</ThemedText>
-        {selected && <SymbolView name="checkmark.circle.fill" tintColor={BRAND_COLOR} size={22} />}
+        {selected && <SymbolView name="checkmark.circle.fill" tintColor={BRAND_COLOR(theme)} size={22} />}
       </View>
       <View style={styles.grid}>
         {[0, MINI_COLUMNS].map((start) => (
@@ -124,7 +128,7 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: ThemePalette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
@@ -176,4 +180,4 @@ const styles = themedStyles(() =>
     alignItems: 'center',
     justifyContent: 'center',
   },
-}));
+});

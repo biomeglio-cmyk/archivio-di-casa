@@ -6,9 +6,10 @@ import { useHorizontalSwipe } from '@/components/calendar-parts';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { addDaysIso, formatMonthTitle, MONTHS, parseISODate, toISODate } from '@/utils/dates';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const WEEKDAYS = ['L', 'M', 'M', 'G', 'V', 'S', 'D'];
 const WEEKDAY_NAMES = ['lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato', 'domenica'];
@@ -28,6 +29,7 @@ type WeekProps = {
 // "Settimana" of Scadenze: L M M G V S D in a white card, 38pt days (today in the main gradient,
 // the chosen day on lilac), a 6pt dot under the days with deadlines. Swipe for the next week.
 export function WeekCalendar({ weekStartIso, todayIso, selectedIso, markers, onSelect, onPrevious, onNext }: WeekProps) {
+  const styles = useThemedStyles(makeStyles);
   const swipe = useHorizontalSwipe(onPrevious, onNext);
   return (
     <WhiteCard
@@ -86,6 +88,7 @@ type MonthProps = {
 // "Mese" of Scadenze: ‹ Novembre 2026 › on pale lilac, L M M G V S D, 40 × 44 days with a 5pt
 // dot; the chosen day in the main gradient (white dot), today on lilac with indigo text
 export function MonthCalendar({ year, month, todayIso, selectedIso, markers, onSelect, onPrevious, onNext, children }: MonthProps) {
+  const styles = useThemedStyles(makeStyles);
   const swipe = useHorizontalSwipe(onPrevious, onNext);
   const daysInMonth = new Date(year, month + 1, 0).getDate();
   const blanks = (new Date(year, month, 1).getDay() + 6) % 7; // Monday first
@@ -172,14 +175,16 @@ function MonthArrow({
   label: string;
   onPress: () => void;
 }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable onPress={onPress} accessibilityRole="button" accessibilityLabel={label} hitSlop={4} style={styles.arrow}>
-      <SymbolView name={symbol} tintColor={Colors.current.text} size={15} weight="semibold" />
+      <SymbolView name={symbol} tintColor={theme.text} size={15} weight="semibold" />
     </Pressable>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   weekCard: {
     marginTop: 12,
@@ -196,7 +201,7 @@ const styles = themedStyles(() =>
     fontSize: 11,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   weekCircle: {
     width: 38,
@@ -215,12 +220,12 @@ const styles = themedStyles(() =>
     boxShadow: '0 6px 14px rgba(100, 90, 235, 0.28)',
   },
   weekSelected: {
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
   },
   weekNumber: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   weekDot: {
     width: 6,
@@ -232,7 +237,7 @@ const styles = themedStyles(() =>
     fontFamily: FONTS.bold,
   },
   numberToday: {
-    color: Colors.current.indigo,
+    color: c.indigo,
     fontFamily: FONTS.bold,
   },
   monthCard: {
@@ -251,14 +256,14 @@ const styles = themedStyles(() =>
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   monthTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   letters: {
     marginTop: 10,
@@ -270,7 +275,7 @@ const styles = themedStyles(() =>
     fontSize: 11,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   grid: {
     marginTop: 6,
@@ -292,7 +297,7 @@ const styles = themedStyles(() =>
     gap: 3,
   },
   monthToday: {
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
   },
   monthSelected: {
     borderRadius: 14,
@@ -301,11 +306,11 @@ const styles = themedStyles(() =>
   monthNumber: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   monthDot: {
     width: 5,
     height: 5,
     borderRadius: 3,
   },
-}));
+});

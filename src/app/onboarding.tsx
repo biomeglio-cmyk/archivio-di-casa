@@ -9,9 +9,10 @@ import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { markOnboardingSeen } from '@/onboarding/onboarding-flag';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const ART_WIDTH = 338; // the illustration box of the design (390 - 2 × 26)
 const ART_HEIGHT = 380;
@@ -48,6 +49,8 @@ const PAGES: Page[] = [
 // page dots, "Avanti" / "Inizia". Swiping works too. Our extra: "Ripristina da un backup" for who
 // already has one (it opens Backup and its file picker).
 export default function OnboardingScreen() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const scrollRef = useRef<ScrollViewInstance>(null);
@@ -102,7 +105,7 @@ export default function OnboardingScreen() {
             <Text style={styles.text}>{p.text}</Text>
             {p.info && (
               <View style={styles.info}>
-                <SymbolView name="lock.shield" tintColor={Colors.current.indigo} size={22} />
+                <SymbolView name="lock.shield" tintColor={theme.indigo} size={22} />
                 <Text style={styles.infoText}>{p.info}</Text>
               </View>
             )}
@@ -130,6 +133,7 @@ export default function OnboardingScreen() {
 // ——— Illustrations (338 × 380, scaled to the screen) ———
 
 function Circle({ color }: { color: string }) {
+  const styles = useThemedStyles(makeStyles);
   return <View style={[styles.circle, { backgroundColor: color }]} />;
 }
 
@@ -137,6 +141,7 @@ function Circle({ color }: { color: string }) {
 // in a clip with the same corner radius (overflow hidden), so on iOS it is always rounded, also
 // next to a shadow
 function Gradient({ colors, style, children }: { colors: readonly [string, string]; style: object; children?: ReactNode }) {
+  const styles = useThemedStyles(makeStyles);
   const flat = StyleSheet.flatten(style) as { borderRadius?: number };
   const clip = { borderRadius: flat.borderRadius ?? 0 };
   return (
@@ -158,6 +163,7 @@ function MiniTile({ name, symbol, colors, shadow, left, top, rotate }: {
   top: number;
   rotate: string;
 }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     // Outer view: place, rotation and colored shadow; inner view: the rounded clip of the gradient
     <View style={[styles.miniTile, { left, top, transform: [{ rotate }], boxShadow: `0 14px 26px rgba(${shadow}, 0.28)` }]}>
@@ -171,9 +177,11 @@ function MiniTile({ name, symbol, colors, shadow, left, top, rotate }: {
 }
 
 function WelcomeArt() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <>
-      <Circle color={Colors.current.lilac} />
+      <Circle color={theme.lilac} />
       <MiniTile name="Bollette" symbol="bolt" colors={['#FFA36E', '#F5824A']} shadow="245, 130, 74" left={28} top={46} rotate="-8deg" />
       <MiniTile name="Tessere" symbol="creditcard" colors={['#6FD3AE', '#45B68E']} shadow="69, 182, 142" left={182} top={24} rotate="7deg" />
       <MiniTile name="Salute" symbol="heart" colors={['#F79BBA', '#EE7499']} shadow="238, 116, 153" left={196} top={214} rotate="-6deg" />
@@ -182,7 +190,7 @@ function WelcomeArt() {
         <LogoMark size={88} radius={22} />
       </View>
       <View style={styles.bubble}>
-        <SymbolView name="wifi.slash" tintColor={Colors.current.indigo} size={20} />
+        <SymbolView name="wifi.slash" tintColor={theme.indigo} size={20} />
       </View>
     </>
   );
@@ -196,6 +204,7 @@ function Paper({ left, top, rotate, accent, shadow, highlight = false }: {
   shadow: string;
   highlight?: boolean;
 }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={[styles.paper, { left, top, transform: [{ rotate }], boxShadow: shadow }]}>
       <View style={[styles.bar, { width: 50, height: 9, backgroundColor: accent }]} />
@@ -214,9 +223,11 @@ function Paper({ left, top, rotate, accent, shadow, highlight = false }: {
 }
 
 function ScanArt() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <>
-      <Circle color={Colors.current.lilac} />
+      <Circle color={theme.lilac} />
       <Paper left={92} top={70} rotate="-8deg" accent="#6FD3AE" shadow="0 12px 26px rgba(28, 30, 70, 0.12)" />
       <Paper left={124} top={86} rotate="4deg" accent="#FFA36E" shadow="0 14px 30px rgba(28, 30, 70, 0.16)" highlight />
       <View style={styles.scanFrame} />
@@ -237,6 +248,7 @@ function ScanArt() {
 }
 
 function DeadlineArt() {
+  const styles = useThemedStyles(makeStyles);
   const days = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
   return (
     <>
@@ -285,6 +297,7 @@ function WalletCard({ name, colors, accent, left, top, rotate }: {
   top: number;
   rotate: string;
 }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     // Outer view: place, rotation and shadow; inner view: the rounded clip of gradient and circles
     <View style={[styles.wallet, { left, top, transform: [{ rotate }] }]}>
@@ -304,6 +317,7 @@ function WalletCard({ name, colors, accent, left, top, rotate }: {
 }
 
 function CardsArt() {
+  const styles = useThemedStyles(makeStyles);
   return (
     <>
       <Circle color="#E6F7F0" />
@@ -317,11 +331,11 @@ function CardsArt() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   topBar: {
     height: 44,
@@ -336,7 +350,7 @@ const styles = themedStyles(() =>
   skip: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   pager: {
     flex: 1,
@@ -355,7 +369,7 @@ const styles = themedStyles(() =>
     fontSize: 30,
     lineHeight: 36,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   titleFirst: {
     fontSize: 27,
@@ -366,14 +380,14 @@ const styles = themedStyles(() =>
     fontSize: 16,
     lineHeight: 24,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   info: {
     marginTop: 18,
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 18,
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -383,7 +397,7 @@ const styles = themedStyles(() =>
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   dots: {
     marginTop: 22,
@@ -394,11 +408,11 @@ const styles = themedStyles(() =>
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: Colors.current.switchOff,
+    backgroundColor: c.switchOff,
   },
   dotActive: {
     width: 22,
-    backgroundColor: Colors.current.indigo,
+    backgroundColor: c.indigo,
   },
   footer: {
     paddingHorizontal: SIDE,
@@ -413,7 +427,7 @@ const styles = themedStyles(() =>
   restoreText: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.accent,
+    color: c.accent,
   },
   // Illustrations
   clip: {
@@ -533,12 +547,12 @@ const styles = themedStyles(() =>
   pdfTitle: {
     fontSize: 12,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   pdfSize: {
     fontSize: 11,
     fontFamily: FONTS.medium,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   miniCalendar: {
     position: 'absolute',
@@ -558,12 +572,12 @@ const styles = themedStyles(() =>
   calendarMonth: {
     fontSize: 15,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   calendarYear: {
     fontSize: 12,
     fontFamily: FONTS.medium,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   calendarGrid: {
     marginTop: 12,
@@ -582,7 +596,7 @@ const styles = themedStyles(() =>
   calendarNumber: {
     fontSize: 12,
     fontFamily: FONTS.medium,
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
   },
   calendarChosen: {
     color: '#FFFFFF',
@@ -612,12 +626,12 @@ const styles = themedStyles(() =>
   reminderTitle: {
     fontSize: 13,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   reminderText: {
     fontSize: 12,
     fontFamily: FONTS.medium,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   bellBadge: {
     position: 'absolute',
@@ -639,7 +653,7 @@ const styles = themedStyles(() =>
     borderRadius: 7,
     borderWidth: 2,
     borderColor: '#FFFFFF',
-    backgroundColor: Colors.current.badge,
+    backgroundColor: c.badge,
   },
   wallet: {
     position: 'absolute',
@@ -693,7 +707,7 @@ const styles = themedStyles(() =>
   },
   walletBar: {
     height: '100%',
-    backgroundColor: Colors.current.text,
+    backgroundColor: c.text,
   },
   scanBadge: {
     position: 'absolute',
@@ -706,4 +720,4 @@ const styles = themedStyles(() =>
     justifyContent: 'center',
     boxShadow: '0 10px 20px rgba(100, 90, 235, 0.35)',
   },
-}));
+});

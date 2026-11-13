@@ -2,10 +2,10 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { Radius, themedStyles } from '@/constants/theme';
+import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import type { TileSize } from '@/hooks/use-tile-size';
 
 type Props = {
@@ -19,6 +19,7 @@ type Props = {
 // Dashed tile at the end of a grid, to add a new item: same size as the items it adds,
 // 2 px dashed border, "+" and a 15/500 label
 export function DashedAddTile({ label, size, onPress, radius = Radius.tile, color }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const { pressed, handlers } = usePressed();
 
@@ -41,7 +42,7 @@ export function DashedAddTile({ label, size, onPress, radius = Radius.tile, colo
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   tile: {
     borderCurve: 'continuous',
@@ -57,4 +58,4 @@ const styles = themedStyles(() =>
     fontFamily: FONTS.medium,
     textAlign: 'center',
   },
-}));
+});

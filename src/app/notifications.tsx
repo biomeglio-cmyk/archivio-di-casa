@@ -7,10 +7,11 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { isUnread, markAllRead, markRead, useNotificationFeed, type FeedItem } from '@/notifications/feed';
 import { categoryShadowRgb } from '@/utils/colors';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const WEEKDAYS = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
 const UNREAD_DOT = '#4A5CF0';
@@ -21,6 +22,7 @@ const BELL_FROM_RIGHT = 100; // center of the bell in Home: margin 22 + logo 44 
 // with a blue dot, read ones on white; the time (today) or the day. "Impostazioni notifiche" at the end.
 // Tap outside to close.
 export default function NotificationsPanel() {
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const { items, read, now } = useNotificationFeed();
@@ -78,6 +80,7 @@ type GroupProps = {
 };
 
 function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <>
       <Text style={styles.section}>{title}</Text>
@@ -120,7 +123,7 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   dim: {
     flex: 1,
@@ -135,7 +138,7 @@ const styles = themedStyles(() =>
     paddingBottom: 14,
     borderRadius: 28,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     boxShadow: '0 20px 50px rgba(28, 30, 70, 0.25)',
   },
   arrow: {
@@ -145,7 +148,7 @@ const styles = themedStyles(() =>
     width: 16,
     height: 16,
     borderRadius: 3,
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     transform: [{ rotate: '45deg' }],
   },
   head: {
@@ -157,13 +160,13 @@ const styles = themedStyles(() =>
   title: {
     fontSize: 20,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   markAll: {
     fontSize: 10,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
-    color: Colors.current.accent,
+    color: c.accent,
   },
   content: {
     paddingBottom: 2,
@@ -173,7 +176,7 @@ const styles = themedStyles(() =>
     marginHorizontal: 8,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   section: {
     marginTop: 16,
@@ -182,7 +185,7 @@ const styles = themedStyles(() =>
     fontSize: 12,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   items: {
     gap: 4,
@@ -193,10 +196,10 @@ const styles = themedStyles(() =>
     padding: 12,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
   },
   itemUnread: {
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
   },
   pressed: {
     opacity: 0.7,
@@ -222,18 +225,18 @@ const styles = themedStyles(() =>
     flexShrink: 1,
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   when: {
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   body: {
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
   },
   dot: {
     width: 9,
@@ -248,13 +251,13 @@ const styles = themedStyles(() =>
     marginTop: 10,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   settingsText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.indigo,
+    color: c.indigo,
   },
-}));
+});

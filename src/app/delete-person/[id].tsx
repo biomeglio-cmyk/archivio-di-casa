@@ -7,7 +7,8 @@ import { ConfirmChoice, ConfirmDialog } from '@/components/confirm-dialog';
 import { countDocumentsOfPerson, deletePerson, getPerson } from '@/db/people';
 import { TRASH_DAYS } from '@/db/trash';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Choice = 'family' | 'trash';
 
@@ -15,6 +16,7 @@ type Choice = 'family' | 'trash';
 // opened it. With documents: pass them to "Tutta la famiglia" (default) or delete them too; deleted
 // documents go to our Cestino (recoverable for 30 days), never straight away.
 export default function DeletePersonScreen() {
+  const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const personId = Number(id);
   const db = useSQLiteContext();
@@ -68,7 +70,7 @@ export default function DeletePersonScreen() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   fill: {
     flex: 1,
@@ -78,4 +80,4 @@ const styles = themedStyles(() =>
     alignSelf: 'stretch',
     gap: 8,
   },
-}));
+});

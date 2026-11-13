@@ -16,11 +16,11 @@ import {
   reminderPickerValue,
   reminderToSave,
 } from '@/constants/deadline-options';
-import { Colors, Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { getDocumentDetail, saveDocumentDeadline } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { afterDocumentSaved } from '@/notifications/reminders';
 import { usePreferences } from '@/settings/preferences';
 import { parseISODate, toISODate } from '@/utils/dates';
@@ -46,6 +46,7 @@ export default function DeadlineScreen() {
 }
 
 function DeadlineContent({ document }: { document: DocumentDetail }) {
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const theme = useTheme();
   const { defaultReminderDays } = usePreferences();
@@ -138,7 +139,7 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
             symbol="calendar.badge.minus"
             onPress={remove}
             disabled={saving}
-            background={Colors.current.errorBackground}
+            background={theme.errorBackground}
             color={theme.error}
           />
         )}
@@ -156,7 +157,7 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
@@ -176,4 +177,4 @@ const styles = themedStyles(() =>
     paddingHorizontal: 14,
     paddingVertical: 12,
   },
-}));
+});

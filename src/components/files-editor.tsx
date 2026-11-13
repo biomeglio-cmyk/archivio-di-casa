@@ -12,12 +12,12 @@ import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import type { Category, DocumentFile, FileSide } from '@/db/types';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { pagesToFiles, type PendingFile } from '@/storage/pending-files';
 import { chooseAction } from '@/utils/action-sheet';
 import { pageLabel, usesFrontBack } from '@/utils/page-labels';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 
 // A file in the form: either already saved (existing) or just captured (pending).
 // The photos are kept in page order: their position in the list IS the page number.
@@ -78,6 +78,7 @@ type Props = {
 // remove it and arrows to move it, then ALWAYS the big "+ Aggiungi pagina" (scanner or photos).
 // A document with an imported PDF shows the PDF instead.
 export function FilesEditor({ files, category, onChange, autoAdd = false }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const [camera, setCamera] = useState(false); // app camera, when the scanner isn't available
   const canScan = isScannerAvailable();
 
@@ -208,6 +209,7 @@ type ThumbProps = {
 
 // One page: a mini sheet on lilac with ✕, its label, and ‹ › to move it (also for VoiceOver)
 function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProps) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const name = label ?? 'Pagina';
   const canMove = Boolean(onMoveLeft || onMoveRight);
@@ -227,7 +229,7 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
           <Image source={{ uri: file.uri }} style={styles.sheetImage} contentFit="cover" accessibilityLabel={name} />
         ) : (
           <View style={[styles.sheetImage, styles.pdfThumb]}>
-            <SymbolView name="doc.richtext" tintColor={BRAND_COLOR} size={28} />
+            <SymbolView name="doc.richtext" tintColor={BRAND_COLOR(theme)} size={28} />
           </View>
         )}
       </View>
@@ -258,6 +260,7 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
 
 // The dashed tile at the end of the grid: "Aggiungi pagina" (or "Sostituisci PDF")
 function AddTile({ label, symbol, onPress }: { label: string; symbol: 'plus' | 'doc'; onPress: () => void }) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   return (
     <Pressable
@@ -286,6 +289,7 @@ function Arrow({
   label: string;
   onPress?: () => void;
 }) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   return (
     <Pressable
@@ -301,7 +305,7 @@ function Arrow({
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   container: {
     gap: 12,
@@ -356,7 +360,7 @@ const styles = themedStyles(() =>
     width: 24,
     height: 20,
     borderRadius: 10,
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -379,8 +383,8 @@ const styles = themedStyles(() =>
     paddingVertical: 4,
   },
   link: {
-    color: BRAND_COLOR,
+    color: BRAND_COLOR(c),
     fontSize: 15,
     fontFamily: FONTS.semiBold,
   },
-}));
+});

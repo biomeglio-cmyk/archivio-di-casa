@@ -7,22 +7,21 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
-import { Colors, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
+import { onSoftTint, type Palette, softTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { FREE_LIMIT, UNLOCK_PRICE } from '@/settings/free-limit';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
-let MINT_TINT = '';
-let MINT_INK = '';
-onTheme(() => {
-  MINT_TINT = softTint('#E6F7F0', '#15332A');
-  MINT_INK = onSoftTint('#1F7A5A', '#7FE0BC');
-});
+const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#15332A');
+const MINT_INK = (p: Palette) => onSoftTint(p, '#1F7A5A', '#7FE0BC');
 const STILL_WORKS = ['Consultare i tuoi documenti', 'Inviarli e condividerli', 'Mostrare le tessere alla cassa', 'Ricevere i promemoria'];
 
 // The limit panel (docs/design/ProvaFinita.dc.html), a sheet over the screen that tried to add:
 // the logo, "Hai usato i 7 spazi gratuiti", what keeps working (ticks) and what doesn't (lock),
 // "Sblocca senza limiti a 0,99 €" and "Più tardi". Tap outside to close.
 export default function LimitPanel() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
 
   return (
@@ -47,14 +46,14 @@ export default function LimitPanel() {
           {STILL_WORKS.map((item) => (
             <View key={item} style={styles.item}>
               <View style={[styles.mark, styles.markOn]}>
-                <SymbolView name="checkmark" tintColor={MINT_INK} size={13} weight="bold" />
+                <SymbolView name="checkmark" tintColor={MINT_INK(theme)} size={13} weight="bold" />
               </View>
               <Text style={styles.itemText}>{item}</Text>
             </View>
           ))}
           <View style={styles.item}>
             <View style={[styles.mark, styles.markOff]}>
-              <SymbolView name="lock.fill" tintColor={Colors.current.textSecondary} size={12} />
+              <SymbolView name="lock.fill" tintColor={theme.textSecondary} size={12} />
             </View>
             <Text style={[styles.itemText, styles.itemOff]}>Aggiungere altri documenti o tessere</Text>
           </View>
@@ -72,7 +71,7 @@ export default function LimitPanel() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   dim: {
     flex: 1,
@@ -84,7 +83,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 24,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     boxShadow: '0 -10px 30px rgba(28, 30, 70, 0.15)',
   },
   grabber: {
@@ -92,7 +91,7 @@ const styles = themedStyles(() =>
     width: 40,
     height: 5,
     borderRadius: 3,
-    backgroundColor: Colors.current.switchOff,
+    backgroundColor: c.switchOff,
   },
   logo: {
     marginTop: 18,
@@ -104,7 +103,7 @@ const styles = themedStyles(() =>
     marginTop: 14,
     fontSize: 24,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
     textAlign: 'center',
   },
   text: {
@@ -112,14 +111,14 @@ const styles = themedStyles(() =>
     fontSize: 15,
     lineHeight: 22,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
   list: {
     marginTop: 20,
     padding: 16,
     borderRadius: 20,
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     gap: 12,
   },
   item: {
@@ -135,19 +134,19 @@ const styles = themedStyles(() =>
     justifyContent: 'center',
   },
   markOn: {
-    backgroundColor: MINT_TINT,
+    backgroundColor: MINT_TINT(c),
   },
   markOff: {
-    backgroundColor: Colors.current.elevated,
+    backgroundColor: c.elevated,
   },
   itemText: {
     flex: 1,
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   itemOff: {
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   unlock: {
     marginTop: 20,
@@ -161,6 +160,6 @@ const styles = themedStyles(() =>
   laterText: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.current.accent,
+    color: c.accent,
   },
-}));
+});

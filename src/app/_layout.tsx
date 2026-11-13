@@ -13,26 +13,27 @@ import { SQLiteProvider } from 'expo-sqlite';
 import { Fragment } from 'react';
 
 import { useAppGeneration } from '@/backup/app-reload';
+import { ThemeProvider as AppThemeProvider } from '@/theme/theme-provider';
 import { AppLock } from '@/components/app-lock';
 import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/typography';
-import { Colors, Radius } from '@/constants/theme';
+import { Radius, type Palette } from '@/constants/theme';
 import { DATABASE_NAME, initDatabase } from '@/db/init';
 import { AppNotifications } from '@/notifications/app-notifications';
-import { followSystemTheme } from '@/settings/theme-mode';
+import { useTheme } from '@/hooks/use-theme';
 
-// Navigation theme with the app page color behind every screen (the active light or dark set)
-function appTheme() {
-  const base = Colors.current.isDark ? DarkTheme : DefaultTheme;
+// Navigation theme with the app page color behind every screen (the active palette)
+function navigationTheme(p: Palette) {
+  const base = p.isDark ? DarkTheme : DefaultTheme;
   return {
     ...base,
     colors: {
       ...base.colors,
-      background: Colors.current.background,
-      card: Colors.current.surface,
-      text: Colors.current.text,
-      border: Colors.current.separator,
-      primary: Colors.current.accent,
+      background: p.background,
+      card: p.surface,
+      text: p.text,
+      border: p.separator,
+      primary: p.accent,
     },
   };
 }
@@ -42,15 +43,9 @@ export const unstable_settings = { anchor: '(tabs)' };
 
 SplashScreen.preventAutoHideAsync();
 
-// The theme (Impostazioni › Aspetto › Tema) is applied by constants/theme.ts when the app starts;
-// with "Automatico" a change of the phone's appearance restarts the screens with the new colors
-followSystemTheme();
 
 // Root Stack: it holds the tab bar and the screens that slide up above the tabs.
 export default function RootLayout() {
-  // Changes after "Ripristina backup": every screen is rebuilt from the restored data
-  const generation = useAppGeneration();
-
   // Load Onest at runtime (no config plugin, so it works in Expo Go).
   // The keys become the fontFamily names listed in constants/typography.ts.
   const [fontsLoaded, fontError] = useFonts({
@@ -66,6 +61,19 @@ export default function RootLayout() {
     return null;
   }
 
+  // The theme of the whole app (Impostazioni › Aspetto › Tema): switching re-renders in place
+  return (
+    <AppThemeProvider>
+      <RootContent />
+    </AppThemeProvider>
+  );
+}
+
+function RootContent() {
+  const theme = useTheme();
+  // Changes after "Ripristina backup": every screen is rebuilt from the restored data
+  const generation = useAppGeneration();
+
   // SQLiteProvider opens the database, runs initDatabase (pragmas, migrations, files folder)
   // and only then renders its children, so every screen finds the database ready.
   return (
@@ -73,10 +81,10 @@ export default function RootLayout() {
       databaseName={DATABASE_NAME}
       onInit={initDatabase}
       options={{ enableChangeListener: true }}>
-      <ThemeProvider value={appTheme()}>
+      <ThemeProvider value={navigationTheme(theme)}>
         <Fragment key={generation}>
         {/* Clock and battery: dark on the light theme, light on the dark one */}
-        <StatusBar style={Colors.current.isDark ? 'light' : 'dark'} />
+        <StatusBar style={theme.isDark ? 'light' : 'dark'} />
         {/* Reminders: scheduled at start, tapping one opens its document */}
         <AppNotifications />
         <Stack>

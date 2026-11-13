@@ -1,4 +1,4 @@
-import { Colors } from '@/constants/theme';
+import type { Palette } from '@/constants/theme';
 import type { CategoryColors } from '@/db/types';
 
 // Whether a hex color (#RRGGBB) is light, by its perceived luminance: light text sits on a dark
@@ -28,8 +28,8 @@ export function categoryShadowRgb(colors: CategoryColors): string {
 
 // A category color that reads on white (calendar dots, small marks): the text on its tint, or
 // its text color, or the gradient end when the text is light (white, palette "Notte")
-export function categoryInk(colors: CategoryColors): string {
-  if (Colors.current.isDark) return colors.darkOnTint ?? darkTintOf(colors.bottom).onTint; // reads on the dark pages
+export function categoryInk(colors: CategoryColors, p: Palette): string {
+  if (p.isDark) return colors.darkOnTint ?? darkTintOf(colors.bottom).onTint; // reads on the dark pages
   return colors.onTint ?? (isLightColor(colors.text) ? mixWithBlack(colors.bottom, 0.25) : colors.text);
 }
 
@@ -47,9 +47,9 @@ export function mixWithWhite(hex: string, amount: number): string {
 
 // The light tint of a category (round buttons, inactive chips of its screens) and the text on it:
 // from the palette ("Sottomano"), or derived from the gradient end for the other palettes
-export function categoryTint(colors: CategoryColors): { tint: string; onTint: string; dashed: string } {
+export function categoryTint(colors: CategoryColors, p: Palette): { tint: string; onTint: string; dashed: string } {
   // "Tema notte": the tint and text of the design guide, or derived the same way
-  if (Colors.current.isDark) {
+  if (p.isDark) {
     const derived = darkTintOf(colors.bottom);
     return {
       tint: colors.darkTint ?? derived.tint,
@@ -59,7 +59,7 @@ export function categoryTint(colors: CategoryColors): { tint: string; onTint: st
   }
   return {
     tint: colors.tint ?? mixWithWhite(colors.bottom, 0.86),
-    onTint: categoryInk(colors),
+    onTint: categoryInk(colors, p),
     dashed: mixWithWhite(colors.bottom, 0.45), // border of its dashed "Nuovo…" tile
   };
 }

@@ -15,7 +15,7 @@ import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { PASSWORD_INK, PASSWORD_TINT, typeMeta, typeName } from '@/constants/password-options';
-import { Colors, Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { setPinned } from '@/db/documents';
 import type { DocumentDetail, PasswordInfo } from '@/db/types';
@@ -25,6 +25,7 @@ import { readPassword } from '@/security/password-vault';
 import { generateBarcode } from '@/utils/barcode';
 import { passwordStrength, wifiQrPayload } from '@/utils/password-tools';
 import { PIN_TINT } from '@/constants/brand';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const CLIPBOARD_SECONDS = 60;
 
@@ -34,6 +35,8 @@ const CLIPBOARD_SECONDS = 60;
 // Face ID, with the screen at full brightness), DI CHI È, NOTE, "Aggiungi ai preferiti",
 // Modifica and Cancella. Everything shown is hidden again when the app goes to the background.
 export function PasswordDetail({ document }: { document: DocumentDetail }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const info: PasswordInfo = document.password ?? {
@@ -103,7 +106,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
     Linking.openURL(address).catch(() => Alert.alert('Indirizzo non valido', info.url ?? ''));
   }
 
-  const strength = shown !== null ? passwordStrength(shown, info.type) : null;
+  const strength = shown !== null ? passwordStrength(shown, info.type, theme) : null;
   const generated = qr !== null && document.username ? generateBarcode(wifiQrPayload(document.username, qr), 'qr') : null;
   const subtitle = [typeName(info), document.person?.name ?? 'Tutta la famiglia'].join(' · ');
 
@@ -113,20 +116,20 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
         style={styles.screen}
         contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 40 }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT} color={Colors.current.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT(theme)} color={theme.text} onPress={() => router.back()} />
           <View style={styles.barRight}>
             <RoundIconButton
               symbol={document.isPinned ? 'heart.fill' : 'heart'}
               accessibilityLabel={document.isPinned ? 'Togli dai preferiti' : 'Aggiungi ai preferiti'}
-              background={PASSWORD_TINT}
-              color={Colors.current.heart}
+              background={PASSWORD_TINT(theme)}
+              color={theme.heart}
               onPress={() => setPinned(db, document.id, !document.isPinned)}
             />
             <RoundIconButton
               symbol="ellipsis"
               accessibilityLabel="Altre azioni"
-              background={PASSWORD_TINT}
-              color={Colors.current.text}
+              background={PASSWORD_TINT(theme)}
+              color={theme.text}
               onPress={() => setMenuOpen(true)}
             />
           </View>
@@ -154,7 +157,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
                 </View>
                 {document.username ? (
                   <Pressable onPress={() => copyText(document.username!)} accessibilityRole="button" accessibilityLabel={`Copia ${meta.userLabel}`} style={styles.round}>
-                    <SymbolView name="doc.on.doc" tintColor={Colors.current.iconGrey} size={19} />
+                    <SymbolView name="doc.on.doc" tintColor={theme.iconGrey} size={19} />
                   </Pressable>
                 ) : null}
               </View>
@@ -173,10 +176,10 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
               </Text>
             </View>
             <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={shown === null ? 'Mostra' : 'Nascondi'} style={styles.round}>
-              <SymbolView name={shown === null ? 'eye' : 'eye.slash'} tintColor={Colors.current.iconGrey} size={20} />
+              <SymbolView name={shown === null ? 'eye' : 'eye.slash'} tintColor={theme.iconGrey} size={20} />
             </Pressable>
             <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel="Copia" style={styles.round}>
-              <SymbolView name="doc.on.doc" tintColor={Colors.current.iconGrey} size={19} />
+              <SymbolView name="doc.on.doc" tintColor={theme.iconGrey} size={19} />
             </Pressable>
           </View>
           <View style={styles.strength}>
@@ -184,7 +187,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
               <>
                 <View style={styles.bars} accessibilityElementsHidden>
                   {[0, 1, 2, 3].map((i) => (
-                    <View key={i} style={[styles.barPiece, { backgroundColor: i < strength.level ? strength.color : Colors.current.separator }]} />
+                    <View key={i} style={[styles.barPiece, { backgroundColor: i < strength.level ? strength.color : theme.separator }]} />
                   ))}
                 </View>
                 <Text style={[styles.strengthLabel, { color: strength.color }]}>{strength.label}</Text>
@@ -204,7 +207,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
                 <Text style={[styles.flex, styles.link]} numberOfLines={2}>
                   {info.url}
                 </Text>
-                <SymbolView name="arrow.up.right.square" tintColor={Colors.current.textSecondary} size={18} />
+                <SymbolView name="arrow.up.right.square" tintColor={theme.textSecondary} size={18} />
               </Pressable>
             </WhiteCard>
           </>
@@ -231,7 +234,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
               )}
               {document.username ? (
                 <Pressable onPress={toggleQr} accessibilityRole="button" style={({ pressed }) => [styles.qrButton, pressed && styles.pressed]}>
-                  <SymbolView name={qr ? 'eye.slash' : 'qrcode'} tintColor={PASSWORD_INK} size={17} />
+                  <SymbolView name={qr ? 'eye.slash' : 'qrcode'} tintColor={PASSWORD_INK(theme)} size={17} />
                   <Text style={styles.qrButtonText}>{qr ? 'Nascondi il QR' : 'Mostra il QR'}</Text>
                 </Pressable>
               ) : null}
@@ -242,8 +245,8 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
         <Section>Di chi è</Section>
         <WhiteCard style={styles.card}>
           <View style={styles.row}>
-            <View style={[styles.iconBox, { backgroundColor: Colors.current.lilac }]}>
-              <SymbolView name="person" tintColor={Colors.current.indigo} size={19} />
+            <View style={[styles.iconBox, { backgroundColor: theme.lilac }]}>
+              <SymbolView name="person" tintColor={theme.indigo} size={19} />
             </View>
             <Text style={styles.personLabel}>Persona</Text>
             <Text style={[styles.flex, styles.value]}>{document.person?.name ?? 'Tutta la famiglia'}</Text>
@@ -263,8 +266,8 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
 
         <WhiteCard style={[styles.card, styles.favCard]}>
           <Pressable onPress={() => setPinned(db, document.id, !document.isPinned)} accessible={false} style={styles.row}>
-            <View style={[styles.iconBox, { backgroundColor: PIN_TINT }]}>
-              <SymbolView name={document.isPinned ? 'heart.fill' : 'heart'} tintColor={Colors.current.heart} size={19} />
+            <View style={[styles.iconBox, { backgroundColor: PIN_TINT(theme) }]}>
+              <SymbolView name={document.isPinned ? 'heart.fill' : 'heart'} tintColor={theme.heart} size={19} />
             </View>
             <View style={styles.flex}>
               <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>
@@ -282,7 +285,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
           onPress={() => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } })}
           accessibilityRole="button"
           style={({ pressed }) => [styles.edit, pressed && styles.pressed]}>
-          <SymbolView name="pencil" tintColor={PASSWORD_INK} size={17} />
+          <SymbolView name="pencil" tintColor={PASSWORD_INK(theme)} size={17} />
           <Text style={styles.editText}>Modifica</Text>
         </Pressable>
       </ScrollView>
@@ -307,6 +310,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
 }
 
 function Section({ children }: { children: string }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Text style={styles.section} accessibilityRole="header">
       {children}
@@ -315,18 +319,20 @@ function Section({ children }: { children: string }) {
 }
 
 function IconBox({ symbol }: { symbol: SFSymbol }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={styles.iconBox}>
-      <SymbolView name={symbol} tintColor={PASSWORD_INK} size={19} />
+      <SymbolView name={symbol} tintColor={PASSWORD_INK(theme)} size={19} />
     </View>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -351,14 +357,14 @@ const styles = themedStyles(() =>
     marginTop: 14,
     fontSize: 26,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
     textAlign: 'center',
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
   section: {
@@ -366,7 +372,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   card: {
     marginTop: 10,
@@ -386,19 +392,19 @@ const styles = themedStyles(() =>
     width: 40,
     height: 40,
     borderRadius: 12,
-    backgroundColor: PASSWORD_TINT,
+    backgroundColor: PASSWORD_TINT(c),
     alignItems: 'center',
     justifyContent: 'center',
   },
   label: {
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   value: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   password: {
     fontFamily: FONTS.semiBold,
@@ -417,7 +423,7 @@ const styles = themedStyles(() =>
     height: 1,
     marginLeft: 70,
     marginRight: 16,
-    backgroundColor: Colors.current.separator,
+    backgroundColor: c.separator,
   },
   strength: {
     marginLeft: 70,
@@ -444,12 +450,12 @@ const styles = themedStyles(() =>
   locked: {
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   link: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.accent,
+    color: c.accent,
   },
   qrCard: {
     marginTop: 10,
@@ -465,20 +471,20 @@ const styles = themedStyles(() =>
   qrNetwork: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   qrHint: {
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
   qrButton: {
     height: 40,
     paddingHorizontal: 16,
     borderRadius: 20,
-    backgroundColor: PASSWORD_TINT,
+    backgroundColor: PASSWORD_TINT(c),
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
@@ -486,7 +492,7 @@ const styles = themedStyles(() =>
   qrButtonText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: PASSWORD_INK,
+    color: PASSWORD_INK(c),
   },
   pressed: {
     opacity: 0.7,
@@ -495,7 +501,7 @@ const styles = themedStyles(() =>
     width: 72,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   notesCard: {
     marginTop: 10,
@@ -506,7 +512,7 @@ const styles = themedStyles(() =>
     fontSize: 15,
     lineHeight: 22,
     fontFamily: FONTS.regular,
-    color: Colors.current.text,
+    color: c.text,
   },
   favCard: {
     marginTop: 12,
@@ -514,13 +520,13 @@ const styles = themedStyles(() =>
   rowTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   edit: {
     marginTop: 24,
     height: 52,
     borderRadius: 26,
-    backgroundColor: PASSWORD_TINT,
+    backgroundColor: PASSWORD_TINT(c),
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -529,6 +535,6 @@ const styles = themedStyles(() =>
   editText: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: PASSWORD_INK,
+    color: PASSWORD_INK(c),
   },
-}));
+});

@@ -8,17 +8,14 @@ import { PrimaryButton } from '@/components/primary-button';
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
-import { Colors, Spacing, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
+import { onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { getFreeUsage, UNLOCK_PRICE } from '@/settings/free-limit';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
-let MINT_TINT = '';
-let MINT_INK = '';
-onTheme(() => {
-  MINT_TINT = softTint('#E6F7F0', '#15332A');
-  MINT_INK = onSoftTint('#1F7A5A', '#7FE0BC');
-});
+const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#15332A');
+const MINT_INK = (p: Palette) => onSoftTint(p, '#1F7A5A', '#7FE0BC');
 const BENEFITS = [
   { title: 'Documenti senza limiti', text: 'Bollette, tessere, garanzie e tutto il resto' },
   { title: 'Promemoria delle scadenze', text: 'Ti avvisiamo prima che sia tardi' },
@@ -39,6 +36,8 @@ function remainingText(remaining: number): string {
 // "Sblocca" (docs/design/Sblocca.dc.html): what the free version allows, how much is used, the
 // one-time 0,99 € purchase. Purchase and "Ripristina acquisto" are stubs for now.
 export default function UnlockScreen() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const { data: usage } = useDbQuery(getFreeUsage, []);
   const used = usage?.used ?? 0;
@@ -54,7 +53,7 @@ export default function UnlockScreen() {
           accessibilityRole="button"
           accessibilityLabel="Chiudi"
           style={({ pressed }) => [styles.close, pressed && styles.pressed]}>
-          <SymbolView name="xmark" tintColor={Colors.current.text} size={18} weight="semibold" />
+          <SymbolView name="xmark" tintColor={theme.text} size={18} weight="semibold" />
         </Pressable>
       </View>
 
@@ -79,7 +78,7 @@ export default function UnlockScreen() {
         {BENEFITS.map((benefit) => (
           <View key={benefit.title} style={styles.benefit}>
             <View style={styles.check}>
-              <SymbolView name="checkmark" tintColor={MINT_INK} size={13} weight="bold" />
+              <SymbolView name="checkmark" tintColor={MINT_INK(theme)} size={13} weight="bold" />
             </View>
             <View style={styles.benefitTexts}>
               <Text style={styles.benefitTitle}>{benefit.title}</Text>
@@ -137,6 +136,7 @@ export default function UnlockScreen() {
 }
 
 function Link({ label, onPress }: { label: string; onPress: () => void }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable onPress={onPress} accessibilityRole="link" hitSlop={{ top: 14, bottom: 14, left: 6, right: 6 }}>
       <Text style={styles.link}>{label}</Text>
@@ -144,11 +144,11 @@ function Link({ label, onPress }: { label: string; onPress: () => void }) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   content: {
     paddingHorizontal: Spacing.side,
@@ -161,7 +161,7 @@ const styles = themedStyles(() =>
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -180,11 +180,11 @@ const styles = themedStyles(() =>
     minHeight: 30,
     paddingHorizontal: 12,
     borderRadius: 15,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
     justifyContent: 'center',
   },
   tagText: {
-    color: Colors.current.indigo,
+    color: c.indigo,
     fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
@@ -196,7 +196,7 @@ const styles = themedStyles(() =>
     lineHeight: 34,
     fontFamily: FONTS.bold,
     textAlign: 'center',
-    color: Colors.current.text,
+    color: c.text,
   },
   intro: {
     marginTop: 10,
@@ -204,7 +204,7 @@ const styles = themedStyles(() =>
     lineHeight: 22,
     fontFamily: FONTS.regular,
     textAlign: 'center',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   benefits: {
     marginTop: 22,
@@ -220,7 +220,7 @@ const styles = themedStyles(() =>
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: MINT_TINT,
+    backgroundColor: MINT_TINT(c),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -230,19 +230,19 @@ const styles = themedStyles(() =>
   benefitTitle: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   benefitText: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   sectionTitle: {
     marginTop: 24,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   usage: {
     marginTop: 12,
@@ -258,12 +258,12 @@ const styles = themedStyles(() =>
     flexShrink: 1,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   usageValue: {
     fontSize: 15,
     fontFamily: FONTS.bold,
-    color: Colors.current.indigo,
+    color: c.indigo,
   },
   usageBar: {
     marginTop: 10,
@@ -273,7 +273,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   price: {
     marginTop: 14,
@@ -282,7 +282,7 @@ const styles = themedStyles(() =>
     borderCurve: 'continuous',
     borderWidth: 2,
     borderColor: '#6D5CE6',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -294,17 +294,17 @@ const styles = themedStyles(() =>
   priceTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   priceText: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   priceValue: {
     fontSize: 30,
     fontFamily: FONTS.bold,
-    color: Colors.current.indigo,
+    color: c.indigo,
   },
   buy: {
     marginTop: 18,
@@ -318,7 +318,7 @@ const styles = themedStyles(() =>
   freeText: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.current.accent,
+    color: c.accent,
   },
   links: {
     marginTop: 6,
@@ -329,6 +329,6 @@ const styles = themedStyles(() =>
   link: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.accent,
+    color: c.accent,
   },
-}));
+});

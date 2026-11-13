@@ -17,7 +17,7 @@ import { SectionHeader } from '@/components/section-header';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { Text } from '@/components/text';
 import { TileScrollView } from '@/components/tile-grid';
-import { Colors, Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategoriesWithCounts, saveCategoryOrder } from '@/db/categories';
 import { listDocumentsWithExpiry, listPinnedDocuments } from '@/db/documents';
@@ -27,6 +27,7 @@ import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
 import { useEmptyHomePreview } from '@/settings/debug-previews';
 import { useFreeLimit } from '@/settings/free-limit';
 import { toISODate } from '@/utils/dates';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const AFTER_SPLASH_MS = 1100; // the opening screen lasts about one second
 
@@ -41,6 +42,7 @@ function nextDeadline(documents: DocumentListItem[]): DocumentListItem | null {
 // next one), ARCHIVIO (the categories, with drag and drop and the quick menu).
 // The search field opens Ricerca (docs/design/Ricerca.dc.html).
 export default function ArchiveScreen() {
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>(); // the page scrolls while a category is dragged
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
@@ -164,7 +166,7 @@ export default function ArchiveScreen() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
@@ -183,7 +185,7 @@ const styles = themedStyles(() =>
     fontSize: 30,
     lineHeight: 36,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   search: {
     marginTop: 18,
@@ -198,10 +200,10 @@ const styles = themedStyles(() =>
   reorderHint: {
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
   },
   favorites: {
     flexDirection: 'row',
     gap: Spacing.tileGap,
   },
-}));
+});

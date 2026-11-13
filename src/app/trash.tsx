@@ -10,13 +10,13 @@ import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
-import { Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { deleteDocumentForever, listTrashedDocuments } from '@/db/documents';
 import { daysLeftInTrash, emptyTrash, restoreFromTrash, TRASH_DAYS } from '@/db/trash';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { resolveDocumentFile } from '@/storage/document-files';
 
 function showError(error: unknown) {
@@ -26,6 +26,7 @@ function showError(error: unknown) {
 // "Cestino" (Menu › Altro): the deleted documents, restorable for 30 days. Each one has
 // "Ripristina" and "Elimina definitivamente"; "Svuota cestino" deletes them all for good.
 export default function TrashScreen() {
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const theme = useTheme();
   const { data: documents } = useDbQuery(listTrashedDocuments, []);
@@ -115,7 +116,7 @@ export default function TrashScreen() {
                       accessibilityLabel={`Ripristina ${document.title}`}
                       hitSlop={6}
                       style={styles.action}>
-                      <Text style={[styles.actionText, { color: BRAND_COLOR }]}>Ripristina</Text>
+                      <Text style={[styles.actionText, { color: BRAND_COLOR(theme) }]}>Ripristina</Text>
                     </Pressable>
                     <Pressable
                       onPress={() => deleteForever(document)}
@@ -123,7 +124,7 @@ export default function TrashScreen() {
                       accessibilityLabel={`Elimina definitivamente ${document.title}`}
                       hitSlop={6}
                       style={styles.action}>
-                      <Text style={[styles.actionText, { color: DANGER_COLOR }]}>Elimina definitivamente</Text>
+                      <Text style={[styles.actionText, { color: DANGER_COLOR(theme) }]}>Elimina definitivamente</Text>
                     </Pressable>
                   </View>
                 </View>
@@ -134,7 +135,7 @@ export default function TrashScreen() {
       </ScrollView>
 
       <Stack.Toolbar placement="left">
-        <Stack.Toolbar.Button onPress={confirmEmpty} disabled={!documents?.length} tintColor={DANGER_COLOR}>
+        <Stack.Toolbar.Button onPress={confirmEmpty} disabled={!documents?.length} tintColor={DANGER_COLOR(theme)}>
           Svuota cestino
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
@@ -149,6 +150,7 @@ export default function TrashScreen() {
 
 // The first photo, or the category icon on its color
 function Thumbnail({ document }: { document: DocumentListItem }) {
+  const styles = useThemedStyles(makeStyles);
   if (document.firstImagePath) {
     return (
       <Image source={{ uri: resolveDocumentFile(document.firstImagePath).uri }} style={styles.thumb} contentFit="cover" />
@@ -159,7 +161,7 @@ function Thumbnail({ document }: { document: DocumentListItem }) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
@@ -215,4 +217,4 @@ const styles = themedStyles(() =>
   actionText: {
     fontSize: 17,
   },
-}));
+});

@@ -11,7 +11,8 @@ import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import type { DocumentListItem } from '@/db/types';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   documents: DocumentListItem[] | undefined;
@@ -26,6 +27,7 @@ type Props = {
 // Preferiti; the dashed "Aggiungi documento" stays last. While selecting ("Seleziona") the grid
 // is fixed: a tap ticks the document, and the dashed tile is hidden.
 export function DocumentGrid({ documents, hrefFor, selection, onAdd, onReorder, header }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const db = useSQLiteContext();
 
@@ -71,9 +73,9 @@ export function DocumentGrid({ documents, hrefFor, selection, onAdd, onReorder, 
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   flex: {
     flex: 1,
   },
-}));
+});

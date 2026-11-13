@@ -7,7 +7,8 @@ import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const WIDTH = 86;
 const HEIGHT = 54; // a card's proportions
@@ -15,6 +16,7 @@ const HEIGHT = 54; // a card's proportions
 // The small picture of a row of "Riordina" (86 × 54, corners 9): the photo (unless the cover is a
 // color), the color of a card, or the category gradient with its icon
 export function DocumentThumb({ document }: { document: DocumentListItem }) {
+  const styles = useThemedStyles(makeStyles);
   const { category } = document;
   if (document.firstImagePath && document.coverMode !== 'color') {
     return (
@@ -45,7 +47,7 @@ export function DocumentThumb({ document }: { document: DocumentListItem }) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   thumb: {
     width: WIDTH,
@@ -58,4 +60,4 @@ const styles = themedStyles(() =>
     alignItems: 'center',
     justifyContent: 'center',
   },
-}));
+});

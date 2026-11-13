@@ -13,7 +13,7 @@ import { StatusBadge } from '@/components/status-badge';
 import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
@@ -21,6 +21,7 @@ import { resolveDocumentFile } from '@/storage/document-files';
 import { folderRowSubtitle } from '@/utils/folder';
 import { formatEuro } from '@/utils/money';
 import { isLightColor } from '@/utils/colors';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const LONG_PRESS_MS = 400;
 export const FOLDER_ROW_INSET = 74; // separators start after the 44pt icon (16 + 44 + 14)
@@ -37,6 +38,8 @@ type Props = {
 // cover photo / picked color), name 16/600 and "Scade il…" 13, amount 16/600 and the
 // Da pagare / Pagata badge on the right. Long press: the quick-action menu.
 export function FolderRow({ document, onPress, actions, onLongPress, selection }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   const ref = useRef<ComponentRef<typeof View>>(null);
   const { category } = document;
@@ -93,7 +96,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
         {selection ? (
           <SymbolView
             name={selection.selected ? 'checkmark.circle.fill' : 'circle'}
-            tintColor={selection.selected ? BRAND_COLOR : Colors.current.dashed}
+            tintColor={selection.selected ? BRAND_COLOR(theme) : theme.dashed}
             size={24}
           />
         ) : (
@@ -109,7 +112,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -119,7 +122,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 16,
   },
   pressed: {
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
   },
   disabled: {
     opacity: 0.4,
@@ -140,12 +143,12 @@ const styles = themedStyles(() =>
   title: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   subtitle: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   right: {
     alignItems: 'flex-end',
@@ -154,6 +157,6 @@ const styles = themedStyles(() =>
   amount: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
-}));
+});

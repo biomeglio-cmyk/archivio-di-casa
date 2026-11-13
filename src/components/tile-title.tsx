@@ -2,7 +2,8 @@ import { useState } from 'react';
 import { StyleSheet, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   children: string;
@@ -20,6 +21,7 @@ const SAFETY = 1; // a point of room, so rounding never pushes the word onto two
 // fits (down to 70%); if it still does not fit, the name stays on one line and ends with "…".
 // The words are measured by an invisible copy with one word per line.
 export function TileTitle({ children, style, numberOfLines = 2, maxFontSizeMultiplier, containerStyle }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const [width, setWidth] = useState(0); // room for the text
   const [wordWidth, setWordWidth] = useState(0); // the widest word at the full font size
 
@@ -57,7 +59,7 @@ export function TileTitle({ children, style, numberOfLines = 2, maxFontSizeMulti
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   measure: {
     position: 'absolute',
@@ -66,4 +68,4 @@ const styles = themedStyles(() =>
     width: 2000, // wide enough to keep every word on its own line
     opacity: 0,
   },
-}));
+});

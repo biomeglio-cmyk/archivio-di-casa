@@ -23,7 +23,7 @@ import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { Text } from '@/components/text';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import { WhiteCard } from '@/components/white-card';
-import { Colors, Spacing, tintedShadow, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { isOtherCategory } from '@/db/categories';
 import { saveDocumentOrder } from '@/db/documents';
@@ -35,6 +35,7 @@ import { getFolderView, saveFolderView, type FolderView } from '@/settings/folde
 import { categoryShadowRgb, categoryTint } from '@/utils/colors';
 import { groupByMonth, newItemLabel } from '@/utils/folder';
 import { whenBelowLimit } from '@/settings/free-limit';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   category: Category;
@@ -59,6 +60,8 @@ function countLabel(count: number): string {
 // (several documents in one PDF) and "Riordina" (the tile grid with drag and drop, which sets the
 // manual order used inside each month). Long press on a row: the quick-action menu.
 export function FolderScreen({ category, documents }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -76,7 +79,7 @@ export function FolderScreen({ category, documents }: Props) {
     saveFolderView(next);
   }
 
-  const { tint, onTint, dashed } = categoryTint(category.colors);
+  const { tint, onTint, dashed } = categoryTint(category.colors, theme);
   const gradient = [category.colors.top, category.colors.bottom] as const;
   const due = documents.filter((d) => d.paymentStatus === 'due').length;
   const subtitle = [countLabel(documents.length), due > 0 ? `${due} da pagare` : null].filter(Boolean).join(' · ');
@@ -176,7 +179,7 @@ export function FolderScreen({ category, documents }: Props) {
             symbol="chevron.left"
             accessibilityLabel="Indietro"
             background={tint}
-            color={Colors.current.text}
+            color={theme.text}
             onPress={() => router.back()}
           />
           {selection.selecting || reordering ? (
@@ -192,14 +195,14 @@ export function FolderScreen({ category, documents }: Props) {
                 symbol="ellipsis"
                 accessibilityLabel={`Modifica o cancella la categoria ${category.name}`}
                 background={tint}
-                color={Colors.current.text}
+                color={theme.text}
                 onPress={() => setSheetOpen(true)}
               />
               <RoundIconButton
                 symbol="magnifyingglass"
                 accessibilityLabel={`Cerca in ${category.name}`}
                 background={tint}
-                color={Colors.current.text}
+                color={theme.text}
                 onPress={() => {
                   setSearchOpen((open) => !open);
                   setQuery('');
@@ -402,11 +405,11 @@ export function FolderScreen({ category, documents }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   flex: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     gap: 0,
@@ -435,13 +438,13 @@ const styles = themedStyles(() =>
     fontSize: 30,
     lineHeight: 36,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   search: {
     marginTop: 18,
@@ -456,7 +459,7 @@ const styles = themedStyles(() =>
     marginTop: 18,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
   },
   grid: {
     marginTop: 14,
@@ -466,7 +469,7 @@ const styles = themedStyles(() =>
     fontSize: 15,
     fontFamily: FONTS.regular,
     textAlign: 'center',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   month: {
     marginTop: 26,
@@ -479,11 +482,11 @@ const styles = themedStyles(() =>
     height: 1,
     marginLeft: FOLDER_ROW_INSET,
     marginRight: 16,
-    backgroundColor: Colors.current.separator,
+    backgroundColor: c.separator,
   },
   menuTile: {
     flex: 1,
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     borderRadius: 18,
     overflow: 'hidden',
   },
@@ -507,4 +510,4 @@ const styles = themedStyles(() =>
     left: Spacing.side,
     right: Spacing.side,
   },
-}));
+});

@@ -20,7 +20,7 @@ import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { Text } from '@/components/text';
 import { TileGrid } from '@/components/tile-grid';
 import { roleLabel } from '@/constants/person-roles';
-import { Colors, Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listDocumentsByPerson, saveDocumentOrder } from '@/db/documents';
 import { getPerson, setPersonPhoto } from '@/db/people';
@@ -30,6 +30,7 @@ import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { deletePersonPhoto, storePersonPhoto } from '@/storage/person-photos';
 import { whenBelowLimit } from '@/settings/free-limit';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const TILE_HEIGHT = 132; // the document squares of the design
 
@@ -58,6 +59,8 @@ export default function PersonScreen() {
 }
 
 function PersonContent({ person, documents }: { person: Person; documents: DocumentListItem[] }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -114,7 +117,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
         contentInsetAdjustmentBehavior="never"
         contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: Spacing.belowContent }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.current.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={theme.text} onPress={() => router.back()} />
           {selection.selecting ? (
             <Pressable onPress={selection.cancel} accessibilityRole="button" style={styles.cancel}>
               <Text style={styles.cancelText}>Annulla</Text>
@@ -123,7 +126,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
             <RoundIconButton
               symbol="ellipsis"
               accessibilityLabel={`Modifica o cancella ${person.name}`}
-              color={Colors.current.text}
+              color={theme.text}
               onPress={() => setSheetOpen(true)}
             />
           )}
@@ -135,7 +138,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
               <PersonAvatar name={person.name} photoPath={person.photoPath} size={116} />
             </View>
             <Pressable onPress={changePhoto} accessibilityRole="button" accessibilityLabel="Cambia foto" style={styles.camera}>
-              <SymbolView name="camera" tintColor={Colors.current.indigo} size={16} weight="semibold" />
+              <SymbolView name="camera" tintColor={theme.indigo} size={16} weight="semibold" />
             </Pressable>
           </View>
           <Text style={styles.name} accessibilityRole="header">
@@ -205,11 +208,11 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -224,12 +227,12 @@ const styles = themedStyles(() =>
     paddingHorizontal: 18,
     borderRadius: 22,
     justifyContent: 'center',
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
   },
   cancelText: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.indigo,
+    color: c.indigo,
   },
   profile: {
     marginTop: 8,
@@ -244,8 +247,8 @@ const styles = themedStyles(() =>
     height: 124,
     borderRadius: 62,
     borderWidth: 4,
-    borderColor: Colors.current.surface,
-    backgroundColor: Colors.current.surface,
+    borderColor: c.surface,
+    backgroundColor: c.surface,
     boxShadow: '0 14px 28px rgba(28, 30, 70, 0.18)',
     alignItems: 'center',
     justifyContent: 'center',
@@ -258,8 +261,8 @@ const styles = themedStyles(() =>
     height: 38,
     borderRadius: 19,
     borderWidth: 3,
-    borderColor: Colors.current.surface,
-    backgroundColor: Colors.current.lilac,
+    borderColor: c.surface,
+    backgroundColor: c.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -267,14 +270,14 @@ const styles = themedStyles(() =>
     marginTop: 16,
     fontSize: 28,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
     textAlign: 'center',
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
   editButton: {
@@ -283,12 +286,12 @@ const styles = themedStyles(() =>
     paddingHorizontal: 18,
     borderRadius: 19,
     justifyContent: 'center',
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
   },
   editText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.indigo,
+    color: c.indigo,
   },
   pressed: {
     opacity: 0.7,
@@ -298,7 +301,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   grid: {
     marginTop: 12,
@@ -308,4 +311,4 @@ const styles = themedStyles(() =>
     left: Spacing.side,
     right: Spacing.side,
   },
-}));
+});

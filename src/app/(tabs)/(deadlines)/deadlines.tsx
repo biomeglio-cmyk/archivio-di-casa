@@ -13,7 +13,7 @@ import { RoundIconButton } from '@/components/round-icon-button';
 import { Segmented } from '@/components/segmented';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
-import { Colors, Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listDocumentsWithExpiry, saveDocumentDeadline, setPaymentStatus } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
@@ -22,6 +22,7 @@ import { addDaysIso, formatShortDate, MONTHS, mondayOfIso, parseISODate, toISODa
 import { groupDeadlines, upcomingSummary } from '@/utils/deadlines';
 import { formatEuro } from '@/utils/money';
 import { whenBelowLimit } from '@/settings/free-limit';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Dated = DocumentListItem & { expiresAt: string };
 
@@ -34,6 +35,8 @@ const documentHref = (id: number) =>
 // what has expired, the Da pagare / Pagata badge, and a long press on a row to change, mark as paid
 // or take away the deadline (repeats, reminders and the «Sottomano» calendar follow on save).
 export default function DeadlinesScreen() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const { data: documents } = useDbQuery(listDocumentsWithExpiry, []);
@@ -131,7 +134,7 @@ export default function DeadlinesScreen() {
           title="Scadenze"
           subtitle={documents ? upcomingSummary(upcoming) : ' '}
           onBack={goHome}
-          right={<RoundIconButton symbol="plus" accessibilityLabel="Nuovo promemoria" color={Colors.current.text} onPress={addReminder} />}
+          right={<RoundIconButton symbol="plus" accessibilityLabel="Nuovo promemoria" color={theme.text} onPress={addReminder} />}
         />
 
         <View style={styles.switch}>
@@ -195,7 +198,7 @@ export default function DeadlinesScreen() {
 
         {documents && sections.length === 0 && (
           <View style={styles.empty}>
-            <SymbolView name="calendar.badge.checkmark" tintColor={Colors.current.textSecondary} size={40} />
+            <SymbolView name="calendar.badge.checkmark" tintColor={theme.textSecondary} size={40} />
             <Text style={styles.emptyTitle}>Nessuna scadenza in vista</Text>
             <Text style={styles.emptyText}>
               Tocca + per aggiungere un documento con una scadenza: comparirà qui e nel calendario.
@@ -218,6 +221,7 @@ export default function DeadlinesScreen() {
 // "14 NOVEMBRE" and the deadlines of that day (dot in the category color, name, amount), or
 // "Nessuna scadenza in questo giorno", on pale lilac
 function DayDeadlines({ iso, items, onOpen }: { iso: string; items: Dated[]; onOpen: (d: Dated) => void }) {
+  const styles = useThemedStyles(makeStyles);
   const date = parseISODate(iso);
   return (
     <View style={styles.dayBox}>
@@ -247,11 +251,11 @@ function monthOf(iso: string) {
   return { year: date.getFullYear(), month: date.getMonth() };
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -270,13 +274,13 @@ const styles = themedStyles(() =>
     paddingHorizontal: 14,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
   },
   dayTitle: {
     fontSize: 12,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   dayItem: {
     marginTop: 8,
@@ -297,28 +301,28 @@ const styles = themedStyles(() =>
     flex: 1,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   dayItemSide: {
     fontSize: 13,
     fontFamily: FONTS.medium,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   dayEmpty: {
     marginTop: 6,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   sectionTitle: {
     marginTop: 26,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   sectionOverdue: {
-    color: Colors.current.error,
+    color: c.error,
   },
   card: {
     marginTop: 12,
@@ -328,7 +332,7 @@ const styles = themedStyles(() =>
     height: 1,
     marginLeft: DEADLINE_ROW_INSET,
     marginRight: 16,
-    backgroundColor: Colors.current.separator,
+    backgroundColor: c.separator,
   },
   empty: {
     alignItems: 'center',
@@ -339,14 +343,14 @@ const styles = themedStyles(() =>
   emptyTitle: {
     fontSize: 18,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
     textAlign: 'center',
   },
   emptyText: {
     fontSize: 15,
     lineHeight: 21,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
-}));
+});

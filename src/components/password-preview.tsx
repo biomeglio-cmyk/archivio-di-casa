@@ -8,7 +8,8 @@ import { previewGradient, previewSymbol } from '@/constants/password-options';
 import type { PasswordInfo } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { hexToRgb } from '@/utils/colors';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   info: Pick<PasswordInfo, 'type' | 'preview'>;
@@ -20,6 +21,7 @@ type Props = {
 // "Anteprima" of a Password entry (docs/design/NuovaPassword.dc.html): its image, or its color with
 // the icon in white. The same square is its tile and its row in the lists.
 export function PasswordPreviewTile({ info, size, imageUri, shadow = true }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const radius = Math.round(size * 0.28);
   const [top, bottom] = previewGradient(info.preview);
   const uri = imageUri ?? (info.preview.imagePath ? resolveDocumentFile(info.preview.imagePath).uri : null);
@@ -36,7 +38,7 @@ export function PasswordPreviewTile({ info, size, imageUri, shadow = true }: Pro
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   square: {
     alignItems: 'center',
@@ -44,4 +46,4 @@ const styles = themedStyles(() =>
     borderCurve: 'continuous',
     overflow: 'hidden',
   },
-}));
+});

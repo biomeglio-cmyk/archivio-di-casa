@@ -14,12 +14,13 @@ import { PersonAvatar } from '@/components/person-avatar';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
-import { Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useMaxBrightness } from '@/hooks/use-max-brightness';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { BarcodeFullScreen, GeneratedCode } from '@/components/barcode-view';
 import { generateBarcode } from '@/utils/barcode';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // White behind the barcode in light and dark mode: scanners need dark bars on white
 const BARCODE_BACKGROUND = '#FFFFFF';
@@ -35,6 +36,7 @@ type Props = {
 // Detail of a card ("Tessere e card"): the card on top, then the barcode photo on white,
 // ready to be shown at the checkout with the screen at full brightness
 export function CardDetail({ card, files, pin }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const { width } = useWindowDimensions();
   const [fullScreen, setFullScreen] = useState(false);
   useMaxBrightness();
@@ -127,7 +129,7 @@ export function CardDetail({ card, files, pin }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
@@ -193,4 +195,4 @@ const styles = themedStyles(() =>
   actions: {
     gap: 8,
   },
-}));
+});

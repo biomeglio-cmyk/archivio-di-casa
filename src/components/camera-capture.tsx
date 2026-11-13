@@ -12,7 +12,8 @@ import { PrimaryButton } from '@/components/primary-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/typography';
 import { useLargestPictureSize } from '@/capture/picture-size';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   onDone: (uris: string[]) => void; // the photos in the order they were taken
@@ -23,6 +24,7 @@ type Props = {
 // A document is N pages: after every shot "Rifai", "Aggiungi pagina" (keep it, shoot the next)
 // or "Fine" (keep it and stop). One page is enough.
 export function CameraCapture({ onDone, onCancel }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
   const picture = useLargestPictureSize(cameraRef); // full sensor resolution, not the preview size
@@ -164,7 +166,7 @@ export function CameraCapture({ onDone, onCancel }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
@@ -276,4 +278,4 @@ const styles = themedStyles(() =>
   permissionButton: {
     alignSelf: 'stretch',
   },
-}));
+});

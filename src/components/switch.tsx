@@ -4,7 +4,8 @@ import { Pressable, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   value: boolean;
@@ -21,6 +22,7 @@ const TRAVEL = WIDTH - KNOB - (HEIGHT - KNOB); // knob from the left inset to th
 
 // Switch of the guide (52 × 32, knob 26): main gradient when on, #D6D8E4 when off
 export function Switch({ value, onValueChange, disabled = false, accessibilityLabel, gradient = BRAND_GRADIENT }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const progress = useSharedValue(value ? 1 : 0);
 
   useEffect(() => {
@@ -52,14 +54,14 @@ export function Switch({ value, onValueChange, disabled = false, accessibilityLa
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   track: {
     width: WIDTH,
     height: HEIGHT,
     borderRadius: HEIGHT / 2,
     overflow: 'hidden',
-    backgroundColor: Colors.current.switchOff,
+    backgroundColor: c.switchOff,
     justifyContent: 'center',
     paddingHorizontal: (HEIGHT - KNOB) / 2,
   },
@@ -73,4 +75,4 @@ const styles = themedStyles(() =>
   disabled: {
     opacity: 0.5,
   },
-}));
+});

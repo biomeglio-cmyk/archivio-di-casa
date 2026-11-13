@@ -4,8 +4,9 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Radius, themedStyles } from '@/constants/theme';
+import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   label: string;
@@ -26,20 +27,24 @@ export function Chip({
   onPress,
   accessibilityLabel,
   gradient = BRAND_GRADIENT,
-  tint = Colors.current.lilac,
-  tintText = Colors.current.text,
+  tint,
+  tintText,
 }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
+  const fill = tint ?? theme.lilac; // inactive background: a section tint, lilac by default
+  const ink = tintText ?? theme.text;
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
       accessibilityState={{ selected }}
-      style={({ pressed }) => [styles.chip, { backgroundColor: tint }, pressed && styles.pressed]}>
+      style={({ pressed }) => [styles.chip, { backgroundColor: fill }, pressed && styles.pressed]}>
       {selected && (
         <LinearGradient colors={gradient} start={GRADIENT_START} end={GRADIENT_END} style={StyleSheet.absoluteFill} />
       )}
-      <Text style={[styles.label, selected ? styles.labelSelected : { color: tintText }]} maxFontSizeMultiplier={1.6}>
+      <Text style={[styles.label, selected ? styles.labelSelected : { color: ink }]} maxFontSizeMultiplier={1.6}>
         {label}
       </Text>
     </Pressable>
@@ -48,10 +53,11 @@ export function Chip({
 
 // A row of chips that wraps onto more lines (never a horizontal scroll)
 export function ChipGroup({ children }: { children: ReactNode }) {
+  const styles = useThemedStyles(makeStyles);
   return <View style={styles.group}>{children}</View>;
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   group: {
     flexDirection: 'row',
@@ -77,4 +83,4 @@ const styles = themedStyles(() =>
     color: '#FFFFFF',
     fontFamily: FONTS.semiBold,
   },
-}));
+});

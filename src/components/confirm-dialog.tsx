@@ -4,8 +4,9 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 
 import { Text } from '@/components/text';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   title: string; // "Cancellare la categoria Bollette?"
@@ -31,6 +32,8 @@ export function ConfirmDialog({
   symbol = 'trash',
   children,
 }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <Animated.View entering={FadeIn.duration(160)} style={styles.dim}>
       <Pressable
@@ -46,7 +49,7 @@ export function ConfirmDialog({
         accessibilityRole="alert"
         onAccessibilityEscape={onCancel}>
         <View style={styles.icon}>
-          <SymbolView name={symbol} tintColor={Colors.current.error} size={26} />
+          <SymbolView name={symbol} tintColor={theme.error} size={26} />
         </View>
         <Text style={styles.title} accessibilityRole="header">
           {title}
@@ -80,6 +83,8 @@ type ChoiceProps = {
 
 // One radio choice inside the dialog ("Spostali in Altro" / "Cancellali")
 export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const accent = '#6D5CE6';
   return (
     <Pressable
@@ -91,10 +96,10 @@ export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) 
         styles.choice,
         {
           borderColor: checked ? accent : 'transparent',
-          backgroundColor: checked ? Colors.current.paleLilac : Colors.current.elevated,
+          backgroundColor: checked ? theme.paleLilac : theme.elevated,
         },
       ]}>
-      <View style={[styles.ring, { borderColor: checked ? accent : Colors.current.dashed }]}>
+      <View style={[styles.ring, { borderColor: checked ? accent : theme.dashed }]}>
         {checked && <View style={[styles.dot, { backgroundColor: accent }]} />}
       </View>
       <View style={styles.choiceTexts}>
@@ -105,7 +110,7 @@ export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) 
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   dim: {
     flex: 1,
@@ -120,14 +125,14 @@ const styles = themedStyles(() =>
     paddingBottom: 20,
     borderRadius: 30,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     boxShadow: '0 20px 50px rgba(28, 30, 70, 0.25)',
   },
   icon: {
     width: 60,
     height: 60,
     borderRadius: 30,
-    backgroundColor: Colors.current.errorBackground,
+    backgroundColor: c.errorBackground,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -137,7 +142,7 @@ const styles = themedStyles(() =>
     lineHeight: 27,
     fontFamily: FONTS.bold,
     textAlign: 'center',
-    color: Colors.current.text,
+    color: c.text,
   },
   message: {
     marginTop: 8,
@@ -145,14 +150,14 @@ const styles = themedStyles(() =>
     lineHeight: 22,
     fontFamily: FONTS.regular,
     textAlign: 'center',
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
   },
   confirm: {
     marginTop: 18,
     alignSelf: 'stretch',
     minHeight: 54,
     borderRadius: 27,
-    backgroundColor: Colors.current.destructive,
+    backgroundColor: c.destructive,
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0 8px 18px rgba(217, 45, 32, 0.25)',
@@ -167,12 +172,12 @@ const styles = themedStyles(() =>
     alignSelf: 'stretch',
     minHeight: 52,
     borderRadius: 26,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   cancelLabel: {
-    color: Colors.current.text,
+    color: c.text,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
   },
@@ -209,11 +214,11 @@ const styles = themedStyles(() =>
   choiceLabel: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   choiceDetail: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
-}));
+});

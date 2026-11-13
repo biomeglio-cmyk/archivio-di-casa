@@ -1,8 +1,8 @@
 import { Platform, StyleSheet, type TextProps } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors, Fonts, ThemeColor, themedStyles } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { Fonts, type Palette, ThemeColor } from '@/constants/theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 export type ThemedTextProps = TextProps & {
   type?: 'default' | 'title' | 'small' | 'smallBold' | 'subtitle' | 'link' | 'linkPrimary' | 'code';
@@ -11,11 +11,12 @@ export type ThemedTextProps = TextProps & {
 
 export function ThemedText({ style, type = 'default', themeColor, ...rest }: ThemedTextProps) {
   const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
 
   return <Text style={[{ color: theme[themeColor ?? 'text'] }, styles[type], style]} {...rest} />;
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   small: {
     fontSize: 14,
@@ -49,11 +50,11 @@ const styles = themedStyles(() =>
   linkPrimary: {
     lineHeight: 30,
     fontSize: 14,
-    color: Colors.current.accent,
+    color: c.accent,
   },
   code: {
     fontFamily: Fonts.mono,
     fontWeight: Platform.select({ android: 700 }) ?? 500,
     fontSize: 12,
   },
-}));
+});

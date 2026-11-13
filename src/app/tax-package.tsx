@@ -8,16 +8,18 @@ import { Choice, Group, Row } from '@/components/grouped-list';
 import { Segmented } from '@/components/segmented';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
-import { Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { getCategory } from '@/db/categories';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { shareFiles } from '@/send/deliver';
 import { formatBytes, loadSendPreferences, SIZE_LIMITS, type SizeLimit } from '@/send/send-preferences';
 import { buildTaxPackage, loadTaxItems, taxYears } from '@/send/tax-package';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // Modal "Prepara per il commercialista" (menu "…" of Spese 730): pick the year, then ONE PDF with
 // an index and every document of that year (photos and imported PDFs), shared with the iOS sheet.
 export default function TaxPackageScreen() {
+  const styles = useThemedStyles(makeStyles);
   const { categoryId } = useLocalSearchParams<{ categoryId: string }>();
   const id = Number(categoryId);
   const { data: category } = useDbQuery((db) => getCategory(db, id), [id]);
@@ -121,7 +123,7 @@ export default function TaxPackageScreen() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
@@ -146,4 +148,4 @@ const styles = themedStyles(() =>
     borderRadius: 12,
     borderCurve: 'continuous',
   },
-}));
+});

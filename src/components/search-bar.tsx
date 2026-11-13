@@ -4,8 +4,8 @@ import { Keyboard, Pressable, StyleSheet, View, type TextInputInstance } from 'r
 
 import { Text, TextInput } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
-import { Radius, themedStyles } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { type Palette, Radius } from '@/constants/theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   value: string;
@@ -21,6 +21,7 @@ const LENS_COLOR = '#6D5CE6'; // the magnifying glass of the design
 // While typing: a clear button, and "Annulla" next to it, which empties the field and closes
 // the keyboard.
 export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const inputRef = useRef<TextInputInstance>(null);
   const [focused, setFocused] = useState(false);
@@ -85,7 +86,7 @@ export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -114,7 +115,7 @@ const styles = themedStyles(() =>
     justifyContent: 'center',
   },
   cancel: {
-    color: BRAND_COLOR,
+    color: BRAND_COLOR(c),
     fontSize: 16,
   },
-}));
+});

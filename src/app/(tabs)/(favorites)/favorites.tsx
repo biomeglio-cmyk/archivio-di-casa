@@ -21,7 +21,7 @@ import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { REORDER_FOOTER, ReorderHeader, ReorderRow, SortableList } from '@/components/sortable-list';
 import { Text } from '@/components/text';
 import { TileGrid } from '@/components/tile-grid';
-import { CardSurface, Colors, Spacing, themedStyles, onTheme } from '@/constants/theme';
+import { cardSurface, type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPinnedDocuments, savePinnedOrder, setPinned } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
@@ -31,11 +31,9 @@ import { findMatch, normalizeText } from '@/search/text-match';
 import { getFavoritesView, saveFavoritesView, type FolderView } from '@/settings/folder-view';
 import { describeDistance } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
-let HEART = '';
-onTheme(() => {
-  HEART = Colors.current.heart;
-});
+const HEART = (p: Palette) => p.heart;
 
 const documentHref = (id: number) =>
   ({ pathname: '/(tabs)/(favorites)/document/[id]', params: { id: String(id) } }) as const;
@@ -47,6 +45,8 @@ const documentHref = (id: number) =>
 // Our extra, as in the folders: Elenco / Griglia (remembered). Griglia = the tiles with their covers,
 // long press to drag (or for the quick menu); both views share the same order.
 export default function FavoritesScreen() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -127,7 +127,7 @@ export default function FavoritesScreen() {
                 <RoundIconButton
                   symbol="magnifyingglass"
                   accessibilityLabel="Cerca nei preferiti"
-                  color={Colors.current.text}
+                  color={theme.text}
                   onPress={() => {
                     setSearchOpen((open) => !open);
                     setQuery('');
@@ -215,6 +215,8 @@ type RowProps = {
 };
 
 function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const { pressed, handlers } = usePressed();
   const subtitle = favoriteSubtitle(document);
@@ -255,7 +257,7 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
         accessibilityState={{ selected: true }}
         hitSlop={4}
         style={({ pressed }) => [styles.heart, pressed && styles.rowPressed]}>
-        <SymbolView name="heart.fill" tintColor={HEART} size={24} />
+        <SymbolView name="heart.fill" tintColor={HEART(theme)} size={24} />
       </Pressable>
     </View>
   );
@@ -273,11 +275,11 @@ function favoriteSubtitle(document: DocumentListItem): string {
   return [document.category.name, detail].filter(Boolean).join(' · ');
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -297,14 +299,14 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   list: {
     marginTop: 12,
     gap: 10,
   },
   row: {
-    ...CardSurface,
+    ...cardSurface(c),
     borderRadius: 20,
     flexDirection: 'row',
     alignItems: 'center',
@@ -328,12 +330,12 @@ const styles = themedStyles(() =>
   name: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   sub: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   heart: {
     width: 44,
@@ -349,10 +351,10 @@ const styles = themedStyles(() =>
     borderRadius: 20,
     borderCurve: 'continuous',
     overflow: 'hidden',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
   footer: {
@@ -361,7 +363,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
-}));
+});

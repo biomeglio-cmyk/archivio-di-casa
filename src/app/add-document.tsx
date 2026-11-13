@@ -15,7 +15,8 @@ import { Text } from '@/components/text';
 import { FONTS } from '@/constants/typography';
 import { encodePendingFiles, pagesToFiles } from '@/storage/pending-files';
 import { useLargestPictureSize } from '@/capture/picture-size';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const DARK = '#12142A';
 const PAGE_RATIO = 210 / 297; // the frame has the shape of an A4 page
@@ -32,6 +33,7 @@ type Mode = { key: string; label: string; onPress?: () => void };
 // shutter. Its pages go to Nuovo documento. Only where there is no system scanner, our own camera
 // with the page frame takes its place (no live edge detection: "Inquadra il documento").
 export default function AddDocumentScreen() {
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
@@ -230,6 +232,7 @@ function pageFrame(box: { width: number; height: number }): FrameRect {
 }
 
 function DarkButton({ symbol, label, onPress }: { symbol: SFSymbol; label: string; onPress: () => void }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -241,7 +244,7 @@ function DarkButton({ symbol, label, onPress }: { symbol: SFSymbol; label: strin
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
@@ -435,4 +438,4 @@ const styles = themedStyles(() =>
     color: '#D2D2D7',
     fontSize: 12,
   },
-}));
+});

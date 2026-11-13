@@ -12,12 +12,13 @@ import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Text, TextInput } from '@/components/text';
 import { PERSON_ROLES } from '@/constants/person-roles';
-import { CardSurface, Colors, Spacing, themedStyles } from '@/constants/theme';
+import { cardSurface, type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getPerson, insertPerson, updatePerson } from '@/db/people';
 import type { Person, PersonRole } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { deletePersonPhoto, storePersonPhoto } from '@/storage/person-photos';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 // "Nuova persona" (no id) or "Modifica persona" (?id=…)
 export default function PersonFormScreen() {
@@ -38,6 +39,8 @@ type PhotoChange = { kind: 'keep' } | { kind: 'new'; uri: string } | { kind: 're
 // "CHI È" (Partner, Figlio o figlia…; our extra "Sono io" gives the "Tu" badge), the note and
 // "Aggiungi alla famiglia"
 function PersonForm({ person }: { person: Person | null }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const [name, setName] = useState(person?.name ?? '');
@@ -92,7 +95,7 @@ function PersonForm({ person }: { person: Person | null }) {
         automaticallyAdjustKeyboardInsets
         contentContainerStyle={[styles.page, { paddingBottom: insets.bottom + 36 }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.current.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={theme.text} onPress={() => router.back()} />
           <Text style={styles.heading} accessibilityRole="header">
             {person ? 'Modifica persona' : 'Nuova persona'}
           </Text>
@@ -114,7 +117,7 @@ function PersonForm({ person }: { person: Person | null }) {
               />
             ) : (
               <>
-                <SymbolView name="camera" tintColor={Colors.current.indigo} size={26} />
+                <SymbolView name="camera" tintColor={theme.indigo} size={26} />
                 <Text style={styles.photoLabel}>Aggiungi foto</Text>
               </>
             )}
@@ -127,7 +130,7 @@ function PersonForm({ person }: { person: Person | null }) {
             value={name}
             onChangeText={setName}
             placeholder="Come si chiama?"
-            placeholderTextColor={Colors.current.placeholder}
+            placeholderTextColor={theme.placeholder}
             autoFocus={!person}
             autoCapitalize="words"
             returnKeyType="done"
@@ -143,7 +146,7 @@ function PersonForm({ person }: { person: Person | null }) {
           accessibilityLabel={`Chi è per te: ${roleName}`}
           style={({ pressed }) => [styles.field, styles.select, pressed && styles.pressed]}>
           <Text style={styles.selectText}>{roleName}</Text>
-          <SymbolView name="chevron.down" tintColor={Colors.current.textSecondary} size={15} weight="semibold" />
+          <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={15} weight="semibold" />
         </Pressable>
 
         <Text style={styles.note}>
@@ -173,11 +176,11 @@ function PersonForm({ person }: { person: Person | null }) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingTop: 24,
@@ -191,7 +194,7 @@ const styles = themedStyles(() =>
   heading: {
     fontSize: 17,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   barSpace: {
     width: 44,
@@ -211,13 +214,13 @@ const styles = themedStyles(() =>
   photoEmpty: {
     borderWidth: 2,
     borderStyle: 'dashed',
-    borderColor: Colors.current.dashed,
-    backgroundColor: Colors.current.paleLilac,
+    borderColor: c.dashed,
+    backgroundColor: c.paleLilac,
   },
   photoLabel: {
     fontSize: 13,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.indigo,
+    color: c.indigo,
   },
   pressed: {
     opacity: 0.7,
@@ -227,10 +230,10 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   field: {
-    ...CardSurface,
+    ...cardSurface(c),
     marginTop: 10,
     height: 56,
     borderRadius: 18,
@@ -240,7 +243,7 @@ const styles = themedStyles(() =>
   input: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   select: {
     flexDirection: 'row',
@@ -250,7 +253,7 @@ const styles = themedStyles(() =>
   selectText: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   note: {
     marginTop: 18,
@@ -258,9 +261,9 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   save: {
     marginTop: 26,
   },
-}));
+});

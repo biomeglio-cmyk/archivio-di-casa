@@ -25,7 +25,7 @@ import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { reminderLabel, reminderPickerValue } from '@/constants/deadline-options';
-import { Colors, Spacing, tintedShadow, themedStyles, onTheme } from '@/constants/theme';
+import { type Palette, Spacing, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import {
   getDocumentDetail,
@@ -47,16 +47,14 @@ import { daysUntil } from '@/utils/deadlines';
 import { dayAndMonth, folderDate } from '@/utils/folder';
 import { formatEuro } from '@/utils/money';
 import { PIN_TINT } from '@/constants/brand';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
-let PIN_BACKGROUND = '';
-let PIN_COLOR = '';
-onTheme(() => {
-  PIN_BACKGROUND = PIN_TINT;
-  PIN_COLOR = Colors.current.heart;
-});
+const PIN_BACKGROUND = (p: Palette) => PIN_TINT(p);
+const PIN_COLOR = (p: Palette) => p.heart;
 
 // Detail of one document (or of a card). Used by the document/[id] screen of every tab.
 export default function DocumentDetail() {
+  const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, Number(id)), [id]);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, Number(id)), [id]);
@@ -124,12 +122,14 @@ function DocumentScreen({
   files: DocumentFile[];
   onTogglePin: () => void;
 }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const { defaultReminderDays } = usePreferences();
   const { data: versions } = useDbQuery((d) => listDocumentVersions(d, document.id), [document.id]);
   const { category, person } = document;
-  const { tint, onTint } = categoryTint(category.colors);
+  const { tint, onTint } = categoryTint(category.colors, theme);
   const gradient = [category.colors.top, category.colors.bottom] as const;
   const shadow = tintedShadow(categoryShadowRgb(category.colors));
   const hasFiles = files.length > 0;
@@ -208,7 +208,7 @@ function DocumentScreen({
         symbol="chevron.left"
         accessibilityLabel="Indietro"
         background={tint}
-        color={Colors.current.text}
+        color={theme.text}
         onPress={() => router.back()}
       />
 
@@ -252,8 +252,8 @@ function DocumentScreen({
             key="pin"
             symbol={document.isPinned ? 'heart.fill' : 'heart'}
             label={document.isPinned ? 'Togli dai preferiti' : 'Aggiungi ai preferiti'}
-            tint={PIN_BACKGROUND}
-            color={PIN_COLOR}
+            tint={PIN_BACKGROUND(theme)}
+            color={PIN_COLOR(theme)}
             selected={document.isPinned}
             onPress={onTogglePin}
           />,
@@ -290,8 +290,8 @@ function DocumentScreen({
             key="delete"
             symbol="trash"
             label="Cancella"
-            tint={Colors.current.errorBackground}
-            color={Colors.current.error}
+            tint={theme.errorBackground}
+            color={theme.error}
             destructive
             onPress={() => confirmDeleteDocument(document)}
           />,
@@ -410,6 +410,7 @@ function Preview({
   tint: string;
   onPress?: () => void;
 }) {
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   const images = files.filter((f) => f.kind === 'image');
   const pdf = files.some((f) => f.kind === 'pdf');
@@ -469,6 +470,8 @@ function ActionRow({
   destructive = false,
   selected,
 }: ActionRowProps) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   return (
     <Pressable
@@ -480,19 +483,19 @@ function ActionRow({
       <View style={[styles.actionIcon, { backgroundColor: tint }]}>
         <SymbolView name={symbol} tintColor={color} size={20} />
       </View>
-      <Text style={[styles.actionLabel, destructive && { color: Colors.current.error }]}>{label}</Text>
+      <Text style={[styles.actionLabel, destructive && { color: theme.error }]}>{label}</Text>
       {chevron && (
-        <SymbolView name="chevron.right" tintColor={Colors.current.textSecondary} size={16} weight="semibold" />
+        <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={16} weight="semibold" />
       )}
     </Pressable>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   content: {
     paddingHorizontal: Spacing.side,
@@ -534,7 +537,7 @@ const styles = themedStyles(() =>
   pdfLabel: {
     fontSize: 13,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   pageCount: {
     position: 'absolute',
@@ -543,25 +546,25 @@ const styles = themedStyles(() =>
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
   },
   pageCountText: {
     fontSize: 12,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   title: {
     marginTop: 20,
     fontSize: 28,
     lineHeight: 34,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   actions: {
     marginTop: 18,
@@ -571,7 +574,7 @@ const styles = themedStyles(() =>
     height: 1,
     marginLeft: 70,
     marginRight: 16,
-    backgroundColor: Colors.current.separator,
+    backgroundColor: c.separator,
   },
   actionRow: {
     flexDirection: 'row',
@@ -581,7 +584,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 16,
   },
   actionPressed: {
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
   },
   actionIcon: {
     width: 40,
@@ -595,14 +598,14 @@ const styles = themedStyles(() =>
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   sectionTitle: {
     marginTop: 26,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   details: {
     marginTop: 12,
@@ -619,12 +622,12 @@ const styles = themedStyles(() =>
   },
   detailBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: Colors.current.separator,
+    borderBottomColor: c.separator,
   },
   detailLabel: {
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   detailValue: {
     flexShrink: 1,
@@ -633,16 +636,16 @@ const styles = themedStyles(() =>
   value: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
     textAlign: 'right',
   },
   valueAlert: {
-    color: Colors.current.error,
+    color: c.error,
   },
   amount: {
     fontSize: 17,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   person: {
     flexDirection: 'row',
@@ -663,13 +666,13 @@ const styles = themedStyles(() =>
   reminderTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   reminderText: {
     marginTop: 1,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   extra: {
     marginTop: 18,
@@ -677,4 +680,4 @@ const styles = themedStyles(() =>
   pay: {
     marginTop: 18,
   },
-}));
+});

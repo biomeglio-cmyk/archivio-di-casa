@@ -9,7 +9,8 @@ import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { isLightColor, mixWithWhite } from '@/utils/colors';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 export const WALLET_CARD_HEIGHT = 214; // open card in Tessere
 export const WALLET_CARD_PEEK = 86; // closed card: only its top shows
@@ -36,6 +37,7 @@ export function spacedNumber(value: string | null): string {
 // color with two soft circles, the name 20/800, the Tipo on the right, the number at the bottom
 // and the holder in capitals
 export function WalletCardFace({ card, height = WALLET_CARD_HEIGHT, scale = 1, usePhoto = true }: Props) {
+  const styles = useThemedStyles(makeStyles);
   if (usePhoto && card.firstImagePath && card.coverMode !== 'color') {
     return (
       <View style={[styles.face, { height }]}>
@@ -88,7 +90,7 @@ export function WalletCardFace({ card, height = WALLET_CARD_HEIGHT, scale = 1, u
 
 const circle = (diameter: number) => ({ width: diameter, height: diameter, borderRadius: diameter / 2 });
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   face: {
     width: '100%',
@@ -134,4 +136,4 @@ const styles = themedStyles(() =>
     color: 'rgba(255, 255, 255, 0.9)',
     fontFamily: FONTS.medium,
   },
-}));
+});

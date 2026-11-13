@@ -17,21 +17,18 @@ import { Text, TextInput } from '@/components/text';
 import { spacedNumber, WalletCardFace } from '@/components/wallet-card';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
+import { onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
 import type { CoverMode } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { barcodeTypeName, codeKindOf, generateBarcode, typeForKind, type CodeKind } from '@/utils/barcode';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const NONE = 0; // no person (ids start at 1)
 const DARK = '#12142A';
-let MINT_TINT = '';
-let MINT_TEXT = '';
-onTheme(() => {
-  MINT_TINT = softTint('#E6F7F0', '#15332A');
-  MINT_TEXT = onSoftTint('#1F7A5A', '#7FE0BC');
-});
+const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#15332A');
+const MINT_TEXT = (p: Palette) => onSoftTint(p, '#1F7A5A', '#7FE0BC');
 
 export type CardFormValues = {
   title: string;
@@ -61,6 +58,8 @@ type Props = {
 // Expo Go cannot read text from a photo: the camera reads the code (its number goes in Numero);
 // Nome and Tipo are typed.
 export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const { data: people } = useDbQuery(listPeople, []);
 
@@ -239,7 +238,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
           <WhiteCard style={styles.codeCard}>
             <View style={styles.foundRow}>
               <View style={styles.found}>
-                <SymbolView name={readByCamera ? 'checkmark' : code ? 'keyboard' : 'questionmark'} tintColor={MINT_TEXT} size={12} weight="bold" />
+                <SymbolView name={readByCamera ? 'checkmark' : code ? 'keyboard' : 'questionmark'} tintColor={MINT_TEXT(theme)} size={12} weight="bold" />
                 <Text style={styles.foundText}>{found}</Text>
               </View>
               <Pressable onPress={() => setRetake('barcode')} accessibilityRole="button" hitSlop={10}>
@@ -264,7 +263,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
               {preview ? (
                 <GeneratedCode barcode={preview} maxWidth={260} maxHeight={kind === 'qr' ? 120 : 86} />
               ) : (
-                <SymbolView name={kind === 'qr' ? 'qrcode' : 'barcode'} tintColor={Colors.current.dashed} size={56} />
+                <SymbolView name={kind === 'qr' ? 'qrcode' : 'barcode'} tintColor={theme.dashed} size={56} />
               )}
               <Text style={styles.previewNumber}>
                 {code ? (kind === 'qr' ? `${title.trim() || 'Tessera'} · ${spacedNumber(code)}` : spacedNumber(code)) : 'Scrivi il numero qui sotto'}
@@ -292,7 +291,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Es. Supermercato"
-                placeholderTextColor={Colors.current.placeholder}
+                placeholderTextColor={theme.placeholder}
                 style={styles.input}
                 accessibilityLabel="Nome"
               />
@@ -302,7 +301,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 value={docType}
                 onChangeText={setDocType}
                 placeholder="Es. Carta fedeltà"
-                placeholderTextColor={Colors.current.placeholder}
+                placeholderTextColor={theme.placeholder}
                 style={styles.input}
                 accessibilityLabel="Tipo"
               />
@@ -312,7 +311,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 value={number}
                 onChangeText={setNumber}
                 placeholder="Es. 0400 2219 8876"
-                placeholderTextColor={Colors.current.placeholder}
+                placeholderTextColor={theme.placeholder}
                 autoCapitalize="characters"
                 autoCorrect={false}
                 style={styles.input}
@@ -349,6 +348,7 @@ function LocalPhoto({ uri }: { uri: string }) {
 
 // "Rifai la foto": a pill at the bottom of a dark preview box, on translucent dark (both themes)
 function RetakePill({ label, onPress }: { label: string; onPress: () => void }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -363,6 +363,7 @@ function RetakePill({ label, onPress }: { label: string; onPress: () => void }) 
 }
 
 function DarkButton({ symbol, label, onPress }: { symbol: 'xmark' | 'camera.rotate'; label: string; onPress: () => void }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -375,6 +376,7 @@ function DarkButton({ symbol, label, onPress }: { symbol: 'xmark' | 'camera.rota
 }
 
 function FieldRow({ label, last = false, children }: { label: string; last?: boolean; children: ReactNode }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={[styles.fieldRow, !last && styles.fieldDivider]}>
       <Text style={styles.fieldLabel}>{label}</Text>
@@ -383,11 +385,11 @@ function FieldRow({ label, last = false, children }: { label: string; last?: boo
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   dark: {
     backgroundColor: DARK,
@@ -509,7 +511,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   coverRow: {
     alignItems: 'center',
@@ -526,7 +528,7 @@ const styles = themedStyles(() =>
     marginTop: 10,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
   coverField: {
@@ -547,7 +549,7 @@ const styles = themedStyles(() =>
     height: 28,
     paddingHorizontal: 10,
     borderRadius: 14,
-    backgroundColor: MINT_TINT,
+    backgroundColor: MINT_TINT(c),
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
@@ -556,12 +558,12 @@ const styles = themedStyles(() =>
     flexShrink: 1,
     fontSize: 12,
     fontFamily: FONTS.semiBold,
-    color: MINT_TEXT,
+    color: MINT_TEXT(c),
   },
   link: {
     fontSize: 13,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.accent,
+    color: c.accent,
   },
   kind: {
     marginTop: 12,
@@ -572,7 +574,7 @@ const styles = themedStyles(() =>
     borderRadius: 16,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: Colors.current.separator,
+    borderColor: c.separator,
     alignItems: 'center',
     gap: 8,
   },
@@ -580,7 +582,7 @@ const styles = themedStyles(() =>
     fontSize: 15,
     fontFamily: FONTS.semiBold,
     letterSpacing: 2.4,
-    color: Colors.current.text,
+    color: c.text,
     textAlign: 'center',
   },
   explain: {
@@ -589,7 +591,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   readBox: {
     marginTop: 24,
@@ -597,7 +599,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 16,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
@@ -614,12 +616,12 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
   },
   readTitle: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   fields: {
     marginTop: 12,
@@ -634,13 +636,13 @@ const styles = themedStyles(() =>
   },
   fieldDivider: {
     borderBottomWidth: 1,
-    borderBottomColor: Colors.current.separator,
+    borderBottomColor: c.separator,
   },
   fieldLabel: {
     width: 104,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   fieldControl: {
     flex: 1,
@@ -652,7 +654,7 @@ const styles = themedStyles(() =>
     minHeight: 44,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
     textAlign: 'right',
   },
   save: {
@@ -662,7 +664,7 @@ const styles = themedStyles(() =>
     marginTop: 8,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
-}));
+});

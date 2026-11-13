@@ -4,11 +4,13 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // "Termini d'uso" (Impostazioni › Informazioni, Sblocca). A placeholder: the real terms are
 // written and published with the App Store version.
 export default function TermsScreen() {
+  const styles = useThemedStyles(makeStyles);
   return (
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
@@ -32,7 +34,7 @@ export default function TermsScreen() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
@@ -43,4 +45,4 @@ const styles = themedStyles(() =>
   intro: {
     paddingHorizontal: 4,
   },
-}));
+});

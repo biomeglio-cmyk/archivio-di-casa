@@ -7,12 +7,14 @@ import { ConfirmDialog } from '@/components/confirm-dialog';
 import { getDocumentDetail } from '@/db/documents';
 import { moveToTrash, TRASH_DAYS } from '@/db/trash';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // "Cancella documento" (docs/design/CancellaDocumento.dc.html), a transparent route over the screen
 // that opened it. The document goes to our Cestino and can be recovered for 30 days (the design's
 // "solo da un backup" does not apply: the Cestino wins).
 export default function DeleteDocumentScreen() {
+  const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const documentId = Number(id);
   const db = useSQLiteContext();
@@ -44,9 +46,9 @@ export default function DeleteDocumentScreen() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   fill: {
     flex: 1,
   },
-}));
+});

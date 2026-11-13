@@ -1,8 +1,9 @@
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet } from 'react-native';
 
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { usePressed } from '@/hooks/use-pressed';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   symbol: SFSymbol;
@@ -17,23 +18,27 @@ export function RoundIconButton({
   symbol,
   accessibilityLabel,
   onPress,
-  background = Colors.current.lilac,
-  color = Colors.current.indigo,
+  background,
+  color,
 }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
+  const fill = background ?? theme.lilac; // lilac by default, or the tint of the section
+  const ink = color ?? theme.indigo;
   return (
     <Pressable
       {...handlers}
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
-      style={[styles.button, { backgroundColor: background }, pressed && styles.pressed]}>
-      <SymbolView name={symbol} tintColor={color} size={20} weight="semibold" />
+      style={[styles.button, { backgroundColor: fill }, pressed && styles.pressed]}>
+      <SymbolView name={symbol} tintColor={ink} size={20} weight="semibold" />
     </Pressable>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   button: {
     width: 44,
@@ -45,4 +50,4 @@ const styles = themedStyles(() =>
   pressed: {
     opacity: 0.6,
   },
-}));
+});

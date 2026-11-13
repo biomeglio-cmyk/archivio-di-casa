@@ -6,8 +6,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/text';
 import type { QuickAction } from '@/actions/quick-actions';
 import { DANGER_COLOR } from '@/constants/brand';
-import { Radius, Shadows, themedStyles } from '@/constants/theme';
-import { useTheme } from '@/hooks/use-theme';
+import { type Palette, Radius, Shadows } from '@/constants/theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 export type TileRect = { x: number; y: number; width: number; height: number }; // in the window
 
@@ -27,6 +27,7 @@ const EDGE = 16;
 // Tap outside (or the VoiceOver escape gesture) closes it. An action runs after the menu is gone,
 // so its alerts and screens are never hidden behind it.
 export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget | null; onClose: () => void }) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const window = useWindowDimensions();
   const insets = useSafeAreaInsets();
@@ -83,7 +84,7 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
             style={[styles.menu, { left: menu.left, top: menu.top, backgroundColor: theme.surface }]}
             accessibilityRole="menu">
             {target.actions.map((action, index) => {
-              const color = action.destructive ? DANGER_COLOR : theme.text;
+              const color = action.destructive ? DANGER_COLOR(theme) : theme.text;
               return (
                 <Pressable
                   key={action.key}
@@ -108,7 +109,7 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   fill: {
     flex: 1,
@@ -137,4 +138,4 @@ const styles = themedStyles(() =>
     flexShrink: 1,
     fontSize: 17,
   },
-}));
+});

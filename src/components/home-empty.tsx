@@ -7,12 +7,13 @@ import { pickPdf } from '@/capture/pick-files';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { CategoryWithCount } from '@/db/types';
 import { encodePendingFiles } from '@/storage/pending-files';
 import { categoryTint } from '@/utils/colors';
 import { whenBelowLimit } from '@/settings/free-limit';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 // "Carica un PDF": the file picker, then Nuovo documento with the PDF attached
 async function loadPdf() {
@@ -29,6 +30,8 @@ async function loadPdf() {
 // then LE TUE CARTELLE: every category on its light tint with "Vuota". Our extra: the dashed
 // "Nuova categoria" at the end.
 export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { width } = useWindowDimensions();
   const tileWidth = (width - Spacing.side * 2 - 12) / 2;
   return (
@@ -53,7 +56,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
         </Text>
         <PrimaryButton label="Fotografa un documento" symbol="camera" onPress={() => whenBelowLimit(() => router.push('/add-document'))} style={styles.button} />
         <Pressable onPress={() => whenBelowLimit(loadPdf)} accessibilityRole="button" style={({ pressed }) => [styles.pdf, pressed && styles.pressed]}>
-          <SymbolView name="doc" tintColor={Colors.current.accent} size={18} />
+          <SymbolView name="doc" tintColor={theme.accent} size={18} />
           <Text style={styles.pdfText}>Carica un PDF</Text>
         </Pressable>
       </View>
@@ -61,7 +64,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
       <Text style={styles.section}>Le tue cartelle</Text>
       <View style={styles.grid}>
         {categories.map((category) => {
-          const { tint, onTint } = categoryTint(category.colors);
+          const { tint, onTint } = categoryTint(category.colors, theme);
           return (
             <Pressable
               key={category.id}
@@ -82,8 +85,8 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
         <Pressable
           onPress={() => router.push('/category-form')}
           accessibilityRole="button"
-          style={({ pressed }) => [styles.folder, styles.add, { width: tileWidth }, pressed && { backgroundColor: Colors.current.paleLilac }]}>
-          <SymbolView name="plus" tintColor={Colors.current.textSecondary} size={22} />
+          style={({ pressed }) => [styles.folder, styles.add, { width: tileWidth }, pressed && { backgroundColor: theme.paleLilac }]}>
+          <SymbolView name="plus" tintColor={theme.textSecondary} size={22} />
           <Text style={styles.addText}>Nuova categoria</Text>
         </Pressable>
       </View>
@@ -92,6 +95,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
 }
 
 function Sheet({ left, right, top, rotate, accent }: { left?: number; right?: number; top: number; rotate: string; accent: string }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={[styles.sheet, { left, right, top, transform: [{ rotate }] }]}>
       <View style={[styles.line, { width: 30, height: 7, backgroundColor: accent }]} />
@@ -101,7 +105,7 @@ function Sheet({ left, right, top, rotate, accent }: { left?: number; right?: nu
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   card: {
     marginTop: 20,
@@ -109,7 +113,7 @@ const styles = themedStyles(() =>
     paddingHorizontal: 20,
     borderRadius: 26,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     alignItems: 'center',
   },
   art: {
@@ -151,7 +155,7 @@ const styles = themedStyles(() =>
     marginTop: 18,
     fontSize: 20,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
     textAlign: 'center',
   },
   text: {
@@ -159,7 +163,7 @@ const styles = themedStyles(() =>
     fontSize: 14,
     lineHeight: 21,
     fontFamily: FONTS.regular,
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
     textAlign: 'center',
   },
   button: {
@@ -176,7 +180,7 @@ const styles = themedStyles(() =>
   pdfText: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.accent,
+    color: c.accent,
   },
   pressed: {
     opacity: 0.7,
@@ -186,7 +190,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   grid: {
     marginTop: 12,
@@ -212,7 +216,7 @@ const styles = themedStyles(() =>
   add: {
     borderWidth: 2,
     borderStyle: 'dashed',
-    borderColor: Colors.current.dashed,
+    borderColor: c.dashed,
     alignItems: 'center',
     justifyContent: 'center',
     gap: 6,
@@ -220,6 +224,6 @@ const styles = themedStyles(() =>
   addText: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
-}));
+});

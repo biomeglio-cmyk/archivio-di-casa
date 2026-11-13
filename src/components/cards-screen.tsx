@@ -19,7 +19,7 @@ import { RoundIconButton } from '@/components/round-icon-button';
 import { REORDER_FOOTER, ReorderHeader, ReorderRow, SortableList } from '@/components/sortable-list';
 import { Text } from '@/components/text';
 import { spacedNumber, WALLET_CARD_HEIGHT, WALLET_CARD_PEEK, WalletCardFace } from '@/components/wallet-card';
-import { Colors, Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listDocumentFiles, saveDocumentOrder } from '@/db/documents';
 import type { Category, DocumentListItem } from '@/db/types';
@@ -29,6 +29,7 @@ import { resolveDocumentFile } from '@/storage/document-files';
 import { generateBarcode } from '@/utils/barcode';
 import { categoryTint } from '@/utils/colors';
 import { whenBelowLimit } from '@/settings/free-limit';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const detailHref = (id: number) => ({ pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(id) } }) as const;
 
@@ -45,10 +46,12 @@ type Props = {
 // Our extras: "Dettagli" (the card screen: person, deadline, edit), tap the code for full screen,
 // long press for the quick actions, "…" for the category.
 export function CardsScreen({ category, cards }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
-  const { tint, onTint, dashed } = categoryTint(category.colors);
+  const { tint, onTint, dashed } = categoryTint(category.colors, theme);
   const [openId, setOpenId] = useState<number | null>(null);
   const [reordering, setReordering] = useState(false);
   const [menuFor, setMenuFor] = useState<DocumentListItem | null>(null);
@@ -129,14 +132,14 @@ export function CardsScreen({ category, cards }: Props) {
                     symbol="ellipsis"
                     accessibilityLabel={`Modifica o cancella la categoria ${category.name}`}
                     background={tint}
-                    color={Colors.current.text}
+                    color={theme.text}
                     onPress={() => setCategoryMenu(true)}
                   />
                   <RoundIconButton
                     symbol="plus"
                     accessibilityLabel="Aggiungi tessera"
                     background={tint}
-                    color={Colors.current.text}
+                    color={theme.text}
                     onPress={add}
                   />
                 </>
@@ -213,6 +216,7 @@ type CardProps = {
 
 // One card of the stack: closed = the top 86pt of its face; open = the whole face, then the code
 function WalletCard({ card, open, tint, onTint, onToggle, onLongPress }: CardProps) {
+  const styles = useThemedStyles(makeStyles);
   const label = card.docType ? `${card.title}, ${card.docType}` : card.title;
   return (
     <View style={styles.card}>
@@ -234,6 +238,7 @@ function WalletCard({ card, open, tint, onTint, onToggle, onLongPress }: CardPro
 // The code of an open card: redrawn from the number (or the photo of the code when its format is
 // unknown), the number, "Chiudi" and "Dettagli". Tap the code: full screen.
 function CardCode({ card, tint, onTint, onClose }: { card: DocumentListItem; tint: string; onTint: string; onClose: () => void }) {
+  const styles = useThemedStyles(makeStyles);
   const { width } = useWindowDimensions();
   const [fullScreen, setFullScreen] = useState(false);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, card.id), [card.id]);
@@ -289,11 +294,11 @@ function CardCode({ card, tint, onTint, onClose }: { card: DocumentListItem; tin
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -306,7 +311,7 @@ const styles = themedStyles(() =>
     fontSize: 10,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
-    color: Colors.current.accent,
+    color: c.accent,
   },
   stack: {
     marginTop: 20,
@@ -339,14 +344,14 @@ const styles = themedStyles(() =>
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
   codeNumber: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
     letterSpacing: 2,
-    color: Colors.current.text,
+    color: c.text,
     fontVariant: ['tabular-nums'],
   },
   codeButtons: {
@@ -387,7 +392,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   reorderList: {
     marginTop: 12,
@@ -405,7 +410,7 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
-}));
+});

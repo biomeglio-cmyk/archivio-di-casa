@@ -6,10 +6,11 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { ColorWheel } from '@/components/color-wheel';
 import { Text, TextInput } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { hexToWheel } from '@/utils/colors';
 import { wheelHex } from '@/utils/password-tools';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 export type ColorPreset = {
   key: string; // what onChange gives back for this swatch
@@ -37,6 +38,8 @@ const RAINBOW = ['#FF5A5A', '#FFC24A', '#5CD68A', '#4AB8FF', '#7A5CFF', '#FF5AC8
 // the panel below: the color wheel (touch or drag) and the hex code, which can also be typed.
 // The chosen swatch has a white ring and an outer ring in its color.
 export function ColorPicker({ presets, value, onChange, size = 32, columns, label = 'Colore', onDraggingChange }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const presetChosen = presets.some((p) => p.key === value);
   const custom = !presetChosen && isHex(value) ? value.toUpperCase() : null;
   const [open, setOpen] = useState(custom !== null);
@@ -104,7 +107,7 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
             style={[round, custom !== null && ring(custom)]}>
             <LinearGradient colors={RAINBOW} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.fill, round]}>
               <View style={[styles.dot, { backgroundColor: custom ?? '#FFFFFF' }]}>
-                <SymbolView name="plus" tintColor={custom ? '#FFFFFF' : Colors.current.iconGrey} size={Math.round(size * 0.3)} weight="bold" />
+                <SymbolView name="plus" tintColor={custom ? '#FFFFFF' : theme.iconGrey} size={Math.round(size * 0.3)} weight="bold" />
               </View>
             </LinearGradient>
           </Pressable>
@@ -137,7 +140,7 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   row: {
     flexDirection: 'row',
@@ -167,7 +170,7 @@ const styles = themedStyles(() =>
     padding: 12,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
   },
   center: {
     alignItems: 'center',
@@ -188,7 +191,7 @@ const styles = themedStyles(() =>
     height: 40,
     paddingHorizontal: 12,
     borderRadius: 12,
-    backgroundColor: Colors.current.surface,
+    backgroundColor: c.surface,
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -196,12 +199,12 @@ const styles = themedStyles(() =>
     marginRight: 8,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   hexInput: {
     flex: 1,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
-}));
+});

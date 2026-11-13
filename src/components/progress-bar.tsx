@@ -2,7 +2,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   share: number; // 0…1
@@ -15,6 +16,8 @@ type Props = {
 
 // The "N di 7" bar of the free version
 export function ProgressBar({ share, height = 6, onGradient = false, accessibilityLabel, max, now }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const width = `${Math.round(Math.min(1, Math.max(0, share)) * 100)}%` as const;
   return (
     <View
@@ -25,7 +28,7 @@ export function ProgressBar({ share, height = 6, onGradient = false, accessibili
       style={[
         styles.track,
         { height, borderRadius: height / 2 },
-        { backgroundColor: onGradient ? 'rgba(255, 255, 255, 0.3)' : Colors.current.lilac },
+        { backgroundColor: onGradient ? 'rgba(255, 255, 255, 0.3)' : theme.lilac },
       ]}>
       {onGradient ? (
         <View style={[styles.fill, { width, borderRadius: height / 2, backgroundColor: '#FFFFFF' }]} />
@@ -41,7 +44,7 @@ export function ProgressBar({ share, height = 6, onGradient = false, accessibili
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   track: {
     overflow: 'hidden',
@@ -49,4 +52,4 @@ const styles = themedStyles(() =>
   fill: {
     height: '100%',
   },
-}));
+});

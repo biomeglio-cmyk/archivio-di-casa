@@ -6,13 +6,15 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { FreeUsage } from '@/settings/free-limit';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // Home at the free limit (docs/design/HomeLimite.dc.html), in place of the backup notice:
 // "7 di 7 spazi gratuiti usati", "SBLOCCA" and the full bar, on pale lilac. Opens Sblocca.
 export function LimitCard({ usage }: { usage: FreeUsage }) {
+  const styles = useThemedStyles(makeStyles);
   const title = `${usage.used} di ${usage.limit} spazi gratuiti usati`;
   return (
     <Pressable
@@ -34,14 +36,14 @@ export function LimitCard({ usage }: { usage: FreeUsage }) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   card: {
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 20,
     borderCurve: 'continuous',
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -71,12 +73,12 @@ const styles = themedStyles(() =>
     flexShrink: 1,
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   unlock: {
     fontSize: 10,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
-    color: Colors.current.accent,
+    color: c.accent,
   },
-}));
+});

@@ -5,9 +5,10 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatMonthTitle, MONTHS, toISODate } from '@/utils/dates';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const WEEKDAYS = ['L', 'M', 'M', 'G', 'V', 'S', 'D'];
 const CELL = 38;
@@ -20,6 +21,7 @@ type Props = {
 // Month calendar of the Modifica design: ‹ month › on pale lilac, L M M G V S D, 38pt days;
 // the chosen day in the main gradient, today on lilac with indigo text
 export function DateCalendar({ value, onChange }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const [month, setMonth] = useState(() => new Date(value.getFullYear(), value.getMonth(), 1));
   const year = month.getFullYear();
   const monthIndex = month.getMonth();
@@ -94,6 +96,8 @@ function MonthButton({
   label: string;
   onPress: () => void;
 }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -101,12 +105,12 @@ function MonthButton({
       accessibilityLabel={label}
       hitSlop={4}
       style={styles.monthButton}>
-      <SymbolView name={symbol} tintColor={Colors.current.text} size={15} weight="semibold" />
+      <SymbolView name={symbol} tintColor={theme.text} size={15} weight="semibold" />
     </Pressable>
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   header: {
     flexDirection: 'row',
@@ -117,14 +121,14 @@ const styles = themedStyles(() =>
     width: 36,
     height: 36,
     borderRadius: 18,
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   month: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   week: {
     marginTop: 10,
@@ -136,7 +140,7 @@ const styles = themedStyles(() =>
     fontSize: 11,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   grid: {
     marginTop: 6,
@@ -160,19 +164,19 @@ const styles = themedStyles(() =>
     boxShadow: '0 6px 12px rgba(100, 90, 235, 0.28)',
   },
   today: {
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
   },
   number: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   numberSelected: {
     color: '#FFFFFF',
     fontFamily: FONTS.bold,
   },
   numberToday: {
-    color: Colors.current.indigo,
+    color: c.indigo,
     fontFamily: FONTS.bold,
   },
-}));
+});

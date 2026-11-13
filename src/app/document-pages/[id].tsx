@@ -5,10 +5,11 @@ import { useState } from 'react';
 import { Alert, ScrollView, StyleSheet } from 'react-native';
 
 import { FilesEditor, filesToSave, fromExisting, type EditableFile } from '@/components/files-editor';
-import { Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { getDocumentDetail, listDocumentFiles, saveDocumentPages } from '@/db/documents';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // Modal "Pagine", from "Aggiungi pagine" in the document detail: the same pages editor as
 // "Nuovo documento" (Scansiona, Dalle foto, ✕, ‹ ›), with no limit on the number of pages.
@@ -30,6 +31,7 @@ export default function DocumentPagesScreen() {
 }
 
 function PagesContent({ document, savedFiles }: { document: DocumentDetail; savedFiles: DocumentFile[] }) {
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const [files, setFiles] = useState<EditableFile[]>(() => savedFiles.map(fromExisting));
   const [saving, setSaving] = useState(false);
@@ -66,11 +68,11 @@ function PagesContent({ document, savedFiles }: { document: DocumentDetail; save
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
     paddingHorizontal: Spacing.side,
     paddingBottom: 48,
   },
-}));
+});

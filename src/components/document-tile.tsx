@@ -16,7 +16,8 @@ import { usePressed } from '@/hooks/use-pressed';
 import type { TileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { isLightColor } from '@/utils/colors';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const UNSELECTED_TINT = '#8E8E93';
 
@@ -33,6 +34,8 @@ type FaceProps = {
 // The deadline is a bell chip at the bottom, only when the document has one.
 // The look only: it fills its cell; DocumentTile below (or the sortable grid) handles the tap.
 export function DocumentTileFace({ document, selected }: FaceProps) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const { category } = document;
   // A Password entry: the tile is its "Anteprima" (its image, or its color with its icon)
   if (document.password) return <PasswordTileFace document={document} info={document.password} selected={selected} />;
@@ -69,7 +72,7 @@ export function DocumentTileFace({ document, selected }: FaceProps) {
         <View style={styles.check}>
           <SymbolView
             name={selected ? 'checkmark.circle.fill' : 'circle'}
-            tintColor={selected ? BRAND_COLOR : UNSELECTED_TINT} // grey on the white chip, on any palette
+            tintColor={selected ? BRAND_COLOR(theme) : UNSELECTED_TINT} // grey on the white chip, on any palette
             size={24}
           />
         </View>
@@ -97,6 +100,7 @@ type Props = {
 // DocumentTileFace in a TileGrid (category, person): tap opens the document, or toggles it
 // while selecting
 export function DocumentTile({ document, size, href, selection }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
 
   return (
@@ -113,7 +117,7 @@ export function DocumentTile({ document, size, href, selection }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   pressed: {
     opacity: 0.8,
@@ -153,10 +157,12 @@ const styles = themedStyles(() =>
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.85)', // readable over the photo or a color
   },
-}));
+});
 
 // The tile of a Password entry: its image full-bleed, or its preview color with its icon; the name
 function PasswordTileFace({ document, info, selected }: FaceProps & { info: NonNullable<DocumentListItem['password']> }) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const [top, bottom] = previewGradient(info.preview);
   const image = info.preview.imagePath ? resolveDocumentFile(info.preview.imagePath).uri : null;
   const content = (
@@ -171,7 +177,7 @@ function PasswordTileFace({ document, info, selected }: FaceProps & { info: NonN
       <TileTitle style={[styles.title, { color: '#FFFFFF' }]}>{document.title}</TileTitle>
       {selected !== undefined && (
         <View style={styles.check}>
-          <SymbolView name={selected ? 'checkmark.circle.fill' : 'circle'} tintColor={selected ? BRAND_COLOR : UNSELECTED_TINT} size={24} />
+          <SymbolView name={selected ? 'checkmark.circle.fill' : 'circle'} tintColor={selected ? BRAND_COLOR(theme) : UNSELECTED_TINT} size={24} />
         </View>
       )}
     </>

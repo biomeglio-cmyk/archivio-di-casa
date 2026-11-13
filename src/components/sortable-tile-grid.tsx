@@ -19,7 +19,8 @@ import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import { DashedAddTile } from '@/components/dashed-add-tile';
 import { QuickActionMenu, type QuickMenuTarget } from '@/components/quick-action-menu';
 import { TILE_COLUMNS, TILE_GAP, useTileSize } from '@/hooks/use-tile-size';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const DRAG_DELAY_MS = 400; // long press before a tile lifts, like the iOS Home Screen
 const REORDER_DRAG_DELAY_MS = 120; // "Riordina": a short touch is enough to pick a tile up
@@ -226,6 +227,7 @@ export function SortableTileGrid<T>({
 
 // "Riordina": the tile rocks a little (like the iOS Home Screen in edit mode) and shows a handle
 function Wiggle({ direction, children }: { direction: 1 | -1; children: ReactNode }) {
+  const styles = useThemedStyles(makeStyles);
   const angle = useSharedValue(0);
   useEffect(() => {
     angle.set(
@@ -252,7 +254,7 @@ function Wiggle({ direction, children }: { direction: 1 | -1; children: ReactNod
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   wiggle: {
     flex: 1,
@@ -268,4 +270,4 @@ const styles = themedStyles(() =>
     alignItems: 'center',
     justifyContent: 'center',
   },
-}));
+});

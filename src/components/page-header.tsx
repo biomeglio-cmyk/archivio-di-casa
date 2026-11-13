@@ -4,8 +4,9 @@ import { StyleSheet, View } from 'react-native';
 
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Text } from '@/components/text';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   title: string; // "Scadenze", "Preferiti", "Tessere", "Famiglia"
@@ -17,15 +18,17 @@ type Props = {
 
 // Top of the section pages of the design (Scadenze, Preferiti, Tessere, Famiglia): a round back
 // button on the left, actions on the right, then the 30/700 title and a 15 grey subtitle
-export function PageHeader({ title, subtitle, right, tint = Colors.current.lilac, onBack }: Props) {
+export function PageHeader({ title, subtitle, right, tint, onBack }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View>
       <View style={styles.bar}>
         <RoundIconButton
           symbol="chevron.left"
           accessibilityLabel="Indietro"
-          background={tint}
-          color={Colors.current.text}
+          background={tint ?? theme.lilac}
+          color={theme.text}
           onPress={onBack ?? (() => router.back())}
         />
         <View style={styles.right}>{right}</View>
@@ -43,7 +46,7 @@ export function goHome() {
   router.navigate('/');
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   bar: {
     flexDirection: 'row',
@@ -60,13 +63,13 @@ const styles = themedStyles(() =>
     fontSize: 30,
     lineHeight: 37,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
-}));
+});

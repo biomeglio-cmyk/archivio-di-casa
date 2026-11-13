@@ -3,9 +3,10 @@ import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatDate, MONTHS_SHORT, parseISODate } from '@/utils/dates';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   iso: string; // 'YYYY-MM-DD'
@@ -14,8 +15,10 @@ type Props = {
 
 // Day and month in a 46 × 50 square (lists of deadlines)
 export function DateSquare({ iso, highlighted = false }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const date = parseISODate(iso);
-  const color = highlighted ? '#FFFFFF' : Colors.current.indigo;
+  const color = highlighted ? '#FFFFFF' : theme.indigo;
   const content = (
     <>
       <Text style={[styles.day, { color }]} maxFontSizeMultiplier={1.2}>
@@ -43,7 +46,7 @@ export function DateSquare({ iso, highlighted = false }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   square: {
     width: 46,
@@ -57,7 +60,7 @@ const styles = themedStyles(() =>
     boxShadow: '0 6px 12px rgba(100, 90, 235, 0.25)',
   },
   idle: {
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
   },
   day: {
     fontSize: 18,
@@ -69,4 +72,4 @@ const styles = themedStyles(() =>
     lineHeight: 15,
     fontFamily: FONTS.medium,
   },
-}));
+});

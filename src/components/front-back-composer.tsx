@@ -4,7 +4,8 @@ import { PixelRatio, StyleSheet, View, type HostInstance } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 export type ComposeOptions = {
   width?: number; // output width in pixels (default: the view's own pixel width)
@@ -33,6 +34,7 @@ const LOAD_TIMEOUT_MS = 3000;
 // this invisible view (placed off screen) draws both faces one above the other,
 // and react-native-view-shot "photographs" it into a single JPEG.
 export function FrontBackComposer({ frontUri, backUri, frontAspect = CARD_ASPECT_RATIO, backAspect = CARD_ASPECT_RATIO, ref }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const canvasRef = useRef<HostInstance>(null); // the native view behind <View>
   const loadedCount = useRef(0);
   const waiting = useRef<(() => void)[]>([]);
@@ -85,7 +87,7 @@ export function composerMaxWidth(): number {
   return Math.round(CANVAS_WIDTH * PixelRatio.get());
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   canvas: {
     position: 'absolute',
@@ -99,4 +101,4 @@ const styles = themedStyles(() =>
   face: {
     width: '100%',
   },
-}));
+});

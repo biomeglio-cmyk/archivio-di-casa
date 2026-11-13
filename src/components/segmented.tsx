@@ -2,8 +2,9 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors, Radius, themedStyles } from '@/constants/theme';
+import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   values: string[];
@@ -21,6 +22,8 @@ const INSET = 4;
 // Choice between a few options (PDF/Foto, Foto/Colore…): 38-high segments inside a lilac pill,
 // the chosen one a white pill with a shadow and indigo text
 export function Segmented({ values, selectedIndex, onChange, enabled = true, tint, activeColor, symbols }: Props) {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   return (
     <View
       style={[styles.pill, tint !== undefined && { backgroundColor: tint }, !enabled && styles.disabled]}
@@ -38,7 +41,7 @@ export function Segmented({ values, selectedIndex, onChange, enabled = true, tin
             {symbols?.[index] && (
               <SymbolView
                 name={symbols[index]!}
-                tintColor={selected ? (activeColor ?? Colors.current.segmentedActiveText) : Colors.current.textSecondary}
+                tintColor={selected ? (activeColor ?? theme.segmentedActiveText) : theme.textSecondary}
                 size={14}
                 weight="semibold"
               />
@@ -63,13 +66,13 @@ export function Segmented({ values, selectedIndex, onChange, enabled = true, tin
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   pill: {
     flexDirection: 'row',
     padding: INSET,
     borderRadius: Radius.pill,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
   },
   disabled: {
     opacity: 0.5,
@@ -85,18 +88,18 @@ const styles = themedStyles(() =>
     paddingHorizontal: 10,
   },
   selected: {
-    backgroundColor: Colors.current.segmentedActive,
+    backgroundColor: c.segmentedActive,
     boxShadow: '0 2px 8px rgba(28, 30, 70, 0.12)',
   },
   label: {
     fontSize: 15,
   },
   labelSelected: {
-    color: Colors.current.segmentedActiveText,
+    color: c.segmentedActiveText,
     fontFamily: FONTS.semiBold,
   },
   labelIdle: {
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     fontFamily: FONTS.medium,
   },
-}));
+});

@@ -9,7 +9,8 @@ import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { isLightColor } from '@/utils/colors';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   card: Pick<DocumentListItem, 'title' | 'firstImagePath' | 'cardColor' | 'personName'>;
@@ -22,6 +23,7 @@ type Props = {
 // A card drawn with the proportions of a real one (85.6 × 54 mm): the photo of its front,
 // or its color with the name in white when there is no photo (or the cover is "Colore")
 export function CardFace({ card, width, showPerson = false, large = false, showPhoto = true }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const height = Math.round(width / CARD_ASPECT_RATIO);
 
   return (
@@ -54,7 +56,7 @@ export function CardFace({ card, width, showPerson = false, large = false, showP
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   card: {
     borderRadius: 12,
@@ -92,4 +94,4 @@ const styles = themedStyles(() =>
     lineHeight: 16,
     fontWeight: 600,
   },
-}));
+});

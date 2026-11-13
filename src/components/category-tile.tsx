@@ -5,10 +5,11 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 import { TileTitle } from '@/components/tile-title';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Radius, tintedShadow, themedStyles } from '@/constants/theme';
+import { type Palette, Radius, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { Category } from '@/db/types';
 import { categoryShadowRgb } from '@/utils/colors';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   category: Category;
@@ -28,6 +29,7 @@ export function describeCategoryCount(category: Pick<Category, 'isCards'>, count
 // it (17/600, nothing when empty), name 17/600 at the bottom (never broken inside a word).
 // The look only: the sortable grid around it handles tap (open) and drag (reorder).
 export function CategoryTile({ category, documentCount }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const { colors } = category;
 
   return (
@@ -55,7 +57,7 @@ export function CategoryTile({ category, documentCount }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   tile: {
     flex: 1, // fills the grid cell
@@ -80,4 +82,4 @@ const styles = themedStyles(() =>
     fontFamily: FONTS.semiBold,
     fontVariant: ['tabular-nums'],
   },
-}));
+});

@@ -38,9 +38,10 @@ import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing, softTint, themedStyles, onTheme } from '@/constants/theme';
+import { type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatBytes } from '@/send/send-preferences';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const MIN_PASSWORD = 8;
 // While the key is derived from the password (PBKDF2, slow in pure JS): create and restore
@@ -52,10 +53,7 @@ type Step =
   | { kind: 'restore'; uri: string; name: string } // asking the password of the chosen file
   | { kind: 'working'; label: string; fraction: number | null }; // null = no percentage yet
 
-let APRICOT_TINT = '';
-onTheme(() => {
-  APRICOT_TINT = softTint('#FFF0E7', '#3A2418');
-});
+const APRICOT_TINT = (p: Palette) => softTint(p, '#FFF0E7', '#3A2418');
 const APRICOT = '#F5824A';
 const BACKUP_FOLDER = 'Backup'; // in the app's own folder on the phone
 
@@ -91,6 +89,8 @@ function existingBackup(): SavedBackup | null {
 // chosen each time; the newest is kept in Sottomano › Backup (the older one is replaced).
 // Fully offline: nothing is sent anywhere by the app.
 export default function BackupScreen() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const [step, setStep] = useState<Step>({ kind: 'idle' });
@@ -264,13 +264,13 @@ export default function BackupScreen() {
   if (step.kind === 'working') {
     body = (
       <View style={styles.working}>
-        <ActivityIndicator size="large" color={BRAND_COLOR} />
+        <ActivityIndicator size="large" color={BRAND_COLOR(theme)} />
         <ThemedText type="smallBold" style={styles.center}>
           {step.label}
         </ThemedText>
         {step.fraction !== null && (
           <View
-            style={[styles.track, { backgroundColor: Colors.current.backgroundSelected }]}
+            style={[styles.track, { backgroundColor: theme.backgroundSelected }]}
             accessibilityRole="progressbar"
             accessibilityValue={{ min: 0, max: 100, now: Math.round(step.fraction * 100) }}>
             <View style={[styles.fill, { width: `${Math.min(100, Math.round(step.fraction * 100))}%` }]} />
@@ -338,7 +338,7 @@ export default function BackupScreen() {
           autoFocus
           onSubmitEditing={() => password.length > 0 && openBackup(step.uri, step.name)}
         />
-        {error && <ThemedText style={{ color: DANGER_COLOR }}>{error}</ThemedText>}
+        {error && <ThemedText style={{ color: DANGER_COLOR(theme) }}>{error}</ThemedText>}
         <PrimaryButton
           label="Apri backup"
           symbol="lock.open"
@@ -360,7 +360,7 @@ export default function BackupScreen() {
             <Text style={styles.statusTitle}>{justCreated ? 'Backup completato' : 'Ultimo backup'}</Text>
             <Text style={styles.statusText}>{`${documents} · ${formatBytes(saved.bytes)} · ${whenText(saved.createdAt)}`}</Text>
             <View style={styles.path}>
-              <SymbolView name="folder" tintColor={Colors.current.indigo} size={18} />
+              <SymbolView name="folder" tintColor={theme.indigo} size={18} />
               <Text style={styles.pathText}>{`Sottomano › Backup › ${saved.name}`}</Text>
             </View>
             <SoftButton symbol="square.and.arrow.up" label="Copia il file altrove" onPress={copyElsewhere} />
@@ -403,7 +403,7 @@ export default function BackupScreen() {
             accessibilityLabel={`Ricordami di fare il backup: ${BACKUP_FREQUENCIES.find((f) => f.value === frequency)?.label}`}
             style={styles.select}>
             <Text style={styles.selectText}>{BACKUP_FREQUENCIES.find((f) => f.value === frequency)?.label}</Text>
-            <SymbolView name="chevron.down" tintColor={Colors.current.textSecondary} size={12} weight="semibold" />
+            <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={12} weight="semibold" />
           </Pressable>
         </WhiteCard>
         <Text style={styles.footnote}>
@@ -428,7 +428,7 @@ export default function BackupScreen() {
             <RoundIconButton
               symbol="chevron.left"
               accessibilityLabel="Indietro"
-              color={Colors.current.text}
+              color={theme.text}
               onPress={() => (step.kind === 'idle' ? router.back() : reset())}
             />
           )}
@@ -457,7 +457,9 @@ export default function BackupScreen() {
 
 // Lilac full-width button of the design ("Copia il file altrove", "Scegli un file di backup")
 function SoftButton({ symbol, label, onPress, plain = false }: { symbol: SFSymbol; label: string; onPress: () => void; plain?: boolean }) {
-  const color = plain ? Colors.current.text : Colors.current.indigo;
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
+  const color = plain ? theme.text : theme.indigo;
   return (
     <Pressable
       onPress={onPress}
@@ -469,11 +471,11 @@ function SoftButton({ symbol, label, onPress, plain = false }: { symbol: SFSymbo
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.current.background,
+    backgroundColor: c.background,
   },
   content: {
     paddingHorizontal: Spacing.side,
@@ -483,14 +485,14 @@ const styles = themedStyles(() =>
     marginTop: 22,
     fontSize: 30,
     fontFamily: FONTS.bold,
-    color: Colors.current.text,
+    color: c.text,
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     lineHeight: 22,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   statusCard: {
     paddingVertical: 22,
@@ -501,7 +503,7 @@ const styles = themedStyles(() =>
     width: 72,
     height: 72,
     borderRadius: 36,
-    backgroundColor: APRICOT_TINT,
+    backgroundColor: APRICOT_TINT(c),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -517,7 +519,7 @@ const styles = themedStyles(() =>
     marginTop: 14,
     fontSize: 18,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
     textAlign: 'center',
   },
   statusText: {
@@ -525,7 +527,7 @@ const styles = themedStyles(() =>
     fontSize: 14,
     lineHeight: 21,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
     textAlign: 'center',
   },
   create: {
@@ -538,7 +540,7 @@ const styles = themedStyles(() =>
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderRadius: 16,
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -548,14 +550,14 @@ const styles = themedStyles(() =>
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.medium,
-    color: Colors.current.textOnLilac,
+    color: c.textOnLilac,
   },
   soft: {
     marginTop: 14,
     alignSelf: 'stretch',
     height: 52,
     borderRadius: 26,
-    backgroundColor: Colors.current.lilac,
+    backgroundColor: c.lilac,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
@@ -574,14 +576,14 @@ const styles = themedStyles(() =>
   againText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.accent,
+    color: c.accent,
   },
   section: {
     marginBottom: -10,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   restoreCard: {
     paddingTop: 18,
@@ -591,14 +593,14 @@ const styles = themedStyles(() =>
   restoreTitle: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   restoreText: {
     marginTop: 4,
     fontSize: 14,
     lineHeight: 21,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   reminder: {
     paddingVertical: 12,
@@ -611,7 +613,7 @@ const styles = themedStyles(() =>
     width: 36,
     height: 36,
     borderRadius: 11,
-    backgroundColor: APRICOT_TINT,
+    backgroundColor: APRICOT_TINT(c),
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -619,13 +621,13 @@ const styles = themedStyles(() =>
     flex: 1,
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.current.text,
+    color: c.text,
   },
   select: {
     height: 38,
     paddingHorizontal: 12,
     borderRadius: 12,
-    backgroundColor: Colors.current.paleLilac,
+    backgroundColor: c.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 6,
@@ -633,20 +635,20 @@ const styles = themedStyles(() =>
   selectText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.current.text,
+    color: c.text,
   },
   footnote: {
     marginHorizontal: 4,
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.current.textSecondary,
+    color: c.textSecondary,
   },
   form: {
     gap: 12,
   },
   warning: {
-    color: DANGER_COLOR,
+    color: DANGER_COLOR(c),
     fontWeight: 600,
   },
   working: {
@@ -666,6 +668,6 @@ const styles = themedStyles(() =>
   fill: {
     height: '100%',
     borderRadius: 4,
-    backgroundColor: BRAND_COLOR,
+    backgroundColor: BRAND_COLOR(c),
   },
-}));
+});

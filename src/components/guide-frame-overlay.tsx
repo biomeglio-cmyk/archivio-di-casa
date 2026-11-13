@@ -1,7 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 
 import type { FrameRect } from '@/capture/guide-frame';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const MASK = 'rgba(0, 0, 0, 0.55)';
 
@@ -12,6 +13,7 @@ type Props = {
 // Darkens everything outside the guide frame and draws its white border.
 // Four plain rectangles around the frame: simple, and no native module needed.
 export function GuideFrameOverlay({ frame }: Props) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <View style={StyleSheet.absoluteFill} pointerEvents="none">
       <View style={[styles.mask, { top: 0, left: 0, right: 0, height: frame.y }]} />
@@ -30,7 +32,7 @@ export function GuideFrameOverlay({ frame }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   mask: {
     position: 'absolute',
@@ -43,4 +45,4 @@ const styles = themedStyles(() =>
     borderRadius: 14,
     borderCurve: 'continuous',
   },
-}));
+});

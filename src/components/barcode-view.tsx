@@ -6,7 +6,8 @@ import { SvgXml } from 'react-native-svg';
 
 import { Text } from '@/components/text';
 import type { GeneratedBarcode } from '@/utils/barcode';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // White behind the barcode: scanners need dark bars on white
 const BARCODE_BACKGROUND = '#FFFFFF';
@@ -14,6 +15,7 @@ const BARCODE_TEXT = '#000000';
 
 // The generated code, as large as fits the box, never stretched
 export function GeneratedCode({ barcode, maxWidth, maxHeight }: { barcode: GeneratedBarcode; maxWidth: number; maxHeight: number }) {
+  const styles = useThemedStyles(makeStyles);
   const width = Math.min(maxWidth, maxHeight * barcode.aspect);
   return (
     <View style={styles.codeBox} accessibilityIgnoresInvertColors>
@@ -34,6 +36,7 @@ type FullScreenProps = {
 // uses the long side (landscape without rotating the app: the phone is simply turned);
 // a QR / PDF417 / DataMatrix stays upright. Tap anywhere to close.
 export function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: FullScreenProps) {
+  const styles = useThemedStyles(makeStyles);
   const { width, height } = useWindowDimensions();
   const sideways = !barcode?.twoD;
   // The box: as long as the screen is tall when sideways
@@ -63,7 +66,7 @@ export function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: Ful
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   codeBox: {
     alignItems: 'center',
@@ -98,4 +101,4 @@ const styles = themedStyles(() =>
     top: 56,
     right: 20,
   },
-}));
+});

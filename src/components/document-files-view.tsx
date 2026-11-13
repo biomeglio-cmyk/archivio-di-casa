@@ -8,11 +8,11 @@ import { Segmented } from '@/components/segmented';
 import { ThemedText } from '@/components/themed-text';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import type { Category, DocumentFile } from '@/db/types';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
 import { previewDocumentFiles } from '@/storage/preview-files';
 import { pageLabel, usesFrontBack } from '@/utils/page-labels';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 
 type Props = {
   title: string;
@@ -25,6 +25,7 @@ const PAGE_ASPECT_RATIO = 3 / 4; // scanned pages are usually portrait sheets
 // Photos and PDFs attached to a document: one photo alone (no label, no selector), two with a
 // switch ("Fronte/Retro" for IDs and cards, else "Pagina 1/2"), 3+ swiped page by page
 export function DocumentFilesView({ title, category, files }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const [imageIndex, setImageIndex] = useState(0);
   const [pagerWidth, setPagerWidth] = useState(0);
 
@@ -95,6 +96,7 @@ export function DocumentFilesView({ title, category, files }: Props) {
 type ImageFileProps = { file: DocumentFile; label: string; aspectRatio: number; onPress: () => void };
 
 function ImageFile({ file, label, aspectRatio, onPress }: ImageFileProps) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const stored = resolveDocumentFile(file.path);
 
@@ -113,6 +115,7 @@ function ImageFile({ file, label, aspectRatio, onPress }: ImageFileProps) {
 }
 
 function PdfFile({ file }: { file: DocumentFile }) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const stored = resolveDocumentFile(file.path);
 
@@ -132,6 +135,7 @@ function PdfFile({ file }: { file: DocumentFile }) {
 }
 
 function MissingFile() {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   return (
     <View style={[styles.missing, { backgroundColor: theme.surface }]}>
@@ -141,7 +145,7 @@ function MissingFile() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   container: {
     gap: 12,
@@ -173,4 +177,4 @@ const styles = themedStyles(() =>
     borderRadius: 16,
     borderCurve: 'continuous',
   },
-}));
+});

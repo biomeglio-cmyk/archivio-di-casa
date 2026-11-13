@@ -4,14 +4,16 @@ import { ScrollView, StyleSheet } from 'react-native';
 
 import { DocumentFilesView } from '@/components/document-files-view';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing, themedStyles } from '@/constants/theme';
+import { type Palette, Spacing } from '@/constants/theme';
 import { getDocumentDetail, getDocumentVersion, listVersionFiles } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { formatDate, toISODate } from '@/utils/dates';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // Modal "Versione precedente", from "Versioni precedenti" in the detail: the pages the document
 // had before a "Rinnovato" with a new scan, with the deadline it had then. Read only.
 export default function DocumentVersionScreen() {
+  const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const versionId = Number(id);
   const { data: version } = useDbQuery((db) => getDocumentVersion(db, versionId), [versionId]);
@@ -47,7 +49,7 @@ export default function DocumentVersionScreen() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   content: {
     paddingVertical: 16,
@@ -58,4 +60,4 @@ const styles = themedStyles(() =>
   title: {
     fontWeight: 600,
   },
-}));
+});

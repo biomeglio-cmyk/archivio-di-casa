@@ -23,7 +23,8 @@ import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
 import type { DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 const BACKGROUND = '#1A1C30';
 const SIDE_MARGIN = 30; // equal margins left and right of a page at 100% (design: 330 of 390)
@@ -39,6 +40,7 @@ const A4_RATIO = 210 / 297;
 // are stacked and centered. Pinch or the buttons zoom around the center (the iOS scroll view zoom).
 // A PDF is drawn by iOS (WKWebView) in the same centered frame: its pages scroll inside it.
 export default function ViewDocumentScreen() {
+  const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const documentId = Number(id);
   const insets = useSafeAreaInsets();
@@ -189,6 +191,7 @@ export default function ViewDocumentScreen() {
 
 // WKWebView draws the PDF; it may only read files inside our documents folder
 function PdfPage({ file, width, height }: { file: DocumentFile; width: number; height: number }) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <WebView
       source={{ uri: resolveDocumentFile(file.path).uri }}
@@ -209,6 +212,7 @@ type RoundButtonProps = {
 };
 
 function RoundButton({ symbol, label, onPress, transparent = false, disabled = false }: RoundButtonProps) {
+  const styles = useThemedStyles(makeStyles);
   return (
     <Pressable
       onPress={onPress}
@@ -226,7 +230,7 @@ function RoundButton({ symbol, label, onPress, transparent = false, disabled = f
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
@@ -321,4 +325,4 @@ const styles = themedStyles(() =>
     fontSize: 14,
     fontFamily: FONTS.medium,
   },
-}));
+});

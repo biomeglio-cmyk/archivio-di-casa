@@ -7,7 +7,8 @@ import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import { LOCK_AFTER_MS, authenticate, isAppLockEnabled, unlockLabel, useAppLockEnabled } from '@/security/app-lock';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
+import { useThemedStyles } from '@/hooks/use-theme';
 
 // "Blocca con Face ID". Mounted once in the root layout, above everything.
 // - locked: at a cold start, and back from the background after more than 1 minute.
@@ -17,6 +18,7 @@ import { themedStyles } from '@/constants/theme';
 // FullWindowOverlay draws it in the window itself, so it also covers open sheets and modals,
 // which a normal absolutely positioned View would not.
 export function AppLock() {
+  const styles = useThemedStyles(makeStyles);
   const enabled = useAppLockEnabled();
   const [locked, setLocked] = useState(isAppLockEnabled); // cold start: locked if the lock is on
   const [covered, setCovered] = useState(false);
@@ -98,11 +100,11 @@ export function AppLock() {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: BRAND_COLOR,
+    backgroundColor: BRAND_COLOR(c),
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 32,
@@ -134,9 +136,9 @@ const styles = themedStyles(() =>
     opacity: 0.8,
   },
   buttonText: {
-    color: BRAND_COLOR,
+    color: BRAND_COLOR(c),
     fontSize: 17,
     fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
-}));
+});

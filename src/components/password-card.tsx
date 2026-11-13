@@ -6,10 +6,10 @@ import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
-import { useTheme } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { authenticate } from '@/security/app-lock';
 import { readPassword } from '@/security/password-vault';
-import { themedStyles } from '@/constants/theme';
+import { type Palette } from '@/constants/theme';
 
 const CLIPBOARD_SECONDS = 60;
 
@@ -23,6 +23,7 @@ type Props = {
 // the Keychain. It is hidden again when the app goes to the background. The copied value stays
 // on this iPhone only (no Universal Clipboard) and iOS removes it from the clipboard after 60 s.
 export function PasswordCard({ documentId, username }: Props) {
+  const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const [shown, setShown] = useState<string | null>(null);
 
@@ -87,7 +88,7 @@ export function PasswordCard({ documentId, username }: Props) {
   );
 }
 
-const styles = themedStyles(() =>
+const makeStyles = (c: Palette) =>
   StyleSheet.create({
   card: {
     borderRadius: 12,
@@ -120,7 +121,7 @@ const styles = themedStyles(() =>
     justifyContent: 'center',
   },
   actionText: {
-    color: BRAND_COLOR,
+    color: BRAND_COLOR(c),
     fontSize: 17,
   },
-}));
+});

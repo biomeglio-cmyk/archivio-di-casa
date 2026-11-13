@@ -14,6 +14,7 @@ import { ActionSheet, type SheetAction } from '@/components/action-sheet';
 import { Chip, ChipGroup } from '@/components/chip';
 import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
 import { FOLDER_ROW_INSET, FolderRow } from '@/components/folder-row';
+import { useIconRow } from '@/components/icon-row';
 import { PrimaryButton } from '@/components/primary-button';
 import { QuickActionMenu, type QuickMenuTarget } from '@/components/quick-action-menu';
 import { RoundIconButton } from '@/components/round-icon-button';
@@ -65,6 +66,7 @@ export function FolderScreen({ category, documents }: Props) {
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const iconRow = useIconRow(); // large text: the rows' squares go above, the separators start at the edge
   const selection = useDocumentSelection();
   const [type, setType] = useState<string | null>(null); // the active chip; null = "Tutte"
   const [searchOpen, setSearchOpen] = useState(false);
@@ -386,7 +388,7 @@ export function FolderScreen({ category, documents }: Props) {
                     <WhiteCard style={styles.card}>
                       {month.documents.map((document, index) => (
                         <Fragment key={document.id}>
-                          {index > 0 && <View style={styles.separator} />}
+                          {index > 0 && <View style={[styles.separator, iconRow.large && styles.separatorLarge]} />}
                           <FolderRow
                             document={document}
                             actions={documentQuickActions(db, document, documentHref(document))}
@@ -551,6 +553,9 @@ const makeStyles = (c: Palette) =>
     marginLeft: FOLDER_ROW_INSET,
     marginRight: 16,
     backgroundColor: c.separator,
+  },
+  separatorLarge: {
+    marginLeft: 16, // no icon column to start after
   },
   menuTile: {
     flex: 1,

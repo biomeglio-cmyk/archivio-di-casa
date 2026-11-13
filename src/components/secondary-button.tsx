@@ -1,6 +1,7 @@
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, useWindowDimensions, type StyleProp, type ViewStyle } from 'react-native';
 
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { NoBreakText } from '@/components/tile-title';
 import { type Palette, Radius } from '@/constants/theme';
@@ -43,6 +44,8 @@ export function SecondaryButton({
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
+  // Larger text: the icon above the label, both centered (full-width buttons, as in the design)
+  const iconRow = useIconRow();
   const { fontScale } = useWindowDimensions();
   const oneLine = singleLine && fontScale <= 1.3; // larger text: the label wraps, never cut or tiny
   const ink = color ?? theme.indigo;
@@ -58,6 +61,7 @@ export function SecondaryButton({
       onPress={onPress}
       style={[
         styles.button,
+        iconRow.rowCentered,
         { backgroundColor: fill },
         style,
         pressed && styles.pressed,
@@ -75,7 +79,7 @@ export function SecondaryButton({
         </Text>
       ) : (
         // Wraps between words only: a long word (German, Finnish…) shrinks instead of breaking
-        <NoBreakText style={[styles.label, { color: ink }]} containerStyle={styles.labelBox}>
+        <NoBreakText style={[styles.label, { color: ink }]} containerStyle={[styles.labelBox, iconRow.texts]}>
           {label}
         </NoBreakText>
       )}

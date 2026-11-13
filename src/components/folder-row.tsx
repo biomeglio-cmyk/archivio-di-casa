@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import type { QuickAction } from '@/actions/quick-actions';
 import { accessibilityActionsOf, runAccessibilityAction } from '@/actions/quick-actions';
+import { useIconRow } from '@/components/icon-row';
 import { IconSquare } from '@/components/icon-square';
 import { PasswordPreviewTile } from '@/components/password-preview';
 import type { TileRect } from '@/components/quick-action-menu';
@@ -45,6 +46,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
   const { pressed, handlers } = usePressed();
   const { fontScale } = useWindowDimensions();
   const large = fontScale > 1.3; // larger text: full name and subtitle, the amount under them
+  const iconRow = useIconRow(); // large text: the square above the texts, the selection tick under them on the right
   const ref = useRef<ComponentRef<typeof View>>(null);
   const { category } = document;
   const subtitle = folderRowSubtitle(document);
@@ -72,7 +74,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
         accessibilityHint={selection?.disabled ? t('a11y.folderRow.disabledHint') : undefined}
         accessibilityActions={selection ? undefined : accessibilityActionsOf(actions)}
         onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
-        style={[styles.row, pressed && styles.pressed, selection?.disabled && styles.disabled]}>
+        style={[styles.row, iconRow.row, pressed && styles.pressed, selection?.disabled && styles.disabled]}>
         {document.password ? (
           // A Password entry: its "Anteprima" (color and icon, or its image)
           <PasswordPreviewTile info={document.password} size={44} shadow={false} />
@@ -90,7 +92,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
         ) : (
           <IconSquare symbol={category.symbol} colors={category.colors} size={44} shadow />
         )}
-        <View style={styles.texts}>
+        <View style={[styles.texts, iconRow.texts]}>
           <Text style={styles.title} numberOfLines={large ? undefined : 2}>
             {document.title}
           </Text>
@@ -105,11 +107,13 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
           )}
         </View>
         {selection ? (
-          <SymbolView
-            name={selection.selected ? 'checkmark.circle.fill' : 'circle'}
-            tintColor={selection.selected ? BRAND_COLOR(theme) : theme.dashed}
-            size={24}
-          />
+          <View style={iconRow.trailingEnd}>
+            <SymbolView
+              name={selection.selected ? 'checkmark.circle.fill' : 'circle'}
+              tintColor={selection.selected ? BRAND_COLOR(theme) : theme.dashed}
+              size={24}
+            />
+          </View>
         ) : (
           !large &&
           (amount || document.paymentStatus) && (

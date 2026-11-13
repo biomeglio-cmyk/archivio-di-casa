@@ -4,6 +4,7 @@ import { SymbolView } from 'expo-symbols';
 import { Alert, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { pickPdf } from '@/capture/pick-files';
+import { useIconRow } from '@/components/icon-row';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
@@ -36,6 +37,8 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
   const { width, fontScale } = useWindowDimensions();
   const { t } = useI18n();
   const large = fontScale > 1.3;
+  // Large text: "Carica un PDF" with its icon above, centered like the empty state and its button
+  const iconRow = useIconRow();
   // Larger text: one folder per row, names in full
   const tileWidth = large ? width - Spacing.side * 2 : (width - Spacing.side * 2 - 12) / 2;
   return (
@@ -57,9 +60,9 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
         </Text>
         <Text style={styles.text}>{t('homeEmpty.text')}</Text>
         <PrimaryButton label={t('homeEmpty.snap')} symbol="camera" onPress={() => whenBelowLimit(() => router.push('/add-document'))} style={styles.button} />
-        <Pressable onPress={() => whenBelowLimit(loadPdf)} accessibilityRole="button" style={({ pressed }) => [styles.pdf, pressed && styles.pressed]}>
+        <Pressable onPress={() => whenBelowLimit(loadPdf)} accessibilityRole="button" style={({ pressed }) => [styles.pdf, iconRow.rowCentered, pressed && styles.pressed]}>
           <SymbolView name="doc" tintColor={theme.accent} size={18} />
-          <Text style={styles.pdfText}>{t('homeEmpty.pdf')}</Text>
+          <Text style={[styles.pdfText, iconRow.large && styles.pdfTextLarge]}>{t('homeEmpty.pdf')}</Text>
         </Pressable>
       </View>
 
@@ -185,6 +188,9 @@ const makeStyles = (c: Palette) =>
     fontSize: 15,
     fontFamily: FONTS.semiBold,
     color: c.accent,
+  },
+  pdfTextLarge: {
+    textAlign: 'center',
   },
   pressed: {
     opacity: 0.7,

@@ -6,6 +6,7 @@ import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type Scro
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { announce, useReduceMotion } from '@/a11y/accessibility';
+import { useIconRow } from '@/components/icon-row';
 import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { NoBreakText } from '@/components/tile-title';
@@ -123,6 +124,7 @@ function OnboardingPage({ page: p, index, active, width, scale }: {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
+  const iconRow = useIconRow(); // large text: the info box's shield above its text
   const Art = p.art;
   return (
     <ScrollView
@@ -141,9 +143,9 @@ function OnboardingPage({ page: p, index, active, width, scale }: {
       </NoBreakText>
       <Text style={styles.text}>{t(`onboarding.pages.${p.id}.text`)}</Text>
       {p.info && (
-        <View style={styles.info}>
+        <View style={[styles.info, iconRow.row]}>
           <SymbolView name="lock.shield" tintColor={theme.indigo} size={22} accessibilityElementsHidden />
-          <Text style={styles.infoText}>{t(`onboarding.pages.${p.id}.info`)}</Text>
+          <Text style={[styles.infoText, iconRow.texts]}>{t(`onboarding.pages.${p.id}.info`)}</Text>
         </View>
       )}
       <View style={styles.dots} accessible accessibilityLabel={t('onboarding.pageOf', { page: index + 1, total: PAGES.length })}>

@@ -4,6 +4,7 @@ import { Stack } from 'expo-router/stack';
 import { useMemo, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 
+import { useIconRow } from '@/components/icon-row';
 import { Segmented } from '@/components/segmented';
 import { Text } from '@/components/text';
 import { confirmDeleteDocument } from '@/actions/delete-actions';
@@ -39,7 +40,9 @@ type Props = {
 export function CardDetail({ card, files, pin }: Props) {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
-  const { width, fontScale } = useWindowDimensions();
+  const { width } = useWindowDimensions();
+  // Larger text: "Persona" above, then the avatar above the name, all on the left
+  const iconRow = useIconRow();
   const [fullScreen, setFullScreen] = useState(false);
   useMaxBrightness();
 
@@ -110,13 +113,13 @@ export function CardDetail({ card, files, pin }: Props) {
 
         {card.person && (
           <WhiteCard
-            style={[styles.infoCard, fontScale > 1.3 && styles.infoCardStacked]}
+            style={[styles.infoCard, iconRow.large && styles.infoCardStacked]}
             accessible
             accessibilityLabel={`${t('cardDetail.person')}, ${card.person.name}`}>
             <ThemedText themeColor="textSecondary">{t('cardDetail.person')}</ThemedText>
-            <View style={styles.person}>
+            <View style={[styles.person, iconRow.row]}>
               <PersonAvatar name={card.person.name} photoPath={card.person.photoPath} size={28} />
-              <ThemedText style={styles.personName}>{card.person.name}</ThemedText>
+              <ThemedText style={[styles.personName, iconRow.text]}>{card.person.name}</ThemedText>
             </View>
           </WhiteCard>
         )}

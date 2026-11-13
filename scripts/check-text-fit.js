@@ -19,6 +19,8 @@
  *  - rows (icon + title + switch/value): the control moves below; with large text the icon goes
  *    above the title, which then has the whole row;
  *    every word must fit at full size
+ *  - icon rows (components/icon-row.ts: every row, button, banner or box with an icon next to its
+ *    text): beside the icon, or with large text under it with the whole width, left-aligned
  *  - form rows (documento, tessera, password, categoria, persona): beside the icon, or with large
  *    text under it with the whole card width
  *  - any other text (paragraphs, notes) in a card: every word must fit at full size
@@ -166,6 +168,10 @@ const PLACES = {
   // Nuova persona): icon + label in a card; from XXL the icon above, the label across the card
   formRow: (W, scale) => ({ label: 'form row', size: 15, weight: 500, mode: 'words', minScale: 0.5, autoFit: true,
     width: W - SIDE * 2 - CARD_PAD * 2 - (scale >= LARGE_TEXT_SCALE ? 0 : 36 + 12) }),
+  // Any row, button, banner or box with an icon next to its text (components/icon-row.ts, useIconRow):
+  // beside the icon (44 + 12) in a card by default; with large text the icon above, the text across
+  iconRow: (W, scale) => ({ label: 'icon row', size: 16, weight: 500, mode: 'words', minScale: 0.5, autoFit: true,
+    width: W - SIDE * 2 - CARD_PAD * 2 - (scale >= LARGE_TEXT_SCALE ? 0 : 44 + 12) }),
   // Scadenze, the selected day panel (dayBox: page − 2×14 padding, dot 8 + gap 10): by default
   // the amount / "promemoria" on the name's line (at least 90 pt left for the name); with large
   // text under the name, left-aligned, with the whole width (FitLine)
@@ -266,6 +272,17 @@ for (const place of ['categoryTile', 'folderTitle']) slots.push({ prefix: 'categ
 // The forms: every text of their namespaces is laid out as a form row
 for (const prefix of ['documentForm.', 'cardForm.', 'passwordForm.', 'categoryForm.', 'personForm.', 'coverField.']) {
   slots.push({ prefix, place: 'formRow', where: 'form rows' });
+}
+// The components that put an icon (thumbnail, avatar, date square) next to text: their texts
+for (const prefix of [
+  'backup.', 'backupReminder.', 'search.', 'searchAll.', 'family.', 'personScreen.', 'favorites.', 'notificationsPanel.',
+  'notificationFeed.', 'limit.', 'limitCard.', 'freeUsageCard.', 'onboarding.pages.', 'viewDocument.', 'addDocument.',
+  'homeEmpty.', 'homeHeader.', 'homeSections.', 'folderRow.', 'folder.', 'folderScreen.', 'sortableList.', 'cardDetail.',
+  'cardsScreen.', 'filesEditor.', 'documentFilesView.', 'deadlineChip.', 'appearance.', 'language.', 'cameraCapture.',
+  'cardCapture.', 'deleteCategory.', 'deletePerson.', 'quickActions.', 'quickActionMenu.', 'newDocument.', 'trash.',
+  'unlock.', 'send.', 'settings.', 'documentDetail.', 'passwordDetail.', 'passwordCard.', 'deadlines.',
+]) {
+  slots.push({ prefix, place: 'iconRow', where: 'icon rows' });
 }
 // Scadenze: the trailing label of the selected day's rows, and the section titles of the list
 for (const key of ['deadlines.dayRepeats', 'deadlines.dayReminder']) slots.push({ key, place: 'daySide', where: 'Scadenze day panel' });

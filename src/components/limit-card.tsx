@@ -1,9 +1,10 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import { ProgressBar } from '@/components/progress-bar';
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
@@ -18,19 +19,20 @@ export function LimitCard({ usage }: { usage: FreeUsage }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
-  const large = useWindowDimensions().fontScale > 1.3; // larger text: "Sblocca" goes under the title
+  // Larger text: the lock above the texts, "Sblocca" under the title
+  const iconRow = useIconRow();
   const title = t('limitCard.title', { used: usage.shown, count: usage.limit });
   return (
     <Pressable
       onPress={() => router.push('/unlock')}
       accessibilityRole="button"
       accessibilityLabel={t('limitCard.accessibility', { title })}
-      style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
+      style={({ pressed }) => [styles.card, iconRow.row, pressed && styles.pressed]}>
       <LinearGradient colors={theme.gradient} start={GRADIENT_START} end={GRADIENT_END} style={styles.icon}>
         <SymbolView name="lock.fill" tintColor="#FFFFFF" size={18} />
       </LinearGradient>
-      <View style={styles.texts}>
-        <View style={[styles.line, large && styles.lineLarge]}>
+      <View style={[styles.texts, iconRow.texts]}>
+        <View style={[styles.line, iconRow.large && styles.lineLarge]}>
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.unlock}>{t('limitCard.unlock')}</Text>
         </View>

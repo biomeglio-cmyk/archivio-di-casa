@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { backupReminderDays, daysSinceLastBackup } from '@/backup/backup-layout';
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -46,6 +47,8 @@ export function BackupReminder() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
+  // Large text: the icon above the texts, the ✕ stays at the top right (on the icon's line)
+  const iconRow = useIconRow();
   const [now, setNow] = useState(() => Date.now());
   useFocusEffect(useCallback(() => setNow(Date.now()), []));
 
@@ -69,11 +72,11 @@ export function BackupReminder() {
     notice.kind === 'none' ? t('backupReminder.none') : t('backupReminder.old', { count: notice.days });
 
   return (
-    <View style={styles.box}>
+    <View style={[styles.box, iconRow.row]}>
       <View style={styles.icon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <SymbolView name="icloud.and.arrow.up" tintColor={theme.indigo} size={20} />
       </View>
-      <View style={styles.texts}>
+      <View style={[styles.texts, iconRow.texts]}>
         <Text style={styles.title}>{text}</Text>
         <Pressable
           onPress={() => router.push('/backup')}
@@ -89,7 +92,7 @@ export function BackupReminder() {
           notice.kind === 'none' ? t('backupReminder.close') : t('backupReminder.snooze', { count: SNOOZE_DAYS })
         }
         hitSlop={4}
-        style={styles.close}>
+        style={[styles.close, iconRow.large && styles.closeLarge]}>
         <SymbolView name="xmark" tintColor={theme.textSecondary} size={16} weight="semibold" />
       </Pressable>
     </View>
@@ -139,5 +142,10 @@ const makeStyles = (c: Palette) =>
     borderRadius: Radius.pill,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  closeLarge: {
+    position: 'absolute',
+    top: 14 + 2, // centered on the 40pt icon
+    right: 12,
   },
 });

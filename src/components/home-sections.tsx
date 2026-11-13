@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { DateSquare } from '@/components/date-square';
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { TileColumnsProvider } from '@/components/tile-columns';
 import { TileTitle } from '@/components/tile-title';
@@ -148,6 +149,7 @@ export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
   const { pressed, handlers } = usePressed();
   const { fontScale } = useWindowDimensions();
   const large = fontScale > 1.3; // larger text: the whole name and subtitle
+  const iconRow = useIconRow(); // large text: the date square above, the texts and the chevron under it
   if (!document.expiresAt) return null;
   const days = daysUntil(document.expiresAt);
   const subtitle = deadlineSubtitle(document, days);
@@ -160,17 +162,19 @@ export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
         accessibilityRole="button"
         // One element: "Bolletta luce, 14 novembre, Tra 3 giorni · € 84,20"
         accessibilityLabel={[document.title, fmt.dayMonth(parseISODate(document.expiresAt)), subtitle].join(', ')}
-        style={[styles.deadlineRow, pressed && styles.pressed]}>
+        style={[styles.deadlineRow, iconRow.row, pressed && styles.pressed]}>
         <DateSquare iso={document.expiresAt} highlighted />
-        <View style={styles.deadlineTexts}>
-          <Text style={styles.deadlineTitle} numberOfLines={large ? undefined : 2}>
-            {document.title}
-          </Text>
-          <Text style={styles.deadlineSubtitle} numberOfLines={large ? undefined : 1}>
-            {subtitle}
-          </Text>
+        <View style={[styles.deadlineBody, iconRow.texts]}>
+          <View style={styles.deadlineTexts}>
+            <Text style={styles.deadlineTitle} numberOfLines={large ? undefined : 2}>
+              {document.title}
+            </Text>
+            <Text style={styles.deadlineSubtitle} numberOfLines={large ? undefined : 1}>
+              {subtitle}
+            </Text>
+          </View>
+          <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={16} weight="semibold" />
         </View>
-        <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={16} weight="semibold" />
       </Pressable>
     </WhiteCard>
   );
@@ -234,6 +238,13 @@ const makeStyles = (c: Palette) =>
     gap: 14,
     paddingVertical: 12,
     paddingHorizontal: 14,
+  },
+  // The texts and the chevron: one row, under the date square with large text
+  deadlineBody: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
   },
   deadlineTexts: {
     flex: 1,

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -90,6 +91,7 @@ export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) 
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const accent = '#6D5CE6';
+  const iconRow = useIconRow(); // larger text: the radio above the texts
   return (
     <Pressable
       onPress={onPress}
@@ -98,6 +100,7 @@ export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) 
       accessibilityLabel={`${label}. ${detail}`}
       style={[
         styles.choice,
+        iconRow.row,
         {
           borderColor: checked ? accent : 'transparent',
           backgroundColor: checked ? theme.paleLilac : theme.elevated,
@@ -109,7 +112,7 @@ export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) 
         importantForAccessibility="no-hide-descendants">
         {checked && <View style={[styles.dot, { backgroundColor: accent }]} />}
       </View>
-      <View style={styles.choiceTexts}>
+      <View style={[styles.choiceTexts, iconRow.texts]}>
         <Text style={styles.choiceLabel}>{label}</Text>
         <Text style={styles.choiceDetail}>{detail}</Text>
       </View>

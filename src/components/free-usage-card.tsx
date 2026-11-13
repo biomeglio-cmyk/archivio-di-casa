@@ -1,8 +1,9 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
+import { useIconRow } from '@/components/icon-row';
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
@@ -23,13 +24,25 @@ export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
-  const large = useWindowDimensions().fontScale > 1.3; // larger text: the texts get the whole width
+  // Larger text: the gift above the texts (the whole width, left-aligned); "Sblocca" under them on
+  // the left, the chevron stays on the right of the texts
+  const iconRow = useIconRow();
   const { data: usage } = useDbQuery(getFreeUsage, []);
   if (!usage || usage.unlocked) return null;
   const settings = variant === 'settings';
   const counts = { used: usage.shown, limit: usage.limit };
   const title = settings ? t('freeUsageCard.titleSettings', counts) : t('freeUsageCard.titleMenu', counts);
   const price = unlockPrice();
+  const texts = (
+    <View style={[styles.texts, settings && iconRow.texts]}>
+      <Text style={[styles.title, settings && styles.titleSettings]}>{title}</Text>
+      <Text style={styles.subtitle}>{t('freeUsageCard.subtitle', { price })}</Text>
+      <View style={styles.bar}>
+        <ProgressBar share={usage.share} onGradient />
+      </View>
+    </View>
+  );
+  const chevron = <SymbolView name="chevron.right" tintColor="#FFFFFF" size={14} weight="semibold" />;
 
   return (
     <Pressable
@@ -41,23 +54,27 @@ export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }
         colors={theme.gradient}
         start={GRADIENT_START}
         end={GRADIENT_END}
-        style={[styles.fill, settings ? styles.fillSettings : styles.fillMenu, large && styles.fillLarge]}>
+        style={[styles.fill, settings ? styles.fillSettings : styles.fillMenu, iconRow.row]}>
         <View style={[styles.icon, settings && styles.iconSettings]}>
           <SymbolView name="gift" tintColor="#FFFFFF" size={settings ? 22 : 20} />
         </View>
-        <View style={[styles.texts, large && styles.textsLarge]}>
-          <Text style={[styles.title, settings && styles.titleSettings]}>{title}</Text>
-          <Text style={styles.subtitle}>{t('freeUsageCard.subtitle', { price })}</Text>
-          <View style={styles.bar}>
-            <ProgressBar share={usage.share} onGradient />
-          </View>
-        </View>
         {settings ? (
-          <View style={styles.pill}>
-            <Text style={styles.pillText}>{t('freeUsageCard.unlock')}</Text>
+          <>
+            {texts}
+            <View style={[styles.pill, iconRow.trailingStart]}>
+              <Text style={styles.pillText}>{t('freeUsageCard.unlock')}</Text>
+            </View>
+          </>
+        ) : iconRow.large ? (
+          <View style={styles.inner}>
+            {texts}
+            {chevron}
           </View>
         ) : (
-          <SymbolView name="chevron.right" tintColor="#FFFFFF" size={14} weight="semibold" />
+          <>
+            {texts}
+            {chevron}
+          </>
         )}
       </LinearGradient>
     </Pressable>
@@ -82,8 +99,11 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     borderCurve: 'continuous',
   },
-  fillLarge: {
-    flexWrap: 'wrap', // icon and "Sblocca" on their own lines around the texts
+  inner: {
+    alignSelf: 'stretch',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
   },
   fillMenu: {
     padding: 14,
@@ -111,9 +131,6 @@ const makeStyles = (c: Palette) =>
   texts: {
     flex: 1,
     gap: 2,
-  },
-  textsLarge: {
-    flexBasis: '100%',
   },
   title: {
     color: '#FFFFFF',

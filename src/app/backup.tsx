@@ -32,6 +32,7 @@ import {
   type PreparedRestore,
 } from '@/backup/restore-backup';
 import { ActionSheet } from '@/components/action-sheet';
+import { useIconRow } from '@/components/icon-row';
 import { NoBreakText } from '@/components/tile-title';
 import { TextField } from '@/components/form-field';
 import { PrimaryButton } from '@/components/primary-button';
@@ -44,7 +45,6 @@ import { BRAND_COLOR, DANGER_COLOR, GRADIENT_END, GRADIENT_START } from '@/const
 import { type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatBytes } from '@/send/send-preferences';
-import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { t, useI18n } from '@/i18n';
 import { intlLocale } from '@/i18n/format';
@@ -101,7 +101,7 @@ export default function BackupScreen() {
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const large = useWindowDimensions().fontScale > 1.3; // larger text: names wrap
-  const largeText = useLargeText(); // the reminder's icon on its own line, above the label
+  const iconRow = useIconRow(); // large text: every icon on its own line, above its text
   const { t } = useI18n();
   const [step, setStep] = useState<Step>({ kind: 'idle' });
   const [password, setPassword] = useState('');
@@ -370,9 +370,9 @@ export default function BackupScreen() {
         />
         {/* The reason in red with a warning sign (not only the color) */}
         {error && (
-          <View style={styles.error} accessible accessibilityLabel={error}>
+          <View style={[styles.error, iconRow.row]} accessible accessibilityLabel={error}>
             <SymbolView name="exclamationmark.triangle.fill" tintColor={DANGER_COLOR(theme)} size={16} />
-            <ThemedText style={[styles.errorText, { color: DANGER_COLOR(theme) }]}>{error}</ThemedText>
+            <ThemedText style={[styles.errorText, iconRow.texts, { color: DANGER_COLOR(theme) }]}>{error}</ThemedText>
           </View>
         )}
         <PrimaryButton
@@ -403,9 +403,9 @@ export default function BackupScreen() {
               {justCreated ? t('backup.completed') : t('backup.lastBackup')}
             </Text>
             <Text style={styles.statusText}>{`${documents} · ${formatBytes(saved.bytes)} · ${whenText(saved.createdAt)}`}</Text>
-            <View style={styles.path}>
+            <View style={[styles.path, iconRow.row]}>
               <SymbolView name="folder" tintColor={theme.indigo} size={18} accessibilityElementsHidden />
-              <Text style={styles.pathText}>{t('backup.path', { name: saved.name })}</Text>
+              <Text style={[styles.pathText, iconRow.texts]}>{t('backup.path', { name: saved.name })}</Text>
             </View>
             <SoftButton symbol="square.and.arrow.up" label={t('backup.copyElsewhere')} onPress={copyElsewhere} />
             <Pressable onPress={() => setStep({ kind: 'create' })} accessibilityRole="button" style={styles.again}>
@@ -442,13 +442,13 @@ export default function BackupScreen() {
         <Text style={styles.section} accessibilityRole="header">
           {t('backup.remindersSection')}
         </Text>
-        <WhiteCard style={[styles.reminder, largeText && styles.reminderLarge]}>
+        <WhiteCard style={[styles.reminder, iconRow.row]}>
           <View style={styles.reminderIcon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
             <SymbolView name="bell" tintColor={APRICOT} size={18} />
           </View>
           {/* Read by VoiceOver with the value, on the button */}
           <Text
-            style={[styles.reminderLabel, largeText && styles.reminderLabelLarge]}
+            style={[styles.reminderLabel, iconRow.texts]}
             accessibilityElementsHidden
             importantForAccessibility="no">
             {t('backup.remindMe')}
@@ -458,7 +458,7 @@ export default function BackupScreen() {
             accessibilityRole="button"
             accessibilityLabel={t('backup.remindMeValue', { value: backupFrequencyLabel(frequency) })}
             hitSlop={4}
-            style={styles.select}>
+            style={[styles.select, iconRow.trailingStart]}>
             <Text style={styles.selectText}>{backupFrequencyLabel(frequency)}</Text>
             <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={12} weight="semibold" />
           </Pressable>
@@ -510,18 +510,20 @@ export default function BackupScreen() {
   );
 }
 
-// Lilac full-width button of the design ("Copia il file altrove", "Scegli un file di backup")
+// Lilac full-width button of the design ("Copia il file altrove", "Scegli un file di backup").
+// Large text: the icon above the label, the label left-aligned on the whole width
 function SoftButton({ symbol, label, onPress, plain = false }: { symbol: SFSymbol; label: string; onPress: () => void; plain?: boolean }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const iconRow = useIconRow();
   const color = plain ? theme.text : theme.indigo;
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="button"
-      style={({ pressed }) => [styles.soft, pressed && styles.pressed]}>
+      style={({ pressed }) => [styles.soft, iconRow.row, pressed && styles.pressed]}>
       <SymbolView name={symbol} tintColor={color} size={18} weight="semibold" />
-      <Text style={[styles.softText, { color }]}>{label}</Text>
+      <Text style={[styles.softText, iconRow.texts, iconRow.text, { color }]}>{label}</Text>
     </Pressable>
   );
 }
@@ -670,12 +672,6 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     gap: 14,
   },
-  reminderLarge: {
-    // Large text: the icon, then the label on the whole width, then the choice under it
-    flexDirection: 'column',
-    alignItems: 'flex-start',
-    gap: 10,
-  },
   reminderIcon: {
     width: 36,
     height: 36,
@@ -689,10 +685,6 @@ const makeStyles = (c: Palette) =>
     fontSize: 15,
     fontFamily: FONTS.medium,
     color: c.text,
-  },
-  reminderLabelLarge: {
-    flex: 0,
-    alignSelf: 'stretch',
   },
   select: {
     minHeight: 38,

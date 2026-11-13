@@ -5,6 +5,7 @@ import { SymbolView } from 'expo-symbols';
 import { useSQLiteContext } from 'expo-sqlite';
 import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { useIconRow } from '@/components/icon-row';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
@@ -92,6 +93,7 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
+  const iconRow = useIconRow(); // larger text: the check under the name, on the right
   return (
     <Pressable
       onPress={onPress}
@@ -104,9 +106,11 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
         { borderColor: selected ? BRAND_COLOR(theme) : 'transparent' },
         pressed && styles.pressed,
       ]}>
-      <View style={styles.cardHeader}>
+      <View style={[styles.cardHeader, iconRow.row]}>
         <ThemedText style={styles.name}>{paletteName(palette.id)}</ThemedText>
-        {selected && <SymbolView name="checkmark.circle.fill" tintColor={BRAND_COLOR(theme)} size={22} />}
+        {selected && (
+          <SymbolView name="checkmark.circle.fill" tintColor={BRAND_COLOR(theme)} size={22} style={iconRow.trailingEnd} />
+        )}
       </View>
       <View style={styles.grid}>
         {[0, MINI_COLUMNS].map((start) => (

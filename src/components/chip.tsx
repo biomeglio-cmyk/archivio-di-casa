@@ -3,6 +3,7 @@ import { SymbolView } from 'expo-symbols';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { useIconRow } from '@/components/icon-row';
 import { NoBreakText } from '@/components/tile-title';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette, Radius } from '@/constants/theme';
@@ -37,6 +38,8 @@ export function Chip({
   const gradient = gradientProp ?? theme.gradient;
   const fill = tint ?? theme.lilac; // inactive background: a section tint, lilac by default
   const ink = tintText ?? theme.text;
+  // Larger text: the check above the label, both centered in the pill
+  const iconRow = useIconRow();
   return (
     <Pressable
       onPress={onPress}
@@ -48,9 +51,9 @@ export function Chip({
         <LinearGradient colors={readableGradient(gradient)} start={GRADIENT_START} end={GRADIENT_END} style={StyleSheet.absoluteFill} />
       )}
       {/* Not only the fill: the active chip also has a checkmark (Differenzia senza colore) */}
-      <View style={styles.content}>
+      <View style={[styles.content, iconRow.rowCentered]}>
         {selected && <SymbolView name="checkmark" tintColor="#FFFFFF" size={12} weight="bold" />}
-        <NoBreakText style={[styles.label, selected ? styles.labelSelected : { color: ink }]} containerStyle={styles.labelBox}>
+        <NoBreakText style={[styles.label, selected ? styles.labelSelected : { color: ink }]} containerStyle={[styles.labelBox, iconRow.texts]}>
           {label}
         </NoBreakText>
       </View>

@@ -2,6 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, useWindowDimensions, type StyleProp, type ViewStyle } from 'react-native';
 
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { NoBreakText } from '@/components/tile-title';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
@@ -45,6 +46,8 @@ export function PrimaryButton({
   const gradient = gradientProp ?? theme.gradient;
   const shadow = shadowProp ?? theme.brandShadow;
   const { pressed, handlers } = usePressed();
+  // Larger text: the icon above the label, both centered (full-width buttons, as in the design)
+  const iconRow = useIconRow();
   const { fontScale } = useWindowDimensions();
   const oneLine = singleLine && fontScale <= 1.3; // larger text: the label wraps, never cut or tiny
   return (
@@ -63,7 +66,7 @@ export function PrimaryButton({
         pressed && styles.pressed,
         disabled && styles.disabled,
       ]}>
-      <LinearGradient colors={readableGradient(gradient)} start={GRADIENT_START} end={GRADIENT_END} style={styles.fill}>
+      <LinearGradient colors={readableGradient(gradient)} start={GRADIENT_START} end={GRADIENT_END} style={[styles.fill, iconRow.rowCentered]}>
         {symbol && <SymbolView name={symbol} tintColor="#FFFFFF" size={18} />}
         {oneLine ? (
           <Text style={styles.label} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.85} maxFontSizeMultiplier={1.3}>
@@ -71,7 +74,7 @@ export function PrimaryButton({
           </Text>
         ) : (
           // Wraps between words only: a long word (German, Finnish…) shrinks instead of breaking
-          <NoBreakText style={styles.label} containerStyle={styles.labelBox}>
+          <NoBreakText style={styles.label} containerStyle={[styles.labelBox, iconRow.texts]}>
             {label}
           </NoBreakText>
         )}

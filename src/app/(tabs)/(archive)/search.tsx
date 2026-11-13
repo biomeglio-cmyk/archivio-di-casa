@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { announce } from '@/a11y/accessibility';
 import { Chip, ChipGroup } from '@/components/chip';
+import { useIconRow } from '@/components/icon-row';
 import { Text, TextInput } from '@/components/text';
 import { cardSurface, onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -121,20 +122,21 @@ export default function SearchScreen() {
 function ResultRow({ result }: { result: SearchResult }) {
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
+  const iconRow = useIconRow(); // large text: the square above the texts
   return (
     <Pressable
       {...handlers}
       onPress={() => router.push(result.href)}
       accessibilityRole="button"
       accessibilityLabel={`${result.title}, ${result.subtitle}`}
-      style={[styles.row, pressed && styles.pressed]}>
+      style={[styles.row, iconRow.row, pressed && styles.pressed]}>
       <LinearGradient
         colors={[result.colors.top, result.colors.bottom]}
         {...tileGradientPoints(result.colors)}
         style={[styles.square, { boxShadow: `0 6px 12px rgba(${categoryShadowRgb(result.colors)}, 0.22)` }, tileFrame(result.colors)]}>
         <SymbolView name={result.symbol} tintColor={result.colors.text} size={22} />
       </LinearGradient>
-      <View style={styles.texts}>
+      <View style={[styles.texts, iconRow.texts]}>
         <Marked text={result.title} match={result.titleMatch} style={styles.title} />
         <Marked text={result.subtitle} match={result.subtitleMatch} style={styles.subtitle} />
       </View>

@@ -5,6 +5,7 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { WebView } from 'react-native-webview';
 
 import { announce } from '@/a11y/accessibility';
+import { useIconRow } from '@/components/icon-row';
 import { Segmented } from '@/components/segmented';
 import { ThemedText } from '@/components/themed-text';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
@@ -146,10 +147,11 @@ function MissingFile() {
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
+  const iconRow = useIconRow(); // larger text: the warning above the text
   return (
-    <View style={[styles.missing, { backgroundColor: theme.surface }]} accessible>
+    <View style={[styles.missing, iconRow.row, { backgroundColor: theme.surface }]} accessible>
       <SymbolView name="exclamationmark.triangle" tintColor={theme.textSecondary} size={24} />
-      <ThemedText themeColor="textSecondary" style={styles.missingText}>
+      <ThemedText themeColor="textSecondary" style={[styles.missingText, iconRow.texts]}>
         {t('documentFilesView.missingFile')}
       </ThemedText>
     </View>

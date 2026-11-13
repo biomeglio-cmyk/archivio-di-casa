@@ -5,6 +5,7 @@ import { Fragment, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { announce } from '@/a11y/accessibility';
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
@@ -33,6 +34,7 @@ export default function LanguageScreen() {
   const { t } = useI18n();
   const { setting, setSetting } = useLanguageSetting();
   const [query, setQuery] = useState('');
+  const iconRow = useIconRow(); // larger text: the check under the language, on the right
 
   const automatic = languageInfo(resolveLanguage('auto'));
   const languages = [...LANGUAGE_INFO].sort((a, b) => a.name.localeCompare(b.name));
@@ -91,8 +93,8 @@ export default function LanguageScreen() {
                     accessibilityRole="radio"
                     accessibilityState={{ checked: selected }}
                     accessibilityLabel={option.detail ? `${option.name}, ${option.detail}` : option.name}
-                    style={({ pressed }) => [styles.row, pressed && styles.pressed]}>
-                    <View style={styles.texts}>
+                    style={({ pressed }) => [styles.row, iconRow.row, pressed && styles.pressed]}>
+                    <View style={[styles.texts, iconRow.texts]}>
                       <Text style={styles.name}>{option.name}</Text>
                       {option.detail && <Text style={styles.detail}>{option.detail}</Text>}
                     </View>
@@ -102,6 +104,7 @@ export default function LanguageScreen() {
                         tintColor={BRAND_COLOR(theme)}
                         size={18}
                         weight="semibold"
+                        style={iconRow.trailingEnd}
                         accessibilityElementsHidden
                       />
                     )}

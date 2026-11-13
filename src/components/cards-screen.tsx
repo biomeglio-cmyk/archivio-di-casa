@@ -416,6 +416,7 @@ const makeStyles = (c: Palette) =>
   },
   addLabel: {
     fontSize: 15,
+    textAlign: 'center',
     fontFamily: FONTS.medium,
   },
   section: {

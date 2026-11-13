@@ -4,6 +4,7 @@ import { Modal, Pressable, StyleSheet, useWindowDimensions, View } from 'react-n
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { GlassFill } from '@/components/glass-fill';
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import type { QuickAction } from '@/actions/quick-actions';
 import { DANGER_COLOR } from '@/constants/brand';
@@ -34,6 +35,7 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
   const { t } = useI18n();
   const window = useWindowDimensions();
   const insets = useSafeAreaInsets();
+  const iconRow = useIconRow(); // larger text: each action's icon above its label
   const pending = useRef<(() => void) | null>(null);
 
   function choose(action: QuickAction) {
@@ -49,7 +51,7 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
 
   // Larger text: taller rows (the labels wrap) and a menu as wide as the screen
   const large = window.fontScale > 1.3;
-  const rowHeight = Math.max(ROW_HEIGHT, Math.round(17 * 1.3 * window.fontScale + 24));
+  const rowHeight = Math.max(ROW_HEIGHT, Math.round(17 * 1.3 * window.fontScale + 24)) + (iconRow.large ? 26 : 0);
   const menuWidth = large ? window.width - 2 * EDGE : MENU_WIDTH;
   let menu = { left: EDGE, top: 0 };
   if (target) {
@@ -108,13 +110,15 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
                   accessibilityLabel={action.label}
                   style={({ pressed }) => [
                     styles.row,
+                    iconRow.row,
                     index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator },
                     pressed && { backgroundColor: theme.backgroundSelected },
                   ]}>
-                  <Text style={[styles.label, { color }]} numberOfLines={large ? undefined : 1}>
+                  {iconRow.large && <SymbolView name={action.symbol} tintColor={color} size={18} />}
+                  <Text style={[styles.label, { color }, iconRow.text]} numberOfLines={large ? undefined : 1}>
                     {action.label}
                   </Text>
-                  <SymbolView name={action.symbol} tintColor={color} size={18} />
+                  {!iconRow.large && <SymbolView name={action.symbol} tintColor={color} size={18} />}
                 </Pressable>
               );
             })}

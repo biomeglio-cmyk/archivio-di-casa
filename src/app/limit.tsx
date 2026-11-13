@@ -4,6 +4,7 @@ import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 're
 import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { useIconRow } from '@/components/icon-row';
 import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
@@ -27,6 +28,7 @@ export default function LimitPanel() {
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const { t } = useI18n();
+  const iconRow = useIconRow(); // large text: each tick / lock above its text
 
   return (
     // The whole screen is the modal for VoiceOver (the screen below is not reachable); the
@@ -62,18 +64,18 @@ export default function LimitPanel() {
           <Text style={styles.text}>{t('limit.text')}</Text>
           <View style={styles.list}>
             {STILL_WORKS.map((item) => (
-              <View key={item} style={styles.item}>
+              <View key={item} style={[styles.item, iconRow.row]}>
                 <View style={[styles.mark, styles.markOn]} accessibilityElementsHidden>
                   <SymbolView name="checkmark" tintColor={MINT_INK(theme)} size={13} weight="bold" />
                 </View>
-                <Text style={styles.itemText}>{t(`limit.stillWorks.${item}`)}</Text>
+                <Text style={[styles.itemText, iconRow.texts]}>{t(`limit.stillWorks.${item}`)}</Text>
               </View>
             ))}
-            <View style={styles.item}>
+            <View style={[styles.item, iconRow.row]}>
               <View style={[styles.mark, styles.markOff]} accessibilityElementsHidden>
                 <SymbolView name="lock.fill" tintColor={theme.textSecondary} size={12} />
               </View>
-              <Text style={[styles.itemText, styles.itemOff]}>{t('limit.blocked')}</Text>
+              <Text style={[styles.itemText, iconRow.texts, styles.itemOff]}>{t('limit.blocked')}</Text>
             </View>
           </View>
           <PrimaryButton

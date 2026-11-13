@@ -199,6 +199,8 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'space-between',
   },
   heading: {
+    flexShrink: 1,
+    textAlign: 'center',
     fontSize: 17,
     fontFamily: FONTS.semiBold,
     color: c.text,

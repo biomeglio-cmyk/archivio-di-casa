@@ -82,7 +82,9 @@ const makeStyles = (c: Palette) =>
   StyleSheet.create({
   chip: {
     alignSelf: 'flex-start',
+    flexShrink: 1, // never wider than the tile: a long label ("Abgelaufen") wraps
     flexDirection: 'row',
+    flexWrap: 'wrap', // larger text: a label that does not fit next to the icon goes under it
     alignItems: 'center',
     gap: 4,
     paddingHorizontal: 8,
@@ -90,6 +92,7 @@ const makeStyles = (c: Palette) =>
     borderRadius: 999,
   },
   label: {
+    flexShrink: 1,
     fontSize: 12,
     lineHeight: 16,
     fontWeight: 700,

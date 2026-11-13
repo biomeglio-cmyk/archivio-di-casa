@@ -8,6 +8,7 @@ import type { AnimatedRef } from 'react-native-reanimated';
 import Sortable from 'react-native-sortables';
 
 import { announce } from '@/a11y/accessibility';
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { cardSurface, type Palette } from '@/constants/theme';
@@ -90,21 +91,24 @@ export function ReorderRow({ thumb, title, subtitle }: RowProps) {
   const styles = useThemedStyles(makeStyles);
   const { fontScale } = useWindowDimensions();
   const lines = fontScale > 1.3 ? undefined : 1; // larger text: the whole name
+  const iconRow = useIconRow(); // large text: the picture above, the texts and the handle under it
   return (
-    <View style={styles.row}>
+    <View style={[styles.row, iconRow.row]}>
       {thumb}
-      <View style={styles.texts}>
-        <Text style={styles.title} numberOfLines={lines}>
-          {title}
-        </Text>
-        {subtitle ? (
-          <Text style={styles.subtitle} numberOfLines={lines}>
-            {subtitle}
+      <View style={[styles.body, iconRow.texts]}>
+        <View style={styles.texts}>
+          <Text style={styles.title} numberOfLines={lines}>
+            {title}
           </Text>
-        ) : null}
-      </View>
-      <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-        <SymbolView name="line.3.horizontal" tintColor={theme.textSecondary} size={20} weight="semibold" />
+          {subtitle ? (
+            <Text style={styles.subtitle} numberOfLines={lines}>
+              {subtitle}
+            </Text>
+          ) : null}
+        </View>
+        <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+          <SymbolView name="line.3.horizontal" tintColor={theme.textSecondary} size={20} weight="semibold" />
+        </View>
       </View>
     </View>
   );
@@ -121,6 +125,7 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
   const theme = useTheme();
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
+  const iconRow = useIconRow(); // large text: the hint's hand above its text
   return (
     <View>
       <View style={styles.bar}>
@@ -137,11 +142,11 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
           <Text style={styles.doneText}>{t('common.done')}</Text>
         </Pressable>
       </View>
-      <View style={styles.hint}>
+      <View style={[styles.hint, iconRow.row]}>
         <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
           <SymbolView name="hand.draw" tintColor={theme.indigo} size={20} />
         </View>
-        <Text style={styles.hintText}>{hint}</Text>
+        <Text style={[styles.hintText, iconRow.texts]}>{hint}</Text>
       </View>
     </View>
   );
@@ -168,6 +173,13 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     gap: 14,
     boxShadow: '0 4px 14px rgba(28, 30, 70, 0.07)',
+  },
+  // The texts and the handle: one row, under the picture with large text
+  body: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
   },
   texts: {
     flex: 1,

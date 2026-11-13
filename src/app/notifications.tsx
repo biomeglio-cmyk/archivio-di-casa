@@ -8,6 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { announce } from '@/a11y/accessibility';
 import { useI18n } from '@/i18n';
 import { useFormat } from '@/i18n/use-format';
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -105,6 +106,7 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
   const fmt = useFormat();
   const { fontScale } = useWindowDimensions();
   const large = fontScale > 1.3;
+  const iconRow = useIconRow(); // large text: the icon above the texts (the dot on the icon's line)
   return (
     <>
       <Text style={styles.section} accessibilityRole="header">
@@ -128,14 +130,14 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
                 unread ? t('notificationsPanel.unreadItem', { title: item.title, body: item.body }) : `${item.title}, ${item.body}`,
                 spokenWhen,
               ].join(', ')}
-              style={({ pressed }) => [styles.item, unread && styles.itemUnread, pressed && styles.pressed]}>
+              style={({ pressed }) => [styles.item, iconRow.row, unread && styles.itemUnread, pressed && styles.pressed]}>
               <LinearGradient
                 colors={[item.colors.top, item.colors.bottom]}
                 {...tileGradientPoints(item.colors)}
                 style={[styles.icon, { boxShadow: `0 5px 10px rgba(${categoryShadowRgb(item.colors)}, 0.22)` }, tileFrame(item.colors)]}>
                 <SymbolView name={item.symbol} tintColor={item.colors.text} size={19} />
               </LinearGradient>
-              <View style={styles.texts}>
+              <View style={[styles.texts, iconRow.texts]}>
                 <View style={[styles.line, large && styles.lineWrap]}>
                   <Text style={styles.itemTitle} numberOfLines={large ? undefined : 1}>
                     {item.title}
@@ -144,7 +146,7 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
                 </View>
                 <Text style={styles.body}>{item.body}</Text>
               </View>
-              <View style={[styles.dot, unread && styles.dotOn]} />
+              <View style={[styles.dot, iconRow.large && styles.dotLarge, unread && styles.dotOn]} />
             </Pressable>
           );
         })}
@@ -278,6 +280,13 @@ const makeStyles = (c: Palette) =>
     height: 9,
     marginTop: 6,
     borderRadius: 5,
+  },
+  dotLarge: {
+    // Large text: the texts take the whole width, the dot stays at the top right, on the icon's line
+    position: 'absolute',
+    top: 12 + 15,
+    right: 12,
+    marginTop: 0,
   },
   dotOn: {
     backgroundColor: UNREAD_DOT,

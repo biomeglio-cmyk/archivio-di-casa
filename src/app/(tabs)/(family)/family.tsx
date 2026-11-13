@@ -10,6 +10,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { announce } from '@/a11y/accessibility';
 import { accessibilityActionsOf, personQuickActions, runAccessibilityAction } from '@/actions/quick-actions';
+import { useIconRow } from '@/components/icon-row';
 import { goHome, PageHeader } from '@/components/page-header';
 import { PersonAvatar } from '@/components/person-avatar';
 import { RoundIconButton } from '@/components/round-icon-button';
@@ -39,6 +40,7 @@ export default function FamilyScreen() {
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const iconRow = useIconRow(); // large text: avatars and icons above their texts
   const { data: people } = useDbQuery(listPeopleWithCounts, []);
   const [reordering, setReordering] = useState(false);
   const addPerson = () => router.push('/person-form');
@@ -119,7 +121,7 @@ export default function FamilyScreen() {
                 <WhiteCard style={styles.card}>
                   {people.map((person, index) => (
                     <Fragment key={person.id}>
-                      {index > 0 && <View style={styles.separator} />}
+                      {index > 0 && <View style={[styles.separator, iconRow.large && styles.separatorLarge]} />}
                       <PersonRow person={person} onLongPress={people.length > 1 ? startReorder : undefined} />
                     </Fragment>
                   ))}
@@ -135,11 +137,11 @@ export default function FamilyScreen() {
               <Text style={styles.addLabel}>{t('family.addPerson')}</Text>
             </Pressable>
 
-            <View style={styles.note}>
+            <View style={[styles.note, iconRow.row]}>
               <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
                 <SymbolView name="lock" tintColor={theme.indigo} size={18} />
               </View>
-              <Text style={styles.noteText}>{t('family.privacyNote')}</Text>
+              <Text style={[styles.noteText, iconRow.texts]}>{t('family.privacyNote')}</Text>
             </View>
           </>
         )}
@@ -156,6 +158,7 @@ function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPre
   const { pressed, handlers } = usePressed();
   const { fontScale } = useWindowDimensions();
   const lines = fontScale > 1.3 ? undefined : 1; // larger text: the whole name and details
+  const iconRow = useIconRow(); // large text: the avatar above, the texts and the chevron under it
   const quick = personQuickActions(db, person);
   // VoiceOver: the quick actions and "Riordina" (the long press)
   const actions = [
@@ -182,31 +185,34 @@ function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPre
       accessibilityHint={onLongPress ? t('family.reorderA11yHint') : undefined}
       accessibilityActions={accessibilityActionsOf(actions)}
       onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
-      style={[styles.row, pressed && styles.rowPressed]}>
+      style={[styles.row, iconRow.row, pressed && styles.rowPressed]}>
       <PersonAvatar name={person.name} photoPath={person.photoPath} size={48} shadow />
-      <View style={styles.texts}>
-        <View style={styles.nameLine}>
-          <Text style={styles.name} numberOfLines={lines}>
-            {person.name}
-          </Text>
-          {person.role === 'me' && <Text style={styles.me}>{t('personRoles.you')}</Text>}
+      {/* The texts and the chevron: one row, under the avatar with large text */}
+      <View style={[styles.body, iconRow.texts]}>
+        <View style={styles.texts}>
+          <View style={styles.nameLine}>
+            <Text style={styles.name} numberOfLines={lines}>
+              {person.name}
+            </Text>
+            {person.role === 'me' && <Text style={styles.me}>{t('personRoles.you')}</Text>}
+          </View>
+          <View style={styles.countLine}>
+            <Text style={styles.count} numberOfLines={lines}>
+              {details.join(' · ')}
+            </Text>
+            {/* "N in scadenza": red with a "!" (not only the color) */}
+            {expiring && (
+              <View style={styles.expiringBox}>
+                <SymbolView name="exclamationmark.circle.fill" tintColor={theme.error} size={13} />
+                <Text style={[styles.count, styles.expiring]} numberOfLines={lines}>
+                  {expiring}
+                </Text>
+              </View>
+            )}
+          </View>
         </View>
-        <View style={styles.countLine}>
-          <Text style={styles.count} numberOfLines={lines}>
-            {details.join(' · ')}
-          </Text>
-          {/* "N in scadenza": red with a "!" (not only the color) */}
-          {expiring && (
-            <View style={styles.expiringBox}>
-              <SymbolView name="exclamationmark.circle.fill" tintColor={theme.error} size={13} />
-              <Text style={[styles.count, styles.expiring]} numberOfLines={lines}>
-                {expiring}
-              </Text>
-            </View>
-          )}
-        </View>
+        <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={15} weight="semibold" />
       </View>
-      <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={15} weight="semibold" />
     </Pressable>
   );
 }
@@ -243,6 +249,15 @@ const makeStyles = (c: Palette) =>
     gap: 14,
     paddingVertical: 14,
     paddingHorizontal: 16,
+  },
+  body: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  separatorLarge: {
+    marginLeft: 16, // large text: no avatar column to start after
   },
   rowPressed: {
     backgroundColor: c.backgroundSelected,

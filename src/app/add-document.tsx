@@ -12,6 +12,7 @@ import { cropToGuideFrame } from '@/capture/crop-photo';
 import type { FrameRect } from '@/capture/guide-frame';
 import { isScannerAvailable, scanDocument } from '@/capture/scan-document';
 import { startAddCard } from '@/capture/start-add-card';
+import { useIconRow } from '@/components/icon-row';
 import { Text } from '@/components/text';
 import { FONTS } from '@/constants/typography';
 import { encodePendingFiles, pagesToFiles } from '@/storage/pending-files';
@@ -38,6 +39,7 @@ export default function AddDocumentScreen() {
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
+  const iconRow = useIconRow(); // large text: the current mode's check mark above its label
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
   const picture = useLargestPictureSize(cameraRef); // full sensor resolution, not the preview size
@@ -199,10 +201,10 @@ export default function AddDocumentScreen() {
               accessibilityRole="tab"
               accessibilityState={{ selected: active }}
               hitSlop={4}
-              style={[styles.mode, active && styles.modeActive]}>
+              style={[styles.mode, active && [styles.modeActive, iconRow.row]]}>
               {/* The current mode: a check mark too, not only the white pill */}
               {active && <SymbolView name="checkmark" tintColor="#1C1E2E" size={12} weight="bold" />}
-              <Text style={[styles.modeText, active && styles.modeTextActive]}>{mode.label}</Text>
+              <Text style={[styles.modeText, active && [styles.modeTextActive, iconRow.texts]]}>{mode.label}</Text>
             </Pressable>
           );
         })}

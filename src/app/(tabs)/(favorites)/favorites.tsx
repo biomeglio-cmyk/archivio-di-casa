@@ -12,6 +12,7 @@ import { announce } from '@/a11y/accessibility';
 import { accessibilityActionsOf, documentQuickActions, runAccessibilityAction } from '@/actions/quick-actions';
 import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
 import { DocumentThumb } from '@/components/document-thumb';
+import { useIconRow } from '@/components/icon-row';
 import { IconSquare } from '@/components/icon-square';
 import { PasswordPreviewTile } from '@/components/password-preview';
 import { goHome, PageHeader } from '@/components/page-header';
@@ -251,6 +252,8 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
   const { pressed, handlers } = usePressed();
   const { fontScale } = useWindowDimensions();
   const lines = fontScale > 1.3 ? undefined : 1; // larger text: the whole name and subtitle
+  // Large text: the square above the texts, the heart under them on the right
+  const iconRow = useIconRow();
   const subtitle = favoriteSubtitle(document);
   // VoiceOver: the same actions as the long-press menu of the tiles, and "Riordina" (the long press here)
   const quick = documentQuickActions(db, document, documentHref(document.id)).filter((a) => a.key !== 'pin');
@@ -263,7 +266,7 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
   ];
 
   return (
-    <View style={styles.row}>
+    <View style={[styles.row, iconRow.row]}>
       <Pressable
         {...handlers}
         onPress={onOpen}
@@ -274,13 +277,13 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
         accessibilityHint={onLongPress ? t('favorites.rowHint') : undefined}
         accessibilityActions={accessibilityActionsOf(actions)}
         onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
-        style={[styles.rowMain, pressed && styles.rowPressed]}>
+        style={[styles.rowMain, iconRow.row, iconRow.texts, pressed && styles.rowPressed]}>
         {document.password ? (
           <PasswordPreviewTile info={document.password} size={52} />
         ) : (
           <IconSquare symbol={document.category.symbol} colors={document.category.colors} size={52} radius={16} shadow />
         )}
-        <View style={styles.texts}>
+        <View style={[styles.texts, iconRow.texts]}>
           <Text style={styles.name} numberOfLines={lines}>
             {document.title}
           </Text>
@@ -295,7 +298,7 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
         accessibilityLabel={t('favorites.unpin')}
         accessibilityState={{ selected: true }}
         hitSlop={4}
-        style={({ pressed }) => [styles.heart, pressed && styles.rowPressed]}>
+        style={({ pressed }) => [styles.heart, iconRow.trailingEnd, pressed && styles.rowPressed]}>
         <SymbolView name="heart.fill" tintColor={HEART(theme)} size={24} />
       </Pressable>
     </View>

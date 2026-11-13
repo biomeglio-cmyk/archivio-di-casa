@@ -5,7 +5,7 @@ import type { CategoryColors } from '@/db/types';
 // "Aspetto": 7 palettes for the 13 built-in categories. Each one lists its colors in the order of
 // BUILTIN_ORDER (documents, cards, utilities, home, insurance, warranties, car, 730, colf, school,
 // pet, password, other). Custom categories keep their own color, and the brand indigo-lilac
-// gradient never changes. "Sottomano" (docs/design-guide.md) is the default.
+// gradient never changes. "Pastello" is the default (accessibility pass, November 2026).
 
 export type PaletteId = 'sottomano' | 'pastel' | 'vivid' | 'earth' | 'sea' | 'sunset' | 'night';
 
@@ -146,7 +146,8 @@ const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [
   },
 ];
 
-export const DEFAULT_PALETTE: PaletteId = 'sottomano';
+// Pastello: dark text on light gradients, WCAG AA on every tile (accessibility pass, November 2026)
+export const DEFAULT_PALETTE: PaletteId = 'pastel';
 
 export const PALETTES: Palette[] = [
   { id: 'sottomano', name: 'Sottomano', colors: SOTTOMANO.map(fromGuide) }, // i18n-ignore (shown through paletteName)

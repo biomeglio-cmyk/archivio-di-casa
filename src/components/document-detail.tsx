@@ -39,6 +39,7 @@ import {
 } from '@/db/documents';
 import type { DocumentDetail as Detail, DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { usePressed } from '@/hooks/use-pressed';
 import { usePreferences } from '@/settings/preferences';
@@ -143,6 +144,7 @@ function DocumentScreen({
   const calendar = getCalendarSettings();
   const { fontScale } = useWindowDimensions();
   const stacked = fontScale > 1.3; // larger text: the value goes under its label
+  const largeText = useLargeText(); // icons on their own line, above the texts
 
   const month = parseISODate(folderDate(document));
   const subtitle = `${fmt.monthTitle(month.getFullYear(), month.getMonth())} · ${filesLabel(files, t)}`;
@@ -341,7 +343,7 @@ function DocumentScreen({
           .filter(Boolean)
           .map((row, index) => (
             <Fragment key={index}>
-              {index > 0 && <View style={styles.separator} />}
+              {index > 0 && <View style={[styles.separator, largeText && styles.separatorLarge]} />}
               {row}
             </Fragment>
           ))}
@@ -365,7 +367,7 @@ function DocumentScreen({
 
       {/* One element for VoiceOver: "Ricordamelo, interruttore, attivo" with the explanation as hint */}
       <WhiteCard
-        style={styles.reminder}
+        style={[styles.reminder, largeText && styles.stackLarge]}
         accessible
         accessibilityRole="switch"
         accessibilityLabel={t('documentDetail.remindMe')}
@@ -376,16 +378,18 @@ function DocumentScreen({
           if (event.nativeEvent.actionName === 'activate') toggleReminder(!reminderOn);
         }}>
         <IconSquare symbol="bell" colors={category.colors} size={40} shadow />
-        <View style={styles.reminderTexts}>
+        <View style={[styles.reminderTexts, largeText && styles.fillLarge]}>
           <Text style={styles.reminderTitle}>{t('documentDetail.remindMe')}</Text>
           <Text style={styles.reminderText}>{reminderText}</Text>
         </View>
-        <Switch
-          value={reminderOn}
-          onValueChange={toggleReminder}
-          gradient={gradient}
-          accessibilityLabel={t('documentDetail.remindMe')}
-        />
+        <View style={largeText && styles.switchLarge}>
+          <Switch
+            value={reminderOn}
+            onValueChange={toggleReminder}
+            gradient={gradient}
+            accessibilityLabel={t('documentDetail.remindMe')}
+          />
+        </View>
       </WhiteCard>
 
       {/* Always here: "Aggiungi scadenza", or the deadline to change or remove */}
@@ -533,23 +537,27 @@ function ActionRow({
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
+  const largeText = useLargeText(); // the icon above the label
   return (
     <Pressable
       {...handlers}
       onPress={onPress}
       accessibilityRole="button"
       accessibilityState={selected === undefined ? undefined : { selected }}
-      style={[styles.actionRow, pressed && styles.actionPressed]}>
+      style={[styles.actionRow, largeText && styles.stackLarge, pressed && styles.actionPressed]}>
       <View
         style={[styles.actionIcon, { backgroundColor: tint }]}
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants">
         <SymbolView name={symbol} tintColor={color} size={20} />
       </View>
-      <Text style={[styles.actionLabel, destructive && { color: theme.error }]}>{label}</Text>
-      {chevron && (
-        <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={16} weight="semibold" />
-      )}
+      {/* Label and chevron: the rest of the row, or the whole width under the icon */}
+      <View style={[styles.actionMain, largeText && styles.fillLarge]}>
+        <Text style={[styles.actionLabel, destructive && { color: theme.error }]}>{label}</Text>
+        {chevron && (
+          <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={16} weight="semibold" />
+        )}
+      </View>
     </Pressable>
   );
 }
@@ -645,6 +653,28 @@ const makeStyles = (c: Palette) =>
     gap: 14,
     paddingVertical: 12,
     paddingHorizontal: 16,
+  },
+  actionMain: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  // Large text: the leading icon on its own line, the texts on the whole width under it
+  stackLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  fillLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
+  },
+  switchLarge: {
+    alignSelf: 'flex-end', // under the texts, still on the right
+  },
+  separatorLarge: {
+    marginLeft: 16, // no icon column to start after
   },
   actionPressed: {
     backgroundColor: c.paleLilac,

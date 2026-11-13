@@ -31,6 +31,7 @@ import type { Category, CategoryColors } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { builtinColorsFor, getPalette } from '@/settings/palette';
 import { categoryShadowRgb, categoryTint, colorsFromHex, readableColors, readableGradient, tileFrame, tileGradientPoints } from '@/utils/colors';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
@@ -124,6 +125,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   const look = readableColors(shown);
   const gradient = [look.top, look.bottom] as const;
   const { fontScale } = useWindowDimensions();
+  const largeText = useLargeText(); // icons: 4 per row instead of 5
   const shadow = tintedShadow(categoryShadowRgb(look));
   // Our 13 colors (the palette of Aspetto), without repeats
   const swatches = palette.colors.filter((c, index, all) => all.findIndex((other) => other.bottom === c.bottom) === index);
@@ -298,7 +300,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           {symbols.map((s, index) => {
             const selected = s === symbol;
             return (
-              <View key={s} style={styles.iconCell}>
+              <View key={s} style={[styles.iconCell, largeText && styles.iconCellLarge]}>
                 <Pressable
                   onPress={() => setSymbol(s)}
                   accessibilityRole="radio"
@@ -461,6 +463,9 @@ const makeStyles = (c: Palette) =>
   iconCell: {
     width: '20%',
     paddingHorizontal: 5,
+  },
+  iconCellLarge: {
+    width: '25%',
   },
   icon: {
     height: 56,

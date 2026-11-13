@@ -35,6 +35,7 @@ import { languageInfo } from '@/settings/language';
 import { t, useI18n } from '@/i18n';
 import { useLanguageSetting } from '@/i18n/use-language';
 import { Segmented } from '@/components/segmented';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemeMode, useThemedStyles } from '@/hooks/use-theme';
 
 // "Avviso predefinito": how many days before a deadline, for documents without their own value
@@ -337,9 +338,10 @@ function ThemeRow() {
   const styles = useThemedStyles(makeStyles);
   const { mode, setMode } = useThemeMode();
   const { t } = useI18n();
+  const large = useLargeText(); // the icon above the title
   return (
     <View style={styles.themeRow}>
-      <View style={styles.themeHead}>
+      <View style={[styles.themeHead, large && styles.headLarge]}>
         <View style={[styles.icon, { backgroundColor: theme.lilac }]}>
           <SymbolView name="moon" tintColor={theme.indigo} size={19} />
         </View>
@@ -418,6 +420,8 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, checked, 
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const isSwitch = checked !== undefined;
+  // Large text: the icon square on its own line above the title, the texts get the whole width
+  const large = useLargeText();
   return (
     <Pressable
       onPress={onPress}
@@ -425,7 +429,7 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, checked, 
       accessibilityLabel={value ? `${label}, ${value}` : label}
       accessibilityHint={subtitle}
       accessibilityState={isSwitch ? { checked } : expanded === undefined ? undefined : { expanded }}
-      style={({ pressed }) => [styles.row, pressed && onPress && styles.rowPressed]}>
+      style={({ pressed }) => [styles.row, large && styles.rowLarge, pressed && onPress && styles.rowPressed]}>
       <View style={[styles.icon, { backgroundColor: tint.background }]}>
         <SymbolView name={symbol} tintColor={tint.icon} size={19} />
       </View>
@@ -433,6 +437,7 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, checked, 
         // Label and value on one line when they fit, else the value under the label (measured on
         // the title alone, so a long subtitle that wraps anyway doesn't push the value down)
         <FitLine
+          style={large ? styles.mainLarge : undefined}
           startMeasure={<Text style={styles.rowLabel}>{label}</Text>}
           start={
             <View>
@@ -456,6 +461,7 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, checked, 
         // A switch: next to the title when both fit on one line, else under it on the right (the
         // title then has the whole width and wraps only between words)
         <FitLine
+          style={large ? styles.mainLarge : undefined}
           startMeasure={<Text style={styles.rowLabel}>{label}</Text>}
           endAlign="end"
           start={
@@ -471,7 +477,7 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, checked, 
           }
         />
       ) : (
-        <>
+        <View style={[styles.rowMain, large && styles.mainLarge]}>
           <View style={styles.rowTexts}>
             <Text style={styles.rowLabel}>{label}</Text>
             {subtitle && <Text style={styles.rowSubtitle}>{subtitle}</Text>}
@@ -482,7 +488,7 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, checked, 
             size={16}
             weight="semibold"
           />
-        </>
+        </View>
       )}
     </Pressable>
   );
@@ -556,6 +562,22 @@ const makeStyles = (c: Palette) =>
   rowPressed: {
     backgroundColor: c.paleLilac,
   },
+  // Large text: icon square above, then the title (and its value or switch) across the whole row
+  rowLarge: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: 8,
+  },
+  rowMain: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  mainLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
+  },
   icon: {
     width: 36,
     height: 36,
@@ -573,6 +595,11 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
+  },
+  headLarge: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: 8,
   },
   rowTexts: {
     flex: 1,

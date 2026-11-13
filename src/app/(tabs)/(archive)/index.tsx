@@ -12,7 +12,7 @@ import { CATEGORY_TILE_HEIGHT, CategoryTile, describeCategoryCount } from '@/com
 import { HomeEmpty } from '@/components/home-empty';
 import { HomeHeader } from '@/components/home-header';
 import { LimitCard } from '@/components/limit-card';
-import { FavoriteTile, NextDeadlineCard } from '@/components/home-sections';
+import { FavoriteTile, FavoritesRow, NextDeadlineCard } from '@/components/home-sections';
 import { SearchBar } from '@/components/search-bar';
 import { SectionHeader } from '@/components/section-header';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
@@ -111,13 +111,11 @@ export default function ArchiveScreen() {
                     onPress: () => router.navigate('/(tabs)/(favorites)/favorites'),
                   }}
                 />
-                <View style={styles.favorites}>
+                <FavoritesRow single={favorites.length === 1}>
                   {favorites.map((document) => (
                     <FavoriteTile key={document.id} document={document} />
                   ))}
-                  {/* One favorite: it keeps half the width, like in a grid of two */}
-                  {favorites.length === 1 && <View style={styles.flex} />}
-                </View>
+                </FavoritesRow>
               </View>
             )}
 
@@ -211,9 +209,5 @@ const makeStyles = (c: Palette) =>
     fontSize: 14,
     fontFamily: FONTS.regular,
     color: c.textOnLilac,
-  },
-  favorites: {
-    flexDirection: 'row',
-    gap: Spacing.tileGap,
   },
 });

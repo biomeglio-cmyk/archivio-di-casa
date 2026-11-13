@@ -44,6 +44,7 @@ import { BRAND_COLOR, DANGER_COLOR, GRADIENT_END, GRADIENT_START } from '@/const
 import { type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatBytes } from '@/send/send-preferences';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { t, useI18n } from '@/i18n';
 import { intlLocale } from '@/i18n/format';
@@ -99,7 +100,8 @@ export default function BackupScreen() {
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
-  const large = useWindowDimensions().fontScale > 1.3; // larger text: rows stack, names wrap
+  const large = useWindowDimensions().fontScale > 1.3; // larger text: names wrap
+  const largeText = useLargeText(); // the reminder's icon on its own line, above the label
   const { t } = useI18n();
   const [step, setStep] = useState<Step>({ kind: 'idle' });
   const [password, setPassword] = useState('');
@@ -440,13 +442,13 @@ export default function BackupScreen() {
         <Text style={styles.section} accessibilityRole="header">
           {t('backup.remindersSection')}
         </Text>
-        <WhiteCard style={[styles.reminder, large && styles.reminderLarge]}>
+        <WhiteCard style={[styles.reminder, largeText && styles.reminderLarge]}>
           <View style={styles.reminderIcon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
             <SymbolView name="bell" tintColor={APRICOT} size={18} />
           </View>
           {/* Read by VoiceOver with the value, on the button */}
           <Text
-            style={[styles.reminderLabel, large && styles.reminderLabelLarge]}
+            style={[styles.reminderLabel, largeText && styles.reminderLabelLarge]}
             accessibilityElementsHidden
             importantForAccessibility="no">
             {t('backup.remindMe')}
@@ -669,7 +671,10 @@ const makeStyles = (c: Palette) =>
     gap: 14,
   },
   reminderLarge: {
-    flexWrap: 'wrap', // larger text: the choice goes under the label
+    // Large text: the icon, then the label on the whole width, then the choice under it
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 10,
   },
   reminderIcon: {
     width: 36,
@@ -686,7 +691,8 @@ const makeStyles = (c: Palette) =>
     color: c.text,
   },
   reminderLabelLarge: {
-    flexBasis: '70%',
+    flex: 0,
+    alignSelf: 'stretch',
   },
   select: {
     minHeight: 38,

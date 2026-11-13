@@ -2,15 +2,18 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
+import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { DateSquare } from '@/components/date-square';
 import { Text } from '@/components/text';
+import { TileColumnsProvider } from '@/components/tile-columns';
 import { TileTitle } from '@/components/tile-title';
 import { WhiteCard } from '@/components/white-card';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
-import { type Palette, Radius, tintedShadow } from '@/constants/theme';
+import { type Palette, Radius, Spacing, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useTileColumns } from '@/hooks/use-tile-size';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import { t, useI18n } from '@/i18n';
@@ -42,6 +45,28 @@ function favoriteSubtitle(document: DocumentListItem): string {
     return t('homeSections.expiresOn', { date: formatShortDate(document.expiresAt) });
   }
   return [document.category.name, document.personName].filter(Boolean).join(' · ');
+}
+
+// The two big favorites of Home, side by side; one under the other with large text or when a title
+// needs more than 2 lines (the same rule as every tile grid: TileColumnsProvider)
+export function FavoritesRow({ children, single }: { children: ReactNode; single: boolean }) {
+  return (
+    <TileColumnsProvider>
+      <FavoritesLayout single={single}>{children}</FavoritesLayout>
+    </TileColumnsProvider>
+  );
+}
+
+function FavoritesLayout({ children, single }: { children: ReactNode; single: boolean }) {
+  const styles = useThemedStyles(makeStyles);
+  const { columns } = useTileColumns();
+  return (
+    <View style={columns === 1 ? styles.favoritesColumn : styles.favoritesRow}>
+      {children}
+      {/* One favorite: it keeps half the width, like in a grid of two */}
+      {single && columns === 2 && <View style={styles.flex} />}
+    </View>
+  );
 }
 
 // One of the two big favorites of Home (196 high): the category gradient with its icon, or (cover
@@ -153,6 +178,16 @@ export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
 
 const makeStyles = (c: Palette) =>
   StyleSheet.create({
+  favoritesRow: {
+    flexDirection: 'row',
+    gap: Spacing.tileGap,
+  },
+  favoritesColumn: {
+    gap: Spacing.tileGap,
+  },
+  flex: {
+    flex: 1,
+  },
   favorite: {
     flex: 1,
     minHeight: FAVORITE_HEIGHT,

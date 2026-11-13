@@ -14,6 +14,7 @@ import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { t as translate, useI18n } from '@/i18n';
 import { getFreeUsage, unlockPrice } from '@/settings/free-limit';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#14282A');
@@ -39,6 +40,7 @@ export default function UnlockScreen() {
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const large = useWindowDimensions().fontScale > 1.3; // larger text: the price goes under its texts
+  const largeText = useLargeText(); // the benefits' check marks above their texts
   const { data: usage } = useDbQuery(getFreeUsage, []);
   const used = usage?.shown ?? 0; // never more than the limit ("7 di 7")
   const limit = usage?.limit ?? 7;
@@ -75,13 +77,13 @@ export default function UnlockScreen() {
           // One element for VoiceOver: "Documenti illimitati, …"
           <View
             key={benefit}
-            style={styles.benefit}
+            style={[styles.benefit, largeText && styles.benefitLarge]}
             accessible
             accessibilityLabel={`${t(`unlock.benefits.${benefit}.title`)}, ${t(`unlock.benefits.${benefit}.text`)}`}>
             <View style={styles.check}>
               <SymbolView name="checkmark" tintColor={MINT_INK(theme)} size={13} weight="bold" />
             </View>
-            <View style={styles.benefitTexts}>
+            <View style={[styles.benefitTexts, largeText && styles.benefitTextsLarge]}>
               <Text style={styles.benefitTitle}>{t(`unlock.benefits.${benefit}.title`)}</Text>
               <Text style={styles.benefitText}>{t(`unlock.benefits.${benefit}.text`)}</Text>
             </View>
@@ -221,6 +223,15 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
+  },
+  // Large text: the check mark on its own line, the texts on the whole width under it
+  benefitLarge: {
+    flexDirection: 'column',
+    gap: 8,
+  },
+  benefitTextsLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
   },
   check: {
     width: 26,

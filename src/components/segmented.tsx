@@ -1,5 +1,5 @@
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { type Palette, Radius } from '@/constants/theme';
@@ -14,6 +14,7 @@ type Props = {
   tint?: string; // the pill: lilac by default, or a section tint
   activeColor?: string; // text of the chosen segment: indigo by default
   symbols?: (SFSymbol | undefined)[]; // an icon before a label (Tema: ☀ Chiaro, ☾ Scuro)
+  accessibilityLabel?: string; // VoiceOver name of the group ("Copertina", "Vista")
 };
 
 const SEGMENT_HEIGHT = 38;
@@ -21,13 +22,25 @@ const INSET = 4;
 
 // Choice between a few options (PDF/Foto, Foto/Colore…): 38-high segments inside a lilac pill,
 // the chosen one a white pill with a shadow and indigo text
-export function Segmented({ values, selectedIndex, onChange, enabled = true, tint, activeColor, symbols }: Props) {
+export function Segmented({
+  values,
+  selectedIndex,
+  onChange,
+  enabled = true,
+  tint,
+  activeColor,
+  symbols,
+  accessibilityLabel,
+}: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { fontScale } = useWindowDimensions();
+  const large = fontScale > 1.3; // larger text: labels wrap at full size instead of shrinking
   return (
     <View
       style={[styles.pill, tint !== undefined && { backgroundColor: tint }, !enabled && styles.disabled]}
-      accessibilityRole="tablist">
+      accessibilityRole="tablist"
+      accessibilityLabel={accessibilityLabel}>
       {values.map((value, index) => {
         const selected = index === selectedIndex;
         return (
@@ -36,6 +49,7 @@ export function Segmented({ values, selectedIndex, onChange, enabled = true, tin
             onPress={() => !selected && onChange(index)}
             disabled={!enabled}
             accessibilityRole="tab"
+            accessibilityLabel={value}
             accessibilityState={{ selected, disabled: !enabled }}
             style={[styles.segment, selected && styles.selected]}>
             {symbols?.[index] && (
@@ -53,10 +67,9 @@ export function Segmented({ values, selectedIndex, onChange, enabled = true, tin
                   ? [styles.labelSelected, activeColor !== undefined && { color: activeColor }]
                   : styles.labelIdle,
               ]}
-              numberOfLines={1}
-              adjustsFontSizeToFit
-              minimumFontScale={0.75}
-              maxFontSizeMultiplier={1.4}>
+              numberOfLines={large ? undefined : 1}
+              adjustsFontSizeToFit={!large}
+              minimumFontScale={0.75}>
               {value}
             </Text>
           </Pressable>
@@ -86,13 +99,16 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: 10,
+    paddingVertical: 4,
   },
   selected: {
     backgroundColor: c.segmentedActive,
     boxShadow: '0 2px 8px rgba(28, 30, 70, 0.12)',
   },
   label: {
+    flexShrink: 1,
     fontSize: 15,
+    textAlign: 'center',
   },
   labelSelected: {
     color: c.segmentedActiveText,

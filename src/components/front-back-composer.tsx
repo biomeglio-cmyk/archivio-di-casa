@@ -75,7 +75,13 @@ export function FrontBackComposer({ frontUri, backUri, frontAspect = CARD_ASPECT
   }));
 
   return (
-    <View ref={canvasRef} collapsable={false} style={[styles.canvas, { height: canvasHeight }]} pointerEvents="none">
+    <View
+      ref={canvasRef}
+      collapsable={false}
+      style={[styles.canvas, { height: canvasHeight }]}
+      pointerEvents="none"
+      accessibilityElementsHidden // off screen: never reached by VoiceOver
+      importantForAccessibility="no-hide-descendants">
       <Image source={{ uri: frontUri }} style={[styles.face, { aspectRatio: frontAspect }]} contentFit="contain" onLoad={handleLoaded} onError={handleLoaded} />
       <Image source={{ uri: backUri }} style={[styles.face, { aspectRatio: backAspect }]} contentFit="contain" onLoad={handleLoaded} onError={handleLoaded} />
     </View>

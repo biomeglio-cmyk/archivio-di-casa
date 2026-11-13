@@ -5,9 +5,10 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useState, type ReactNode } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { scanDocument } from '@/capture/scan-document';
 import { ColorPicker } from '@/components/color-picker';
 import { PasswordPreviewTile } from '@/components/password-preview';
@@ -77,6 +78,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
   const { t } = useI18n();
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
+  const large = useWindowDimensions().fontScale > 1.3; // larger text: 2 types per row, names on 2 lines
   const { data: people } = useDbQuery(listPeople, []);
   const { data: customTypes } = useDbQuery(listCustomPasswordTypes, []);
   const info = existing?.password ?? null;
@@ -144,6 +146,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       setLoadedSaved(true);
     }
     setShow(true);
+    announce(t('a11y.passwordForm.shown'));
   }
 
   async function copy() {
@@ -157,8 +160,10 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
   }
 
   function generate() {
-    setPassword(generatePassword());
+    const value = generatePassword();
+    setPassword(value);
     setShow(true);
+    announce(t('a11y.passwordForm.generated', { strength: passwordStrength(value, type, theme).label }));
   }
 
   // ——— Anteprima ———
@@ -279,7 +284,12 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       </View>
 
       <View style={styles.privacy}>
-        <LinearGradient colors={PASSWORD_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={styles.privacyIcon}>
+        <LinearGradient
+          colors={PASSWORD_GRADIENT}
+          start={GRADIENT_START}
+          end={GRADIENT_END}
+          style={styles.privacyIcon}
+          accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
           <SymbolView name="faceid" tintColor="#FFFFFF" size={26} />
         </LinearGradient>
         <Text style={styles.privacyText}>{t('passwordForm.privacy')}</Text>
@@ -290,15 +300,22 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         {types.map((item) => {
           const on = typeSelected(item);
           return (
-            <View key={item.key} style={styles.typeCell}>
+            <View key={item.key} style={[styles.typeCell, large && styles.typeCellLarge]}>
               <Pressable
                 onPress={() => pickType(item.type, item.written)}
                 accessibilityRole="radio"
+                accessibilityLabel={item.name}
                 accessibilityState={{ checked: on }}
                 style={[styles.typeButton, on && styles.typeOn]}>
                 {on && <LinearGradient colors={PASSWORD_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={[StyleSheet.absoluteFill, styles.typeFill]} />}
+                {/* Chosen: not only the fill, a check mark too */}
+                {on && <SelectedMark />}
                 <SymbolView name={item.symbol} tintColor={on ? '#FFFFFF' : theme.iconGrey} size={22} />
-                <Text style={[styles.typeName, on && styles.typeNameOn]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
+                <Text
+                  style={[styles.typeName, on && styles.typeNameOn]}
+                  numberOfLines={large ? 2 : 1}
+                  adjustsFontSizeToFit={!large}
+                  minimumFontScale={0.8}>
                   {item.name}
                 </Text>
               </Pressable>
@@ -309,7 +326,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       {type === 'other' && (
         <>
           <View style={[styles.field, styles.whatField]}>
-            <SymbolView name="questionmark.circle" tintColor={PASSWORD_INK(theme)} size={20} />
+            <SymbolView name="questionmark.circle" tintColor={PASSWORD_INK(theme)} size={20} accessibilityElementsHidden />
             <TextInput
               value={customType}
               onChangeText={setCustomType}
@@ -349,7 +366,9 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           </View>
         </View>
 
-        <Text style={styles.small}>{t('passwordForm.color')}</Text>
+        <Text style={styles.small} accessibilityRole="header">
+          {t('passwordForm.color')}
+        </Text>
         <View style={styles.colors}>
           <ColorPicker
             presets={PASSWORD_COLORS.map((c) => ({ key: c.key, name: passwordColorName(c.key), colors: [c.top, c.bottom] as const }))}
@@ -361,7 +380,9 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           />
         </View>
 
-        <Text style={styles.small}>{t('passwordForm.icon')}</Text>
+        <Text style={styles.small} accessibilityRole="header">
+          {t('passwordForm.icon')}
+        </Text>
         <View style={styles.icons} accessibilityRole="radiogroup" accessibilityLabel={t('passwordForm.iconLabel')}>
           {PASSWORD_ICONS.map((i) => {
             const on = !hasImage && i.symbol === chosenSymbol;
@@ -384,6 +405,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                       style={[StyleSheet.absoluteFill, styles.iconFill]}
                     />
                   )}
+                  {on && <SelectedMark small />}
                   <SymbolView name={i.symbol} tintColor={on ? '#FFFFFF' : theme.iconGrey} size={20} />
                 </Pressable>
               </View>
@@ -391,13 +413,21 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           })}
         </View>
 
-        <Text style={styles.small}>{t('passwordForm.image')}</Text>
+        <Text style={styles.small} accessibilityRole="header">
+          {t('passwordForm.image')}
+        </Text>
         <View style={styles.imageButtons}>
           <ImageButton label={t('passwordForm.scan')} symbol="doc.viewfinder" on={image.kind === 'new' && image.source === 'scan'} onPress={scanImage} />
           <ImageButton label={t('passwordForm.gallery')} symbol="photo" on={image.kind === 'new' && image.source === 'gallery'} onPress={galleryImage} />
         </View>
         {hasImage && (
-          <Pressable onPress={() => setImage({ kind: 'remove' })} accessibilityRole="button" style={styles.removeImage}>
+          <Pressable
+            onPress={() => {
+              setImage({ kind: 'remove' });
+              announce(t('a11y.passwordForm.imageRemoved'));
+            }}
+            accessibilityRole="button"
+            style={styles.removeImage}>
             <Text style={styles.removeImageText}>{t('passwordForm.removeImage')}</Text>
           </Pressable>
         )}
@@ -410,7 +440,9 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             <View style={styles.accessRow}>
               <IconBox symbol={meta.userSymbol} />
               <View style={styles.flex}>
-                <Text style={styles.fieldLabel}>{meta.userLabel}</Text>
+                <Text style={styles.fieldLabel} accessibilityElementsHidden importantForAccessibility="no">
+                  {meta.userLabel}
+                </Text>
                 <TextInput
                   value={user}
                   onChangeText={setUser}
@@ -430,7 +462,9 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         <View style={[styles.accessRow, styles.passwordRow]}>
           <IconBox symbol={isPin ? 'circle.grid.3x3' : 'key'} />
           <View style={styles.flex}>
-            <Text style={styles.fieldLabel}>{meta.passwordLabel}</Text>
+            <Text style={styles.fieldLabel} accessibilityElementsHidden importantForAccessibility="no">
+              {meta.passwordLabel}
+            </Text>
             <TextInput
               value={password}
               onChangeText={(text) => {
@@ -467,7 +501,11 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         </View>
         {meta.canGenerate && (
           <View style={styles.generateRow}>
-            <Pressable onPress={generate} accessibilityRole="button" style={({ pressed }) => [styles.generate, pressed && styles.pressed]}>
+            <Pressable
+              onPress={generate}
+              accessibilityRole="button"
+              hitSlop={4}
+              style={({ pressed }) => [styles.generate, pressed && styles.pressed]}>
               <SymbolView name="wand.and.stars" tintColor={PASSWORD_INK(theme)} size={16} />
               <Text style={styles.generateText}>{t('passwordForm.generate')}</Text>
             </Pressable>
@@ -479,7 +517,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         <>
           <Section>{t('passwordForm.sections.site')}</Section>
           <View style={[styles.field, styles.whiteField]}>
-            <SymbolView name="link" tintColor={theme.textSecondary} size={18} />
+            <SymbolView name="link" tintColor={theme.textSecondary} size={18} accessibilityElementsHidden />
             <TextInput
               value={url}
               onChangeText={setUrl}
@@ -497,7 +535,14 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
 
       {type === 'wifi' && (
         <WhiteCard style={[styles.card, styles.wifiCard]}>
-          <Pressable onPress={() => setWifiQr(!wifiQr)} accessible={false} style={styles.switchRow}>
+          {/* One element for VoiceOver: title, switch state, subtitle as hint */}
+          <Pressable
+            onPress={() => setWifiQr(!wifiQr)}
+            accessibilityRole="switch"
+            accessibilityLabel={t('passwordForm.wifiQrTitle')}
+            accessibilityHint={t('passwordForm.wifiQrSubtitle')}
+            accessibilityState={{ checked: wifiQr }}
+            style={styles.switchRow}>
             <IconBox symbol="qrcode" />
             <View style={styles.flex}>
               <Text style={styles.rowTitle}>{t('passwordForm.wifiQrTitle')}</Text>
@@ -511,10 +556,12 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       <Section>{t('passwordForm.sections.whose')}</Section>
       <WhiteCard style={styles.card}>
         <View style={styles.personRow}>
-          <View style={[styles.iconBox, { backgroundColor: theme.lilac }]}>
+          <View style={[styles.iconBox, { backgroundColor: theme.lilac }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
             <SymbolView name="person" tintColor={theme.indigo} size={19} />
           </View>
-          <Text style={styles.personLabel}>{t('passwordForm.person')}</Text>
+          <Text style={styles.personLabel} accessibilityElementsHidden importantForAccessibility="no">
+            {t('passwordForm.person')}
+          </Text>
           <Pressable onPress={choosePerson} accessibilityRole="button" accessibilityLabel={t('passwordForm.personA11y', { name: personName })} style={styles.select}>
             <Text style={styles.selectText}>{personName}</Text>
             <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={13} weight="semibold" />
@@ -536,7 +583,13 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       </WhiteCard>
 
       <WhiteCard style={[styles.card, styles.favCard]}>
-        <Pressable onPress={() => setPinnedState(!pinned)} accessible={false} style={styles.switchRow}>
+        <Pressable
+          onPress={() => setPinnedState(!pinned)}
+          accessibilityRole="switch"
+          accessibilityLabel={t('passwordForm.favoriteTitle')}
+          accessibilityHint={t('passwordForm.favoriteSubtitle')}
+          accessibilityState={{ checked: pinned }}
+          style={styles.switchRow}>
           <View style={[styles.iconBox, { backgroundColor: PIN_TINT(theme) }]}>
             <SymbolView name={pinned ? 'heart.fill' : 'heart'} tintColor={theme.heart} size={19} />
           </View>
@@ -567,8 +620,18 @@ function IconBox({ symbol }: { symbol: SFSymbol }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   return (
-    <View style={styles.iconBox}>
+    <View style={styles.iconBox} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
       <SymbolView name={symbol} tintColor={PASSWORD_INK(theme)} size={19} />
+    </View>
+  );
+}
+
+// The check mark in the corner of a chosen type or icon: the choice is not shown by the fill alone
+function SelectedMark({ small = false }: { small?: boolean }) {
+  const styles = useThemedStyles(makeStyles);
+  return (
+    <View style={[styles.mark, small && styles.markSmall]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <SymbolView name="checkmark.circle.fill" tintColor="#FFFFFF" size={small ? 12 : 16} />
     </View>
   );
 }
@@ -583,7 +646,8 @@ function ImageButton({ label, symbol, on, onPress }: { label: string; symbol: SF
       accessibilityState={{ selected: on }}
       style={({ pressed }) => [styles.imageButton, pressed && styles.pressed]}>
       {on && <LinearGradient colors={PASSWORD_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={[StyleSheet.absoluteFill, styles.imageFill]} />}
-      <SymbolView name={symbol} tintColor={on ? '#FFFFFF' : PASSWORD_INK(theme)} size={18} />
+      {/* Chosen: a check mark instead of the icon, not only the fill */}
+      <SymbolView name={on ? 'checkmark.circle.fill' : symbol} tintColor={on ? '#FFFFFF' : PASSWORD_INK(theme)} size={18} />
       <Text style={[styles.imageButtonText, on && { color: '#FFFFFF' }]}>{label}</Text>
     </Pressable>
   );
@@ -661,8 +725,21 @@ const makeStyles = (c: Palette) =>
     width: '25%',
     paddingHorizontal: 4,
   },
+  typeCellLarge: {
+    width: '50%',
+  },
+  mark: {
+    position: 'absolute',
+    top: 6,
+    right: 6,
+  },
+  markSmall: {
+    top: 3,
+    right: 3,
+  },
   typeButton: {
-    height: 74,
+    minHeight: 74,
+    paddingVertical: 8,
     borderRadius: 18,
     borderCurve: 'continuous',
     backgroundColor: c.elevated,
@@ -686,7 +763,7 @@ const makeStyles = (c: Palette) =>
     color: '#FFFFFF',
   },
   field: {
-    height: 56,
+    minHeight: 56,
     paddingHorizontal: 18,
     borderRadius: 18,
     borderCurve: 'continuous',
@@ -775,7 +852,9 @@ const makeStyles = (c: Palette) =>
   },
   imageButton: {
     flex: 1,
-    height: 48,
+    minHeight: 48,
+    paddingVertical: 8,
+    paddingHorizontal: 8,
     borderRadius: 16,
     borderCurve: 'continuous',
     backgroundColor: PASSWORD_TINT(c),
@@ -794,7 +873,7 @@ const makeStyles = (c: Palette) =>
   },
   removeImage: {
     marginTop: 8,
-    height: 40,
+    minHeight: 44,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -881,7 +960,8 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
   },
   generate: {
-    height: 38,
+    minHeight: 38,
+    paddingVertical: 6,
     paddingHorizontal: 14,
     borderRadius: 19,
     backgroundColor: PASSWORD_TINT(c),
@@ -925,7 +1005,7 @@ const makeStyles = (c: Palette) =>
     paddingHorizontal: 16,
   },
   personLabel: {
-    width: 72,
+    minWidth: 72,
     fontSize: 15,
     fontFamily: FONTS.regular,
     color: c.textSecondary,

@@ -39,7 +39,7 @@ type Props = {
 export function CardDetail({ card, files, pin }: Props) {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
-  const { width } = useWindowDimensions();
+  const { width, fontScale } = useWindowDimensions();
   const [fullScreen, setFullScreen] = useState(false);
   useMaxBrightness();
 
@@ -55,7 +55,12 @@ export function CardDetail({ card, files, pin }: Props) {
     <>
       <Stack.Screen options={{ title: card.title }} />
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
-        <View style={styles.cardShadow}>
+        {/* The card is a picture (often a photo): VoiceOver says what is on it */}
+        <View
+          style={styles.cardShadow}
+          accessible
+          accessibilityRole="image"
+          accessibilityLabel={[card.title, card.docType, card.person?.name].filter(Boolean).join(', ')}>
           <CardFace card={card} width={width - 32} large />
         </View>
 
@@ -63,6 +68,7 @@ export function CardDetail({ card, files, pin }: Props) {
           {/* Both available: choose between the generated code and the photo */}
           {generated && barcodeUri && (
             <Segmented
+              accessibilityLabel={t('a11y.segmented.show')}
               values={[t('cardDetail.code'), t('cardDetail.photo')]}
               selectedIndex={view === 'code' ? 0 : 1}
               onChange={(index) => setView(index === 0 ? 'code' : 'photo')}
@@ -87,15 +93,26 @@ export function CardDetail({ card, files, pin }: Props) {
             )
           )}
           {card.barcodeValue && (
-            <Text style={styles.number} selectable>
+            <Text
+              style={styles.number}
+              selectable
+              accessibilityLabel={t('a11y.walletCard.number', { number: card.barcodeValue.split('').join(' ') })}>
               {card.barcodeValue}
             </Text>
           )}
-          {(showCode || barcodeUri) && <Text style={styles.tapHint}>{t('cardDetail.tapHint')}</Text>}
+          {/* Said by VoiceOver as the hint of the code */}
+          {(showCode || barcodeUri) && (
+            <Text style={styles.tapHint} accessibilityElementsHidden importantForAccessibility="no">
+              {t('cardDetail.tapHint')}
+            </Text>
+          )}
         </View>
 
         {card.person && (
-          <WhiteCard style={styles.infoCard}>
+          <WhiteCard
+            style={[styles.infoCard, fontScale > 1.3 && styles.infoCardStacked]}
+            accessible
+            accessibilityLabel={`${t('cardDetail.person')}, ${card.person.name}`}>
             <ThemedText themeColor="textSecondary">{t('cardDetail.person')}</ThemedText>
             <View style={styles.person}>
               <PersonAvatar name={card.person.name} photoPath={card.person.photoPath} size={28} />
@@ -184,6 +201,11 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     justifyContent: 'space-between',
     gap: 16,
+  },
+  infoCardStacked: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 6,
   },
   person: {
     flexDirection: 'row',

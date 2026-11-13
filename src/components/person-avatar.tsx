@@ -19,7 +19,8 @@ type Props = {
 };
 
 // Round avatar: the person's photo, or their initial in white on a gradient (always the same one
-// for the same name), as in docs/design/Utenti.dc.html
+// for the same name), as in docs/design/Utenti.dc.html. Decorative: the name is always next to it,
+// so VoiceOver skips it
 export function PersonAvatar({ name, photoPath, photoUri, size, shadow = false }: Props) {
   const styles = useThemedStyles(makeStyles);
   const circle = { width: size, height: size, borderRadius: size / 2 };
@@ -28,13 +29,30 @@ export function PersonAvatar({ name, photoPath, photoUri, size, shadow = false }
   const glow = shadow ? { boxShadow: `0 6px 12px rgba(${gradient.shadow}, 0.22)` } : null;
 
   if (uri) {
-    return <Image source={{ uri }} style={[styles.photo, circle, glow]} contentFit="cover" transition={120} />;
+    return (
+      <Image
+        source={{ uri }}
+        style={[styles.photo, circle, glow]}
+        contentFit="cover"
+        transition={120}
+        accessible={false}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
+      />
+    );
   }
 
   const initial = name.trim().charAt(0).toUpperCase() || '?';
   return (
-    <LinearGradient colors={gradient.colors} start={GRADIENT_START} end={GRADIENT_END} style={[styles.placeholder, circle, glow]}>
-      <Text style={[styles.initial, { fontSize: Math.round(size * 0.38) }]} maxFontSizeMultiplier={1}>
+    <LinearGradient
+      colors={gradient.colors}
+      start={GRADIENT_START}
+      end={GRADIENT_END}
+      style={[styles.placeholder, circle, glow]}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants">
+      {/* Sized with the circle, which doesn't grow with the text */}
+      <Text style={[styles.initial, { fontSize: Math.round(size * 0.38) }]} allowFontScaling={false}>
         {initial}
       </Text>
     </LinearGradient>

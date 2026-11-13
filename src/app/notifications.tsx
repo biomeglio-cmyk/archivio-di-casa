@@ -5,6 +5,7 @@ import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 're
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { useI18n } from '@/i18n';
 import { useFormat } from '@/i18n/use-format';
 import { Text } from '@/components/text';
@@ -15,25 +16,32 @@ import { isUnread, markAllRead, markRead, useNotificationFeed, type FeedItem } f
 import { categoryShadowRgb } from '@/utils/colors';
 import { useThemedStyles } from '@/hooks/use-theme';
 
-const UNREAD_DOT = '#4A5CF0';
+const UNREAD_DOT = '#4A5CF0'; // 4.8:1 on pale lilac, 3:1 on the dark one
 const BELL_FROM_RIGHT = 100; // center of the bell in Home: margin 22 + logo 44 + gap 12 + half bell 22
 
 // "Notifiche" (docs/design/Notifiche.dc.html): a panel over Home, opened by the bell, with a little
 // arrow pointing at it. "Segna come lette", then OGGI and QUESTA SETTIMANA: unread ones on pale lilac
 // with a blue dot, read ones on white; the time (today) or the day. "Impostazioni notifiche" at the end.
-// Tap outside to close.
+// Tap outside to close. VoiceOver: the whole screen is the modal (the dimmed backdrop is its "Chiudi"
+// button), and the escape gesture (or the magic tap) closes it too.
 export default function NotificationsPanel() {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const { items, read, now } = useNotificationFeed();
+  const close = () => router.back();
 
   const startOfToday = new Date(now);
   startOfToday.setHours(0, 0, 0, 0);
   const today = items.filter((item) => item.at >= startOfToday.getTime());
   const earlier = items.filter((item) => item.at < startOfToday.getTime());
   const top = insets.top + 8 + 44 + 18; // under the bell
+
+  function readAll() {
+    markAllRead();
+    announce(t('a11y.notificationsPanel.allRead'));
+  }
 
   function open(item: FeedItem) {
     markRead(item.id);
@@ -42,15 +50,26 @@ export default function NotificationsPanel() {
   }
 
   return (
-    <Animated.View entering={FadeIn.duration(150)} style={styles.dim}>
-      <Pressable style={StyleSheet.absoluteFill} onPress={() => router.back()} accessibilityRole="button" accessibilityLabel={t('notificationsPanel.close')} />
-      <View style={[styles.panel, { top, maxHeight: height - top - insets.bottom - 24 }]} accessibilityViewIsModal>
+    <Animated.View
+      entering={FadeIn.duration(150)}
+      style={styles.dim}
+      accessibilityViewIsModal
+      onAccessibilityEscape={close}
+      onMagicTap={close}>
+      {/* The dimmed backdrop: a tap outside closes; for VoiceOver the first element, "Chiudi le notifiche" */}
+      <Pressable
+        style={StyleSheet.absoluteFill}
+        onPress={close}
+        accessibilityRole="button"
+        accessibilityLabel={t('notificationsPanel.close')}
+      />
+      <View style={[styles.panel, { top, maxHeight: height - top - insets.bottom - 24 }]}>
         <View style={styles.arrow} />
         <View style={styles.head}>
           <Text style={styles.title} accessibilityRole="header">
             {t('notificationsPanel.title')}
           </Text>
-          <Pressable onPress={markAllRead} accessibilityRole="button" hitSlop={14}>
+          <Pressable onPress={readAll} accessibilityRole="button" hitSlop={14}>
             <Text style={styles.markAll}>{t('notificationsPanel.markAllRead')}</Text>
           </Pressable>
         </View>
@@ -85,9 +104,13 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const fmt = useFormat();
+  const { fontScale } = useWindowDimensions();
+  const large = fontScale > 1.3;
   return (
     <>
-      <Text style={styles.section}>{title}</Text>
+      <Text style={styles.section} accessibilityRole="header">
+        {title}
+      </Text>
       <View style={styles.items}>
         {items.map((item) => {
           const unread = isUnread(item, read);
@@ -95,16 +118,17 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
           const when = withTime
             ? `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`
             : fmt.weekdayName(date.getDay(), 'short');
+          // VoiceOver: the whole weekday ("lunedì", not "lun")
+          const spokenWhen = withTime ? when : fmt.weekdayName(date.getDay(), 'long');
           return (
             <Pressable
               key={item.id}
               onPress={() => onOpen(item)}
               accessibilityRole="button"
-              accessibilityLabel={
-                unread
-                  ? t('notificationsPanel.unreadItem', { title: item.title, body: item.body })
-                  : `${item.title}, ${item.body}`
-              }
+              accessibilityLabel={[
+                unread ? t('notificationsPanel.unreadItem', { title: item.title, body: item.body }) : `${item.title}, ${item.body}`,
+                spokenWhen,
+              ].join(', ')}
               style={({ pressed }) => [styles.item, unread && styles.itemUnread, pressed && styles.pressed]}>
               <LinearGradient
                 colors={[item.colors.top, item.colors.bottom]}
@@ -114,8 +138,8 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
                 <SymbolView name={item.symbol} tintColor={item.colors.text} size={19} />
               </LinearGradient>
               <View style={styles.texts}>
-                <View style={styles.line}>
-                  <Text style={styles.itemTitle} numberOfLines={1}>
+                <View style={[styles.line, large && styles.lineWrap]}>
+                  <Text style={styles.itemTitle} numberOfLines={large ? undefined : 1}>
                     {item.title}
                   </Text>
                   <Text style={styles.when}>{when}</Text>
@@ -163,6 +187,8 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
+    flexWrap: 'wrap', // larger text: "Segna come lette" goes under the title
+    rowGap: 8,
     paddingHorizontal: 8,
   },
   title: {
@@ -171,7 +197,7 @@ const makeStyles = (c: Palette) =>
     color: c.text,
   },
   markAll: {
-    fontSize: 10,
+    fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
     color: c.accent,
@@ -229,6 +255,9 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'space-between',
     gap: 8,
   },
+  lineWrap: {
+    flexWrap: 'wrap', // larger text: the time goes under a long title
+  },
   itemTitle: {
     flexShrink: 1,
     fontSize: 14,
@@ -257,13 +286,16 @@ const makeStyles = (c: Palette) =>
   },
   settings: {
     marginTop: 10,
-    height: 44,
+    minHeight: 44,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
     borderRadius: 22,
     backgroundColor: c.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   settingsText: {
+    textAlign: 'center',
     fontSize: 14,
     fontFamily: FONTS.semiBold,
     color: c.indigo,

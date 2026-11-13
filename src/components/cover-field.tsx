@@ -36,6 +36,7 @@ export function CoverField({ mode, onModeChange, color, onColorChange, categoryC
   return (
     <FormField label={t('coverField.label')}>
       <Segmented
+        accessibilityLabel={t('coverField.label')}
         values={[t('coverField.photo'), t('coverField.color')]}
         selectedIndex={MODES.indexOf(mode)}
         onChange={(index) => onModeChange(MODES[index])}

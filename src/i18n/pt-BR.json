@@ -626,7 +626,6 @@
     "dueIn_other": "Vence em {{count}} dias"
   },
   "deadlineListRow": {
-    "hint": "Toque e segure para editar ou remover o vencimento",
     "statusDue": "a pagar",
     "statusPaid": "pago"
   },
@@ -1609,5 +1608,113 @@
     "rateMessage": "Você poderá deixar uma avaliação quando o Sottomano estiver na App Store.",
     "lockUnavailableTitle": "Bloqueio indisponível",
     "lockUnavailableMessage": "Para bloquear o Sottomano, você precisa de um código no iPhone. Defina um em Ajustes › Face ID e Código e tente de novo."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Reordenação ativada: em cada item, escolha uma ação para movê-lo.",
+      "reorderOff": "Reordenação concluída",
+      "selecting": "Seleção ativada: toque nos documentos para enviar em um único PDF.",
+      "selectionOff": "Seleção cancelada"
+    },
+    "notificationsPanel": {
+      "allRead": "Todas as notificações marcadas como lidas"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} vencimento",
+      "dayCount_other": "{{date}}: {{count}} vencimentos"
+    },
+    "favorites": {
+      "removed": "{{title}} removido dos favoritos"
+    },
+    "folderRow": {
+      "disabledHint": "Só documentos com fotos entram no PDF."
+    },
+    "categoryForm": {
+      "iconNumber": "Ícone {{number}}",
+      "selected": "Selecionado",
+      "icons": {
+        "folder": "Pasta",
+        "tag": "Etiqueta",
+        "star": "Estrela",
+        "gift": "Presente",
+        "tools": "Ferramentas",
+        "cart": "Carrinho",
+        "stethoscope": "Consultas médicas",
+        "fitness": "Academia",
+        "music": "Música",
+        "book": "Livro",
+        "idCard": "Documento de identidade",
+        "card": "Cartão",
+        "lightbulb": "Lâmpada",
+        "shield": "Escudo",
+        "receipt": "Recibo",
+        "firstAid": "Primeiros socorros",
+        "cleaning": "Limpeza",
+        "backpack": "Mochila"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, hoje"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Semana de {{date}}"
+    },
+    "reorder": {
+      "moved": "Movido para a posição {{position}} de {{count}}"
+    },
+    "colorWheel": {
+      "value": "Matiz {{hue}}°, intensidade {{intensity}}%",
+      "moreIntense": "Mais intenso",
+      "lessIntense": "Menos intenso"
+    },
+    "deadlineListRow": {
+      "actions": "Edite ou remova o vencimento"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} vencendo",
+      "alertCount_other": "{{count}} vencendo"
+    },
+    "formField": {
+      "required": "obrigatório"
+    },
+    "walletCard": {
+      "number": "Número {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zoom {{percent}}%"
+    },
+    "filesEditor": {
+      "added_one": "{{count}} página adicionada",
+      "added_other": "{{count}} páginas adicionadas",
+      "removed": "Página removida: {{name}}",
+      "movedTo": "Movida para a posição {{position}} de {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Página {{number}} adicionada"
+    },
+    "passwordForm": {
+      "shown": "Senha visível",
+      "generated": "Senha gerada: {{strength}}",
+      "imageRemoved": "Imagem removida"
+    },
+    "onboarding": {
+      "pageChanged": "Página {{page}} de {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Arquivos prontos: {{meta}}"
+    },
+    "trash": {
+      "restored": "Restaurado: {{title}}",
+      "deleted": "Apagado permanentemente: {{title}}"
+    },
+    "segmented": {
+      "format": "Formato",
+      "calendarView": "Visualização",
+      "layout": "Exibição",
+      "codeType": "Tipo de código",
+      "show": "Mostrar",
+      "side": "Lado",
+      "status": "Status"
+    }
   }
 }

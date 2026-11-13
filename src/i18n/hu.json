@@ -626,7 +626,6 @@
     "dueIn_other": "{{count}} nap múlva"
   },
   "deadlineListRow": {
-    "hint": "Tartsd lenyomva a határidő szerkesztéséhez vagy eltávolításához",
     "statusDue": "fizetendő",
     "statusPaid": "fizetve"
   },
@@ -1609,5 +1608,113 @@
     "rateMessage": "Értékelést akkor hagyhatsz, amikor a Sottomano megjelenik az App Store-ban.",
     "lockUnavailableTitle": "A zár nem érhető el",
     "lockUnavailableMessage": "A Sottomano zárolásához jelkód kell az iPhone-odon. Állíts be egyet a Beállítások › Face ID és jelkód menüben, majd próbáld újra."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Átrendezés bekapcsolva: minden elemnél válassz egy műveletet az áthelyezéshez.",
+      "reorderOff": "Átrendezés kész",
+      "selecting": "Kijelölés bekapcsolva: koppints az egy PDF-ben küldendő dokumentumokra.",
+      "selectionOff": "Kijelölés megszakítva"
+    },
+    "notificationsPanel": {
+      "allRead": "Minden értesítés olvasottnak jelölve"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} határidő",
+      "dayCount_other": "{{date}}: {{count}} határidő"
+    },
+    "favorites": {
+      "removed": "{{title}} eltávolítva a kedvencek közül"
+    },
+    "folderRow": {
+      "disabledHint": "A PDF-be csak a fényképes dokumentumok kerülnek."
+    },
+    "categoryForm": {
+      "iconNumber": "{{number}}. ikon",
+      "selected": "Kijelölve",
+      "icons": {
+        "folder": "Mappa",
+        "tag": "Címke",
+        "star": "Csillag",
+        "gift": "Ajándék",
+        "tools": "Szerszámok",
+        "cart": "Bevásárlókocsi",
+        "stethoscope": "Orvosi vizitek",
+        "fitness": "Edzőterem",
+        "music": "Zene",
+        "book": "Könyv",
+        "idCard": "Személyi igazolvány",
+        "card": "Kártya",
+        "lightbulb": "Villanykörte",
+        "shield": "Pajzs",
+        "receipt": "Nyugta",
+        "firstAid": "Elsősegély",
+        "cleaning": "Takarítás",
+        "backpack": "Hátizsák"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, ma"
+    },
+    "deadlineCalendar": {
+      "weekOf": "{{date}} hete"
+    },
+    "reorder": {
+      "moved": "Áthelyezve: {{position}}. hely / {{count}}"
+    },
+    "colorWheel": {
+      "value": "Árnyalat {{hue}}°, intenzitás {{intensity}}%",
+      "moreIntense": "Intenzívebb",
+      "lessIntense": "Kevésbé intenzív"
+    },
+    "deadlineListRow": {
+      "actions": "Határidő szerkesztése vagy eltávolítása"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} lejáró",
+      "alertCount_other": "{{count}} lejáró"
+    },
+    "formField": {
+      "required": "kötelező"
+    },
+    "walletCard": {
+      "number": "Szám: {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Nagyítás {{percent}}%"
+    },
+    "filesEditor": {
+      "added_one": "{{count}} oldal hozzáadva",
+      "added_other": "{{count}} oldal hozzáadva",
+      "removed": "Oldal eltávolítva: {{name}}",
+      "movedTo": "Áthelyezve: {{position}}. hely / {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "{{number}}. oldal hozzáadva"
+    },
+    "passwordForm": {
+      "shown": "Jelszó megjelenítve",
+      "generated": "Jelszó létrehozva: {{strength}}",
+      "imageRemoved": "Kép eltávolítva"
+    },
+    "onboarding": {
+      "pageChanged": "{{page}}. oldal / {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "A fájlok készen állnak: {{meta}}"
+    },
+    "trash": {
+      "restored": "Visszaállítva: {{title}}",
+      "deleted": "Véglegesen törölve: {{title}}"
+    },
+    "segmented": {
+      "format": "Formátum",
+      "calendarView": "Nézet",
+      "layout": "Elrendezés",
+      "codeType": "Kód típusa",
+      "show": "Megjelenítés",
+      "side": "Oldal",
+      "status": "Állapot"
+    }
   }
 }

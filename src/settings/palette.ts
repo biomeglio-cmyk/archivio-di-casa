@@ -29,7 +29,7 @@ export function getPaletteId(): PaletteId {
 }
 
 export function getPalette(): Palette {
-  return PALETTES.find((p) => p.id === getPaletteId()) ?? PALETTES[0];
+  return PALETTES.find((p) => p.id === getPaletteId()) ?? PALETTES.find((p) => p.id === DEFAULT_PALETTE) ?? PALETTES[0];
 }
 
 export function setPaletteId(id: PaletteId): void {
@@ -51,15 +51,16 @@ export function usePaletteId(): PaletteId {
   return useSyncExternalStore(subscribe, getPaletteId);
 }
 
-// Set once the app has moved this phone to the "Sottomano" palette (redesign, November 2026)
-const ADOPTED_KEY = 'app.palette.sottomanoAdopted';
+// Set once the app has moved this phone to the default "Pastello" palette (accessibility pass,
+// November 2026). It replaces the earlier one-time move to "Sottomano" (app.palette.sottomanoAdopted).
+const ADOPTED_KEY = 'app.palette.pastelAdopted';
 
-// Runs at every start (initDatabase), does its work only once per install. Phones that had
-// picked a palette in "Aspetto" before the redesign (saved "pastel"…) would keep the old look,
-// so they move to "Sottomano" once; afterwards the choice in "Aspetto" is respected again.
+// Runs at every start (initDatabase), does its work only once per install: a phone on "Sottomano"
+// (the previous default, chosen or not) moves to "Pastello"; any other palette picked in "Aspetto"
+// stays. Afterwards the choice in "Aspetto" is always respected, "Sottomano" included.
 // Built-in categories whose own saved color is just their original pastel default (not a real
 // choice) follow the palette again too. Never throws: it must not block the app.
-export async function adoptSottomanoPaletteOnce(db: SQLiteDatabase): Promise<void> {
+export async function adoptDefaultPaletteOnce(db: SQLiteDatabase): Promise<void> {
   try {
     if (Storage.getItemSync(ADOPTED_KEY) === '1') return;
     for (const builtin of BUILTIN_DEFAULTS) {
@@ -73,7 +74,8 @@ export async function adoptSottomanoPaletteOnce(db: SQLiteDatabase): Promise<voi
         builtin.colors.text,
       );
     }
-    setPaletteId('sottomano');
+    const saved = Storage.getItemSync(KEY);
+    if (saved === null || saved === 'sottomano') setPaletteId(DEFAULT_PALETTE);
     Storage.setItemSync(ADOPTED_KEY, '1');
   } catch (error) {
     console.warn('Palette update failed', error);

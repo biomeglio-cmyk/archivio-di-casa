@@ -626,7 +626,6 @@
     "dueIn_other": "Forfaller om {{count}} dager"
   },
   "deadlineListRow": {
-    "hint": "Hold inne for å endre eller fjerne fristen",
     "statusDue": "å betale",
     "statusPaid": "betalt"
   },
@@ -1609,5 +1608,113 @@
     "rateMessage": "Du kan gi en vurdering når Sottomano er i App Store.",
     "lockUnavailableTitle": "Låsen er ikke tilgjengelig",
     "lockUnavailableMessage": "For å låse Sottomano trenger du en kode på iPhonen. Angi en i Innstillinger › Face ID og kode, og prøv igjen."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Endre rekkefølge på: velg en handling på hvert element for å flytte det.",
+      "reorderOff": "Rekkefølgen er ferdig",
+      "selecting": "Velger: trykk på dokumentene som skal sendes som én PDF.",
+      "selectionOff": "Valget er avbrutt"
+    },
+    "notificationsPanel": {
+      "allRead": "Alle varsler merket som lest"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} frist",
+      "dayCount_other": "{{date}}: {{count}} frister"
+    },
+    "favorites": {
+      "removed": "{{title}} fjernet fra favoritter"
+    },
+    "folderRow": {
+      "disabledHint": "Bare dokumenter med bilder kommer med i PDF-en."
+    },
+    "categoryForm": {
+      "iconNumber": "Symbol {{number}}",
+      "selected": "Valgt",
+      "icons": {
+        "folder": "Mappe",
+        "tag": "Merkelapp",
+        "star": "Stjerne",
+        "gift": "Gave",
+        "tools": "Verktøy",
+        "cart": "Handlevogn",
+        "stethoscope": "Legebesøk",
+        "fitness": "Trening",
+        "music": "Musikk",
+        "book": "Bok",
+        "idCard": "ID-kort",
+        "card": "Kort",
+        "lightbulb": "Lyspære",
+        "shield": "Skjold",
+        "receipt": "Kvittering",
+        "firstAid": "Førstehjelp",
+        "cleaning": "Rengjøring",
+        "backpack": "Ryggsekk"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, i dag"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Uken fra {{date}}"
+    },
+    "reorder": {
+      "moved": "Flyttet til posisjon {{position}} av {{count}}"
+    },
+    "colorWheel": {
+      "value": "Fargetone {{hue}}°, intensitet {{intensity}} %",
+      "moreIntense": "Mer intens",
+      "lessIntense": "Mindre intens"
+    },
+    "deadlineListRow": {
+      "actions": "Rediger eller fjern fristen"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} utløper snart",
+      "alertCount_other": "{{count}} utløper snart"
+    },
+    "formField": {
+      "required": "obligatorisk"
+    },
+    "walletCard": {
+      "number": "Nummer {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zoom {{percent}} %"
+    },
+    "filesEditor": {
+      "added_one": "{{count}} side lagt til",
+      "added_other": "{{count}} sider lagt til",
+      "removed": "Side fjernet: {{name}}",
+      "movedTo": "Flyttet til posisjon {{position}} av {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Side {{number}} lagt til"
+    },
+    "passwordForm": {
+      "shown": "Passordet vises",
+      "generated": "Passord laget: {{strength}}",
+      "imageRemoved": "Bilde fjernet"
+    },
+    "onboarding": {
+      "pageChanged": "Side {{page}} av {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Filene er klare: {{meta}}"
+    },
+    "trash": {
+      "restored": "Gjenopprettet: {{title}}",
+      "deleted": "Slettet permanent: {{title}}"
+    },
+    "segmented": {
+      "format": "Format",
+      "calendarView": "Visning",
+      "layout": "Oppsett",
+      "codeType": "Kodetype",
+      "show": "Vis",
+      "side": "Side",
+      "status": "Status"
+    }
   }
 }

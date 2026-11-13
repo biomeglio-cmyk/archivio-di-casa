@@ -5,7 +5,7 @@ import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Fragment, type ReactNode } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { confirmDeleteDocument } from '@/actions/delete-actions';
@@ -52,6 +52,7 @@ import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 import { useFormat } from '@/i18n/use-format';
 
+const PAPER_TEXT = '#6A6D80'; // grey text on the white page of the preview (5:1)
 const PIN_BACKGROUND = (p: Palette) => PIN_TINT(p);
 const PIN_COLOR = (p: Palette) => p.heart;
 
@@ -140,6 +141,8 @@ function DocumentScreen({
   const shadow = tintedShadow(categoryShadowRgb(category.colors));
   const hasFiles = files.length > 0;
   const calendar = getCalendarSettings();
+  const { fontScale } = useWindowDimensions();
+  const stacked = fontScale > 1.3; // larger text: the value goes under its label
 
   const month = parseISODate(folderDate(document));
   const subtitle = `${fmt.monthTitle(month.getFullYear(), month.getMonth())} · ${filesLabel(files, t)}`;
@@ -156,9 +159,11 @@ function DocumentScreen({
     setReminderDays(db, document.id, on ? null : -1);
   }
 
-  const details: { label: string; value: ReactNode }[] = [];
+  // spoken: the value as VoiceOver reads it; the row is one element ("Importo, 84,30 €")
+  const details: { label: string; value: ReactNode; spoken: string }[] = [];
   if (document.amountCents !== null) {
-    details.push({ label: t('documentDetail.amount'), value: <Text style={styles.amount}>{fmt.euro(document.amountCents)}</Text> });
+    const amount = fmt.euro(document.amountCents);
+    details.push({ label: t('documentDetail.amount'), value: <Text style={styles.amount}>{amount}</Text>, spoken: amount });
   }
   if (document.expiresAt && days !== null) {
     const near = days <= 7;
@@ -173,20 +178,29 @@ function DocumentScreen({
     details.push({
       label: t('documentDetail.deadline'),
       value: (
-        <Text style={[styles.value, near && styles.valueAlert]}>
-          {dayAndMonth(document.expiresAt)} · {distance}
-        </Text>
+        // Near or past: red, and the exclamation mark for who can't tell the red
+        <View style={styles.deadlineValue}>
+          {near && <SymbolView name="exclamationmark.circle.fill" tintColor={theme.error} size={15} />}
+          <Text style={[styles.value, near && styles.valueAlert]}>
+            {dayAndMonth(document.expiresAt)} · {distance}
+          </Text>
+        </View>
       ),
+      spoken: `${dayAndMonth(document.expiresAt)}, ${distance}`,
     });
   }
+  const folder = document.docType ? `${category.name} › ${document.docType}` : category.name;
   details.push({
     label: t('documentDetail.folder'),
-    value: (
-      <Text style={styles.value}>{document.docType ? `${category.name} › ${document.docType}` : category.name}</Text>
-    ),
+    value: <Text style={styles.value}>{folder}</Text>,
+    spoken: document.docType ? `${category.name}, ${document.docType}` : category.name,
   });
   if (document.paymentStatus) {
-    details.push({ label: t('documentDetail.status'), value: <StatusBadge status={document.paymentStatus} /> });
+    details.push({
+      label: t('documentDetail.status'),
+      value: <StatusBadge status={document.paymentStatus} />,
+      spoken: document.paymentStatus === 'due' ? t('statusBadge.due') : t('statusBadge.paid'),
+    });
   }
   if (person) {
     details.push({
@@ -197,6 +211,7 @@ function DocumentScreen({
           <Text style={styles.value}>{person.name}</Text>
         </View>
       ),
+      spoken: person.name,
     });
   }
   if (document.number)
@@ -207,11 +222,25 @@ function DocumentScreen({
           {document.number}
         </Text>
       ),
+      spoken: document.number,
     });
-  if (document.notes) details.push({ label: t('documentDetail.notes'), value: <Text style={styles.value}>{document.notes}</Text> });
-  if (calendar.enabled && document.calendarEventId && calendar.calendarTitle) {
-    details.push({ label: t('documentDetail.inCalendar'), value: <Text style={styles.value}>{calendar.calendarTitle}</Text> });
+  if (document.notes) {
+    details.push({ label: t('documentDetail.notes'), value: <Text style={styles.value}>{document.notes}</Text>, spoken: document.notes });
   }
+  if (calendar.enabled && document.calendarEventId && calendar.calendarTitle) {
+    details.push({
+      label: t('documentDetail.inCalendar'),
+      value: <Text style={styles.value}>{calendar.calendarTitle}</Text>,
+      spoken: calendar.calendarTitle,
+    });
+  }
+  const reminderText = !document.expiresAt
+    ? t('documentDetail.reminderNeedsDeadline')
+    : reminderOn
+      ? t('documentDetail.reminderWhen', {
+          when: reminderLabel(reminderPickerValue(document.reminderDays), defaultReminderDays),
+        })
+      : t('documentDetail.noReminder');
 
   return (
     <ScrollView
@@ -323,26 +352,33 @@ function DocumentScreen({
       </Text>
       <WhiteCard style={styles.details}>
         {details.map((detail, index) => (
-          <View key={detail.label} style={[styles.detailRow, index < details.length - 1 && styles.detailBorder]}>
+          <View
+            key={detail.label}
+            accessible
+            accessibilityLabel={`${detail.label}, ${detail.spoken}`}
+            style={[styles.detailRow, stacked && styles.detailRowStacked, index < details.length - 1 && styles.detailBorder]}>
             <Text style={styles.detailLabel}>{detail.label}</Text>
-            <View style={styles.detailValue}>{detail.value}</View>
+            <View style={[styles.detailValue, stacked && styles.detailValueStacked]}>{detail.value}</View>
           </View>
         ))}
       </WhiteCard>
 
-      <WhiteCard style={styles.reminder}>
+      {/* One element for VoiceOver: "Ricordamelo, interruttore, attivo" with the explanation as hint */}
+      <WhiteCard
+        style={styles.reminder}
+        accessible
+        accessibilityRole="switch"
+        accessibilityLabel={t('documentDetail.remindMe')}
+        accessibilityHint={reminderText}
+        accessibilityState={{ checked: reminderOn }}
+        accessibilityActions={[{ name: 'activate' }]}
+        onAccessibilityAction={(event) => {
+          if (event.nativeEvent.actionName === 'activate') toggleReminder(!reminderOn);
+        }}>
         <IconSquare symbol="bell" colors={category.colors} size={40} shadow />
         <View style={styles.reminderTexts}>
           <Text style={styles.reminderTitle}>{t('documentDetail.remindMe')}</Text>
-          <Text style={styles.reminderText}>
-            {!document.expiresAt
-              ? t('documentDetail.reminderNeedsDeadline')
-              : reminderOn
-                ? t('documentDetail.reminderWhen', {
-                    when: reminderLabel(reminderPickerValue(document.reminderDays), defaultReminderDays),
-                  })
-                : t('documentDetail.noReminder')}
-          </Text>
+          <Text style={styles.reminderText}>{reminderText}</Text>
         </View>
         <Switch
           value={reminderOn}
@@ -432,6 +468,8 @@ function Preview({
   const pdf = files.some((f) => f.kind === 'pdf');
   const first = images[0];
   const count = pdf ? null : images.length;
+  // "Visualizza, 3 pagine": what the box shows, said in one element
+  const contents = pdf ? 'PDF' : t('documentDetail.photoPages', { count: images.length });
 
   return (
     <Pressable
@@ -439,11 +477,16 @@ function Preview({
       onPress={onPress}
       disabled={!onPress}
       accessibilityRole="button"
-      accessibilityLabel={onPress ? t('documentDetail.view') : t('documentDetail.noPages')}
+      accessibilityLabel={onPress ? `${t('documentDetail.view')}, ${contents}` : t('documentDetail.noPages')}
       style={[styles.preview, { backgroundColor: tint }, pressed && styles.pressed]}>
       <View style={styles.page}>
         {first ? (
-          <Image source={{ uri: resolveDocumentFile(first.path).uri }} style={styles.pageImage} contentFit="cover" />
+          <Image
+            source={{ uri: resolveDocumentFile(first.path).uri }}
+            style={styles.pageImage}
+            contentFit="cover"
+            accessibilityIgnoresInvertColors
+          />
         ) : (
           <View style={styles.pageEmpty}>
             <SymbolView
@@ -497,7 +540,10 @@ function ActionRow({
       accessibilityRole="button"
       accessibilityState={selected === undefined ? undefined : { selected }}
       style={[styles.actionRow, pressed && styles.actionPressed]}>
-      <View style={[styles.actionIcon, { backgroundColor: tint }]}>
+      <View
+        style={[styles.actionIcon, { backgroundColor: tint }]}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants">
         <SymbolView name={symbol} tintColor={color} size={20} />
       </View>
       <Text style={[styles.actionLabel, destructive && { color: theme.error }]}>{label}</Text>
@@ -524,7 +570,7 @@ const makeStyles = (c: Palette) =>
   },
   preview: {
     marginTop: 18,
-    height: 220,
+    minHeight: 220,
     borderRadius: 24,
     borderCurve: 'continuous',
     alignItems: 'center',
@@ -554,7 +600,7 @@ const makeStyles = (c: Palette) =>
   pdfLabel: {
     fontSize: 13,
     fontFamily: FONTS.semiBold,
-    color: c.textSecondary,
+    color: PAPER_TEXT, // the page is always white paper, also in the dark theme
   },
   pageCount: {
     position: 'absolute',
@@ -636,6 +682,20 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'space-between',
     gap: 16,
     paddingVertical: 10,
+  },
+  detailRowStacked: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 4,
+  },
+  detailValueStacked: {
+    alignItems: 'flex-start',
+  },
+  deadlineValue: {
+    flexShrink: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 5,
   },
   detailBorder: {
     borderBottomWidth: 1,

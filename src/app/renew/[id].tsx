@@ -6,7 +6,6 @@ import { Alert, ScrollView, StyleSheet, View } from 'react-native';
 
 import { FilesEditor, filesToSave, type EditableFile } from '@/components/files-editor';
 import { Group, Row } from '@/components/grouped-list';
-import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
 import { type Palette, Spacing } from '@/constants/theme';
 import { getDocumentDetail, renewDocument } from '@/db/documents';
@@ -74,7 +73,9 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
         contentInsetAdjustmentBehavior="automatic"
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.content}>
-        <ThemedText style={styles.intro}>{document.title}</ThemedText>
+        <ThemedText style={styles.intro} accessibilityRole="header">
+          {document.title}
+        </ThemedText>
 
         <Group
           title={t('renew.deadline')}
@@ -100,9 +101,8 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
               ? t('renew.withScanFooter')
               : t('renew.withoutScanFooter')
           }>
-          <Row label={t('renew.addNewScan')} symbol="doc.viewfinder" first>
-            <Switch value={withScan} onValueChange={setWithScan} accessibilityLabel={t('renew.addNewScan')} />
-          </Row>
+          {/* One VoiceOver switch for the whole row */}
+          <Row label={t('renew.addNewScan')} symbol="doc.viewfinder" first toggle={{ value: withScan, onValueChange: setWithScan }} />
         </Group>
 
         {withScan && <FilesEditor files={pages} category={document.category} onChange={setPages} autoAdd />}

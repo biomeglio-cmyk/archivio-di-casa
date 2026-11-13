@@ -1,6 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, type StyleProp, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
 import { NoBreakText } from '@/components/tile-title';
@@ -9,6 +9,7 @@ import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { readableGradient } from '@/utils/colors';
 
 type Props = {
   label: string;
@@ -17,8 +18,10 @@ type Props = {
   onPress: () => void;
   gradient?: readonly [string, string]; // a section gradient; the main gradient by default
   shadow?: string; // its boxShadow; the main gradient shadow by default
-  singleLine?: boolean; // one line, shrinking a little instead of wrapping (rows of buttons)
+  singleLine?: boolean; // one line, shrinking a little instead of wrapping (rows of buttons); wraps with larger text
   style?: StyleProp<ViewStyle>;
+  accessibilityLabel?: string; // when the visible label alone is not enough
+  accessibilityHint?: string;
 };
 
 const HEIGHT = 56;
@@ -33,13 +36,19 @@ export function PrimaryButton({
   shadow = BRAND_SHADOW,
   singleLine = false,
   style,
+  accessibilityLabel,
+  accessibilityHint,
 }: Props) {
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
+  const { fontScale } = useWindowDimensions();
+  const oneLine = singleLine && fontScale <= 1.3; // larger text: the label wraps, never cut or tiny
   return (
     <Pressable
       {...handlers}
       accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={accessibilityHint}
       accessibilityState={{ disabled }}
       disabled={disabled}
       onPress={onPress}
@@ -50,10 +59,10 @@ export function PrimaryButton({
         pressed && styles.pressed,
         disabled && styles.disabled,
       ]}>
-      <LinearGradient colors={gradient} start={GRADIENT_START} end={GRADIENT_END} style={styles.fill}>
+      <LinearGradient colors={readableGradient(gradient)} start={GRADIENT_START} end={GRADIENT_END} style={styles.fill}>
         {symbol && <SymbolView name={symbol} tintColor="#FFFFFF" size={18} />}
-        {singleLine ? (
-          <Text style={styles.label} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8} maxFontSizeMultiplier={1.2}>
+        {oneLine ? (
+          <Text style={styles.label} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8} maxFontSizeMultiplier={1.3}>
             {label}
           </Text>
         ) : (

@@ -15,11 +15,27 @@ import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import type { TileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
-import { isLightColor } from '@/utils/colors';
+import { t } from '@/i18n';
+import { daysUntil } from '@/utils/deadlines';
+import { textOn } from '@/utils/colors';
 import { type Palette } from '@/constants/theme';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const UNSELECTED_TINT = '#8E8E93';
+
+// What VoiceOver says for a tile, in reading order: "Bolletta luce, Scade tra 3 giorni, Da pagare"
+// (the deadline chip and the status are only drawn, or not drawn at all, on the tile)
+export function documentTileLabel(document: DocumentListItem): string {
+  const parts: string[] = [document.title];
+  if (document.expiresAt) {
+    const days = daysUntil(document.expiresAt);
+    parts.push(
+      days < 0 ? t('deadlineChip.overdue') : days === 0 ? t('deadlineChip.dueToday') : t('deadlineChip.dueIn', { count: days }),
+    );
+  }
+  if (document.paymentStatus) parts.push(document.paymentStatus === 'due' ? t('statusBadge.due') : t('statusBadge.paid'));
+  return parts.join(', ');
+}
 
 type FaceProps = {
   document: DocumentListItem; // includes its category and its first photo
@@ -45,7 +61,7 @@ export function DocumentTileFace({ document, selected }: FaceProps) {
     ? null
     : (document.coverColor ?? (category.isCards ? (document.cardColor ?? DEFAULT_CARD_COLOR) : null));
   // White on a picked color, dark on a very light one ("Il tuo colore" can be pale)
-  const textColor = solid ? (isLightColor(solid) ? '#1C1E2E' : '#FFFFFF') : category.colors.text;
+  const textColor = solid ? textOn(solid) : category.colors.text;
 
   const content: ReactNode = (
     <>
@@ -55,10 +71,11 @@ export function DocumentTileFace({ document, selected }: FaceProps) {
           style={styles.thumbnail}
           contentFit="cover"
           transition={120}
+          accessibilityIgnoresInvertColors
         />
       ) : (
         <View style={styles.iconArea}>
-          <SymbolView name={category.symbol} tintColor={textColor} size={28} />
+          <SymbolView name={category.symbol} tintColor={textColor} size={28} accessibilityElementsHidden />
         </View>
       )}
 
@@ -110,7 +127,7 @@ export function DocumentTile({ document, size, href, selection }: Props) {
       disabled={selection?.disabled}
       accessibilityRole={selection ? 'checkbox' : 'button'}
       accessibilityState={selection ? { checked: selection.selected, disabled: selection.disabled } : undefined}
-      accessibilityLabel={document.title}
+      accessibilityLabel={documentTileLabel(document)}
       style={[size, pressed && styles.pressed, selection?.disabled && styles.disabled]}>
       <DocumentTileFace document={document} selected={selection?.selected} />
     </Pressable>
@@ -163,12 +180,12 @@ const makeStyles = (c: Palette) =>
 function PasswordTileFace({ document, info, selected }: FaceProps & { info: NonNullable<DocumentListItem['password']> }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
-  const [top, bottom] = previewGradient(info.preview);
+  const [top, bottom] = previewGradient(info.preview); // already readable under white (WCAG AA)
   const image = info.preview.imagePath ? resolveDocumentFile(info.preview.imagePath).uri : null;
   const content = (
     <>
       {image ? (
-        <Image source={{ uri: image }} style={styles.thumbnail} contentFit="cover" transition={120} />
+        <Image source={{ uri: image }} style={styles.thumbnail} contentFit="cover" transition={120} accessibilityIgnoresInvertColors />
       ) : (
         <View style={styles.iconArea}>
           <SymbolView name={previewSymbol(info.preview, info.type)} tintColor="#FFFFFF" size={28} />

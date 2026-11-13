@@ -1,7 +1,7 @@
 import { router } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useState, type ReactNode } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { CoverField } from '@/components/cover-field';
@@ -96,6 +96,7 @@ export function DocumentForm({
   const { data: categories } = useDbQuery(listCategories, []);
   const { data: people } = useDbQuery(listPeople, []);
   const { defaultReminderDays } = usePreferences();
+  const { fontScale } = useWindowDimensions();
 
   const [title, setTitle] = useState(initial?.title ?? '');
   const [categoryId, setCategoryId] = useState<number | null>(initial?.categoryId ?? null);
@@ -226,7 +227,7 @@ export function DocumentForm({
       contentContainerStyle={[styles.content, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 36 }]}>
       <View style={styles.header}>
         <RoundIconButton symbol="chevron.left" accessibilityLabel={t('common.back')} onPress={() => router.back()} />
-        <Text style={styles.heading} accessibilityRole="header" numberOfLines={1}>
+        <Text style={styles.heading} accessibilityRole="header" numberOfLines={fontScale > 1.3 ? 3 : 1}>
           {heading}
         </Text>
         <View style={styles.headerSpace} />
@@ -286,7 +287,14 @@ export function DocumentForm({
 
           <SectionTitle>{t('documentForm.deadlineSection')}</SectionTitle>
           <WhiteCard style={styles.card}>
-            <Pressable onPress={() => setHasExpiry(!hasExpiry)} accessible={false} style={styles.switchRow}>
+            {/* One element for VoiceOver: "Aggiungi scadenza, interruttore, attivo" */}
+            <Pressable
+              onPress={() => setHasExpiry(!hasExpiry)}
+              accessibilityRole="switch"
+              accessibilityLabel={t('documentForm.addDeadline')}
+              accessibilityHint={dueText}
+              accessibilityState={{ checked: hasExpiry }}
+              style={styles.switchRow}>
               <IconBox symbol="calendar" tint={theme.lilac} color={theme.indigo} />
               <View style={styles.flex}>
                 <Text style={styles.rowTitle}>{t('documentForm.addDeadline')}</Text>
@@ -300,7 +308,11 @@ export function DocumentForm({
                 <View style={styles.remind}>
                   <IconBox symbol="bell" tint={theme.surface} color={theme.indigo} />
                   <FitLine
-                    start={<Text style={styles.remindLabel}>{t('documentForm.remindMe')}</Text>}
+                    start={
+                      <Text style={styles.remindLabel} accessibilityElementsHidden importantForAccessibility="no">
+                        {t('documentForm.remindMe')}
+                      </Text>
+                    }
                     end={
                       <SelectBox
                         small
@@ -322,7 +334,11 @@ export function DocumentForm({
                 <View style={styles.remind}>
                   <IconBox symbol="arrow.clockwise" tint={theme.surface} color={theme.indigo} />
                   <FitLine
-                    start={<Text style={styles.remindLabel}>{t('documentForm.repeats')}</Text>}
+                    start={
+                      <Text style={styles.remindLabel} accessibilityElementsHidden importantForAccessibility="no">
+                        {t('documentForm.repeats')}
+                      </Text>
+                    }
                     end={
                       <SelectBox
                         small
@@ -348,7 +364,11 @@ export function DocumentForm({
                   <View style={styles.remind}>
                     <IconBox symbol="number" tint={theme.surface} color={theme.indigo} />
                     <FitLine
-                      start={<Text style={styles.remindLabel}>{t('documentForm.every')}</Text>}
+                      start={
+                        <Text style={styles.remindLabel} accessibilityElementsHidden importantForAccessibility="no">
+                          {t('documentForm.every')}
+                        </Text>
+                      }
                       end={
                         <SelectBox
                           small
@@ -385,7 +405,13 @@ export function DocumentForm({
           </WhiteCard>
 
           <WhiteCard style={[styles.card, styles.pinCard]}>
-            <Pressable onPress={() => setPinned(!pinned)} accessible={false} style={styles.switchRow}>
+            <Pressable
+              onPress={() => setPinned(!pinned)}
+              accessibilityRole="switch"
+              accessibilityLabel={t('documentForm.pin')}
+              accessibilityHint={t('documentForm.pinSubtitle')}
+              accessibilityState={{ checked: pinned }}
+              style={styles.switchRow}>
               <IconBox symbol={pinned ? 'heart.fill' : 'heart'} tint={PIN_BACKGROUND(theme)} color={PIN_COLOR(theme)} />
               <View style={styles.flex}>
                 <Text style={styles.rowTitle}>{t('documentForm.pin')}</Text>
@@ -404,7 +430,9 @@ export function DocumentForm({
               iconColor={theme.success}
               label={t('documentForm.amount')}>
               <View style={[styles.select, amountInvalid && styles.selectError]}>
-                <Text style={styles.euro}>€</Text>
+                <Text style={styles.euro} accessibilityElementsHidden importantForAccessibility="no">
+                  €
+                </Text>
                 <TextInput
                   value={amount}
                   onChangeText={setAmount}
@@ -412,12 +440,18 @@ export function DocumentForm({
                   placeholderTextColor={theme.placeholder}
                   keyboardType="decimal-pad"
                   accessibilityLabel={t('documentForm.amountInEuro')}
+                  accessibilityHint={amountInvalid ? t('documentForm.amountHint', { example: centsToInput(8420) }) : undefined}
                   style={styles.amountInput}
                 />
+                {/* Not only the red border: an exclamation mark too */}
+                {amountInvalid && (
+                  <SymbolView name="exclamationmark.circle.fill" tintColor={theme.error} size={18} accessibilityElementsHidden />
+                )}
               </View>
             </FieldRow>
             <View style={styles.statusRow}>
               <Segmented
+                accessibilityLabel={t('a11y.segmented.status')}
                 values={STATUSES.map((s) => t(s.labelKey))}
                 selectedIndex={STATUSES.findIndex((s) => s.value === status)}
                 onChange={(index) => setStatus(STATUSES[index].value)}
@@ -537,16 +571,21 @@ function Separator() {
   return <View style={styles.separator} />;
 }
 
+// Decoration: hidden from VoiceOver (the control next to it has the label)
 function IconBox({ symbol, tint, color }: { symbol: SFSymbol; tint: string; color: string }) {
   const styles = useThemedStyles(makeStyles);
   return (
-    <View style={[styles.iconBox, { backgroundColor: tint }]}>
+    <View
+      style={[styles.iconBox, { backgroundColor: tint }]}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants">
       <SymbolView name={symbol} tintColor={color} size={19} />
     </View>
   );
 }
 
-// "Cartella   [Bollette ⌄]": icon square, a 72pt grey label, then the control
+// "Cartella   [Bollette ⌄]": icon square, a 72pt grey label, then the control (under the label
+// with larger text). The control says the label itself: the grey label is hidden from VoiceOver.
 function FieldRow({
   symbol,
   tint,
@@ -561,10 +600,27 @@ function FieldRow({
   children: ReactNode;
 }) {
   const styles = useThemedStyles(makeStyles);
+  const large = useWindowDimensions().fontScale > 1.3;
+  const labelText = (
+    <Text style={[styles.fieldLabel, large && styles.fieldLabelLarge]} accessibilityElementsHidden importantForAccessibility="no">
+      {label}
+    </Text>
+  );
+  if (large) {
+    return (
+      <View style={[styles.fieldRow, styles.fieldRowStacked]}>
+        <View style={styles.fieldRowTop}>
+          <IconBox symbol={symbol} tint={tint} color={iconColor} />
+          {labelText}
+        </View>
+        {children}
+      </View>
+    );
+  }
   return (
     <View style={styles.fieldRow}>
       <IconBox symbol={symbol} tint={tint} color={iconColor} />
-      <Text style={styles.fieldLabel}>{label}</Text>
+      {labelText}
       <View style={styles.flex}>{children}</View>
     </View>
   );
@@ -592,6 +648,7 @@ function SelectBox({
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={`${accessibilityLabel}, ${value}`}
+      hitSlop={small ? 4 : undefined} // 38 high: 46 to touch
       style={({ pressed }) => [small ? styles.selectSmall : styles.select, pressed && styles.pressed]}>
       <Text
         style={[small ? styles.selectSmallText : styles.selectText, placeholder && styles.placeholder]}>
@@ -674,6 +731,20 @@ const makeStyles = (c: Palette) =>
     gap: 14,
     paddingVertical: 10,
     paddingHorizontal: 16,
+  },
+  fieldRowStacked: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: 8,
+  },
+  fieldRowTop: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  fieldLabelLarge: {
+    width: 'auto',
+    flexShrink: 1,
   },
   fieldLabel: {
     width: 72,

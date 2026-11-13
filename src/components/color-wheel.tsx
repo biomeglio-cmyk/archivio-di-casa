@@ -70,13 +70,22 @@ export function ColorWheel({ hue, radius, onChange, onDraggingChange }: Props) {
           accessible
           accessibilityRole="adjustable"
           accessibilityLabel={t('colorWheel.label')}
+          accessibilityValue={{
+            text: t('a11y.colorWheel.value', { hue: Math.round(hue), intensity: Math.round(radius * 100) }),
+          }}
           accessibilityActions={[
             { name: 'increment', label: t('colorWheel.nextHue') },
             { name: 'decrement', label: t('colorWheel.previousHue') },
+            { name: 'moreIntense', label: t('a11y.colorWheel.moreIntense') },
+            { name: 'lessIntense', label: t('a11y.colorWheel.lessIntense') },
           ]}
-          onAccessibilityAction={(e) =>
-            onChange((hue + (e.nativeEvent.actionName === 'increment' ? 30 : 330)) % 360, radius || 0.85)
-          }>
+          onAccessibilityAction={(e) => {
+            // Swipe up / down: the hue in 30° steps; the other two actions: the intensity in 20% steps
+            const action = e.nativeEvent.actionName;
+            if (action === 'moreIntense') onChange(hue, Math.min(1, Math.round((radius + 0.2) * 10) / 10));
+            else if (action === 'lessIntense') onChange(hue, Math.max(0, Math.round((radius - 0.2) * 10) / 10));
+            else onChange((hue + (action === 'increment' ? 30 : 330)) % 360, radius || 0.85);
+          }}>
           <Svg width={SIZE} height={SIZE} pointerEvents="none">
             <Defs>
               <RadialGradient id="white" cx="50%" cy="50%" r="50%">

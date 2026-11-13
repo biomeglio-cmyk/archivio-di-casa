@@ -1,6 +1,7 @@
 import * as Clipboard from 'expo-clipboard';
 import { useEffect, useState } from 'react';
-import { Alert, AppState, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, AppState, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { announce } from '@/a11y/accessibility';
 
 import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
@@ -28,6 +29,8 @@ export function PasswordCard({ documentId, username }: Props) {
   const theme = useTheme();
   const { t } = useI18n();
   const [shown, setShown] = useState<string | null>(null);
+  const { fontScale } = useWindowDimensions();
+  const stacked = fontScale > 1.3; // larger text: the value goes under its label
 
   useEffect(() => {
     const subscription = AppState.addEventListener('change', (state) => {
@@ -46,9 +49,12 @@ export function PasswordCard({ documentId, username }: Props) {
   async function toggleShow() {
     if (shown !== null) {
       setShown(null);
+      announce(t('passwordCard.hidden'));
       return;
     }
-    setShown(await unlockedPassword(t('passwordCard.showPrompt')));
+    const value = await unlockedPassword(t('passwordCard.showPrompt'));
+    setShown(value);
+    if (value !== null) announce(value); // VoiceOver reads the password just shown
   }
 
   async function copy() {
@@ -64,17 +70,21 @@ export function PasswordCard({ documentId, username }: Props) {
 
   return (
     <WhiteCard style={styles.card}>
-      <View style={styles.row}>
+      <View
+        style={[styles.row, stacked && styles.rowStacked]}
+        accessible
+        accessibilityLabel={`${t('passwordCard.user')}, ${username ?? t('common.none')}`}>
         <ThemedText themeColor="textSecondary">{t('passwordCard.user')}</ThemedText>
         <ThemedText style={styles.value} selectable>
           {username ?? '—'}
         </ThemedText>
       </View>
-      <View style={[styles.row, line]}>
+      <View
+        style={[styles.row, stacked && styles.rowStacked, line]}
+        accessible
+        accessibilityLabel={`${t('passwordCard.password')}, ${shown === null ? t('passwordCard.hidden') : shown}`}>
         <ThemedText themeColor="textSecondary">{t('passwordCard.password')}</ThemedText>
-        <ThemedText
-          style={[styles.value, styles.password]}
-          accessibilityLabel={shown === null ? t('passwordCard.hidden') : shown}>
+        <ThemedText style={[styles.value, styles.password]}>
           {shown ?? '••••••••'}
         </ThemedText>
       </View>
@@ -103,6 +113,11 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'space-between',
     gap: 16,
     paddingVertical: 14,
+  },
+  rowStacked: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 2,
   },
   value: {
     flexShrink: 1,

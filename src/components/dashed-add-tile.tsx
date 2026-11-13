@@ -1,5 +1,5 @@
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { type Palette, Radius } from '@/constants/theme';
@@ -22,12 +22,14 @@ export function DashedAddTile({ label, size, onPress, radius = Radius.tile, colo
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const { pressed, handlers } = usePressed();
+  const { fontScale } = useWindowDimensions();
 
   return (
     <Pressable
       {...handlers}
       onPress={onPress}
       accessibilityRole="button"
+      accessibilityLabel={label}
       style={[
         size,
         styles.tile,
@@ -35,7 +37,7 @@ export function DashedAddTile({ label, size, onPress, radius = Radius.tile, colo
         pressed && { backgroundColor: theme.paleLilac },
       ]}>
       <SymbolView name="plus" tintColor={color ?? theme.textSecondary} size={24} />
-      <ThemedText style={[styles.label, { color: color ?? theme.textSecondary }]} numberOfLines={2}>
+      <ThemedText style={[styles.label, { color: color ?? theme.textSecondary }]} numberOfLines={fontScale > 1.3 ? undefined : 2}>
         {label}
       </ThemedText>
     </Pressable>

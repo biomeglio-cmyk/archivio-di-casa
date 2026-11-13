@@ -3,6 +3,7 @@ import type { SFSymbol } from 'expo-symbols';
 import type { PasswordInfo, PasswordPreview, PasswordType } from '@/db/types';
 import { onSoftTint, softTint, type Palette } from '@/constants/theme';
 import { t } from '@/i18n';
+import { readableGradient } from '@/utils/colors';
 
 // Everything that changes with "Che cosa salvi" (docs/design/NuovaPassword.dc.html, its logic class).
 // The texts are translated when typeMeta() / passwordTypes() is called, never at module load.
@@ -86,9 +87,10 @@ export const passwordIconName = (key: string): string => t(`passwordOptions.icon
 
 // The two gradient colors of a preview
 export function previewGradient(preview: PasswordPreview): [string, string] {
-  if (preview.color === 'custom' && preview.hex) return [preview.hex, preview.hex];
+  // White text and icon on it: darkened just enough for WCAG AA
+  if (preview.color === 'custom' && preview.hex) return readableGradient([preview.hex, preview.hex]);
   const color = PASSWORD_COLORS.find((c) => c.key === preview.color) ?? PASSWORD_COLORS[0];
-  return [color.top, color.bottom];
+  return readableGradient([color.top, color.bottom]);
 }
 
 // The icon of a preview: the one chosen, else the one of its type
@@ -100,4 +102,5 @@ export function previewSymbol(preview: PasswordPreview, type: PasswordType): SFS
 export const PASSWORD_TINT = (p: Palette) => softTint(p, '#E3F6F9', '#12313A');
 export const PASSWORD_INK = (p: Palette) => onSoftTint(p, '#1A6F7E', '#7FD6E4');
 export const PASSWORD_NOTE = (p: Palette) => onSoftTint(p, '#1A5E6B', '#7FD6E4');
-export const PASSWORD_GRADIENT = ['#5CC8D8', '#2FA3B8'] as const;
+// The aqua of the design, darkened just enough for white text at WCAG AA (selected type, image button)
+export const PASSWORD_GRADIENT = readableGradient(['#5CC8D8', '#2FA3B8']) as readonly [string, string];

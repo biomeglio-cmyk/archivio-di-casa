@@ -626,7 +626,6 @@
     "dueIn_other": "Λήγει σε {{count}} ημέρες"
   },
   "deadlineListRow": {
-    "hint": "Άγγιξε παρατεταμένα για επεξεργασία ή αφαίρεση της προθεσμίας",
     "statusDue": "προς πληρωμή",
     "statusPaid": "πληρωμένο"
   },
@@ -1609,5 +1608,113 @@
     "rateMessage": "Θα μπορείς να αφήσεις αξιολόγηση μόλις το Sottomano είναι στο App Store.",
     "lockUnavailableTitle": "Το κλείδωμα δεν είναι διαθέσιμο",
     "lockUnavailableMessage": "Για να κλειδώσεις το Sottomano χρειάζεσαι κωδικό στο iPhone. Όρισέ τον στις Ρυθμίσεις › Face ID και κωδικός και δοκίμασε ξανά."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Ταξινόμηση ενεργή: σε κάθε στοιχείο, επίλεξε μια ενέργεια για να το μετακινήσεις.",
+      "reorderOff": "Η ταξινόμηση ολοκληρώθηκε",
+      "selecting": "Επιλογή ενεργή: άγγιξε τα έγγραφα που θα σταλούν σε ένα μόνο PDF.",
+      "selectionOff": "Η επιλογή ακυρώθηκε"
+    },
+    "notificationsPanel": {
+      "allRead": "Όλες οι ειδοποιήσεις σημειώθηκαν ως αναγνωσμένες"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} προθεσμία",
+      "dayCount_other": "{{date}}: {{count}} προθεσμίες"
+    },
+    "favorites": {
+      "removed": "{{title}}: αφαιρέθηκε από τα αγαπημένα"
+    },
+    "folderRow": {
+      "disabledHint": "Στο PDF μπαίνουν μόνο έγγραφα με φωτογραφίες."
+    },
+    "categoryForm": {
+      "iconNumber": "Εικονίδιο {{number}}",
+      "selected": "Επιλεγμένο",
+      "icons": {
+        "folder": "Φάκελος",
+        "tag": "Ετικέτα",
+        "star": "Αστέρι",
+        "gift": "Δώρο",
+        "tools": "Εργαλεία",
+        "cart": "Καλάθι",
+        "stethoscope": "Ιατρικές επισκέψεις",
+        "fitness": "Γυμναστήριο",
+        "music": "Μουσική",
+        "book": "Βιβλίο",
+        "idCard": "Ταυτότητα",
+        "card": "Κάρτα",
+        "lightbulb": "Λάμπα",
+        "shield": "Ασπίδα",
+        "receipt": "Απόδειξη",
+        "firstAid": "Πρώτες βοήθειες",
+        "cleaning": "Καθαριότητα",
+        "backpack": "Σακίδιο"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, σήμερα"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Εβδομάδα από {{date}}"
+    },
+    "reorder": {
+      "moved": "Μετακινήθηκε στη θέση {{position}} από {{count}}"
+    },
+    "colorWheel": {
+      "value": "Απόχρωση {{hue}}°, ένταση {{intensity}}%",
+      "moreIntense": "Πιο έντονο",
+      "lessIntense": "Λιγότερο έντονο"
+    },
+    "deadlineListRow": {
+      "actions": "Επεξεργασία ή αφαίρεση της προθεσμίας"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} λήγει",
+      "alertCount_other": "{{count}} λήγουν"
+    },
+    "formField": {
+      "required": "υποχρεωτικό"
+    },
+    "walletCard": {
+      "number": "Αριθμός {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Ζουμ {{percent}}%"
+    },
+    "filesEditor": {
+      "added_one": "Προστέθηκε {{count}} σελίδα",
+      "added_other": "Προστέθηκαν {{count}} σελίδες",
+      "removed": "Η σελίδα αφαιρέθηκε: {{name}}",
+      "movedTo": "Μετακινήθηκε στη θέση {{position}} από {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Η σελίδα {{number}} προστέθηκε"
+    },
+    "passwordForm": {
+      "shown": "Το συνθηματικό εμφανίζεται",
+      "generated": "Δημιουργήθηκε συνθηματικό: {{strength}}",
+      "imageRemoved": "Η εικόνα αφαιρέθηκε"
+    },
+    "onboarding": {
+      "pageChanged": "Σελίδα {{page}} από {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Τα αρχεία είναι έτοιμα: {{meta}}"
+    },
+    "trash": {
+      "restored": "Επαναφέρθηκε: {{title}}",
+      "deleted": "Διαγράφηκε οριστικά: {{title}}"
+    },
+    "segmented": {
+      "format": "Μορφή",
+      "calendarView": "Προβολή",
+      "layout": "Διάταξη",
+      "codeType": "Τύπος κωδικού",
+      "show": "Εμφάνιση",
+      "side": "Όψη",
+      "status": "Κατάσταση"
+    }
   }
 }

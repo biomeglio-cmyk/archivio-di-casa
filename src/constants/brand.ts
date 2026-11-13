@@ -7,7 +7,7 @@ export const BRAND_COLOR = (p: Palette) => p.accent;
 
 // Main gradient, 135° (top-left → bottom-right): "+", primary buttons, active filters,
 // switches that are on, the selected day, the logo
-export const BRAND_GRADIENT = ['#4A5CF0', '#8B6CF0'] as const;
+export const BRAND_GRADIENT = ['#4A5CF0', '#7558E6'] as const; // white text 4.9:1 at both ends (WCAG AA)
 export const GRADIENT_START = { x: 0, y: 0 } as const;
 export const GRADIENT_END = { x: 1, y: 1 } as const;
 

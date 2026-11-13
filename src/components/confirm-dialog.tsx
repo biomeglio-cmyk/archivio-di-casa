@@ -37,20 +37,21 @@ export function ConfirmDialog({
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   return (
-    <Animated.View entering={FadeIn.duration(160)} style={styles.dim}>
+    // The outermost view is the modal one: VoiceOver never reaches the screen under the dim
+    <Animated.View
+      entering={FadeIn.duration(160)}
+      style={styles.dim}
+      accessibilityViewIsModal
+      onAccessibilityEscape={onCancel}>
+      {/* Tap outside cancels; VoiceOver has "Annulla" and the escape gesture instead */}
       <Pressable
         style={StyleSheet.absoluteFill}
         onPress={onCancel}
-        accessibilityRole="button"
-        accessibilityLabel={t('common.cancel')}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants"
       />
-      <Animated.View
-        entering={ZoomIn.duration(180)}
-        style={styles.dialog}
-        accessibilityViewIsModal
-        accessibilityRole="alert"
-        onAccessibilityEscape={onCancel}>
-        <View style={styles.icon}>
+      <Animated.View entering={ZoomIn.duration(180)} style={styles.dialog} accessibilityRole="alert">
+        <View style={styles.icon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
           <SymbolView name={symbol} tintColor={theme.error} size={26} />
         </View>
         <Text style={styles.title} accessibilityRole="header">
@@ -62,6 +63,7 @@ export function ConfirmDialog({
           onPress={onConfirm}
           disabled={busy}
           accessibilityRole="button"
+          accessibilityState={{ disabled: busy, busy }}
           style={({ pressed }) => [styles.confirm, (pressed || busy) && styles.pressed]}>
           <Text style={styles.confirmLabel}>{confirmLabel}</Text>
         </Pressable>
@@ -101,7 +103,10 @@ export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) 
           backgroundColor: checked ? theme.paleLilac : theme.elevated,
         },
       ]}>
-      <View style={[styles.ring, { borderColor: checked ? accent : theme.dashed }]}>
+      <View
+        style={[styles.ring, { borderColor: checked ? accent : theme.dashed }]}
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants">
         {checked && <View style={[styles.dot, { backgroundColor: accent }]} />}
       </View>
       <View style={styles.choiceTexts}>

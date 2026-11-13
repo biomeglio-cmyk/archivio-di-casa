@@ -1,5 +1,5 @@
 import { SymbolView, type SFSymbol } from 'expo-symbols';
-import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, type StyleProp, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
 import { NoBreakText } from '@/components/tile-title';
@@ -17,8 +17,10 @@ type Props = {
   symbolColor?: string; // icon color, when different from the label
   background?: string; // lilac by default; a section tint, or the soft red of "Cancella"
   selected?: boolean; // toggle buttons ("Nei preferiti")
-  singleLine?: boolean; // one line, shrinking a little instead of wrapping (rows of buttons)
+  singleLine?: boolean; // one line, shrinking a little instead of wrapping (rows of buttons); wraps with larger text
   style?: StyleProp<ViewStyle>;
+  accessibilityLabel?: string; // when the visible label alone is not enough
+  accessibilityHint?: string;
 };
 
 const HEIGHT = 48;
@@ -35,16 +37,22 @@ export function SecondaryButton({
   selected,
   singleLine = false,
   style,
+  accessibilityLabel,
+  accessibilityHint,
 }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
+  const { fontScale } = useWindowDimensions();
+  const oneLine = singleLine && fontScale <= 1.3; // larger text: the label wraps, never cut or tiny
   const ink = color ?? theme.indigo;
   const fill = background ?? theme.lilac;
   return (
     <Pressable
       {...handlers}
       accessibilityRole="button"
+      accessibilityLabel={accessibilityLabel}
+      accessibilityHint={accessibilityHint}
       accessibilityState={selected === undefined ? { disabled } : { disabled, selected }}
       disabled={disabled}
       onPress={onPress}
@@ -56,13 +64,13 @@ export function SecondaryButton({
         disabled && styles.disabled,
       ]}>
       {symbol && <SymbolView name={symbol} tintColor={symbolColor ?? ink} size={18} />}
-      {singleLine ? (
+      {oneLine ? (
         <Text
           style={[styles.label, { color: ink }]}
           numberOfLines={1}
           adjustsFontSizeToFit
           minimumFontScale={0.8}
-          maxFontSizeMultiplier={1.2}>
+          maxFontSizeMultiplier={1.3}>
           {label}
         </Text>
       ) : (

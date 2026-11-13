@@ -3,11 +3,12 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
 import { Fragment, useState } from 'react';
-import { Alert, Pressable, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { accessibilityActionsOf, personQuickActions, runAccessibilityAction } from '@/actions/quick-actions';
 import { goHome, PageHeader } from '@/components/page-header';
 import { PersonAvatar } from '@/components/person-avatar';
@@ -54,6 +55,12 @@ export default function FamilyScreen() {
     if ((people?.length ?? 0) < 2) return;
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     setReordering(true);
+    announce(t('a11y.browse.reorderOn'));
+  }
+
+  function endReorder() {
+    setReordering(false);
+    announce(t('a11y.browse.reorderOff'));
   }
 
   return (
@@ -67,14 +74,16 @@ export default function FamilyScreen() {
             <ReorderHeader
               title={t('family.reorderTitle')}
               hint={t('family.reorderHint')}
-              onDone={() => setReordering(false)}
+              onDone={endReorder}
             />
-            <Text style={styles.section}>{t('family.members')}</Text>
+            <Text style={styles.section} accessibilityRole="header">
+              {t('family.members')}
+            </Text>
             <View style={styles.reorderList}>
               <SortableList
                 items={people}
                 keyFor={(person) => person.id}
-                labelFor={(person) => person.name}
+                labelFor={(person) => `${person.name}, ${t('common.documents', { count: person.documentCount })}`}
                 renderRow={(person) => (
                   <ReorderRow
                     thumb={
@@ -104,12 +113,14 @@ export default function FamilyScreen() {
             />
             {people && people.length > 0 && (
               <>
-                <Text style={styles.section}>{t('family.members')}</Text>
+                <Text style={styles.section} accessibilityRole="header">
+                  {t('family.members')}
+                </Text>
                 <WhiteCard style={styles.card}>
                   {people.map((person, index) => (
                     <Fragment key={person.id}>
                       {index > 0 && <View style={styles.separator} />}
-                      <PersonRow person={person} onLongPress={startReorder} />
+                      <PersonRow person={person} onLongPress={people.length > 1 ? startReorder : undefined} />
                     </Fragment>
                   ))}
                 </WhiteCard>
@@ -125,7 +136,9 @@ export default function FamilyScreen() {
             </Pressable>
 
             <View style={styles.note}>
-              <SymbolView name="lock" tintColor={theme.indigo} size={18} />
+              <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+                <SymbolView name="lock" tintColor={theme.indigo} size={18} />
+              </View>
               <Text style={styles.noteText}>{t('family.privacyNote')}</Text>
             </View>
           </>
@@ -135,15 +148,26 @@ export default function FamilyScreen() {
   );
 }
 
-function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPress: () => void }) {
+function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPress?: () => void }) {
   const { t } = useI18n();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const { pressed, handlers } = usePressed();
-  const actions = personQuickActions(db, person);
+  const { fontScale } = useWindowDimensions();
+  const lines = fontScale > 1.3 ? undefined : 1; // larger text: the whole name and details
+  const quick = personQuickActions(db, person);
+  // VoiceOver: the quick actions and "Riordina" (the long press)
+  const actions = [
+    ...quick.filter((a) => !a.destructive),
+    ...(onLongPress
+      ? [{ key: 'reorder', label: t('family.reorderTitle'), symbol: 'arrow.up.arrow.down' as const, onPress: onLongPress }]
+      : []),
+    ...quick.filter((a) => a.destructive),
+  ];
   const role = roleLabel(person.role);
   const details = [t('common.documents', { count: person.documentCount })];
+  const expiring = person.expiringCount > 0 ? t('family.expiring', { count: person.expiringCount }) : null;
 
   return (
     <Pressable
@@ -152,23 +176,35 @@ function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPre
       onLongPress={onLongPress}
       delayLongPress={400}
       accessibilityRole="button"
-      accessibilityLabel={[person.name, person.role === 'me' ? t('family.youSpoken') : role, ...details].filter(Boolean).join(', ')}
-      accessibilityHint={t('family.reorderA11yHint')}
+      accessibilityLabel={[person.name, person.role === 'me' ? t('family.youSpoken') : role, ...details, expiring]
+        .filter(Boolean)
+        .join(', ')}
+      accessibilityHint={onLongPress ? t('family.reorderA11yHint') : undefined}
       accessibilityActions={accessibilityActionsOf(actions)}
       onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
       style={[styles.row, pressed && styles.rowPressed]}>
       <PersonAvatar name={person.name} photoPath={person.photoPath} size={48} shadow />
       <View style={styles.texts}>
         <View style={styles.nameLine}>
-          <Text style={styles.name} numberOfLines={1}>
+          <Text style={styles.name} numberOfLines={lines}>
             {person.name}
           </Text>
           {person.role === 'me' && <Text style={styles.me}>{t('personRoles.you')}</Text>}
         </View>
-        <Text style={styles.count} numberOfLines={1}>
-          {details.join(' · ')}
-          {person.expiringCount > 0 && <Text style={styles.expiring}>{` · ${t('family.expiring', { count: person.expiringCount })}`}</Text>}
-        </Text>
+        <View style={styles.countLine}>
+          <Text style={styles.count} numberOfLines={lines}>
+            {details.join(' · ')}
+          </Text>
+          {/* "N in scadenza": red with a "!" (not only the color) */}
+          {expiring && (
+            <View style={styles.expiringBox}>
+              <SymbolView name="exclamationmark.circle.fill" tintColor={theme.error} size={13} />
+              <Text style={[styles.count, styles.expiring]} numberOfLines={lines}>
+                {expiring}
+              </Text>
+            </View>
+          )}
+        </View>
       </View>
       <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={15} weight="semibold" />
     </Pressable>
@@ -218,6 +254,7 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
+    flexWrap: 'wrap',
   },
   name: {
     flexShrink: 1,
@@ -232,7 +269,7 @@ const makeStyles = (c: Palette) =>
     borderRadius: 8,
     backgroundColor: c.lilac,
     color: c.indigo,
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
   },
@@ -241,12 +278,24 @@ const makeStyles = (c: Palette) =>
     fontFamily: FONTS.regular,
     color: c.textSecondary,
   },
+  countLine: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    alignItems: 'center',
+    columnGap: 8,
+  },
+  expiringBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
   expiring: {
     color: c.error,
   },
   add: {
     marginTop: 14,
-    height: 76,
+    minHeight: 76,
+    paddingVertical: 12,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderColor: c.dashed,

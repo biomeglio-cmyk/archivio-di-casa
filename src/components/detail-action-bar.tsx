@@ -1,4 +1,4 @@
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { PrimaryButton } from '@/components/primary-button';
 import { SecondaryButton } from '@/components/secondary-button';
@@ -20,18 +20,21 @@ type Props = {
 
 // Buttons at the end of the detail screens: "Aggiungi pagine" (main gradient pill),
 // "Aggiungi ai preferiti" and "Rinnovato" (lilac pills), then "Modifica" and "Cancella" always
-// side by side, at any text size (one line each, shrinking a little instead of wrapping).
+// side by side (one line each, shrinking a little; with larger text they wrap and stack).
 // They sit in the scroll content, right after the data, and scroll with the page.
 export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props) {
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
+  // Larger text: labels wrap at full size instead of shrinking, Modifica and Cancella one under the other
+  const large = useWindowDimensions().fontScale > 1.3;
+  const singleLine = !large;
 
   if (!onAdd && !onEdit && !onDelete && !pin) return null;
 
   return (
     <View style={styles.container}>
-      {onAdd && <PrimaryButton label={t('detailActionBar.addPages')} symbol="plus" onPress={onAdd} singleLine />}
+      {onAdd && <PrimaryButton label={t('detailActionBar.addPages')} symbol="plus" onPress={onAdd} singleLine={singleLine} />}
       {pin && (
         <SecondaryButton
           label={pin.pinned ? t('detailActionBar.pinned') : t('detailActionBar.pin')}
@@ -41,22 +44,22 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
           background={pin.pinned ? PIN_TINT(theme) : theme.lilac}
           color={theme.text}
           selected={pin.pinned}
-          singleLine
+          singleLine={singleLine}
         />
       )}
       {onRenew && (
-        <SecondaryButton label={t('detailActionBar.renewed')} symbol="arrow.clockwise" onPress={onRenew} color={theme.text} singleLine />
+        <SecondaryButton label={t('detailActionBar.renewed')} symbol="arrow.clockwise" onPress={onRenew} color={theme.text} singleLine={singleLine} />
       )}
       {(onEdit || onDelete) && (
-        <View style={styles.row}>
+        <View style={[styles.row, large && styles.column]}>
           {onEdit && (
             <SecondaryButton
               label={t('common.edit')}
               symbol="pencil"
               onPress={onEdit}
               color={theme.text}
-              singleLine
-              style={styles.half}
+              singleLine={singleLine}
+              style={large ? undefined : styles.half}
             />
           )}
           {onDelete && (
@@ -66,8 +69,8 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
               onPress={onDelete}
               background={theme.errorBackground}
               color={theme.error}
-              singleLine
-              style={styles.half}
+              singleLine={singleLine}
+              style={large ? undefined : styles.half}
             />
           )}
         </View>
@@ -82,8 +85,11 @@ const makeStyles = (c: Palette) =>
     gap: 10,
   },
   row: {
-    flexDirection: 'row', // Modifica and Cancella always side by side
+    flexDirection: 'row', // Modifica and Cancella side by side (one under the other with larger text)
     gap: 10,
+  },
+  column: {
+    flexDirection: 'column',
   },
   half: {
     flex: 1, // two equal halves of the row

@@ -4,6 +4,7 @@ import { SymbolView } from 'expo-symbols';
 import { Fragment, useState } from 'react';
 import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
+import { announce } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
@@ -50,14 +51,24 @@ export default function LanguageScreen() {
       search: `${l.name} ${l.english} ${l.code}`,
     })),
   ];
-  const needle = fold(query.trim());
-  const shown = needle ? options.filter((o) => fold(o.search).includes(needle)) : options;
+  const filter = (text: string) => {
+    const needle = fold(text.trim());
+    return needle ? options.filter((o) => fold(o.search).includes(needle)) : options;
+  };
+  const shown = filter(query);
+
+  // VoiceOver: how many languages the search leaves
+  function search(text: string) {
+    setQuery(text);
+    const found = filter(text).length;
+    announce(found === 0 ? t('language.noResults', { query: text.trim() }) : t('search.results', { count: found }));
+  }
 
   return (
     <>
       <Stack.SearchBar
         placeholder={t('language.search')}
-        onChangeText={(event) => setQuery(event.nativeEvent.text)}
+        onChangeText={(event) => search(event.nativeEvent.text)}
         onCancelButtonPress={() => setQuery('')}
         hideWhenScrolling={false}
       />
@@ -85,7 +96,15 @@ export default function LanguageScreen() {
                       <Text style={styles.name}>{option.name}</Text>
                       {option.detail && <Text style={styles.detail}>{option.detail}</Text>}
                     </View>
-                    {selected && <SymbolView name="checkmark" tintColor={BRAND_COLOR(theme)} size={18} weight="semibold" />}
+                    {selected && (
+                      <SymbolView
+                        name="checkmark"
+                        tintColor={BRAND_COLOR(theme)}
+                        size={18}
+                        weight="semibold"
+                        accessibilityElementsHidden
+                      />
+                    )}
                   </Pressable>
                 </Fragment>
               );

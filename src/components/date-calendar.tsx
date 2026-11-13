@@ -3,6 +3,7 @@ import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { announce } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
@@ -36,7 +37,11 @@ export function DateCalendar({ value, onChange }: Props) {
   const cells: (number | null)[] = [...Array<null>(blanks).fill(null)];
   for (let day = 1; day <= daysInMonth; day++) cells.push(day);
 
-  const shift = (delta: number) => setMonth(new Date(year, monthIndex + delta, 1));
+  const shift = (delta: number) => {
+    const next = new Date(year, monthIndex + delta, 1);
+    setMonth(next);
+    announce(fmt.monthTitle(next.getFullYear(), next.getMonth())); // VoiceOver: the new month
+  };
 
   return (
     <View>
@@ -60,12 +65,13 @@ export function DateCalendar({ value, onChange }: Props) {
           const iso = toISODate(new Date(year, monthIndex, day));
           const selected = iso === valueIso;
           const today = iso === todayIso;
+          const date = fmt.dayMonth(new Date(year, monthIndex, day));
           return (
             <View key={iso} style={styles.cell}>
               <Pressable
                 onPress={() => onChange(new Date(year, monthIndex, day))}
                 accessibilityRole="button"
-                accessibilityLabel={fmt.dayMonth(new Date(year, monthIndex, day))}
+                accessibilityLabel={today ? t('a11y.calendar.today', { date }) : date}
                 accessibilityState={{ selected }}
                 style={[styles.day, today && !selected && styles.today]}>
                 {selected && (
@@ -77,7 +83,7 @@ export function DateCalendar({ value, onChange }: Props) {
                   />
                 )}
                 <Text
-                  maxFontSizeMultiplier={1.3}
+                  maxFontSizeMultiplier={2}
                   style={[styles.number, selected && styles.numberSelected, today && !selected && styles.numberToday]}>
                   {day}
                 </Text>
@@ -121,8 +127,8 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'space-between',
   },
   monthButton: {
-    width: 36,
-    height: 36,
+    minWidth: 36,
+    minHeight: 36,
     borderRadius: 18,
     backgroundColor: c.paleLilac,
     alignItems: 'center',
@@ -140,7 +146,7 @@ const makeStyles = (c: Palette) =>
   weekday: {
     flex: 1,
     textAlign: 'center',
-    fontSize: 11,
+    fontSize: 12,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
     color: c.textSecondary,
@@ -156,8 +162,8 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
   },
   day: {
-    width: CELL,
-    height: CELL,
+    minWidth: CELL,
+    minHeight: CELL,
     borderRadius: CELL / 2,
     alignItems: 'center',
     justifyContent: 'center',
@@ -168,6 +174,8 @@ const makeStyles = (c: Palette) =>
   },
   today: {
     backgroundColor: c.lilac,
+    borderWidth: 1.5, // a ring, not only a color (Differenzia senza colore)
+    borderColor: c.indigo,
   },
   number: {
     fontSize: 15,

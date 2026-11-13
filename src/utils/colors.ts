@@ -132,3 +132,61 @@ export function darkTintOf(hex: string): { tint: string; onTint: string } {
   const saturation = Math.max(0.25, Math.min(0.55, radius)); // grey colors stay grey
   return { tint: hslHex(hue, saturation * 0.6, 0.15), onTint: hslHex(hue, 0.9, 0.78) };
 }
+
+// ---- Contrast (WCAG 2) ----
+
+function luminance(hex: string): number {
+  const match = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!match) return 0;
+  const value = parseInt(match[1], 16);
+  const channel = (c: number) => {
+    const s = c / 255;
+    return s <= 0.03928 ? s / 12.92 : ((s + 0.055) / 1.055) ** 2.4;
+  };
+  return 0.2126 * channel((value >> 16) & 255) + 0.7152 * channel((value >> 8) & 255) + 0.0722 * channel(value & 255);
+}
+
+// Contrast ratio of two hex colors: 1 (same) … 21 (black on white). WCAG AA: 4.5 text, 3 large text/icons
+export function contrastRatio(a: string, b: string): number {
+  const [light, dark] = [luminance(a), luminance(b)].sort((x, y) => y - x);
+  return (light + 0.05) / (dark + 0.05);
+}
+
+const AA_TEXT = 4.5;
+const INK = '#1C1E2E'; // the design ink
+const readableCache = new Map<string, CategoryColors>();
+
+// The colors of a tile with its name (17 pt) readable at WCAG AA on the whole gradient: the design
+// text if it already reads; otherwise the design ink (dark text on the pastel tiles); otherwise
+// the same gradient a little darker, until white text reads.
+export function readableColors(colors: CategoryColors): CategoryColors {
+  const key = `${colors.top}|${colors.bottom}|${colors.text}`;
+  const cached = readableCache.get(key);
+  if (cached) return cached;
+  const reads = (text: string, top = colors.top, bottom = colors.bottom) =>
+    Math.min(contrastRatio(text, top), contrastRatio(text, bottom)) >= AA_TEXT;
+  let result: CategoryColors = colors;
+  if (!reads(colors.text)) {
+    if (reads(INK)) result = { ...colors, text: INK };
+    else {
+      const [top, bottom] = readableGradient([colors.top, colors.bottom]);
+      result = { ...colors, top, bottom, text: '#FFFFFF' };
+    }
+  }
+  readableCache.set(key, result);
+  return result;
+}
+
+// A gradient under white text, darkened just enough for WCAG AA (unchanged if it already reads)
+export function readableGradient([top, bottom]: readonly [string, string]): [string, string] {
+  for (let amount = 0; amount <= 0.6; amount += 0.02) {
+    const pair: [string, string] = [mixWithBlack(top, amount), mixWithBlack(bottom, amount)];
+    if (Math.min(contrastRatio('#FFFFFF', pair[0]), contrastRatio('#FFFFFF', pair[1])) >= AA_TEXT) return pair;
+  }
+  return [mixWithBlack(top, 0.6), mixWithBlack(bottom, 0.6)];
+}
+
+// Text on a solid color (cover, card): dark ink or white, whichever reads better
+export function textOn(background: string): string {
+  return contrastRatio(INK, background) >= contrastRatio('#FFFFFF', background) ? INK : '#FFFFFF';
+}

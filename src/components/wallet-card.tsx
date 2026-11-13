@@ -8,7 +8,7 @@ import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
-import { isLightColor, mixWithWhite } from '@/utils/colors';
+import { mixWithWhite, readableGradient, textOn } from '@/utils/colors';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
@@ -55,33 +55,39 @@ export function WalletCardFace({ card, height = WALLET_CARD_HEIGHT, scale = 1, u
   }
   const color = card.cardColor ?? DEFAULT_CARD_COLOR;
   const size = (value: number) => Math.round(value * scale);
-  const ink = isLightColor(color) ? { color: '#1C1E2E' } : null; // a pale "Il tuo colore": dark text
+  // A pale "Il tuo colore": dark text; otherwise white, on the gradient darkened just enough to read (WCAG AA)
+  const top = mixWithWhite(color, 0.18);
+  const darkText = textOn(top) !== '#FFFFFF' && textOn(color) !== '#FFFFFF';
+  const ink = darkText ? { color: '#1C1E2E' } : null;
+  const gradient = darkText ? ([top, color] as const) : readableGradient([top, color]);
+  // The face is a picture of the card: its texts are said by the element around it (a button, a row).
+  // It has a fixed shape, so the texts grow a little (1.5×), then stop.
   return (
     <LinearGradient
-      colors={[mixWithWhite(color, 0.18), color]}
+      colors={gradient}
       start={GRADIENT_START}
       end={GRADIENT_END}
       style={[styles.face, styles.colored, { height, padding: size(18) }]}>
       <View style={[styles.circle, styles.circleTop, circle(size(180)), { right: -size(40), top: -size(60) }]} />
       <View style={[styles.circle, styles.circleBottom, circle(size(140)), { right: size(40), bottom: -size(70) }]} />
       <View style={styles.top}>
-        <Text style={[styles.brand, ink, { fontSize: size(20) }]} numberOfLines={1} maxFontSizeMultiplier={1.2}>
+        <Text style={[styles.brand, ink, { fontSize: size(20) }]} numberOfLines={1} maxFontSizeMultiplier={1.5}>
           {card.title || t('walletCard.untitled')}
         </Text>
         {card.docType ? (
-          <Text style={[styles.type, ink, { fontSize: size(12) }]} numberOfLines={1} maxFontSizeMultiplier={1.2}>
+          <Text style={[styles.type, ink, { fontSize: size(12) }]} numberOfLines={1} maxFontSizeMultiplier={1.5}>
             {card.docType}
           </Text>
         ) : null}
       </View>
       <View style={styles.bottom}>
         {card.barcodeValue ? (
-          <Text style={[styles.number, ink, { fontSize: size(14) }]} numberOfLines={1} maxFontSizeMultiplier={1.2}>
+          <Text style={[styles.number, ink, { fontSize: size(14) }]} numberOfLines={1} maxFontSizeMultiplier={1.5}>
             {spacedNumber(card.barcodeValue)}
           </Text>
         ) : null}
         {card.holder ? (
-          <Text style={[styles.holder, ink, { fontSize: size(12) }]} numberOfLines={1} maxFontSizeMultiplier={1.2}>
+          <Text style={[styles.holder, ink, { fontSize: size(12) }]} numberOfLines={1} maxFontSizeMultiplier={1.5}>
             {card.holder.toUpperCase()}
           </Text>
         ) : null}

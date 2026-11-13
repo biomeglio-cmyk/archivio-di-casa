@@ -3,8 +3,9 @@ import { router } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
-import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 
+import { announce } from '@/a11y/accessibility';
 import { IconSquare } from '@/components/icon-square';
 import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
@@ -27,6 +28,7 @@ export default function TrashScreen() {
   const db = useSQLiteContext();
   const theme = useTheme();
   const { t } = useI18n();
+  const large = useWindowDimensions().fontScale > 1.3; // larger text: names are not cut
   const { data: documents } = useDbQuery(listTrashedDocuments, []);
 
   function showError(error: unknown) {
@@ -36,6 +38,8 @@ export default function TrashScreen() {
   async function restore(document: DocumentListItem) {
     try {
       const { movedToOther } = await restoreFromTrash(db, document.id);
+      // VoiceOver: the row is gone, say what happened to it
+      announce(t('a11y.trash.restored', { title: document.title }));
       if (movedToOther) {
         Alert.alert(
           t('trash.alerts.restoredToOther'),
@@ -53,7 +57,10 @@ export default function TrashScreen() {
       {
         text: t('common.delete'),
         style: 'destructive',
-        onPress: () => deleteDocumentForever(db, document.id).catch(showError),
+        onPress: () =>
+          deleteDocumentForever(db, document.id)
+            .then(() => announce(t('a11y.trash.deleted', { title: document.title })))
+            .catch(showError),
       },
     ]);
   }
@@ -65,7 +72,14 @@ export default function TrashScreen() {
       t('trash.alerts.emptyMessage', { count }),
       [
         { text: t('common.cancel'), style: 'cancel' },
-        { text: t('trash.alerts.emptyConfirm'), style: 'destructive', onPress: () => emptyTrash(db).catch(showError) },
+        {
+          text: t('trash.alerts.emptyConfirm'),
+          style: 'destructive',
+          onPress: () =>
+            emptyTrash(db)
+              .then(() => announce(t('trash.empty')))
+              .catch(showError),
+        },
       ],
     );
   }
@@ -79,7 +93,7 @@ export default function TrashScreen() {
 
         {documents?.length === 0 && (
           <View style={styles.empty}>
-            <SymbolView name="trash" tintColor={theme.textSecondary} size={36} />
+            <SymbolView name="trash" tintColor={theme.textSecondary} size={36} accessibilityElementsHidden />
             <ThemedText themeColor="textSecondary">{t('trash.empty')}</ThemedText>
           </View>
         )}
@@ -88,6 +102,8 @@ export default function TrashScreen() {
           <WhiteCard style={styles.card}>
             {documents.map((document, index) => {
               const left = document.deletedAt ? daysLeftInTrash(document.deletedAt) : TRASH_DAYS;
+              const subtitle = [document.category.name, document.personName].filter(Boolean).join(' · ');
+              const when = left <= 1 ? t('trash.deletedSoon') : t('trash.deletedIn', { count: left });
               return (
                 <View
                   key={document.id}
@@ -95,17 +111,21 @@ export default function TrashScreen() {
                     styles.row,
                     index > 0 && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected },
                   ]}>
-                  <View style={styles.info}>
+                  {/* One element for VoiceOver: "Bolletta luce, Utenze · Marco, Verrà eliminato tra 12 giorni" */}
+                  <View
+                    style={styles.info}
+                    accessible
+                    accessibilityLabel={[document.title, subtitle, when].filter(Boolean).join(', ')}>
                     <Thumbnail document={document} />
                     <View style={styles.texts}>
-                      <ThemedText style={styles.title} numberOfLines={2}>
+                      <ThemedText style={styles.title} numberOfLines={large ? undefined : 2}>
                         {document.title}
                       </ThemedText>
-                      <ThemedText type="small" themeColor="textSecondary" numberOfLines={2}>
-                        {[document.category.name, document.personName].filter(Boolean).join(' · ')}
+                      <ThemedText type="small" themeColor="textSecondary" numberOfLines={large ? undefined : 2}>
+                        {subtitle}
                       </ThemedText>
                       <ThemedText type="small" themeColor="textSecondary">
-                        {left <= 1 ? t('trash.deletedSoon') : t('trash.deletedIn', { count: left })}
+                        {when}
                       </ThemedText>
                     </View>
                   </View>

@@ -672,7 +672,6 @@
     "dueIn_many": "Через {{count}} дней"
   },
   "deadlineListRow": {
-    "hint": "Нажми и удерживай, чтобы изменить или убрать срок",
     "statusDue": "к оплате",
     "statusPaid": "оплачено"
   },
@@ -1682,5 +1681,116 @@
     "rateMessage": "Оценку можно будет оставить, когда Sottomano появится в App Store.",
     "lockUnavailableTitle": "Блокировка недоступна",
     "lockUnavailableMessage": "Чтобы заблокировать Sottomano, на iPhone нужен код-пароль. Задай его в Настройках › Face ID и код-пароль, затем попробуй снова."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Изменение порядка: у каждого элемента выбери действие, чтобы переместить его.",
+      "reorderOff": "Порядок изменен",
+      "selecting": "Выбор: нажми на документы, чтобы отправить их одним PDF.",
+      "selectionOff": "Выбор отменен"
+    },
+    "notificationsPanel": {
+      "allRead": "Все уведомления отмечены как прочитанные"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} срок",
+      "dayCount_few": "{{date}}: {{count}} срока",
+      "dayCount_many": "{{date}}: {{count}} сроков"
+    },
+    "favorites": {
+      "removed": "Убрано из Избранного: «{{title}}»"
+    },
+    "folderRow": {
+      "disabledHint": "В PDF попадают только документы с фото."
+    },
+    "categoryForm": {
+      "iconNumber": "Значок {{number}}",
+      "selected": "Выбрано",
+      "icons": {
+        "folder": "Папка",
+        "tag": "Метка",
+        "star": "Звезда",
+        "gift": "Подарок",
+        "tools": "Инструменты",
+        "cart": "Тележка",
+        "stethoscope": "Визиты к врачу",
+        "fitness": "Спортзал",
+        "music": "Музыка",
+        "book": "Книга",
+        "idCard": "Удостоверение личности",
+        "card": "Карта",
+        "lightbulb": "Лампочка",
+        "shield": "Щит",
+        "receipt": "Чек",
+        "firstAid": "Первая помощь",
+        "cleaning": "Уборка",
+        "backpack": "Рюкзак"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, сегодня"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Неделя с {{date}}"
+    },
+    "reorder": {
+      "moved": "Перемещено на позицию {{position}} из {{count}}"
+    },
+    "colorWheel": {
+      "value": "Оттенок {{hue}}°, интенсивность {{intensity}} %",
+      "moreIntense": "Интенсивнее",
+      "lessIntense": "Менее интенсивно"
+    },
+    "deadlineListRow": {
+      "actions": "Изменить или убрать срок"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} истекает",
+      "alertCount_few": "{{count}} истекают",
+      "alertCount_many": "{{count}} истекают"
+    },
+    "formField": {
+      "required": "обязательно"
+    },
+    "walletCard": {
+      "number": "Номер {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Масштаб {{percent}} %"
+    },
+    "filesEditor": {
+      "added_one": "Добавлена {{count}} страница",
+      "added_few": "Добавлено {{count}} страницы",
+      "added_many": "Добавлено {{count}} страниц",
+      "removed": "Страница удалена: {{name}}",
+      "movedTo": "Перемещено на позицию {{position}} из {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Страница {{number}} добавлена"
+    },
+    "passwordForm": {
+      "shown": "Пароль показан",
+      "generated": "Пароль создан: {{strength}}",
+      "imageRemoved": "Изображение удалено"
+    },
+    "onboarding": {
+      "pageChanged": "Страница {{page}} из {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Файлы готовы: {{meta}}"
+    },
+    "trash": {
+      "restored": "Восстановлено: «{{title}}»",
+      "deleted": "Удалено навсегда: «{{title}}»"
+    },
+    "segmented": {
+      "format": "Формат",
+      "calendarView": "Вид",
+      "layout": "Отображение",
+      "codeType": "Тип кода",
+      "show": "Показать",
+      "side": "Сторона",
+      "status": "Статус"
+    }
   }
 }

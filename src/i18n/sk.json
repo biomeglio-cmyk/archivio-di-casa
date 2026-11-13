@@ -672,7 +672,6 @@
     "dueIn_other": "Termín o {{count}} dní"
   },
   "deadlineListRow": {
-    "hint": "Podržaním termín upravíš alebo odstrániš",
     "statusDue": "na zaplatenie",
     "statusPaid": "zaplatené"
   },
@@ -1682,5 +1681,116 @@
     "rateMessage": "Hodnotenie budeš môcť zanechať, keď bude Sottomano v App Store.",
     "lockUnavailableTitle": "Zámok nie je k dispozícii",
     "lockUnavailableMessage": "Na zamknutie Sottomano potrebuješ v iPhone nastavený kód. Nastav ho v Nastavenia › Face ID a kód a skús to znova."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Zmena poradia zapnutá: pri každej položke vyber akciu, ktorou ju presunieš.",
+      "reorderOff": "Zmena poradia dokončená",
+      "selecting": "Výber: ťukni na dokumenty, ktoré chceš poslať ako jedno PDF.",
+      "selectionOff": "Výber zrušený"
+    },
+    "notificationsPanel": {
+      "allRead": "Všetky hlásenia označené ako prečítané"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} termín",
+      "dayCount_few": "{{date}}: {{count}} termíny",
+      "dayCount_other": "{{date}}: {{count}} termínov"
+    },
+    "favorites": {
+      "removed": "Odstránené z obľúbených: {{title}}"
+    },
+    "folderRow": {
+      "disabledHint": "Do PDF idú len dokumenty s fotkami."
+    },
+    "categoryForm": {
+      "iconNumber": "Ikona {{number}}",
+      "selected": "Vybraté",
+      "icons": {
+        "folder": "Priečinok",
+        "tag": "Štítok",
+        "star": "Hviezda",
+        "gift": "Darček",
+        "tools": "Náradie",
+        "cart": "Košík",
+        "stethoscope": "Návštevy lekára",
+        "fitness": "Posilňovňa",
+        "music": "Hudba",
+        "book": "Kniha",
+        "idCard": "Preukaz totožnosti",
+        "card": "Karta",
+        "lightbulb": "Žiarovka",
+        "shield": "Štít",
+        "receipt": "Bloček",
+        "firstAid": "Prvá pomoc",
+        "cleaning": "Upratovanie",
+        "backpack": "Ruksak"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, dnes"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Týždeň od {{date}}"
+    },
+    "reorder": {
+      "moved": "Presunuté na pozíciu {{position}} z {{count}}"
+    },
+    "colorWheel": {
+      "value": "Odtieň {{hue}}°, intenzita {{intensity}} %",
+      "moreIntense": "Vyššia intenzita",
+      "lessIntense": "Nižšia intenzita"
+    },
+    "deadlineListRow": {
+      "actions": "Upraviť alebo odstrániť termín"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} s blížiacim sa termínom",
+      "alertCount_few": "{{count}} s blížiacim sa termínom",
+      "alertCount_other": "{{count}} s blížiacim sa termínom"
+    },
+    "formField": {
+      "required": "povinné"
+    },
+    "walletCard": {
+      "number": "Číslo {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zväčšenie {{percent}} %"
+    },
+    "filesEditor": {
+      "added_one": "Pridaná {{count}} strana",
+      "added_few": "Pridané {{count}} strany",
+      "added_other": "Pridaných {{count}} strán",
+      "removed": "Strana odstránená: {{name}}",
+      "movedTo": "Presunuté na pozíciu {{position}} z {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Strana {{number}} pridaná"
+    },
+    "passwordForm": {
+      "shown": "Heslo zobrazené",
+      "generated": "Heslo vygenerované: {{strength}}",
+      "imageRemoved": "Obrázok odstránený"
+    },
+    "onboarding": {
+      "pageChanged": "Strana {{page}} z {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Súbory pripravené: {{meta}}"
+    },
+    "trash": {
+      "restored": "Obnovené: {{title}}",
+      "deleted": "Natrvalo odstránené: {{title}}"
+    },
+    "segmented": {
+      "format": "Formát",
+      "calendarView": "Zobrazenie",
+      "layout": "Rozloženie",
+      "codeType": "Typ kódu",
+      "show": "Zobraziť",
+      "side": "Strana",
+      "status": "Stav"
+    }
   }
 }

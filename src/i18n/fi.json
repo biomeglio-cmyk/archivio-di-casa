@@ -626,7 +626,6 @@
     "dueIn_other": "Erääntyy {{count}} päivän päästä"
   },
   "deadlineListRow": {
-    "hint": "Muokkaa tai poista eräpäivä painamalla pitkään",
     "statusDue": "maksamatta",
     "statusPaid": "maksettu"
   },
@@ -1609,5 +1608,113 @@
     "rateMessage": "Voit antaa arvion, kun Sottomano on App Storessa.",
     "lockUnavailableTitle": "Lukitus ei ole käytettävissä",
     "lockUnavailableMessage": "Sottomanon lukitseminen vaatii iPhoneen pääsykoodin. Aseta se kohdassa Asetukset › Face ID ja pääsykoodi ja yritä uudelleen."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Järjestäminen päällä: valitse kullekin kohteelle toiminto sen siirtämiseksi.",
+      "reorderOff": "Järjestäminen valmis",
+      "selecting": "Valinta päällä: napauta asiakirjoja, jotka lähetetään yhtenä PDF:nä.",
+      "selectionOff": "Valinta peruttu"
+    },
+    "notificationsPanel": {
+      "allRead": "Kaikki ilmoitukset merkitty luetuiksi"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} eräpäivä",
+      "dayCount_other": "{{date}}: {{count}} eräpäivää"
+    },
+    "favorites": {
+      "removed": "{{title}} poistettu suosikeista"
+    },
+    "folderRow": {
+      "disabledHint": "PDF:ään tulevat vain asiakirjat, joissa on kuvia."
+    },
+    "categoryForm": {
+      "iconNumber": "Kuvake {{number}}",
+      "selected": "Valittu",
+      "icons": {
+        "folder": "Kansio",
+        "tag": "Tunniste",
+        "star": "Tähti",
+        "gift": "Lahja",
+        "tools": "Työkalut",
+        "cart": "Ostoskärry",
+        "stethoscope": "Lääkärikäynnit",
+        "fitness": "Kuntosali",
+        "music": "Musiikki",
+        "book": "Kirja",
+        "idCard": "Henkilökortti",
+        "card": "Kortti",
+        "lightbulb": "Hehkulamppu",
+        "shield": "Kilpi",
+        "receipt": "Kuitti",
+        "firstAid": "Ensiapu",
+        "cleaning": "Siivous",
+        "backpack": "Reppu"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, tänään"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Viikko alkaen {{date}}"
+    },
+    "reorder": {
+      "moved": "Siirretty kohtaan {{position}}/{{count}}"
+    },
+    "colorWheel": {
+      "value": "Sävy {{hue}}°, voimakkuus {{intensity}} %",
+      "moreIntense": "Voimakkaampi",
+      "lessIntense": "Miedompi"
+    },
+    "deadlineListRow": {
+      "actions": "Muokkaa tai poista eräpäivä"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} vanhenemassa",
+      "alertCount_other": "{{count}} vanhenemassa"
+    },
+    "formField": {
+      "required": "pakollinen"
+    },
+    "walletCard": {
+      "number": "Numero {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Zoomaus {{percent}} %"
+    },
+    "filesEditor": {
+      "added_one": "{{count}} sivu lisätty",
+      "added_other": "{{count}} sivua lisätty",
+      "removed": "Sivu poistettu: {{name}}",
+      "movedTo": "Siirretty kohtaan {{position}}/{{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Sivu {{number}} lisätty"
+    },
+    "passwordForm": {
+      "shown": "Salasana näkyvissä",
+      "generated": "Salasana luotu: {{strength}}",
+      "imageRemoved": "Kuva poistettu"
+    },
+    "onboarding": {
+      "pageChanged": "Sivu {{page}}/{{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Tiedostot valmiina: {{meta}}"
+    },
+    "trash": {
+      "restored": "Palautettu: {{title}}",
+      "deleted": "Poistettu pysyvästi: {{title}}"
+    },
+    "segmented": {
+      "format": "Muoto",
+      "calendarView": "Näkymä",
+      "layout": "Asettelu",
+      "codeType": "Koodin tyyppi",
+      "show": "Näytä",
+      "side": "Puoli",
+      "status": "Tila"
+    }
   }
 }

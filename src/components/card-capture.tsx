@@ -5,6 +5,7 @@ import { useRef, useState } from 'react';
 import { Alert, Linking, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
 import { cropToGuideFrame } from '@/capture/crop-photo';
 import { guideFrameRect } from '@/capture/guide-frame';
@@ -77,6 +78,7 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
   function onBarcodeScanned(scan: BarcodeScanningResult) {
     if (scan.data && scan.data !== code?.value) {
       setCode({ value: scan.data, type: scan.type });
+      announce(t('cardCapture.read', { value: scan.data }));
     }
   }
 
@@ -100,6 +102,7 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
     try {
       const photo = await cameraRef.current.takePictureAsync({ quality: 1 });
       setPreviewUri(await cropToGuideFrame(photo, frame, { width, height }));
+      announce(previewTitle(code));
     } finally {
       setBusy(false);
     }
@@ -112,12 +115,23 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
       if (step === 'barcode') {
         // From a photo iOS can only read QR codes; other codes are typed in the form
         const found = await scanFromURLAsync(uri, CARD_BARCODE_TYPES).catch(() => []);
-        setCode(found[0]?.data ? { value: found[0].data, type: found[0].type } : null);
+        const read = found[0]?.data ? { value: found[0].data, type: found[0].type } : null;
+        setCode(read);
+        setPreviewUri(uri);
+        announce(previewTitle(read));
+        return;
       }
       setPreviewUri(uri);
+      announce(previewTitle(code));
     } catch (error) {
       Alert.alert(t('cardCapture.photoOpenFailed'), String(error));
     }
+  }
+
+  // What the preview says on top: "Si legge bene?" or the code read (also announced to VoiceOver)
+  function previewTitle(read: ScannedCode | null): string {
+    if (step === 'front') return t('cardCapture.frontCheck');
+    return read ? t('cardCapture.read', { value: read.value }) : t('cardCapture.notRead');
   }
 
   // ---- Permission states ----
@@ -129,7 +143,7 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
   if (!permission.granted) {
     return (
       <View style={[styles.screen, styles.centered, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
-        <SymbolView name="camera" tintColor="#FFFFFF" size={44} />
+        <SymbolView name="camera" tintColor="#FFFFFF" size={44} accessibilityElementsHidden />
         <Text style={styles.permissionTitle}>{t('cardCapture.permissionTitle')}</Text>
         <Text style={styles.permissionText}>{t('cardCapture.permissionText')}</Text>
         <View style={styles.permissionButton}>
@@ -138,7 +152,7 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
             onPress={() => (permission.canAskAgain ? requestPermission() : Linking.openSettings())}
           />
         </View>
-        <Pressable onPress={onCancel} hitSlop={12}>
+        <Pressable onPress={onCancel} hitSlop={12} accessibilityRole="button">
           <Text style={styles.link}>{t('common.cancel')}</Text>
         </Pressable>
       </View>
@@ -150,10 +164,11 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
   if (previewUri) {
     return (
       <View style={styles.screen}>
-        <Image source={{ uri: previewUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
-        <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
-          <Text style={styles.instruction}>
-            {step === 'front' ? t('cardCapture.frontCheck') : code ? t('cardCapture.read', { value: code.value }) : t('cardCapture.notRead')}
+        <Image source={{ uri: previewUri }} style={StyleSheet.absoluteFill} contentFit="contain" accessibilityIgnoresInvertColors />
+        {/* On a dark band: readable over any photo */}
+        <View style={[styles.topBar, styles.scrimBand, { paddingTop: insets.top + 8 }]}>
+          <Text style={styles.instruction} accessibilityRole="header">
+            {previewTitle(code)}
           </Text>
           {step === 'barcode' && !code && (
             <Text style={styles.hint}>{t('cardCapture.notReadHint')}</Text>
@@ -201,23 +216,31 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
       {focusRing && <View pointerEvents="none" style={[styles.focusRing, { left: focusRing.x - 36, top: focusRing.y - 36 }]} />}
 
       <View style={[styles.topBar, styles.topBarRow, { paddingTop: insets.top + 8 }]}>
-        <Pressable onPress={onCancel} hitSlop={12} accessibilityRole="button" accessibilityLabel={t('common.close')}>
+        <Pressable
+          onPress={onCancel}
+          hitSlop={12}
+          accessibilityRole="button"
+          accessibilityLabel={t('common.close')}
+          style={styles.scrimRound}>
           <SymbolView name="xmark" tintColor="#FFFFFF" size={22} />
         </Pressable>
         {steps.length > 1 && (
-          <Text style={styles.stepCount}>{t('cardCapture.stepCount', { current: stepIndex + 1, total: steps.length })}</Text>
+          <Text style={[styles.stepCount, styles.scrimPill]}>{t('cardCapture.stepCount', { current: stepIndex + 1, total: steps.length })}</Text>
         )}
       </View>
 
-      <View style={[styles.overFrame, { bottom: height - frame.y + 12 }]}>
+      <View style={[styles.overFrame, styles.scrimBox, { bottom: height - frame.y + 12 }]} pointerEvents="none">
         <Text style={styles.instruction}>{t(`cardCapture.steps.${step}`)}</Text>
         {step === 'front' && <Text style={styles.hint}>{t('cardCapture.frameHint')}</Text>}
       </View>
 
       {step === 'barcode' && (
-        <View style={[styles.codeBadge, { top: frame.y + frame.height + 16 }, code && styles.codeBadgeFound]}>
+        <View
+          style={[styles.codeBadge, { top: frame.y + frame.height + 16 }, code && styles.codeBadgeFound]}
+          pointerEvents="none"
+          accessible>
           <SymbolView name={code ? 'checkmark.circle.fill' : 'barcode.viewfinder'} tintColor="#FFFFFF" size={18} />
-          <Text style={styles.codeText} numberOfLines={2}>
+          <Text style={styles.codeText} numberOfLines={3}>
             {code ? t('cardCapture.read', { value: code.value }) : t('cardCapture.searching')}
           </Text>
         </View>
@@ -225,7 +248,12 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
 
       <View style={[styles.cameraBar, { paddingBottom: insets.bottom + 24 }]}>
         <View style={styles.sideSlot}>
-          <Pressable onPress={fromLibrary} hitSlop={12} accessibilityRole="button" accessibilityLabel={t('cardCapture.chooseFromPhotos')}>
+          <Pressable
+            onPress={fromLibrary}
+            hitSlop={8}
+            accessibilityRole="button"
+            accessibilityLabel={t('cardCapture.chooseFromPhotos')}
+            style={styles.scrimRound}>
             <SymbolView name="photo.on.rectangle" tintColor="#FFFFFF" size={28} />
           </Pressable>
         </View>
@@ -234,11 +262,12 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
           disabled={!ready || busy}
           accessibilityRole="button"
           accessibilityLabel={t('cardCapture.shoot')}
+          accessibilityState={{ disabled: !ready || busy, busy }}
           style={({ pressed }) => [styles.shutter, (pressed || busy) && styles.shutterPressed]}>
           <View style={styles.shutterInner} />
         </Pressable>
         <View style={styles.sideSlot}>
-          <Pressable onPress={() => next(null)} hitSlop={12} accessibilityRole="button">
+          <Pressable onPress={() => next(null)} hitSlop={12} accessibilityRole="button" style={styles.scrimButton}>
             <Text style={styles.link}>{t('cardCapture.skip')}</Text>
           </Pressable>
         </View>
@@ -284,7 +313,7 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'space-between',
   },
   stepCount: {
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: '#FFFFFF',
     fontSize: 15,
     fontFamily: FONTS.medium,
   },
@@ -301,7 +330,7 @@ const makeStyles = (c: Palette) =>
     textAlign: 'center',
   },
   hint: {
-    color: 'rgba(255, 255, 255, 0.8)',
+    color: '#FFFFFF', // on the 55% black scrim: readable over a white scene
     fontSize: 15,
     textAlign: 'center',
   },
@@ -318,7 +347,41 @@ const makeStyles = (c: Palette) =>
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
   },
   codeBadgeFound: {
-    backgroundColor: 'rgba(30, 140, 70, 0.9)',
+    backgroundColor: 'rgba(24, 120, 60, 0.92)', // white text at WCAG AA
+  },
+  // Dark backgrounds that keep white text readable over the camera or a photo
+  scrimBand: {
+    paddingBottom: 12,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+  },
+  scrimBox: {
+    paddingHorizontal: 14,
+    paddingVertical: 10,
+    borderRadius: 18,
+    borderCurve: 'continuous',
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+  },
+  scrimPill: {
+    overflow: 'hidden',
+    paddingHorizontal: 12,
+    paddingVertical: 4,
+    borderRadius: 14,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+  },
+  scrimRound: {
+    width: 48,
+    height: 48,
+    borderRadius: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+  },
+  scrimButton: {
+    minHeight: 44,
+    paddingHorizontal: 12,
+    borderRadius: 22,
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
   },
   codeText: {
     flexShrink: 1,
@@ -337,7 +400,7 @@ const makeStyles = (c: Palette) =>
     paddingHorizontal: 32,
   },
   sideSlot: {
-    width: 64,
+    minWidth: 64,
     alignItems: 'center',
   },
   shutter: {
@@ -367,7 +430,7 @@ const makeStyles = (c: Palette) =>
     gap: 12,
     paddingHorizontal: 20,
     paddingTop: 16,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.75)', // white labels stay readable over a white card
   },
   secondaryButton: {
     flex: 1,
@@ -375,7 +438,7 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'center',
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: 'rgba(255, 255, 255, 0.18)',
+    backgroundColor: 'rgba(255, 255, 255, 0.16)',
   },
   secondaryLabel: {
     color: '#FFFFFF',

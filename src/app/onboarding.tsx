@@ -5,6 +5,7 @@ import { useRef, useState, type ComponentType, type ReactNode } from 'react';
 import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View, type ScrollViewInstance } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce, useReduceMotion } from '@/a11y/accessibility';
 import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { NoBreakText } from '@/components/tile-title';
@@ -42,6 +43,7 @@ export default function OnboardingScreen() {
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const { t } = useI18n();
+  const reduceMotion = useReduceMotion();
   const scrollRef = useRef<ScrollViewInstance>(null);
   const [page, setPage] = useState(0);
   const last = page === PAGES.length - 1;
@@ -62,8 +64,16 @@ export default function OnboardingScreen() {
       close();
       return;
     }
-    scrollRef.current?.scrollTo({ x: (page + 1) * width, animated: true });
+    scrollRef.current?.scrollTo({ x: (page + 1) * width, animated: !reduceMotion });
     setPage(page + 1);
+    // VoiceOver stays on "Avanti": it hears which page came in
+    announce(
+      t('a11y.onboarding.pageChanged', {
+        page: page + 2,
+        total: PAGES.length,
+        title: t(`onboarding.pages.${PAGES[page + 1].id}.title`),
+      }),
+    );
   }
 
   return (
@@ -84,7 +94,7 @@ export default function OnboardingScreen() {
         onMomentumScrollEnd={(e) => setPage(Math.round(e.nativeEvent.contentOffset.x / width))}
         style={styles.pager}>
         {PAGES.map((p, index) => (
-          <OnboardingPage key={p.id} page={p} index={index} width={width} scale={scale} />
+          <OnboardingPage key={p.id} page={p} index={index} active={index === page} width={width} scale={scale} />
         ))}
       </ScrollView>
 
@@ -102,13 +112,25 @@ export default function OnboardingScreen() {
 
 // One page of the pager: illustration, title, text, (info), dots. A real component, so the hooks of
 // the illustration belong to it and run in the same order on every render.
-function OnboardingPage({ page: p, index, width, scale }: { page: Page; index: number; width: number; scale: number }) {
+// Only the page on screen is read by VoiceOver: the others are hidden until they scroll in.
+function OnboardingPage({ page: p, index, active, width, scale }: {
+  page: Page;
+  index: number;
+  active: boolean;
+  width: number;
+  scale: number;
+}) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const Art = p.art;
   return (
-    <ScrollView style={{ width }} contentContainerStyle={styles.page} showsVerticalScrollIndicator={false}>
+    <ScrollView
+      style={{ width }}
+      contentContainerStyle={styles.page}
+      showsVerticalScrollIndicator={false}
+      accessibilityElementsHidden={!active}
+      importantForAccessibility={active ? 'auto' : 'no-hide-descendants'}>
       <View style={{ height: ART_HEIGHT * scale, alignItems: 'center' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <View style={[styles.art, { transform: [{ scale }], marginTop: (ART_HEIGHT * (scale - 1)) / 2 }]}>
           <Art />
@@ -120,7 +142,7 @@ function OnboardingPage({ page: p, index, width, scale }: { page: Page; index: n
       <Text style={styles.text}>{t(`onboarding.pages.${p.id}.text`)}</Text>
       {p.info && (
         <View style={styles.info}>
-          <SymbolView name="lock.shield" tintColor={theme.indigo} size={22} />
+          <SymbolView name="lock.shield" tintColor={theme.indigo} size={22} accessibilityElementsHidden />
           <Text style={styles.infoText}>{t(`onboarding.pages.${p.id}.info`)}</Text>
         </View>
       )}
@@ -173,7 +195,7 @@ function MiniTile({ name, symbol, colors, shadow, left, top, rotate }: {
       <View style={styles.miniTileClip}>
         <Gradient colors={colors} style={StyleSheet.absoluteFill} />
         <SymbolView name={symbol} tintColor="#FFFFFF" size={24} />
-        <Text style={styles.miniTileName}>{name}</Text>
+        <Text style={styles.miniTileName} allowFontScaling={false}>{name}</Text>
       </View>
     </View>
   );
@@ -244,8 +266,8 @@ function ScanArt() {
           <SymbolView name="doc.fill" tintColor="#FFFFFF" size={14} />
         </Gradient>
         <View>
-          <Text style={styles.pdfTitle}>{t('onboarding.art.pdfReady')}</Text>
-          <Text style={styles.pdfSize}>980 KB</Text>{/* i18n-ignore: illustration size */}
+          <Text style={styles.pdfTitle} allowFontScaling={false}>{t('onboarding.art.pdfReady')}</Text>
+          <Text style={styles.pdfSize} allowFontScaling={false}>980 KB</Text>{/* i18n-ignore: illustration size */}
         </View>
       </View>
     </>
@@ -253,26 +275,27 @@ function ScanArt() {
 }
 
 function DeadlineArt() {
+  const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const days = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
   return (
     <>
-      <Circle color="#FFF0E7" />
+      <Circle color={theme.isDark ? '#3A2418' : '#FFF0E7'} />
       <View style={styles.miniCalendar}>
         <View style={styles.calendarHead}>
-          <Text style={styles.calendarMonth}>{capitalize(monthName(10))}</Text>
-          <Text style={styles.calendarYear}>2026</Text>
+          <Text style={styles.calendarMonth} allowFontScaling={false}>{capitalize(monthName(10))}</Text>
+          <Text style={styles.calendarYear} allowFontScaling={false}>2026</Text>
         </View>
         <View style={styles.calendarGrid}>
           {days.map((day) =>
             day === 14 ? (
               <Gradient key={day} colors={BRAND_GRADIENT} style={styles.calendarDay}>
-                <Text style={[styles.calendarNumber, styles.calendarChosen]}>{day}</Text>
+                <Text style={[styles.calendarNumber, styles.calendarChosen]} allowFontScaling={false}>{day}</Text>
               </Gradient>
             ) : (
               <View key={day} style={styles.calendarDay}>
-                <Text style={styles.calendarNumber}>{day}</Text>
+                <Text style={styles.calendarNumber} allowFontScaling={false}>{day}</Text>
               </View>
             ),
           )}
@@ -283,8 +306,8 @@ function DeadlineArt() {
           <SymbolView name="bolt" tintColor="#FFFFFF" size={18} />
         </Gradient>
         <View>
-          <Text style={styles.reminderTitle}>{t('onboarding.art.billTitle')}</Text>
-          <Text style={styles.reminderText}>{t('onboarding.art.billExpires')}</Text>
+          <Text style={styles.reminderTitle} allowFontScaling={false}>{t('onboarding.art.billTitle')}</Text>
+          <Text style={styles.reminderText} allowFontScaling={false}>{t('onboarding.art.billExpires')}</Text>
         </View>
       </View>
       <Gradient colors={BRAND_GRADIENT} style={styles.bellBadge}>
@@ -311,7 +334,7 @@ function WalletCard({ name, colors, accent, left, top, rotate }: {
         <Gradient colors={colors} style={StyleSheet.absoluteFill} />
         <View style={styles.walletCircleTop} />
         <View style={[styles.walletCircleBottom, { backgroundColor: accent }]} />
-        <Text style={styles.walletName}>{name}</Text>
+        <Text style={styles.walletName} allowFontScaling={false}>{name}</Text>
         <View style={styles.walletCode}>
           {Array.from({ length: 34 }, (_, i) => (
             <View key={i} style={[styles.walletBar, { width: i % 3 === 0 ? 3 : 2 }]} />
@@ -323,11 +346,12 @@ function WalletCard({ name, colors, accent, left, top, rotate }: {
 }
 
 function CardsArt() {
+  const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   return (
     <>
-      <Circle color="#E6F7F0" />
+      <Circle color={theme.isDark ? '#15332A' : '#E6F7F0'} />
       <WalletCard name={t('onboarding.art.gym')} colors={['#FF6F9B', '#E8457A']} accent="#FFD27A" left={40} top={60} rotate="-10deg" />
       <WalletCard name={t('onboarding.art.library')} colors={BRAND_GRADIENT} accent="#FF9A70" left={70} top={120} rotate="-2deg" />
       <WalletCard name={t('onboarding.art.supermarket')} colors={['#2ECC9A', '#13A37B']} accent="#F5CB6B" left={96} top={186} rotate="7deg" />
@@ -345,13 +369,13 @@ const makeStyles = (c: Palette) =>
     backgroundColor: c.background,
   },
   topBar: {
-    height: 44,
+    minHeight: 44,
     paddingHorizontal: SIDE,
     flexDirection: 'row',
     justifyContent: 'flex-end',
   },
   skipButton: {
-    height: 44,
+    minHeight: 44,
     justifyContent: 'center',
   },
   skip: {
@@ -483,7 +507,7 @@ const makeStyles = (c: Palette) =>
     width: 46,
     height: 46,
     borderRadius: 23,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: c.surface, // themed: the indigo icon stays readable in "Tema notte"
     alignItems: 'center',
     justifyContent: 'center',
     boxShadow: '0 8px 18px rgba(28, 30, 70, 0.12)',
@@ -506,7 +530,7 @@ const makeStyles = (c: Palette) =>
     marginTop: 6,
     padding: 8,
     borderRadius: 6,
-    backgroundColor: '#FFF0E7',
+    backgroundColor: '#FFF0E7', // on the white paper in both themes
     gap: 5,
   },
   scanFrame: {
@@ -538,7 +562,7 @@ const makeStyles = (c: Palette) =>
     paddingVertical: 8,
     paddingHorizontal: 12,
     borderRadius: 14,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: c.surface, // themed, like its text
     boxShadow: '0 10px 22px rgba(28, 30, 70, 0.14)',
     flexDirection: 'row',
     alignItems: 'center',
@@ -568,7 +592,7 @@ const makeStyles = (c: Palette) =>
     width: 240,
     padding: 16,
     borderRadius: 24,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: c.surface, // themed, like its text
     boxShadow: '0 16px 34px rgba(28, 30, 70, 0.14)',
   },
   calendarHead: {
@@ -617,7 +641,7 @@ const makeStyles = (c: Palette) =>
     paddingVertical: 12,
     paddingHorizontal: 14,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.96)',
+    backgroundColor: c.isDark ? c.surface : 'rgba(255, 255, 255, 0.96)', // themed, like its text
     boxShadow: '0 14px 30px rgba(28, 30, 70, 0.16)',
     flexDirection: 'row',
     alignItems: 'center',
@@ -714,7 +738,7 @@ const makeStyles = (c: Palette) =>
   },
   walletBar: {
     height: '100%',
-    backgroundColor: c.text,
+    backgroundColor: '#1C1E2E', // "Inchiostro" bars on the white code strip in both themes
   },
   scanBadge: {
     position: 'absolute',

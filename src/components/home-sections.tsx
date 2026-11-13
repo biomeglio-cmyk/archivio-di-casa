@@ -2,7 +2,7 @@ import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { DateSquare } from '@/components/date-square';
 import { Text } from '@/components/text';
@@ -14,14 +14,15 @@ import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import { t, useI18n } from '@/i18n';
+import { useFormat } from '@/i18n/use-format';
 import { resolveDocumentFile } from '@/storage/document-files';
-import { categoryShadowRgb, hexToRgb } from '@/utils/colors';
-import { describeDistance, formatShortDate } from '@/utils/dates';
+import { categoryShadowRgb, hexToRgb, textOn } from '@/utils/colors';
+import { describeDistance, formatShortDate, parseISODate } from '@/utils/dates';
 import { formatEuro } from '@/utils/money';
 import { daysUntil } from '@/utils/deadlines';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
-const FAVORITE_HEIGHT = 196;
+const FAVORITE_HEIGHT = 196; // grows with larger text
 // The favorites of the design use a steeper gradient than the category squares (160°)
 const FAVORITE_START = { x: 0.33, y: 0 };
 const FAVORITE_END = { x: 0.67, y: 1 };
@@ -45,15 +46,17 @@ function favoriteSubtitle(document: DocumentListItem): string {
 
 // One of the two big favorites of Home (196 high): the category gradient with its icon, or (cover
 // "Foto") the photo at the top; a picked color (or a card's color) as a solid background.
-// Name 17/600 and the deadline 13/400 at the bottom, in white.
+// Name 17/600 and the deadline 13/400 at the bottom: in the category's readable text color, on a
+// solid color dark ink or white, whichever reads (textOn).
 export function FavoriteTile({ document }: { document: DocumentListItem }) {
   const styles = useThemedStyles(makeStyles);
   useI18n(); // re-render when the language changes
   const { pressed, handlers } = usePressed();
+  const { fontScale } = useWindowDimensions();
   const { category } = document;
   const showPhoto = document.firstImagePath !== null && document.coverMode !== 'color';
   const solid = document.coverColor ?? (category.isCards ? (document.cardColor ?? DEFAULT_CARD_COLOR) : null);
-  const textColor = solid ? '#FFFFFF' : category.colors.text;
+  const textColor = solid ? textOn(solid) : category.colors.text;
   const shadow = tintedShadow(solid ? hexToRgb(solid) : categoryShadowRgb(category.colors));
   const subtitle = favoriteSubtitle(document);
 
@@ -73,7 +76,7 @@ export function FavoriteTile({ document }: { document: DocumentListItem }) {
       <View style={styles.bottom}>
         <TileTitle style={[styles.title, { color: textColor }]}>{document.title}</TileTitle>
         {subtitle.length > 0 && (
-          <Text style={[styles.subtitle, { color: textColor }]} numberOfLines={2}>
+          <Text style={[styles.subtitle, { color: textColor }]} numberOfLines={fontScale > 1.3 ? undefined : 2}>
             {subtitle}
           </Text>
         )}
@@ -116,9 +119,13 @@ export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   useI18n(); // re-render when the language changes
+  const fmt = useFormat();
   const { pressed, handlers } = usePressed();
+  const { fontScale } = useWindowDimensions();
+  const large = fontScale > 1.3; // larger text: the whole name and subtitle
   if (!document.expiresAt) return null;
   const days = daysUntil(document.expiresAt);
+  const subtitle = deadlineSubtitle(document, days);
 
   return (
     <WhiteCard style={styles.deadlineCard}>
@@ -126,14 +133,16 @@ export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
         {...handlers}
         onPress={() => openDocument(document)}
         accessibilityRole="button"
+        // One element: "Bolletta luce, 14 novembre, Tra 3 giorni · € 84,20"
+        accessibilityLabel={[document.title, fmt.dayMonth(parseISODate(document.expiresAt)), subtitle].join(', ')}
         style={[styles.deadlineRow, pressed && styles.pressed]}>
         <DateSquare iso={document.expiresAt} highlighted />
         <View style={styles.deadlineTexts}>
-          <Text style={styles.deadlineTitle} numberOfLines={2}>
+          <Text style={styles.deadlineTitle} numberOfLines={large ? undefined : 2}>
             {document.title}
           </Text>
-          <Text style={styles.deadlineSubtitle} numberOfLines={1}>
-            {deadlineSubtitle(document, days)}
+          <Text style={styles.deadlineSubtitle} numberOfLines={large ? undefined : 1}>
+            {subtitle}
           </Text>
         </View>
         <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={16} weight="semibold" />
@@ -146,12 +155,12 @@ const makeStyles = (c: Palette) =>
   StyleSheet.create({
   favorite: {
     flex: 1,
-    height: FAVORITE_HEIGHT,
+    minHeight: FAVORITE_HEIGHT,
     borderRadius: Radius.card,
     borderCurve: 'continuous',
   },
   fill: {
-    flex: 1,
+    flexGrow: 1, // not flex: 1, so larger text makes the tile taller instead of being cut
     padding: 16,
     borderRadius: Radius.card,
     borderCurve: 'continuous',

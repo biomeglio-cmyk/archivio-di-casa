@@ -1,12 +1,13 @@
 import { router, type Href } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
-import { Fragment, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { Alert, Pressable, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { confirmDeleteCategory } from '@/actions/delete-actions';
 import { documentQuickActions } from '@/actions/quick-actions';
 import { ActionSheet, type SheetAction } from '@/components/action-sheet';
@@ -34,8 +35,8 @@ import { useI18n } from '@/i18n';
 import { searchDocuments } from '@/search/search-documents';
 import { TAX_CATEGORY_KEY } from '@/send/tax-package';
 import { getFolderView, saveFolderView, type FolderView } from '@/settings/folder-view';
-import { categoryShadowRgb, categoryTint } from '@/utils/colors';
-import { groupByMonth, newItemLabel } from '@/utils/folder';
+import { categoryShadowRgb, categoryTint, readableGradient } from '@/utils/colors';
+import { folderRowSubtitle, groupByMonth, newItemLabel } from '@/utils/folder';
 import { whenBelowLimit } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
@@ -79,7 +80,8 @@ export function FolderScreen({ category, documents }: Props) {
   }
 
   const { tint, onTint, dashed } = categoryTint(category.colors, theme);
-  const gradient = [category.colors.top, category.colors.bottom] as const;
+  // Chips and buttons have white text: the category gradient darkened until it reads (WCAG AA)
+  const gradient = readableGradient([category.colors.top, category.colors.bottom]);
   const due = documents.filter((d) => d.paymentStatus === 'due').length;
   const subtitle = [t('common.documents', { count: documents.length }), due > 0 ? t('folderScreen.toPay', { count: due }) : null]
     .filter(Boolean)
@@ -104,6 +106,45 @@ export function FolderScreen({ category, documents }: Props) {
   const filtered = activeType !== null || (searchOpen && query.trim().length > 0);
   const months = groupByMonth(shown);
   const selectedIds = documents.filter((d) => selection.selected.has(d.id)).map((d) => d.id);
+  const searching = searchOpen && query.trim().length > 0;
+
+  // VoiceOver: how many documents a Tipo chip or the search leaves, once the typing settles
+  useEffect(() => {
+    if (!filtered) return;
+    const timer = setTimeout(() => announce(t('common.documents', { count: shown.length })), 600);
+    return () => clearTimeout(timer);
+  }, [filtered, activeType, searching, query, shown.length, t]);
+
+  // A tile read as one: "Bolletta luce, Scade il 14 nov, Da pagare"
+  const tileLabel = (document: DocumentListItem) =>
+    [
+      document.title,
+      folderRowSubtitle(document),
+      document.paymentStatus === 'due' ? t('folderRow.due') : document.paymentStatus === 'paid' ? t('folderRow.paid') : null,
+    ]
+      .filter(Boolean)
+      .join(', ');
+
+  // "Seleziona e invia" and "Riordina" on / off, said to VoiceOver
+  function startSelecting() {
+    selection.start();
+    announce(t('a11y.browse.selecting'));
+  }
+
+  function startReordering() {
+    setReordering(true);
+    announce(t('a11y.browse.reorderOn'));
+  }
+
+  function endMode() {
+    if (reordering) {
+      setReordering(false);
+      announce(t('a11y.browse.reorderOff'));
+    } else {
+      selection.cancel();
+      announce(t('a11y.browse.selectionOff'));
+    }
+  }
 
   async function saveOrder(items: DocumentListItem[]) {
     try {
@@ -148,7 +189,7 @@ export function FolderScreen({ category, documents }: Props) {
         ]
       : []),
     ...(documents.some((d) => d.imageCount > 0)
-      ? [{ key: 'select', label: t('folderScreen.actions.selectAndSend'), symbol: 'checkmark.circle' as const, onPress: selection.start }]
+      ? [{ key: 'select', label: t('folderScreen.actions.selectAndSend'), symbol: 'checkmark.circle' as const, onPress: startSelecting }]
       : []),
     ...(documents.length > 1
       ? [
@@ -156,7 +197,7 @@ export function FolderScreen({ category, documents }: Props) {
             key: 'reorder',
             label: t('folderScreen.actions.reorder'),
             symbol: 'arrow.up.arrow.down' as const,
-            onPress: () => setReordering(true),
+            onPress: startReordering,
           },
         ]
       : []),
@@ -190,7 +231,7 @@ export function FolderScreen({ category, documents }: Props) {
           />
           {selection.selecting || reordering ? (
             <Pressable
-              onPress={() => (reordering ? setReordering(false) : selection.cancel())}
+              onPress={endMode}
               accessibilityRole="button"
               style={[styles.done, { backgroundColor: tint }]}>
               <Text style={[styles.doneText, { color: onTint }]}>{reordering ? t('common.done') : t('common.cancel')}</Text>
@@ -207,6 +248,7 @@ export function FolderScreen({ category, documents }: Props) {
               <RoundIconButton
                 symbol="magnifyingglass"
                 accessibilityLabel={t('folderScreen.searchIn', { name: category.name })}
+                expanded={searchOpen}
                 background={tint}
                 color={theme.text}
                 onPress={() => {
@@ -238,6 +280,7 @@ export function FolderScreen({ category, documents }: Props) {
         {!reordering && (
           <View style={styles.viewSwitch}>
             <Segmented
+              accessibilityLabel={t('a11y.segmented.layout')}
               values={[t('folderScreen.viewList'), t('folderScreen.viewGrid')]}
               selectedIndex={view === 'list' ? 0 : 1}
               onChange={(index) => changeView(index === 0 ? 'list' : 'grid')}
@@ -260,7 +303,7 @@ export function FolderScreen({ category, documents }: Props) {
               <SortableTileGrid
                 items={documents}
                 keyFor={(document) => document.id}
-                labelFor={(document) => document.title}
+                labelFor={tileLabel}
                 renderTile={(document) => <DocumentTileFace document={document} />}
                 onOpen={() => undefined}
                 onReorder={saveOrder}
@@ -321,7 +364,7 @@ export function FolderScreen({ category, documents }: Props) {
                   <SortableTileGrid
                     items={documents}
                     keyFor={(document) => document.id}
-                    labelFor={(document) => document.title}
+                    labelFor={tileLabel}
                     renderTile={(document) => <DocumentTileFace document={document} />}
                     actionsFor={(document) => documentQuickActions(db, document, documentHref(document))}
                     onOpen={(document) => router.push(documentHref(document))}
@@ -355,7 +398,11 @@ export function FolderScreen({ category, documents }: Props) {
                               setMenu({
                                 rect,
                                 tile: (
-                                  <View style={styles.menuTile}>
+                                  // The lifted copy of the row: only a picture, VoiceOver reads the menu
+                                  <View
+                                    style={styles.menuTile}
+                                    accessibilityElementsHidden
+                                    importantForAccessibility="no-hide-descendants">
                                     <FolderRow
                                       document={document}
                                       actions={[]}
@@ -513,7 +560,8 @@ const makeStyles = (c: Palette) =>
   },
   add: {
     marginTop: 14,
-    height: 76,
+    minHeight: 76,
+    paddingVertical: 12,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderRadius: 22,

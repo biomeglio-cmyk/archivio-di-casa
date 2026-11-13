@@ -23,10 +23,10 @@ export function DateSquare({ iso, highlighted = false }: Props) {
   const color = highlighted ? '#FFFFFF' : theme.indigo;
   const content = (
     <>
-      <Text style={[styles.day, { color }]} maxFontSizeMultiplier={1.2}>
+      <Text style={[styles.day, { color }]} maxFontSizeMultiplier={2}>
         {date.getDate()}
       </Text>
-      <Text style={[styles.month, { color }]} maxFontSizeMultiplier={1.2}>
+      <Text style={[styles.month, { color }]} maxFontSizeMultiplier={2}>
         {fmt.monthName(date.getMonth(), 'short')}
       </Text>
     </>
@@ -51,8 +51,10 @@ export function DateSquare({ iso, highlighted = false }: Props) {
 const makeStyles = (c: Palette) =>
   StyleSheet.create({
   square: {
-    width: 46,
-    height: 50,
+    minWidth: 46,
+    minHeight: 50,
+    paddingHorizontal: 4,
+    paddingVertical: 4,
     borderRadius: 14,
     borderCurve: 'continuous',
     alignItems: 'center',

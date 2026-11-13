@@ -3,9 +3,10 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { announce } from '@/a11y/accessibility';
 import { FrontBackComposer, type FrontBackComposerHandle } from '@/components/front-back-composer';
 import { Segmented } from '@/components/segmented';
 import { Switch } from '@/components/switch';
@@ -74,6 +75,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
+  const large = useWindowDimensions().fontScale > 1.3; // larger text: names and labels wrap
   const composerRef = useRef<FrontBackComposerHandle>(null);
   const [preferences, setPreferences] = useState<SendPreferences>(loadSendPreferences);
   const [result, setResult] = useState<Result | null>(null);
@@ -193,13 +195,22 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       ? t('send.meta.failed')
       : t('send.meta.preparing');
   const ready = Boolean(prepared) && !delivering;
+
+  // VoiceOver: the files are ready ("PDF unico · 2 pagine · 1,2 MB"), or why they are not
+  useEffect(() => {
+    if (busy) return;
+    announce(prepared ? t('a11y.send.ready', { meta }) : error);
+  }, [busy, prepared, error, meta, t]);
   const firstPhoto = single?.files.find((f) => f.kind === 'image');
   const { tint, onTint } = single ? categoryTint(single.category.colors, theme) : { tint: theme.lilac, onTint: theme.indigo };
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { paddingBottom: insets.bottom + 24 }]}>
       <View style={styles.head}>
-        <View style={[styles.thumb, { backgroundColor: tint }]}>
+        <View
+          style={[styles.thumb, { backgroundColor: tint }]}
+          accessibilityElementsHidden
+          importantForAccessibility="no-hide-descendants">
           {firstPhoto ? (
             <Image source={{ uri: resolveDocumentFile(firstPhoto.path).uri }} style={styles.thumbPhoto} contentFit="cover" />
           ) : (
@@ -211,12 +222,12 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
           )}
         </View>
         <View style={styles.flex}>
-          <Text style={styles.title} numberOfLines={2} accessibilityRole="header">
+          <Text style={styles.title} numberOfLines={large ? undefined : 2} accessibilityRole="header">
             {t('send.title', { title })}
           </Text>
-          <View style={styles.metaRow}>
+          <View style={styles.metaRow} accessible accessibilityLabel={meta} accessibilityState={{ busy }}>
             {busy && <ActivityIndicator size="small" />}
-            <Text style={styles.meta} numberOfLines={1}>
+            <Text style={styles.meta} numberOfLines={large ? undefined : 1}>
               {meta}
             </Text>
           </View>
@@ -225,6 +236,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
 
       <View style={styles.format}>
         <Segmented
+          accessibilityLabel={t('a11y.segmented.format')}
           values={['PDF', t('send.formatPhotos')]}
           selectedIndex={format === 'pdf' ? 0 : 1}
           enabled={!multi && !importedPdf}
@@ -240,7 +252,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
             disabled={!ready}
             accessibilityRole="button"
             accessibilityState={{ disabled: !ready }}
-            style={({ pressed }) => [styles.action, (pressed || !ready) && styles.dimmed]}>
+            style={({ pressed }) => [styles.action, large && styles.actionLarge, (pressed || !ready) && styles.dimmed]}>
             {action.gradient ? (
               <LinearGradient
                 colors={action.gradient}
@@ -254,40 +266,39 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
                 <SymbolView name={action.symbol} tintColor={theme.indigo} size={26} />
               </View>
             )}
-            <Text style={styles.actionLabel} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
+            <Text
+              style={styles.actionLabel}
+              numberOfLines={large ? 2 : 1}
+              adjustsFontSizeToFit={!large}
+              minimumFontScale={0.8}>
               {t(`send.actions.${action.key}`)}
             </Text>
           </Pressable>
         ))}
       </View>
 
-      <View style={styles.noteRow}>
-        <Text style={styles.noteLabel}>{t('send.includeNote')}</Text>
-        <Switch
-          value={includeNote}
-          onValueChange={setIncludeNote}
-          disabled={!single?.notes}
-          accessibilityLabel={t('send.includeNote')}
-        />
-      </View>
+      <SwitchRow
+        label={t('send.includeNote')}
+        value={includeNote}
+        onValueChange={setIncludeNote}
+        disabled={!single?.notes}
+      />
       {single && !single.notes && <Text style={styles.small}>{t('send.noNote')}</Text>}
 
       {/* Our extras: front and back together, the weight limit, the files that will go */}
       {single && twoFaces && (
-        <View style={styles.noteRow}>
-          <Text style={styles.noteLabel}>
-            {format === 'pdf' ? t('send.frontBackPage') : t('send.frontBackImage')}
-          </Text>
-          <Switch
-            value={together}
-            onValueChange={(value) => update({ together: value })}
-            accessibilityLabel={format === 'pdf' ? t('send.frontBackPage') : t('send.frontBackImage')}
-          />
-        </View>
+        <SwitchRow
+          label={format === 'pdf' ? t('send.frontBackPage') : t('send.frontBackImage')}
+          value={together}
+          onValueChange={(value) => update({ together: value })}
+        />
       )}
 
-      <Text style={styles.section}>{t('send.maxSize')}</Text>
+      <Text style={styles.section} accessibilityRole="header">
+        {t('send.maxSize')}
+      </Text>
       <Segmented
+        accessibilityLabel={t('send.maxSize')}
         values={SIZE_LIMITS.map(sizeLimitLabel)}
         selectedIndex={SIZE_LIMITS.indexOf(limit)}
         enabled={!importedPdf}
@@ -301,9 +312,14 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       {prepared && (
         <View style={styles.files}>
           {prepared.files.map((file) => (
-            <View key={file.name} style={styles.fileRow}>
+            // One element for VoiceOver: "Bolletta.pdf, 1,2 MB"
+            <View
+              key={file.name}
+              style={styles.fileRow}
+              accessible
+              accessibilityLabel={`${file.name}, ${formatBytes(file.bytes)}`}>
               <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={theme.indigo} size={20} />
-              <Text style={styles.fileName} numberOfLines={1}>
+              <Text style={styles.fileName} numberOfLines={large ? undefined : 1}>
                 {file.name}
               </Text>
               <Text style={styles.small}>{formatBytes(file.bytes)}</Text>
@@ -339,11 +355,35 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
   );
 }
 
+// A row with a switch, read by VoiceOver as one switch (the whole row toggles it)
+function SwitchRow({ label, value, onValueChange, disabled = false }: {
+  label: string;
+  value: boolean;
+  onValueChange: (value: boolean) => void;
+  disabled?: boolean;
+}) {
+  const styles = useThemedStyles(makeStyles);
+  return (
+    <Pressable
+      onPress={() => onValueChange(!value)}
+      disabled={disabled}
+      accessibilityRole="switch"
+      accessibilityLabel={label}
+      accessibilityState={{ checked: value, disabled }}
+      style={styles.noteRow}>
+      <Text style={styles.noteLabel}>{label}</Text>
+      <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+        <Switch value={value} onValueChange={onValueChange} disabled={disabled} />
+      </View>
+    </Pressable>
+  );
+}
+
 function Warning({ text }: { text: string }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   return (
-    <View style={styles.warning}>
+    <View style={styles.warning} accessible accessibilityLabel={text}>
       <SymbolView name="exclamationmark.triangle.fill" tintColor={WARNING_COLORS(theme).text} size={16} />
       <Text style={styles.warningText}>{text}</Text>
     </View>
@@ -430,6 +470,9 @@ const makeStyles = (c: Palette) =>
     alignItems: 'center',
     gap: 8,
   },
+  actionLarge: {
+    width: '33.33%', // larger text: three actions a row, labels on two lines
+  },
   dimmed: {
     opacity: 0.5,
   },
@@ -512,7 +555,8 @@ const makeStyles = (c: Palette) =>
   },
   cancel: {
     marginTop: 18,
-    height: 50,
+    minHeight: 50,
+    paddingVertical: 10,
     borderRadius: 25,
     backgroundColor: c.lilac,
     alignItems: 'center',

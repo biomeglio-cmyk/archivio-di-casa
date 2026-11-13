@@ -17,6 +17,7 @@ import {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { WebView } from 'react-native-webview';
 
+import { announce, useReduceMotion } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
 import { FONTS } from '@/constants/typography';
 import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
@@ -46,7 +47,8 @@ export default function ViewDocumentScreen() {
   const { id } = useLocalSearchParams<{ id: string }>();
   const documentId = Number(id);
   const insets = useSafeAreaInsets();
-  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
+  const { width: screenWidth, height: screenHeight, fontScale } = useWindowDimensions();
+  const reduceMotion = useReduceMotion();
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, documentId), [documentId]);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, documentId), [documentId]);
   const scrollRef = useRef<ScrollViewInstance>(null);
@@ -101,14 +103,21 @@ export default function ViewDocumentScreen() {
     const centerY = (y + screenHeight / 2) / current;
     const width = screenWidth / next;
     const height = screenHeight / next;
-    scrollRef.current?.scrollResponderZoomTo({ x: centerX - width / 2, y: centerY - height / 2, width, height, animated: true });
+    scrollRef.current?.scrollResponderZoomTo({
+      x: centerX - width / 2,
+      y: centerY - height / 2,
+      width,
+      height,
+      animated: !reduceMotion,
+    });
     setZoom(next);
+    announce(t('a11y.viewDocument.zoomValue', { percent: Math.round(next * 100) }));
   }
 
   const send = () => router.push({ pathname: '/send', params: { ids: String(documentId) } });
 
   return (
-    <View style={styles.screen}>
+    <View style={styles.screen} accessibilityViewIsModal onAccessibilityEscape={() => router.back()}>
       {/* Dark screen: light clock and battery in both themes */}
       <StatusBar style="light" />
       <ScrollView
@@ -137,6 +146,9 @@ export default function ViewDocumentScreen() {
                 }}
                 style={[styles.page, sizes[index]]}
                 contentFit="contain"
+                accessibilityIgnoresInvertColors
+                accessible
+                accessibilityRole="image"
                 accessibilityLabel={t('viewDocument.pageOf', { number: index + 1, total: images.length })}
               />
             ))
@@ -151,7 +163,7 @@ export default function ViewDocumentScreen() {
         pointerEvents="box-none">
         <RoundButton symbol="xmark" label={t('common.close')} onPress={() => router.back()} />
         <View style={styles.titleBox}>
-          <Text style={styles.title} numberOfLines={1}>
+          <Text style={styles.title} numberOfLines={fontScale > 1.3 ? 2 : 1} accessibilityRole="header">
             {document?.title ?? ''}
           </Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
@@ -170,7 +182,10 @@ export default function ViewDocumentScreen() {
           disabled={zoom <= ZOOM_MIN + 0.01}
           onPress={() => zoomTo(zoom - ZOOM_STEP)}
         />
-        <Text style={styles.percent} accessibilityLiveRegion="polite">
+        <Text
+          style={styles.percent}
+          accessibilityLiveRegion="polite"
+          accessibilityLabel={t('a11y.viewDocument.zoomValue', { percent: Math.round(zoom * 100) })}>
           {Math.round(zoom * 100)}%
         </Text>
         <RoundButton
@@ -223,7 +238,7 @@ function RoundButton({ symbol, label, onPress, transparent = false, disabled = f
         !transparent && styles.roundFilled,
         (pressed || disabled) && styles.dimmed,
       ]}>
-      <SymbolView name={symbol} tintColor="#FFFFFF" size={18} weight="semibold" />
+      <SymbolView name={symbol} tintColor="#FFFFFF" size={18} weight="semibold" accessibilityElementsHidden />
     </Pressable>
   );
 }
@@ -289,7 +304,8 @@ const makeStyles = (c: Palette) =>
     justifyContent: 'center',
   },
   roundFilled: {
-    backgroundColor: 'rgba(255, 255, 255, 0.14)',
+    // Opaque: the 14% white of the design on the dark background, still readable over a white page
+    backgroundColor: '#3A3C4D',
   },
   dimmed: {
     opacity: 0.45,
@@ -297,10 +313,12 @@ const makeStyles = (c: Palette) =>
   zoomBar: {
     position: 'absolute',
     alignSelf: 'center',
-    height: 56,
+    minHeight: 56,
+    maxWidth: '92%',
     paddingHorizontal: 8,
     borderRadius: 28,
-    backgroundColor: 'rgba(255, 255, 255, 0.16)',
+    // Opaque: the 16% white of the design on the dark background, still readable over a white page
+    backgroundColor: '#3F4051',
     flexDirection: 'row',
     alignItems: 'center',
   },
@@ -318,6 +336,7 @@ const makeStyles = (c: Palette) =>
     backgroundColor: 'rgba(255, 255, 255, 0.25)',
   },
   pageLabel: {
+    flexShrink: 1,
     paddingHorizontal: 12,
     color: '#FFFFFF',
     fontSize: 14,

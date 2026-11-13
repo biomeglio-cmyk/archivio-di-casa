@@ -718,7 +718,6 @@
     "dueIn_other": "Termin za {{count}} dnia"
   },
   "deadlineListRow": {
-    "hint": "Przytrzymaj, aby edytować lub usunąć termin",
     "statusDue": "do zapłaty",
     "statusPaid": "zapłacone"
   },
@@ -1755,5 +1754,119 @@
     "rateMessage": "Ocenę wystawisz, gdy Sottomano pojawi się w App Store.",
     "lockUnavailableTitle": "Blokada niedostępna",
     "lockUnavailableMessage": "Aby zablokować Sottomano, potrzebujesz kodu na iPhonie. Ustaw go w Ustawienia › Face ID i kod, a potem spróbuj ponownie."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Zmiana kolejności włączona: przy każdym elemencie wybierz czynność, aby go przenieść.",
+      "reorderOff": "Zmiana kolejności zakończona",
+      "selecting": "Zaznaczanie: stuknij dokumenty, które chcesz wysłać jako jeden PDF.",
+      "selectionOff": "Zaznaczanie anulowane"
+    },
+    "notificationsPanel": {
+      "allRead": "Wszystkie powiadomienia oznaczone jako przeczytane"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} termin",
+      "dayCount_few": "{{date}}: {{count}} terminy",
+      "dayCount_many": "{{date}}: {{count}} terminów",
+      "dayCount_other": "{{date}}: {{count}} terminu"
+    },
+    "favorites": {
+      "removed": "Usunięto z ulubionych: {{title}}"
+    },
+    "folderRow": {
+      "disabledHint": "Do pliku PDF trafiają tylko dokumenty ze zdjęciami."
+    },
+    "categoryForm": {
+      "iconNumber": "Ikona {{number}}",
+      "selected": "Zaznaczone",
+      "icons": {
+        "folder": "Folder",
+        "tag": "Etykieta",
+        "star": "Gwiazdka",
+        "gift": "Prezent",
+        "tools": "Narzędzia",
+        "cart": "Koszyk",
+        "stethoscope": "Wizyty lekarskie",
+        "fitness": "Siłownia",
+        "music": "Muzyka",
+        "book": "Książka",
+        "idCard": "Dowód osobisty",
+        "card": "Karta",
+        "lightbulb": "Żarówka",
+        "shield": "Tarcza",
+        "receipt": "Paragon",
+        "firstAid": "Pierwsza pomoc",
+        "cleaning": "Sprzątanie",
+        "backpack": "Plecak"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, dziś"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Tydzień od {{date}}"
+    },
+    "reorder": {
+      "moved": "Przeniesiono na pozycję {{position}} z {{count}}"
+    },
+    "colorWheel": {
+      "value": "Odcień {{hue}}°, intensywność {{intensity}}%",
+      "moreIntense": "Większa intensywność",
+      "lessIntense": "Mniejsza intensywność"
+    },
+    "deadlineListRow": {
+      "actions": "Edytuj lub usuń termin"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} z bliskim terminem",
+      "alertCount_few": "{{count}} z bliskim terminem",
+      "alertCount_many": "{{count}} z bliskim terminem",
+      "alertCount_other": "{{count}} z bliskim terminem"
+    },
+    "formField": {
+      "required": "wymagane"
+    },
+    "walletCard": {
+      "number": "Numer {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Powiększenie {{percent}}%"
+    },
+    "filesEditor": {
+      "added_one": "Dodano {{count}} stronę",
+      "added_few": "Dodano {{count}} strony",
+      "added_many": "Dodano {{count}} stron",
+      "added_other": "Dodano {{count}} strony",
+      "removed": "Usunięto stronę: {{name}}",
+      "movedTo": "Przeniesiono na pozycję {{position}} z {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Dodano stronę {{number}}"
+    },
+    "passwordForm": {
+      "shown": "Hasło widoczne",
+      "generated": "Wygenerowano hasło: {{strength}}",
+      "imageRemoved": "Usunięto obraz"
+    },
+    "onboarding": {
+      "pageChanged": "Strona {{page}} z {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Pliki gotowe: {{meta}}"
+    },
+    "trash": {
+      "restored": "Przywrócono: {{title}}",
+      "deleted": "Usunięto na zawsze: {{title}}"
+    },
+    "segmented": {
+      "format": "Format",
+      "calendarView": "Widok",
+      "layout": "Układ",
+      "codeType": "Typ kodu",
+      "show": "Pokaż",
+      "side": "Strona",
+      "status": "Status"
+    }
   }
 }

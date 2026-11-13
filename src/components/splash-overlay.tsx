@@ -35,7 +35,12 @@ export function SplashOverlay() {
   if (!visible) return null;
 
   return (
-    <Animated.View exiting={FadeOut.duration(FADE_MS)} style={[StyleSheet.absoluteFill, styles.overlay]}>
+    // Under one second on screen: only a picture for VoiceOver, which starts on the first screen
+    <Animated.View
+      exiting={FadeOut.duration(FADE_MS)}
+      style={[StyleSheet.absoluteFill, styles.overlay]}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants">
       <LinearGradient
         colors={BRAND_GRADIENT}
         start={{ x: 0, y: 0 }}
@@ -47,8 +52,10 @@ export function SplashOverlay() {
         }}>
         <Image source={require('@/assets/images/logo-glyph.png')} style={styles.glyph} contentFit="contain" />
         {/* i18n-ignore: brand */}
-        <Text style={styles.name}>Sottomano</Text>
-        <Text style={styles.tagline}>{t('splashOverlay.tagline')}</Text>
+        <Text style={styles.name} allowFontScaling={false}>Sottomano</Text>
+        <Text style={styles.tagline} maxFontSizeMultiplier={2}>
+          {t('splashOverlay.tagline')}
+        </Text>
       </LinearGradient>
     </Animated.View>
   );

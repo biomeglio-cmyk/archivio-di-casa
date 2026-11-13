@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, type AccessibilityRole, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
+import { StyleSheet, useWindowDimensions, View, type AccessibilityRole, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
@@ -30,6 +30,9 @@ export function TileTitle({
   accessibilityRole,
 }: Props) {
   const styles = useThemedStyles(makeStyles);
+  const { fontScale } = useWindowDimensions();
+  // Larger text: twice the lines, so a name is not cut after a word or two
+  const lines = numberOfLines > 0 && fontScale > 1.3 ? numberOfLines * 2 : numberOfLines;
   const [width, setWidth] = useState(0); // room for the text
   const [wordWidth, setWordWidth] = useState(0); // the widest word at the full font size
 
@@ -49,7 +52,7 @@ export function TileTitle({
     <View style={containerStyle} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
       <Text
         style={[style, sized]}
-        numberOfLines={tooLong ? 1 : numberOfLines}
+        numberOfLines={tooLong ? 1 : lines}
         accessibilityRole={accessibilityRole}
         ellipsizeMode="tail"
         maxFontSizeMultiplier={maxFontSizeMultiplier}>

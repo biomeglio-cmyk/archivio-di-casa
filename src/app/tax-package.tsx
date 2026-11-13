@@ -1,8 +1,9 @@
 import { router, useLocalSearchParams } from 'expo-router';
 import { Stack } from 'expo-router/stack';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ActivityIndicator, Alert, ScrollView, StyleSheet, View } from 'react-native';
 
+import { announce } from '@/a11y/accessibility';
 import { PrimaryButton } from '@/components/primary-button';
 import { Choice, Group, Row } from '@/components/grouped-list';
 import { Segmented } from '@/components/segmented';
@@ -39,6 +40,11 @@ export default function TaxPackageScreen() {
   const photos = items?.reduce((n, item) => n + item.files.filter((f) => f.kind === 'image').length, 0) ?? 0;
   const pdfs = items?.reduce((n, item) => n + item.files.filter((f) => f.kind === 'pdf').length, 0) ?? 0;
   const busy = progress !== null;
+
+  // VoiceOver: each step of the preparation ("Preparo il PDF…", "Riduco le foto…")
+  useEffect(() => {
+    announce(progress);
+  }, [progress]);
   const limitBytes = SIZE_LIMITS.find((l) => l.key === limit)?.bytes ?? null;
 
   async function prepare() {
@@ -137,10 +143,11 @@ export default function TaxPackageScreen() {
         </Group>
 
         <View style={styles.group}>
-          <ThemedText type="smallBold" themeColor="textSecondary" style={styles.groupTitle}>
+          <ThemedText type="smallBold" themeColor="textSecondary" style={styles.groupTitle} accessibilityRole="header">
             {t('taxPackage.maxPhotoSize')}
           </ThemedText>
           <Segmented
+            accessibilityLabel={t('taxPackage.maxPhotoSize')}
             values={SIZE_LIMITS.map(sizeLimitLabel)}
             selectedIndex={SIZE_LIMITS.findIndex((l) => l.key === limit)}
             enabled={!busy}
@@ -152,7 +159,7 @@ export default function TaxPackageScreen() {
         </View>
 
         {busy ? (
-          <WhiteCard style={styles.progress}>
+          <WhiteCard style={styles.progress} accessible accessibilityLabel={progress} accessibilityState={{ busy }}>
             <ActivityIndicator />
             <ThemedText themeColor="textSecondary">{progress}</ThemedText>
           </WhiteCard>

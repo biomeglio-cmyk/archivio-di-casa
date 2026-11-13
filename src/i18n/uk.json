@@ -718,7 +718,6 @@
     "dueIn_other": "Через {{count}} дня"
   },
   "deadlineListRow": {
-    "hint": "Торкнися й утримуй, щоб змінити або вилучити термін",
     "statusDue": "до сплати",
     "statusPaid": "сплачено"
   },
@@ -1755,5 +1754,119 @@
     "rateMessage": "Залишити оцінку можна буде, коли Sottomano з’явиться в App Store.",
     "lockUnavailableTitle": "Блокування недоступне",
     "lockUnavailableMessage": "Щоб заблокувати Sottomano, на iPhone потрібен код допуску. Встанови його в Параметри › Face ID і код допуску, а потім спробуй ще раз."
+  },
+  "a11y": {
+    "browse": {
+      "reorderOn": "Зміна порядку: на кожному елементі вибери дію, щоб перемістити його.",
+      "reorderOff": "Порядок змінено",
+      "selecting": "Вибір: торкнися документів, щоб надіслати їх одним PDF.",
+      "selectionOff": "Вибір скасовано"
+    },
+    "notificationsPanel": {
+      "allRead": "Усі сповіщення позначено прочитаними"
+    },
+    "deadlines": {
+      "dayCount_one": "{{date}}: {{count}} термін",
+      "dayCount_few": "{{date}}: {{count}} терміни",
+      "dayCount_many": "{{date}}: {{count}} термінів",
+      "dayCount_other": "{{date}}: {{count}} терміну"
+    },
+    "favorites": {
+      "removed": "Вилучено з Обраного: «{{title}}»"
+    },
+    "folderRow": {
+      "disabledHint": "До PDF потрапляють лише документи з фото."
+    },
+    "categoryForm": {
+      "iconNumber": "Іконка {{number}}",
+      "selected": "Вибрано",
+      "icons": {
+        "folder": "Папка",
+        "tag": "Мітка",
+        "star": "Зірка",
+        "gift": "Подарунок",
+        "tools": "Інструменти",
+        "cart": "Візок",
+        "stethoscope": "Візити до лікаря",
+        "fitness": "Спортзал",
+        "music": "Музика",
+        "book": "Книга",
+        "idCard": "Посвідчення особи",
+        "card": "Картка",
+        "lightbulb": "Лампочка",
+        "shield": "Щит",
+        "receipt": "Чек",
+        "firstAid": "Перша допомога",
+        "cleaning": "Прибирання",
+        "backpack": "Рюкзак"
+      }
+    },
+    "calendar": {
+      "today": "{{date}}, сьогодні"
+    },
+    "deadlineCalendar": {
+      "weekOf": "Тиждень з {{date}}"
+    },
+    "reorder": {
+      "moved": "Переміщено на позицію {{position}} з {{count}}"
+    },
+    "colorWheel": {
+      "value": "Відтінок {{hue}}°, інтенсивність {{intensity}} %",
+      "moreIntense": "Інтенсивніше",
+      "lessIntense": "Менш інтенсивно"
+    },
+    "deadlineListRow": {
+      "actions": "Змінити або вилучити термін"
+    },
+    "groupedList": {
+      "alertCount_one": "{{count}} закінчується",
+      "alertCount_few": "{{count}} закінчуються",
+      "alertCount_many": "{{count}} закінчуються",
+      "alertCount_other": "{{count}} закінчується"
+    },
+    "formField": {
+      "required": "обов’язково"
+    },
+    "walletCard": {
+      "number": "Номер {{number}}"
+    },
+    "viewDocument": {
+      "zoomValue": "Масштаб {{percent}} %"
+    },
+    "filesEditor": {
+      "added_one": "Додано {{count}} сторінку",
+      "added_few": "Додано {{count}} сторінки",
+      "added_many": "Додано {{count}} сторінок",
+      "added_other": "Додано {{count}} сторінки",
+      "removed": "Сторінку вилучено: {{name}}",
+      "movedTo": "Переміщено на позицію {{position}} з {{total}}"
+    },
+    "cameraCapture": {
+      "pageAdded": "Сторінку {{number}} додано"
+    },
+    "passwordForm": {
+      "shown": "Пароль показано",
+      "generated": "Пароль створено: {{strength}}",
+      "imageRemoved": "Зображення вилучено"
+    },
+    "onboarding": {
+      "pageChanged": "Сторінка {{page}} з {{total}}: {{title}}"
+    },
+    "send": {
+      "ready": "Файли готові: {{meta}}"
+    },
+    "trash": {
+      "restored": "Відновлено: «{{title}}»",
+      "deleted": "Видалено назавжди: «{{title}}»"
+    },
+    "segmented": {
+      "format": "Формат",
+      "calendarView": "Вигляд",
+      "layout": "Відображення",
+      "codeType": "Тип коду",
+      "show": "Показати",
+      "side": "Сторона",
+      "status": "Статус"
+    }
   }
 }

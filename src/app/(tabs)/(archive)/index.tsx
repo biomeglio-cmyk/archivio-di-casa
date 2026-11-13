@@ -5,6 +5,7 @@ import { Alert, StyleSheet, View } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
+import { announce } from '@/a11y/accessibility';
 import { categoryQuickActions } from '@/actions/quick-actions';
 import { BackupReminder } from '@/components/backup-reminder';
 import { CATEGORY_TILE_HEIGHT, CategoryTile, describeCategoryCount } from '@/components/category-tile';
@@ -56,6 +57,12 @@ export default function ArchiveScreen() {
   const empty = usage?.used === 0 || emptyPreview; // no documents or cards yet: Home vuota
 
   const [reordering, setReordering] = useState(false); // "Riordina" … "Fine"
+
+  // "Riordina" … "Fine", said to VoiceOver (the tiles get move actions)
+  function reorder(on: boolean) {
+    setReordering(on);
+    announce(on ? t('a11y.browse.reorderOn') : t('a11y.browse.reorderOff'));
+  }
 
   // Leaving Home ends "Riordina"
   useFocusEffect(useCallback(() => () => setReordering(false), []));
@@ -134,8 +141,8 @@ export default function ArchiveScreen() {
                 action={
                   categories && categories.length > 1
                     ? reordering
-                      ? { label: t('common.done'), accessibilityLabel: t('home.reorderDone'), onPress: () => setReordering(false) }
-                      : { label: t('home.reorder'), accessibilityLabel: t('home.reorderCategories'), onPress: () => setReordering(true) }
+                      ? { label: t('common.done'), accessibilityLabel: t('home.reorderDone'), onPress: () => reorder(false) }
+                      : { label: t('home.reorder'), accessibilityLabel: t('home.reorderCategories'), onPress: () => reorder(true) }
                     : undefined
                 }
               />

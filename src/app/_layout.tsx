@@ -14,6 +14,7 @@ import { SQLiteProvider } from 'expo-sqlite';
 import { Fragment } from 'react';
 
 import { useAppGeneration } from '@/backup/app-reload';
+import { AccessibilityProvider, useReduceMotion } from '@/a11y/accessibility';
 import { ThemeProvider as AppThemeProvider } from '@/theme/theme-provider';
 import { AppLock } from '@/components/app-lock';
 import { SplashOverlay } from '@/components/splash-overlay';
@@ -64,9 +65,11 @@ export default function RootLayout() {
 
   // The theme of the whole app (Impostazioni › Aspetto › Tema): switching re-renders in place
   return (
-    <AppThemeProvider>
-      <RootContent />
-    </AppThemeProvider>
+    <AccessibilityProvider>
+      <AppThemeProvider>
+        <RootContent />
+      </AppThemeProvider>
+    </AccessibilityProvider>
   );
 }
 
@@ -76,6 +79,8 @@ function RootContent() {
   const { t } = useI18n();
   // Changes after "Ripristina backup": every screen is rebuilt from the restored data
   const generation = useAppGeneration();
+  // Riduci movimento: the full-screen sheets fade in instead of sliding up
+  const slideUp = useReduceMotion() ? 'fade' : 'slide_from_bottom';
 
   // SQLiteProvider opens the database, runs initDatabase (pragmas, migrations, files folder)
   // and only then renders its children, so every screen finds the database ready.
@@ -94,7 +99,7 @@ function RootContent() {
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
             name="add-document"
-            options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, animation: slideUp }}
           />
           {/* Side menu from ≡ in Home: transparent, it draws its own dimmed background and slides
               its panel in from the left (src/app/menu.tsx) */}
@@ -141,7 +146,7 @@ function RootContent() {
           />
           <Stack.Screen
             name="capture"
-            options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, animation: slideUp }}
           />
           <Stack.Screen
             name="edit-document/[id]"
@@ -272,7 +277,7 @@ function RootContent() {
           {/* Cards: camera (front + barcode), then the card form */}
           <Stack.Screen
             name="add-card"
-            options={{ presentation: 'fullScreenModal', headerShown: false, animation: 'slide_from_bottom' }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, animation: slideUp }}
           />
           <Stack.Screen
             name="new-card"

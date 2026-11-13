@@ -6,18 +6,28 @@ import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { type Palette } from '@/constants/theme';
+import { useI18n } from '@/i18n';
 
 type FormFieldProps = {
   label: string;
   required?: boolean; // shows a brand-colored asterisk after the label
   children: ReactNode;
+  // The control below already says the label (its accessibilityLabel): VoiceOver skips this one
+  labelHiddenFromAccessibility?: boolean;
 };
+
+// VoiceOver: "Titolo, obbligatorio" instead of "Titolo asterisco"
+function useSpokenLabel(label: string, required: boolean): string {
+  const { t } = useI18n();
+  return required ? `${label}, ${t('a11y.formField.required')}` : label;
+}
 
 // "Titolo *": the asterisk marks a required field (explained by a note under the form)
 export function FieldLabel({ label, required = false }: { label: string; required?: boolean }) {
   const styles = useThemedStyles(makeStyles);
+  const spoken = useSpokenLabel(label, required);
   return (
-    <ThemedText>
+    <ThemedText accessibilityLabel={spoken}>
       {label}
       {required && <ThemedText style={styles.asterisk}> *</ThemedText>}
     </ThemedText>
@@ -25,11 +35,18 @@ export function FieldLabel({ label, required = false }: { label: string; require
 }
 
 // Small label above a form control
-export function FormField({ label, required = false, children }: FormFieldProps) {
+export function FormField({ label, required = false, children, labelHiddenFromAccessibility = false }: FormFieldProps) {
   const styles = useThemedStyles(makeStyles);
+  const spoken = useSpokenLabel(label, required);
   return (
     <View style={styles.field}>
-      <ThemedText type="smallBold" themeColor="textSecondary" style={styles.label}>
+      <ThemedText
+        type="smallBold"
+        themeColor="textSecondary"
+        style={styles.label}
+        accessibilityLabel={spoken}
+        accessibilityElementsHidden={labelHiddenFromAccessibility}
+        importantForAccessibility={labelHiddenFromAccessibility ? 'no-hide-descendants' : 'auto'}>
         {label}
         {required && <ThemedText type="smallBold" style={styles.asterisk}> *</ThemedText>}
       </ThemedText>

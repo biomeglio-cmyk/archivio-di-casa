@@ -13,6 +13,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import Sortable, { type DragMoveParams, type SortableGridDragEndParams } from 'react-native-sortables';
 
+import { announce, useReduceMotion } from '@/a11y/accessibility';
 import { accessibilityActionsOf, runAccessibilityAction, type QuickAction } from '@/actions/quick-actions';
 
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
@@ -130,7 +131,7 @@ export function SortableTileGrid<T>({
     });
   }
 
-  // VoiceOver: "Sposta prima" / "Sposta dopo" instead of dragging
+  // VoiceOver: "Sposta prima" / "Sposta dopo" instead of dragging; says the new place
   function moveBy(item: T, delta: number) {
     const from = items.indexOf(item);
     const to = from + delta;
@@ -139,6 +140,7 @@ export function SortableTileGrid<T>({
     next.splice(from, 1);
     next.splice(to, 0, item);
     onReorder(next);
+    announce(t('a11y.reorder.moved', { position: to + 1, count: items.length }));
   }
 
   return (
@@ -227,11 +229,18 @@ export function SortableTileGrid<T>({
   );
 }
 
-// "Riordina": the tile rocks a little (like the iOS Home Screen in edit mode) and shows a handle
+// "Riordina": the tile rocks a little (like the iOS Home Screen in edit mode) and shows a handle.
+// With Riduci movimento it stays still: only the handle says it can be moved.
 function Wiggle({ direction, children }: { direction: 1 | -1; children: ReactNode }) {
   const styles = useThemedStyles(makeStyles);
+  const reduceMotion = useReduceMotion();
   const angle = useSharedValue(0);
   useEffect(() => {
+    if (reduceMotion) {
+      cancelAnimation(angle);
+      angle.set(0);
+      return;
+    }
     angle.set(
       withRepeat(
         withSequence(
@@ -243,13 +252,17 @@ function Wiggle({ direction, children }: { direction: 1 | -1; children: ReactNod
       ),
     );
     return () => cancelAnimation(angle);
-  }, [angle, direction]);
+  }, [angle, direction, reduceMotion]);
   const rocking = useAnimatedStyle(() => ({ transform: [{ rotate: `${angle.get()}deg` }] }));
 
   return (
     <Animated.View style={[styles.wiggle, rocking]}>
       {children}
-      <View style={styles.handle} pointerEvents="none">
+      <View
+        style={styles.handle}
+        pointerEvents="none"
+        accessibilityElementsHidden
+        importantForAccessibility="no-hide-descendants">
         <SymbolView name="line.3.horizontal" tintColor="#1C1E2E" size={14} weight="semibold" />
       </View>
     </Animated.View>

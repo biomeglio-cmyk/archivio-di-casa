@@ -16,7 +16,8 @@ type Props = {
   radius?: number; // corners: 13 by default (16 for the 52pt squares of Preferiti)
 };
 
-// Icon in a small gradient square (135°), corners 12–14
+// Icon in a small gradient square (135°), corners 12–14. Decorative: hidden from VoiceOver (the
+// text next to it says what it is; SF Symbol names like "cross.case" are never read)
 export function IconSquare({ symbol, colors, size = 44, shadow = false, radius: cornerRadius }: Props) {
   const styles = useThemedStyles(makeStyles);
   const gradient = colors ? ([colors.top, colors.bottom] as const) : BRAND_GRADIENT;
@@ -26,6 +27,8 @@ export function IconSquare({ symbol, colors, size = 44, shadow = false, radius: 
       colors={gradient}
       start={GRADIENT_START}
       end={GRADIENT_END}
+      accessibilityElementsHidden
+      importantForAccessibility="no-hide-descendants"
       style={[
         styles.square,
         { width: size, height: size, borderRadius: radius },

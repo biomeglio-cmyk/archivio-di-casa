@@ -2,7 +2,7 @@ import { router, useLocalSearchParams } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
 import { useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { pickPersonPhoto } from '@/capture/pick-files';
@@ -18,6 +18,7 @@ import { getPerson, insertPerson, updatePerson } from '@/db/people';
 import type { Person, PersonRole } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { deletePersonPhoto, storePersonPhoto } from '@/storage/person-photos';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
@@ -53,6 +54,9 @@ function PersonForm({ person }: { person: Person | null }) {
 
   const canSave = name.trim().length > 0 && !saving;
   const hasPhoto = photo.kind === 'new' || (photo.kind === 'keep' && Boolean(person?.photoPath));
+  const { fontScale } = useWindowDimensions();
+  const largeText = useLargeText();
+  const circle = largeText ? Math.min(140, Math.round(112 * Math.min(fontScale, 1.25))) : 112;
   const roleName = roleChoiceLabel(role);
 
   async function changePhoto() {
@@ -105,23 +109,37 @@ function PersonForm({ person }: { person: Person | null }) {
         </View>
 
         <View style={styles.photoRow}>
+          {/* Always a circle. With large text it grows a little (up to 140), holds only the camera
+              (or the photo) and the label goes under it, centered, wrapping between words */}
           <Pressable
             onPress={changePhoto}
             accessibilityRole="button"
             accessibilityLabel={hasPhoto ? t('personScreen.changePhoto') : t('personForm.addPhoto')}
-            style={({ pressed }) => [styles.photo, !hasPhoto && styles.photoEmpty, pressed && styles.pressed]}>
-            {hasPhoto ? (
-              <PersonAvatar
-                name={name}
-                photoPath={photo.kind === 'keep' ? person?.photoPath : null}
-                photoUri={photo.kind === 'new' ? photo.uri : null}
-                size={112}
-              />
-            ) : (
-              <>
-                <SymbolView name="camera" tintColor={theme.indigo} size={26} />
-                <Text style={styles.photoLabel}>{t('personForm.addPhoto')}</Text>
-              </>
+            style={({ pressed }) => [styles.photoButton, pressed && styles.pressed]}>
+            <View
+              style={[
+                styles.photo,
+                { width: circle, height: circle, borderRadius: circle / 2 },
+                !hasPhoto && styles.photoEmpty,
+              ]}>
+              {hasPhoto ? (
+                <PersonAvatar
+                  name={name}
+                  photoPath={photo.kind === 'keep' ? person?.photoPath : null}
+                  photoUri={photo.kind === 'new' ? photo.uri : null}
+                  size={circle}
+                />
+              ) : (
+                <>
+                  <SymbolView name="camera" tintColor={theme.indigo} size={largeText ? 32 : 26} />
+                  {!largeText && <Text style={styles.photoLabel}>{t('personForm.addPhoto')}</Text>}
+                </>
+              )}
+            </View>
+            {largeText && (
+              <Text style={[styles.photoLabel, styles.photoLabelBelow]}>
+                {hasPhoto ? t('personScreen.changePhoto') : t('personForm.addPhoto')}
+              </Text>
             )}
           </Pressable>
         </View>
@@ -212,16 +230,20 @@ const makeStyles = (c: Palette) =>
     marginTop: 20,
     alignItems: 'center',
   },
+  photoButton: {
+    alignItems: 'center',
+    gap: 8,
+    maxWidth: '100%',
+  },
   photo: {
-    minWidth: 112,
-    minHeight: 112,
-    borderRadius: 56,
+    // width, height and radius: the circle size (always a circle)
     alignItems: 'center',
     justifyContent: 'center',
     gap: 4,
+    overflow: 'hidden',
   },
   photoEmpty: {
-    padding: 8, // larger text: the circle grows around "Aggiungi foto"
+    padding: 8,
     borderWidth: 2,
     borderStyle: 'dashed',
     borderColor: c.dashed,
@@ -232,6 +254,9 @@ const makeStyles = (c: Palette) =>
     fontSize: 13,
     fontFamily: FONTS.semiBold,
     color: c.indigo,
+  },
+  photoLabelBelow: {
+    fontSize: 15,
   },
   pressed: {
     opacity: 0.7,

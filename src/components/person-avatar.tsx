@@ -41,7 +41,7 @@ export function PersonAvatar({ name, photoPath, photoUri, size, shadow = false }
 
 const styles = StyleSheet.create({
   photo: {
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
   },
   placeholder: {
     alignItems: 'center',

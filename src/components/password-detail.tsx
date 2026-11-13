@@ -112,7 +112,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
         style={styles.screen}
         contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 40 }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT} color={Colors.light.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT} color={Colors.current.text} onPress={() => router.back()} />
           <View style={styles.barRight}>
             <RoundIconButton
               symbol={document.isPinned ? 'heart.fill' : 'heart'}
@@ -125,7 +125,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
               symbol="ellipsis"
               accessibilityLabel="Altre azioni"
               background={PASSWORD_TINT}
-              color={Colors.light.text}
+              color={Colors.current.text}
               onPress={() => setMenuOpen(true)}
             />
           </View>
@@ -203,7 +203,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
                 <Text style={[styles.flex, styles.link]} numberOfLines={2}>
                   {info.url}
                 </Text>
-                <SymbolView name="arrow.up.right.square" tintColor={Colors.light.textSecondary} size={18} />
+                <SymbolView name="arrow.up.right.square" tintColor={Colors.current.textSecondary} size={18} />
               </Pressable>
             </WhiteCard>
           </>
@@ -241,8 +241,8 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
         <Section>Di chi è</Section>
         <WhiteCard style={styles.card}>
           <View style={styles.row}>
-            <View style={[styles.iconBox, { backgroundColor: Colors.light.lilac }]}>
-              <SymbolView name="person" tintColor={Colors.light.indigo} size={19} />
+            <View style={[styles.iconBox, { backgroundColor: Colors.current.lilac }]}>
+              <SymbolView name="person" tintColor={Colors.current.indigo} size={19} />
             </View>
             <Text style={styles.personLabel}>Persona</Text>
             <Text style={[styles.flex, styles.value]}>{document.person?.name ?? 'Tutta la famiglia'}</Text>
@@ -324,7 +324,7 @@ function IconBox({ symbol }: { symbol: SFSymbol }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -349,14 +349,14 @@ const styles = StyleSheet.create({
     marginTop: 14,
     fontSize: 26,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlign: 'center',
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   section: {
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   card: {
     marginTop: 10,
@@ -391,12 +391,12 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   value: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   password: {
     fontFamily: FONTS.semiBold,
@@ -415,7 +415,7 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: 70,
     marginRight: 16,
-    backgroundColor: Colors.light.separator,
+    backgroundColor: Colors.current.separator,
   },
   strength: {
     marginLeft: 70,
@@ -442,12 +442,12 @@ const styles = StyleSheet.create({
   locked: {
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   link: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   qrCard: {
     marginTop: 10,
@@ -463,13 +463,13 @@ const styles = StyleSheet.create({
   qrNetwork: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   qrHint: {
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   qrButton: {
@@ -493,7 +493,7 @@ const styles = StyleSheet.create({
     width: 72,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   notesCard: {
     marginTop: 10,
@@ -504,7 +504,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     fontFamily: FONTS.regular,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   favCard: {
     marginTop: 12,
@@ -512,7 +512,7 @@ const styles = StyleSheet.create({
   rowTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   edit: {
     marginTop: 24,

@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
@@ -53,13 +53,13 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   text: {
     marginTop: 2,
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
 });

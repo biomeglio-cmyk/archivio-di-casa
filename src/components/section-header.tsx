@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase', // +0.1em letter spacing from the app Text
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   action: {
     paddingVertical: 2,
@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
 });

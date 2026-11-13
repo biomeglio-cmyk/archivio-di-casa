@@ -25,7 +25,7 @@ export function ProgressBar({ share, height = 6, onGradient = false, accessibili
       style={[
         styles.track,
         { height, borderRadius: height / 2 },
-        { backgroundColor: onGradient ? 'rgba(255, 255, 255, 0.3)' : Colors.light.lilac },
+        { backgroundColor: onGradient ? 'rgba(255, 255, 255, 0.3)' : Colors.current.lilac },
       ]}>
       {onGradient ? (
         <View style={[styles.fill, { width, borderRadius: height / 2, backgroundColor: '#FFFFFF' }]} />

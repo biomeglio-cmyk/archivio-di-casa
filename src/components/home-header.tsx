@@ -25,7 +25,7 @@ export function HomeHeader() {
         accessibilityRole="button"
         accessibilityLabel="Menu"
         style={[styles.menu, menu.pressed && styles.pressed]}>
-        <SymbolView name="line.3.horizontal" tintColor={Colors.light.text} size={22} weight="medium" />
+        <SymbolView name="line.3.horizontal" tintColor={Colors.current.text} size={22} weight="medium" />
       </Pressable>
       <View style={styles.right}>
         <Pressable
@@ -34,7 +34,7 @@ export function HomeHeader() {
           accessibilityRole="button"
           accessibilityLabel={count > 0 ? `Notifiche, ${count} non lette` : 'Notifiche'}
           style={[styles.bell, bell.pressed && styles.pressed]}>
-          <SymbolView name="bell" tintColor={Colors.light.text} size={21} weight="medium" />
+          <SymbolView name="bell" tintColor={Colors.current.text} size={21} weight="medium" />
           {count > 0 && (
             <View style={styles.badge} accessibilityElementsHidden>
               <Text style={styles.badgeText} maxFontSizeMultiplier={1.2}>
@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     borderRadius: 9,
     borderWidth: 2,
     borderColor: '#FFFFFF',
-    backgroundColor: Colors.light.badge,
+    backgroundColor: Colors.current.badge,
     alignItems: 'center',
     justifyContent: 'center',
   },

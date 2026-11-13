@@ -139,7 +139,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
         automaticallyAdjustKeyboardInsets
         contentContainerStyle={[styles.page, { paddingBottom: insets.bottom + 36 }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.light.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.current.text} onPress={() => router.back()} />
           <Text style={styles.heading} accessibilityRole="header">
             {category ? 'Modifica categoria' : 'Nuova categoria'}
           </Text>
@@ -198,7 +198,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
             value={name}
             onChangeText={setName}
             placeholder="Es. Animali"
-            placeholderTextColor={Colors.light.textSecondary}
+            placeholderTextColor={Colors.current.textSecondary}
             autoFocus={!category}
             returnKeyType="done"
             accessibilityLabel="Nome della categoria"
@@ -280,7 +280,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           <Text style={styles.selectText} numberOfLines={1}>
             {personName}
           </Text>
-          <SymbolView name="chevron.down" tintColor={Colors.light.textSecondary} size={15} weight="semibold" />
+          <SymbolView name="chevron.down" tintColor={Colors.current.textSecondary} size={15} weight="semibold" />
         </Pressable>
         <Text style={styles.hint}>I nuovi documenti di questa categoria partono con questa persona.</Text>
 
@@ -320,7 +320,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingTop: 24,
@@ -334,7 +334,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 17,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   barSpace: {
     width: 44,
@@ -364,7 +364,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   field: {
     ...CardSurface,
@@ -377,7 +377,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   colors: {
     marginTop: 12,
@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   icons: {
     marginTop: 12,
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   pressed: {
     opacity: 0.7,
@@ -443,17 +443,17 @@ const styles = StyleSheet.create({
   },
   restoreDivider: {
     borderTopWidth: 1,
-    borderTopColor: Colors.light.separator,
+    borderTopColor: Colors.current.separator,
   },
   restoreName: {
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   restoreAction: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
 });

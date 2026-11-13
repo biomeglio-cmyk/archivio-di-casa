@@ -6,8 +6,8 @@ import { Colors } from '@/constants/theme';
 import { isLightColor } from '@/utils/colors';
 import { daysUntil } from '@/utils/deadlines';
 
-const RED = Colors.light.error;
-const RED_SOFT = Colors.light.errorBackground;
+const RED = Colors.current.error;
+const RED_SOFT = Colors.current.errorBackground;
 const AMBER = '#8A5A00';
 const AMBER_SOFT = '#FFF1D6';
 // Behind the tile's own text color: translucent white under dark text (pastel tiles),

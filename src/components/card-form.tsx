@@ -251,7 +251,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
               {preview ? (
                 <GeneratedCode barcode={preview} maxWidth={260} maxHeight={kind === 'qr' ? 120 : 86} />
               ) : (
-                <SymbolView name={kind === 'qr' ? 'qrcode' : 'barcode'} tintColor={Colors.light.dashed} size={56} />
+                <SymbolView name={kind === 'qr' ? 'qrcode' : 'barcode'} tintColor={Colors.current.dashed} size={56} />
               )}
               <Text style={styles.previewNumber}>
                 {code ? (kind === 'qr' ? `${title.trim() || 'Tessera'} · ${spacedNumber(code)}` : spacedNumber(code)) : 'Scrivi il numero qui sotto'}
@@ -279,7 +279,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 value={title}
                 onChangeText={setTitle}
                 placeholder="Es. Supermercato"
-                placeholderTextColor={Colors.light.textSecondary}
+                placeholderTextColor={Colors.current.textSecondary}
                 style={styles.input}
                 accessibilityLabel="Nome"
               />
@@ -289,7 +289,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 value={docType}
                 onChangeText={setDocType}
                 placeholder="Es. Carta fedeltà"
-                placeholderTextColor={Colors.light.textSecondary}
+                placeholderTextColor={Colors.current.textSecondary}
                 style={styles.input}
                 accessibilityLabel="Tipo"
               />
@@ -299,7 +299,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 value={number}
                 onChangeText={setNumber}
                 placeholder="Es. 0400 2219 8876"
-                placeholderTextColor={Colors.light.textSecondary}
+                placeholderTextColor={Colors.current.textSecondary}
                 autoCapitalize="characters"
                 autoCorrect={false}
                 style={styles.input}
@@ -358,7 +358,7 @@ function FieldRow({ label, last = false, children }: { label: string; last?: boo
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   dark: {
     backgroundColor: DARK,
@@ -454,7 +454,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   coverRow: {
     alignItems: 'center',
@@ -471,7 +471,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   coverField: {
@@ -506,7 +506,7 @@ const styles = StyleSheet.create({
   link: {
     fontSize: 13,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   kind: {
     marginTop: 12,
@@ -517,7 +517,7 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderCurve: 'continuous',
     borderWidth: 1,
-    borderColor: Colors.light.separator,
+    borderColor: Colors.current.separator,
     alignItems: 'center',
     gap: 8,
   },
@@ -525,7 +525,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: FONTS.semiBold,
     letterSpacing: 2.4,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlign: 'center',
   },
   explain: {
@@ -534,7 +534,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   readBox: {
     marginTop: 24,
@@ -542,7 +542,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
@@ -559,12 +559,12 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
   readTitle: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   fields: {
     marginTop: 12,
@@ -579,13 +579,13 @@ const styles = StyleSheet.create({
   },
   fieldDivider: {
     borderBottomWidth: 1,
-    borderBottomColor: Colors.light.separator,
+    borderBottomColor: Colors.current.separator,
   },
   fieldLabel: {
     width: 104,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   fieldControl: {
     flex: 1,
@@ -597,7 +597,7 @@ const styles = StyleSheet.create({
     minHeight: 44,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlign: 'right',
   },
   save: {
@@ -607,7 +607,7 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
 });

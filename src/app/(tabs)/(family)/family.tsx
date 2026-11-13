@@ -96,7 +96,7 @@ export default function FamilyScreen() {
               subtitle="Un profilo per ogni persona di casa"
               onBack={goHome}
               right={
-                <RoundIconButton symbol="plus" accessibilityLabel="Aggiungi una persona" color={Colors.light.text} onPress={addPerson} />
+                <RoundIconButton symbol="plus" accessibilityLabel="Aggiungi una persona" color={Colors.current.text} onPress={addPerson} />
               }
             />
             {people && people.length > 0 && (
@@ -117,12 +117,12 @@ export default function FamilyScreen() {
               onPress={addPerson}
               accessibilityRole="button"
               style={({ pressed }) => [styles.add, pressed && styles.addPressed]}>
-              <SymbolView name="plus" tintColor={Colors.light.textSecondary} size={24} weight="semibold" />
+              <SymbolView name="plus" tintColor={Colors.current.textSecondary} size={24} weight="semibold" />
               <Text style={styles.addLabel}>Aggiungi una persona</Text>
             </Pressable>
 
             <View style={styles.note}>
-              <SymbolView name="lock" tintColor={Colors.light.indigo} size={18} />
+              <SymbolView name="lock" tintColor={Colors.current.indigo} size={18} />
               <Text style={styles.noteText}>
                 Tutto resta su questo telefono. Per mandare un documento a qualcuno, aprilo e tocca Invia.
               </Text>
@@ -166,7 +166,7 @@ function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPre
           {person.expiringCount > 0 && <Text style={styles.expiring}>{` · ${person.expiringCount} in scadenza`}</Text>}
         </Text>
       </View>
-      <SymbolView name="chevron.right" tintColor={Colors.light.textSecondary} size={15} weight="semibold" />
+      <SymbolView name="chevron.right" tintColor={Colors.current.textSecondary} size={15} weight="semibold" />
     </Pressable>
   );
 }
@@ -174,7 +174,7 @@ function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPre
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   card: {
     marginTop: 12,
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: ROW_INSET,
     marginRight: 16,
-    backgroundColor: Colors.light.separator,
+    backgroundColor: Colors.current.separator,
   },
   row: {
     flexDirection: 'row',
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   rowPressed: {
-    backgroundColor: Colors.light.backgroundSelected,
+    backgroundColor: Colors.current.backgroundSelected,
   },
   texts: {
     flex: 1,
@@ -218,15 +218,15 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   me: {
     overflow: 'hidden',
     paddingHorizontal: 8,
     paddingVertical: 3,
     borderRadius: 8,
-    backgroundColor: Colors.light.lilac,
-    color: Colors.light.indigo,
+    backgroundColor: Colors.current.lilac,
+    color: Colors.current.indigo,
     fontSize: 11,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
@@ -234,17 +234,17 @@ const styles = StyleSheet.create({
   count: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   expiring: {
-    color: Colors.light.error,
+    color: Colors.current.error,
   },
   add: {
     marginTop: 14,
     height: 76,
     borderWidth: 2,
     borderStyle: 'dashed',
-    borderColor: Colors.light.dashed,
+    borderColor: Colors.current.dashed,
     borderRadius: 22,
     borderCurve: 'continuous',
     alignItems: 'center',
@@ -252,12 +252,12 @@ const styles = StyleSheet.create({
     gap: 6,
   },
   addPressed: {
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   addLabel: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   note: {
     marginTop: 20,
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
   reorderList: {
     marginTop: 12,
@@ -292,7 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
 });

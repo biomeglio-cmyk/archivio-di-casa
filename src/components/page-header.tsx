@@ -17,7 +17,7 @@ type Props = {
 
 // Top of the section pages of the design (Scadenze, Preferiti, Tessere, Famiglia): a round back
 // button on the left, actions on the right, then the 30/700 title and a 15 grey subtitle
-export function PageHeader({ title, subtitle, right, tint = Colors.light.lilac, onBack }: Props) {
+export function PageHeader({ title, subtitle, right, tint = Colors.current.lilac, onBack }: Props) {
   return (
     <View>
       <View style={styles.bar}>
@@ -25,7 +25,7 @@ export function PageHeader({ title, subtitle, right, tint = Colors.light.lilac, 
           symbol="chevron.left"
           accessibilityLabel="Indietro"
           background={tint}
-          color={Colors.light.text}
+          color={Colors.current.text}
           onPress={onBack ?? (() => router.back())}
         />
         <View style={styles.right}>{right}</View>
@@ -59,13 +59,13 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 37,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
 });

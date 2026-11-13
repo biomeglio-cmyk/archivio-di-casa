@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   center: {
     alignItems: 'center',
@@ -195,12 +195,12 @@ const styles = StyleSheet.create({
     marginRight: 8,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   hexInput: {
     flex: 1,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
 });

@@ -1,3 +1,4 @@
+import { Colors } from '@/constants/theme';
 import type { CategoryColors } from '@/db/types';
 
 // Whether a hex color (#RRGGBB) is light, by its perceived luminance: light text sits on a dark
@@ -28,6 +29,7 @@ export function categoryShadowRgb(colors: CategoryColors): string {
 // A category color that reads on white (calendar dots, small marks): the text on its tint, or
 // its text color, or the gradient end when the text is light (white, palette "Notte")
 export function categoryInk(colors: CategoryColors): string {
+  if (Colors.current.isDark) return colors.top; // reads on the dark pages
   return colors.onTint ?? (isLightColor(colors.text) ? mixWithBlack(colors.bottom, 0.25) : colors.text);
 }
 
@@ -46,6 +48,14 @@ export function mixWithWhite(hex: string, amount: number): string {
 // The light tint of a category (round buttons, inactive chips of its screens) and the text on it:
 // from the palette ("Sottomano"), or derived from the gradient end for the other palettes
 export function categoryTint(colors: CategoryColors): { tint: string; onTint: string; dashed: string } {
+  // Dark theme: the "A" color at 18% as the tint, the "Da" color as the text on it
+  if (Colors.current.isDark) {
+    return {
+      tint: `rgba(${hexToRgb(colors.bottom)}, 0.18)`,
+      onTint: colors.top,
+      dashed: `rgba(${hexToRgb(colors.bottom)}, 0.45)`,
+    };
+  }
   return {
     tint: colors.tint ?? mixWithWhite(colors.bottom, 0.86),
     onTint: categoryInk(colors),

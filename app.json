@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "icon": "./assets/images/logo-icon.png",
     "scheme": "archiviodicasa",
-    "userInterfaceStyle": "light",
+    "userInterfaceStyle": "automatic",
     "ios": {
       "icon": "./assets/images/logo-icon.png"
     },

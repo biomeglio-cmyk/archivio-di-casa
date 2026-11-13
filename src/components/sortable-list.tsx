@@ -93,7 +93,7 @@ export function ReorderRow({ thumb, title, subtitle }: RowProps) {
           </Text>
         ) : null}
       </View>
-      <SymbolView name="line.3.horizontal" tintColor={Colors.light.textSecondary} size={20} weight="semibold" />
+      <SymbolView name="line.3.horizontal" tintColor={Colors.current.textSecondary} size={20} weight="semibold" />
     </View>
   );
 }
@@ -123,7 +123,7 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
         </Pressable>
       </View>
       <View style={styles.hint}>
-        <SymbolView name="hand.draw" tintColor={Colors.light.indigo} size={20} />
+        <SymbolView name="hand.draw" tintColor={Colors.current.indigo} size={20} />
         <Text style={styles.hintText}>{hint}</Text>
       </View>
     </View>
@@ -152,12 +152,12 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   subtitle: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   bar: {
     flexDirection: 'row',
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 17,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   done: {
     height: 40,
@@ -195,7 +195,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
@@ -205,6 +205,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
 });

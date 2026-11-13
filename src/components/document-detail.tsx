@@ -203,7 +203,7 @@ function DocumentScreen({
         symbol="chevron.left"
         accessibilityLabel="Indietro"
         background={tint}
-        color={Colors.light.text}
+        color={Colors.current.text}
         onPress={() => router.back()}
       />
 
@@ -285,8 +285,8 @@ function DocumentScreen({
             key="delete"
             symbol="trash"
             label="Cancella"
-            tint={Colors.light.errorBackground}
-            color={Colors.light.error}
+            tint={Colors.current.errorBackground}
+            color={Colors.current.error}
             destructive
             onPress={() => confirmDeleteDocument(document)}
           />,
@@ -475,9 +475,9 @@ function ActionRow({
       <View style={[styles.actionIcon, { backgroundColor: tint }]}>
         <SymbolView name={symbol} tintColor={color} size={20} />
       </View>
-      <Text style={[styles.actionLabel, destructive && { color: Colors.light.error }]}>{label}</Text>
+      <Text style={[styles.actionLabel, destructive && { color: Colors.current.error }]}>{label}</Text>
       {chevron && (
-        <SymbolView name="chevron.right" tintColor={Colors.light.textSecondary} size={16} weight="semibold" />
+        <SymbolView name="chevron.right" tintColor={Colors.current.textSecondary} size={16} weight="semibold" />
       )}
     </Pressable>
   );
@@ -486,7 +486,7 @@ function ActionRow({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   content: {
     paddingHorizontal: Spacing.side,
@@ -528,7 +528,7 @@ const styles = StyleSheet.create({
   pdfLabel: {
     fontSize: 13,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   pageCount: {
     position: 'absolute',
@@ -542,20 +542,20 @@ const styles = StyleSheet.create({
   pageCountText: {
     fontSize: 12,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   title: {
     marginTop: 20,
     fontSize: 28,
     lineHeight: 34,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   actions: {
     marginTop: 18,
@@ -565,7 +565,7 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: 70,
     marginRight: 16,
-    backgroundColor: Colors.light.separator,
+    backgroundColor: Colors.current.separator,
   },
   actionRow: {
     flexDirection: 'row',
@@ -575,7 +575,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   actionPressed: {
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   actionIcon: {
     width: 40,
@@ -589,14 +589,14 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   sectionTitle: {
     marginTop: 26,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   details: {
     marginTop: 12,
@@ -613,12 +613,12 @@ const styles = StyleSheet.create({
   },
   detailBorder: {
     borderBottomWidth: 1,
-    borderBottomColor: Colors.light.separator,
+    borderBottomColor: Colors.current.separator,
   },
   detailLabel: {
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   detailValue: {
     flexShrink: 1,
@@ -627,16 +627,16 @@ const styles = StyleSheet.create({
   value: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlign: 'right',
   },
   valueAlert: {
-    color: Colors.light.error,
+    color: Colors.current.error,
   },
   amount: {
     fontSize: 17,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   person: {
     flexDirection: 'row',
@@ -657,13 +657,13 @@ const styles = StyleSheet.create({
   reminderTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   reminderText: {
     marginTop: 1,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   extra: {
     marginTop: 18,

@@ -13,8 +13,8 @@ export function StatusBadge({ status }: { status: PaymentStatus }) {
       style={[
         styles.badge,
         due
-          ? { color: Colors.light.error, backgroundColor: Colors.light.errorBackground }
-          : { color: Colors.light.success, backgroundColor: Colors.light.successBackground },
+          ? { color: Colors.current.error, backgroundColor: Colors.current.errorBackground }
+          : { color: Colors.current.success, backgroundColor: Colors.current.successBackground },
       ]}
       maxFontSizeMultiplier={1.4}>
       {due ? 'Da pagare' : 'Pagata'}

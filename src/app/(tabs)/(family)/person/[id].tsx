@@ -114,7 +114,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
         contentInsetAdjustmentBehavior="never"
         contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: Spacing.belowContent }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.light.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.current.text} onPress={() => router.back()} />
           {selection.selecting ? (
             <Pressable onPress={selection.cancel} accessibilityRole="button" style={styles.cancel}>
               <Text style={styles.cancelText}>Annulla</Text>
@@ -123,7 +123,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
             <RoundIconButton
               symbol="ellipsis"
               accessibilityLabel={`Modifica o cancella ${person.name}`}
-              color={Colors.light.text}
+              color={Colors.current.text}
               onPress={() => setSheetOpen(true)}
             />
           )}
@@ -135,7 +135,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
               <PersonAvatar name={person.name} photoPath={person.photoPath} size={116} />
             </View>
             <Pressable onPress={changePhoto} accessibilityRole="button" accessibilityLabel="Cambia foto" style={styles.camera}>
-              <SymbolView name="camera" tintColor={Colors.light.indigo} size={16} weight="semibold" />
+              <SymbolView name="camera" tintColor={Colors.current.indigo} size={16} weight="semibold" />
             </Pressable>
           </View>
           <Text style={styles.name} accessibilityRole="header">
@@ -208,7 +208,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -223,12 +223,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderRadius: 22,
     justifyContent: 'center',
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
   },
   cancelText: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
   profile: {
     marginTop: 8,
@@ -258,7 +258,7 @@ const styles = StyleSheet.create({
     borderRadius: 19,
     borderWidth: 3,
     borderColor: '#FFFFFF',
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -266,14 +266,14 @@ const styles = StyleSheet.create({
     marginTop: 16,
     fontSize: 28,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlign: 'center',
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   editButton: {
@@ -282,12 +282,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderRadius: 19,
     justifyContent: 'center',
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
   },
   editText: {
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
   pressed: {
     opacity: 0.7,
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   grid: {
     marginTop: 12,

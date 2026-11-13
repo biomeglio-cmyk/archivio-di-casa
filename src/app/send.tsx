@@ -191,7 +191,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       : 'Preparazione…';
   const ready = Boolean(prepared) && !delivering;
   const firstPhoto = single?.files.find((f) => f.kind === 'image');
-  const { tint, onTint } = single ? categoryTint(single.category.colors) : { tint: Colors.light.lilac, onTint: Colors.light.indigo };
+  const { tint, onTint } = single ? categoryTint(single.category.colors) : { tint: Colors.current.lilac, onTint: Colors.current.indigo };
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { paddingBottom: insets.bottom + 24 }]}>
@@ -247,8 +247,8 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
                 <SymbolView name={action.symbol} tintColor="#FFFFFF" size={26} />
               </LinearGradient>
             ) : (
-              <View style={[styles.actionIcon, { backgroundColor: Colors.light.lilac }]}>
-                <SymbolView name={action.symbol} tintColor={Colors.light.indigo} size={26} />
+              <View style={[styles.actionIcon, { backgroundColor: Colors.current.lilac }]}>
+                <SymbolView name={action.symbol} tintColor={Colors.current.indigo} size={26} />
               </View>
             )}
             <Text style={styles.actionLabel} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
@@ -301,7 +301,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
         <View style={styles.files}>
           {prepared.files.map((file) => (
             <View key={file.name} style={styles.fileRow}>
-              <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={Colors.light.indigo} size={20} />
+              <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={Colors.current.indigo} size={20} />
               <Text style={styles.fileName} numberOfLines={1}>
                 {file.name}
               </Text>
@@ -399,7 +399,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 18,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   metaRow: {
     flexDirection: 'row',
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   format: {
     marginTop: 18,
@@ -440,7 +440,7 @@ const styles = StyleSheet.create({
   actionLabel: {
     fontSize: 13,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   noteRow: {
     marginTop: 22,
@@ -448,7 +448,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     borderRadius: 16,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -457,7 +457,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   section: {
     marginTop: 22,
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   small: {
     marginTop: 6,
@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   files: {
     marginTop: 14,
@@ -488,7 +488,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   warning: {
     marginTop: 12,
@@ -510,13 +510,13 @@ const styles = StyleSheet.create({
     marginTop: 18,
     height: 50,
     borderRadius: 25,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
   cancelText: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
 });

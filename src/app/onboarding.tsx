@@ -102,7 +102,7 @@ export default function OnboardingScreen() {
             <Text style={styles.text}>{p.text}</Text>
             {p.info && (
               <View style={styles.info}>
-                <SymbolView name="lock.shield" tintColor={Colors.light.indigo} size={22} />
+                <SymbolView name="lock.shield" tintColor={Colors.current.indigo} size={22} />
                 <Text style={styles.infoText}>{p.info}</Text>
               </View>
             )}
@@ -173,7 +173,7 @@ function MiniTile({ name, symbol, colors, shadow, left, top, rotate }: {
 function WelcomeArt() {
   return (
     <>
-      <Circle color={Colors.light.lilac} />
+      <Circle color={Colors.current.lilac} />
       <MiniTile name="Bollette" symbol="bolt" colors={['#FFA36E', '#F5824A']} shadow="245, 130, 74" left={28} top={46} rotate="-8deg" />
       <MiniTile name="Tessere" symbol="creditcard" colors={['#6FD3AE', '#45B68E']} shadow="69, 182, 142" left={182} top={24} rotate="7deg" />
       <MiniTile name="Salute" symbol="heart" colors={['#F79BBA', '#EE7499']} shadow="238, 116, 153" left={196} top={214} rotate="-6deg" />
@@ -182,7 +182,7 @@ function WelcomeArt() {
         <LogoMark size={88} radius={22} />
       </View>
       <View style={styles.bubble}>
-        <SymbolView name="wifi.slash" tintColor={Colors.light.indigo} size={20} />
+        <SymbolView name="wifi.slash" tintColor={Colors.current.indigo} size={20} />
       </View>
     </>
   );
@@ -216,7 +216,7 @@ function Paper({ left, top, rotate, accent, shadow, highlight = false }: {
 function ScanArt() {
   return (
     <>
-      <Circle color={Colors.light.lilac} />
+      <Circle color={Colors.current.lilac} />
       <Paper left={92} top={70} rotate="-8deg" accent="#6FD3AE" shadow="0 12px 26px rgba(28, 30, 70, 0.12)" />
       <Paper left={124} top={86} rotate="4deg" accent="#FFA36E" shadow="0 14px 30px rgba(28, 30, 70, 0.16)" highlight />
       <View style={styles.scanFrame} />
@@ -320,7 +320,7 @@ function CardsArt() {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   topBar: {
     height: 44,
@@ -335,7 +335,7 @@ const styles = StyleSheet.create({
   skip: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   pager: {
     flex: 1,
@@ -354,7 +354,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 36,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   titleFirst: {
     fontSize: 27,
@@ -365,14 +365,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 24,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   info: {
     marginTop: 18,
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 18,
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 12,
@@ -382,7 +382,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   dots: {
     marginTop: 22,
@@ -393,11 +393,11 @@ const styles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    backgroundColor: Colors.light.switchOff,
+    backgroundColor: Colors.current.switchOff,
   },
   dotActive: {
     width: 22,
-    backgroundColor: Colors.light.indigo,
+    backgroundColor: Colors.current.indigo,
   },
   footer: {
     paddingHorizontal: SIDE,
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
   restoreText: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   // Illustrations
   clip: {
@@ -532,12 +532,12 @@ const styles = StyleSheet.create({
   pdfTitle: {
     fontSize: 12,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   pdfSize: {
     fontSize: 11,
     fontFamily: FONTS.medium,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   miniCalendar: {
     position: 'absolute',
@@ -557,12 +557,12 @@ const styles = StyleSheet.create({
   calendarMonth: {
     fontSize: 15,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   calendarYear: {
     fontSize: 12,
     fontFamily: FONTS.medium,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   calendarGrid: {
     marginTop: 12,
@@ -581,7 +581,7 @@ const styles = StyleSheet.create({
   calendarNumber: {
     fontSize: 12,
     fontFamily: FONTS.medium,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
   calendarChosen: {
     color: '#FFFFFF',
@@ -611,12 +611,12 @@ const styles = StyleSheet.create({
   reminderTitle: {
     fontSize: 13,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   reminderText: {
     fontSize: 12,
     fontFamily: FONTS.medium,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   bellBadge: {
     position: 'absolute',
@@ -638,7 +638,7 @@ const styles = StyleSheet.create({
     borderRadius: 7,
     borderWidth: 2,
     borderColor: '#FFFFFF',
-    backgroundColor: Colors.light.badge,
+    backgroundColor: Colors.current.badge,
   },
   wallet: {
     position: 'absolute',
@@ -692,7 +692,7 @@ const styles = StyleSheet.create({
   },
   walletBar: {
     height: '100%',
-    backgroundColor: Colors.light.text,
+    backgroundColor: Colors.current.text,
   },
   scanBadge: {
     position: 'absolute',

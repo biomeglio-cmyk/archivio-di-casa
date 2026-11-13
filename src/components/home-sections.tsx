@@ -129,7 +129,7 @@ export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
             {deadlineSubtitle(document, days)}
           </Text>
         </View>
-        <SymbolView name="chevron.right" tintColor={Colors.light.textSecondary} size={16} weight="semibold" />
+        <SymbolView name="chevron.right" tintColor={Colors.current.textSecondary} size={16} weight="semibold" />
       </Pressable>
     </WhiteCard>
   );
@@ -190,12 +190,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 21,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   deadlineSubtitle: {
     fontSize: 13,
     lineHeight: 18,
     fontFamily: FONTS.regular,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
 });

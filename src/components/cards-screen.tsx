@@ -129,14 +129,14 @@ export function CardsScreen({ category, cards }: Props) {
                     symbol="ellipsis"
                     accessibilityLabel={`Modifica o cancella la categoria ${category.name}`}
                     background={tint}
-                    color={Colors.light.text}
+                    color={Colors.current.text}
                     onPress={() => setCategoryMenu(true)}
                   />
                   <RoundIconButton
                     symbol="plus"
                     accessibilityLabel="Aggiungi tessera"
                     background={tint}
-                    color={Colors.light.text}
+                    color={Colors.current.text}
                     onPress={add}
                   />
                 </>
@@ -292,7 +292,7 @@ function CardCode({ card, tint, onTint, onClose }: { card: DocumentListItem; tin
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingHorizontal: Spacing.side,
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   stack: {
     marginTop: 20,
@@ -338,14 +338,14 @@ const styles = StyleSheet.create({
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   codeNumber: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
     letterSpacing: 2,
-    color: Colors.light.text,
+    color: Colors.current.text,
     fontVariant: ['tabular-nums'],
   },
   codeButtons: {
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   reorderList: {
     marginTop: 12,
@@ -404,7 +404,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
 });

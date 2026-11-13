@@ -92,7 +92,7 @@ function PersonForm({ person }: { person: Person | null }) {
         automaticallyAdjustKeyboardInsets
         contentContainerStyle={[styles.page, { paddingBottom: insets.bottom + 36 }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.light.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={Colors.current.text} onPress={() => router.back()} />
           <Text style={styles.heading} accessibilityRole="header">
             {person ? 'Modifica persona' : 'Nuova persona'}
           </Text>
@@ -114,7 +114,7 @@ function PersonForm({ person }: { person: Person | null }) {
               />
             ) : (
               <>
-                <SymbolView name="camera" tintColor={Colors.light.indigo} size={26} />
+                <SymbolView name="camera" tintColor={Colors.current.indigo} size={26} />
                 <Text style={styles.photoLabel}>Aggiungi foto</Text>
               </>
             )}
@@ -127,7 +127,7 @@ function PersonForm({ person }: { person: Person | null }) {
             value={name}
             onChangeText={setName}
             placeholder="Come si chiama?"
-            placeholderTextColor={Colors.light.textSecondary}
+            placeholderTextColor={Colors.current.textSecondary}
             autoFocus={!person}
             autoCapitalize="words"
             returnKeyType="done"
@@ -143,7 +143,7 @@ function PersonForm({ person }: { person: Person | null }) {
           accessibilityLabel={`Chi è per te: ${roleName}`}
           style={({ pressed }) => [styles.field, styles.select, pressed && styles.pressed]}>
           <Text style={styles.selectText}>{roleName}</Text>
-          <SymbolView name="chevron.down" tintColor={Colors.light.textSecondary} size={15} weight="semibold" />
+          <SymbolView name="chevron.down" tintColor={Colors.current.textSecondary} size={15} weight="semibold" />
         </Pressable>
 
         <Text style={styles.note}>
@@ -176,7 +176,7 @@ function PersonForm({ person }: { person: Person | null }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     paddingTop: 24,
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   heading: {
     fontSize: 17,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   barSpace: {
     width: 44,
@@ -210,13 +210,13 @@ const styles = StyleSheet.create({
   photoEmpty: {
     borderWidth: 2,
     borderStyle: 'dashed',
-    borderColor: Colors.light.dashed,
-    backgroundColor: Colors.light.paleLilac,
+    borderColor: Colors.current.dashed,
+    backgroundColor: Colors.current.paleLilac,
   },
   photoLabel: {
     fontSize: 13,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
   pressed: {
     opacity: 0.7,
@@ -226,7 +226,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   field: {
     ...CardSurface,
@@ -239,7 +239,7 @@ const styles = StyleSheet.create({
   input: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   select: {
     flexDirection: 'row',
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   selectText: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   note: {
     marginTop: 18,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   save: {
     marginTop: 26,

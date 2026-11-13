@@ -22,7 +22,7 @@ export default function TabsLayout() {
   const { reached } = useFreeLimit();
 
   return (
-    <NativeTabs tintColor={Colors.light.indigo} badgeBackgroundColor={Colors.light.badge}>
+    <NativeTabs tintColor={Colors.current.indigo} badgeBackgroundColor={Colors.current.badge}>
       <NativeTabs.Trigger name="(archive)" accessibilityLabel="Home">
         <NativeTabs.Trigger.Icon sf={{ default: 'house', selected: 'house.fill' }} md="home" />
         <NativeTabs.Trigger.Label hidden>Home</NativeTabs.Trigger.Label>

@@ -29,17 +29,23 @@ import { setEmptyHomePreview, useEmptyHomePreview } from '@/settings/debug-previ
 import { FREE_LIMIT_ENFORCED, setLimitPreview, useLimitPreview } from '@/settings/free-limit';
 import { chooseAction } from '@/utils/action-sheet';
 import { daysBefore } from '@/constants/deadline-options';
+import { readThemeMode, saveThemeMode, type ThemeMode } from '@/settings/theme-mode';
+import { Segmented } from '@/components/segmented';
+import { hexToRgb } from '@/utils/colors';
 
 // "Avviso predefinito": how many days before a deadline, for documents without their own value
 const DAYS_OPTIONS = [1, 2, 3, 7, 15, 30, 60];
 
 // Icon square colors of each section, from docs/design/Impostazioni.dc.html
+// The icon squares of the sections; in the dark theme the icon color at 18% and a lighter icon
+const tint = (background: string, icon: string, darkIcon: string) =>
+  Colors.current.isDark ? { background: `rgba(${hexToRgb(darkIcon)}, 0.18)`, icon: darkIcon } : { background, icon };
 const TINTS = {
-  security: { background: Colors.light.lilac, icon: Colors.light.indigo },
-  grey: { background: '#F0F1F5', icon: '#4B5068' },
-  reminders: { background: '#FFF0E7', icon: '#C2530F' },
-  backup: { background: '#EAF2FE', icon: '#2F62C8' },
-  info: { background: '#E6F7F0', icon: '#1F7A5A' },
+  security: { background: Colors.current.lilac, icon: Colors.current.indigo },
+  grey: tint('#F0F1F5', '#4B5068', '#A9AFC4'),
+  reminders: tint('#FFF0E7', '#C2530F', '#FFA36E'),
+  backup: tint('#EAF2FE', '#2F62C8', '#86B4F7'),
+  info: tint('#E6F7F0', '#1F7A5A', '#6FD3AE'),
 } as const;
 type Tint = (typeof TINTS)[keyof typeof TINTS];
 
@@ -140,7 +146,7 @@ export default function SettingsScreen() {
         accessibilityRole="button"
         accessibilityLabel="Indietro"
         style={({ pressed }) => [styles.back, pressed && styles.pressed]}>
-        <SymbolView name="chevron.left" tintColor={Colors.light.text} size={20} weight="semibold" />
+        <SymbolView name="chevron.left" tintColor={Colors.current.text} size={20} weight="semibold" />
       </Pressable>
       <Text style={styles.title} accessibilityRole="header">
         Impostazioni
@@ -149,6 +155,17 @@ export default function SettingsScreen() {
       <View style={styles.card}>
         <FreeUsageCard variant="settings" />
       </View>
+
+      <Section title="Aspetto">
+        <ThemeRow />
+        <SettingsRow
+          symbol="paintpalette"
+          tint={TINTS.grey}
+          label="Colori delle categorie"
+          value={paletteName}
+          onPress={() => open('/appearance')}
+        />
+      </Section>
 
       <Section title="Sicurezza">
         <SettingsRow
@@ -263,23 +280,6 @@ export default function SettingsScreen() {
         />
       </Section>
 
-      <Section title="Aspetto">
-        <SettingsRow
-          symbol="moon"
-          tint={TINTS.grey}
-          label="Tema"
-          value="Chiaro"
-          onPress={() => Alert.alert('Tema', 'Per ora Sottomano usa solo il tema chiaro. Il tema scuro arriverà più avanti.')}
-        />
-        <SettingsRow
-          symbol="paintpalette"
-          tint={TINTS.grey}
-          label="Colori delle categorie"
-          value={paletteName}
-          onPress={() => open('/appearance')}
-        />
-      </Section>
-
       <Section title="Informazioni">
         <SettingsRow symbol="questionmark.circle" tint={TINTS.info} label="Aiuto e contatti" onPress={() => open('/onboarding')} />
         <SettingsRow symbol="lock" tint={TINTS.info} label="Privacy" onPress={() => open('/about')} />
@@ -322,6 +322,36 @@ export default function SettingsScreen() {
         <Text style={styles.version}>Sottomano · versione {version}</Text>
       </Pressable>
     </ScrollView>
+  );
+}
+
+// "Tema" (updated Impostazioni design): moon in a lilac square, "Tema" and, when Automatico,
+// "Segue l'impostazione del telefono"; under it Automatico / ☀ Chiaro / ☾ Scuro in a lilac pill
+const THEME_MODES: ThemeMode[] = ['auto', 'light', 'dark'];
+
+function ThemeRow() {
+  const [mode, setMode] = useState<ThemeMode>(readThemeMode);
+  return (
+    <View style={styles.themeRow}>
+      <View style={styles.themeHead}>
+        <View style={[styles.icon, { backgroundColor: Colors.current.lilac }]}>
+          <SymbolView name="moon" tintColor={Colors.current.indigo} size={19} />
+        </View>
+        <View style={styles.rowTexts}>
+          <Text style={styles.rowLabel}>Tema</Text>
+          {mode === 'auto' && <Text style={styles.rowSubtitle}>Segue l’impostazione del telefono</Text>}
+        </View>
+      </View>
+      <Segmented
+        values={['Automatico', 'Chiaro', 'Scuro']}
+        symbols={[undefined, 'sun.max', 'moon']}
+        selectedIndex={THEME_MODES.indexOf(mode)}
+        onChange={(index) => {
+          setMode(THEME_MODES[index]);
+          saveThemeMode(THEME_MODES[index]);
+        }}
+      />
+    </View>
   );
 }
 
@@ -386,7 +416,7 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, expanded,
               <Text style={styles.rowValue}>{value}</Text>
               <SymbolView
                 name={expanded ? 'chevron.down' : 'chevron.right'}
-                tintColor={Colors.light.textSecondary}
+                tintColor={Colors.current.textSecondary}
                 size={16}
                 weight="semibold"
               />
@@ -402,7 +432,7 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, expanded,
           {trailing ?? (
             <SymbolView
               name={expanded ? 'chevron.down' : 'chevron.right'}
-              tintColor={Colors.light.textSecondary}
+              tintColor={Colors.current.textSecondary}
               size={16}
               weight="semibold"
             />
@@ -416,7 +446,7 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, expanded,
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   content: {
     paddingHorizontal: Spacing.side,
@@ -425,7 +455,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -437,7 +467,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 36,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   card: {
     marginTop: 20,
@@ -449,7 +479,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   sectionCard: {
     marginTop: 10,
@@ -459,7 +489,7 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: 66,
     marginRight: 16,
-    backgroundColor: Colors.light.separator,
+    backgroundColor: Colors.current.separator,
   },
   note: {
     marginTop: 10,
@@ -467,7 +497,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   row: {
     flexDirection: 'row',
@@ -478,7 +508,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   rowPressed: {
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   icon: {
     width: 36,
@@ -488,18 +518,28 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  themeRow: {
+    paddingVertical: 12,
+    paddingHorizontal: 16,
+    gap: 12,
+  },
+  themeHead: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
   rowTexts: {
     flex: 1,
   },
   rowLabel: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   rowSubtitle: {
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   rowEnd: {
     flexDirection: 'row',
@@ -510,7 +550,7 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   timePicker: {
     alignItems: 'center',
@@ -521,6 +561,6 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTS.regular,
     textAlign: 'center',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
 });

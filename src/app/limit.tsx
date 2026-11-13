@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     width: 40,
     height: 5,
     borderRadius: 3,
-    backgroundColor: Colors.light.switchOff,
+    backgroundColor: Colors.current.switchOff,
   },
   logo: {
     marginTop: 18,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     marginTop: 14,
     fontSize: 24,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlign: 'center',
   },
   text: {
@@ -105,14 +105,14 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   list: {
     marginTop: 20,
     padding: 16,
     borderRadius: 20,
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     gap: 12,
   },
   item: {
@@ -137,10 +137,10 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   itemOff: {
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   unlock: {
     marginTop: 20,
@@ -154,6 +154,6 @@ const styles = StyleSheet.create({
   laterText: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
 });

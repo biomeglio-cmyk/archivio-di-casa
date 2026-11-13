@@ -141,7 +141,7 @@ export default function MenuScreen() {
             accessibilityRole="button"
             accessibilityLabel="Chiudi il menu"
             style={({ pressed }) => [styles.close, pressed && styles.pressed]}>
-            <SymbolView name="xmark" tintColor={Colors.light.text} size={18} weight="semibold" />
+            <SymbolView name="xmark" tintColor={Colors.current.text} size={18} weight="semibold" />
           </Pressable>
         </View>
 
@@ -235,7 +235,7 @@ type ItemProps = {
 // One row: 50 high, icon 22, label 16/500 (600 indigo on lilac when it is the current screen)
 function MenuItem({ label, symbol, onPress, active = false, trailing, accessibilityLabel, accessibilityHint }: ItemProps) {
   const { pressed, handlers } = usePressed();
-  const color = active ? Colors.light.indigo : Colors.light.text;
+  const color = active ? Colors.current.indigo : Colors.current.text;
   return (
     <Pressable
       {...handlers}
@@ -279,7 +279,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   dim: {
-    backgroundColor: Colors.light.scrim,
+    backgroundColor: Colors.current.scrim,
   },
   panel: {
     position: 'absolute',
@@ -307,13 +307,13 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 20,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   close: {
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -342,10 +342,10 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
   },
   itemActive: {
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
   },
   itemPressed: {
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   itemLabel: {
     flex: 1,
@@ -360,7 +360,7 @@ const styles = StyleSheet.create({
     height: 22,
     paddingHorizontal: 6,
     borderRadius: 11,
-    backgroundColor: Colors.light.badge,
+    backgroundColor: Colors.current.badge,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -382,19 +382,19 @@ const styles = StyleSheet.create({
     maxWidth: '45%',
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   divider: {
     height: 1,
     marginVertical: 14,
     marginHorizontal: 8,
-    backgroundColor: Colors.light.separator,
+    backgroundColor: Colors.current.separator,
   },
   version: {
     paddingHorizontal: 14,
     paddingTop: 8,
     fontSize: 12,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
 });

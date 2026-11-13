@@ -176,7 +176,7 @@ export function FolderScreen({ category, documents }: Props) {
             symbol="chevron.left"
             accessibilityLabel="Indietro"
             background={tint}
-            color={Colors.light.text}
+            color={Colors.current.text}
             onPress={() => router.back()}
           />
           {selection.selecting || reordering ? (
@@ -192,14 +192,14 @@ export function FolderScreen({ category, documents }: Props) {
                 symbol="ellipsis"
                 accessibilityLabel={`Modifica o cancella la categoria ${category.name}`}
                 background={tint}
-                color={Colors.light.text}
+                color={Colors.current.text}
                 onPress={() => setSheetOpen(true)}
               />
               <RoundIconButton
                 symbol="magnifyingglass"
                 accessibilityLabel={`Cerca in ${category.name}`}
                 background={tint}
-                color={Colors.light.text}
+                color={Colors.current.text}
                 onPress={() => {
                   setSearchOpen((open) => !open);
                   setQuery('');
@@ -405,7 +405,7 @@ export function FolderScreen({ category, documents }: Props) {
 const styles = StyleSheet.create({
   flex: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   page: {
     gap: 0,
@@ -434,13 +434,13 @@ const styles = StyleSheet.create({
     fontSize: 30,
     lineHeight: 36,
     fontFamily: FONTS.bold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   subtitle: {
     marginTop: 4,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   search: {
     marginTop: 18,
@@ -455,7 +455,7 @@ const styles = StyleSheet.create({
     marginTop: 18,
     fontSize: 14,
     fontFamily: FONTS.regular,
-    color: Colors.light.textOnLilac,
+    color: Colors.current.textOnLilac,
   },
   grid: {
     marginTop: 14,
@@ -465,7 +465,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: FONTS.regular,
     textAlign: 'center',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   month: {
     marginTop: 26,
@@ -478,7 +478,7 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: FOLDER_ROW_INSET,
     marginRight: 16,
-    backgroundColor: Colors.light.separator,
+    backgroundColor: Colors.current.separator,
   },
   menuTile: {
     flex: 1,

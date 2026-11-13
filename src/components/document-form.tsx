@@ -232,7 +232,7 @@ export function DocumentForm({
           value={title}
           onChangeText={setTitle}
           placeholder="Nome del documento"
-          placeholderTextColor={Colors.light.textSecondary}
+          placeholderTextColor={Colors.current.textSecondary}
           autoFocus={autoFocusTitle}
           returnKeyType="done"
           accessibilityLabel="Nome del documento"
@@ -246,8 +246,8 @@ export function DocumentForm({
           <WhiteCard style={styles.card}>
             <FieldRow
               symbol="folder"
-              tint={tint?.tint ?? Colors.light.lilac}
-              iconColor={tint?.onTint ?? Colors.light.indigo}
+              tint={tint?.tint ?? Colors.current.lilac}
+              iconColor={tint?.onTint ?? Colors.current.indigo}
               label="Cartella">
               <SelectBox
                 value={selectedCategory?.name ?? 'Scegli…'}
@@ -257,7 +257,7 @@ export function DocumentForm({
               />
             </FieldRow>
             <Separator />
-            <FieldRow symbol="person" tint={Colors.light.lilac} iconColor={Colors.light.indigo} label="Persona">
+            <FieldRow symbol="person" tint={Colors.current.lilac} iconColor={Colors.current.indigo} label="Persona">
               <SelectBox
                 value={people.find((p) => p.id === personId)?.name ?? 'Tutta la famiglia'}
                 onPress={choosePerson}
@@ -265,7 +265,7 @@ export function DocumentForm({
               />
             </FieldRow>
             <Separator />
-            <FieldRow symbol="tag" tint={Colors.light.paleLilac} iconColor={Colors.light.indigo} label="Tipo">
+            <FieldRow symbol="tag" tint={Colors.current.paleLilac} iconColor={Colors.current.indigo} label="Tipo">
               <SelectBox
                 value={docType ?? 'Nessuno'}
                 placeholder={!docType}
@@ -278,7 +278,7 @@ export function DocumentForm({
           <SectionTitle>Scadenza</SectionTitle>
           <WhiteCard style={styles.card}>
             <Pressable onPress={() => setHasExpiry(!hasExpiry)} accessible={false} style={styles.switchRow}>
-              <IconBox symbol="calendar" tint={Colors.light.lilac} color={Colors.light.indigo} />
+              <IconBox symbol="calendar" tint={Colors.current.lilac} color={Colors.current.indigo} />
               <View style={styles.flex}>
                 <Text style={styles.rowTitle}>Aggiungi scadenza</Text>
                 <Text style={styles.rowSubtitle}>{dueText}</Text>
@@ -289,7 +289,7 @@ export function DocumentForm({
               <View style={styles.dueBox}>
                 <DateCalendar value={expiryDate} onChange={setExpiryDate} />
                 <View style={styles.remind}>
-                  <IconBox symbol="bell" tint="#FFFFFF" color={Colors.light.indigo} />
+                  <IconBox symbol="bell" tint="#FFFFFF" color={Colors.current.indigo} />
                   <FitLine
                     start={<Text style={styles.remindLabel}>Avvisami</Text>}
                     end={
@@ -311,7 +311,7 @@ export function DocumentForm({
                 </View>
                 {/* Ours: a deadline that comes back */}
                 <View style={styles.remind}>
-                  <IconBox symbol="arrow.clockwise" tint="#FFFFFF" color={Colors.light.indigo} />
+                  <IconBox symbol="arrow.clockwise" tint="#FFFFFF" color={Colors.current.indigo} />
                   <FitLine
                     start={<Text style={styles.remindLabel}>Si ripete</Text>}
                     end={
@@ -333,7 +333,7 @@ export function DocumentForm({
                 </View>
                 {repeatUnit !== 'never' && (
                   <View style={styles.remind}>
-                    <IconBox symbol="number" tint="#FFFFFF" color={Colors.light.indigo} />
+                    <IconBox symbol="number" tint="#FFFFFF" color={Colors.current.indigo} />
                     <FitLine
                       start={<Text style={styles.remindLabel}>Ogni</Text>}
                       end={
@@ -364,7 +364,7 @@ export function DocumentForm({
               value={notes}
               onChangeText={setNotes}
               placeholder="Per esempio: pagata con domiciliazione, chiedere il rimborso…"
-              placeholderTextColor={Colors.light.textSecondary}
+              placeholderTextColor={Colors.current.textSecondary}
               multiline
               accessibilityLabel="Note"
               style={styles.notes}
@@ -387,8 +387,8 @@ export function DocumentForm({
           <WhiteCard style={styles.card}>
             <FieldRow
               symbol="eurosign"
-              tint={Colors.light.successBackground}
-              iconColor={Colors.light.success}
+              tint={Colors.current.successBackground}
+              iconColor={Colors.current.success}
               label="Importo">
               <View style={[styles.select, amountInvalid && styles.selectError]}>
                 <Text style={styles.euro}>€</Text>
@@ -396,7 +396,7 @@ export function DocumentForm({
                   value={amount}
                   onChangeText={setAmount}
                   placeholder="0,00"
-                  placeholderTextColor={Colors.light.textSecondary}
+                  placeholderTextColor={Colors.current.textSecondary}
                   keyboardType="decimal-pad"
                   accessibilityLabel="Importo in euro"
                   style={styles.amountInput}
@@ -432,15 +432,15 @@ export function DocumentForm({
               <WhiteCard style={styles.card}>
                 <FieldRow
                   symbol="person.crop.circle"
-                  tint={Colors.light.lilac}
-                  iconColor={Colors.light.indigo}
+                  tint={Colors.current.lilac}
+                  iconColor={Colors.current.indigo}
                   label="Utente">
                   <View style={styles.select}>
                     <TextInput
                       value={username}
                       onChangeText={setUsername}
                       placeholder="nome@esempio.it"
-                      placeholderTextColor={Colors.light.textSecondary}
+                      placeholderTextColor={Colors.current.textSecondary}
                       autoCapitalize="none"
                       autoCorrect={false}
                       textContentType="none"
@@ -450,13 +450,13 @@ export function DocumentForm({
                   </View>
                 </FieldRow>
                 <Separator />
-                <FieldRow symbol="key" tint={Colors.light.lilac} iconColor={Colors.light.indigo} label="Password">
+                <FieldRow symbol="key" tint={Colors.current.lilac} iconColor={Colors.current.indigo} label="Password">
                   <View style={styles.select}>
                     <TextInput
                       value={password}
                       onChangeText={setPassword}
                       placeholder={hasSavedPassword ? '•••••••• (invariata)' : 'Password'}
-                      placeholderTextColor={Colors.light.textSecondary}
+                      placeholderTextColor={Colors.current.textSecondary}
                       secureTextEntry
                       autoCapitalize="none"
                       autoCorrect={false}
@@ -478,7 +478,7 @@ export function DocumentForm({
               value={number ?? ''}
               onChangeText={setNumber}
               placeholder="Es. CA12345AB"
-              placeholderTextColor={Colors.light.textSecondary}
+              placeholderTextColor={Colors.current.textSecondary}
               autoCapitalize="characters"
               accessibilityLabel="Numero del documento"
               style={styles.nameInput}
@@ -572,7 +572,7 @@ function SelectBox({
         style={[small ? styles.selectSmallText : styles.selectText, placeholder && styles.placeholder]}>
         {value}
       </Text>
-      <SymbolView name="chevron.down" tintColor={Colors.light.textSecondary} size={13} weight="semibold" />
+      <SymbolView name="chevron.down" tintColor={Colors.current.textSecondary} size={13} weight="semibold" />
     </Pressable>
   );
 }
@@ -580,7 +580,7 @@ function SelectBox({
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   content: {
     paddingHorizontal: Spacing.side,
@@ -598,7 +598,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   headerSpace: {
     width: 44,
@@ -611,7 +611,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   nameField: {
     marginTop: 10,
@@ -626,7 +626,7 @@ const styles = StyleSheet.create({
   nameInput: {
     fontSize: 16,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
     paddingVertical: 14,
   },
   card: {
@@ -640,7 +640,7 @@ const styles = StyleSheet.create({
     height: 1,
     marginLeft: 70,
     marginRight: 16,
-    backgroundColor: Colors.light.separator,
+    backgroundColor: Colors.current.separator,
   },
   fieldRow: {
     flexDirection: 'row',
@@ -653,7 +653,7 @@ const styles = StyleSheet.create({
     width: 72,
     fontSize: 15,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   iconBox: {
     width: 40,
@@ -669,20 +669,20 @@ const styles = StyleSheet.create({
     paddingRight: 14,
     borderRadius: 14,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,
   },
   selectError: {
     borderWidth: 1,
-    borderColor: Colors.light.error,
+    borderColor: Colors.current.error,
   },
   selectText: {
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   selectSmall: {
     minHeight: 38,
@@ -697,10 +697,10 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 14,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   placeholder: {
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   pressed: {
     opacity: 0.7,
@@ -709,19 +709,19 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     paddingVertical: 10,
   },
   euro: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   amountInput: {
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
     paddingVertical: 10,
   },
   statusRow: {
@@ -739,12 +739,12 @@ const styles = StyleSheet.create({
   rowTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   rowSubtitle: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   dueBox: {
     marginTop: 4,
@@ -752,7 +752,7 @@ const styles = StyleSheet.create({
     paddingTop: 12,
     paddingBottom: 8,
     borderTopWidth: 1,
-    borderTopColor: Colors.light.separator,
+    borderTopColor: Colors.current.separator,
     gap: 8,
   },
   remind: {
@@ -763,12 +763,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 12,
     borderRadius: 14,
     borderCurve: 'continuous',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
   },
   remindLabel: {
     fontSize: 14,
     fontFamily: FONTS.medium,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   notesCard: {
     marginTop: 10,
@@ -780,7 +780,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     lineHeight: 22,
     fontFamily: FONTS.regular,
-    color: Colors.light.text,
+    color: Colors.current.text,
     textAlignVertical: 'top',
   },
   extra: {
@@ -791,7 +791,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 6,
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
     textAlign: 'center',
   },
   save: {
@@ -806,6 +806,6 @@ const styles = StyleSheet.create({
   deleteText: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.error,
+    color: Colors.current.error,
   },
 });

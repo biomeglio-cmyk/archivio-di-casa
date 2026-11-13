@@ -48,7 +48,7 @@ export default function UnlockScreen() {
           accessibilityRole="button"
           accessibilityLabel="Chiudi"
           style={({ pressed }) => [styles.close, pressed && styles.pressed]}>
-          <SymbolView name="xmark" tintColor={Colors.light.text} size={18} weight="semibold" />
+          <SymbolView name="xmark" tintColor={Colors.current.text} size={18} weight="semibold" />
         </Pressable>
       </View>
 
@@ -141,7 +141,7 @@ function Link({ label, onPress }: { label: string; onPress: () => void }) {
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    backgroundColor: Colors.light.background,
+    backgroundColor: Colors.current.background,
   },
   content: {
     paddingHorizontal: Spacing.side,
@@ -154,7 +154,7 @@ const styles = StyleSheet.create({
     width: 44,
     height: 44,
     borderRadius: 22,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -173,11 +173,11 @@ const styles = StyleSheet.create({
     minHeight: 30,
     paddingHorizontal: 12,
     borderRadius: 15,
-    backgroundColor: Colors.light.lilac,
+    backgroundColor: Colors.current.lilac,
     justifyContent: 'center',
   },
   tagText: {
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
     fontSize: 12,
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
@@ -189,7 +189,7 @@ const styles = StyleSheet.create({
     lineHeight: 34,
     fontFamily: FONTS.bold,
     textAlign: 'center',
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   intro: {
     marginTop: 10,
@@ -197,7 +197,7 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     fontFamily: FONTS.regular,
     textAlign: 'center',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   benefits: {
     marginTop: 22,
@@ -223,19 +223,19 @@ const styles = StyleSheet.create({
   benefitTitle: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   benefitText: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   sectionTitle: {
     marginTop: 24,
     fontSize: 13,
     fontFamily: FONTS.regular,
     textTransform: 'uppercase',
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   usage: {
     marginTop: 12,
@@ -251,12 +251,12 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 15,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   usageValue: {
     fontSize: 15,
     fontFamily: FONTS.bold,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
   usageBar: {
     marginTop: 10,
@@ -266,7 +266,7 @@ const styles = StyleSheet.create({
     fontSize: 13,
     lineHeight: 19,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   price: {
     marginTop: 14,
@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
     borderCurve: 'continuous',
     borderWidth: 2,
     borderColor: '#6D5CE6',
-    backgroundColor: Colors.light.paleLilac,
+    backgroundColor: Colors.current.paleLilac,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
@@ -287,17 +287,17 @@ const styles = StyleSheet.create({
   priceTitle: {
     fontSize: 16,
     fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
+    color: Colors.current.text,
   },
   priceText: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
+    color: Colors.current.textSecondary,
   },
   priceValue: {
     fontSize: 30,
     fontFamily: FONTS.bold,
-    color: Colors.light.indigo,
+    color: Colors.current.indigo,
   },
   buy: {
     marginTop: 18,
@@ -311,7 +311,7 @@ const styles = StyleSheet.create({
   freeText: {
     fontSize: 15,
     fontFamily: FONTS.medium,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
   links: {
     marginTop: 6,
@@ -322,6 +322,6 @@ const styles = StyleSheet.create({
   link: {
     fontSize: 13,
     fontFamily: FONTS.regular,
-    color: Colors.light.accent,
+    color: Colors.current.accent,
   },
 });

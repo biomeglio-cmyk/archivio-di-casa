@@ -696,9 +696,9 @@
   "deleteCategory": {
     "deleteFailed": "Impossibile eliminare",
     "title": "Cancellare la categoria {{name}}?",
-    "messageWithDocuments_one": "Dentro ci sono {{count}} documento. Cosa vuoi farne?",
+    "messageWithDocuments_one": "Dentro c’è {{count}} documento. Cosa vuoi farne?",
     "messageWithDocuments_other": "Dentro ci sono {{count}} documenti. Cosa vuoi farne?",
-    "messageWithDocumentsRestorable_one": "Dentro ci sono {{count}} documento. Cosa vuoi farne? Potrai ripristinarla da Nuova categoria.",
+    "messageWithDocumentsRestorable_one": "Dentro c’è {{count}} documento. Cosa vuoi farne? Potrai ripristinarla da Nuova categoria.",
     "messageWithDocumentsRestorable_other": "Dentro ci sono {{count}} documenti. Cosa vuoi farne? Potrai ripristinarla da Nuova categoria.",
     "messageEmpty": "La categoria è vuota.",
     "messageEmptyRestorable": "La categoria è vuota. Potrai ripristinarla da Nuova categoria.",

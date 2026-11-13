@@ -37,7 +37,7 @@ function nextDeadline(documents: DocumentListItem[]): DocumentListItem | null {
 }
 
 // "/" route, the app opens here (docs/design/Main.dc.html). One scrolling page: ≡ menu, bell and
-// logo; "Ciao!"; the search field; the backup notice; PREFERITI (the first 2), SCADENZE (the
+// logo; "Ciao!" ("Benvenuto in Sottomano" in Home vuota); the search field; the backup notice; PREFERITI (the first 2), SCADENZE (the
 // next one), ARCHIVIO (the categories, with drag and drop and the quick menu).
 // The search field opens Ricerca (docs/design/Ricerca.dc.html).
 export default function ArchiveScreen() {
@@ -73,8 +73,9 @@ export default function ArchiveScreen() {
         keyboardShouldPersistTaps="handled"
         contentContainerStyle={styles.page}>
         <HomeHeader />
-        <Text style={styles.hello} accessibilityRole="header">
-          Ciao!
+        {/* Home vuota greets the new user (it wraps between words, never inside one) */}
+        <Text style={styles.hello} accessibilityRole="header" lineBreakStrategyIOS="standard">
+          {empty && categories ? 'Benvenuto in Sottomano' : 'Ciao!'}
         </Text>
         {empty && categories ? (
           <HomeEmpty categories={categories} />

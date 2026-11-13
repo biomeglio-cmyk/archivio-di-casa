@@ -903,8 +903,8 @@
     "prompt": "Deblochează Sottomano",
     "unlock": "Deblochează",
     "unlockWith": {
-      "faceId": "Deblochează cu Face ID",
-      "touchId": "Deblochează cu Touch ID",
+      "faceId": "Deblochează cu Face ID",
+      "touchId": "Deblochează cu Touch ID",
       "passcode": "Deblochează cu codul de acces"
     },
     "message": "Documentele tale sunt protejate"
@@ -919,7 +919,7 @@
     "saveFailed": "Nu s-a putut salva",
     "editTitle": "Editează parola",
     "newTitle": "Parolă nouă",
-    "privacy": "Rămân doar pe acest telefon și se deschid cu Face ID.",
+    "privacy": "Rămân doar pe acest telefon și se deschid cu Face ID.",
     "sections": {
       "what": "Ce salvezi",
       "name": "Nume",
@@ -1001,10 +1001,10 @@
     "show": "Afișează",
     "hide": "Ascunde",
     "copy": "Copiază",
-    "locked": "Vizibilă după Face ID sau codul de acces al iPhone-ului",
+    "locked": "Vizibilă după Face ID sau codul de acces al iPhone-ului",
     "wifiQrLabel": "Codul QR al rețelei Wi-Fi",
     "qrHint": "Îl scanează cu camera și se conectează.",
-    "qrLocked": "Codul QR conține parola: e vizibil după Face ID sau codul de acces al iPhone-ului.",
+    "qrLocked": "Codul QR conține parola: e vizibil după Face ID sau codul de acces al iPhone-ului.",
     "qrNoNetwork": "Adaugă numele rețelei cu Editează pentru a obține codul QR.",
     "showQr": "Afișează codul QR",
     "hideQr": "Ascunde codul QR",
@@ -1419,7 +1419,7 @@
       "daysAgo_other": "Acum {{count}} de zile"
     },
     "categoryColors": "Culorile categoriilor",
-    "faceId": "Blocare cu Face ID",
+    "faceId": "Blocare cu Face ID",
     "faceIdSubtitle": "Îți cere fața de fiecare dată când deschizi aplicația",
     "hidePreviews": "Ascunde previzualizările",
     "hidePreviewsSubtitle": "Notificările nu afișează documentul",
@@ -1680,7 +1680,7 @@
     "rateTitle": "Evaluează Sottomano",
     "rateMessage": "Vei putea lăsa o evaluare după ce Sottomano va fi în App Store.",
     "lockUnavailableTitle": "Blocarea nu este disponibilă",
-    "lockUnavailableMessage": "Pentru a bloca Sottomano ai nevoie de un cod de acces pe iPhone. Setează unul în Configurări › Face ID și cod, apoi încearcă din nou."
+    "lockUnavailableMessage": "Pentru a bloca Sottomano ai nevoie de un cod de acces pe iPhone. Setează unul în Configurări › Face ID și cod, apoi încearcă din nou."
   },
   "a11y": {
     "browse": {

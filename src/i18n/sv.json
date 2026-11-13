@@ -169,7 +169,7 @@
       "newDocument": "Nytt dokument",
       "appearance": "Utseende",
       "backup": "Säkerhetskopia",
-      "taxPackage": "Redovisningskonsult",
+      "taxPackage": "Till bokföraren",
       "trash": "Papperskorg",
       "terms": "Användarvillkor",
       "about": "Om och integritet",
@@ -216,7 +216,7 @@
     },
     "actions": {
       "editCategory": "Redigera kategori",
-      "sendToAccountant": "Skicka till redovisningskonsulten",
+      "sendToAccountant": "Skicka till bokföraren",
       "selectAndSend": "Välj och skicka",
       "reorder": "Ändra ordning",
       "deleteCategory": "Radera kategori"
@@ -850,8 +850,8 @@
     "prompt": "Lås upp Sottomano",
     "unlock": "Lås upp",
     "unlockWith": {
-      "faceId": "Lås upp med Face ID",
-      "touchId": "Lås upp med Touch ID",
+      "faceId": "Lås upp med Face ID",
+      "touchId": "Lås upp med Touch ID",
       "passcode": "Lås upp med lösenkod"
     },
     "message": "Dina dokument är skyddade"
@@ -866,7 +866,7 @@
     "saveFailed": "Det gick inte att spara",
     "editTitle": "Redigera lösenord",
     "newTitle": "Nytt lösenord",
-    "privacy": "De stannar bara på den här telefonen och öppnas med Face ID.",
+    "privacy": "De stannar bara på den här telefonen och öppnas med Face ID.",
     "sections": {
       "what": "Vad du sparar",
       "name": "Namn",
@@ -948,10 +948,10 @@
     "show": "Visa",
     "hide": "Göm",
     "copy": "Kopiera",
-    "locked": "Synligt efter Face ID eller iPhones lösenkod",
+    "locked": "Synligt efter Face ID eller iPhones lösenkod",
     "wifiQrLabel": "QR-kod för Wi-Fi-nätverket",
     "qrHint": "De skannar den med kameran och ansluter.",
-    "qrLocked": "QR-koden innehåller lösenordet: den visas efter Face ID eller iPhones lösenkod.",
+    "qrLocked": "QR-koden innehåller lösenordet: den visas efter Face ID eller iPhones lösenkod.",
     "qrNoNetwork": "Lägg till nätverksnamnet med Redigera för att få QR-koden.",
     "showQr": "Visa QR-kod",
     "hideQr": "Göm QR-kod",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "För {{count}} dagar sedan"
     },
     "categoryColors": "Kategorifärger",
-    "faceId": "Lås med Face ID",
+    "faceId": "Lås med Face ID",
     "faceIdSubtitle": "Kräver ditt ansikte varje gång du öppnar appen",
     "hidePreviews": "Göm förhandsvisningar",
     "hidePreviewsSubtitle": "Notiserna visar inte dokumentet",
@@ -1417,7 +1417,7 @@
     "createNew": "Skapa en ny säkerhetskopia",
     "noneTitle": "Du har inte gjort någon säkerhetskopia än",
     "noneText": "Om du tappar bort eller byter telefon får du tillbaka allt med säkerhetskopian.",
-    "createNow": "Säkerhetskopiera nu",
+    "createNow": "Gör backup nu",
     "restoreSection": "Återställ",
     "restoreTitle": "Har du en ny telefon?",
     "restoreText": "Välj säkerhetskopian för att få tillbaka dina dokument, kort och påminnelser.",
@@ -1493,7 +1493,7 @@
   },
   "appearance": {
     "intro": "Färgerna på standardkategorierna. Kategorier du har skapat behåller sin egen färg.",
-    "restoreButton": "Återställ standardkategorier",
+    "restoreButton": "Återställ kategorierna",
     "restoreHint": "Tar tillbaka standardkategorier du har raderat.",
     "paletteLabel": "Paletten {{name}}",
     "alerts": {
@@ -1607,7 +1607,7 @@
     "rateTitle": "Betygsätt Sottomano",
     "rateMessage": "Du kan lämna ett betyg när Sottomano finns i App Store.",
     "lockUnavailableTitle": "Låset är inte tillgängligt",
-    "lockUnavailableMessage": "För att låsa Sottomano behöver du en lösenkod på din iPhone. Ställ in en i Inställningar › Face ID och lösenkod och försök sedan igen."
+    "lockUnavailableMessage": "För att låsa Sottomano behöver du en lösenkod på din iPhone. Ställ in en i Inställningar › Face ID och lösenkod och försök sedan igen."
   },
   "a11y": {
     "browse": {

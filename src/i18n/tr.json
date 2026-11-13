@@ -850,8 +850,8 @@
     "prompt": "Sottomano’nun kilidini aç",
     "unlock": "Kilidi aç",
     "unlockWith": {
-      "faceId": "Face ID ile kilidi aç",
-      "touchId": "Touch ID ile kilidi aç",
+      "faceId": "Face ID ile kilidi aç",
+      "touchId": "Touch ID ile kilidi aç",
       "passcode": "Parola ile kilidi aç"
     },
     "message": "Belgelerin koruma altında"
@@ -866,7 +866,7 @@
     "saveFailed": "Kaydedilemedi",
     "editTitle": "Parolayı düzenle",
     "newTitle": "Yeni parola",
-    "privacy": "Yalnızca bu telefonda kalırlar ve Face ID ile açılırlar.",
+    "privacy": "Yalnızca bu telefonda kalırlar ve Face ID ile açılırlar.",
     "sections": {
       "what": "Ne kaydediyorsun",
       "name": "Ad",
@@ -948,10 +948,10 @@
     "show": "Göster",
     "hide": "Gizle",
     "copy": "Kopyala",
-    "locked": "Face ID veya iPhone parolasından sonra görünür",
+    "locked": "Face ID veya iPhone parolasından sonra görünür",
     "wifiQrLabel": "Wi-Fi ağı QR kodu",
     "qrHint": "Kamerayla tarayıp bağlanırlar.",
-    "qrLocked": "QR kodu parolayı içerir: Face ID veya iPhone parolasından sonra görünür.",
+    "qrLocked": "QR kodu parolayı içerir: Face ID veya iPhone parolasından sonra görünür.",
     "qrNoNetwork": "QR kodunu almak için Düzenle ile ağ adını ekle.",
     "showQr": "QR kodunu göster",
     "hideQr": "QR kodunu gizle",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "{{count}} gün önce"
     },
     "categoryColors": "Kategori renkleri",
-    "faceId": "Face ID ile kilitle",
+    "faceId": "Face ID ile kilitle",
     "faceIdSubtitle": "Uygulamayı her açtığında yüzünü ister",
     "hidePreviews": "Önizlemeleri gizle",
     "hidePreviewsSubtitle": "Bildirimler belgeyi göstermez",
@@ -1607,7 +1607,7 @@
     "rateTitle": "Sottomano’yu puanla",
     "rateMessage": "Sottomano App Store’a geldiğinde puan verebileceksin.",
     "lockUnavailableTitle": "Kilit kullanılamıyor",
-    "lockUnavailableMessage": "Sottomano’yu kilitlemek için iPhone’unda bir parola olmalı. Ayarlar › Face ID ve Parola’dan bir tane ayarla, sonra yeniden dene."
+    "lockUnavailableMessage": "Sottomano’yu kilitlemek için iPhone’unda bir parola olmalı. Ayarlar › Face ID ve Parola’dan bir tane ayarla, sonra yeniden dene."
   },
   "a11y": {
     "browse": {

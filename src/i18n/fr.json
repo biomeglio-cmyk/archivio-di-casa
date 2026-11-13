@@ -850,8 +850,8 @@
     "prompt": "Déverrouiller Sottomano",
     "unlock": "Déverrouiller",
     "unlockWith": {
-      "faceId": "Déverrouiller avec Face ID",
-      "touchId": "Déverrouiller avec Touch ID",
+      "faceId": "Déverrouiller avec Face ID",
+      "touchId": "Déverrouiller avec Touch ID",
       "passcode": "Déverrouiller avec le code"
     },
     "message": "Tes documents sont protégés"
@@ -866,7 +866,7 @@
     "saveFailed": "Impossible d’enregistrer",
     "editTitle": "Modifier le mot de passe",
     "newTitle": "Nouveau mot de passe",
-    "privacy": "Ils restent uniquement sur ce téléphone et s’ouvrent avec Face ID.",
+    "privacy": "Ils restent uniquement sur ce téléphone et s’ouvrent avec Face ID.",
     "sections": {
       "what": "Ce que tu enregistres",
       "name": "Nom",
@@ -948,10 +948,10 @@
     "show": "Afficher",
     "hide": "Masquer",
     "copy": "Copier",
-    "locked": "Visible après Face ID ou le code de l’iPhone",
+    "locked": "Visible après Face ID ou le code de l’iPhone",
     "wifiQrLabel": "Code QR du réseau Wi-Fi",
     "qrHint": "Ils le scannent avec l’appareil photo et se connectent.",
-    "qrLocked": "Le code QR contient le mot de passe : il est visible après Face ID ou le code de l’iPhone.",
+    "qrLocked": "Le code QR contient le mot de passe : il est visible après Face ID ou le code de l’iPhone.",
     "qrNoNetwork": "Ajoute le nom du réseau avec Modifier pour obtenir le code QR.",
     "showQr": "Afficher le code QR",
     "hideQr": "Masquer le code QR",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "Il y a {{count}} jours"
     },
     "categoryColors": "Couleurs des catégories",
-    "faceId": "Verrouiller avec Face ID",
+    "faceId": "Verrouiller avec Face ID",
     "faceIdSubtitle": "Demande ton visage à chaque ouverture de l’app",
     "hidePreviews": "Masquer les aperçus",
     "hidePreviewsSubtitle": "Les notifications n’affichent pas le document",
@@ -1607,7 +1607,7 @@
     "rateTitle": "Noter Sottomano",
     "rateMessage": "Tu pourras laisser une note dès que Sottomano sera sur l’App Store.",
     "lockUnavailableTitle": "Verrouillage indisponible",
-    "lockUnavailableMessage": "Pour verrouiller Sottomano, il te faut un code sur ton iPhone. Définis-en un dans Réglages › Face ID et code, puis réessaie."
+    "lockUnavailableMessage": "Pour verrouiller Sottomano, il te faut un code sur ton iPhone. Définis-en un dans Réglages › Face ID et code, puis réessaie."
   },
   "a11y": {
     "browse": {

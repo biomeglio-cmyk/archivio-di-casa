@@ -850,8 +850,8 @@
     "prompt": "Lås Sottomano op",
     "unlock": "Lås op",
     "unlockWith": {
-      "faceId": "Lås op med Face ID",
-      "touchId": "Lås op med Touch ID",
+      "faceId": "Lås op med Face ID",
+      "touchId": "Lås op med Touch ID",
       "passcode": "Lås op med kode"
     },
     "message": "Dine dokumenter er beskyttet"
@@ -866,7 +866,7 @@
     "saveFailed": "Kunne ikke gemme",
     "editTitle": "Rediger adgangskode",
     "newTitle": "Ny adgangskode",
-    "privacy": "De bliver kun på denne telefon og åbnes med Face ID.",
+    "privacy": "De bliver kun på denne telefon og åbnes med Face ID.",
     "sections": {
       "what": "Hvad du gemmer",
       "name": "Navn",
@@ -948,10 +948,10 @@
     "show": "Vis",
     "hide": "Skjul",
     "copy": "Kopier",
-    "locked": "Synlig efter Face ID eller iPhone-koden",
+    "locked": "Synlig efter Face ID eller iPhone-koden",
     "wifiQrLabel": "QR-kode til Wi-Fi-netværket",
     "qrHint": "De scanner den med kameraet og opretter forbindelse.",
-    "qrLocked": "QR-koden indeholder adgangskoden: Den er synlig efter Face ID eller iPhone-koden.",
+    "qrLocked": "QR-koden indeholder adgangskoden: Den er synlig efter Face ID eller iPhone-koden.",
     "qrNoNetwork": "Tilføj netværksnavnet med Rediger for at få QR-koden.",
     "showQr": "Vis QR-kode",
     "hideQr": "Skjul QR-kode",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "For {{count}} dage siden"
     },
     "categoryColors": "Kategorifarver",
-    "faceId": "Lås med Face ID",
+    "faceId": "Lås med Face ID",
     "faceIdSubtitle": "Beder om dit ansigt, hver gang du åbner appen",
     "hidePreviews": "Skjul eksempler",
     "hidePreviewsSubtitle": "Meddelelser viser ikke dokumentet",
@@ -1417,7 +1417,7 @@
     "createNew": "Opret en ny sikkerhedskopi",
     "noneTitle": "Du har ikke lavet en sikkerhedskopi endnu",
     "noneText": "Hvis du mister eller skifter telefon, bringer sikkerhedskopien det hele tilbage.",
-    "createNow": "Sikkerhedskopier nu",
+    "createNow": "Lav backup nu",
     "restoreSection": "Gendan",
     "restoreTitle": "Har du fået en ny telefon?",
     "restoreText": "Vælg sikkerhedskopifilen for at få dine dokumenter, kort og påmindelser tilbage.",
@@ -1493,7 +1493,7 @@
   },
   "appearance": {
     "intro": "Farverne på standardkategorierne. Kategorier, du selv har oprettet, beholder deres egen farve.",
-    "restoreButton": "Gendan standardkategorier",
+    "restoreButton": "Gendan kategorierne",
     "restoreHint": "Henter de standardkategorier tilbage, som du har slettet.",
     "paletteLabel": "Paletten {{name}}",
     "alerts": {
@@ -1607,7 +1607,7 @@
     "rateTitle": "Bedøm Sottomano",
     "rateMessage": "Du kan give en bedømmelse, når Sottomano er i App Store.",
     "lockUnavailableTitle": "Lås ikke tilgængelig",
-    "lockUnavailableMessage": "For at låse Sottomano skal du have en kode på din iPhone. Indstil en i Indstillinger › Face ID & kode, og prøv igen."
+    "lockUnavailableMessage": "For at låse Sottomano skal du have en kode på din iPhone. Indstil en i Indstillinger › Face ID & kode, og prøv igen."
   },
   "a11y": {
     "browse": {

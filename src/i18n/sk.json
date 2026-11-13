@@ -903,8 +903,8 @@
     "prompt": "Odomknúť Sottomano",
     "unlock": "Odomknúť",
     "unlockWith": {
-      "faceId": "Odomknúť pomocou Face ID",
-      "touchId": "Odomknúť pomocou Touch ID",
+      "faceId": "Odomknúť pomocou Face ID",
+      "touchId": "Odomknúť pomocou Touch ID",
       "passcode": "Odomknúť kódom"
     },
     "message": "Tvoje dokumenty sú chránené"
@@ -919,7 +919,7 @@
     "saveFailed": "Uloženie sa nepodarilo",
     "editTitle": "Upraviť heslo",
     "newTitle": "Nové heslo",
-    "privacy": "Zostávajú len v tomto telefóne a otvárajú sa pomocou Face ID.",
+    "privacy": "Zostávajú len v tomto telefóne a otvárajú sa pomocou Face ID.",
     "sections": {
       "what": "Čo ukladáš",
       "name": "Názov",
@@ -1001,10 +1001,10 @@
     "show": "Zobraziť",
     "hide": "Skryť",
     "copy": "Kopírovať",
-    "locked": "Viditeľné po overení Face ID alebo kódom iPhonu",
+    "locked": "Viditeľné po overení Face ID alebo kódom iPhonu",
     "wifiQrLabel": "QR kód siete Wi‑Fi",
     "qrHint": "Naskenujú ho fotoaparátom a pripoja sa.",
-    "qrLocked": "QR kód obsahuje heslo: zobrazí sa po overení Face ID alebo kódom iPhonu.",
+    "qrLocked": "QR kód obsahuje heslo: zobrazí sa po overení Face ID alebo kódom iPhonu.",
     "qrNoNetwork": "Ak chceš QR kód, pridaj cez Upraviť názov siete.",
     "showQr": "Zobraziť QR kód",
     "hideQr": "Skryť QR kód",
@@ -1419,7 +1419,7 @@
       "daysAgo_other": "Pred {{count}} dňami"
     },
     "categoryColors": "Farby kategórií",
-    "faceId": "Zamykať pomocou Face ID",
+    "faceId": "Zamykať pomocou Face ID",
     "faceIdSubtitle": "Pri každom otvorení aplikácie overí tvoju tvár",
     "hidePreviews": "Skryť náhľady",
     "hidePreviewsSubtitle": "Hlásenia nezobrazujú dokument",
@@ -1680,7 +1680,7 @@
     "rateTitle": "Ohodnotiť Sottomano",
     "rateMessage": "Hodnotenie budeš môcť zanechať, keď bude Sottomano v App Store.",
     "lockUnavailableTitle": "Zámok nie je k dispozícii",
-    "lockUnavailableMessage": "Na zamknutie Sottomano potrebuješ v iPhone nastavený kód. Nastav ho v Nastavenia › Face ID a kód a skús to znova."
+    "lockUnavailableMessage": "Na zamknutie Sottomano potrebuješ v iPhone nastavený kód. Nastav ho v Nastavenia › Face ID a kód a skús to znova."
   },
   "a11y": {
     "browse": {

@@ -903,8 +903,8 @@
     "prompt": "Otključaj Sottomano",
     "unlock": "Otključaj",
     "unlockWith": {
-      "faceId": "Otključaj pomoću Face ID-ja",
-      "touchId": "Otključaj pomoću Touch ID-ja",
+      "faceId": "Otključaj pomoću Face ID-ja",
+      "touchId": "Otključaj pomoću Touch ID-ja",
       "passcode": "Otključaj šifrom"
     },
     "message": "Tvoji su dokumenti zaštićeni"
@@ -919,7 +919,7 @@
     "saveFailed": "Spremanje nije uspjelo",
     "editTitle": "Uredi lozinku",
     "newTitle": "Nova lozinka",
-    "privacy": "Ostaju samo na ovom telefonu i otvaraju se pomoću Face ID-ja.",
+    "privacy": "Ostaju samo na ovom telefonu i otvaraju se pomoću Face ID-ja.",
     "sections": {
       "what": "Što spremaš",
       "name": "Naziv",
@@ -1001,10 +1001,10 @@
     "show": "Prikaži",
     "hide": "Sakrij",
     "copy": "Kopiraj",
-    "locked": "Vidljivo nakon Face ID-ja ili šifre iPhonea",
+    "locked": "Vidljivo nakon Face ID-ja ili šifre iPhonea",
     "wifiQrLabel": "QR kôd Wi‑Fi mreže",
     "qrHint": "Skeniraju ga kamerom i spoje se.",
-    "qrLocked": "QR kôd sadrži lozinku: vidljiv je nakon Face ID-ja ili šifre iPhonea.",
+    "qrLocked": "QR kôd sadrži lozinku: vidljiv je nakon Face ID-ja ili šifre iPhonea.",
     "qrNoNetwork": "Dodaj naziv mreže pomoću Uredi da dobiješ QR kôd.",
     "showQr": "Prikaži QR kôd",
     "hideQr": "Sakrij QR kôd",
@@ -1419,7 +1419,7 @@
       "daysAgo_other": "Prije {{count}} dana"
     },
     "categoryColors": "Boje kategorija",
-    "faceId": "Zaključaj pomoću Face ID-ja",
+    "faceId": "Zaključaj pomoću Face ID-ja",
     "faceIdSubtitle": "Traži tvoje lice svaki put kada otvoriš aplikaciju",
     "hidePreviews": "Sakrij pretpreglede",
     "hidePreviewsSubtitle": "Obavijesti ne prikazuju dokument",
@@ -1680,7 +1680,7 @@
     "rateTitle": "Ocijeni Sottomano",
     "rateMessage": "Ocjenu ćeš moći ostaviti kad Sottomano bude u App Storeu.",
     "lockUnavailableTitle": "Zaključavanje nije dostupno",
-    "lockUnavailableMessage": "Za zaključavanje Sottomana potrebna je šifra na iPhoneu. Postavi je u Postavke › Face ID i šifra, zatim pokušaj ponovno."
+    "lockUnavailableMessage": "Za zaključavanje Sottomana potrebna je šifra na iPhoneu. Postavi je u Postavke › Face ID i šifra, zatim pokušaj ponovno."
   },
   "a11y": {
     "browse": {

@@ -33,31 +33,62 @@ const ROWS_FIRST_PAGE = Math.floor((PAGE.height - 2 * MARGIN - HEADER_HEIGHT) / 
 const ROWS_OTHER_PAGES = Math.floor((PAGE.height - 2 * MARGIN - 30) / ROW_HEIGHT);
 const OUTPUT_FOLDER = 'invio';
 
-// The date that places a document in a year: its deadline, else the day it was added
+// The date that places a document in a year: its deadline or payment day, else the day it was added
 export function documentDate(document: DocumentListItem): string {
-  return document.expiresAt ?? toISODate(new Date(document.createdAt));
+  return document.expiresAt ?? document.paidAt ?? toISODate(new Date(document.createdAt));
 }
+
+export const yearOf = (document: DocumentListItem) => Number(documentDate(document).slice(0, 4));
 
 export type TaxItem = { document: DocumentListItem; date: string; files: DocumentFile[] };
 
-// The documents of that year, in date order (then title)
-export async function loadTaxItems(db: SQLiteDatabase, categoryId: number, year: number): Promise<TaxItem[]> {
+// The documents of that year (null = every year), in date order (then title)
+export async function loadTaxItems(db: SQLiteDatabase, categoryId: number, year: number | null): Promise<TaxItem[]> {
   const documents = await listDocumentsByCategory(db, categoryId);
   const items: TaxItem[] = [];
   for (const document of documents) {
     const date = documentDate(document);
-    if (Number(date.slice(0, 4)) !== year) continue;
+    if (year !== null && Number(date.slice(0, 4)) !== year) continue;
     items.push({ document, date, files: await listDocumentFiles(db, document.id) });
   }
   return items.sort((a, b) => a.date.localeCompare(b.date) || a.document.title.localeCompare(b.document.title, 'it'));
 }
 
-// Years that have documents, the most recent first, always including last year (the default)
+// Years that have documents, the most recent first
 export async function taxYears(db: SQLiteDatabase, categoryId: number): Promise<number[]> {
   const documents = await listDocumentsByCategory(db, categoryId);
-  const years = new Set(documents.map((d) => Number(documentDate(d).slice(0, 4))));
-  years.add(new Date().getFullYear() - 1);
-  return [...years].sort((a, b) => b - a);
+  return [...new Set(documents.map(yearOf))].sort((a, b) => b - a);
+}
+
+// "Spese 730 – 2026": the title of a year's PDF and its file name (kept readable)
+export const yearTitle = (categoryName: string, year: number) => `${categoryName} – ${year}`;
+
+export type YearPackages = { files: PreparedFile[]; years: { year: number; pages: number; bytes: number }[]; sentApart: string[]; warnings: string[] };
+
+// "Tutti gli anni" (or one year): one PDF per year, each with its own index and total, then the
+// PDFs that could not be merged; all the files together for one delivery
+export async function buildYearPackages(
+  items: TaxItem[],
+  categoryName: string,
+  limitBytes: number | null,
+  onProgress?: (text: string) => void,
+): Promise<YearPackages> {
+  const byYear = new Map<number, TaxItem[]>();
+  for (const item of items) {
+    const year = Number(item.date.slice(0, 4));
+    byYear.set(year, [...(byYear.get(year) ?? []), item]);
+  }
+  const result: YearPackages = { files: [], years: [], sentApart: [], warnings: [] };
+  for (const year of [...byYear.keys()].sort((a, b) => b - a)) {
+    const built = await buildTaxPackage(byYear.get(year)!, yearTitle(categoryName, year), limitBytes, (text) =>
+      onProgress?.(byYear.size > 1 ? `${year}: ${text}` : text),
+    );
+    result.files.push(...built.files);
+    result.years.push({ year, pages: built.pages, bytes: built.bytes });
+    result.sentApart.push(...built.sentApart);
+    result.warnings.push(...built.warnings.map((w) => (byYear.size > 1 ? `${year}: ${w}` : w)));
+  }
+  return result;
 }
 
 export type TaxPackage = {
@@ -107,7 +138,8 @@ export async function buildTaxPackage(
     // The main PDF, then each PDF that could not be merged, with readable names
     const output = new Directory(Paths.cache, OUTPUT_FOLDER);
     if (!output.exists) output.create({ intermediates: true, idempotent: true });
-    const mainName = `${fileBaseName([title])}.pdf`;
+    // "Spese 730 – 2026.pdf": readable, as the accountant sees it (no characters iOS refuses)
+    const mainName = `${title.replace(/[\\/:*?"<>|]/g, '-')}.pdf`;
     const main = new File(output, mainName);
     if (main.exists) main.delete();
     await new File(built.uri).copy(main);

@@ -40,7 +40,7 @@ const BACKUP_DOT = '#F5824A';
 // list scrolls when it is longer than the screen.
 // Entries of the design first (purple free-version card → Sblocca; Home, Preferiti, Scadenze,
 // Famiglia, Tessere; Impostazioni, Backup, Aiuto e contatti, Valuta Sottomano, Consiglialo a un
-// amico), then our extras: Cestino, Password, Pacchetto commercialista, Scansiona, Dalle foto,
+// amico), then our extras: Cestino, Password, Scansiona, Dalle foto,
 // Importa file.
 // Rows: a tab → close, then go there; another screen → the menu is REPLACED by it (closing that
 // screen brings back to where you were); "Aggiungi" rows keep the menu open while the scanner or
@@ -106,7 +106,6 @@ export default function MenuScreen() {
 
   const cardsId = counts?.cardsCategoryId;
   const passwordId = counts?.passwordCategoryId;
-  const taxId = counts?.taxCategoryId;
   const urgent = counts?.urgent ?? 0;
   const trash = counts?.trash ?? 0;
   const version = Constants.expoConfig?.version ?? '1.0';
@@ -205,13 +204,6 @@ export default function MenuScreen() {
               label="Password"
               symbol="key"
               onPress={() => goToTab({ pathname: '/category/[id]', params: { id: String(passwordId) } })}
-            />
-          )}
-          {taxId != null && (
-            <MenuItem
-              label="Pacchetto commercialista"
-              symbol="doc.text.magnifyingglass"
-              onPress={() => openScreen({ pathname: '/tax-package', params: { categoryId: String(taxId) } })}
             />
           )}
           <MenuItem label="Scansiona" symbol="doc.viewfinder" onPress={() => whenBelowLimit(addByScan)} />

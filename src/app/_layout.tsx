@@ -197,12 +197,12 @@ function RootContent() {
             name="backup"
             options={{ presentation: 'modal', title: 'Backup', headerShown: false }}
           />
-          {/* "Prepara per il commercialista" in the "…" menu of Spese 730 */}
+          {/* "Invia al commercialista": button and "…" menu of Spese 730 */}
           <Stack.Screen
             name="tax-package"
             options={{
               presentation: 'modal',
-              title: 'Per il commercialista',
+              title: 'Invia al commercialista',
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />

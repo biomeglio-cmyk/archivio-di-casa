@@ -11,21 +11,26 @@ import { WhiteCard } from '@/components/white-card';
 import { type Palette, Spacing } from '@/constants/theme';
 import { getCategory } from '@/db/categories';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { shareFiles } from '@/send/deliver';
 import { formatBytes, loadSendPreferences, SIZE_LIMITS, type SizeLimit } from '@/send/send-preferences';
-import { buildTaxPackage, loadTaxItems, taxYears } from '@/send/tax-package';
+import { emailFiles, saveToFiles, shareFiles } from '@/send/deliver';
+import type { PreparedFile } from '@/send/prepare';
+import { buildYearPackages, loadTaxItems, taxYears, yearTitle } from '@/send/tax-package';
+import { chooseAction } from '@/utils/action-sheet';
 import { useThemedStyles } from '@/hooks/use-theme';
 
-// Modal "Prepara per il commercialista" (menu "…" of Spese 730): pick the year, then ONE PDF with
-// an index and every document of that year (photos and imported PDFs), shared with the iOS sheet.
+const ALL_YEARS = 0; // "Tutti gli anni"
+
+// "Invia al commercialista" (the button of the Spese 730 folder, and its "…" menu): every document
+// of the folder divided by year. "Tutti gli anni" (default) makes one PDF per year, each with its
+// index and total; one year makes just that PDF. PDFs that can't be merged go along, apart.
 export default function TaxPackageScreen() {
   const styles = useThemedStyles(makeStyles);
   const { categoryId } = useLocalSearchParams<{ categoryId: string }>();
   const id = Number(categoryId);
   const { data: category } = useDbQuery((db) => getCategory(db, id), [id]);
   const { data: years } = useDbQuery((db) => taxYears(db, id), [id]);
-  const [year, setYear] = useState(() => new Date().getFullYear() - 1);
-  const { data: items } = useDbQuery((db) => loadTaxItems(db, id, year), [id, year]);
+  const [year, setYear] = useState(ALL_YEARS); // "Tutti gli anni" by default
+  const { data: items } = useDbQuery((db) => loadTaxItems(db, id, year === ALL_YEARS ? null : year), [id, year]);
   const [limit, setLimit] = useState<SizeLimit>(() => loadSendPreferences().limit);
   const [progress, setProgress] = useState<string | null>(null);
 
@@ -36,30 +41,53 @@ export default function TaxPackageScreen() {
 
   async function prepare() {
     if (!items || !category) return;
-    const title = `${category.name} ${year}`;
     setProgress('Preparo il PDF…');
     try {
-      const result = await buildTaxPackage(items, title, limitBytes, setProgress);
+      const result = await buildYearPackages(items, category.name, limitBytes, setProgress);
       setProgress(null);
-      const share = () => shareFiles(result.files, title);
-      const summary = `${result.pages === 1 ? '1 pagina' : `${result.pages} pagine`}, ${formatBytes(result.bytes)}`;
+      const label = year === ALL_YEARS ? category.name : yearTitle(category.name, year);
+      const pdfs = result.years
+        .map((y) => `${yearTitle(category.name, y.year)}: ${y.pages === 1 ? '1 pagina' : `${y.pages} pagine`}, ${formatBytes(y.bytes)}`)
+        .join('\n');
       const notes = [
         ...result.warnings,
         result.sentApart.length > 0
-          ? `${result.sentApart.length === 1 ? 'Un PDF non si può unire' : `${result.sentApart.length} PDF non si possono unire`} (protetto da password o danneggiato): ${result.sentApart.join(', ')}. Nell'indice è segnato «inviato a parte» e lo condividi subito dopo il PDF principale.`
+          ? `${result.sentApart.length === 1 ? 'Un PDF non si può unire' : `${result.sentApart.length} PDF non si possono unire`} (protetto da password o danneggiato): ${result.sentApart.join(', ')}. Nell'indice è segnato «inviato a parte» e lo mandi insieme agli altri.`
           : null,
       ].filter(Boolean);
-      if (notes.length === 0) {
-        await share();
-        return;
-      }
-      Alert.alert(`PDF pronto: ${summary}`, notes.join('\n\n'), [
-        { text: 'Annulla', style: 'cancel' },
-        { text: 'Condividi', onPress: () => share() },
-      ]);
+      await deliver(result.files, label, [pdfs, ...notes].join('\n\n'));
     } catch (error) {
       setProgress(null);
       Alert.alert('Impossibile preparare il PDF', error instanceof Error ? error.message : String(error));
+    }
+  }
+
+  // One file: the share sheet. Several (more years, or PDFs sent apart): iOS shares one file per
+  // sheet, so the ways to send them TOGETHER come first: one email with every PDF attached, or all
+  // saved in one folder of File; the share sheet one after another stays as the last choice.
+  async function deliver(files: PreparedFile[], label: string, summary: string) {
+    if (files.length === 1) {
+      Alert.alert('PDF pronto', summary, [
+        { text: 'Annulla', style: 'cancel' },
+        { text: 'Condividi', onPress: () => void shareFiles(files, label) },
+      ]);
+      return;
+    }
+    const choice = await chooseAction(`${files.length} PDF pronti`, [
+      'Email: tutti i PDF in un messaggio',
+      'Salva in File: tutti nella stessa cartella',
+      'Condividi uno alla volta',
+    ]);
+    try {
+      if (choice === 0 && !(await emailFiles(files, label, summary))) {
+        Alert.alert('Mail non configurata', 'Aggiungi un account in Mail, oppure salva i PDF in File.');
+      } else if (choice === 1 && (await saveToFiles(files))) {
+        Alert.alert('Salvati in File', files.map((f) => f.name).join('\n'));
+      } else if (choice === 2) {
+        await shareFiles(files, label);
+      }
+    } catch (error) {
+      Alert.alert('Impossibile inviare', error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -67,8 +95,9 @@ export default function TaxPackageScreen() {
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
-          Un solo PDF con un indice (documento, data, persona, pagina) e tutti i documenti dell&apos;anno, in ordine di
-          data: la scadenza o, se manca, il giorno in cui li hai aggiunti.
+          Tutti i documenti di {category?.name ?? 'Spese 730'}, divisi per anno: un PDF per ogni anno, con il suo indice
+          (documento, data, persona, importo, pagina) e il totale. L&apos;anno è quello della scadenza o del pagamento;
+          se mancano, quello in cui li hai aggiunti.
         </ThemedText>
 
         <Group
@@ -76,11 +105,17 @@ export default function TaxPackageScreen() {
             items
               ? items.length === 0
                 ? 'Nessun documento in questo anno.'
-                : `${items.length === 1 ? '1 documento' : `${items.length} documenti`}: ${photos} foto, ${pdfs} PDF.`
+                : `${items.length === 1 ? '1 documento' : `${items.length} documenti`}: ${photos} foto, ${pdfs} PDF${year === ALL_YEARS && years ? ` · ${years.length === 1 ? '1 anno' : `${years.length} anni`}` : ''}.`
               : undefined
           }>
           <Row label="Anno" symbol="calendar" first>
-            <Choice title="Anno" value={year} options={years ?? [year]} labelFor={String} onChange={setYear} />
+            <Choice
+              title="Anno"
+              value={year}
+              options={[ALL_YEARS, ...(years ?? [])]}
+              labelFor={(y) => (y === ALL_YEARS ? 'Tutti gli anni' : String(y))}
+              onChange={setYear}
+            />
           </Row>
         </Group>
 
@@ -106,7 +141,7 @@ export default function TaxPackageScreen() {
           </WhiteCard>
         ) : (
           <PrimaryButton
-            label="Prepara e condividi"
+            label="Prepara e invia"
             symbol="square.and.arrow.up"
             disabled={!items?.length || !category}
             onPress={prepare}

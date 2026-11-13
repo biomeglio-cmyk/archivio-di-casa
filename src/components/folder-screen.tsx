@@ -56,7 +56,7 @@ function countLabel(count: number): string {
 // documents by month in white cards, the dashed "Nuovo…" tile. "Elenco / Griglia" (remembered)
 // switches to our tile grid: covers, long press for the quick menu, drag to reorder. "…" opens the sheet with Modifica /
 // Cancella categoria; the search button filters this folder.
-// Our extras in the same sheet: "Prepara per il commercialista" (Spese 730), "Seleziona e invia"
+// Our extras in the same sheet: "Invia al commercialista" (Spese 730, also a button under the title), "Seleziona e invia"
 // (several documents in one PDF) and "Riordina" (the tile grid with drag and drop, which sets the
 // manual order used inside each month). Long press on a row: the quick-action menu.
 export function FolderScreen({ category, documents }: Props) {
@@ -124,6 +124,11 @@ export function FolderScreen({ category, documents }: Props) {
   const addDocument = () =>
     whenBelowLimit(() => router.push({ pathname: '/new-document', params: { categoryId: String(category.id) } }));
 
+  // Spese 730 (by its built-in key, so a rename doesn't matter): every document, divided by year
+  const isTaxFolder = category.builtinKey === TAX_CATEGORY_KEY;
+  const openTaxPackage = () =>
+    router.push({ pathname: '/tax-package', params: { categoryId: String(category.id) } });
+
   const sheetActions: SheetAction[] = [
     {
       key: 'edit',
@@ -131,13 +136,13 @@ export function FolderScreen({ category, documents }: Props) {
       symbol: 'pencil',
       onPress: () => router.push({ pathname: '/category-form', params: { id: String(category.id) } }),
     },
-    ...(category.builtinKey === TAX_CATEGORY_KEY
+    ...(isTaxFolder
       ? [
           {
             key: 'tax',
-            label: 'Prepara per il commercialista',
-            symbol: 'doc.on.doc' as const,
-            onPress: () => router.push({ pathname: '/tax-package', params: { categoryId: String(category.id) } }),
+            label: 'Invia al commercialista',
+            symbol: 'paperplane' as const,
+            onPress: openTaxPackage,
           },
         ]
       : []),
@@ -216,6 +221,18 @@ export function FolderScreen({ category, documents }: Props) {
           {category.name}
         </Text>
         <Text style={styles.subtitle}>{subtitle}</Text>
+
+        {isTaxFolder && !reordering && !selection.selecting && (
+          <PrimaryButton
+            label="Invia al commercialista"
+            symbol="paperplane.fill"
+            gradient={gradient}
+            shadow={tintedShadow(categoryShadowRgb(category.colors))}
+            disabled={documents.length === 0}
+            onPress={openTaxPackage}
+            style={styles.taxButton}
+          />
+        )}
 
         {!reordering && (
           <View style={styles.viewSwitch}>
@@ -450,6 +467,9 @@ const makeStyles = (c: Palette) =>
     marginTop: 18,
   },
   viewSwitch: {
+    marginTop: 18,
+  },
+  taxButton: {
     marginTop: 18,
   },
   chips: {

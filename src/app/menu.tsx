@@ -287,7 +287,7 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     paddingHorizontal: 16,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     borderTopRightRadius: 32,
     borderBottomRightRadius: 32,
     borderCurve: 'continuous',

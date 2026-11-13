@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Chip, ChipGroup } from '@/components/chip';
 import { Text, TextInput } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { CardSurface, Colors, Spacing } from '@/constants/theme';
+import { CardSurface, Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategoriesWithCounts } from '@/db/categories';
 import { listAllDocuments } from '@/db/documents';
@@ -20,8 +20,8 @@ import { categoryShadowRgb } from '@/utils/colors';
 
 const DEBOUNCE_MS = 150;
 const LENS = '#6D5CE6';
-const MARK_BACKGROUND = '#E8E5FD';
-const MARK_TEXT = '#3A2BC8';
+const MARK_BACKGROUND = softTint('#E8E5FD', '139, 108, 240');
+const MARK_TEXT = onSoftTint('#3A2BC8', '#C9C2FF');
 
 // "Ricerca" (docs/design/Ricerca.dc.html), opened by the field in Home: the field (lilac, ringed)
 // with "Annulla", the filters Tutto / Documenti / Tessere / Scadenze, "N RISULTATI" and the results

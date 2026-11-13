@@ -94,7 +94,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(28, 30, 70, 0.35)',
   },
   sheet: {
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderCurve: 'continuous',

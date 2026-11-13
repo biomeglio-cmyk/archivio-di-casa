@@ -104,7 +104,7 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
             style={[round, custom !== null && ring(custom)]}>
             <LinearGradient colors={RAINBOW} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={[styles.fill, round]}>
               <View style={[styles.dot, { backgroundColor: custom ?? '#FFFFFF' }]}>
-                <SymbolView name="plus" tintColor={custom ? '#FFFFFF' : '#4B5068'} size={Math.round(size * 0.3)} weight="bold" />
+                <SymbolView name="plus" tintColor={custom ? '#FFFFFF' : Colors.current.textSecondary} size={Math.round(size * 0.3)} weight="bold" />
               </View>
             </LinearGradient>
           </Pressable>
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
     height: 40,
     paddingHorizontal: 12,
     borderRadius: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     flexDirection: 'row',
     alignItems: 'center',
   },

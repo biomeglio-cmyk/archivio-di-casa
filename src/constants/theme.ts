@@ -96,6 +96,17 @@ export const Colors = {
   current: startTheme(),
 } as const;
 
+// A light tint of an accent: the pastel of the light theme, or the accent at 18% on the dark one
+// (the same rule as the category tints)
+export function softTint(lightTint: string, accentRgb: string): string {
+  return Colors.current.isDark ? `rgba(${accentRgb}, 0.18)` : lightTint;
+}
+
+// Text or icons on that tint: the dark ink of the light theme, a light one on the dark theme
+export function onSoftTint(lightInk: string, darkInk: string): string {
+  return Colors.current.isDark ? darkInk : lightInk;
+}
+
 export type ThemeColor = Exclude<keyof typeof Colors.current, 'isDark'>;
 
 export const Fonts = Platform.select({

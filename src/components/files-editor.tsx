@@ -17,6 +17,7 @@ import { resolveDocumentFile } from '@/storage/document-files';
 import { pagesToFiles, type PendingFile } from '@/storage/pending-files';
 import { chooseAction } from '@/utils/action-sheet';
 import { pageLabel, usesFrontBack } from '@/utils/page-labels';
+import { Colors } from '@/constants/theme';
 
 // A file in the form: either already saved (existing) or just captured (pending).
 // The photos are kept in page order: their position in the list IS the page number.
@@ -354,7 +355,7 @@ const styles = StyleSheet.create({
     width: 24,
     height: 20,
     borderRadius: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     alignItems: 'center',
     justifyContent: 'center',
   },

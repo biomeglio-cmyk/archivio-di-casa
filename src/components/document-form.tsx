@@ -35,9 +35,10 @@ import { categoryTint } from '@/utils/colors';
 import { MONTHS, parseISODate, toISODate } from '@/utils/dates';
 import { centsToInput, parseEuro } from '@/utils/money';
 import { REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
+import { PIN_TINT } from '@/constants/brand';
 
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
-const PIN_BACKGROUND = '#FDEBF1';
+const PIN_BACKGROUND = PIN_TINT;
 const PIN_COLOR = '#E8457A';
 const STATUSES: { label: string; value: PaymentStatus | null }[] = [
   { label: 'Nessuno', value: null },
@@ -289,7 +290,7 @@ export function DocumentForm({
               <View style={styles.dueBox}>
                 <DateCalendar value={expiryDate} onChange={setExpiryDate} />
                 <View style={styles.remind}>
-                  <IconBox symbol="bell" tint="#FFFFFF" color={Colors.current.indigo} />
+                  <IconBox symbol="bell" tint={Colors.current.surface} color={Colors.current.indigo} />
                   <FitLine
                     start={<Text style={styles.remindLabel}>Avvisami</Text>}
                     end={
@@ -311,7 +312,7 @@ export function DocumentForm({
                 </View>
                 {/* Ours: a deadline that comes back */}
                 <View style={styles.remind}>
-                  <IconBox symbol="arrow.clockwise" tint="#FFFFFF" color={Colors.current.indigo} />
+                  <IconBox symbol="arrow.clockwise" tint={Colors.current.surface} color={Colors.current.indigo} />
                   <FitLine
                     start={<Text style={styles.remindLabel}>Si ripete</Text>}
                     end={
@@ -333,7 +334,7 @@ export function DocumentForm({
                 </View>
                 {repeatUnit !== 'never' && (
                   <View style={styles.remind}>
-                    <IconBox symbol="number" tint="#FFFFFF" color={Colors.current.indigo} />
+                    <IconBox symbol="number" tint={Colors.current.surface} color={Colors.current.indigo} />
                     <FitLine
                       start={<Text style={styles.remindLabel}>Ogni</Text>}
                       end={
@@ -619,7 +620,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     boxShadow: '0 6px 22px rgba(28, 30, 70, 0.08)',
     justifyContent: 'center',
   },
@@ -688,7 +689,7 @@ const styles = StyleSheet.create({
     minHeight: 38,
     paddingHorizontal: 12,
     borderRadius: 12,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     flexDirection: 'row',
     alignItems: 'center',
     gap: 8,

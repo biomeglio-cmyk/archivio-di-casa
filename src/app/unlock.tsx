@@ -8,11 +8,13 @@ import { PrimaryButton } from '@/components/primary-button';
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { getFreeUsage, UNLOCK_PRICE } from '@/settings/free-limit';
 
+const MINT_TINT = softTint('#E6F7F0', '69, 182, 142');
+const MINT_INK = onSoftTint('#1F7A5A', '#6FD3AE');
 const BENEFITS = [
   { title: 'Documenti senza limiti', text: 'Bollette, tessere, garanzie e tutto il resto' },
   { title: 'Promemoria delle scadenze', text: 'Ti avvisiamo prima che sia tardi' },
@@ -73,7 +75,7 @@ export default function UnlockScreen() {
         {BENEFITS.map((benefit) => (
           <View key={benefit.title} style={styles.benefit}>
             <View style={styles.check}>
-              <SymbolView name="checkmark" tintColor="#1F7A5A" size={13} weight="bold" />
+              <SymbolView name="checkmark" tintColor={MINT_INK} size={13} weight="bold" />
             </View>
             <View style={styles.benefitTexts}>
               <Text style={styles.benefitTitle}>{benefit.title}</Text>
@@ -213,7 +215,7 @@ const styles = StyleSheet.create({
     width: 26,
     height: 26,
     borderRadius: 13,
-    backgroundColor: '#E6F7F0',
+    backgroundColor: MINT_TINT,
     alignItems: 'center',
     justifyContent: 'center',
   },

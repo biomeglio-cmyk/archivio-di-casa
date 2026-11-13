@@ -482,7 +482,7 @@ const styles = StyleSheet.create({
   },
   menuTile: {
     flex: 1,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     borderRadius: 18,
     overflow: 'hidden',
   },

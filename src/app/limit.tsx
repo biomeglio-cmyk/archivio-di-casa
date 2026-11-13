@@ -7,10 +7,12 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
-import { Colors } from '@/constants/theme';
+import { Colors, softTint, onSoftTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { FREE_LIMIT, UNLOCK_PRICE } from '@/settings/free-limit';
 
+const MINT_TINT = softTint('#E6F7F0', '69, 182, 142');
+const MINT_INK = onSoftTint('#1F7A5A', '#6FD3AE');
 const STILL_WORKS = ['Consultare i tuoi documenti', 'Inviarli e condividerli', 'Mostrare le tessere alla cassa', 'Ricevere i promemoria'];
 
 // The limit panel (docs/design/ProvaFinita.dc.html), a sheet over the screen that tried to add:
@@ -41,14 +43,14 @@ export default function LimitPanel() {
           {STILL_WORKS.map((item) => (
             <View key={item} style={styles.item}>
               <View style={[styles.mark, styles.markOn]}>
-                <SymbolView name="checkmark" tintColor="#1F7A5A" size={13} weight="bold" />
+                <SymbolView name="checkmark" tintColor={MINT_INK} size={13} weight="bold" />
               </View>
               <Text style={styles.itemText}>{item}</Text>
             </View>
           ))}
           <View style={styles.item}>
             <View style={[styles.mark, styles.markOff]}>
-              <SymbolView name="lock.fill" tintColor="#6A6D80" size={12} />
+              <SymbolView name="lock.fill" tintColor={Colors.current.textSecondary} size={12} />
             </View>
             <Text style={[styles.itemText, styles.itemOff]}>Aggiungere altri documenti o tessere</Text>
           </View>
@@ -77,7 +79,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     borderTopLeftRadius: 32,
     borderTopRightRadius: 32,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     boxShadow: '0 -10px 30px rgba(28, 30, 70, 0.15)',
   },
   grabber: {
@@ -128,10 +130,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   markOn: {
-    backgroundColor: '#E6F7F0',
+    backgroundColor: MINT_TINT,
   },
   markOff: {
-    backgroundColor: '#F0F1F5',
+    backgroundColor: Colors.current.elevated,
   },
   itemText: {
     flex: 1,

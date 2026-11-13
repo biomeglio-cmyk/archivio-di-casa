@@ -19,3 +19,6 @@ export const DANGER_COLOR = Colors.current.error;
 
 // "Preferiti" heart
 export const PIN_COLOR = Colors.current.accent;
+
+// Light tint behind the heart (Aggiungi ai preferiti): pink, or its 18% on the dark theme
+export const PIN_TINT = Colors.current.isDark ? 'rgba(232, 69, 122, 0.18)' : '#FDEBF1';

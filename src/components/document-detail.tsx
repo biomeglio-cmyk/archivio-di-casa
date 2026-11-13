@@ -46,8 +46,9 @@ import { formatDate, formatMonthTitle, parseISODate, toISODate } from '@/utils/d
 import { daysUntil } from '@/utils/deadlines';
 import { dayAndMonth, folderDate } from '@/utils/folder';
 import { formatEuro } from '@/utils/money';
+import { PIN_TINT } from '@/constants/brand';
 
-const PIN_BACKGROUND = '#FDEBF1';
+const PIN_BACKGROUND = PIN_TINT;
 const PIN_COLOR = '#E8457A';
 
 // Detail of one document (or of a card). Used by the document/[id] screen of every tab.
@@ -537,7 +538,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     paddingVertical: 4,
     borderRadius: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
   },
   pageCountText: {
     fontSize: 12,

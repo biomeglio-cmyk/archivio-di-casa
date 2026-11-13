@@ -91,7 +91,7 @@ export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) 
         styles.choice,
         {
           borderColor: checked ? accent : 'transparent',
-          backgroundColor: checked ? Colors.current.paleLilac : '#F7F7FA',
+          backgroundColor: checked ? Colors.current.paleLilac : Colors.current.elevated,
         },
       ]}>
       <View style={[styles.ring, { borderColor: checked ? accent : Colors.current.dashed }]}>
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
     borderRadius: 30,
     borderCurve: 'continuous',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     boxShadow: '0 20px 50px rgba(28, 30, 70, 0.25)',
   },
   icon: {

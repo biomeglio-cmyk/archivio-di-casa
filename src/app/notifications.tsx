@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     paddingBottom: 14,
     borderRadius: 28,
     borderCurve: 'continuous',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     boxShadow: '0 20px 50px rgba(28, 30, 70, 0.25)',
   },
   arrow: {
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     width: 16,
     height: 16,
     borderRadius: 3,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
     transform: [{ rotate: '45deg' }],
   },
   head: {
@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     padding: 12,
     borderRadius: 18,
     borderCurve: 'continuous',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.current.surface,
   },
   itemUnread: {
     backgroundColor: Colors.current.paleLilac,

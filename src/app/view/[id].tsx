@@ -1,5 +1,6 @@
 import { Image } from 'expo-image';
 import { LinearGradient } from 'expo-linear-gradient';
+import { StatusBar } from 'expo-status-bar';
 import { router, useLocalSearchParams } from 'expo-router';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useRef, useState } from 'react';
@@ -107,6 +108,8 @@ export default function ViewDocumentScreen() {
 
   return (
     <View style={styles.screen}>
+      {/* Dark screen: light clock and battery in both themes */}
+      <StatusBar style="light" />
       <ScrollView
         ref={scrollRef}
         style={StyleSheet.absoluteFill}

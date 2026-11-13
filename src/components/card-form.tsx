@@ -17,7 +17,7 @@ import { Text, TextInput } from '@/components/text';
 import { spacedNumber, WalletCardFace } from '@/components/wallet-card';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
 import type { CoverMode } from '@/db/types';
@@ -26,8 +26,8 @@ import { barcodeTypeName, codeKindOf, generateBarcode, typeForKind, type CodeKin
 
 const NONE = 0; // no person (ids start at 1)
 const DARK = '#12142A';
-const MINT_TINT = '#E6F7F0';
-const MINT_TEXT = '#1F7A5A';
+const MINT_TINT = softTint('#E6F7F0', '69, 182, 142');
+const MINT_TEXT = onSoftTint('#1F7A5A', '#6FD3AE');
 
 export type CardFormValues = {
   title: string;

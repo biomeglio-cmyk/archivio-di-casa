@@ -152,7 +152,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
         </View>
 
         <View style={styles.hero}>
-          <PasswordPreviewTile info={info} size={88} />
+          <PasswordPreviewTile info={info} size={88} category={document.category.colors} />
           <Text style={styles.title} accessibilityRole="header">
             {document.title}
           </Text>

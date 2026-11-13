@@ -10,9 +10,9 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { announce } from '@/a11y/accessibility';
 import { accessibilityActionsOf, documentQuickActions, runAccessibilityAction } from '@/actions/quick-actions';
-import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
 import { DocumentThumb } from '@/components/document-thumb';
 import { useIconRow } from '@/components/icon-row';
+import { FAVORITE_TILE_HEIGHT, FavoriteTile, FavoriteTileFace } from '@/components/home-sections';
 import { IconSquare } from '@/components/icon-square';
 import { PasswordPreviewTile } from '@/components/password-preview';
 import { goHome, PageHeader } from '@/components/page-header';
@@ -187,16 +187,15 @@ export default function FavoritesScreen() {
                   <TileGrid
                     items={shown}
                     keyFor={(document) => document.id}
-                    renderTile={(document, size) => (
-                      <DocumentTile document={document} size={size} href={documentHref(document.id)} />
-                    )}
+                    renderTile={(document, size) => <FavoriteTile document={document} style={size} />}
                   />
                 ) : (
                   <SortableTileGrid
                     items={items}
                     keyFor={(document) => document.id}
                     labelFor={(document) => `${document.title}, ${favoriteSubtitle(document)}`}
-                    renderTile={(document) => <DocumentTileFace document={document} />}
+                    renderTile={(document) => <FavoriteTileFace document={document} />}
+                    tileHeight={FAVORITE_TILE_HEIGHT}
                     actionsFor={(document) => documentQuickActions(db, document, documentHref(document.id))}
                     onOpen={(document) => router.push(documentHref(document.id))}
                     onReorder={saveOrder}
@@ -279,7 +278,7 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
         onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
         style={[styles.rowMain, iconRow.row, iconRow.texts, pressed && styles.rowPressed]}>
         {document.password ? (
-          <PasswordPreviewTile info={document.password} size={52} />
+          <PasswordPreviewTile info={document.password} size={52} category={document.category.colors} />
         ) : (
           <IconSquare symbol={document.category.symbol} colors={document.category.colors} size={52} radius={16} shadow />
         )}

@@ -7,7 +7,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { TileTitle } from '@/components/tile-title';
 import { BRAND_COLOR, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { previewGradient, previewSymbol } from '@/constants/password-options';
+import { passwordColors, previewSymbol } from '@/constants/password-options';
 import { FONTS } from '@/constants/typography';
 import { DeadlineChip } from '@/components/deadline-chip';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
@@ -180,7 +180,7 @@ const makeStyles = (c: Palette) =>
 function PasswordTileFace({ document, info, selected }: FaceProps & { info: NonNullable<DocumentListItem['password']> }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
-  const [top, bottom] = previewGradient(info.preview); // already readable under white (WCAG AA)
+  const { top, bottom, text } = passwordColors(info.preview, document.category.colors); // readable (WCAG AA)
   const image = info.preview.imagePath ? resolveDocumentFile(info.preview.imagePath).uri : null;
   const content = (
     <>
@@ -188,10 +188,10 @@ function PasswordTileFace({ document, info, selected }: FaceProps & { info: NonN
         <Image source={{ uri: image }} style={styles.thumbnail} contentFit="cover" transition={120} accessibilityIgnoresInvertColors />
       ) : (
         <View style={styles.iconArea}>
-          <SymbolView name={previewSymbol(info.preview, info.type)} tintColor="#FFFFFF" size={28} />
+          <SymbolView name={previewSymbol(info.preview, info.type)} tintColor={text} size={28} />
         </View>
       )}
-      <TileTitle style={[styles.title, { color: '#FFFFFF' }]}>{document.title}</TileTitle>
+      <TileTitle style={[styles.title, { color: text }]}>{document.title}</TileTitle>
       {selected !== undefined && (
         <View style={styles.check}>
           <SymbolView name={selected ? 'checkmark.circle.fill' : 'circle'} tintColor={selected ? BRAND_COLOR(theme) : UNSELECTED_TINT} size={24} />

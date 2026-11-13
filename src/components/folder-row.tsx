@@ -77,7 +77,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
         style={[styles.row, iconRow.row, pressed && styles.pressed, selection?.disabled && styles.disabled]}>
         {document.password ? (
           // A Password entry: its "Anteprima" (color and icon, or its image)
-          <PasswordPreviewTile info={document.password} size={44} shadow={false} />
+          <PasswordPreviewTile info={document.password} size={44} shadow={false} category={document.category.colors} />
         ) : showPhoto && document.firstImagePath ? (
           <Image
             source={{ uri: resolveDocumentFile(document.firstImagePath).uri }}

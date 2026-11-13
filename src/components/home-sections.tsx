@@ -3,7 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { router } from 'expo-router';
 import { SymbolView } from 'expo-symbols';
 import type { ReactNode } from 'react';
-import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Pressable, StyleSheet, useWindowDimensions, View, type StyleProp, type ViewStyle } from 'react-native';
 
 import { DateSquare } from '@/components/date-square';
 import { useIconRow } from '@/components/icon-row';
@@ -12,6 +12,7 @@ import { TileColumnsProvider } from '@/components/tile-columns';
 import { TileTitle } from '@/components/tile-title';
 import { WhiteCard } from '@/components/white-card';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
+import { passwordColors, previewSymbol } from '@/constants/password-options';
 import { type Palette, Radius, Spacing, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTileColumns } from '@/hooks/use-tile-size';
@@ -70,34 +71,44 @@ function FavoritesLayout({ children, single }: { children: ReactNode; single: bo
   );
 }
 
-// One of the two big favorites of Home (196 high): the category gradient with its icon, or (cover
-// "Foto") the photo at the top; a picked color (or a card's color) as a solid background.
-// Name 17/600 and the deadline 13/400 at the bottom: in the category's readable text color, on a
-// solid color dark ink or white, whichever reads (textOn).
-export function FavoriteTile({ document }: { document: DocumentListItem }) {
+// THE favorite tile (docs/design/Main.dc.html), the same in Home and in Preferiti (Griglia): 196
+// high, padding 16, radius 22; at the top the icon, or the cover photo (cover "Foto", a Password's
+// image); name 17/600 and under it 13/400 "Scade …" or the category name.
+// Colors: the category's from the active palette; a picked color (or a card's color) as a solid
+// background with dark ink or white (textOn); a Password item its preview color when set
+// (passwordColors), otherwise its category's.
+export const FAVORITE_TILE_HEIGHT = FAVORITE_HEIGHT;
+
+type FaceProps = { document: DocumentListItem; style?: StyleProp<ViewStyle> };
+
+// The look only (the sortable grid of Preferiti handles tap, drag and the quick menu around it)
+export function FavoriteTileFace({ document, style }: FaceProps) {
   const styles = useThemedStyles(makeStyles);
   useI18n(); // re-render when the language changes
-  const { pressed, handlers } = usePressed();
   const { fontScale } = useWindowDimensions();
   const { category } = document;
-  const showPhoto = document.firstImagePath !== null && document.coverMode !== 'color';
-  const solid = document.coverColor ?? (category.isCards ? (document.cardColor ?? DEFAULT_CARD_COLOR) : null);
-  const textColor = solid ? textOn(solid) : category.colors.text;
-  const shadow = tintedShadow(solid ? hexToRgb(solid) : categoryShadowRgb(category.colors));
+  const password = document.password;
+  const passwordLook = password ? passwordColors(password.preview, category.colors) : null;
+  const colors = passwordLook ?? category.colors;
+  const solid = password ? null : (document.coverColor ?? (category.isCards ? (document.cardColor ?? DEFAULT_CARD_COLOR) : null));
+  const photoPath = password ? password.preview.imagePath : document.coverMode !== 'color' ? document.firstImagePath : null;
+  const textColor = solid ? textOn(solid) : colors.text;
+  const shadow = tintedShadow(solid ? hexToRgb(solid) : passwordLook ? hexToRgb(colors.bottom) : categoryShadowRgb(category.colors));
   const subtitle = favoriteSubtitle(document);
+  const night = !solid && !passwordLook && category.colors.isNight;
 
   const content = (
     <>
-      {showPhoto && document.firstImagePath ? (
+      {photoPath ? (
         <Image
-          source={{ uri: resolveDocumentFile(document.firstImagePath).uri }}
+          source={{ uri: resolveDocumentFile(photoPath).uri }}
           style={styles.photo}
           contentFit="cover"
           transition={120}
           accessibilityIgnoresInvertColors
         />
       ) : (
-        <SymbolView name={category.symbol} tintColor={textColor} size={28} />
+        <SymbolView name={password ? previewSymbol(password.preview, password.type) : category.symbol} tintColor={textColor} size={28} />
       )}
       <View style={styles.bottom}>
         <TileTitle style={[styles.title, { color: textColor }]}>{document.title}</TileTitle>
@@ -111,23 +122,35 @@ export function FavoriteTile({ document }: { document: DocumentListItem }) {
   );
 
   return (
+    <View style={[styles.favorite, { boxShadow: shadow }, night && tileFrame(category.colors), style]}>
+      {solid ? (
+        <View style={[styles.fill, { backgroundColor: solid }]}>{content}</View>
+      ) : (
+        <LinearGradient
+          colors={[colors.top, colors.bottom]}
+          start={night ? { x: 0, y: 0 } : FAVORITE_START}
+          end={night ? { x: 0, y: 1 } : FAVORITE_END}
+          style={styles.fill}>
+          {content}
+        </LinearGradient>
+      )}
+    </View>
+  );
+}
+
+// The favorite tile with its tap (Home; Preferiti while searching): opens the document
+export function FavoriteTile({ document, style }: FaceProps) {
+  const styles = useThemedStyles(makeStyles);
+  const { pressed, handlers } = usePressed();
+  const subtitle = favoriteSubtitle(document);
+  return (
     <Pressable
       {...handlers}
       onPress={() => openDocument(document)}
       accessibilityRole="button"
       accessibilityLabel={subtitle ? `${document.title}, ${subtitle}` : document.title}
-      style={[styles.favorite, { boxShadow: shadow }, !solid && tileFrame(category.colors), pressed && styles.pressed]}>
-      {solid ? (
-        <View style={[styles.fill, { backgroundColor: solid }]}>{content}</View>
-      ) : (
-        <LinearGradient
-          colors={[category.colors.top, category.colors.bottom]}
-          start={category.colors.isNight ? { x: 0, y: 0 } : FAVORITE_START}
-          end={category.colors.isNight ? { x: 0, y: 1 } : FAVORITE_END}
-          style={styles.fill}>
-          {content}
-        </LinearGradient>
-      )}
+      style={[style ?? styles.favoriteButton, pressed && styles.pressed]}>
+      <FavoriteTileFace document={document} style={styles.faceFill} />
     </Pressable>
   );
 }
@@ -192,8 +215,14 @@ const makeStyles = (c: Palette) =>
   flex: {
     flex: 1,
   },
+  favoriteButton: {
+    flex: 1, // the two favorites of Home share the row
+  },
+  faceFill: {
+    flexGrow: 1,
+  },
   favorite: {
-    flex: 1,
+    flexGrow: 1,
     minHeight: FAVORITE_HEIGHT,
     borderRadius: Radius.card,
     borderCurve: 'continuous',

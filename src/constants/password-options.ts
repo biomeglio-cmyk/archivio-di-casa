@@ -1,6 +1,6 @@
 import type { SFSymbol } from 'expo-symbols';
 
-import type { PasswordInfo, PasswordPreview, PasswordType } from '@/db/types';
+import type { CategoryColors, PasswordInfo, PasswordPreview, PasswordType } from '@/db/types';
 import { onSoftTint, softTint, type Palette } from '@/constants/theme';
 import { t } from '@/i18n';
 import { readableGradient } from '@/utils/colors';
@@ -91,6 +91,18 @@ export function previewGradient(preview: PasswordPreview): [string, string] {
   if (preview.color === 'custom' && preview.hex) return readableGradient([preview.hex, preview.hex]);
   const color = PASSWORD_COLORS.find((c) => c.key === preview.color) ?? PASSWORD_COLORS[0];
   return readableGradient([color.top, color.bottom]);
+}
+
+// The colors of a Password item everywhere (Home favorites, Preferiti, folders, rows, detail): its
+// preview color when one is set (white text and icon, readable), otherwise its category's colors
+// from the active palette (Pastello, the night folders…)
+export function passwordColors(
+  preview: PasswordPreview,
+  category: CategoryColors | undefined,
+): { top: string; bottom: string; text: string; isNight?: boolean } {
+  if (preview.color === null && category) return category;
+  const [top, bottom] = previewGradient(preview);
+  return { top, bottom, text: '#FFFFFF' };
 }
 
 // The icon of a preview: the one chosen, else the one of its type

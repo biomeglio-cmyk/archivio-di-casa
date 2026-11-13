@@ -4,7 +4,8 @@ import Animated, { type AnimatedRef } from 'react-native-reanimated';
 
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import { DashedAddTile } from '@/components/dashed-add-tile';
-import { TILE_COLUMNS, TILE_GAP, TILE_PADDING, useTileSize, type TileSize } from '@/hooks/use-tile-size';
+import { TileColumnsProvider } from '@/components/tile-columns';
+import { TILE_GAP, TILE_PADDING, useTileColumns, useTileSize, type TileSize } from '@/hooks/use-tile-size';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
 
@@ -19,9 +20,18 @@ type Props<T> = {
 // The ONE tile grid of the app (Home, categories, people, documents, cards):
 // 2 columns, same gaps, width from the screen, and both tiles of a row as tall as the taller one.
 // It is a plain View (not a list): the grids are small, and Home can stack two of them.
-export function TileGrid<T>({ items, keyFor, renderTile, add, cardShaped = false }: Props<T>) {
+export function TileGrid<T>(props: Props<T>) {
+  return (
+    <TileColumnsProvider>
+      <Grid {...props} />
+    </TileColumnsProvider>
+  );
+}
+
+function Grid<T>({ items, keyFor, renderTile, add, cardShaped = false }: Props<T>) {
   const styles = useThemedStyles(makeStyles);
   const tileSize = useTileSize();
+  const { columns } = useTileColumns();
   if (!items) return null;
 
   const size: TileSize = cardShaped
@@ -33,7 +43,7 @@ export function TileGrid<T>({ items, keyFor, renderTile, add, cardShaped = false
   if (add) cells.push({ kind: 'add' });
 
   const rows: Cell[][] = [];
-  for (let i = 0; i < cells.length; i += TILE_COLUMNS) rows.push(cells.slice(i, i + TILE_COLUMNS));
+  for (let i = 0; i < cells.length; i += columns) rows.push(cells.slice(i, i + columns));
 
   const cellKey = (cell: Cell) => (cell.kind === 'item' ? String(keyFor(cell.item)) : 'add');
 

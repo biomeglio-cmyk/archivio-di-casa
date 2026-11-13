@@ -1,3 +1,4 @@
+import { createContext, use } from 'react';
 import { useWindowDimensions } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
@@ -15,8 +16,20 @@ export type TileSize = { width: number; minHeight: number };
 // (screen - side paddings - gaps between the columns) / columns. Math.floor avoids sub-pixel overflow.
 export function useTileSize(): TileSize {
   const { width } = useWindowDimensions();
+  const { columns } = use(TileColumnsContext);
   return {
-    width: Math.floor((width - TILE_PADDING * 2 - TILE_GAP * (TILE_COLUMNS - 1)) / TILE_COLUMNS),
+    width: Math.floor((width - TILE_PADDING * 2 - TILE_GAP * (columns - 1)) / columns),
     minHeight: TILE_MIN_HEIGHT,
   };
+}
+
+// The columns of a grid: 2, or 1 when a tile name has a word that doesn't fit its tile even at 85 %
+// (narrow phone, large text, a long language). A TileTitle that would have to cut its word reports
+// it (reportTooLong) and the grid lays out again with 1 column, so no word is ever broken or cut.
+export type TileColumns = { columns: 1 | 2; reportTooLong: () => void; inGrid: boolean };
+
+export const TileColumnsContext = createContext<TileColumns>({ columns: TILE_COLUMNS, reportTooLong: () => undefined, inGrid: false });
+
+export function useTileColumns(): TileColumns {
+  return use(TileColumnsContext);
 }

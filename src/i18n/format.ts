@@ -56,9 +56,10 @@ export function formatNumber(value: number, options?: Intl.NumberFormatOptions):
 export function formatMoney(cents: number): string {
   const amount = cents / 100;
   if (currentLanguage() === 'it') {
-    return `€ ${formatNumber(amount, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    return `€\u00A0${formatNumber(amount, { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
   }
-  return formatNumber(amount, { style: 'currency', currency: 'EUR' });
+  // One line: the currency and the number never split ("84,20 €", "€84.20")
+  return formatNumber(amount, { style: 'currency', currency: 'EUR' }).replace(/ /g, '\u00A0');
 }
 
 // The decimal separator of the language: "," / "."

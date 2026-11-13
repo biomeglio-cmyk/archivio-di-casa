@@ -66,7 +66,7 @@ export function PrimaryButton({
       <LinearGradient colors={readableGradient(gradient)} start={GRADIENT_START} end={GRADIENT_END} style={styles.fill}>
         {symbol && <SymbolView name={symbol} tintColor="#FFFFFF" size={18} />}
         {oneLine ? (
-          <Text style={styles.label} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8} maxFontSizeMultiplier={1.3}>
+          <Text style={styles.label} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.85} maxFontSizeMultiplier={1.3}>
             {label}
           </Text>
         ) : (

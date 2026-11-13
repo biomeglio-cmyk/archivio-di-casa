@@ -19,7 +19,8 @@ import { accessibilityActionsOf, runAccessibilityAction, type QuickAction } from
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import { DashedAddTile } from '@/components/dashed-add-tile';
 import { QuickActionMenu, type QuickMenuTarget } from '@/components/quick-action-menu';
-import { TILE_COLUMNS, TILE_GAP, useTileSize } from '@/hooks/use-tile-size';
+import { TileColumnsProvider } from '@/components/tile-columns';
+import { TILE_GAP, useTileColumns, useTileSize } from '@/hooks/use-tile-size';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
@@ -62,7 +63,15 @@ type Cell<T> = { kind: 'item'; item: T } | { kind: 'add' };
 // (a custom popover: the native iOS context menu has its own long press, which fights the drag).
 // Every tile is a Sortable.Handle (customHandle): the items drag, the "add" tile is 'fixed-order',
 // so it stays in the last place and no item can be dropped after it.
-export function SortableTileGrid<T>({
+export function SortableTileGrid<T>(props: Props<T>) {
+  return (
+    <TileColumnsProvider>
+      <SortableGrid {...props} />
+    </TileColumnsProvider>
+  );
+}
+
+function SortableGrid<T>({
   items,
   keyFor,
   renderTile,
@@ -78,6 +87,7 @@ export function SortableTileGrid<T>({
 }: Props<T>) {
   const { t } = useI18n();
   const gridSize = useTileSize(); // the width comes from the grid column
+  const { columns } = useTileColumns();
   const tileSize = cardShaped
     ? { width: gridSize.width, minHeight: Math.round(gridSize.width / CARD_ASPECT_RATIO) }
     : { width: gridSize.width, minHeight: tileHeight ?? gridSize.minHeight };
@@ -149,7 +159,7 @@ export function SortableTileGrid<T>({
         data={cells}
         keyExtractor={(cell) => (cell.kind === 'item' ? String(keyFor(cell.item)) : 'add')}
         customHandle
-        columns={TILE_COLUMNS}
+        columns={columns}
         rowGap={TILE_GAP}
         columnGap={TILE_GAP}
         dragActivationDelay={reordering ? REORDER_DRAG_DELAY_MS : DRAG_DELAY_MS}

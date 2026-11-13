@@ -27,7 +27,7 @@ export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }
   const { data: usage } = useDbQuery(getFreeUsage, []);
   if (!usage || usage.unlocked) return null;
   const settings = variant === 'settings';
-  const counts = { used: usage.used, limit: usage.limit };
+  const counts = { used: usage.shown, limit: usage.limit };
   const title = settings ? t('freeUsageCard.titleSettings', counts) : t('freeUsageCard.titleMenu', counts);
   const price = unlockPrice();
 

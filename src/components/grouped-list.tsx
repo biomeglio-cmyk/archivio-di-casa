@@ -80,6 +80,7 @@ export function Row({
         style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator }]}>
         {/* Label and value on one line when they fit, else the value under the label (measured) */}
         <FitLine
+          endAlign={toggle && value === undefined ? 'end' : 'start'}
           start={<ThemedText style={disabled ? { color: theme.textSecondary } : undefined}>{label}</ThemedText>}
           end={
             <View style={styles.end}>

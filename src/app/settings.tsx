@@ -430,8 +430,10 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, checked, 
         <SymbolView name={symbol} tintColor={tint.icon} size={19} />
       </View>
       {value !== undefined && trailing === undefined ? (
-        // Label and value on one line when they fit, else the value under the label (measured)
+        // Label and value on one line when they fit, else the value under the label (measured on
+        // the title alone, so a long subtitle that wraps anyway doesn't push the value down)
         <FitLine
+          startMeasure={<Text style={styles.rowLabel}>{label}</Text>}
           start={
             <View>
               <Text style={styles.rowLabel}>{label}</Text>
@@ -450,24 +452,36 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, checked, 
             </View>
           }
         />
+      ) : trailing !== undefined ? (
+        // A switch: next to the title when both fit on one line, else under it on the right (the
+        // title then has the whole width and wraps only between words)
+        <FitLine
+          startMeasure={<Text style={styles.rowLabel}>{label}</Text>}
+          endAlign="end"
+          start={
+            <View>
+              <Text style={styles.rowLabel}>{label}</Text>
+              {subtitle && <Text style={styles.rowSubtitle}>{subtitle}</Text>}
+            </View>
+          }
+          end={
+            <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+              {trailing}
+            </View>
+          }
+        />
       ) : (
         <>
           <View style={styles.rowTexts}>
             <Text style={styles.rowLabel}>{label}</Text>
             {subtitle && <Text style={styles.rowSubtitle}>{subtitle}</Text>}
           </View>
-          {trailing !== undefined ? (
-            <View accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-              {trailing}
-            </View>
-          ) : (
-            <SymbolView
-              name={expanded ? 'chevron.down' : 'chevron.right'}
-              tintColor={theme.textSecondary}
-              size={16}
-              weight="semibold"
-            />
-          )}
+          <SymbolView
+            name={expanded ? 'chevron.down' : 'chevron.right'}
+            tintColor={theme.textSecondary}
+            size={16}
+            weight="semibold"
+          />
         </>
       )}
     </Pressable>

@@ -40,7 +40,7 @@ export default function UnlockScreen() {
   const insets = useSafeAreaInsets();
   const large = useWindowDimensions().fontScale > 1.3; // larger text: the price goes under its texts
   const { data: usage } = useDbQuery(getFreeUsage, []);
-  const used = usage?.used ?? 0;
+  const used = usage?.shown ?? 0; // never more than the limit ("7 di 7")
   const limit = usage?.limit ?? 7;
 
   return (

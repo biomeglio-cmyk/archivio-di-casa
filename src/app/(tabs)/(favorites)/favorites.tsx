@@ -150,6 +150,7 @@ export default function FavoritesScreen() {
                 <RoundIconButton
                   symbol="magnifyingglass"
                   accessibilityLabel={t('favorites.searchPlaceholder')}
+                  expanded={searchOpen}
                   color={theme.text}
                   onPress={() => {
                     setSearchOpen((open) => !open);
@@ -167,6 +168,7 @@ export default function FavoritesScreen() {
             {items.length > 0 && (
               <View style={styles.viewSwitch}>
                 <Segmented
+                  accessibilityLabel={t('a11y.segmented.layout')}
                   values={[t('favorites.viewList'), t('favorites.viewGrid')]}
                   selectedIndex={view === 'list' ? 0 : 1}
                   onChange={(index) => changeView(index === 0 ? 'list' : 'grid')}

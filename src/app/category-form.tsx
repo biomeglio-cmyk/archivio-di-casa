@@ -358,13 +358,15 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           {
             key: 'all',
             label: t('common.wholeFamily'),
-            symbol: personId === null ? 'checkmark.circle.fill' : 'person.2',
+            symbol: 'person.2',
+            selected: personId === null,
             onPress: () => setPersonId(null),
           },
           ...(people ?? []).map((p) => ({
             key: String(p.id),
             label: p.name,
-            symbol: p.id === personId ? ('checkmark.circle.fill' as const) : ('person' as const),
+            symbol: 'person' as const,
+            selected: p.id === personId,
             onPress: () => setPersonId(p.id),
           })),
         ]}

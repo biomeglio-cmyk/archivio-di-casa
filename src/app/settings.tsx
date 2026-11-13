@@ -349,6 +349,7 @@ function ThemeRow() {
         </View>
       </View>
       <Segmented
+        accessibilityLabel={t('settings.theme.title')}
         values={[t('settings.theme.auto'), t('settings.theme.light'), t('settings.theme.dark')]}
         symbols={[undefined, 'sun.max', 'moon']}
         selectedIndex={THEME_MODES.indexOf(mode)}

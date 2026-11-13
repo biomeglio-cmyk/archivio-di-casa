@@ -236,6 +236,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
 
       <View style={styles.format}>
         <Segmented
+          accessibilityLabel={t('a11y.segmented.format')}
           values={['PDF', t('send.formatPhotos')]}
           selectedIndex={format === 'pdf' ? 0 : 1}
           enabled={!multi && !importedPdf}
@@ -297,6 +298,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
         {t('send.maxSize')}
       </Text>
       <Segmented
+        accessibilityLabel={t('send.maxSize')}
         values={SIZE_LIMITS.map(sizeLimitLabel)}
         selectedIndex={SIZE_LIMITS.indexOf(limit)}
         enabled={!importedPdf}

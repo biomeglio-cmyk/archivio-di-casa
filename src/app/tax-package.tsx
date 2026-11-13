@@ -147,6 +147,7 @@ export default function TaxPackageScreen() {
             {t('taxPackage.maxPhotoSize')}
           </ThemedText>
           <Segmented
+            accessibilityLabel={t('taxPackage.maxPhotoSize')}
             values={SIZE_LIMITS.map(sizeLimitLabel)}
             selectedIndex={SIZE_LIMITS.findIndex((l) => l.key === limit)}
             enabled={!busy}

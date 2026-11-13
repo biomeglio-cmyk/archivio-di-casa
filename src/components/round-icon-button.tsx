@@ -11,6 +11,7 @@ type Props = {
   onPress: () => void;
   background?: string; // lilac by default, or the tint of the section
   color?: string; // indigo by default, or the text on that tint
+  expanded?: boolean; // a toggle that opens something below (search): told to VoiceOver
 };
 
 // Round 44 × 44 button at the top of a page: back, search, "…", share, menu
@@ -20,6 +21,7 @@ export function RoundIconButton({
   onPress,
   background,
   color,
+  expanded,
 }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
@@ -32,6 +34,7 @@ export function RoundIconButton({
       onPress={onPress}
       accessibilityRole="button"
       accessibilityLabel={accessibilityLabel}
+      accessibilityState={expanded === undefined ? undefined : { expanded }}
       style={[styles.button, { backgroundColor: fill }, pressed && styles.pressed]}>
       <SymbolView name={symbol} tintColor={ink} size={20} weight="semibold" />
     </Pressable>

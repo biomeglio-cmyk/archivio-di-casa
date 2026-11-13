@@ -248,6 +248,7 @@ export function FolderScreen({ category, documents }: Props) {
               <RoundIconButton
                 symbol="magnifyingglass"
                 accessibilityLabel={t('folderScreen.searchIn', { name: category.name })}
+                expanded={searchOpen}
                 background={tint}
                 color={theme.text}
                 onPress={() => {
@@ -279,6 +280,7 @@ export function FolderScreen({ category, documents }: Props) {
         {!reordering && (
           <View style={styles.viewSwitch}>
             <Segmented
+              accessibilityLabel={t('a11y.segmented.layout')}
               values={[t('folderScreen.viewList'), t('folderScreen.viewGrid')]}
               selectedIndex={view === 'list' ? 0 : 1}
               onChange={(index) => changeView(index === 0 ? 'list' : 'grid')}

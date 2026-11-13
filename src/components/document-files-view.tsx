@@ -81,6 +81,7 @@ export function DocumentFilesView({ title, category, files }: Props) {
 
       {images.length === 2 && (
         <Segmented
+          accessibilityLabel={t('a11y.segmented.side')}
           values={images.map((_, index) => labelAt(index))}
           selectedIndex={imageIndex}
           onChange={(index) => setImageIndex(index)}

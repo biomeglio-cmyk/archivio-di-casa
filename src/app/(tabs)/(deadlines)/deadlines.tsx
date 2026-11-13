@@ -156,6 +156,7 @@ export default function DeadlinesScreen() {
 
         <View style={styles.switch}>
           <Segmented
+            accessibilityLabel={t('a11y.segmented.calendarView')}
             values={[t('deadlines.week'), t('deadlines.month')]}
             selectedIndex={view === 'week' ? 0 : 1}
             onChange={(index) => changeView(index === 0 ? 'week' : 'month')}

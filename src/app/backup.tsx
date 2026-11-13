@@ -498,7 +498,8 @@ export default function BackupScreen() {
         actions={BACKUP_FREQUENCIES.map((value) => ({
           key: value,
           label: backupFrequencyLabel(value),
-          symbol: value === frequency ? 'checkmark.circle.fill' : 'circle',
+          symbol: 'calendar',
+          selected: value === frequency,
           onPress: () => chooseFrequency(value),
         }))}
         onClose={() => setFrequencyOpen(false)}

@@ -173,7 +173,8 @@ function PersonForm({ person }: { person: Person | null }) {
         actions={PERSON_ROLES.map((r) => ({
           key: r,
           label: roleChoiceLabel(r),
-          symbol: r === role ? 'checkmark.circle.fill' : 'circle',
+          symbol: 'person',
+          selected: r === role,
           onPress: () => setRole(r),
         }))}
         onClose={() => setRolesOpen(false)}

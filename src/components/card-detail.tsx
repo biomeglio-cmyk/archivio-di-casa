@@ -68,6 +68,7 @@ export function CardDetail({ card, files, pin }: Props) {
           {/* Both available: choose between the generated code and the photo */}
           {generated && barcodeUri && (
             <Segmented
+              accessibilityLabel={t('a11y.segmented.show')}
               values={[t('cardDetail.code'), t('cardDetail.photo')]}
               selectedIndex={view === 'code' ? 0 : 1}
               onChange={(index) => setView(index === 0 ? 'code' : 'photo')}

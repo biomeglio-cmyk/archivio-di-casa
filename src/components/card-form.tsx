@@ -283,6 +283,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
             )}
             <View style={styles.kind}>
               <Segmented
+                accessibilityLabel={t('a11y.segmented.codeType')}
                 values={[t('cardForm.barcode'), t('cardForm.qrCode')]}
                 selectedIndex={kind === 'bar' ? 0 : 1}
                 onChange={(index) => setKind(index === 0 ? 'bar' : 'qr')}

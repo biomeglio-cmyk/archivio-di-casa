@@ -451,6 +451,7 @@ export function DocumentForm({
             </FieldRow>
             <View style={styles.statusRow}>
               <Segmented
+                accessibilityLabel={t('a11y.segmented.status')}
                 values={STATUSES.map((s) => t(s.labelKey))}
                 selectedIndex={STATUSES.findIndex((s) => s.value === status)}
                 onChange={(index) => setStatus(STATUSES[index].value)}

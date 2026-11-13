@@ -1,1 +1,1643 @@
-{}
+{
+  "common": {
+    "cancel": "Anulează",
+    "ok": "OK",
+    "done": "Gata",
+    "save": "Salvează",
+    "delete": "Șterge",
+    "edit": "Editează",
+    "close": "Închide",
+    "confirm": "Confirmă",
+    "back": "Înapoi",
+    "next": "Înainte",
+    "share": "Partajează",
+    "send": "Trimite",
+    "search": "Caută",
+    "add": "Adaugă",
+    "remove": "Elimină",
+    "retry": "Reîncearcă",
+    "continue": "Continuă",
+    "yes": "Da",
+    "no": "Nu",
+    "restore": "Restaurează",
+    "settings": "Configurări",
+    "more": "Mai mult",
+    "none": "Niciunul",
+    "documents_one": "{{count}} document",
+    "documents_few": "{{count}} documente",
+    "documents_other": "{{count}} de documente",
+    "pages_one": "{{count}} pagină",
+    "pages_few": "{{count}} pagini",
+    "pages_other": "{{count}} de pagini",
+    "photos_one": "{{count}} poză",
+    "photos_few": "{{count}} poze",
+    "photos_other": "{{count}} de poze",
+    "wholeFamily": "Toată familia"
+  },
+  "dates": {
+    "today": "azi",
+    "tomorrow": "mâine",
+    "yesterday": "ieri",
+    "inSpan": "peste {{span}}",
+    "spanAgo": "acum {{span}}",
+    "expiredYesterday": "expirat ieri",
+    "expiredFor": "expirat acum {{span}}",
+    "days_one": "{{count}} zi",
+    "days_few": "{{count}} zile",
+    "days_other": "{{count}} de zile",
+    "months_one": "{{count}} lună",
+    "months_few": "{{count}} luni",
+    "months_other": "{{count}} de luni",
+    "years_one": "{{count}} an",
+    "years_few": "{{count}} ani",
+    "years_other": "{{count}} de ani"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Documente",
+      "cards": "Carduri",
+      "utilities": "Utilități",
+      "home": "Casă",
+      "insurance": "Asigurări",
+      "warranties": "Garanții și bonuri",
+      "car": "Mașină",
+      "tax": "Cheltuieli deductibile",
+      "householdStaff": "Personal casnic",
+      "school": "Școală",
+      "pet": "Animale",
+      "password": "Parole",
+      "other": "Altele"
+    }
+  },
+  "language": {
+    "title": "Limbă",
+    "auto": "Automat",
+    "autoSubtitle": "Urmează limba telefonului",
+    "search": "Caută limbi",
+    "autoDetail": "Limba iPhone-ului: {{language}}",
+    "noResults": "Nicio limbă pentru „{{query}}”"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastel",
+    "vivid": "Vii",
+    "earth": "Pământ",
+    "sea": "Mare",
+    "sunset": "Apus",
+    "night": "Noapte"
+  },
+  "home": {
+    "welcome": "Bun venit în Sottomano",
+    "hello": "Salut!",
+    "searchPlaceholder": "Caută un document",
+    "favorites": "Favorite",
+    "seeAll": "Vezi tot",
+    "seeAllFavorites": "Vezi toate favoritele",
+    "deadlines": "Termene",
+    "seeAllDeadlines": "Vezi toate termenele",
+    "archive": "Arhivă",
+    "reorderDone": "Ordonare terminată",
+    "reorder": "Reordonează",
+    "reorderCategories": "Reordonează categoriile",
+    "reorderHint": "Trage categoriile în ordinea dorită.",
+    "alerts": {
+      "orderNotSaved": "Ordinea nu a putut fi salvată"
+    },
+    "newCategory": "Categorie nouă"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} card",
+    "cards_few": "{{count}} carduri",
+    "cards_other": "{{count}} de carduri"
+  },
+  "folder": {
+    "paidOn": "Plătit pe {{date}}",
+    "expiredOn": "Expirat pe {{date}}",
+    "expiresOn": "Expiră pe {{date}}",
+    "addedOn": "Adăugat pe {{date}}",
+    "newItem": {
+      "bill": "Factură nouă",
+      "card": "Card nou",
+      "warranty": "Garanție nouă",
+      "password": "Parolă nouă",
+      "document": "Document nou"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Toate",
+      "documents": "Documente",
+      "cards": "Carduri",
+      "deadlines": "Termene"
+    },
+    "paid": "plătit",
+    "expiresOn": "expiră pe {{date}}",
+    "folderSubtitle_one": "Dosar · {{count}} document",
+    "folderSubtitle_few": "Dosar · {{count}} documente",
+    "folderSubtitle_other": "Dosar · {{count}} de documente",
+    "card": "Card",
+    "deadlineSubtitle": "Termen · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Caută un document",
+    "fieldLabel": "Caută în documentele tale",
+    "filter": "Filtru",
+    "results_one": "{{count}} rezultat",
+    "results_few": "{{count}} rezultate",
+    "results_other": "{{count}} de rezultate",
+    "noResults": "Niciun rezultat",
+    "noResultsHint": "Încearcă alt cuvânt, de exemplu numele unui magazin.",
+    "hint": "Caută după nume, dosare, tipuri, note, carduri și termene."
+  },
+  "navigation": {
+    "home": "Acasă",
+    "favorites": "Favorite",
+    "family": "Familie",
+    "deadlines": "Termene",
+    "deadlinesToCheck_one": "Termene, {{count}} de verificat",
+    "deadlinesToCheck_few": "Termene, {{count}} de verificat",
+    "deadlinesToCheck_other": "Termene, {{count}} de verificat",
+    "addLocked": "Adaugă document, blocat: limita gratuită a fost atinsă",
+    "addDocument": "Adaugă un document",
+    "titles": {
+      "editDocument": "Editează documentul",
+      "pages": "Pagini",
+      "deadline": "Termen",
+      "renewed": "Reînnoit",
+      "previousVersion": "Versiunea anterioară",
+      "newDocument": "Document nou",
+      "appearance": "Aspect",
+      "backup": "Backup",
+      "taxPackage": "Trimite la contabil",
+      "trash": "Coș",
+      "terms": "Condiții de utilizare",
+      "about": "Info și confidențialitate",
+      "newCard": "Card nou",
+      "editCard": "Editează cardul"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Trage pentru a-l muta sau folosește acțiunile Mută mai sus și Mută mai jos",
+    "moveEarlier": "Mută mai sus",
+    "moveLater": "Mută mai jos",
+    "footer": "Cardurile, persoanele din Familie și Favoritele se reordonează la fel: ține apăsat pe un rând și trage-l de mânerul din dreapta."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Ține apăsat: trage pentru a-l muta sau eliberează pentru acțiuni"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Ordinea nu a putut fi salvată"
+    },
+    "reorderTitle": "Reordonează favoritele",
+    "reorderHint": "Ține apăsat pe un favorit și trage-l unde vrei.",
+    "yourFavorites": "Favoritele tale",
+    "title": "Favorite",
+    "subtitle": "Ce ai ales să ai mereu la îndemână",
+    "searchPlaceholder": "Caută în favorite",
+    "viewList": "Listă",
+    "viewGrid": "Grilă",
+    "count_one": "{{count}} favorit",
+    "count_few": "{{count}} favorite",
+    "count_other": "{{count}} de favorite",
+    "noMatch": "Niciun favorit pentru „{{query}}”.",
+    "empty": "Nu ai încă niciun favorit.",
+    "footer": "Atinge inima de pe orice document ca să-l adaugi aici.",
+    "footerGrid": "Atinge inima de pe orice document ca să-l adaugi aici. Ține apăsat pe o casetă și trage-o pentru a le reordona.",
+    "footerList": "Atinge inima de pe orice document ca să-l adaugi aici. Ține apăsat pe un rând pentru a le reordona.",
+    "rowHint": "Ține apăsat pentru a reordona favoritele",
+    "unpin": "Elimină din favorite",
+    "expires": "expiră {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} de plătit",
+    "alerts": {
+      "orderNotSaved": "Ordinea nu a putut fi salvată"
+    },
+    "actions": {
+      "editCategory": "Editează categoria",
+      "sendToAccountant": "Trimite la contabil",
+      "selectAndSend": "Selectează și trimite",
+      "reorder": "Reordonează",
+      "deleteCategory": "Șterge categoria"
+    },
+    "moreLabel": "Editează sau șterge categoria {{name}}",
+    "searchIn": "Caută în {{name}}",
+    "viewList": "Listă",
+    "viewGrid": "Grilă",
+    "reorderHint": "Ține apăsat și trage documentele în ordinea dorită.",
+    "allTypes": "Toate",
+    "noDocumentsFound": "Nu s-a găsit niciun document.",
+    "sendTogether": "Trimite împreună ({{count}})",
+    "sheetTitle": "Categoria {{name}}"
+  },
+  "folderRow": {
+    "due": "de plătit",
+    "paid": "plătit"
+  },
+  "homeSections": {
+    "expired": "Expirate",
+    "expiresToday": "Expiră azi",
+    "expiresTomorrow": "Expiră mâine",
+    "expiresInDays_one": "Expiră peste {{count}} zi",
+    "expiresInDays_few": "Expiră peste {{count}} zile",
+    "expiresInDays_other": "Expiră peste {{count}} de zile",
+    "expiresOn": "Expiră {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Elimină din favorite",
+    "pin": "Adaugă la favorite"
+  },
+  "searchBar": {
+    "clear": "Șterge textul"
+  },
+  "documentGrid": {
+    "addDocument": "Adaugă document"
+  },
+  "homeHeader": {
+    "menu": "Meniu",
+    "notifications": "Notificări",
+    "notificationsUnread_one": "Notificări, {{count}} necitită",
+    "notificationsUnread_few": "Notificări, {{count}} necitite",
+    "notificationsUnread_other": "Notificări, {{count}} de necitite"
+  },
+  "demoData": {
+    "people": {
+      "step": "Pas",
+      "mom": "Mama",
+      "dad": "Tata"
+    },
+    "documents": {
+      "idCard": "Carte de identitate",
+      "drivingLicence": "Permis de conducere",
+      "passport": "Pașaport",
+      "electricityBill": "Factură curent",
+      "carInsurance": "Asigurare auto",
+      "carTax": "Impozit auto",
+      "washingMachineWarranty": "Garanție mașină de spălat",
+      "gymCard": "Abonament sală",
+      "rentalContract": "Contract de închiriere",
+      "pharmacyReceipt": "Bon farmacie",
+      "reportCard": "Carnet de note"
+    },
+    "notes": {
+      "electricityBill": "Debit direct din contul bancar"
+    }
+  },
+  "documentTypes": {
+    "documents": "Carte de identitate|Permis de conducere|Pașaport|Card de sănătate|Certificat fiscal",
+    "cards": "Fidelitate|Sală|Bibliotecă|Transport|Membru",
+    "utilities": "Curent|Gaz|Apă|Internet|Telefon|Salubritate",
+    "home": "Chirie|Credit ipotecar|Întreținere|Reparații|Contract",
+    "insurance": "Auto|Locuință|Sănătate|Viață|Călătorie",
+    "warranties": "Electrocasnic|Electronice|Mobilă|Bon",
+    "car": "Impozit auto|Asigurare|ITP|Revizie|Talon",
+    "tax": "Farmacie|Consult medical|Dentist|Analize|Sport|Școală",
+    "householdStaff": "Fluturaș de salariu|Contribuții|Contract",
+    "school": "Înscriere|Carnet de note|Adeverință|Cantină|Excursie",
+    "pet": "Carnet de sănătate|Vaccin|Veterinar|Microcip",
+    "password": "Email|Bancă|Social|Wi-Fi|Serviciu"
+  },
+  "pageLabels": {
+    "front": "Față",
+    "back": "Verso",
+    "page": "Pagina {{number}}"
+  },
+  "statusBadge": {
+    "due": "De plătit",
+    "paid": "Plătit"
+  },
+  "addActions": {
+    "openFileFailed": "Fișierul nu a putut fi deschis"
+  },
+  "pickFiles": {
+    "takePhoto": "Fă o poză",
+    "choosePhoto": "Alege din Poze",
+    "removePhoto": "Elimină poza"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Mai multe pagini",
+      "text": "Poți scana mai multe pagini la rând: încadrează pagina următoare înainte să atingi Salvează."
+    },
+    "cardTip": {
+      "title": "Culori reale",
+      "text": "Pentru culorile reale ale cardului, atinge butonul de filtre din scaner și alege „Poză”."
+    },
+    "gotIt": "Am înțeles"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Este necesar accesul la cameră",
+    "permissionText": "Sottomano folosește camera doar pentru a fotografia documentele tale.",
+    "allow": "Permite",
+    "openSettings": "Deschide Configurări",
+    "readable": "Se citește bine?",
+    "pageReadable": "Pagina {{number}}: se citește bine?",
+    "retake": "Refă",
+    "addPage": "Adaugă pagină",
+    "frameDocument": "Încadrează documentul",
+    "framePage": "Încadrează pagina {{number}}",
+    "shoot": "Fă o poză",
+    "finishWithPages_one": "Gata, {{count}} pagină",
+    "finishWithPages_few": "Gata, {{count}} pagini",
+    "finishWithPages_other": "Gata, {{count}} de pagini"
+  },
+  "coverField": {
+    "label": "Copertă",
+    "photo": "Poză",
+    "color": "Culoare",
+    "noPhotoHint": "Fără poză se afișează culoarea: adaugă o pagină ca să-i folosești poza drept copertă.",
+    "categoryColor": "Culoarea dosarului",
+    "colorNumber": "Culoarea {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Adaugă pagini",
+    "pinned": "În favorite",
+    "pin": "Adaugă la favorite",
+    "renewed": "Reînnoit",
+    "delete": "Șterge"
+  },
+  "documentFilesView": {
+    "document": "Document",
+    "openFailed": "Documentul nu a putut fi deschis",
+    "pageOfSwipe": "Pagina {{number}} din {{total}} · glisează pentru a răsfoi",
+    "openFullScreen": "{{label}}, deschide pe tot ecranul",
+    "missingFile": "Fișierul nu a fost găsit pe acest telefon."
+  },
+  "filesEditor": {
+    "addBack": "Adaugă versoul",
+    "addPage": "Adaugă pagină",
+    "scan": "Scanează",
+    "photograph": "Fă o poză",
+    "fromPhotos": "Din Poze",
+    "scannerUnavailableTitle": "Scanerul nu este disponibil",
+    "scannerUnavailableMessage": "Elimină paginile cu ✕ și adaugă altele noi.",
+    "replacePdf": "Înlocuiește PDF-ul",
+    "importPdf": "Importă un PDF",
+    "rescanAll": "Rescanează tot",
+    "openFileFailed": "Fișierul nu a putut fi deschis",
+    "page": "Pagina",
+    "newTag": "nou",
+    "moveBefore": "Mută {{name}} mai sus",
+    "moveAfter": "Mută {{name}} mai jos",
+    "removePage": "Elimină {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Documentul nu a fost găsit.",
+    "noPages": "Nicio pagină",
+    "photoPages_one": "Poză, {{count}} pagină",
+    "photoPages_few": "Poze, {{count}} pagini",
+    "photoPages_other": "Poze, {{count}} de pagini",
+    "amount": "Sumă",
+    "expired": "expirat",
+    "inDays_one": "peste {{count}} zi",
+    "inDays_few": "peste {{count}} zile",
+    "inDays_other": "peste {{count}} de zile",
+    "deadline": "Termen",
+    "folder": "Dosar",
+    "status": "Stare",
+    "person": "Persoană",
+    "number": "Număr",
+    "notes": "Note",
+    "inCalendar": "În calendar",
+    "view": "Vezi documentul",
+    "unpin": "Elimină din favorite",
+    "pin": "Adaugă la favorite",
+    "addPages": "Adaugă pagini",
+    "renewed": "Reînnoit",
+    "delete": "Șterge",
+    "details": "Detalii",
+    "remindMe": "Amintește-mi",
+    "reminderNeedsDeadline": "Adaugă un termen ca să primești un memento",
+    "reminderWhen": "Memento: {{when}}",
+    "noReminder": "Fără memento",
+    "previousVersions": "Versiuni anterioare",
+    "versionUntil": "Până pe {{date}}",
+    "versionExpired": "expirat {{date}}",
+    "paidOnMarkDue": "Plătit pe {{date}} · marchează ca de plătit",
+    "markDue": "Marchează ca de plătit",
+    "markPaid": "Marchează ca plătit",
+    "firstOf": "1 din {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "De plătit",
+    "statusPaid": "Plătit",
+    "saveFailed": "Nu s-a putut salva",
+    "folder": "Dosar",
+    "person": "Persoană",
+    "type": "Tip",
+    "otherType": "Scrie alt tip…",
+    "noType": "Fără tip",
+    "typeExample": "De exemplu: Curent, Impozit auto, Dentist",
+    "dueOn": "Pe {{date}}",
+    "noDeadline": "Fără termen",
+    "nameSection": "Nume",
+    "namePlaceholder": "Numele documentului",
+    "whereSection": "Unde îl salvezi",
+    "choose": "Alege…",
+    "deadlineSection": "Termen",
+    "addDeadline": "Adaugă termen",
+    "remindMe": "Amintește-mi",
+    "whenToRemind": "Când să-ți amintesc",
+    "repeats": "Se repetă",
+    "never": "Niciodată",
+    "everySpan": "La fiecare {{span}}",
+    "every": "La fiecare",
+    "notesSection": "Note",
+    "notesPlaceholder": "De exemplu: plătit prin debit direct, cere rambursarea…",
+    "pin": "Adaugă la favorite",
+    "pinSubtitle": "Îl găsești imediat pe ecranul principal",
+    "amountSection": "Sumă și stare",
+    "amount": "Sumă",
+    "amountInEuro": "Sumă în euro",
+    "accessSection": "Autentificare",
+    "username": "Nume de utilizator",
+    "usernamePlaceholder": "nume@exemplu.ro",
+    "password": "Parolă",
+    "passwordUnchanged": "•••••••• (neschimbată)",
+    "passwordNote": "Parola rămâne doar în Portchei pe iPhone.",
+    "numberSection": "Numărul documentului",
+    "numberPlaceholder": "Ex. RX123456",
+    "saveChanges": "Salvează modificările",
+    "saveDocument": "Salvează documentul",
+    "amountHint": "Scrie suma în formatul {{example}}.",
+    "missingNameAndFolder": "Pentru a salva, introdu numele și alege dosarul.",
+    "missingName": "Pentru a salva, introdu numele.",
+    "missingFolder": "Pentru a salva, alege dosarul.",
+    "deleteDocument": "Șterge documentul"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Scanare",
+      "photos": "Din Poze",
+      "pdf": "Din PDF",
+      "card": "Card",
+      "manual": "Manual"
+    },
+    "hintFirst": "Încadrează documentul · ține telefonul nemișcat",
+    "hintNext": "Pagina {{number}} capturată · încadrează-o pe următoarea",
+    "title": "Document nou",
+    "flashOff": "Dezactivează blițul",
+    "flashOn": "Activează blițul",
+    "scanWithIos": "Scanează cu scanerul iOS",
+    "tapToScan": "Atinge pentru a scana: găsește singur marginile",
+    "permissionTitle": "Este necesar accesul la cameră",
+    "permissionText": "Sottomano o folosește doar pentru a fotografia documentele tale.",
+    "allow": "Permite",
+    "openSettings": "Deschide Configurări",
+    "howToAdd": "Cum adaugi",
+    "chooseFromGallery": "Alege din bibliotecă",
+    "shoot": "Fă o poză",
+    "goOnWith_one": "Continuă cu {{count}} pagină",
+    "goOnWith_few": "Continuă cu {{count}} pagini",
+    "goOnWith_other": "Continuă cu {{count}} de pagini",
+    "noPages": "Nicio pagină",
+    "countNext": "înainte ›",
+    "countPages": "pagini"
+  },
+  "newDocument": {
+    "readTitle": "Citit din document",
+    "readText": "Nume preluat din fișier: {{name}}. Verifică-l și corectează-l dacă e nevoie.",
+    "checkTitle": "Verifică detaliile",
+    "checkText_one": "{{count}} pagină capturată. Introdu numele și, dacă există, termenul: îl vei găsi în Termene.",
+    "checkText_few": "{{count}} pagini capturate. Introdu numele și, dacă există, termenul: îl vei găsi în Termene.",
+    "checkText_other": "{{count}} de pagini capturate. Introdu numele și, dacă există, termenul: îl vei găsi în Termene.",
+    "heading": "Document nou"
+  },
+  "editDocument": {
+    "heading": "Editează documentul"
+  },
+  "documentVersion": {
+    "replacedOn": "Înlocuit pe {{date}}",
+    "expiredOn": "expirat pe {{date}}",
+    "previewTitle": "{{title}} (versiunea anterioară)"
+  },
+  "documentPages": {
+    "saveFailed": "Paginile nu au putut fi salvate"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Nu s-a putut șterge",
+    "title": "Ștergi {{title}}?",
+    "message_one": "Documentul și mementoul său ajung în Coș. Îl poți recupera din Meniu › Coș timp de {{count}} zi.",
+    "message_few": "Documentul și mementoul său ajung în Coș. Îl poți recupera din Meniu › Coș timp de {{count}} zile.",
+    "message_other": "Documentul și mementoul său ajung în Coș. Îl poți recupera din Meniu › Coș timp de {{count}} de zile.",
+    "confirm": "Șterge documentul"
+  },
+  "renew": {
+    "saveFailed": "Nu s-a putut salva",
+    "deadline": "Termen",
+    "repeatFooter": "{{repeat}}: noua dată se calculează pornind de la cea veche.",
+    "was": "Era",
+    "newDeadline": "Termen nou",
+    "newDocument": "Document nou",
+    "withScanFooter": "Paginile actuale devin o „Versiune anterioară”, pe care o găsești în detalii.",
+    "withoutScanFooter": "Activează dacă ai noul document de scanat.",
+    "addNewScan": "Adaugă noua scanare"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · derulează în jos",
+    "pagesSubtitle_one": "{{count}} pagină",
+    "pagesSubtitle_few": "{{count}} pagini · derulează în jos",
+    "pagesSubtitle_other": "{{count}} de pagini · derulează în jos",
+    "pageOf": "Pagina {{number}} din {{total}}",
+    "noPages": "Acest document nu are pagini.",
+    "zoom": "Zoom",
+    "zoomOut": "Micșorează",
+    "zoomIn": "Mărește",
+    "pageShort": "Pag. {{number}} din {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "zi",
+      "day_few": "zile",
+      "day_other": "de zile",
+      "week_one": "săptămână",
+      "week_few": "săptămâni",
+      "week_other": "de săptămâni",
+      "month_one": "lună",
+      "month_few": "luni",
+      "month_other": "de luni",
+      "year_one": "an",
+      "year_few": "ani",
+      "year_other": "de ani"
+    },
+    "count": {
+      "day_one": "{{count}} zi",
+      "day_few": "{{count}} zile",
+      "day_other": "{{count}} de zile",
+      "week_one": "{{count}} săptămână",
+      "week_few": "{{count}} săptămâni",
+      "week_other": "{{count}} de săptămâni",
+      "month_one": "{{count}} lună",
+      "month_few": "{{count}} luni",
+      "month_other": "{{count}} de luni",
+      "year_one": "{{count}} an",
+      "year_few": "{{count}} ani",
+      "year_other": "{{count}} de ani"
+    },
+    "every": {
+      "day_one": "În fiecare zi",
+      "day_few": "La fiecare {{count}} zile",
+      "day_other": "La fiecare {{count}} de zile",
+      "week_one": "În fiecare săptămână",
+      "week_few": "La fiecare {{count}} săptămâni",
+      "week_other": "La fiecare {{count}} de săptămâni",
+      "month_one": "În fiecare lună",
+      "month_few": "La fiecare {{count}} luni",
+      "month_other": "La fiecare {{count}} de luni",
+      "year_one": "În fiecare an",
+      "year_few": "La fiecare {{count}} ani",
+      "year_other": "La fiecare {{count}} de ani"
+    },
+    "repeats": {
+      "day_one": "Se repetă în fiecare zi",
+      "day_few": "Se repetă la fiecare {{count}} zile",
+      "day_other": "Se repetă la fiecare {{count}} de zile",
+      "week_one": "Se repetă în fiecare săptămână",
+      "week_few": "Se repetă la fiecare {{count}} săptămâni",
+      "week_other": "Se repetă la fiecare {{count}} de săptămâni",
+      "month_one": "Se repetă în fiecare lună",
+      "month_few": "Se repetă la fiecare {{count}} luni",
+      "month_other": "Se repetă la fiecare {{count}} de luni",
+      "year_one": "Se repetă în fiecare an",
+      "year_few": "Se repetă la fiecare {{count}} ani",
+      "year_other": "Se repetă la fiecare {{count}} de ani"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "De rezolvat",
+    "thisWeek": "Săptămâna aceasta",
+    "upcomingNone": "Nimic scadent în lunile următoare",
+    "upcoming_one": "{{count}} lucru de făcut în lunile următoare",
+    "upcoming_few": "{{count}} lucruri de făcut în lunile următoare",
+    "upcoming_other": "{{count}} de lucruri de făcut în lunile următoare"
+  },
+  "deadlineOptions": {
+    "sameDay": "În ziua respectivă",
+    "daysBefore_one": "Cu {{count}} zi înainte",
+    "daysBefore_few": "Cu {{count}} zile înainte",
+    "daysBefore_other": "Cu {{count}} de zile înainte",
+    "defaultChoice": "{{label}} (implicit)"
+  },
+  "personRoles": {
+    "you": "Tu",
+    "choice": {
+      "me": "Sunt eu",
+      "partner": "Partener",
+      "child": "Fiu sau fiică",
+      "parent": "Părinte",
+      "sibling": "Frate sau soră",
+      "other": "Altcineva"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Categoria „Altele” nu există.",
+    "otherNotDeletable": "Categoria „Altele” nu poate fi ștearsă."
+  },
+  "deadlineChip": {
+    "overdue": "Expirat",
+    "today": "Azi",
+    "dueToday": "Scadent azi",
+    "dueIn_one": "Scadent peste {{count}} zi",
+    "dueIn_few": "Scadent peste {{count}} zile",
+    "dueIn_other": "Scadent peste {{count}} de zile"
+  },
+  "deadlineListRow": {
+    "hint": "Ține apăsat pentru a edita sau elimina termenul",
+    "statusDue": "de plătit",
+    "statusPaid": "plătit"
+  },
+  "deadlineSection": {
+    "title": "Termen",
+    "emptyFooter": "Cu un memento pe telefon și, dacă e activat, în calendarul „Sottomano”.",
+    "add": "Adaugă termen",
+    "expiresOn": "Scadent pe",
+    "repeats": "Se repetă",
+    "never": "Niciodată",
+    "reminder": "Memento"
+  },
+  "dateCalendar": {
+    "previousMonth": "Luna anterioară",
+    "nextMonth": "Luna următoare"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Săptămâna următoare",
+    "previousWeek": "Săptămâna anterioară",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} termen",
+    "dayWithDeadlines_few": "{{day}}, {{count}} termene",
+    "dayWithDeadlines_other": "{{day}}, {{count}} de termene"
+  },
+  "deadlines": {
+    "title": "Termene",
+    "newReminder": "Memento nou",
+    "week": "Săptămână",
+    "month": "Lună",
+    "openDocument": "Deschide documentul",
+    "editDeadline": "Editează termenul",
+    "markDue": "Marchează ca de plătit",
+    "markPaid": "Marchează ca plătit",
+    "removeDeadline": "Elimină termenul",
+    "removeAlert": {
+      "title": "Elimini termenul?",
+      "message": "Documentul rămâne; mementoul și evenimentul din calendar sunt eliminate.",
+      "confirm": "Elimină"
+    },
+    "emptyTitle": "Niciun termen în viitor",
+    "emptyText": "Atinge + pentru a adăuga un document cu termen: va apărea aici și în calendar.",
+    "sheetSubtitle": "Scadent {{date}}",
+    "dayRepeats": "se repetă",
+    "dayReminder": "memento",
+    "dayEmpty": "Niciun termen în această zi"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Nu s-a putut salva",
+    "date": "Dată",
+    "footer": "Mementoul sosește pe telefon; cu calendarul activat, termenul apare și în „Sottomano”.",
+    "every": "La fiecare"
+  },
+  "family": {
+    "title": "Familie",
+    "subtitle": "Un profil pentru fiecare membru al casei",
+    "addPerson": "Adaugă o persoană",
+    "members": "Membri",
+    "orderSaveFailed": "Ordinea nu a putut fi salvată",
+    "reorderTitle": "Reordonează familia",
+    "reorderHint": "Ține apăsat pe o persoană și trage-o unde vrei.",
+    "privacyNote": "Totul rămâne pe acest telefon. Ca să trimiți un document cuiva, deschide-l și atinge Trimite.",
+    "youSpoken": "tu",
+    "reorderA11yHint": "Ține apăsat pentru a reordona familia",
+    "expiring_one": "{{count}} expiră curând",
+    "expiring_few": "{{count}} expiră curând",
+    "expiring_other": "{{count}} expiră curând"
+  },
+  "personScreen": {
+    "photoFailed": "Poza nu a putut fi folosită",
+    "editPerson": "Editează persoana",
+    "selectAndSend": "Selectează și trimite",
+    "deletePerson": "Șterge persoana",
+    "moreA11y": "Editează sau șterge {{name}}",
+    "changePhoto": "Schimbă poza",
+    "editProfile": "Editează profilul",
+    "documentsSection": "Documentele sale · {{count}}",
+    "addDocument": "Adaugă document",
+    "sendTogether": "Trimite împreună ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Nu s-a putut salva",
+    "newPerson": "Persoană nouă",
+    "addPhoto": "Adaugă poză",
+    "name": "Nume",
+    "namePlaceholder": "Cum se numește?",
+    "role": "Cine este",
+    "roleA11y": "Cine este pentru tine: {{role}}",
+    "note": "Profilul rămâne pe acest telefon. Te ajută să ții în ordine documentele tuturor.",
+    "addToFamily": "Adaugă în familie",
+    "roleSheetTitle": "Cine este pentru tine"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Nu s-a putut șterge",
+    "title": "Ștergi categoria {{name}}?",
+    "messageWithDocuments_one": "Conține {{count}} document. Ce vrei să faci cu el?",
+    "messageWithDocuments_few": "Conține {{count}} documente. Ce vrei să faci cu ele?",
+    "messageWithDocuments_other": "Conține {{count}} de documente. Ce vrei să faci cu ele?",
+    "messageWithDocumentsRestorable_one": "Conține {{count}} document. Ce vrei să faci cu el? Poți restaura categoria din Categorie nouă.",
+    "messageWithDocumentsRestorable_few": "Conține {{count}} documente. Ce vrei să faci cu ele? Poți restaura categoria din Categorie nouă.",
+    "messageWithDocumentsRestorable_other": "Conține {{count}} de documente. Ce vrei să faci cu ele? Poți restaura categoria din Categorie nouă.",
+    "messageEmpty": "Categoria este goală.",
+    "messageEmptyRestorable": "Categoria este goală. O poți restaura din Categorie nouă.",
+    "deleteAll": "Șterge tot",
+    "confirm": "Șterge categoria",
+    "choicesA11y": "Ce să faci cu documentele",
+    "moveLabel": "Mută-le în Altele",
+    "moveDetailPassword": "Rămân în aplicație, în Altele, fără nume de utilizator și parolă",
+    "moveDetail": "Rămân în aplicație, într-un dosar general",
+    "trashLabel": "Șterge-le",
+    "trashDetail_one": "Ajung în Coș: le poți recupera timp de {{count}} zi",
+    "trashDetail_few": "Ajung în Coș: le poți recupera timp de {{count}} zile",
+    "trashDetail_other": "Ajung în Coș: le poți recupera timp de {{count}} de zile"
+  },
+  "deletePerson": {
+    "title": "Elimini pe {{name}} din familie?",
+    "messageWithDocuments_one": "{{name}} are {{count}} document. Ce vrei să faci cu el?",
+    "messageWithDocuments_few": "{{name}} are {{count}} documente. Ce vrei să faci cu ele?",
+    "messageWithDocuments_other": "{{name}} are {{count}} de documente. Ce vrei să faci cu ele?",
+    "messageEmpty": "Profilul este eliminat de pe acest telefon.",
+    "familyLabel": "Mută-le în Toată familia",
+    "familyDetail": "Rămân în aplicație, vizibile pentru toți",
+    "trashDetail_one": "Pleacă odată cu profilul: rămân în Coș timp de {{count}} zi",
+    "trashDetail_few": "Pleacă odată cu profilul: rămân în Coș timp de {{count}} zile",
+    "trashDetail_other": "Pleacă odată cu profilul: rămân în Coș timp de {{count}} de zile"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Animale",
+      "document": "Document",
+      "home": "Casă",
+      "car": "Mașină",
+      "health": "Sănătate",
+      "school": "Școală",
+      "work": "Serviciu",
+      "keys": "Chei",
+      "travel": "Călătorii",
+      "expenses": "Cheltuieli"
+    },
+    "restoreFailed": "Nu s-a putut restaura",
+    "editTitle": "Editează categoria",
+    "newTitle": "Categorie nouă",
+    "restoreSection": "Restaurează o categorie implicită",
+    "restoreA11y": "Restaurează {{name}}",
+    "restoreHint": "Revine așa cum era, cu culorile, pictograma și câmpurile sale. Sau creează una nouă mai jos.",
+    "previewA11y": "Previzualizarea categoriei",
+    "namePlaceholder": "Ex. Animale",
+    "nameA11y": "Numele categoriei",
+    "color": "Culoare",
+    "paletteColor": "Culoare din Aspect",
+    "colorNumber": "Culoarea {{number}}",
+    "followsPaletteHint": "Culoarea urmează paleta aleasă în Aspect.",
+    "ownColorHint": "Culoarea ta: nu se schimbă odată cu Aspectul.",
+    "icon": "Pictogramă",
+    "forWhom": "Pentru cine",
+    "forWhomA11y": "Pentru cine e această categorie: {{name}}",
+    "forWhomHint": "Documentele noi din această categorie pornesc cu această persoană.",
+    "create": "Creează categoria"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Site sau aplicație",
+        "namePlaceholder": "De exemplu: Internet banking",
+        "userLabel": "Nume de utilizator sau email",
+        "userPlaceholder": "nume@email.ro",
+        "passwordLabel": "Parolă",
+        "notePlaceholder": "De exemplu: întrebare de securitate, cod de recuperare…"
+      },
+      "wifi": {
+        "name": "Wi-Fi",
+        "namePlaceholder": "De exemplu: Wi-Fi acasă",
+        "userLabel": "Numele rețelei",
+        "userPlaceholder": "CasaPopescu_5G",
+        "passwordLabel": "Parola rețelei",
+        "notePlaceholder": "De exemplu: routerul e în sufragerie, în spatele televizorului…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "De exemplu: Card de debit",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "De exemplu: cardul Iuliei…"
+      },
+      "other": {
+        "name": "Altele",
+        "namePlaceholder": "De exemplu: Alarma casei",
+        "userLabel": "Nume de utilizator",
+        "userPlaceholder": "Opțional",
+        "passwordLabel": "Cod sau parolă",
+        "notePlaceholder": "La ce folosește, unde se folosește…"
+      }
+    },
+    "colors": {
+      "aqua": "Acvamarin",
+      "indigo": "Indigo",
+      "apricot": "Caisă",
+      "pink": "Roz",
+      "mint": "Mentă",
+      "sky": "Cer",
+      "graphite": "Grafit"
+    },
+    "icons": {
+      "key": "Cheie",
+      "lock": "Lacăt",
+      "globe": "Glob",
+      "wifi": "Wi-Fi",
+      "bank": "Bancă",
+      "card": "Card",
+      "mail": "Email",
+      "home": "Casă",
+      "car": "Mașină",
+      "shield": "Scut",
+      "cart": "Cărucior",
+      "star": "Stea"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Doar cifre",
+    "strength": {
+      "weak": "Slabă",
+      "fair": "Acceptabilă",
+      "good": "Bună",
+      "strong": "Puternică"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Confirmă pentru a activa blocarea"
+  },
+  "appLock": {
+    "prompt": "Deblochează Sottomano",
+    "unlock": "Deblochează",
+    "unlockWith": {
+      "faceId": "Deblochează cu Face ID",
+      "touchId": "Deblochează cu Touch ID",
+      "passcode": "Deblochează cu codul de acces"
+    },
+    "message": "Documentele tale sunt protejate"
+  },
+  "passwordForm": {
+    "showPrompt": "Afișează parola",
+    "copyPrompt": "Copiază parola",
+    "copiedTitle": "Copiat",
+    "copiedMessage": "Va fi ștearsă din clipboard peste 1 minut.",
+    "scannerUnavailableTitle": "Scanerul nu este disponibil",
+    "scannerUnavailableMessage": "Alege imaginea din biblioteca Poze.",
+    "saveFailed": "Nu s-a putut salva",
+    "editTitle": "Editează parola",
+    "newTitle": "Parolă nouă",
+    "privacy": "Rămân doar pe acest telefon și se deschid cu Face ID.",
+    "sections": {
+      "what": "Ce salvezi",
+      "name": "Nume",
+      "preview": "Previzualizare",
+      "access": "Autentificare",
+      "site": "Site sau aplicație",
+      "whose": "Al cui este",
+      "notes": "Note"
+    },
+    "typesLabel": "Tipul parolei",
+    "customTypePlaceholder": "Ce este? Alarmă, seif, lacăt…",
+    "customTypeLabel": "Ce este",
+    "customTypeHint": "Devine un tip nou și data viitoare îl vei găsi printre opțiuni.",
+    "previewTitle": "Cum arată în listă",
+    "previewText": "O culoare și o pictogramă sau o imagine.",
+    "color": "Culoare",
+    "colorLabel": "Culoarea previzualizării",
+    "icon": "Pictogramă",
+    "iconLabel": "Pictograma previzualizării",
+    "image": "Imagine",
+    "scan": "Scanează",
+    "gallery": "Din Poze",
+    "removeImage": "Elimină imaginea și folosește culoarea și pictograma",
+    "passwordPlaceholder": "Scrie sau generează",
+    "show": "Afișează",
+    "hide": "Ascunde",
+    "copy": "Copiază",
+    "saved": "Salvată",
+    "generate": "Generează o parolă puternică",
+    "urlPlaceholder": "www.exemplu.ro",
+    "urlLabel": "Adresa site-ului",
+    "wifiQrTitle": "Cod QR pentru oaspeți",
+    "wifiQrSubtitle": "Îl scanează și se conectează",
+    "person": "Persoană",
+    "personA11y": "Persoană, {{name}}",
+    "favoriteTitle": "Adaugă la favorite",
+    "favoriteSubtitle": "O găsești direct pe ecranul principal",
+    "saveButton": "Salvează parola",
+    "saveHint": "Introdu un nume pentru a salva."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Nicio parolă",
+    "noPasswordMessage": "Adaug-o cu Editează.",
+    "showPrompt": {
+      "site": "Afișează parola",
+      "wifi": "Afișează parola rețelei",
+      "pin": "Afișează PIN-ul",
+      "other": "Afișează codul sau parola"
+    },
+    "copyPrompt": {
+      "site": "Copiază parola",
+      "wifi": "Copiază parola rețelei",
+      "pin": "Copiază PIN-ul",
+      "other": "Copiază codul sau parola"
+    },
+    "copyUser": {
+      "site": "Copiază numele de utilizator sau emailul",
+      "wifi": "Copiază numele rețelei",
+      "pin": "Copiază numele de utilizator",
+      "other": "Copiază numele de utilizator"
+    },
+    "copiedTitle": "Copiat",
+    "copiedMessage": "Va fi ștearsă din clipboard peste 1 minut.",
+    "copiedTextTitle": "Copiat",
+    "qrPrompt": "Afișează codul QR pentru oaspeți",
+    "invalidAddress": "Adresă nevalidă",
+    "removeFavorite": "Elimină din favorite",
+    "favoriteTitle": "Adaugă la favorite",
+    "favoriteSubtitle": "O găsești direct pe ecranul principal",
+    "moreActions": "Mai multe acțiuni",
+    "sections": {
+      "access": "Autentificare",
+      "site": "Site sau aplicație",
+      "wifiQr": "Cod QR pentru oaspeți",
+      "whose": "Al cui este",
+      "notes": "Note"
+    },
+    "hidden": "Ascunsă",
+    "show": "Afișează",
+    "hide": "Ascunde",
+    "copy": "Copiază",
+    "locked": "Vizibilă după Face ID sau codul de acces al iPhone-ului",
+    "wifiQrLabel": "Codul QR al rețelei Wi-Fi",
+    "qrHint": "Îl scanează cu camera și se conectează.",
+    "qrLocked": "Codul QR conține parola: e vizibil după Face ID sau codul de acces al iPhone-ului.",
+    "qrNoNetwork": "Adaugă numele rețelei cu Editează pentru a obține codul QR.",
+    "showQr": "Afișează codul QR",
+    "hideQr": "Ascunde codul QR",
+    "person": "Persoană",
+    "moveToTrash": "Mută în Coș"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Nicio parolă",
+    "noPasswordMessage": "Adaug-o cu Editează.",
+    "showPrompt": "Afișează parola",
+    "copyPrompt": "Copiază parola",
+    "copiedTitle": "Parolă copiată",
+    "copiedMessage": "Va fi ștearsă din clipboard peste 1 minut.",
+    "user": "Nume de utilizator",
+    "password": "Parolă",
+    "hidden": "Parolă ascunsă",
+    "show": "Afișează",
+    "hide": "Ascunde",
+    "copy": "Copiază"
+  },
+  "cardForm": {
+    "found": "Găsit: {{name}}",
+    "foundBarcode": "Găsit: cod de bare {{name}}",
+    "handwritten": "Cod introdus manual",
+    "noCode": "Niciun cod citit",
+    "photoOpenFailed": "Poza nu a putut fi deschisă",
+    "saveFailed": "Nu s-a putut salva",
+    "retakeFront": "Fotografiază din nou",
+    "retakePhoto": "Refă poza",
+    "recognized": "Card recunoscut",
+    "tapRetake": "Atinge Fotografiază din nou pentru a-l fotografia",
+    "fromPhotos": "Din Poze",
+    "cover": "Copertă",
+    "coverPhotoCaption": "Decupat și îndreptat din poza cardului",
+    "coverColorCaption": "Culoarea cardului, cu numele și numărul său",
+    "codeSection": "Codul de arătat la casă",
+    "photographCode": "Fotografiază codul",
+    "barcode": "Cod de bare",
+    "qrCode": "Cod QR",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Card",
+    "typeNumber": "Scrie numărul mai jos",
+    "explain": "Sottomano recunoaște singur dacă cardul are cod de bare sau cod QR. La casă îl afișează mare, cu ecranul la luminozitate maximă.",
+    "readTitle": "Detalii citite de pe card",
+    "readText": "Verifică-le și corectează-le dacă e nevoie.",
+    "name": "Nume",
+    "namePlaceholder": "Ex. Supermarket",
+    "type": "Tip",
+    "typePlaceholder": "Ex. Card de fidelitate",
+    "number": "Număr",
+    "numberPlaceholder": "Ex. 0400 2219 8876",
+    "holder": "Titular",
+    "saveButton": "Salvează cardul",
+    "saveHint": "Introdu numele cardului pentru a salva."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Poza feței",
+      "barcode": "Fotografiază codul de bare"
+    },
+    "photoOpenFailed": "Poza nu a putut fi deschisă",
+    "permissionTitle": "Este necesar accesul la cameră",
+    "permissionText": "Sottomano folosește camera pentru a fotografia cardurile și a le citi codul de bare.",
+    "allow": "Permite",
+    "openSettings": "Deschide Configurări",
+    "frontCheck": "Fața: e clară?",
+    "read": "Citit: {{value}}",
+    "notRead": "Cod necitit",
+    "notReadHint": "Păstrează poza: vei scrie numărul la pasul următor.",
+    "retake": "Refă",
+    "use": "Folosește",
+    "focus": "Focalizare",
+    "stepCount": "{{current}} din {{total}}",
+    "frameHint": "Încadrează cardul în chenar",
+    "searching": "Se caută codul…",
+    "chooseFromPhotos": "Alege din Poze",
+    "shoot": "Fă o poză",
+    "skip": "Omite"
+  },
+  "cardDetail": {
+    "code": "Cod",
+    "photo": "Poză",
+    "barcodeLabel": "Cod de bare",
+    "barcodePhotoLabel": "Poza codului de bare",
+    "fullScreenHint": "Deschide codul pe tot ecranul",
+    "noCode": "Niciun cod. Atinge „Editează” pentru a-l fotografia sau scrie.",
+    "tapHint": "Atinge codul pentru a-l mări",
+    "person": "Persoană"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Ordinea nu a putut fi salvată",
+    "editCategory": "Editează categoria",
+    "deleteCategory": "Șterge categoria",
+    "reorderTitle": "Reordonează cardurile",
+    "reorderHint": "Ține apăsat pe un card, apoi trage-l unde vrei.",
+    "yourCards": "Cardurile tale",
+    "title": "Carduri",
+    "subtitle": "Atinge un card pentru a-i arăta codul la casă",
+    "categoryMenuLabel": "Editează sau șterge categoria {{name}}",
+    "addCard": "Adaugă card",
+    "reorder": "Reordonează",
+    "newCard": "Card nou",
+    "cardDetails": "Detaliile cardului",
+    "categoryMenuTitle": "Categoria {{name}}",
+    "cardCount_one": "{{count}} card",
+    "cardCount_few": "{{count}} carduri",
+    "cardCount_other": "{{count}} de carduri",
+    "cardOpenLabel": "{{label}}, închide",
+    "cardClosedLabel": "{{label}}, afișează codul",
+    "qrLabel": "Codul QR al cardului",
+    "barcodeLabel": "Codul de bare al cardului",
+    "fullScreenHint": "Deschide codul pe tot ecranul",
+    "noCode": "Niciun cod: atinge Detalii › Editează pentru a-l fotografia sau scrie.",
+    "details": "Detalii"
+  },
+  "walletCard": {
+    "untitled": "Card nou"
+  },
+  "barcodeView": {
+    "close": "Închide codul"
+  },
+  "colorPicker": {
+    "color": "Culoare",
+    "custom": "Culoarea ta",
+    "hex": "Cod",
+    "hexLabel": "Codul culorii"
+  },
+  "colorWheel": {
+    "label": "Roata culorilor: atinge sau trage pentru a alege",
+    "nextHue": "Nuanța următoare",
+    "previousHue": "Nuanța anterioară"
+  },
+  "newCard": {
+    "title": "Card nou",
+    "missingCategory": "Categoria „Carduri” nu mai există."
+  },
+  "editCard": {
+    "title": "Editează cardul"
+  },
+  "unlock": {
+    "storeOnly": "Disponibil în versiunea din App Store",
+    "remainingNone": "Ai folosit toate locurile gratuite.",
+    "remaining_one": "Mai poți adăuga {{count}}.",
+    "remaining_few": "Mai poți adăuga {{count}}.",
+    "remaining_other": "Mai poți adăuga {{count}}.",
+    "tag": "Versiune gratuită · {{used}} din {{limit}} folosite",
+    "title": "Toate documentele tale, fără limite",
+    "intro": "Gratuit pentru până la {{limit}} documente și carduri. Ca să adaugi câte vrei, deblochează aplicația cu o singură plată.",
+    "benefits": {
+      "unlimited": {
+        "title": "Documente nelimitate",
+        "text": "Facturi, carduri, garanții și tot restul"
+      },
+      "reminders": {
+        "title": "Mementouri pentru termene",
+        "text": "Îți amintim înainte să fie prea târziu"
+      },
+      "offline": {
+        "title": "Funcționează fără internet",
+        "text": "Totul rămâne pe telefonul tău, inclusiv backupul"
+      },
+      "family": {
+        "title": "Toată familia",
+        "text": "Un profil pentru fiecare membru al casei"
+      }
+    },
+    "sectionTitle": "Versiunea ta gratuită",
+    "usageLabel": "Documente și carduri",
+    "usageValue": "{{used}} din {{limit}}",
+    "usageA11y": "Locuri gratuite folosite",
+    "keptNote": "Cele deja salvate rămân mereu ale tale, chiar și fără deblocare.",
+    "priceTitle": "Pentru totdeauna",
+    "priceText": "Fără limite · o singură plată",
+    "buy": "Deblochează pentru {{price}}",
+    "continueFree": "Continuă gratuit",
+    "restore": "Restaurează achiziția",
+    "terms": "Condiții",
+    "privacy": "Confidențialitate"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Categoria „Altele”",
+    "otherCategoryMessage": "Nu poate fi ștearsă: păstrează documentele categoriilor șterse."
+  },
+  "quickActionMenu": {
+    "close": "Închide meniul"
+  },
+  "quickActions": {
+    "open": "Deschide",
+    "unpin": "Elimină din favorite",
+    "pin": "Adaugă la favorite",
+    "moveToTrash": "Mută în Coș",
+    "editCategory": "Editează categoria",
+    "deleteCategory": "Șterge categoria",
+    "editPerson": "Editează persoana",
+    "deletePerson": "Șterge persoana"
+  },
+  "shareCopies": {
+    "defaultName": "Document",
+    "fileNotFound": "Fișierul nu a fost găsit pe telefon."
+  },
+  "sendCompression": {
+    "tooBig": "Chiar și la compresie maximă depășește limita: încearcă să-l împarți în mai multe fișiere.",
+    "lowPpi": "Textul mic s-ar putea să nu fie lizibil."
+  },
+  "sendPreferences": {
+    "original": "Original"
+  },
+  "sendFileName": {
+    "fallback": "document"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Fața și versoul nu pot fi combinate acum.",
+    "noPhotos": "Nicio poză de trimis.",
+    "fileFront": "fata",
+    "fileBack": "verso",
+    "filePage": "pagina-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "documente",
+    "title": "Trimite {{title}}",
+    "formatPhotos": "Poze",
+    "actions": {
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "print": "Tipărește",
+      "save": "Salvează în Fișiere",
+      "copy": "Copiază",
+      "other": "Altele"
+    },
+    "alerts": {
+      "savedToFiles": "Salvat în Fișiere",
+      "imageCopied": "Imagine copiată",
+      "textCopied": "Text copiat",
+      "firstPageCopied": "Prima pagină a fost copiată: lipește-o într-un mesaj.",
+      "pasteImage": "Lipește-o într-un mesaj sau într-o notă.",
+      "pdfNotCopied": "Un PDF nu poate fi copiat: au fost copiate numele și nota. Pentru fișier, folosește Altele.",
+      "failed": "Nu s-a putut finaliza"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDF-uri",
+      "singlePdf": "Un singur PDF",
+      "failed": "Fișierul nu a putut fi pregătit",
+      "preparing": "Se pregătește…"
+    },
+    "includeNote": "Include nota documentului",
+    "noNote": "Acest document nu are notă.",
+    "frontBackPage": "Fața și versoul pe o pagină",
+    "frontBackImage": "Fața și versoul într-o imagine",
+    "maxSize": "Dimensiune maximă",
+    "pdfAsIs": "PDF-ul este trimis așa cum este.",
+    "severalInfo": "Un singur PDF: documentele unul după altul, cu fața și versoul actelor și cardurilor pe aceeași pagină.",
+    "quality": {
+      "high": "Calitate înaltă",
+      "good": "Calitate bună",
+      "low": "Calitate scăzută",
+      "minimum": "Calitate minimă",
+      "original": "Calitate originală"
+    },
+    "skipped_one": "{{count}} document fără poze nu este inclus (PDF-urile importate nu pot fi încă unite).",
+    "skipped_few": "{{count}} documente fără poze nu sunt incluse (PDF-urile importate nu pot fi încă unite).",
+    "skipped_other": "{{count}} de documente fără poze nu sunt incluse (PDF-urile importate nu pot fi încă unite)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Se pregătește PDF-ul…",
+    "progressRetry": "Se reduc pozele (încercarea {{attempt}})…",
+    "subtitle": "Pregătit pe {{date}} cu Sottomano · {{documents}}",
+    "subtitleWithTotal": "Pregătit pe {{date}} cu Sottomano · {{documents}} · total {{total}}",
+    "columns": {
+      "number": "Nr.",
+      "document": "Document",
+      "date": "Dată",
+      "person": "Persoană",
+      "amount": "Sumă",
+      "page": "Pagina"
+    },
+    "sentApart": "trimis separat",
+    "noPages": "fără pagini",
+    "paid": "plătit",
+    "due": "de plătit",
+    "invalidIndex": "Index nevalid"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Un PDF nu poate fi unit (protejat cu parolă sau deteriorat): {{titles}}. Indexul îl marchează „trimis separat” și pleacă împreună cu celelalte.",
+    "sentApart_few": "{{count}} PDF-uri nu pot fi unite (protejate cu parolă sau deteriorate): {{titles}}. Indexul le marchează „trimis separat” și pleacă împreună cu celelalte.",
+    "sentApart_other": "{{count}} de PDF-uri nu pot fi unite (protejate cu parolă sau deteriorate): {{titles}}. Indexul le marchează „trimis separat” și pleacă împreună cu celelalte.",
+    "alerts": {
+      "prepareFailed": "PDF-ul nu a putut fi pregătit",
+      "ready": "PDF gata",
+      "noMailTitle": "Mail nu este configurat",
+      "noMailMessage": "Adaugă un cont în Mail sau salvează PDF-urile în Fișiere.",
+      "savedToFiles": "Salvat în Fișiere",
+      "sendFailed": "Nu s-a putut trimite"
+    },
+    "readyMany": "{{number}} PDF-uri gata",
+    "choices": {
+      "email": "Email: toate PDF-urile într-un singur mesaj",
+      "save": "Salvează în Fișiere: toate în același dosar",
+      "oneByOne": "Partajează pe rând"
+    },
+    "intro": "Toate documentele din {{category}}, împărțite pe ani: câte un PDF pentru fiecare an, cu indexul său (document, dată, persoană, sumă, pagină) și totalul. Anul este cel al termenului sau al plății; dacă niciunul nu e setat, anul în care le-ai adăugat.",
+    "noDocuments": "Niciun document în acest an.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_few": "{{count}} PDF-uri",
+    "pdfs_other": "{{count}} de PDF-uri",
+    "year": "An",
+    "allYears": "Toți anii",
+    "maxPhotoSize": "Dimensiunea maximă a pozelor",
+    "limitInfo": "Pozele sunt reduse ca să rămână în limită; PDF-urile importate rămân așa cum sunt.",
+    "prepare": "Pregătește și trimite"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Ceva nu a mers bine",
+      "restoredToOther": "Restaurat în Altele",
+      "restoredPassword": "Categoria sa nu mai există: documentul este în Altele, fără nume de utilizator și parolă.",
+      "restoredMessage": "Categoria sa nu mai există: documentul este în Altele.",
+      "deleteTitle": "Ștergi definitiv „{{title}}”?",
+      "deleteMessage": "Vor fi șterse și pozele și PDF-urile sale. Acțiunea nu poate fi anulată.",
+      "emptyTitle": "Golești Coșul?",
+      "emptyMessage_one": "Documentul va fi șters împreună cu pozele și PDF-urile sale. Acțiunea nu poate fi anulată.",
+      "emptyMessage_few": "Cele {{count}} documente vor fi șterse împreună cu pozele și PDF-urile lor. Acțiunea nu poate fi anulată.",
+      "emptyMessage_other": "Cele {{count}} de documente vor fi șterse împreună cu pozele și PDF-urile lor. Acțiunea nu poate fi anulată.",
+      "emptyConfirm": "Golește"
+    },
+    "intro": "Documentele șterse rămân aici {{days}} de zile, apoi sunt eliminate împreună cu pozele și PDF-urile lor.",
+    "empty": "Coșul este gol",
+    "deletedSoon": "Va fi șters în curând",
+    "deletedIn": "Zile până la ștergere: {{days}}",
+    "restoreLabel": "Restaurează {{title}}",
+    "deleteForeverLabel": "Șterge definitiv {{title}}",
+    "deleteForever": "Șterge definitiv",
+    "emptyTrash": "Golește Coșul"
+  },
+  "menu": {
+    "close": "Închide meniul",
+    "home": "Acasă",
+    "favorites": "Favorite",
+    "deadlines": "Termene",
+    "deadlinesUrgent": "Termene, {{number}} de verificat",
+    "family": "Familie",
+    "cards": "Carduri",
+    "backup": "Backup",
+    "backupDue": "Backup, de făcut",
+    "help": "Ajutor și contact",
+    "rate": "Evaluează Sottomano",
+    "recommend": "Recomandă-l unui prieten",
+    "trash": "Coș",
+    "trashCount": "Coș, {{number}}",
+    "password": "Parole",
+    "scan": "Scanează",
+    "fromPhotos": "Din Poze",
+    "importFiles": "Importă fișiere",
+    "version": "Versiunea {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Închide notificările",
+    "title": "Notificări",
+    "markAllRead": "Marchează ca citite",
+    "empty": "Nicio notificare în ultimele 7 zile.",
+    "today": "Azi",
+    "thisWeek": "Săptămâna aceasta",
+    "settings": "Configurări notificări",
+    "unreadItem": "Necitită. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "A expirat pe {{date}}.",
+    "expiresToday": "Expiră azi.",
+    "expiresOn": "Expiră {{distance}}, pe {{date}}.",
+    "amount": "Sumă {{amount}}.",
+    "backupTitle": "Backup",
+    "backupLate": "A trecut ceva timp de la ultimul backup al documentelor tale.",
+    "backupNever": "Nu ai făcut încă un backup al documentelor."
+  },
+  "deadlineReminders": {
+    "title": "Termen apropiat",
+    "hiddenBody": "Un document expiră {{date}} ({{distance}}). Deschide Sottomano pentru a-l vedea.",
+    "body": "{{name}} expiră {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Aspect",
+      "security": "Securitate",
+      "reminders": "Mementouri",
+      "backup": "Backup",
+      "info": "Despre"
+    },
+    "calendarOff": "Dezactivat",
+    "alerts": {
+      "notificationsOffTitle": "Notificările sunt dezactivate",
+      "notificationsOffMessage": "Pentru a primi mementouri, permite notificările pentru Sottomano în Configurări pe iPhone.",
+      "openSettings": "Deschide Configurări"
+    },
+    "lastBackup": {
+      "never": "Niciodată",
+      "today": "Azi",
+      "yesterday": "Ieri",
+      "daysAgo_one": "Acum {{count}} zi",
+      "daysAgo_few": "Acum {{count}} zile",
+      "daysAgo_other": "Acum {{count}} de zile"
+    },
+    "categoryColors": "Culorile categoriilor",
+    "faceId": "Blocare cu Face ID",
+    "faceIdSubtitle": "Îți cere fața de fiecare dată când deschizi aplicația",
+    "hidePreviews": "Ascunde previzualizările",
+    "hidePreviewsSubtitle": "Notificările nu afișează documentul",
+    "notifications": "Notificări",
+    "reminderTime": "Ora mementoului",
+    "defaultReminder": "Memento implicit",
+    "iconBadge": "Bulină pe pictograma aplicației",
+    "iconBadgeSubtitle": "Termene trecute sau în următoarele 7 zile",
+    "calendar": "Calendarul „Sottomano”",
+    "notificationsBlocked": "Notificările sunt blocate",
+    "notificationsBlockedSubtitle": "Permite-le în Configurări pe iPhone",
+    "backupNote": "Backupul este un fișier salvat pe telefon, în aplicația Fișiere. Îl poți copia unde vrei. Sottomano funcționează și fără internet.",
+    "createBackup": "Fă backup acum",
+    "restoreBackup": "Restaurează dintr-un backup",
+    "help": "Ajutor și contact",
+    "privacy": "Confidențialitate",
+    "terms": "Condiții de utilizare",
+    "rate": "Evaluează Sottomano",
+    "debug": {
+      "limitPreview": "Previzualizare limită gratuită",
+      "limitPreviewSubtitle": "Doar pentru test: afișează + blocat, panoul limitei și cardul de pe ecranul Acasă",
+      "emptyHome": "Previzualizare Acasă goală",
+      "emptyHomeSubtitle": "Doar pentru test: ecranul Acasă ca și cum nu ar exista documente (datele tale rămân)",
+      "onboarding": "Revezi bun venitul",
+      "onboardingSubtitle": "Doar pentru test: paginile de bun venit 1–4"
+    },
+    "version": "Sottomano · versiunea {{version}}",
+    "theme": {
+      "title": "Temă",
+      "autoSubtitle": "Urmează setarea telefonului",
+      "auto": "Automat",
+      "light": "Luminoasă",
+      "dark": "Întunecată"
+    }
+  },
+  "backup": {
+    "title": "Backup",
+    "subtitle": "O copie a tuturor documentelor tale, salvată pe telefon.",
+    "keyProgress": "Se protejează cu parola ta… poate dura până la un minut",
+    "whenToday": "azi la {{time}}",
+    "whenDate": "{{date}} la {{time}}",
+    "minLength": "Cel puțin {{min}} caractere.",
+    "mismatch": "Cele două parole nu coincid.",
+    "creating": "Se creează backupul…",
+    "copyDialogTitle": "Copiază backupul",
+    "opening": "Se deschide backupul…",
+    "checking": "Se verifică documentele…",
+    "restoring": "Se restaurează…",
+    "keepOpen": "Ține aplicația deschisă până la final.",
+    "forgotWarning": "Dacă uiți parola, backupul nu mai poate fi deschis.",
+    "passwordPlaceholder": "Parolă (cel puțin {{min}} caractere)",
+    "repeatPlaceholder": "Repetă parola",
+    "createAndSave": "Creează și salvează",
+    "backupPassword": "Parola backupului",
+    "openBackup": "Deschide backupul",
+    "completed": "Backup finalizat",
+    "lastBackup": "Ultimul backup",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Copiază fișierul în altă parte",
+    "createNew": "Creează un backup nou",
+    "noneTitle": "Nu ai făcut încă un backup",
+    "noneText": "Dacă pierzi sau schimbi telefonul, backupul îți aduce totul înapoi.",
+    "createNow": "Fă backup acum",
+    "restoreSection": "Restaurare",
+    "restoreTitle": "Ai un telefon nou?",
+    "restoreText": "Alege fișierul de backup ca să-ți recuperezi documentele, cardurile și mementourile.",
+    "chooseFile": "Alege un fișier de backup",
+    "remindersSection": "Mementouri",
+    "remindMe": "Amintește-mi să fac backup",
+    "remindMeValue": "Amintește-mi să fac backup: {{value}}",
+    "footnote": "Backupul este un singur fișier protejat de parola pe care o alegi: documente, poze, carduri, persoane și mementouri. Copiază-l în altă parte (Fișiere, iCloud Drive, un computer) ca să-l ai chiar dacă pierzi telefonul.",
+    "alerts": {
+      "createFailed": "Backupul nu a reușit",
+      "copyFailed": "Nu s-a putut copia",
+      "restoreTitle": "Restaurezi backupul din {{date}}?",
+      "restoreMessage_one": "Conține {{count}} document. Ce este acum în aplicație va fi înlocuit.",
+      "restoreMessage_few": "Conține {{count}} documente. Ce este acum în aplicație va fi înlocuit.",
+      "restoreMessage_other": "Conține {{count}} de documente. Ce este acum în aplicație va fi înlocuit.",
+      "restoreFailed": "Restaurarea nu a reușit",
+      "restoreFailedMessage": "Nu s-a schimbat nimic în aplicație.\n\n{{reason}}",
+      "restored": "Backup restaurat",
+      "restoredMessage": "Documentele tale au revenit."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Săptămânal",
+      "month": "Lunar",
+      "never": "Niciodată"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Acest fișier nu este un backup Sottomano.",
+    "newerVersion": "Acest backup a fost creat de o versiune mai nouă de Sottomano. Actualizează aplicația și încearcă din nou.",
+    "empty": "Fișierul de backup este gol sau incomplet.",
+    "incomplete": "Fișierul de backup este incomplet.",
+    "wrongPassword": "Parolă greșită. Verifică literele mari și mici și încearcă din nou.",
+    "damaged": "Fișierul de backup este deteriorat sau incomplet."
+  },
+  "createBackup": {
+    "incompleteFile": "Fișier incomplet: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Conținutul backupului nu este valid.",
+    "newerApp": "Acest backup provine dintr-o versiune mai nouă de Sottomano. Actualizează aplicația și încearcă din nou."
+  },
+  "zipReader": {
+    "invalid": "Arhivă nevalidă",
+    "incomplete": "Arhivă incompletă"
+  },
+  "backupReminder": {
+    "none": "Nu ai făcut încă un backup",
+    "old_one": "Ultimul tău backup a fost acum {{count}} zi",
+    "old_few": "Ultimul tău backup a fost acum {{count}} zile",
+    "old_other": "Ultimul tău backup a fost acum {{count}} de zile",
+    "link": "Fă backup acum",
+    "close": "Închide avertismentul",
+    "snooze_one": "Ascunde pentru {{count}} zi",
+    "snooze_few": "Ascunde pentru {{count}} zile",
+    "snooze_other": "Ascunde pentru {{count}} de zile"
+  },
+  "calendarSettings": {
+    "title": "Calendar",
+    "intro": "Termenele intră într-un calendar separat, „Sottomano”. Îl poți ascunde în aplicația Calendar; dacă îl dezactivezi aici, este șters.",
+    "details": "Fiecare termen este un eveniment de o zi întreagă „Expiră: titlu”, fără alte detalii din document. Dacă mementourile Sottomano sunt dezactivate, evenimentul te anunță la 9:00 în ziua mementoului; dacă sunt activate, te anunță doar aplicația, ca să nu primești două alerte.",
+    "allowAccess": "Permite accesul la Calendar",
+    "denied": "Accesul la Calendar a fost refuzat. Îl poți activa în Configurări pe iPhone.",
+    "openSettings": "Deschide Configurări",
+    "switchLabel": "Termene în calendarul „Sottomano”",
+    "enabled_one": "{{count}} termen în calendarul „Sottomano”",
+    "enabled_few": "{{count}} termene în calendarul „Sottomano”",
+    "enabled_other": "{{count}} de termene în calendarul „Sottomano”",
+    "removeConfirm": "Elimini calendarul Sottomano și toate termenele sale din Calendar?",
+    "remove": "Elimină",
+    "removed": "Calendarul „Sottomano” a fost șters"
+  },
+  "calendarSync": {
+    "eventTitle": "Expiră: {{title}}",
+    "cannotCreate": "Calendarul „Sottomano” nu a putut fi creat pe acest iPhone."
+  },
+  "appearance": {
+    "intro": "Culorile categoriilor implicite. Categoriile create de tine își păstrează culoarea.",
+    "restoreButton": "Restaurează categoriile implicite",
+    "restoreHint": "Readuce categoriile implicite pe care le-ai șters.",
+    "paletteLabel": "Paleta {{name}}",
+    "alerts": {
+      "restoreTitle": "Restaurezi categoriile implicite?",
+      "restoreMessage": "Cele pe care le-ai șters revin cu numele, pictograma și culoarea originale. Documentele tale și categoriile create de tine nu se schimbă.",
+      "nothingTitle": "Nimic de restaurat",
+      "nothingMessage": "Toate categoriile implicite sunt deja pe ecranul Acasă.",
+      "restoredTitle": "Categorii restaurate",
+      "restoredMessage_one": "{{count}} categorie a revenit pe ecranul Acasă, înainte de „Altele”.",
+      "restoredMessage_few": "{{count}} categorii au revenit pe ecranul Acasă, înainte de „Altele”.",
+      "restoredMessage_other": "{{count}} de categorii au revenit pe ecranul Acasă, înainte de „Altele”.",
+      "restoreFailed": "Nu s-a putut restaura"
+    }
+  },
+  "about": {
+    "version": "Versiunea {{version}}",
+    "privacy": "Confidențialitate",
+    "privacyFooter": "Dacă activezi Calendarul, termenele sunt scrise în calendarul iPhone-ului pe care îl alegi. Când trimiți un document, tu decizi cu cine îl partajezi.",
+    "onPhone": "Documentele tale rămân pe telefon",
+    "offline": "Fără cont și fără server: funcționează și offline",
+    "noTracking": "Fără urmărire și fără reclame"
+  },
+  "terms": {
+    "intro": "Condițiile complete de utilizare vor fi publicate odată cu versiunea din App Store. Pe scurt:",
+    "free": "Sottomano este gratuit pentru până la {{limit}} documente și carduri",
+    "oneTime": "Deblocarea este o achiziție unică, fără abonament",
+    "yours": "Documentele tale rămân pe telefon și îți aparțin",
+    "backup": "Fă un backup ca să nu le pierzi dacă schimbi telefonul"
+  },
+  "limit": {
+    "later": "Mai târziu",
+    "title": "Ai folosit cele {{limit}} locuri gratuite",
+    "text": "Tot ce ai salvat rămâne aici și funcționează ca întotdeauna. Ca să adaugi alte documente și carduri, deblochează Sottomano.",
+    "stillWorks": {
+      "view": "Vezi documentele",
+      "send": "Trimite-le și partajează-le",
+      "cards": "Arată cardurile la casă",
+      "reminders": "Primește mementouri"
+    },
+    "blocked": "Adaugă alte documente sau carduri",
+    "unlock": "Deblochează fără limite pentru {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}} din {{limit}} locuri gratuite folosite",
+    "accessibility": "{{title}}. Deblochează",
+    "unlock": "Deblochează"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Versiune gratuită: {{used}} din {{limit}} folosite",
+    "titleMenu": "Gratuit: {{used}} din {{limit}} folosite",
+    "subtitle": "Deblochează fără limite pentru {{price}}",
+    "accessibility": "{{title}}. Deblochează fără limite pentru {{price}}",
+    "unlock": "Deblochează"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Bun venit în Sottomano",
+        "text": "Acte de identitate, carduri de fidelitate, facturi, garanții: toate documentele casei într-un singur loc, mereu la îndemână.",
+        "info": "Rămân pe telefonul tău și funcționează chiar și fără internet"
+      },
+      "scan": {
+        "title": "Fotografiezi o dată",
+        "text": "Scanează și mai multe pagini sau importă poze și PDF-uri. Le găsești în ordine și le trimiți cât de ușoare e nevoie."
+      },
+      "deadlines": {
+        "title": "Noi urmărim termenele",
+        "text": "Îți amintim înainte să expire o factură sau un document. Și în Calendar, dacă vrei."
+      },
+      "cards": {
+        "title": "Cardurile mereu în buzunar",
+        "text": "Fotografiază cardurile de fidelitate: la casă, arată codul de bare sau codul QR cu o atingere."
+      }
+    },
+    "skip": "Omite",
+    "pageOf": "Pagina {{page}} din {{total}}",
+    "start": "Începe",
+    "restore": "Restaurează dintr-un backup",
+    "art": {
+      "bills": "Facturi",
+      "cards": "Carduri",
+      "health": "Sănătate",
+      "car": "Mașină",
+      "pdfReady": "PDF gata",
+      "billTitle": "Factură curent",
+      "billExpires": "Scadentă în 2 zile",
+      "gym": "Sală",
+      "library": "Bibliotecă",
+      "supermarket": "Supermarket"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Fișierul nu a putut fi deschis",
+    "title": "Fotografiază primul document",
+    "text": "O factură, buletinul sau garanția mașinii de spălat: în câteva secunde e în siguranță și mereu la îndemână.",
+    "snap": "Fotografiază un document",
+    "pdf": "Încarcă un PDF",
+    "folders": "Dosarele tale",
+    "emptyAccessibility": "{{name}}, gol",
+    "empty": "Gol",
+    "newCategory": "Categorie nouă"
+  },
+  "splashOverlay": {
+    "tagline": "Documentele casei, gata de trimis"
+  },
+  "appActions": {
+    "shareText": "Îți recomand Sottomano: documentele casei, cardurile și termenele mereu la îndemână, pe telefon și chiar fără internet.",
+    "rateTitle": "Evaluează Sottomano",
+    "rateMessage": "Vei putea lăsa o evaluare după ce Sottomano va fi în App Store.",
+    "lockUnavailableTitle": "Blocarea nu este disponibilă",
+    "lockUnavailableMessage": "Pentru a bloca Sottomano ai nevoie de un cod de acces pe iPhone. Setează unul în Configurări › Face ID și cod, apoi încearcă din nou."
+  }
+}

@@ -1,11 +1,16 @@
+import NativeMaskedView from '@react-native-masked-view/masked-view';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { useEffect, useState, type ComponentType, type ReactElement } from 'react';
+import { Pressable, StyleSheet, useWindowDimensions, View, type ViewProps } from 'react-native';
 import Animated, {
   Easing,
   useAnimatedStyle,
   useSharedValue,
+  withDelay,
+  withRepeat,
+  withSequence,
+  withSpring,
   withTiming,
   type SharedValue,
 } from 'react-native-reanimated';
@@ -17,62 +22,128 @@ import { FONTS } from '@/constants/typography';
 import { useTheme } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
-// The opening animation, right after the native splash (same color), on top of Home:
-//   0.00–0.35 s  the gradient fades in
-//   0.30–0.90 s  the logo square grows from 0.6 to 1 with a little spring
-//   0.75–1.20 s  the hand slides in from the left
-//   1.00–1.55 s  the document drops into the hand, with a small bounce
-//   1.45–2.05 s  "Sottomano" letter by letter (fade and rise, 50 ms apart)
-//   2.05–2.55 s  the tagline fades in
-//   4.00–4.50 s  everything fades out (and grows a little) onto Home
-// One clock (milliseconds) drives every step on the UI thread. A tap anywhere skips to Home.
-// Riduci movimento: only fade in, hold, fade out, same length. The app keeps starting underneath
-// (database, notifications, Home): nothing waits for this screen.
+// The opening animation, right after the native splash (same color), on top of Home. 4.5 s:
+//   0.00–0.35  the gradient fades in; a soft light sweeps slowly across it the whole time
+//   0.75       the hand springs in from the left (overshoot)
+//   1.00–1.32  the document falls from above, tilted, and lands in the hand with a bounce;
+//              the hand dips on the impact and recovers; small sparkles burst out (~400 ms)
+//   1.45–2.15  "Sottomano": letters pop up one by one with a spring; then a shine runs across
+//   2.05–2.55  the tagline fades in (and stays still)
+//   ~1.9–4.0   hand and document float gently up and down (2–3 pt)
+//   4.00–4.50  a slight scale-up and fade onto Home
+// Everything runs on the UI thread (Reanimated). A tap anywhere skips to Home. Riduci movimento:
+// only fade in, hold, fade out, same length. The app keeps starting underneath (database,
+// notifications, Home): nothing waits for this screen.
 const TOTAL_MS = 4500;
 const EXIT_AT = 4000;
 const SKIP_MS = 250;
 
-const NAME = 'Sottomano'; // i18n-ignore: brand
-const LETTERS = NAME.split('');
+const HAND_AT = 750;
+const DROP_AT = 1000;
+const FALL_MS = 320;
+const LAND_AT = DROP_AT + FALL_MS;
 const LETTER_AT = 1450;
 const LETTER_STEP = 50;
-const LETTER_MS = 200;
+const SHINE_AT = 2150;
+const TAGLINE_AT = 2050;
+const FLOAT_AT = 1900;
 
-const TILE = 132;
-const MARK = TILE * 0.68;
+const NAME = 'Sottomano'; // i18n-ignore: brand
+const LETTERS = NAME.split('');
+
 // The mark drawn in the coordinates of the app icon (1024 × 1024), framed on the hand and document
-const VIEW_BOX = '172 196 680 630';
-const MARK_HEIGHT = (MARK * 630) / 680;
+const VIEW_BOX = { x: 172, y: 196, width: 680, height: 630 };
+// Where the document meets the hand (sparkles start there), in the same coordinates
+const LANDING = { x: 518, y: 560 };
+const SPARKLES = 6;
+const SHINE_BAND = 70;
 
-// 0 → 1 between start and end (ms), clamped, with an easing
-function progress(time: number, start: number, end: number, ease: (p: number) => number = (p) => p): number {
-  'worklet';
-  const p = Math.min(1, Math.max(0, (time - start) / (end - start)));
-  return ease(p);
-}
-
-const springy = Easing.out(Easing.back(1.8)); // overshoots a little, then settles
-const bouncy = Easing.out(Easing.back(1.5));
-const smooth = Easing.out(Easing.cubic);
+// The package's class types don't match the React 19 types: the same component, typed as a function
+const MaskedView = NativeMaskedView as unknown as ComponentType<ViewProps & { maskElement: ReactElement }>;
 
 export function SplashOverlay() {
   const theme = useTheme();
   const { t } = useI18n();
   const reduceMotion = useReduceMotion();
+  const { width: screenWidth, height: screenHeight } = useWindowDimensions();
   const [visible, setVisible] = useState(true);
   const [shown, setShown] = useState(false);
   const [skipped, setSkipped] = useState(false);
-  const time = useSharedValue(0);
-  const skip = useSharedValue(0);
 
-  // The clock starts once this screen is drawn and the native splash is gone; Home is never
+  // About 40% of the screen width (a little less on an iPad)
+  const mark = Math.round(Math.min(Math.max(screenWidth * 0.4, 140), 260));
+  const markHeight = (mark * VIEW_BOX.height) / VIEW_BOX.width;
+
+  const background = useSharedValue(0);
+  const content = useSharedValue(reduceMotion ? 0 : 1);
+  const sweep = useSharedValue(0);
+  const handIn = useSharedValue(0);
+  const drop = useSharedValue(-1.1); // document offset, in mark heights (0 = in the hand)
+  const tilt = useSharedValue(-16); // degrees
+  const dip = useSharedValue(0); // impact on the hand: 0 → 1 → 0
+  const burst = useSharedValue(0);
+  const shine = useSharedValue(0);
+  const tagline = useSharedValue(0);
+  const float = useSharedValue(0);
+  const exit = useSharedValue(0);
+  const skip = useSharedValue(0);
+  const wordWidth = useSharedValue(0);
+
+  // Everything starts once this screen is drawn and the native splash is gone; Home is never
   // hidden longer than 4.5 s from then
   useEffect(() => {
     if (!shown) return;
-    time.set(withTiming(TOTAL_MS, { duration: TOTAL_MS, easing: Easing.linear }));
+    const fade = { duration: 350, easing: Easing.out(Easing.quad) };
+    background.set(withTiming(1, fade));
+    exit.set(withDelay(EXIT_AT, withTiming(1, { duration: TOTAL_MS - EXIT_AT, easing: Easing.inOut(Easing.quad) })));
+    if (reduceMotion) {
+      // Fades only: everything already in place
+      content.set(withTiming(1, fade));
+      handIn.set(1);
+      drop.set(0);
+      tilt.set(0);
+      tagline.set(1);
+    } else {
+      sweep.set(withTiming(1, { duration: TOTAL_MS, easing: Easing.inOut(Easing.sin) }));
+      handIn.set(withDelay(HAND_AT, withSpring(1, { damping: 11, stiffness: 120, mass: 1 })));
+      drop.set(
+        withDelay(
+          DROP_AT,
+          withSequence(
+            withTiming(0, { duration: FALL_MS, easing: Easing.in(Easing.quad) }), // falls
+            withTiming(-0.08, { duration: 130, easing: Easing.out(Easing.quad) }), // bounces up
+            withSpring(0, { damping: 9, stiffness: 260 }), // settles in the hand
+          ),
+        ),
+      );
+      tilt.set(
+        withDelay(
+          DROP_AT,
+          withSequence(
+            withTiming(6, { duration: FALL_MS, easing: Easing.in(Easing.quad) }),
+            withSpring(0, { damping: 7, stiffness: 160 }),
+          ),
+        ),
+      );
+      dip.set(
+        withDelay(
+          LAND_AT,
+          withSequence(
+            withTiming(1, { duration: 90, easing: Easing.out(Easing.quad) }),
+            withSpring(0, { damping: 7, stiffness: 200 }),
+          ),
+        ),
+      );
+      burst.set(withDelay(LAND_AT, withTiming(1, { duration: 420, easing: Easing.out(Easing.cubic) })));
+      shine.set(withDelay(SHINE_AT, withTiming(1, { duration: 700, easing: Easing.inOut(Easing.quad) })));
+      float.set(
+        withDelay(FLOAT_AT, withRepeat(withTiming(1, { duration: 1100, easing: Easing.inOut(Easing.sin) }), -1, true)),
+      );
+      tagline.set(withDelay(TAGLINE_AT, withTiming(1, { duration: 500, easing: Easing.out(Easing.cubic) })));
+    }
     const timer = setTimeout(() => setVisible(false), TOTAL_MS);
     return () => clearTimeout(timer);
-  }, [shown, time]);
+  }, [shown, reduceMotion, background, content, sweep, handIn, drop, tilt, dip, burst, shine, tagline, float, exit]);
 
   // A tap: a quick fade, then Home
   useEffect(() => {
@@ -82,65 +153,55 @@ export function SplashOverlay() {
     return () => clearTimeout(timer);
   }, [skipped, skip]);
 
-  const whole = useAnimatedStyle(() => {
-    const out = progress(time.get(), EXIT_AT, TOTAL_MS, Easing.inOut(Easing.quad));
-    const scale = reduceMotion ? 1 : 1 + 0.06 * out;
-    return { opacity: (1 - out) * (1 - skip.get()), transform: [{ scale }] };
-  });
-  const background = useAnimatedStyle(() => ({
-    opacity: progress(time.get(), 0, 350),
+  const wholeStyle = useAnimatedStyle(() => ({
+    opacity: (1 - exit.get()) * (1 - skip.get()),
+    transform: [{ scale: reduceMotion ? 1 : 1 + 0.06 * exit.get() }],
   }));
-  // Riduci movimento: the content fades in with the background and doesn't move
-  const content = useAnimatedStyle(() => ({
-    opacity: reduceMotion ? progress(time.get(), 0, 350) : 1,
+  const backgroundStyle = useAnimatedStyle(() => ({ opacity: background.get() }));
+  const sweepStyle = useAnimatedStyle(() => ({
+    transform: [{ translateX: -screenWidth + sweep.get() * screenWidth * 2.2 }, { rotate: '18deg' }],
   }));
-  const tile = useAnimatedStyle(() => {
-    if (reduceMotion) return { opacity: 1, transform: [{ scale: 1 }] };
-    return {
-      opacity: progress(time.get(), 300, 500),
-      transform: [{ scale: 0.6 + 0.4 * progress(time.get(), 300, 900, springy) }],
-    };
-  });
-  const hand = useAnimatedStyle(() => {
-    if (reduceMotion) return { opacity: 1, transform: [{ translateX: 0 }] };
-    return {
-      opacity: progress(time.get(), 750, 950),
-      transform: [
-        {
-          translateX: -MARK * 0.7 * (1 - progress(time.get(), 750, 1200, smooth)),
-        },
-      ],
-    };
-  });
-  const documentStyle = useAnimatedStyle(() => {
-    if (reduceMotion) return { opacity: 1, transform: [{ translateY: 0 }] };
-    return {
-      opacity: progress(time.get(), 1000, 1150),
-      transform: [
-        {
-          translateY: -MARK * 0.55 * (1 - progress(time.get(), 1000, 1550, bouncy)),
-        },
-      ],
-    };
-  });
-  const tagline = useAnimatedStyle(() => {
-    if (reduceMotion) return { opacity: 1, transform: [{ translateY: 0 }] };
-    const p = progress(time.get(), 2050, 2550, smooth);
-    return { opacity: p, transform: [{ translateY: 8 * (1 - p) }] };
-  });
+  const contentStyle = useAnimatedStyle(() => ({ opacity: content.get() }));
+  const floatStyle = useAnimatedStyle(() => ({ transform: [{ translateY: -2.5 * float.get() }] }));
+  const handStyle = useAnimatedStyle(() => ({
+    opacity: Math.min(1, handIn.get() * 4),
+    transform: [
+      { translateX: -(screenWidth / 2 + mark) * (1 - handIn.get()) },
+      { translateY: mark * 0.035 * dip.get() },
+      { scaleY: 1 - 0.07 * dip.get() },
+      { scaleX: 1 + 0.03 * dip.get() },
+    ],
+  }));
+  const documentStyle = useAnimatedStyle(() => ({
+    opacity: Math.min(1, (drop.get() + 1.1) * 3),
+    transform: [{ translateY: drop.get() * markHeight + mark * 0.035 * dip.get() }, { rotate: `${tilt.get()}deg` }],
+  }));
+  const taglineStyle = useAnimatedStyle(() => ({
+    opacity: tagline.get(),
+    transform: [{ translateY: 8 * (1 - tagline.get()) }],
+  }));
+  const shineStyle = useAnimatedStyle(() => ({
+    opacity: shine.get() > 0 && shine.get() < 1 ? 1 : 0,
+    transform: [{ translateX: -SHINE_BAND + shine.get() * (wordWidth.get() + SHINE_BAND * 2) }],
+  }));
 
   if (!visible) return null;
+
+  const landing = {
+    x: ((LANDING.x - VIEW_BOX.x) / VIEW_BOX.width) * mark,
+    y: ((LANDING.y - VIEW_BOX.y) / VIEW_BOX.height) * markHeight,
+  };
 
   return (
     // A few seconds on screen: only a picture for VoiceOver, which starts on Home
     <Animated.View
-      style={[StyleSheet.absoluteFill, styles.overlay, whole]}
+      style={[StyleSheet.absoluteFill, styles.overlay, wholeStyle]}
       pointerEvents={skipped ? 'none' : 'auto'}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants">
       {/* The native splash color underneath: no flash of Home while the gradient fades in */}
       <View style={[StyleSheet.absoluteFill, { backgroundColor: theme.gradient[0] }]} />
-      <Animated.View style={[StyleSheet.absoluteFill, background]}>
+      <Animated.View style={[StyleSheet.absoluteFill, styles.clip, backgroundStyle]}>
         <LinearGradient
           colors={theme.gradient}
           start={{ x: 0, y: 0 }}
@@ -151,28 +212,72 @@ export function SplashOverlay() {
             SplashScreen.hideAsync().finally(() => setShown(true));
           }}
         />
-      </Animated.View>
-      <Pressable style={styles.center} onPress={() => setSkipped(true)}>
-        <Animated.View style={[styles.center, content]}>
-          <Animated.View style={[styles.tile, tile]}>
-            {/* The hand and the document enter from inside the square */}
-            <View style={styles.clip}>
-              <View style={styles.mark}>
-                <Animated.View style={[StyleSheet.absoluteFill, hand]}>
-                  <HandShape />
-                </Animated.View>
-                <Animated.View style={[StyleSheet.absoluteFill, documentStyle]}>
-                  <DocumentShape lineColor={theme.gradient[1]} />
-                </Animated.View>
-              </View>
-            </View>
+        {/* A soft band of light that crosses the gradient slowly */}
+        {!reduceMotion && (
+          <Animated.View
+            style={[
+              styles.sweep,
+              { top: -screenHeight * 0.25, height: screenHeight * 1.5, width: screenWidth * 0.7 },
+              sweepStyle,
+            ]}>
+            <LinearGradient
+              colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.16)', 'rgba(255,255,255,0)']}
+              start={{ x: 0, y: 0.5 }}
+              end={{ x: 1, y: 0.5 }}
+              style={StyleSheet.absoluteFill}
+            />
           </Animated.View>
-          <View style={styles.name}>
-            {LETTERS.map((letter, index) => (
-              <Letter key={index} letter={letter} index={index} time={time} reduceMotion={reduceMotion} />
-            ))}
+        )}
+      </Animated.View>
+
+      <Pressable style={styles.center} onPress={() => setSkipped(true)}>
+        <Animated.View style={[styles.center, contentStyle]}>
+          <Animated.View style={[{ width: mark, height: markHeight }, styles.mark, floatStyle]}>
+            <Animated.View style={[StyleSheet.absoluteFill, styles.shadow, styles.handOrigin, handStyle]}>
+              <HandShape width={mark} height={markHeight} />
+            </Animated.View>
+            <Animated.View style={[StyleSheet.absoluteFill, styles.shadow, documentStyle]}>
+              <DocumentShape width={mark} height={markHeight} lineColor={theme.gradient[1]} />
+            </Animated.View>
+            {!reduceMotion &&
+              Array.from({ length: SPARKLES }, (_, index) => (
+                <Sparkle key={index} index={index} burst={burst} origin={landing} distance={mark * 0.42} />
+              ))}
+          </Animated.View>
+
+          <View onLayout={(event) => wordWidth.set(event.nativeEvent.layout.width)}>
+            <View style={styles.name}>
+              {LETTERS.map((letter, index) => (
+                <Letter key={index} letter={letter} index={index} start={shown} reduceMotion={reduceMotion} />
+              ))}
+            </View>
+            {/* The shine: a light band that only shows inside the letters */}
+            {!reduceMotion && (
+              <MaskedView
+                style={StyleSheet.absoluteFill}
+                pointerEvents="none"
+                maskElement={
+                  <View style={styles.name}>
+                    {LETTERS.map((letter, index) => (
+                      <Text key={index} style={styles.letter} allowFontScaling={false}>
+                        {letter}
+                      </Text>
+                    ))}
+                  </View>
+                }>
+                <Animated.View style={[styles.shine, shineStyle]}>
+                  <LinearGradient
+                    colors={['rgba(255,255,255,0)', '#FFFFFF', 'rgba(255,255,255,0)']}
+                    start={{ x: 0, y: 0.5 }}
+                    end={{ x: 1, y: 0.5 }}
+                    style={StyleSheet.absoluteFill}
+                  />
+                </Animated.View>
+              </MaskedView>
+            )}
           </View>
-          <Animated.View style={[styles.taglineBox, tagline]}>
+
+          <Animated.View style={[styles.taglineBox, taglineStyle]}>
             <Text style={styles.tagline} maxFontSizeMultiplier={2}>
               {t('splashOverlay.tagline')}
             </Text>
@@ -183,23 +288,33 @@ export function SplashOverlay() {
   );
 }
 
+// One letter of "Sottomano": pops up with a spring bounce, 50 ms after the previous one
 function Letter({
   letter,
   index,
-  time,
+  start,
   reduceMotion,
 }: {
   letter: string;
   index: number;
-  time: SharedValue<number>;
+  start: boolean;
   reduceMotion: boolean;
 }) {
-  const style = useAnimatedStyle(() => {
-    if (reduceMotion) return { opacity: 1, transform: [{ translateY: 0 }] };
-    const start = LETTER_AT + index * LETTER_STEP;
-    const p = progress(time.get(), start, start + LETTER_MS, smooth);
-    return { opacity: p, transform: [{ translateY: 12 * (1 - p) }] };
-  });
+  const pop = useSharedValue(reduceMotion ? 1 : 0);
+  const fade = useSharedValue(reduceMotion ? 1 : 0);
+
+  useEffect(() => {
+    if (!start || reduceMotion) return;
+    const delay = LETTER_AT + index * LETTER_STEP;
+    fade.set(withDelay(delay, withTiming(1, { duration: 120 })));
+    pop.set(withDelay(delay, withSpring(1, { damping: 7, stiffness: 260, mass: 0.6 })));
+  }, [start, reduceMotion, index, pop, fade]);
+
+  const style = useAnimatedStyle(() => ({
+    opacity: fade.get(),
+    transform: [{ translateY: 16 * (1 - pop.get()) }, { scale: 0.3 + 0.7 * pop.get() }],
+  }));
+
   return (
     <Animated.View style={style}>
       <Text style={styles.letter} allowFontScaling={false}>
@@ -209,10 +324,53 @@ function Letter({
   );
 }
 
-// The open hand of the logo (white)
-function HandShape() {
+// A small white four-point star flying out from where the document lands, then gone
+function Sparkle({
+  index,
+  burst,
+  origin,
+  distance,
+}: {
+  index: number;
+  burst: SharedValue<number>;
+  origin: { x: number; y: number };
+  distance: number;
+}) {
+  const angle = ((index * 360) / SPARKLES - 90 + (index % 2 ? 12 : -12)) * (Math.PI / 180);
+  const reach = distance * (index % 2 ? 0.8 : 1);
+  const size = index % 2 ? 9 : 12;
+  const style = useAnimatedStyle(() => {
+    const p = burst.get();
+    return {
+      opacity: p <= 0 || p >= 1 ? 0 : Math.min(1, p * 6) * (1 - p),
+      transform: [
+        { translateX: Math.cos(angle) * reach * p },
+        { translateY: Math.sin(angle) * reach * p },
+        { scale: 0.4 + 0.8 * Math.sin(p * Math.PI) },
+        { rotate: `${p * 90}deg` },
+      ],
+    };
+  });
   return (
-    <Svg width={MARK} height={MARK_HEIGHT} viewBox={VIEW_BOX}>
+    <Animated.View
+      style={[
+        styles.sparkle,
+        { left: origin.x - size / 2, top: origin.y - size / 2, width: size, height: size },
+        style,
+      ]}>
+      <Svg width={size} height={size} viewBox="0 0 10 10">
+        <Path fill="#FFFFFF" d="M5 0 Q5.6 4.4 10 5 Q5.6 5.6 5 10 Q4.4 5.6 0 5 Q4.4 4.4 5 0 Z" />
+      </Svg>
+    </Animated.View>
+  );
+}
+
+const viewBox = `${VIEW_BOX.x} ${VIEW_BOX.y} ${VIEW_BOX.width} ${VIEW_BOX.height}`;
+
+// The open hand of the logo (white)
+function HandShape({ width, height }: { width: number; height: number }) {
+  return (
+    <Svg width={width} height={height} viewBox={viewBox}>
       <Path
         fill="#FFFFFF"
         d="M212 670 L262 670 C300 636 336 597 392 597 L586 597 A35 35 0 0 1 586 667 L506 667 A19 19 0 0 0 506 705
@@ -224,9 +382,9 @@ function HandShape() {
 }
 
 // The document of the logo (white, folded corner, two lines), a little tilted
-function DocumentShape({ lineColor }: { lineColor: string }) {
+function DocumentShape({ width, height, lineColor }: { width: number; height: number; lineColor: string }) {
   return (
-    <Svg width={MARK} height={MARK_HEIGHT} viewBox={VIEW_BOX}>
+    <Svg width={width} height={height} viewBox={viewBox}>
       <G rotation={-5} origin="518, 370">
         <Path
           fill="#FFFFFF"
@@ -244,6 +402,13 @@ const styles = StyleSheet.create({
   overlay: {
     zIndex: 1000,
   },
+  clip: {
+    overflow: 'hidden',
+  },
+  sweep: {
+    position: 'absolute',
+    left: 0,
+  },
   center: {
     flex: 1,
     alignSelf: 'stretch',
@@ -251,39 +416,38 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     paddingHorizontal: 32,
   },
-  tile: {
-    width: TILE,
-    height: TILE,
-    borderRadius: 34,
-    borderCurve: 'continuous',
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.16)',
-    borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.32)',
-    boxShadow: '0 14px 30px rgba(20, 16, 80, 0.28)',
-    marginBottom: 24,
-  },
-  clip: {
-    ...StyleSheet.absoluteFill,
-    borderRadius: 33,
-    borderCurve: 'continuous',
-    overflow: 'hidden',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   mark: {
-    width: MARK,
-    height: MARK_HEIGHT,
+    marginBottom: 28,
+  },
+  // A soft shadow that follows the white shapes (iOS draws it from the drawing itself)
+  shadow: {
+    shadowColor: '#1A1050',
+    shadowOpacity: 0.28,
+    shadowRadius: 14,
+    shadowOffset: { width: 0, height: 8 },
+  },
+  // The hand squashes from its bottom edge
+  handOrigin: {
+    transformOrigin: 'bottom',
+  },
+  sparkle: {
+    position: 'absolute',
   },
   name: {
     flexDirection: 'row',
   },
   letter: {
-    color: '#FFFFFF',
+    // A touch below pure white, so the shine shows as a brighter streak
+    color: 'rgba(255, 255, 255, 0.9)',
     fontSize: 40,
     lineHeight: 50,
     fontFamily: FONTS.wordmark,
+  },
+  shine: {
+    position: 'absolute',
+    top: 0,
+    bottom: 0,
+    width: SHINE_BAND,
   },
   taglineBox: {
     marginTop: 8,

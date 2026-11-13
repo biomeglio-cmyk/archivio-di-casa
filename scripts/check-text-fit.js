@@ -160,6 +160,16 @@ const PLACES = {
   row: (W, scale) => ({ label: 'row title', size: 16, weight: 500, mode: 'words', minScale: 0.5, autoFit: true,
     width: W - SIDE * 2 - CARD_PAD * 2 - (scale >= LARGE_TEXT_SCALE ? 0 : 36 + 12) }),
   text: (W) => ({ label: 'text', size: 16, weight: 400, mode: 'words', minScale: 0.5, autoFit: true, width: W - SIDE * 2 - CARD_PAD * 2 }),
+  // Scadenze, the selected day panel (dayBox: page − 2×14 padding, dot 8 + gap 10): by default
+  // the amount / "promemoria" on the name's line (at least 90 pt left for the name); with large
+  // text under the name, left-aligned, with the whole width (FitLine)
+  daySide: (W, scale) => ({ label: 'Scadenze day row', size: 13, weight: 500, minScale: 0.5, autoFit: true,
+    mode: scale >= LARGE_TEXT_SCALE ? 'words' : 'line',
+    width: scale >= LARGE_TEXT_SCALE ? W - SIDE * 2 - 28 - 18 : W - SIDE * 2 - 28 - 18 - 10 - 90 }),
+  // section titles ("DA SISTEMARE", "QUESTA SETTIMANA", the months of Scadenze; Home): 13 pt
+  // capitals, the action under the title when both don't fit
+  sectionTitle: (W) => ({ label: 'section title', size: 13, weight: 400, mode: 'words', minScale: 0.5, autoFit: true, upper: true,
+    width: W - SIDE * 2 }),
   navTitle: (W) => ({ label: 'navigation title', size: 17, weight: 600, mode: 'line', minScale: 1, width: W - 2 * 88, fixed: true }),
 };
 // A segmented control in a card: one line per segment, or the vertical list (option row padding
@@ -221,6 +231,10 @@ for (const file of sourceFiles(path.join(ROOT, 'src'))) {
         if (keys.length) segmentGroups.push({ keys, count: Math.max(count, keys.length), symbols: 'symbols' in props, where: where(sf, node) });
       }
       if ((tag === 'SettingsRow' || tag === 'Row') && props.label) addKeys(props.label, 'row', sf);
+      if (tag === 'SectionHeader') {
+        if (props.title) addKeys(props.title, 'sectionTitle', sf);
+        if (props.action) addKeys(props.action, 'sectionTitle', sf);
+      }
       // Text buttons of the native toolbar: the text between the tags (not the accessibility label)
       if (tag === 'Stack.Toolbar.Button' && ts.isJsxOpeningElement(node)) {
         for (const child of node.parent.children) addKeys(child, 'navTitle', sf);
@@ -243,6 +257,9 @@ for (const file of sourceFiles(path.join(ROOT, 'src'))) {
 }
 // Category names: tiles of Home and the big title of the folder
 for (const place of ['categoryTile', 'folderTitle']) slots.push({ prefix: 'categories.builtin.', place, where: 'category name' });
+// Scadenze: the trailing label of the selected day's rows, and the section titles of the list
+for (const key of ['deadlines.dayRepeats', 'deadlines.dayReminder']) slots.push({ key, place: 'daySide', where: 'Scadenze day panel' });
+slots.push({ prefix: 'deadlineUtils.', place: 'sectionTitle', where: 'Scadenze sections' });
 // Palette names in Aspetto cards
 slots.push({ prefix: 'palettes.', place: 'chip', where: 'appearance' });
 
@@ -318,7 +335,7 @@ function checkLanguage(lang, W, scaleName, scale) {
     for (const key of keysFor(slot)) {
       covered.add(key);
       if (NOT_ON_SCREEN.test(key)) continue;
-      const text = sample(texts.get(key));
+      const text = place.upper ? sample(texts.get(key)).toUpperCase() : sample(texts.get(key));
       const widest = place.mode === 'words' ? widestWord(text, size, place.weight) : { word: text, width: measure(text, size, place.weight) };
       // more lines than allowed (estimate: the whole text over the line width) → the 1-column layout
       if (place.lines && place.fallback && measure(text, size, place.weight) > place.width * place.lines) {

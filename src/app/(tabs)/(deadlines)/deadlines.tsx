@@ -2,13 +2,14 @@ import { router } from 'expo-router';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView } from 'expo-symbols';
 import { Fragment, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { announce } from '@/a11y/accessibility';
 import { ActionSheet, type SheetAction } from '@/components/action-sheet';
 import { MonthCalendar, WeekCalendar, type DayMarkers } from '@/components/deadline-calendar';
 import { DEADLINE_ROW_INSET, DeadlineListRow } from '@/components/deadline-list-row';
+import { FitLine } from '@/components/fit-line';
 import { goHome, PageHeader } from '@/components/page-header';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Segmented } from '@/components/segmented';
@@ -24,6 +25,7 @@ import { useFormat } from '@/i18n/use-format';
 import { addDaysIso, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 import { groupDeadlines, upcomingSummary } from '@/utils/deadlines';
 import { whenBelowLimit } from '@/settings/free-limit';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Dated = DocumentListItem & { expiresAt: string };
@@ -244,8 +246,10 @@ function DayDeadlines({ iso, items, onOpen }: { iso: string; items: Dated[]; onO
   const { t } = useI18n();
   const fmt = useFormat();
   const styles = useThemedStyles(makeStyles);
-  const { fontScale } = useWindowDimensions();
-  const large = fontScale > 1.3; // larger text: the name on more lines, the amount under it
+  // Large text (XXL and up): the shared row rule (FitLine): dot and name, and the amount or
+  // "promemoria" on the same line when both fit, else under the name, left-aligned; never a
+  // word broken. Default size: one line as in the design.
+  const large = useLargeText();
   const date = parseISODate(iso);
   return (
     <View style={styles.dayBox}>
@@ -261,14 +265,25 @@ function DayDeadlines({ iso, items, onOpen }: { iso: string; items: Dated[]; onO
             accessibilityRole="button"
             accessibilityLabel={`${item.title}, ${side}`}
             hitSlop={{ top: 4, bottom: 4 }}
-            style={({ pressed }) => [styles.dayItem, large && styles.dayItemWrap, pressed && styles.pressed]}>
-            <View style={[styles.dayDot, { backgroundColor: item.category.colors.bottom }]} />
-            <Text style={styles.dayItemTitle} numberOfLines={large ? undefined : 1}>
-              {item.title}
-            </Text>
-            <Text style={[styles.dayItemSide, large && styles.dayItemSideWrap]} numberOfLines={large ? undefined : 1}>
-              {side}
-            </Text>
+            style={({ pressed }) => [styles.dayItem, large && styles.dayItemLarge, pressed && styles.pressed]}>
+            <View style={[styles.dayDot, large && styles.dayDotLarge, { backgroundColor: item.category.colors.bottom }]} />
+            {large ? (
+              <FitLine
+                gap={10}
+                startMeasure={<Text style={styles.dayItemTitle}>{item.title}</Text>}
+                start={<Text style={styles.dayItemTitle}>{item.title}</Text>}
+                end={<Text style={styles.dayItemSide}>{side}</Text>}
+              />
+            ) : (
+              <>
+                <Text style={styles.dayItemTitle} numberOfLines={1}>
+                  {item.title}
+                </Text>
+                <Text style={styles.dayItemSide} numberOfLines={1}>
+                  {side}
+                </Text>
+              </>
+            )}
           </Pressable>
         );
       })}
@@ -323,13 +338,12 @@ const makeStyles = (c: Palette) =>
   pressed: {
     opacity: 0.6,
   },
-  dayItemWrap: {
-    flexWrap: 'wrap',
+  dayItemLarge: {
+    alignItems: 'flex-start', // the dot next to the first line of the name
     paddingVertical: 4,
   },
-  dayItemSideWrap: {
-    flexBasis: '100%',
-    paddingLeft: 18, // under the name, after the dot
+  dayDotLarge: {
+    marginTop: 9,
   },
   dayDot: {
     width: 8,

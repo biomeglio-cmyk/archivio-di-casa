@@ -12,6 +12,7 @@ import {
 
 import { useAccessibilitySettings } from '@/a11y/accessibility';
 import { withOnest } from '@/constants/typography';
+import { LARGE_TEXT_SCALE } from '@/hooks/use-large-text';
 
 // True inside a Text: a nested Text inherits font and spacing from its parent unless it sets its own
 const InsideText = createContext(false);
@@ -60,7 +61,12 @@ export function Text({ style, children, maxFontSizeMultiplier = MAX_FONT_SCALE, 
   const fontSize = flat.fontSize ?? 17;
   const size = fontSize * Math.min(fontScale, maxFontSizeMultiplier ?? MAX_FONT_SCALE);
   const longest = plain ? Math.max(0, ...plain.split(/\s+/).map((w) => w.length)) : 0;
-  const atRisk = plain !== null && rest.numberOfLines !== 1 && longest * size * WIDEST_CHAR_EM > screenWidth - PAGE_SIDES;
+  // (a long word for the page, or any text with large text: in a narrow column even "promemoria"
+  // can be too wide)
+  const atRisk =
+    plain !== null &&
+    rest.numberOfLines !== 1 &&
+    (fontScale >= LARGE_TEXT_SCALE || longest * size * WIDEST_CHAR_EM > screenWidth - PAGE_SIDES);
 
   // The fit scale belongs to this text at this size and width; a new one starts from 100 %
   const fitKey = `${plain}|${fontScale}|${screenWidth}`;

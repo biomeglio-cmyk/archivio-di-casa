@@ -8,6 +8,7 @@ import { FONTS } from '@/constants/typography';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
+import { isLightColor } from '@/utils/colors';
 
 type Props = {
   card: Pick<DocumentListItem, 'title' | 'firstImagePath' | 'cardColor' | 'personName'>;
@@ -34,7 +35,7 @@ export function CardFace({ card, width, showPerson = false, large = false, showP
         />
       ) : (
         <TileTitle
-          style={[styles.title, large && styles.titleLarge]}
+          style={[styles.title, large && styles.titleLarge, isLightColor(card.cardColor ?? DEFAULT_CARD_COLOR) && styles.dark]}
           numberOfLines={large ? 3 : 2}
           maxFontSizeMultiplier={1.4} // the card has a fixed shape: text grows a little, then stops
         >
@@ -64,6 +65,9 @@ const styles = StyleSheet.create({
     fontSize: 16,
     lineHeight: 20,
     fontFamily: FONTS.semiBold,
+  },
+  dark: {
+    color: '#1C1E2E',
   },
   titleLarge: {
     fontSize: 26,

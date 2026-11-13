@@ -20,6 +20,7 @@ import { usePressed } from '@/hooks/use-pressed';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { folderRowSubtitle } from '@/utils/folder';
 import { formatEuro } from '@/utils/money';
+import { isLightColor } from '@/utils/colors';
 
 const LONG_PRESS_MS = 400;
 export const FOLDER_ROW_INSET = 74; // separators start after the 44pt icon (16 + 44 + 14)
@@ -76,7 +77,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
           />
         ) : solid ? (
           <View style={[styles.photo, styles.center, { backgroundColor: solid }]}>
-            <SymbolView name={category.symbol} tintColor="#FFFFFF" size={22} />
+            <SymbolView name={category.symbol} tintColor={isLightColor(solid) ? '#1C1E2E' : '#FFFFFF'} size={22} />
           </View>
         ) : (
           <IconSquare symbol={category.symbol} colors={category.colors} size={44} shadow />

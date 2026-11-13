@@ -113,6 +113,7 @@ export function DocumentForm({
   const [coverMode, setCoverMode] = useState<CoverMode | null>(initial?.coverMode ?? null);
   const [coverColor, setCoverColor] = useState<string | null>(initial?.coverColor ?? null);
   const [saving, setSaving] = useState(false);
+  const [wheelDragging, setWheelDragging] = useState(false); // a finger on the color wheel: no scroll
 
   const selectedCategory = categories?.find((c) => c.id === categoryId);
   const personId = personTouched ? chosenPerson : (selectedCategory?.personId ?? null);
@@ -210,6 +211,7 @@ export function DocumentForm({
   return (
     <ScrollView
       style={styles.screen}
+      scrollEnabled={!wheelDragging}
       keyboardShouldPersistTaps="handled"
       automaticallyAdjustKeyboardInsets
       contentContainerStyle={[styles.content, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 36 }]}>
@@ -419,6 +421,7 @@ export function DocumentForm({
               onColorChange={setCoverColor}
               categoryColors={selectedCategory?.colors}
               hasPhoto={hasPhoto}
+              onDraggingChange={setWheelDragging}
             />
           </View>
 

@@ -9,7 +9,7 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { scanDocument } from '@/capture/scan-document';
-import { ColorWheel } from '@/components/color-wheel';
+import { ColorPicker } from '@/components/color-picker';
 import { PasswordPreviewTile } from '@/components/password-preview';
 import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
@@ -89,11 +89,10 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
   // Preview
   const [color, setColor] = useState<string>(info?.preview.color ?? 'aqua');
   const [hex, setHex] = useState(info?.preview.hex ?? wheelHex(220, 0.85));
-  const [hexText, setHexText] = useState(info?.preview.hex ?? wheelHex(220, 0.85));
-  const [wheel, setWheel] = useState({ hue: 220, radius: 0.85 });
   const [icon, setIcon] = useState<string | null>(info?.preview.icon ?? null);
   const [image, setImage] = useState<ImageChange>({ kind: 'keep' });
   const [saving, setSaving] = useState(false);
+  const [wheelDragging, setWheelDragging] = useState(false); // a finger on the color wheel: no scroll
 
   const meta = typeMeta(type);
   const isPin = type === 'pin';
@@ -182,21 +181,14 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
     if (hasImage) setImage({ kind: 'remove' });
   }
 
-  function pickWheel(hue: number, radius: number) {
-    const value = wheelHex(hue, radius);
-    setWheel({ hue, radius });
-    setHex(value);
-    setHexText(value);
-    chooseColor('custom');
-  }
-
-  function typeHex(text: string) {
-    const value = text.startsWith('#') ? text.toUpperCase() : `#${text.toUpperCase()}`;
-    setHexText(value);
-    if (/^#[0-9A-F]{6}$/.test(value)) {
-      setHex(value);
-      chooseColor('custom');
+  // A preset key, or "Il tuo colore" as '#RRGGBB'
+  function pickColor(value: string) {
+    if (PASSWORD_COLORS.some((c) => c.key === value)) {
+      chooseColor(value);
+      return;
     }
+    setHex(value);
+    chooseColor('custom');
   }
 
   // ——— Persona ———
@@ -267,6 +259,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
   return (
     <ScrollView
       style={styles.screen}
+      scrollEnabled={!wheelDragging}
       keyboardShouldPersistTaps="handled"
       automaticallyAdjustKeyboardInsets
       contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 36 }]}>
@@ -350,63 +343,16 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         </View>
 
         <Text style={styles.small}>Colore</Text>
-        <View style={styles.colors} accessibilityRole="radiogroup" accessibilityLabel="Colore dell'anteprima">
-          {PASSWORD_COLORS.map((c) => {
-            const on = !hasImage && color === c.key;
-            return (
-              <View key={c.key} style={styles.colorCell}>
-                <Pressable
-                  onPress={() => chooseColor(c.key)}
-                  accessibilityRole="radio"
-                  accessibilityLabel={c.name}
-                  accessibilityState={{ checked: on }}
-                  style={[styles.swatch, on && { boxShadow: `0 0 0 3px #FFFFFF, 0 0 0 5px ${c.bottom}` }]}>
-                  <LinearGradient colors={[c.top, c.bottom]} start={GRADIENT_START} end={GRADIENT_END} style={styles.swatchFill} />
-                </Pressable>
-              </View>
-            );
-          })}
-          <View style={styles.colorCell}>
-            <Pressable
-              onPress={() => chooseColor('custom')}
-              accessibilityRole="radio"
-              accessibilityLabel="Il tuo colore"
-              accessibilityState={{ checked: !hasImage && color === 'custom' }}
-              style={[styles.swatch, !hasImage && color === 'custom' && { boxShadow: `0 0 0 3px #FFFFFF, 0 0 0 5px ${hex}` }]}>
-              <LinearGradient
-                colors={['#FF5A5A', '#FFC24A', '#5CD68A', '#4AB8FF', '#7A5CFF', '#FF5AC8']}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={[styles.swatchFill, styles.center]}>
-                <View style={styles.plusDot}>
-                  <SymbolView name="plus" tintColor="#4B5068" size={10} weight="bold" />
-                </View>
-              </LinearGradient>
-            </Pressable>
-          </View>
+        <View style={styles.colors}>
+          <ColorPicker
+            presets={PASSWORD_COLORS.map((c) => ({ key: c.key, name: c.name, colors: [c.top, c.bottom] as const }))}
+            value={hasImage ? null : color === 'custom' ? hex : color}
+            onChange={pickColor}
+            columns={8}
+            label="Colore dell'anteprima"
+            onDraggingChange={setWheelDragging}
+          />
         </View>
-        {!hasImage && color === 'custom' && (
-          <View style={styles.wheelPanel}>
-            <View style={styles.center}>
-              <ColorWheel hue={wheel.hue} radius={wheel.radius} onChange={pickWheel} />
-            </View>
-            <View style={styles.hexRow}>
-              <View style={[styles.hexSwatch, { backgroundColor: hex }]} />
-              <View style={styles.hexField}>
-                <Text style={styles.hexLabel}>Codice</Text>
-                <TextInput
-                  value={hexText}
-                  onChangeText={typeHex}
-                  autoCapitalize="characters"
-                  autoCorrect={false}
-                  maxLength={7}
-                  accessibilityLabel="Codice colore"
-                  style={styles.hexInput}
-                />
-              </View>
-            </View>
-          </View>
-        )}
 
         <Text style={styles.small}>Icona</Text>
         <View style={styles.icons} accessibilityRole="radiogroup" accessibilityLabel="Icona dell'anteprima">
@@ -786,66 +732,6 @@ const styles = StyleSheet.create({
   },
   colors: {
     marginTop: 10,
-    flexDirection: 'row',
-  },
-  colorCell: {
-    flex: 1,
-    alignItems: 'center',
-  },
-  swatch: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-  },
-  swatchFill: {
-    flex: 1,
-    borderRadius: 16,
-  },
-  plusDot: {
-    width: 16,
-    height: 16,
-    borderRadius: 8,
-    backgroundColor: '#FFFFFF',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  wheelPanel: {
-    marginTop: 12,
-    padding: 12,
-    borderRadius: 16,
-    backgroundColor: Colors.light.paleLilac,
-  },
-  hexRow: {
-    marginTop: 10,
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 10,
-  },
-  hexSwatch: {
-    width: 28,
-    height: 28,
-    borderRadius: 8,
-  },
-  hexField: {
-    flex: 1,
-    height: 40,
-    paddingHorizontal: 12,
-    borderRadius: 12,
-    backgroundColor: '#FFFFFF',
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  hexLabel: {
-    marginRight: 8,
-    fontSize: 13,
-    fontFamily: FONTS.regular,
-    color: Colors.light.textSecondary,
-  },
-  hexInput: {
-    flex: 1,
-    fontSize: 15,
-    fontFamily: FONTS.semiBold,
-    color: Colors.light.text,
   },
   icons: {
     marginTop: 10,

@@ -1,1 +1,1585 @@
-{}
+{
+  "common": {
+    "cancel": "Kumoa",
+    "ok": "OK",
+    "done": "Valmis",
+    "save": "Tallenna",
+    "delete": "Poista",
+    "edit": "Muokkaa",
+    "close": "Sulje",
+    "confirm": "Vahvista",
+    "back": "Takaisin",
+    "next": "Seuraava",
+    "share": "Jaa",
+    "send": "Lähetä",
+    "search": "Etsi",
+    "add": "Lisää",
+    "remove": "Poista",
+    "retry": "Yritä uudelleen",
+    "continue": "Jatka",
+    "yes": "Kyllä",
+    "no": "Ei",
+    "restore": "Palauta",
+    "settings": "Asetukset",
+    "more": "Lisää",
+    "none": "Ei mitään",
+    "documents_one": "{{count}} asiakirja",
+    "documents_other": "{{count}} asiakirjaa",
+    "pages_one": "{{count}} sivu",
+    "pages_other": "{{count}} sivua",
+    "photos_one": "{{count}} kuva",
+    "photos_other": "{{count}} kuvaa",
+    "wholeFamily": "Koko perhe"
+  },
+  "dates": {
+    "today": "tänään",
+    "tomorrow": "huomenna",
+    "yesterday": "eilen",
+    "inSpan": "{{span}} päästä",
+    "spanAgo": "{{span}} sitten",
+    "expiredYesterday": "vanheni eilen",
+    "expiredFor": "vanheni {{span}} sitten",
+    "days_one": "{{count}} päivä",
+    "days_other": "{{count}} päivää",
+    "months_one": "{{count}} kuukausi",
+    "months_other": "{{count}} kuukautta",
+    "years_one": "{{count}} vuosi",
+    "years_other": "{{count}} vuotta"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Asiakirjat",
+      "cards": "Kortit",
+      "utilities": "Laskut",
+      "home": "Asunto",
+      "insurance": "Vakuutukset",
+      "warranties": "Takuut ja kuitit",
+      "car": "Auto",
+      "tax": "Verovähennykset",
+      "householdStaff": "Kotiapu",
+      "school": "Koulu",
+      "pet": "Lemmikit",
+      "password": "Salasanat",
+      "other": "Muut"
+    }
+  },
+  "language": {
+    "title": "Kieli",
+    "auto": "Automaattinen",
+    "autoSubtitle": "Seuraa puhelimen kieltä",
+    "search": "Etsi kieliä",
+    "autoDetail": "iPhonen kieli: {{language}}",
+    "noResults": "Ei kieliä haulla ”{{query}}”"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastelli",
+    "vivid": "Kirkas",
+    "earth": "Maa",
+    "sea": "Meri",
+    "sunset": "Iltarusko",
+    "night": "Yö"
+  },
+  "home": {
+    "welcome": "Tervetuloa Sottomanoon",
+    "hello": "Hei!",
+    "searchPlaceholder": "Etsi asiakirjaa",
+    "favorites": "Suosikit",
+    "seeAll": "Näytä kaikki",
+    "seeAllFavorites": "Näytä kaikki suosikit",
+    "deadlines": "Eräpäivät",
+    "seeAllDeadlines": "Näytä kaikki eräpäivät",
+    "archive": "Arkisto",
+    "reorderDone": "Järjestys valmis",
+    "reorder": "Järjestä",
+    "reorderCategories": "Järjestä kategoriat",
+    "reorderHint": "Vedä kategoriat haluamaasi järjestykseen.",
+    "alerts": {
+      "orderNotSaved": "Järjestystä ei voitu tallentaa"
+    },
+    "newCategory": "Uusi kategoria"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} kortti",
+    "cards_other": "{{count}} korttia"
+  },
+  "folder": {
+    "paidOn": "Maksettu {{date}}",
+    "expiredOn": "Vanheni {{date}}",
+    "expiresOn": "Vanhenee {{date}}",
+    "addedOn": "Lisätty {{date}}",
+    "newItem": {
+      "bill": "Uusi lasku",
+      "card": "Uusi kortti",
+      "warranty": "Uusi takuu",
+      "password": "Uusi salasana",
+      "document": "Uusi asiakirja"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Kaikki",
+      "documents": "Asiakirjat",
+      "cards": "Kortit",
+      "deadlines": "Eräpäivät"
+    },
+    "paid": "maksettu",
+    "expiresOn": "vanhenee {{date}}",
+    "folderSubtitle_one": "Kansio · {{count}} asiakirja",
+    "folderSubtitle_other": "Kansio · {{count}} asiakirjaa",
+    "card": "Kortti",
+    "deadlineSubtitle": "Eräpäivä · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Etsi asiakirjaa",
+    "fieldLabel": "Etsi asiakirjoistasi",
+    "filter": "Suodata",
+    "results_one": "{{count}} tulos",
+    "results_other": "{{count}} tulosta",
+    "noResults": "Ei tuloksia",
+    "noResultsHint": "Kokeile toista sanaa, esimerkiksi kaupan nimeä.",
+    "hint": "Etsi nimistä, kansioista, tyypeistä, muistiinpanoista, korteista ja eräpäivistä."
+  },
+  "navigation": {
+    "home": "Koti",
+    "favorites": "Suosikit",
+    "family": "Perhe",
+    "deadlines": "Eräpäivät",
+    "deadlinesToCheck_one": "Eräpäivät, {{count}} tarkistettavana",
+    "deadlinesToCheck_other": "Eräpäivät, {{count}} tarkistettavana",
+    "addLocked": "Lisää asiakirja, lukittu: ilmaisraja täynnä",
+    "addDocument": "Lisää asiakirja",
+    "titles": {
+      "editDocument": "Muokkaa asiakirjaa",
+      "pages": "Sivut",
+      "deadline": "Eräpäivä",
+      "renewed": "Uusittu",
+      "previousVersion": "Edellinen versio",
+      "newDocument": "Uusi asiakirja",
+      "appearance": "Ulkoasu",
+      "backup": "Varmuuskopio",
+      "taxPackage": "Lähetä kirjanpitäjälle",
+      "trash": "Roskakori",
+      "terms": "Käyttöehdot",
+      "about": "Tietoja ja yksityisyys",
+      "newCard": "Uusi kortti",
+      "editCard": "Muokkaa korttia"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Siirrä vetämällä tai käytä toimintoja Siirrä ylös ja Siirrä alas",
+    "moveEarlier": "Siirrä ylös",
+    "moveLater": "Siirrä alas",
+    "footer": "Kortit, Perheen jäsenet ja Suosikit järjestetään samalla tavalla: paina riviä pitkään ja vedä oikealla olevasta kahvasta."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Paina pitkään: siirrä vetämällä tai päästä irti nähdäksesi toiminnot"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Järjestystä ei voitu tallentaa"
+    },
+    "reorderTitle": "Järjestä suosikit",
+    "reorderHint": "Paina suosikkia pitkään ja vedä se haluamaasi kohtaan.",
+    "yourFavorites": "Suosikkisi",
+    "title": "Suosikit",
+    "subtitle": "Mitä halusit pitää käden ulottuvilla",
+    "searchPlaceholder": "Etsi suosikeista",
+    "viewList": "Lista",
+    "viewGrid": "Ruudukko",
+    "count_one": "{{count}} suosikki",
+    "count_other": "{{count}} suosikkia",
+    "noMatch": "Ei suosikkeja haulla ”{{query}}”.",
+    "empty": "Sinulla ei ole vielä suosikkeja.",
+    "footer": "Lisää asiakirja tänne napauttamalla sen sydäntä.",
+    "footerGrid": "Lisää asiakirja tänne napauttamalla sen sydäntä. Järjestä painamalla ruutua pitkään ja vetämällä.",
+    "footerList": "Lisää asiakirja tänne napauttamalla sen sydäntä. Järjestä painamalla riviä pitkään.",
+    "rowHint": "Järjestä suosikit painamalla pitkään",
+    "unpin": "Poista suosikeista",
+    "expires": "vanhenee {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} maksamatta",
+    "alerts": {
+      "orderNotSaved": "Järjestystä ei voitu tallentaa"
+    },
+    "actions": {
+      "editCategory": "Muokkaa kategoriaa",
+      "sendToAccountant": "Lähetä kirjanpitäjälle",
+      "selectAndSend": "Valitse ja lähetä",
+      "reorder": "Järjestä",
+      "deleteCategory": "Poista kategoria"
+    },
+    "moreLabel": "Muokkaa tai poista kategoria {{name}}",
+    "searchIn": "Etsi: {{name}}",
+    "viewList": "Lista",
+    "viewGrid": "Ruudukko",
+    "reorderHint": "Paina pitkään ja vedä asiakirjat haluamaasi järjestykseen.",
+    "allTypes": "Kaikki",
+    "noDocumentsFound": "Asiakirjoja ei löytynyt.",
+    "sendTogether": "Lähetä yhdessä ({{count}})",
+    "sheetTitle": "Kategoria {{name}}"
+  },
+  "folderRow": {
+    "due": "maksamatta",
+    "paid": "maksettu"
+  },
+  "homeSections": {
+    "expired": "Vanhentunut",
+    "expiresToday": "Vanhenee tänään",
+    "expiresTomorrow": "Vanhenee huomenna",
+    "expiresInDays_one": "Vanhenee {{count}} päivän päästä",
+    "expiresInDays_other": "Vanhenee {{count}} päivän päästä",
+    "expiresOn": "Vanhenee {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Poista suosikeista",
+    "pin": "Lisää suosikkeihin"
+  },
+  "searchBar": {
+    "clear": "Tyhjennä teksti"
+  },
+  "documentGrid": {
+    "addDocument": "Lisää asiakirja"
+  },
+  "homeHeader": {
+    "menu": "Valikko",
+    "notifications": "Ilmoitukset",
+    "notificationsUnread_one": "Ilmoitukset, {{count}} lukematon",
+    "notificationsUnread_other": "Ilmoitukset, {{count}} lukematonta"
+  },
+  "demoData": {
+    "people": {
+      "step": "Vaihe",
+      "mom": "Äiti",
+      "dad": "Isä"
+    },
+    "documents": {
+      "idCard": "Henkilökortti",
+      "drivingLicence": "Ajokortti",
+      "passport": "Passi",
+      "electricityBill": "Sähkölasku",
+      "carInsurance": "Autovakuutus",
+      "carTax": "Ajoneuvovero",
+      "washingMachineWarranty": "Pesukoneen takuu",
+      "gymCard": "Kuntosalikortti",
+      "rentalContract": "Vuokrasopimus",
+      "pharmacyReceipt": "Apteekkikuitti",
+      "reportCard": "Todistus"
+    },
+    "notes": {
+      "electricityBill": "Suoramaksu pankista"
+    }
+  },
+  "documentTypes": {
+    "documents": "Henkilökortti|Ajokortti|Passi|Kela-kortti|Verokortti",
+    "cards": "Kanta-asiakas|Kuntosali|Kirjasto|Matkakortti|Jäsenkortti",
+    "utilities": "Sähkö|Kaasu|Vesi|Internet|Puhelin|Jätehuolto",
+    "home": "Vuokra|Asuntolaina|Vastike|Huolto|Sopimus",
+    "insurance": "Auto|Koti|Terveys|Henki|Matka",
+    "warranties": "Kodinkone|Elektroniikka|Huonekalu|Kuitti",
+    "car": "Ajoneuvovero|Vakuutus|Katsastus|Huolto|Rekisteröinti",
+    "tax": "Apteekki|Lääkäri|Hammaslääkäri|Laboratorio|Urheilu|Koulu",
+    "householdStaff": "Palkkalaskelma|Maksut|Sopimus",
+    "school": "Ilmoittautuminen|Todistus|Lausunto|Ruokailu|Retki",
+    "pet": "Terveyskortti|Rokotus|Eläinlääkäri|Mikrosiru",
+    "password": "Sähköposti|Pankki|Some|Wi-Fi|Työ"
+  },
+  "pageLabels": {
+    "front": "Etupuoli",
+    "back": "Takapuoli",
+    "page": "Sivu {{number}}"
+  },
+  "statusBadge": {
+    "due": "Maksamatta",
+    "paid": "Maksettu"
+  },
+  "addActions": {
+    "openFileFailed": "Tiedostoa ei voitu avata"
+  },
+  "pickFiles": {
+    "takePhoto": "Ota kuva",
+    "choosePhoto": "Valitse kuvista",
+    "removePhoto": "Poista kuva"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Useita sivuja",
+      "text": "Voit skannata useita sivuja peräkkäin: rajaa seuraava sivu ennen kuin napautat Tallenna."
+    },
+    "cardTip": {
+      "title": "Aidot värit",
+      "text": "Saat kortin aidot värit napauttamalla skannerin suodatinpainiketta ja valitsemalla ”Valokuva”."
+    },
+    "gotIt": "Selvä"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Kameran käyttöoikeus tarvitaan",
+    "permissionText": "Sottomano käyttää kameraa vain asiakirjojesi kuvaamiseen.",
+    "allow": "Salli",
+    "openSettings": "Avaa Asetukset",
+    "readable": "Onko se luettava?",
+    "pageReadable": "Sivu {{number}}: onko se luettava?",
+    "retake": "Ota uudelleen",
+    "addPage": "Lisää sivu",
+    "frameDocument": "Rajaa asiakirja",
+    "framePage": "Rajaa sivu {{number}}",
+    "shoot": "Ota kuva",
+    "finishWithPages_one": "Valmis, {{count}} sivu",
+    "finishWithPages_other": "Valmis, {{count}} sivua"
+  },
+  "coverField": {
+    "label": "Kansikuva",
+    "photo": "Kuva",
+    "color": "Väri",
+    "noPhotoHint": "Ilman kuvaa näytetään väri: lisää sivu, niin sen kuvaa käytetään kansikuvana.",
+    "categoryColor": "Kansion väri",
+    "colorNumber": "Väri {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Lisää sivuja",
+    "pinned": "Suosikeissa",
+    "pin": "Lisää suosikkeihin",
+    "renewed": "Uusittu",
+    "delete": "Poista"
+  },
+  "documentFilesView": {
+    "document": "Asiakirja",
+    "openFailed": "Asiakirjaa ei voitu avata",
+    "pageOfSwipe": "Sivu {{number}}/{{total}} · selaa pyyhkäisemällä",
+    "openFullScreen": "{{label}}, avaa koko näytölle",
+    "missingFile": "Tiedostoa ei löydy tästä puhelimesta."
+  },
+  "filesEditor": {
+    "addBack": "Lisää takapuoli",
+    "addPage": "Lisää sivu",
+    "scan": "Skannaa",
+    "photograph": "Ota kuva",
+    "fromPhotos": "Kuvista",
+    "scannerUnavailableTitle": "Skanneri ei ole käytettävissä",
+    "scannerUnavailableMessage": "Poista sivut ✕:llä ja lisää uudet.",
+    "replacePdf": "Korvaa PDF",
+    "importPdf": "Tuo PDF",
+    "rescanAll": "Skannaa kaikki uudelleen",
+    "openFileFailed": "Tiedostoa ei voitu avata",
+    "page": "Sivu",
+    "newTag": "uusi",
+    "moveBefore": "Siirrä ylös: {{name}}",
+    "moveAfter": "Siirrä alas: {{name}}",
+    "removePage": "Poista {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Asiakirjaa ei löytynyt.",
+    "noPages": "Ei sivuja",
+    "photoPages_one": "Kuva, {{count}} sivu",
+    "photoPages_other": "Kuvat, {{count}} sivua",
+    "amount": "Summa",
+    "expired": "vanhentunut",
+    "inDays_one": "{{count}} päivän päästä",
+    "inDays_other": "{{count}} päivän päästä",
+    "deadline": "Eräpäivä",
+    "folder": "Kansio",
+    "status": "Tila",
+    "person": "Henkilö",
+    "number": "Numero",
+    "notes": "Muistiinpanot",
+    "inCalendar": "Kalenterissa",
+    "view": "Näytä asiakirja",
+    "unpin": "Poista suosikeista",
+    "pin": "Lisää suosikkeihin",
+    "addPages": "Lisää sivuja",
+    "renewed": "Uusittu",
+    "delete": "Poista",
+    "details": "Tiedot",
+    "remindMe": "Muistuta",
+    "reminderNeedsDeadline": "Lisää eräpäivä saadaksesi muistutuksen",
+    "reminderWhen": "Muistutus: {{when}}",
+    "noReminder": "Ei muistutusta",
+    "previousVersions": "Aiemmat versiot",
+    "versionUntil": "{{date}} asti",
+    "versionExpired": "vanheni {{date}}",
+    "paidOnMarkDue": "Maksettu {{date}} · merkitse maksamattomaksi",
+    "markDue": "Merkitse maksamattomaksi",
+    "markPaid": "Merkitse maksetuksi",
+    "firstOf": "1/{{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Maksamatta",
+    "statusPaid": "Maksettu",
+    "saveFailed": "Tallennus epäonnistui",
+    "folder": "Kansio",
+    "person": "Henkilö",
+    "type": "Tyyppi",
+    "otherType": "Kirjoita muu…",
+    "noType": "Ei tyyppiä",
+    "typeExample": "Esimerkiksi: Sähkö, Ajoneuvovero, Hammaslääkäri",
+    "dueOn": "{{date}}",
+    "noDeadline": "Ei eräpäivää",
+    "nameSection": "Nimi",
+    "namePlaceholder": "Asiakirjan nimi",
+    "whereSection": "Mihin tallennetaan",
+    "choose": "Valitse…",
+    "deadlineSection": "Eräpäivä",
+    "addDeadline": "Lisää eräpäivä",
+    "remindMe": "Muistuta",
+    "whenToRemind": "Milloin muistutetaan",
+    "repeats": "Toistuu",
+    "never": "Ei koskaan",
+    "everySpan": "Toistoväli: {{span}}",
+    "every": "Toistoväli",
+    "notesSection": "Muistiinpanot",
+    "notesPlaceholder": "Esimerkiksi: maksettu suoramaksulla, pyydä hyvitys…",
+    "pin": "Lisää suosikkeihin",
+    "pinSubtitle": "Löydät sen heti kotinäytöltä",
+    "amountSection": "Summa ja tila",
+    "amount": "Summa",
+    "amountInEuro": "Summa euroina",
+    "accessSection": "Kirjautuminen",
+    "username": "Käyttäjänimi",
+    "usernamePlaceholder": "nimi@esimerkki.fi",
+    "password": "Salasana",
+    "passwordUnchanged": "•••••••• (ei muutettu)",
+    "passwordNote": "Salasana tallennetaan vain iPhonen avainnippuun.",
+    "numberSection": "Asiakirjan numero",
+    "numberPlaceholder": "Esim. AB1234567",
+    "saveChanges": "Tallenna muutokset",
+    "saveDocument": "Tallenna asiakirja",
+    "amountHint": "Kirjoita summa muodossa {{example}}.",
+    "missingNameAndFolder": "Tallenna antamalla nimi ja valitsemalla kansio.",
+    "missingName": "Tallenna antamalla nimi.",
+    "missingFolder": "Tallenna valitsemalla kansio.",
+    "deleteDocument": "Poista asiakirja"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Skannaa",
+      "photos": "Kuvista",
+      "pdf": "PDF:stä",
+      "card": "Kortti",
+      "manual": "Käsin"
+    },
+    "hintFirst": "Rajaa asiakirja · pidä puhelin paikallaan",
+    "hintNext": "Sivu {{number}} otettu · rajaa seuraava",
+    "title": "Uusi asiakirja",
+    "flashOff": "Salama pois",
+    "flashOn": "Salama päälle",
+    "scanWithIos": "Skannaa iOS-skannerilla",
+    "tapToScan": "Skannaa napauttamalla: reunat löytyvät itsestään",
+    "permissionTitle": "Kameran käyttöoikeus tarvitaan",
+    "permissionText": "Sottomano käyttää sitä vain asiakirjojesi kuvaamiseen.",
+    "allow": "Salli",
+    "openSettings": "Avaa Asetukset",
+    "howToAdd": "Miten lisätään",
+    "chooseFromGallery": "Valitse kirjastosta",
+    "shoot": "Ota kuva",
+    "goOnWith_one": "Jatka, {{count}} sivu",
+    "goOnWith_other": "Jatka, {{count}} sivua",
+    "noPages": "Ei sivuja",
+    "countNext": "seuraava ›",
+    "countPages": "sivua"
+  },
+  "newDocument": {
+    "readTitle": "Luettu asiakirjasta",
+    "readText": "Nimi otettu tiedostosta: {{name}}. Tarkista ja korjaa tarvittaessa.",
+    "checkTitle": "Tarkista tiedot",
+    "checkText_one": "{{count}} sivu otettu. Anna nimi ja mahdollinen eräpäivä: löydät sen Eräpäivistä.",
+    "checkText_other": "{{count}} sivua otettu. Anna nimi ja mahdollinen eräpäivä: löydät sen Eräpäivistä.",
+    "heading": "Uusi asiakirja"
+  },
+  "editDocument": {
+    "heading": "Muokkaa asiakirjaa"
+  },
+  "documentVersion": {
+    "replacedOn": "Korvattu {{date}}",
+    "expiredOn": "vanheni {{date}}",
+    "previewTitle": "{{title}} (edellinen versio)"
+  },
+  "documentPages": {
+    "saveFailed": "Sivuja ei voitu tallentaa"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Poisto epäonnistui",
+    "title": "Poistetaanko {{title}}?",
+    "message_one": "Asiakirja ja sen muistutus siirtyvät roskakoriin. Voit palauttaa sen kohdasta Valikko › Roskakori {{count}} päivän ajan.",
+    "message_other": "Asiakirja ja sen muistutus siirtyvät roskakoriin. Voit palauttaa sen kohdasta Valikko › Roskakori {{count}} päivän ajan.",
+    "confirm": "Poista asiakirja"
+  },
+  "renew": {
+    "saveFailed": "Tallennus epäonnistui",
+    "deadline": "Eräpäivä",
+    "repeatFooter": "{{repeat}}: uusi päivä lasketaan vanhasta.",
+    "was": "Aiemmin",
+    "newDeadline": "Uusi eräpäivä",
+    "newDocument": "Uusi asiakirja",
+    "withScanFooter": "Nykyisistä sivuista tulee ”Edellinen versio”, jonka löydät tiedoista.",
+    "withoutScanFooter": "Laita päälle, jos sinulla on uusi asiakirja skannattavana.",
+    "addNewScan": "Lisää uusi skannaus"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · vieritä alas",
+    "pagesSubtitle_one": "{{count}} sivu",
+    "pagesSubtitle_other": "{{count}} sivua · vieritä alas",
+    "pageOf": "Sivu {{number}}/{{total}}",
+    "noPages": "Tässä asiakirjassa ei ole sivuja.",
+    "zoom": "Zoomaa",
+    "zoomOut": "Loitonna",
+    "zoomIn": "Lähennä",
+    "pageShort": "Sivu {{number}}/{{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "päivä",
+      "day_other": "päivää",
+      "week_one": "viikko",
+      "week_other": "viikkoa",
+      "month_one": "kuukausi",
+      "month_other": "kuukautta",
+      "year_one": "vuosi",
+      "year_other": "vuotta"
+    },
+    "count": {
+      "day_one": "{{count}} päivä",
+      "day_other": "{{count}} päivää",
+      "week_one": "{{count}} viikko",
+      "week_other": "{{count}} viikkoa",
+      "month_one": "{{count}} kuukausi",
+      "month_other": "{{count}} kuukautta",
+      "year_one": "{{count}} vuosi",
+      "year_other": "{{count}} vuotta"
+    },
+    "every": {
+      "day_one": "Joka päivä",
+      "day_other": "{{count}} päivän välein",
+      "week_one": "Joka viikko",
+      "week_other": "{{count}} viikon välein",
+      "month_one": "Joka kuukausi",
+      "month_other": "{{count}} kuukauden välein",
+      "year_one": "Joka vuosi",
+      "year_other": "{{count}} vuoden välein"
+    },
+    "repeats": {
+      "day_one": "Toistuu joka päivä",
+      "day_other": "Toistuu {{count}} päivän välein",
+      "week_one": "Toistuu joka viikko",
+      "week_other": "Toistuu {{count}} viikon välein",
+      "month_one": "Toistuu joka kuukausi",
+      "month_other": "Toistuu {{count}} kuukauden välein",
+      "year_one": "Toistuu joka vuosi",
+      "year_other": "Toistuu {{count}} vuoden välein"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Vaatii huomiota",
+    "thisWeek": "Tällä viikolla",
+    "upcomingNone": "Ei mitään erääntyvää tulevina kuukausina",
+    "upcoming_one": "{{count}} tehtävä tulevina kuukausina",
+    "upcoming_other": "{{count}} tehtävää tulevina kuukausina"
+  },
+  "deadlineOptions": {
+    "sameDay": "Samana päivänä",
+    "daysBefore_one": "{{count}} päivä ennen",
+    "daysBefore_other": "{{count}} päivää ennen",
+    "defaultChoice": "{{label}} (oletus)"
+  },
+  "personRoles": {
+    "you": "Sinä",
+    "choice": {
+      "me": "Minä",
+      "partner": "Puoliso",
+      "child": "Poika tai tytär",
+      "parent": "Vanhempi",
+      "sibling": "Veli tai sisko",
+      "other": "Muu"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Kategoriaa ”Muut” ei ole olemassa.",
+    "otherNotDeletable": "Kategoriaa ”Muut” ei voi poistaa."
+  },
+  "deadlineChip": {
+    "overdue": "Vanhentunut",
+    "today": "Tänään",
+    "dueToday": "Erääntyy tänään",
+    "dueIn_one": "Erääntyy {{count}} päivän päästä",
+    "dueIn_other": "Erääntyy {{count}} päivän päästä"
+  },
+  "deadlineListRow": {
+    "hint": "Muokkaa tai poista eräpäivä painamalla pitkään",
+    "statusDue": "maksamatta",
+    "statusPaid": "maksettu"
+  },
+  "deadlineSection": {
+    "title": "Eräpäivä",
+    "emptyFooter": "Muistutus tulee puhelimeen ja, jos se on päällä, ”Sottomano”-kalenteriin.",
+    "add": "Lisää eräpäivä",
+    "expiresOn": "Eräpäivä",
+    "repeats": "Toistuu",
+    "never": "Ei koskaan",
+    "reminder": "Muistutus"
+  },
+  "dateCalendar": {
+    "previousMonth": "Edellinen kuukausi",
+    "nextMonth": "Seuraava kuukausi"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Seuraava viikko",
+    "previousWeek": "Edellinen viikko",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} eräpäivä",
+    "dayWithDeadlines_other": "{{day}}, {{count}} eräpäivää"
+  },
+  "deadlines": {
+    "title": "Eräpäivät",
+    "newReminder": "Uusi muistutus",
+    "week": "Viikko",
+    "month": "Kuukausi",
+    "openDocument": "Avaa asiakirja",
+    "editDeadline": "Muokkaa eräpäivää",
+    "markDue": "Merkitse maksamattomaksi",
+    "markPaid": "Merkitse maksetuksi",
+    "removeDeadline": "Poista eräpäivä",
+    "removeAlert": {
+      "title": "Poistetaanko eräpäivä?",
+      "message": "Asiakirja säilyy; sen muistutus ja kalenteritapahtuma poistetaan.",
+      "confirm": "Poista"
+    },
+    "emptyTitle": "Ei tulevia eräpäiviä",
+    "emptyText": "Lisää asiakirja eräpäivineen napauttamalla +: se näkyy täällä ja kalenterissa.",
+    "sheetSubtitle": "Erääntyy {{date}}",
+    "dayRepeats": "toistuu",
+    "dayReminder": "muistutus",
+    "dayEmpty": "Ei eräpäiviä tänä päivänä"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Tallennus epäonnistui",
+    "date": "Päivämäärä",
+    "footer": "Muistutus tulee puhelimeen; kun kalenteri on päällä, eräpäivä on myös ”Sottomano”-kalenterissa.",
+    "every": "Toistoväli"
+  },
+  "family": {
+    "title": "Perhe",
+    "subtitle": "Profiili jokaiselle kotona",
+    "addPerson": "Lisää henkilö",
+    "members": "Jäsenet",
+    "orderSaveFailed": "Järjestystä ei voitu tallentaa",
+    "reorderTitle": "Järjestä perhe",
+    "reorderHint": "Paina henkilöä pitkään ja vedä haluamaasi kohtaan.",
+    "privacyNote": "Kaikki pysyy tässä puhelimessa. Lähetä asiakirja jollekulle avaamalla se ja napauttamalla Lähetä.",
+    "youSpoken": "sinä",
+    "reorderA11yHint": "Järjestä perhe painamalla pitkään",
+    "expiring_one": "{{count}} vanhenemassa",
+    "expiring_other": "{{count}} vanhenemassa"
+  },
+  "personScreen": {
+    "photoFailed": "Kuvaa ei voitu käyttää",
+    "editPerson": "Muokkaa henkilöä",
+    "selectAndSend": "Valitse ja lähetä",
+    "deletePerson": "Poista henkilö",
+    "moreA11y": "Muokkaa tai poista {{name}}",
+    "changePhoto": "Vaihda kuva",
+    "editProfile": "Muokkaa profiilia",
+    "documentsSection": "Asiakirjat · {{count}}",
+    "addDocument": "Lisää asiakirja",
+    "sendTogether": "Lähetä yhdessä ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Tallennus epäonnistui",
+    "newPerson": "Uusi henkilö",
+    "addPhoto": "Lisää kuva",
+    "name": "Nimi",
+    "namePlaceholder": "Mikä hänen nimensä on?",
+    "role": "Kuka hän on",
+    "roleA11y": "Kuka hän on sinulle: {{role}}",
+    "note": "Profiili pysyy tässä puhelimessa. Sen avulla pidät kaikkien asiakirjat järjestyksessä.",
+    "addToFamily": "Lisää perheeseen",
+    "roleSheetTitle": "Kuka hän on sinulle"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Poisto epäonnistui",
+    "title": "Poistetaanko kategoria {{name}}?",
+    "messageWithDocuments_one": "Siinä on {{count}} asiakirja. Mitä haluat tehdä sille?",
+    "messageWithDocuments_other": "Siinä on {{count}} asiakirjaa. Mitä haluat tehdä niille?",
+    "messageWithDocumentsRestorable_one": "Siinä on {{count}} asiakirja. Mitä haluat tehdä sille? Voit palauttaa kategorian kohdasta Uusi kategoria.",
+    "messageWithDocumentsRestorable_other": "Siinä on {{count}} asiakirjaa. Mitä haluat tehdä niille? Voit palauttaa kategorian kohdasta Uusi kategoria.",
+    "messageEmpty": "Kategoria on tyhjä.",
+    "messageEmptyRestorable": "Kategoria on tyhjä. Voit palauttaa sen kohdasta Uusi kategoria.",
+    "deleteAll": "Poista kaikki",
+    "confirm": "Poista kategoria",
+    "choicesA11y": "Mitä asiakirjoille tehdään",
+    "moveLabel": "Siirrä kohtaan Muut",
+    "moveDetailPassword": "Ne jäävät appiin, kohtaan Muut, ilman käyttäjänimeä ja salasanaa",
+    "moveDetail": "Ne jäävät appiin, yleiseen kansioon",
+    "trashLabel": "Poista ne",
+    "trashDetail_one": "Ne siirtyvät roskakoriin: voit palauttaa ne {{count}} päivän ajan",
+    "trashDetail_other": "Ne siirtyvät roskakoriin: voit palauttaa ne {{count}} päivän ajan"
+  },
+  "deletePerson": {
+    "title": "Poistetaanko {{name}} perheestä?",
+    "messageWithDocuments_one": "Henkilöllä {{name}} on {{count}} asiakirja. Mitä haluat tehdä sille?",
+    "messageWithDocuments_other": "Henkilöllä {{name}} on {{count}} asiakirjaa. Mitä haluat tehdä niille?",
+    "messageEmpty": "Profiili poistetaan tästä puhelimesta.",
+    "familyLabel": "Siirrä kohtaan Koko perhe",
+    "familyDetail": "Ne jäävät appiin kaikkien nähtäville",
+    "trashDetail_one": "Ne lähtevät profiilin mukana: ne ovat roskakorissa {{count}} päivän ajan",
+    "trashDetail_other": "Ne lähtevät profiilin mukana: ne ovat roskakorissa {{count}} päivän ajan"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Lemmikit",
+      "document": "Asiakirja",
+      "home": "Koti",
+      "car": "Auto",
+      "health": "Terveys",
+      "school": "Koulu",
+      "work": "Työ",
+      "keys": "Avaimet",
+      "travel": "Matkat",
+      "expenses": "Kulut"
+    },
+    "restoreFailed": "Palautus epäonnistui",
+    "editTitle": "Muokkaa kategoriaa",
+    "newTitle": "Uusi kategoria",
+    "restoreSection": "Palauta oletuskategoria",
+    "restoreA11y": "Palauta {{name}}",
+    "restoreHint": "Se palaa ennalleen väreineen, kuvakkeineen ja kenttineen. Tai luo uusi alla.",
+    "previewA11y": "Kategorian esikatselu",
+    "namePlaceholder": "Esim. Lemmikit",
+    "nameA11y": "Kategorian nimi",
+    "color": "Väri",
+    "paletteColor": "Ulkoasun väri",
+    "colorNumber": "Väri {{number}}",
+    "followsPaletteHint": "Väri seuraa Ulkoasussa valittua palettia.",
+    "ownColorHint": "Oma värisi: se ei muutu Ulkoasun mukana.",
+    "icon": "Kuvake",
+    "forWhom": "Kenelle",
+    "forWhomA11y": "Kenelle kategoria on: {{name}}",
+    "forWhomHint": "Tämän kategorian uudet asiakirjat liitetään aluksi tähän henkilöön.",
+    "create": "Luo kategoria"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Verkkosivu tai appi",
+        "namePlaceholder": "Esimerkiksi: Verkkopankki",
+        "userLabel": "Käyttäjänimi tai sähköposti",
+        "userPlaceholder": "nimi@sahkoposti.fi",
+        "passwordLabel": "Salasana",
+        "notePlaceholder": "Esimerkiksi: turvakysymys, palautuskoodi…"
+      },
+      "wifi": {
+        "name": "Wi-Fi",
+        "namePlaceholder": "Esimerkiksi: Kodin Wi-Fi",
+        "userLabel": "Verkon nimi",
+        "userPlaceholder": "Virtanen_5G",
+        "passwordLabel": "Verkon salasana",
+        "notePlaceholder": "Esimerkiksi: reititin on olohuoneessa television takana…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Esimerkiksi: Pankkikortti",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Esimerkiksi: Julian kortti…"
+      },
+      "other": {
+        "name": "Muu",
+        "namePlaceholder": "Esimerkiksi: Kodin hälytin",
+        "userLabel": "Käyttäjänimi",
+        "userPlaceholder": "Valinnainen",
+        "passwordLabel": "Koodi tai salasana",
+        "notePlaceholder": "Mihin se on, missä sitä käytetään…"
+      }
+    },
+    "colors": {
+      "aqua": "Akva",
+      "indigo": "Indigo",
+      "apricot": "Aprikoosi",
+      "pink": "Pinkki",
+      "mint": "Minttu",
+      "sky": "Taivas",
+      "graphite": "Grafiitti"
+    },
+    "icons": {
+      "key": "Avain",
+      "lock": "Riippulukko",
+      "globe": "Maapallo",
+      "wifi": "Wi-Fi",
+      "bank": "Pankki",
+      "card": "Kortti",
+      "mail": "Sähköposti",
+      "home": "Koti",
+      "car": "Auto",
+      "shield": "Kilpi",
+      "cart": "Ostoskärry",
+      "star": "Tähti"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Vain numeroita",
+    "strength": {
+      "weak": "Heikko",
+      "fair": "Kohtalainen",
+      "good": "Hyvä",
+      "strong": "Vahva"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Vahvista lukituksen käyttöönotto"
+  },
+  "appLock": {
+    "prompt": "Avaa Sottomanon lukitus",
+    "unlock": "Avaa",
+    "unlockWith": {
+      "faceId": "Avaa Face ID:llä",
+      "touchId": "Avaa Touch ID:llä",
+      "passcode": "Avaa pääsykoodilla"
+    },
+    "message": "Asiakirjasi ovat suojassa"
+  },
+  "passwordForm": {
+    "showPrompt": "Näytä salasana",
+    "copyPrompt": "Kopioi salasana",
+    "copiedTitle": "Kopioitu",
+    "copiedMessage": "Se tyhjennetään leikepöydältä 1 minuutin kuluttua.",
+    "scannerUnavailableTitle": "Skanneri ei ole käytettävissä",
+    "scannerUnavailableMessage": "Valitse kuva kuvakirjastostasi.",
+    "saveFailed": "Tallennus epäonnistui",
+    "editTitle": "Muokkaa salasanaa",
+    "newTitle": "Uusi salasana",
+    "privacy": "Ne pysyvät vain tässä puhelimessa ja avautuvat Face ID:llä.",
+    "sections": {
+      "what": "Mitä tallennat",
+      "name": "Nimi",
+      "preview": "Esikatselu",
+      "access": "Kirjautuminen",
+      "site": "Verkkosivu tai appi",
+      "whose": "Kenen se on",
+      "notes": "Muistiinpanot"
+    },
+    "typesLabel": "Salasanan tyyppi",
+    "customTypePlaceholder": "Mikä se on? Hälytin, kassakaappi, riippulukko…",
+    "customTypeLabel": "Mikä se on",
+    "customTypeHint": "Siitä tulee uusi tyyppi, ja ensi kerralla löydät sen vaihtoehdoista.",
+    "previewTitle": "Miltä se näyttää listassa",
+    "previewText": "Väri ja kuvake tai kuva.",
+    "color": "Väri",
+    "colorLabel": "Esikatselun väri",
+    "icon": "Kuvake",
+    "iconLabel": "Esikatselun kuvake",
+    "image": "Kuva",
+    "scan": "Skannaa",
+    "gallery": "Kuvista",
+    "removeImage": "Poista kuva ja käytä väriä ja kuvaketta",
+    "passwordPlaceholder": "Kirjoita tai luo",
+    "show": "Näytä",
+    "hide": "Piilota",
+    "copy": "Kopioi",
+    "saved": "Tallennettu",
+    "generate": "Luo vahva salasana",
+    "urlPlaceholder": "www.esimerkki.fi",
+    "urlLabel": "Verkkosivun osoite",
+    "wifiQrTitle": "QR-koodi vieraille",
+    "wifiQrSubtitle": "He skannaavat sen ja yhdistävät",
+    "person": "Henkilö",
+    "personA11y": "Henkilö, {{name}}",
+    "favoriteTitle": "Lisää suosikkeihin",
+    "favoriteSubtitle": "Löydät sen heti kotinäytöltä",
+    "saveButton": "Tallenna salasana",
+    "saveHint": "Tallenna antamalla nimi."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Ei salasanaa",
+    "noPasswordMessage": "Lisää se Muokkaa-kohdasta.",
+    "showPrompt": {
+      "site": "Näytä salasana",
+      "wifi": "Näytä verkon salasana",
+      "pin": "Näytä PIN",
+      "other": "Näytä koodi tai salasana"
+    },
+    "copyPrompt": {
+      "site": "Kopioi salasana",
+      "wifi": "Kopioi verkon salasana",
+      "pin": "Kopioi PIN",
+      "other": "Kopioi koodi tai salasana"
+    },
+    "copyUser": {
+      "site": "Kopioi käyttäjänimi tai sähköposti",
+      "wifi": "Kopioi verkon nimi",
+      "pin": "Kopioi käyttäjänimi",
+      "other": "Kopioi käyttäjänimi"
+    },
+    "copiedTitle": "Kopioitu",
+    "copiedMessage": "Se tyhjennetään leikepöydältä 1 minuutin kuluttua.",
+    "copiedTextTitle": "Kopioitu",
+    "qrPrompt": "Näytä QR-koodi vieraille",
+    "invalidAddress": "Virheellinen osoite",
+    "removeFavorite": "Poista suosikeista",
+    "favoriteTitle": "Lisää suosikkeihin",
+    "favoriteSubtitle": "Löydät sen heti kotinäytöltä",
+    "moreActions": "Lisää toimintoja",
+    "sections": {
+      "access": "Kirjautuminen",
+      "site": "Verkkosivu tai appi",
+      "wifiQr": "QR-koodi vieraille",
+      "whose": "Kenen se on",
+      "notes": "Muistiinpanot"
+    },
+    "hidden": "Piilotettu",
+    "show": "Näytä",
+    "hide": "Piilota",
+    "copy": "Kopioi",
+    "locked": "Näkyy Face ID:n tai iPhonen pääsykoodin jälkeen",
+    "wifiQrLabel": "Wi-Fi-verkon QR-koodi",
+    "qrHint": "He skannaavat sen kameralla ja yhdistävät.",
+    "qrLocked": "QR-koodi sisältää salasanan: se näkyy Face ID:n tai iPhonen pääsykoodin jälkeen.",
+    "qrNoNetwork": "Lisää verkon nimi Muokkaa-kohdasta saadaksesi QR-koodin.",
+    "showQr": "Näytä QR-koodi",
+    "hideQr": "Piilota QR-koodi",
+    "person": "Henkilö",
+    "moveToTrash": "Siirrä roskakoriin"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Ei salasanaa",
+    "noPasswordMessage": "Lisää se Muokkaa-kohdasta.",
+    "showPrompt": "Näytä salasana",
+    "copyPrompt": "Kopioi salasana",
+    "copiedTitle": "Salasana kopioitu",
+    "copiedMessage": "Se tyhjennetään leikepöydältä 1 minuutin kuluttua.",
+    "user": "Käyttäjänimi",
+    "password": "Salasana",
+    "hidden": "Salasana piilotettu",
+    "show": "Näytä",
+    "hide": "Piilota",
+    "copy": "Kopioi"
+  },
+  "cardForm": {
+    "found": "Löytyi: {{name}}",
+    "foundBarcode": "Löytyi: viivakoodi {{name}}",
+    "handwritten": "Koodi kirjoitettu käsin",
+    "noCode": "Koodia ei luettu",
+    "photoOpenFailed": "Kuvaa ei voitu avata",
+    "saveFailed": "Tallennus epäonnistui",
+    "retakeFront": "Ota uudelleen",
+    "retakePhoto": "Ota kuva uudelleen",
+    "recognized": "Kortti tunnistettu",
+    "tapRetake": "Kuvaa se napauttamalla Ota uudelleen",
+    "fromPhotos": "Kuvista",
+    "cover": "Kansikuva",
+    "coverPhotoCaption": "Rajattu ja suoristettu kortin kuvasta",
+    "coverColorCaption": "Kortin väri, nimi ja numero",
+    "codeSection": "Kassalla näytettävä koodi",
+    "photographCode": "Kuvaa koodi",
+    "barcode": "Viivakoodi",
+    "qrCode": "QR-koodi",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Kortti",
+    "typeNumber": "Kirjoita numero alle",
+    "explain": "Sottomano tunnistaa itse, onko kortissa viivakoodi vai QR-koodi. Kassalla se näytetään isona, näyttö täydellä kirkkaudella.",
+    "readTitle": "Kortista luetut tiedot",
+    "readText": "Tarkista ja korjaa tarvittaessa.",
+    "name": "Nimi",
+    "namePlaceholder": "Esim. Ruokakauppa",
+    "type": "Tyyppi",
+    "typePlaceholder": "Esim. Kanta-asiakaskortti",
+    "number": "Numero",
+    "numberPlaceholder": "Esim. 0400 2219 8876",
+    "holder": "Haltija",
+    "saveButton": "Tallenna kortti",
+    "saveHint": "Tallenna antamalla kortin nimi."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Kuva etupuolesta",
+      "barcode": "Kuvaa viivakoodi"
+    },
+    "photoOpenFailed": "Kuvaa ei voitu avata",
+    "permissionTitle": "Kameran käyttöoikeus tarvitaan",
+    "permissionText": "Sottomano käyttää kameraa korttiesi kuvaamiseen ja viivakoodin lukemiseen.",
+    "allow": "Salli",
+    "openSettings": "Avaa Asetukset",
+    "frontCheck": "Etupuoli: onko se selkeä?",
+    "read": "Luettu: {{value}}",
+    "notRead": "Koodia ei luettu",
+    "notReadHint": "Säilytä kuva: kirjoitat numeron seuraavassa vaiheessa.",
+    "retake": "Ota uudelleen",
+    "use": "Käytä",
+    "focus": "Tarkenna",
+    "stepCount": "{{current}}/{{total}}",
+    "frameHint": "Rajaa kortti kehyksen sisään",
+    "searching": "Etsitään koodia…",
+    "chooseFromPhotos": "Valitse Kuvista",
+    "shoot": "Ota kuva",
+    "skip": "Ohita"
+  },
+  "cardDetail": {
+    "code": "Koodi",
+    "photo": "Kuva",
+    "barcodeLabel": "Viivakoodi",
+    "barcodePhotoLabel": "Kuva viivakoodista",
+    "fullScreenHint": "Avaa koodin koko näytölle",
+    "noCode": "Ei koodia. Kuvaa tai kirjoita se napauttamalla ”Muokkaa”.",
+    "tapHint": "Suurenna koodi napauttamalla sitä",
+    "person": "Henkilö"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Järjestystä ei voitu tallentaa",
+    "editCategory": "Muokkaa kategoriaa",
+    "deleteCategory": "Poista kategoria",
+    "reorderTitle": "Järjestä kortit",
+    "reorderHint": "Paina korttia pitkään ja vedä se haluamaasi kohtaan.",
+    "yourCards": "Korttisi",
+    "title": "Kortit",
+    "subtitle": "Näytä koodi kassalla napauttamalla korttia",
+    "categoryMenuLabel": "Muokkaa tai poista kategoria {{name}}",
+    "addCard": "Lisää kortti",
+    "reorder": "Järjestä",
+    "newCard": "Uusi kortti",
+    "cardDetails": "Kortin tiedot",
+    "categoryMenuTitle": "Kategoria {{name}}",
+    "cardCount_one": "{{count}} kortti",
+    "cardCount_other": "{{count}} korttia",
+    "cardOpenLabel": "{{label}}, sulje",
+    "cardClosedLabel": "{{label}}, näytä koodi",
+    "qrLabel": "Kortin QR-koodi",
+    "barcodeLabel": "Kortin viivakoodi",
+    "fullScreenHint": "Avaa koodin koko näytölle",
+    "noCode": "Ei koodia: kuvaa tai kirjoita se kohdasta Tiedot › Muokkaa.",
+    "details": "Tiedot"
+  },
+  "walletCard": {
+    "untitled": "Uusi kortti"
+  },
+  "barcodeView": {
+    "close": "Sulje koodi"
+  },
+  "colorPicker": {
+    "color": "Väri",
+    "custom": "Oma väri",
+    "hex": "Koodi",
+    "hexLabel": "Värikoodi"
+  },
+  "colorWheel": {
+    "label": "Väriympyrä: valitse napauttamalla tai vetämällä",
+    "nextHue": "Seuraava sävy",
+    "previousHue": "Edellinen sävy"
+  },
+  "newCard": {
+    "title": "Uusi kortti",
+    "missingCategory": "Kategoriaa ”Kortit” ei ole enää olemassa."
+  },
+  "editCard": {
+    "title": "Muokkaa korttia"
+  },
+  "unlock": {
+    "storeOnly": "Saatavilla App Store ‑versiossa",
+    "remainingNone": "Olet käyttänyt kaikki ilmaiset paikat.",
+    "remaining_one": "Voit lisätä vielä {{count}}.",
+    "remaining_other": "Voit lisätä vielä {{count}}.",
+    "tag": "Ilmaisversio · {{used}}/{{limit}} käytetty",
+    "title": "Kaikki asiakirjasi ilman rajoja",
+    "intro": "Ilmainen enintään {{limit}} asiakirjalle ja kortille. Lisää niin monta kuin haluat avaamalla rajoitukset yhdellä maksulla.",
+    "benefits": {
+      "unlimited": {
+        "title": "Rajattomasti asiakirjoja",
+        "text": "Laskut, kortit, takuut ja kaikki muu"
+      },
+      "reminders": {
+        "title": "Muistutukset eräpäivistä",
+        "text": "Muistutamme ennen kuin on liian myöhäistä"
+      },
+      "offline": {
+        "title": "Toimii ilman internetiä",
+        "text": "Kaikki pysyy puhelimessasi, myös varmuuskopio"
+      },
+      "family": {
+        "title": "Koko perhe",
+        "text": "Profiili jokaiselle kotona"
+      }
+    },
+    "sectionTitle": "Ilmaisversiosi",
+    "usageLabel": "Asiakirjat ja kortit",
+    "usageValue": "{{used}}/{{limit}}",
+    "usageA11y": "Käytetyt ilmaiset paikat",
+    "keptNote": "Jo tallennetut ovat aina sinun, vaikka et avaisi rajoituksia.",
+    "priceTitle": "Ikuisesti",
+    "priceText": "Ei rajoja · yksi maksu",
+    "buy": "Avaa hintaan {{price}}",
+    "continueFree": "Jatka ilmaiseksi",
+    "restore": "Palauta osto",
+    "terms": "Ehdot",
+    "privacy": "Yksityisyys"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Kategoria ”Muut”",
+    "otherCategoryMessage": "Sitä ei voi poistaa: siinä ovat poistettujen kategorioiden asiakirjat."
+  },
+  "quickActionMenu": {
+    "close": "Sulje valikko"
+  },
+  "quickActions": {
+    "open": "Avaa",
+    "unpin": "Poista suosikeista",
+    "pin": "Lisää suosikkeihin",
+    "moveToTrash": "Siirrä roskakoriin",
+    "editCategory": "Muokkaa kategoriaa",
+    "deleteCategory": "Poista kategoria",
+    "editPerson": "Muokkaa henkilöä",
+    "deletePerson": "Poista henkilö"
+  },
+  "shareCopies": {
+    "defaultName": "Asiakirja",
+    "fileNotFound": "Tiedostoa ei löydy puhelimesta."
+  },
+  "sendCompression": {
+    "tooBig": "Se ylittää rajan suurimmallakin pakkauksella: harkitse jakamista useaan tiedostoon.",
+    "lowPpi": "Pieni teksti ei ehkä ole luettavaa."
+  },
+  "sendPreferences": {
+    "original": "Alkuperäinen"
+  },
+  "sendFileName": {
+    "fallback": "asiakirja"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Etu- ja takapuolta ei voi yhdistää juuri nyt.",
+    "noPhotos": "Ei lähetettäviä kuvia.",
+    "fileFront": "etupuoli",
+    "fileBack": "takapuoli",
+    "filePage": "sivu-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "asiakirjat",
+    "title": "Lähetä {{title}}",
+    "formatPhotos": "Kuvat",
+    "actions": {
+      "email": "Sähköposti",
+      "whatsapp": "WhatsApp",
+      "print": "Tulosta",
+      "save": "Tallenna Tiedostoihin",
+      "copy": "Kopioi",
+      "other": "Lisää"
+    },
+    "alerts": {
+      "savedToFiles": "Tallennettu Tiedostoihin",
+      "imageCopied": "Kuva kopioitu",
+      "textCopied": "Teksti kopioitu",
+      "firstPageCopied": "Ensimmäinen sivu kopioitiin: liitä se viestiin.",
+      "pasteImage": "Liitä se viestiin tai muistiinpanoon.",
+      "pdfNotCopied": "PDF:ää ei voi kopioida: nimi ja muistiinpano kopioitiin. Käytä tiedostolle Lisää-toimintoa.",
+      "failed": "Toimintoa ei voitu suorittaa"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDF:ää",
+      "singlePdf": "Yksi PDF",
+      "failed": "Tiedostoa ei voitu valmistella",
+      "preparing": "Valmistellaan…"
+    },
+    "includeNote": "Liitä asiakirjan muistiinpano",
+    "noNote": "Tässä asiakirjassa ei ole muistiinpanoa.",
+    "frontBackPage": "Etu- ja takapuoli samalle sivulle",
+    "frontBackImage": "Etu- ja takapuoli samaan kuvaan",
+    "maxSize": "Enimmäiskoko",
+    "pdfAsIs": "PDF lähetetään sellaisenaan.",
+    "severalInfo": "Yksi PDF: asiakirjat peräkkäin, henkilöpapereiden ja korttien etu- ja takapuoli samalla sivulla.",
+    "quality": {
+      "high": "Korkea laatu",
+      "good": "Hyvä laatu",
+      "low": "Matala laatu",
+      "minimum": "Alin laatu",
+      "original": "Alkuperäinen laatu"
+    },
+    "skipped_one": "{{count}} asiakirja ilman kuvia jää pois (tuotuja PDF:iä ei voi vielä yhdistää).",
+    "skipped_other": "{{count}} asiakirjaa ilman kuvia jää pois (tuotuja PDF:iä ei voi vielä yhdistää)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Valmistellaan PDF:ää…",
+    "progressRetry": "Pienennetään kuvia (yritys {{attempt}})…",
+    "subtitle": "Laadittu {{date}} Sottomanolla · {{documents}}",
+    "subtitleWithTotal": "Laadittu {{date}} Sottomanolla · {{documents}} · yhteensä {{total}}",
+    "columns": {
+      "number": "Nro",
+      "document": "Asiakirja",
+      "date": "Päivämäärä",
+      "person": "Henkilö",
+      "amount": "Summa",
+      "page": "Sivu"
+    },
+    "sentApart": "lähetetty erikseen",
+    "noPages": "ei sivuja",
+    "paid": "maksettu",
+    "due": "maksamatta",
+    "invalidIndex": "Virheellinen luettelo"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Yhtä PDF:ää ei voi yhdistää (salasanasuojattu tai vioittunut): {{titles}}. Luettelossa se on merkitty ”lähetetty erikseen”, ja se lähtee muiden mukana.",
+    "sentApart_other": "{{count}} PDF:ää ei voi yhdistää (salasanasuojattuja tai vioittuneita): {{titles}}. Luettelossa ne on merkitty ”lähetetty erikseen”, ja ne lähtevät muiden mukana.",
+    "alerts": {
+      "prepareFailed": "PDF:n valmistelu epäonnistui",
+      "ready": "PDF valmis",
+      "noMailTitle": "Mailia ei ole määritetty",
+      "noMailMessage": "Lisää tili Mailiin tai tallenna PDF:t Tiedostoihin.",
+      "savedToFiles": "Tallennettu Tiedostoihin",
+      "sendFailed": "Lähetys epäonnistui"
+    },
+    "readyMany": "{{number}} PDF:ää valmiina",
+    "choices": {
+      "email": "Sähköposti: kaikki PDF:t yhdessä viestissä",
+      "save": "Tallenna Tiedostoihin: kaikki samaan kansioon",
+      "oneByOne": "Jaa yksi kerrallaan"
+    },
+    "intro": "Kaikki kategorian {{category}} asiakirjat vuosittain jaettuina: yksi PDF kultakin vuodelta luetteloineen (asiakirja, päivämäärä, henkilö, summa, sivu) ja loppusummineen. Vuosi on eräpäivän tai maksun vuosi; jos kumpaakaan ei ole, lisäysvuosi.",
+    "noDocuments": "Ei asiakirjoja tältä vuodelta.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF:ää",
+    "year": "Vuosi",
+    "allYears": "Kaikki vuodet",
+    "maxPhotoSize": "Kuvien enimmäiskoko",
+    "limitInfo": "Kuvia pienennetään, jotta raja ei ylity; tuodut PDF:t pysyvät ennallaan.",
+    "prepare": "Valmistele ja lähetä"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Jokin meni vikaan",
+      "restoredToOther": "Palautettu kohtaan Muut",
+      "restoredPassword": "Sen kategoriaa ei ole enää: asiakirja on kohdassa Muut ilman käyttäjänimeä ja salasanaa.",
+      "restoredMessage": "Sen kategoriaa ei ole enää: asiakirja on kohdassa Muut.",
+      "deleteTitle": "Poistetaanko ”{{title}}” pysyvästi?",
+      "deleteMessage": "Myös sen kuvat ja PDF:t poistetaan. Tätä ei voi kumota.",
+      "emptyTitle": "Tyhjennetäänkö roskakori?",
+      "emptyMessage_one": "Asiakirja poistetaan kuvineen ja PDF:ineen. Tätä ei voi kumota.",
+      "emptyMessage_other": "{{count}} asiakirjaa poistetaan kuvineen ja PDF:ineen. Tätä ei voi kumota.",
+      "emptyConfirm": "Tyhjennä"
+    },
+    "intro": "Poistetut asiakirjat säilyvät täällä {{days}} päivää, minkä jälkeen ne poistetaan kuvineen ja PDF:ineen.",
+    "empty": "Roskakori on tyhjä",
+    "deletedSoon": "Poistetaan pian",
+    "deletedIn": "Poistetaan {{days}} päivän päästä",
+    "restoreLabel": "Palauta {{title}}",
+    "deleteForeverLabel": "Poista {{title}} pysyvästi",
+    "deleteForever": "Poista pysyvästi",
+    "emptyTrash": "Tyhjennä roskakori"
+  },
+  "menu": {
+    "close": "Sulje valikko",
+    "home": "Koti",
+    "favorites": "Suosikit",
+    "deadlines": "Eräpäivät",
+    "deadlinesUrgent": "Eräpäivät, {{number}} tarkistettavana",
+    "family": "Perhe",
+    "cards": "Kortit",
+    "backup": "Varmuuskopio",
+    "backupDue": "Varmuuskopio, aika tehdä",
+    "help": "Ohjeet ja yhteystiedot",
+    "rate": "Arvioi Sottomano",
+    "recommend": "Suosittele ystävälle",
+    "trash": "Roskakori",
+    "trashCount": "Roskakori, {{number}}",
+    "password": "Salasanat",
+    "scan": "Skannaa",
+    "fromPhotos": "Kuvista",
+    "importFiles": "Tuo tiedostoja",
+    "version": "Versio {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Sulje ilmoitukset",
+    "title": "Ilmoitukset",
+    "markAllRead": "Merkitse luetuiksi",
+    "empty": "Ei ilmoituksia viimeisen 7 päivän ajalta.",
+    "today": "Tänään",
+    "thisWeek": "Tällä viikolla",
+    "settings": "Ilmoitusasetukset",
+    "unreadItem": "Lukematon. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Se vanheni {{date}}.",
+    "expiresToday": "Se vanhenee tänään.",
+    "expiresOn": "Se vanhenee {{distance}}, {{date}}.",
+    "amount": "Summa {{amount}}.",
+    "backupTitle": "Varmuuskopio",
+    "backupLate": "Asiakirjojesi edellisestä varmuuskopiosta on jo aikaa.",
+    "backupNever": "Et ole vielä varmuuskopioinut asiakirjojasi."
+  },
+  "deadlineReminders": {
+    "title": "Lähestyvä eräpäivä",
+    "hiddenBody": "Asiakirja vanhenee {{date}} ({{distance}}). Avaa Sottomano nähdäksesi sen.",
+    "body": "{{name}} vanhenee {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Ulkoasu",
+      "security": "Suojaus",
+      "reminders": "Muistutukset",
+      "backup": "Varmuuskopio",
+      "info": "Tietoja"
+    },
+    "calendarOff": "Pois",
+    "alerts": {
+      "notificationsOffTitle": "Ilmoitukset ovat pois päältä",
+      "notificationsOffMessage": "Saat muistutukset sallimalla Sottomanon ilmoitukset iPhonen Asetuksissa.",
+      "openSettings": "Avaa Asetukset"
+    },
+    "lastBackup": {
+      "never": "Ei koskaan",
+      "today": "Tänään",
+      "yesterday": "Eilen",
+      "daysAgo_one": "{{count}} päivä sitten",
+      "daysAgo_other": "{{count}} päivää sitten"
+    },
+    "categoryColors": "Kategorioiden värit",
+    "faceId": "Lukitse Face ID:llä",
+    "faceIdSubtitle": "Kysyy kasvojasi aina, kun avaat apin",
+    "hidePreviews": "Piilota esikatselut",
+    "hidePreviewsSubtitle": "Ilmoitukset eivät näytä asiakirjaa",
+    "notifications": "Ilmoitukset",
+    "reminderTime": "Muistutuksen aika",
+    "defaultReminder": "Oletusmuistutus",
+    "iconBadge": "Kuvakemerkki",
+    "iconBadgeSubtitle": "Menneet tai 7 päivän sisällä olevat eräpäivät",
+    "calendar": "”Sottomano”-kalenteri",
+    "notificationsBlocked": "Ilmoitukset on estetty",
+    "notificationsBlockedSubtitle": "Salli ne iPhonen Asetuksissa",
+    "backupNote": "Varmuuskopio on puhelimeen Tiedostot-appiin tallennettu tiedosto. Voit kopioida sen minne haluat. Sottomano toimii myös ilman internetiä.",
+    "createBackup": "Varmuuskopioi nyt",
+    "restoreBackup": "Palauta varmuuskopiosta",
+    "help": "Ohjeet ja yhteystiedot",
+    "privacy": "Yksityisyys",
+    "terms": "Käyttöehdot",
+    "rate": "Arvioi Sottomano",
+    "debug": {
+      "limitPreview": "Ilmaisrajan esikatselu",
+      "limitPreviewSubtitle": "Vain testaukseen: näyttää lukitun +:n, rajapaneelin ja Kodin kortin",
+      "emptyHome": "Tyhjän Kodin esikatselu",
+      "emptyHomeSubtitle": "Vain testaukseen: Koti ikään kuin asiakirjoja ei olisi (tietosi säilyvät)",
+      "onboarding": "Näytä tervetulosivut uudelleen",
+      "onboardingSubtitle": "Vain testaukseen: tervetulosivut 1–4"
+    },
+    "version": "Sottomano · versio {{version}}",
+    "theme": {
+      "title": "Teema",
+      "autoSubtitle": "Seuraa puhelimen asetusta",
+      "auto": "Automaattinen",
+      "light": "Vaalea",
+      "dark": "Tumma"
+    }
+  },
+  "backup": {
+    "title": "Varmuuskopio",
+    "subtitle": "Kopio kaikista asiakirjoistasi, tallennettu puhelimeesi.",
+    "keyProgress": "Suojataan salasanallasi… tämä voi kestää minuutin",
+    "whenToday": "tänään klo {{time}}",
+    "whenDate": "{{date}} klo {{time}}",
+    "minLength": "Vähintään {{min}} merkkiä.",
+    "mismatch": "Salasanat eivät täsmää.",
+    "creating": "Luodaan varmuuskopiota…",
+    "copyDialogTitle": "Kopioi varmuuskopio",
+    "opening": "Avataan varmuuskopiota…",
+    "checking": "Tarkistetaan asiakirjoja…",
+    "restoring": "Palautetaan…",
+    "keepOpen": "Pidä appi auki, kunnes se on valmis.",
+    "forgotWarning": "Jos unohdat salasanan, varmuuskopiota ei voi avata.",
+    "passwordPlaceholder": "Salasana (vähintään {{min}} merkkiä)",
+    "repeatPlaceholder": "Toista salasana",
+    "createAndSave": "Luo ja tallenna",
+    "backupPassword": "Varmuuskopion salasana",
+    "openBackup": "Avaa varmuuskopio",
+    "completed": "Varmuuskopio valmis",
+    "lastBackup": "Edellinen varmuuskopio",
+    "path": "Sottomano › Varmuuskopio › {{name}}",
+    "copyElsewhere": "Kopioi tiedosto muualle",
+    "createNew": "Luo uusi varmuuskopio",
+    "noneTitle": "Et ole vielä tehnyt varmuuskopiota",
+    "noneText": "Jos kadotat tai vaihdat puhelimen, varmuuskopio tuo kaiken takaisin.",
+    "createNow": "Varmuuskopioi nyt",
+    "restoreSection": "Palauta",
+    "restoreTitle": "Uusi puhelin?",
+    "restoreText": "Valitse varmuuskopiotiedosto, niin saat asiakirjat, kortit ja muistutukset takaisin.",
+    "chooseFile": "Valitse varmuuskopio",
+    "remindersSection": "Muistutukset",
+    "remindMe": "Muistuta varmuuskopioinnista",
+    "remindMeValue": "Muistuta varmuuskopioinnista: {{value}}",
+    "footnote": "Varmuuskopio on yksi tiedosto, jonka suojaa valitsemasi salasana: asiakirjat, kuvat, kortit, henkilöt ja muistutukset. Kopioi se muualle (Tiedostot, iCloud Drive, tietokone), niin se säilyy, vaikka kadottaisit puhelimen.",
+    "alerts": {
+      "createFailed": "Varmuuskopiointi epäonnistui",
+      "copyFailed": "Kopiointi epäonnistui",
+      "restoreTitle": "Palautetaanko varmuuskopio ajalta {{date}}?",
+      "restoreMessage_one": "Siinä on {{count}} asiakirja. Apissa nyt oleva korvataan.",
+      "restoreMessage_other": "Siinä on {{count}} asiakirjaa. Apissa nyt oleva korvataan.",
+      "restoreFailed": "Palautus epäonnistui",
+      "restoreFailedMessage": "Apissa ei muuttunut mitään.\n\n{{reason}}",
+      "restored": "Varmuuskopio palautettu",
+      "restoredMessage": "Asiakirjasi ovat palanneet."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Viikoittain",
+      "month": "Kuukausittain",
+      "never": "Ei koskaan"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Tämä tiedosto ei ole Sottomanon varmuuskopio.",
+    "newerVersion": "Tämä varmuuskopio on tehty Sottomanon uudemmalla versiolla. Päivitä appi ja yritä uudelleen.",
+    "empty": "Varmuuskopiotiedosto on tyhjä tai keskeneräinen.",
+    "incomplete": "Varmuuskopiotiedosto on keskeneräinen.",
+    "wrongPassword": "Väärä salasana. Tarkista isot ja pienet kirjaimet ja yritä uudelleen.",
+    "damaged": "Varmuuskopiotiedosto on vioittunut tai keskeneräinen."
+  },
+  "createBackup": {
+    "incompleteFile": "Keskeneräinen tiedosto: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Varmuuskopion sisältö ei kelpaa.",
+    "newerApp": "Tämä varmuuskopio on Sottomanon uudemmasta versiosta. Päivitä appi ja yritä uudelleen."
+  },
+  "zipReader": {
+    "invalid": "Virheellinen arkisto",
+    "incomplete": "Keskeneräinen arkisto"
+  },
+  "backupReminder": {
+    "none": "Et ole vielä tehnyt varmuuskopiota",
+    "old_one": "Edellinen varmuuskopio tehtiin {{count}} päivä sitten",
+    "old_other": "Edellinen varmuuskopio tehtiin {{count}} päivää sitten",
+    "link": "Varmuuskopioi nyt",
+    "close": "Sulje ilmoitus",
+    "snooze_one": "Piilota {{count}} päiväksi",
+    "snooze_other": "Piilota {{count}} päiväksi"
+  },
+  "calendarSettings": {
+    "title": "Kalenteri",
+    "intro": "Eräpäivät tallennetaan erilliseen ”Sottomano”-kalenteriin. Voit piilottaa sen Kalenteri-apissa; jos laitat sen pois tästä, se poistetaan.",
+    "details": "Jokainen eräpäivä on koko päivän tapahtuma ”Vanhenee: otsikko” ilman muita asiakirjan tietoja. Jos Sottomanon muistutukset ovat pois päältä, tapahtuma hälyttää klo 9.00 muistutuspäivänä; jos ne ovat päällä, vain appi hälyttää, jotta et saa kahta hälytystä.",
+    "allowAccess": "Salli Kalenterin käyttö",
+    "denied": "Kalenterin käyttö estettiin. Voit sallia sen iPhonen Asetuksissa.",
+    "openSettings": "Avaa Asetukset",
+    "switchLabel": "Eräpäivät ”Sottomano”-kalenteriin",
+    "enabled_one": "{{count}} eräpäivä ”Sottomano”-kalenterissa",
+    "enabled_other": "{{count}} eräpäivää ”Sottomano”-kalenterissa",
+    "removeConfirm": "Poistetaanko Sottomano-kalenteri ja kaikki sen eräpäivät Kalenterista?",
+    "remove": "Poista",
+    "removed": "”Sottomano”-kalenteri poistettu"
+  },
+  "calendarSync": {
+    "eventTitle": "Vanhenee: {{title}}",
+    "cannotCreate": "”Sottomano”-kalenteria ei voitu luoda tähän iPhoneen."
+  },
+  "appearance": {
+    "intro": "Oletuskategorioiden värit. Itse luomasi kategoriat säilyttävät oman värinsä.",
+    "restoreButton": "Palauta oletuskategoriat",
+    "restoreHint": "Tuo takaisin poistamasi oletuskategoriat.",
+    "paletteLabel": "Paletti {{name}}",
+    "alerts": {
+      "restoreTitle": "Palautetaanko oletuskategoriat?",
+      "restoreMessage": "Poistamasi palaavat alkuperäisellä nimellä, kuvakkeella ja värillä. Asiakirjasi ja luomasi kategoriat eivät muutu.",
+      "nothingTitle": "Ei palautettavaa",
+      "nothingMessage": "Kaikki oletuskategoriat ovat jo Kodissa.",
+      "restoredTitle": "Kategoriat palautettu",
+      "restoredMessage_one": "{{count}} kategoria on taas Kodissa ennen kohtaa ”Muut”.",
+      "restoredMessage_other": "{{count}} kategoriaa on taas Kodissa ennen kohtaa ”Muut”.",
+      "restoreFailed": "Palautus epäonnistui"
+    }
+  },
+  "about": {
+    "version": "Versio {{version}}",
+    "privacy": "Yksityisyys",
+    "privacyFooter": "Jos otat Kalenterin käyttöön, eräpäivät kirjoitetaan valitsemaasi iPhonen kalenteriin. Kun lähetät asiakirjan, päätät itse, kenen kanssa jaat sen.",
+    "onPhone": "Asiakirjasi pysyvät puhelimessasi",
+    "offline": "Ei tiliä eikä palvelinta: toimii myös offline-tilassa",
+    "noTracking": "Ei seurantaa eikä mainoksia"
+  },
+  "terms": {
+    "intro": "Täydelliset käyttöehdot julkaistaan App Store ‑version yhteydessä. Lyhyesti:",
+    "free": "Sottomano on ilmainen enintään {{limit}} asiakirjalle ja kortille",
+    "oneTime": "Avaaminen on kertaostos ilman tilausta",
+    "yours": "Asiakirjasi pysyvät puhelimessasi ja kuuluvat sinulle",
+    "backup": "Tee varmuuskopio, jotta et menetä niitä puhelinta vaihtaessasi"
+  },
+  "limit": {
+    "later": "Myöhemmin",
+    "title": "Olet käyttänyt {{limit}} ilmaista paikkaasi",
+    "text": "Kaikki tallentamasi pysyy täällä ja toimii kuten ennenkin. Lisää asiakirjoja ja kortteja avaamalla Sottomanon rajoitukset.",
+    "stillWorks": {
+      "view": "Asiakirjojen katselu",
+      "send": "Lähettäminen ja jakaminen",
+      "cards": "Korttien näyttäminen kassalla",
+      "reminders": "Muistutukset"
+    },
+    "blocked": "Uusien asiakirjojen ja korttien lisääminen",
+    "unlock": "Poista rajat hintaan {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}}/{{limit}} ilmaista paikkaa käytetty",
+    "accessibility": "{{title}}. Avaa",
+    "unlock": "Avaa"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Ilmaisversio: {{used}}/{{limit}} käytetty",
+    "titleMenu": "Ilmainen: {{used}}/{{limit}} käytetty",
+    "subtitle": "Poista rajat hintaan {{price}}",
+    "accessibility": "{{title}}. Poista rajat hintaan {{price}}",
+    "unlock": "Avaa"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Tervetuloa Sottomanoon",
+        "text": "Henkilökortit, kanta-asiakaskortit, laskut, takuut: kaikki kodin asiakirjat yhdessä paikassa, aina käden ulottuvilla.",
+        "info": "Ne pysyvät puhelimessasi ja toimivat ilman internetiäkin"
+      },
+      "scan": {
+        "title": "Kuvaa kerran",
+        "text": "Skannaa useitakin sivuja tai tuo kuvia ja PDF:iä. Löydät ne järjestyksessä ja lähetät niin kevyinä kuin tarvitaan."
+      },
+      "deadlines": {
+        "title": "Pidämme eräpäivät mielessä",
+        "text": "Muistutamme ennen kuin lasku erääntyy tai asiakirja vanhenee. Halutessasi myös Kalenterissa."
+      },
+      "cards": {
+        "title": "Kortit aina taskussa",
+        "text": "Kuvaa kanta-asiakaskorttisi: kassalla näytät viivakoodin tai QR-koodin yhdellä napautuksella."
+      }
+    },
+    "skip": "Ohita",
+    "pageOf": "Sivu {{page}}/{{total}}",
+    "start": "Aloita",
+    "restore": "Palauta varmuuskopiosta",
+    "art": {
+      "bills": "Laskut",
+      "cards": "Kortit",
+      "health": "Terveys",
+      "car": "Auto",
+      "pdfReady": "PDF valmis",
+      "billTitle": "Sähkölasku",
+      "billExpires": "Erääntyy 2 päivän päästä",
+      "gym": "Kuntosali",
+      "library": "Kirjasto",
+      "supermarket": "Ruokakauppa"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Tiedostoa ei voitu avata",
+    "title": "Kuvaa ensimmäinen asiakirjasi",
+    "text": "Lasku, henkilökorttisi tai pesukoneen takuu: muutamassa sekunnissa se on tallessa ja aina käden ulottuvilla.",
+    "snap": "Kuvaa asiakirja",
+    "pdf": "Lataa PDF",
+    "folders": "Kansiosi",
+    "emptyAccessibility": "{{name}}, tyhjä",
+    "empty": "Tyhjä",
+    "newCategory": "Uusi kategoria"
+  },
+  "splashOverlay": {
+    "tagline": "Kodin asiakirjat valmiina lähetettäviksi"
+  },
+  "appActions": {
+    "shareText": "Suosittelen Sottomanoa: kodin asiakirjat, kortit ja eräpäivät aina käden ulottuvilla, puhelimessa ja ilman internetiäkin.",
+    "rateTitle": "Arvioi Sottomano",
+    "rateMessage": "Voit antaa arvion, kun Sottomano on App Storessa.",
+    "lockUnavailableTitle": "Lukitus ei ole käytettävissä",
+    "lockUnavailableMessage": "Sottomanon lukitseminen vaatii iPhoneen pääsykoodin. Aseta se kohdassa Asetukset › Face ID ja pääsykoodi ja yritä uudelleen."
+  }
+}

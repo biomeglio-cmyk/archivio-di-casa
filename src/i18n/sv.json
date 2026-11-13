@@ -1,1 +1,1585 @@
-{}
+{
+  "common": {
+    "cancel": "Avbryt",
+    "ok": "OK",
+    "done": "Klar",
+    "save": "Spara",
+    "delete": "Radera",
+    "edit": "Redigera",
+    "close": "Stäng",
+    "confirm": "Bekräfta",
+    "back": "Tillbaka",
+    "next": "Nästa",
+    "share": "Dela",
+    "send": "Skicka",
+    "search": "Sök",
+    "add": "Lägg till",
+    "remove": "Ta bort",
+    "retry": "Försök igen",
+    "continue": "Fortsätt",
+    "yes": "Ja",
+    "no": "Nej",
+    "restore": "Återställ",
+    "settings": "Inställningar",
+    "more": "Mer",
+    "none": "Ingen",
+    "documents_one": "{{count}} dokument",
+    "documents_other": "{{count}} dokument",
+    "pages_one": "{{count}} sida",
+    "pages_other": "{{count}} sidor",
+    "photos_one": "{{count}} bild",
+    "photos_other": "{{count}} bilder",
+    "wholeFamily": "Hela familjen"
+  },
+  "dates": {
+    "today": "i dag",
+    "tomorrow": "i morgon",
+    "yesterday": "i går",
+    "inSpan": "om {{span}}",
+    "spanAgo": "för {{span}} sedan",
+    "expiredYesterday": "gick ut i går",
+    "expiredFor": "gick ut för {{span}} sedan",
+    "days_one": "{{count}} dag",
+    "days_other": "{{count}} dagar",
+    "months_one": "{{count}} månad",
+    "months_other": "{{count}} månader",
+    "years_one": "{{count}} år",
+    "years_other": "{{count}} år"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Dokument",
+      "cards": "Kort",
+      "utilities": "Räkningar",
+      "home": "Bostad",
+      "insurance": "Försäkringar",
+      "warranties": "Garantier & kvitton",
+      "car": "Bil",
+      "tax": "Avdragsgillt",
+      "householdStaff": "Hushållshjälp",
+      "school": "Skola",
+      "pet": "Husdjur",
+      "password": "Lösenord",
+      "other": "Övrigt"
+    }
+  },
+  "language": {
+    "title": "Språk",
+    "auto": "Automatiskt",
+    "autoSubtitle": "Följer telefonens språk",
+    "search": "Sök språk",
+    "autoDetail": "iPhone-språk: {{language}}",
+    "noResults": "Inga språk för ”{{query}}”"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastell",
+    "vivid": "Livfull",
+    "earth": "Jord",
+    "sea": "Hav",
+    "sunset": "Solnedgång",
+    "night": "Natt"
+  },
+  "home": {
+    "welcome": "Välkommen till Sottomano",
+    "hello": "Hej!",
+    "searchPlaceholder": "Sök efter ett dokument",
+    "favorites": "Favoriter",
+    "seeAll": "Visa alla",
+    "seeAllFavorites": "Visa alla favoriter",
+    "deadlines": "Förfallodagar",
+    "seeAllDeadlines": "Visa alla förfallodagar",
+    "archive": "Arkiv",
+    "reorderDone": "Klar med ordningen",
+    "reorder": "Ändra ordning",
+    "reorderCategories": "Ändra ordning på kategorier",
+    "reorderHint": "Dra kategorierna i den ordning du vill.",
+    "alerts": {
+      "orderNotSaved": "Det gick inte att spara ordningen"
+    },
+    "newCategory": "Ny kategori"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} kort",
+    "cards_other": "{{count}} kort"
+  },
+  "folder": {
+    "paidOn": "Betald {{date}}",
+    "expiredOn": "Gick ut {{date}}",
+    "expiresOn": "Går ut {{date}}",
+    "addedOn": "Tillagd {{date}}",
+    "newItem": {
+      "bill": "Ny räkning",
+      "card": "Nytt kort",
+      "warranty": "Ny garanti",
+      "password": "Nytt lösenord",
+      "document": "Nytt dokument"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Alla",
+      "documents": "Dokument",
+      "cards": "Kort",
+      "deadlines": "Förfallodagar"
+    },
+    "paid": "betald",
+    "expiresOn": "går ut {{date}}",
+    "folderSubtitle_one": "Mapp · {{count}} dokument",
+    "folderSubtitle_other": "Mapp · {{count}} dokument",
+    "card": "Kort",
+    "deadlineSubtitle": "Förfallodag · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Sök efter ett dokument",
+    "fieldLabel": "Sök bland dina dokument",
+    "filter": "Filter",
+    "results_one": "{{count}} träff",
+    "results_other": "{{count}} träffar",
+    "noResults": "Inga träffar",
+    "noResultsHint": "Prova ett annat ord, till exempel namnet på en butik.",
+    "hint": "Sök bland namn, mappar, typer, anteckningar, kort och förfallodagar."
+  },
+  "navigation": {
+    "home": "Hem",
+    "favorites": "Favoriter",
+    "family": "Familj",
+    "deadlines": "Förfallodagar",
+    "deadlinesToCheck_one": "Förfallodagar, {{count}} att kolla",
+    "deadlinesToCheck_other": "Förfallodagar, {{count}} att kolla",
+    "addLocked": "Lägg till dokument, låst: gratisgränsen är nådd",
+    "addDocument": "Lägg till ett dokument",
+    "titles": {
+      "editDocument": "Redigera dokument",
+      "pages": "Sidor",
+      "deadline": "Förfallodag",
+      "renewed": "Förnyat",
+      "previousVersion": "Tidigare version",
+      "newDocument": "Nytt dokument",
+      "appearance": "Utseende",
+      "backup": "Säkerhetskopia",
+      "taxPackage": "Skicka till revisorn",
+      "trash": "Papperskorg",
+      "terms": "Användarvillkor",
+      "about": "Om och integritet",
+      "newCard": "Nytt kort",
+      "editCard": "Redigera kort"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Dra för att flytta, eller använd åtgärderna Flytta upp och Flytta ned",
+    "moveEarlier": "Flytta upp",
+    "moveLater": "Flytta ned",
+    "footer": "Kort, personerna i Familj och Favoriter ordnar du på samma sätt: håll kvar på en rad och dra i handtaget till höger."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Håll kvar: dra för att flytta, eller släpp för åtgärder"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Det gick inte att spara ordningen"
+    },
+    "reorderTitle": "Ändra ordning på favoriter",
+    "reorderHint": "Håll kvar på en favorit och dra den dit du vill.",
+    "yourFavorites": "Dina favoriter",
+    "title": "Favoriter",
+    "subtitle": "Det du valt att ha nära till hands",
+    "searchPlaceholder": "Sök bland favoriter",
+    "viewList": "Lista",
+    "viewGrid": "Rutnät",
+    "count_one": "{{count}} favorit",
+    "count_other": "{{count}} favoriter",
+    "noMatch": "Inga favoriter matchar ”{{query}}”.",
+    "empty": "Du har inga favoriter än.",
+    "footer": "Tryck på hjärtat på ett dokument för att lägga till det här.",
+    "footerGrid": "Tryck på hjärtat på ett dokument för att lägga till det här. Håll kvar på en ruta och dra för att ändra ordning.",
+    "footerList": "Tryck på hjärtat på ett dokument för att lägga till det här. Håll kvar på en rad för att ändra ordning.",
+    "rowHint": "Håll kvar för att ändra ordning på favoriter",
+    "unpin": "Ta bort från favoriter",
+    "expires": "går ut {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} att betala",
+    "alerts": {
+      "orderNotSaved": "Det gick inte att spara ordningen"
+    },
+    "actions": {
+      "editCategory": "Redigera kategori",
+      "sendToAccountant": "Skicka till revisorn",
+      "selectAndSend": "Välj och skicka",
+      "reorder": "Ändra ordning",
+      "deleteCategory": "Radera kategori"
+    },
+    "moreLabel": "Redigera eller radera kategorin {{name}}",
+    "searchIn": "Sök i {{name}}",
+    "viewList": "Lista",
+    "viewGrid": "Rutnät",
+    "reorderHint": "Håll kvar och dra dokumenten i den ordning du vill.",
+    "allTypes": "Alla",
+    "noDocumentsFound": "Inga dokument hittades.",
+    "sendTogether": "Skicka tillsammans ({{count}})",
+    "sheetTitle": "Kategorin {{name}}"
+  },
+  "folderRow": {
+    "due": "att betala",
+    "paid": "betald"
+  },
+  "homeSections": {
+    "expired": "Utgånget",
+    "expiresToday": "Går ut i dag",
+    "expiresTomorrow": "Går ut i morgon",
+    "expiresInDays_one": "Går ut om {{count}} dag",
+    "expiresInDays_other": "Går ut om {{count}} dagar",
+    "expiresOn": "Går ut {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Ta bort från favoriter",
+    "pin": "Lägg till i favoriter"
+  },
+  "searchBar": {
+    "clear": "Rensa text"
+  },
+  "documentGrid": {
+    "addDocument": "Lägg till dokument"
+  },
+  "homeHeader": {
+    "menu": "Meny",
+    "notifications": "Notiser",
+    "notificationsUnread_one": "Notiser, {{count}} oläst",
+    "notificationsUnread_other": "Notiser, {{count}} olästa"
+  },
+  "demoData": {
+    "people": {
+      "step": "Steg",
+      "mom": "Mamma",
+      "dad": "Pappa"
+    },
+    "documents": {
+      "idCard": "ID-kort",
+      "drivingLicence": "Körkort",
+      "passport": "Pass",
+      "electricityBill": "Elräkning",
+      "carInsurance": "Bilförsäkring",
+      "carTax": "Fordonsskatt",
+      "washingMachineWarranty": "Garanti tvättmaskin",
+      "gymCard": "Gymkort",
+      "rentalContract": "Hyreskontrakt",
+      "pharmacyReceipt": "Apotekskvitto",
+      "reportCard": "Skolbetyg"
+    },
+    "notes": {
+      "electricityBill": "Autogiro från banken"
+    }
+  },
+  "documentTypes": {
+    "documents": "ID-kort|Körkort|Pass|EU-kort|Personbevis",
+    "cards": "Bonuskort|Gym|Bibliotek|Kollektivtrafik|Medlemskort",
+    "utilities": "El|Gas|Vatten|Internet|Telefon|Sophämtning",
+    "home": "Hyra|Bolån|Avgift|Underhåll|Kontrakt",
+    "insurance": "Bil|Hem|Sjukvård|Liv|Resa",
+    "warranties": "Vitvaror|Elektronik|Möbler|Kvitto",
+    "car": "Fordonsskatt|Försäkring|Besiktning|Service|Registrering",
+    "tax": "Apotek|Läkarbesök|Tandläkare|Provtagning|Sport|Skola",
+    "householdStaff": "Lönebesked|Avgifter|Kontrakt",
+    "school": "Inskrivning|Betyg|Intyg|Skolmat|Skolresa",
+    "pet": "Hälsobok|Vaccin|Veterinärbesök|Mikrochip",
+    "password": "E-post|Bank|Sociala medier|Wi‑Fi|Jobb"
+  },
+  "pageLabels": {
+    "front": "Framsida",
+    "back": "Baksida",
+    "page": "Sida {{number}}"
+  },
+  "statusBadge": {
+    "due": "Att betala",
+    "paid": "Betald"
+  },
+  "addActions": {
+    "openFileFailed": "Det gick inte att öppna filen"
+  },
+  "pickFiles": {
+    "takePhoto": "Ta bild",
+    "choosePhoto": "Välj bland bilder",
+    "removePhoto": "Ta bort bild"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Flera sidor",
+      "text": "Du kan skanna flera sidor i rad: rama in nästa sida innan du trycker på Spara."
+    },
+    "cardTip": {
+      "title": "Äkta färger",
+      "text": "För kortets äkta färger trycker du på filterknappen i skannern och väljer ”Foto”."
+    },
+    "gotIt": "Uppfattat"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Kameraåtkomst krävs",
+    "permissionText": "Sottomano använder kameran bara för att fotografera dina dokument.",
+    "allow": "Tillåt",
+    "openSettings": "Öppna Inställningar",
+    "readable": "Går det att läsa?",
+    "pageReadable": "Sida {{number}}: går det att läsa?",
+    "retake": "Ta om",
+    "addPage": "Lägg till sida",
+    "frameDocument": "Rama in dokumentet",
+    "framePage": "Rama in sida {{number}}",
+    "shoot": "Ta bild",
+    "finishWithPages_one": "Klar, {{count}} sida",
+    "finishWithPages_other": "Klar, {{count}} sidor"
+  },
+  "coverField": {
+    "label": "Omslag",
+    "photo": "Bild",
+    "color": "Färg",
+    "noPhotoHint": "Utan bild visas färgen: lägg till en sida för att använda dess bild som omslag.",
+    "categoryColor": "Mappens färg",
+    "colorNumber": "Färg {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Lägg till sidor",
+    "pinned": "I favoriter",
+    "pin": "Lägg till i favoriter",
+    "renewed": "Förnyat",
+    "delete": "Radera"
+  },
+  "documentFilesView": {
+    "document": "Dokument",
+    "openFailed": "Det gick inte att öppna dokumentet",
+    "pageOfSwipe": "Sida {{number}} av {{total}} · svep för att bläddra",
+    "openFullScreen": "{{label}}, öppna i helskärm",
+    "missingFile": "Filen finns inte på den här telefonen."
+  },
+  "filesEditor": {
+    "addBack": "Lägg till baksidan",
+    "addPage": "Lägg till sida",
+    "scan": "Skanna",
+    "photograph": "Ta bild",
+    "fromPhotos": "Från Bilder",
+    "scannerUnavailableTitle": "Skannern är inte tillgänglig",
+    "scannerUnavailableMessage": "Ta bort sidorna med ✕ och lägg till nya.",
+    "replacePdf": "Ersätt PDF",
+    "importPdf": "Importera en PDF",
+    "rescanAll": "Skanna om allt",
+    "openFileFailed": "Det gick inte att öppna filen",
+    "page": "Sida",
+    "newTag": "ny",
+    "moveBefore": "Flytta upp {{name}}",
+    "moveAfter": "Flytta ned {{name}}",
+    "removePage": "Ta bort {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Dokumentet hittades inte.",
+    "noPages": "Inga sidor",
+    "photoPages_one": "Bild, {{count}} sida",
+    "photoPages_other": "Bilder, {{count}} sidor",
+    "amount": "Belopp",
+    "expired": "utgånget",
+    "inDays_one": "om {{count}} dag",
+    "inDays_other": "om {{count}} dagar",
+    "deadline": "Förfallodag",
+    "folder": "Mapp",
+    "status": "Status",
+    "person": "Person",
+    "number": "Nummer",
+    "notes": "Anteckningar",
+    "inCalendar": "I kalendern",
+    "view": "Visa dokument",
+    "unpin": "Ta bort från favoriter",
+    "pin": "Lägg till i favoriter",
+    "addPages": "Lägg till sidor",
+    "renewed": "Förnyat",
+    "delete": "Radera",
+    "details": "Detaljer",
+    "remindMe": "Påminn mig",
+    "reminderNeedsDeadline": "Lägg till en förfallodag för att få en påminnelse",
+    "reminderWhen": "Påminnelse: {{when}}",
+    "noReminder": "Ingen påminnelse",
+    "previousVersions": "Tidigare versioner",
+    "versionUntil": "Till {{date}}",
+    "versionExpired": "gick ut {{date}}",
+    "paidOnMarkDue": "Betald {{date}} · markera som obetald",
+    "markDue": "Markera som obetald",
+    "markPaid": "Markera som betald",
+    "firstOf": "1 av {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Att betala",
+    "statusPaid": "Betald",
+    "saveFailed": "Det gick inte att spara",
+    "folder": "Mapp",
+    "person": "Person",
+    "type": "Typ",
+    "otherType": "Skriv en annan …",
+    "noType": "Ingen typ",
+    "typeExample": "Till exempel: El, Fordonsskatt, Tandläkare",
+    "dueOn": "Den {{date}}",
+    "noDeadline": "Ingen förfallodag",
+    "nameSection": "Namn",
+    "namePlaceholder": "Dokumentets namn",
+    "whereSection": "Var det ska sparas",
+    "choose": "Välj …",
+    "deadlineSection": "Förfallodag",
+    "addDeadline": "Lägg till förfallodag",
+    "remindMe": "Påminn mig",
+    "whenToRemind": "När du ska påminnas",
+    "repeats": "Upprepa",
+    "never": "Aldrig",
+    "everySpan": "Var {{span}}",
+    "every": "Var",
+    "notesSection": "Anteckningar",
+    "notesPlaceholder": "Till exempel: betalas via autogiro, begär återbetalning …",
+    "pin": "Lägg till i favoriter",
+    "pinSubtitle": "Hitta det direkt på hemskärmen",
+    "amountSection": "Belopp och status",
+    "amount": "Belopp",
+    "amountInEuro": "Belopp i euro",
+    "accessSection": "Inloggning",
+    "username": "Användarnamn",
+    "usernamePlaceholder": "namn@exempel.se",
+    "password": "Lösenord",
+    "passwordUnchanged": "•••••••• (oförändrat)",
+    "passwordNote": "Lösenordet sparas bara i iPhones nyckelring.",
+    "numberSection": "Dokumentnummer",
+    "numberPlaceholder": "T.ex. AB1234567",
+    "saveChanges": "Spara ändringar",
+    "saveDocument": "Spara dokument",
+    "amountHint": "Ange beloppet som {{example}}.",
+    "missingNameAndFolder": "Ange namn och välj mapp för att spara.",
+    "missingName": "Ange namn för att spara.",
+    "missingFolder": "Välj mapp för att spara.",
+    "deleteDocument": "Radera dokument"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Skanna",
+      "photos": "Från bilder",
+      "pdf": "Från PDF",
+      "card": "Kort",
+      "manual": "Manuellt"
+    },
+    "hintFirst": "Rama in dokumentet · håll telefonen stilla",
+    "hintNext": "Sida {{number}} tagen · rama in nästa",
+    "title": "Nytt dokument",
+    "flashOff": "Stäng av blixten",
+    "flashOn": "Slå på blixten",
+    "scanWithIos": "Skanna med iOS-skannern",
+    "tapToScan": "Tryck för att skanna: kanterna hittas automatiskt",
+    "permissionTitle": "Kameraåtkomst krävs",
+    "permissionText": "Sottomano använder den bara för att fotografera dina dokument.",
+    "allow": "Tillåt",
+    "openSettings": "Öppna Inställningar",
+    "howToAdd": "Hur du lägger till",
+    "chooseFromGallery": "Välj från bildbiblioteket",
+    "shoot": "Ta bild",
+    "goOnWith_one": "Fortsätt med {{count}} sida",
+    "goOnWith_other": "Fortsätt med {{count}} sidor",
+    "noPages": "Inga sidor",
+    "countNext": "nästa ›",
+    "countPages": "sidor"
+  },
+  "newDocument": {
+    "readTitle": "Läst från dokumentet",
+    "readText": "Namn hämtat från filen: {{name}}. Kontrollera och rätta vid behov.",
+    "checkTitle": "Kontrollera uppgifterna",
+    "checkText_one": "{{count}} sida tagen. Ange namnet och eventuell förfallodag: du hittar den under Förfallodagar.",
+    "checkText_other": "{{count}} sidor tagna. Ange namnet och eventuell förfallodag: du hittar den under Förfallodagar.",
+    "heading": "Nytt dokument"
+  },
+  "editDocument": {
+    "heading": "Redigera dokument"
+  },
+  "documentVersion": {
+    "replacedOn": "Ersatt {{date}}",
+    "expiredOn": "gick ut {{date}}",
+    "previewTitle": "{{title}} (tidigare version)"
+  },
+  "documentPages": {
+    "saveFailed": "Det gick inte att spara sidorna"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Det gick inte att radera",
+    "title": "Radera {{title}}?",
+    "message_one": "Dokumentet och dess påminnelse flyttas till papperskorgen. Du kan återställa det från Meny › Papperskorg i {{count}} dag.",
+    "message_other": "Dokumentet och dess påminnelse flyttas till papperskorgen. Du kan återställa det från Meny › Papperskorg i {{count}} dagar.",
+    "confirm": "Radera dokument"
+  },
+  "renew": {
+    "saveFailed": "Det gick inte att spara",
+    "deadline": "Förfallodag",
+    "repeatFooter": "{{repeat}}: det nya datumet räknas från det gamla.",
+    "was": "Tidigare",
+    "newDeadline": "Ny förfallodag",
+    "newDocument": "Nytt dokument",
+    "withScanFooter": "De nuvarande sidorna blir en ”Tidigare version”, som du hittar i detaljerna.",
+    "withoutScanFooter": "Slå på om du har det nya dokumentet att skanna.",
+    "addNewScan": "Lägg till den nya skanningen"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · scrolla nedåt",
+    "pagesSubtitle_one": "{{count}} sida",
+    "pagesSubtitle_other": "{{count}} sidor · scrolla nedåt",
+    "pageOf": "Sida {{number}} av {{total}}",
+    "noPages": "Det här dokumentet har inga sidor.",
+    "zoom": "Zooma",
+    "zoomOut": "Zooma ut",
+    "zoomIn": "Zooma in",
+    "pageShort": "Sida {{number}} av {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "dag",
+      "day_other": "dagar",
+      "week_one": "vecka",
+      "week_other": "veckor",
+      "month_one": "månad",
+      "month_other": "månader",
+      "year_one": "år",
+      "year_other": "år"
+    },
+    "count": {
+      "day_one": "{{count}} dag",
+      "day_other": "{{count}} dagar",
+      "week_one": "{{count}} vecka",
+      "week_other": "{{count}} veckor",
+      "month_one": "{{count}} månad",
+      "month_other": "{{count}} månader",
+      "year_one": "{{count}} år",
+      "year_other": "{{count}} år"
+    },
+    "every": {
+      "day_one": "Varje dag",
+      "day_other": "Var {{count}}:e dag",
+      "week_one": "Varje vecka",
+      "week_other": "Var {{count}}:e vecka",
+      "month_one": "Varje månad",
+      "month_other": "Var {{count}}:e månad",
+      "year_one": "Varje år",
+      "year_other": "Vart {{count}}:e år"
+    },
+    "repeats": {
+      "day_one": "Upprepas varje dag",
+      "day_other": "Upprepas var {{count}}:e dag",
+      "week_one": "Upprepas varje vecka",
+      "week_other": "Upprepas var {{count}}:e vecka",
+      "month_one": "Upprepas varje månad",
+      "month_other": "Upprepas var {{count}}:e månad",
+      "year_one": "Upprepas varje år",
+      "year_other": "Upprepas vart {{count}}:e år"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Kräver åtgärd",
+    "thisWeek": "Den här veckan",
+    "upcomingNone": "Inget förfaller de kommande månaderna",
+    "upcoming_one": "{{count}} sak att göra de kommande månaderna",
+    "upcoming_other": "{{count}} saker att göra de kommande månaderna"
+  },
+  "deadlineOptions": {
+    "sameDay": "Samma dag",
+    "daysBefore_one": "{{count}} dag innan",
+    "daysBefore_other": "{{count}} dagar innan",
+    "defaultChoice": "{{label}} (standard)"
+  },
+  "personRoles": {
+    "you": "Du",
+    "choice": {
+      "me": "Det är jag",
+      "partner": "Partner",
+      "child": "Son eller dotter",
+      "parent": "Förälder",
+      "sibling": "Bror eller syster",
+      "other": "Annan"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Kategorin ”Övrigt” finns inte.",
+    "otherNotDeletable": "Kategorin ”Övrigt” kan inte raderas."
+  },
+  "deadlineChip": {
+    "overdue": "Utgånget",
+    "today": "I dag",
+    "dueToday": "Förfaller i dag",
+    "dueIn_one": "Förfaller om {{count}} dag",
+    "dueIn_other": "Förfaller om {{count}} dagar"
+  },
+  "deadlineListRow": {
+    "hint": "Håll kvar för att ändra eller ta bort förfallodagen",
+    "statusDue": "att betala",
+    "statusPaid": "betald"
+  },
+  "deadlineSection": {
+    "title": "Förfallodag",
+    "emptyFooter": "Med en påminnelse i telefonen och, om det är på, i kalendern ”Sottomano”.",
+    "add": "Lägg till förfallodag",
+    "expiresOn": "Förfaller",
+    "repeats": "Upprepa",
+    "never": "Aldrig",
+    "reminder": "Påminnelse"
+  },
+  "dateCalendar": {
+    "previousMonth": "Föregående månad",
+    "nextMonth": "Nästa månad"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Nästa vecka",
+    "previousWeek": "Föregående vecka",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} förfallodag",
+    "dayWithDeadlines_other": "{{day}}, {{count}} förfallodagar"
+  },
+  "deadlines": {
+    "title": "Förfallodagar",
+    "newReminder": "Ny påminnelse",
+    "week": "Vecka",
+    "month": "Månad",
+    "openDocument": "Öppna dokument",
+    "editDeadline": "Ändra förfallodag",
+    "markDue": "Markera som obetald",
+    "markPaid": "Markera som betald",
+    "removeDeadline": "Ta bort förfallodag",
+    "removeAlert": {
+      "title": "Ta bort förfallodagen?",
+      "message": "Dokumentet finns kvar; påminnelsen och kalenderhändelsen tas bort.",
+      "confirm": "Ta bort"
+    },
+    "emptyTitle": "Inga kommande förfallodagar",
+    "emptyText": "Tryck på + för att lägga till ett dokument med förfallodag: det visas här och i kalendern.",
+    "sheetSubtitle": "Förfaller {{date}}",
+    "dayRepeats": "upprepas",
+    "dayReminder": "påminnelse",
+    "dayEmpty": "Inga förfallodagar den här dagen"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Det gick inte att spara",
+    "date": "Datum",
+    "footer": "Påminnelsen kommer till telefonen; med kalendern på finns förfallodagen även i ”Sottomano”.",
+    "every": "Var"
+  },
+  "family": {
+    "title": "Familj",
+    "subtitle": "En profil för alla där hemma",
+    "addPerson": "Lägg till en person",
+    "members": "Medlemmar",
+    "orderSaveFailed": "Det gick inte att spara ordningen",
+    "reorderTitle": "Ändra ordning i familjen",
+    "reorderHint": "Håll kvar på en person och dra dit du vill.",
+    "privacyNote": "Allt stannar på den här telefonen. För att skicka ett dokument till någon öppnar du det och trycker på Skicka.",
+    "youSpoken": "du",
+    "reorderA11yHint": "Håll kvar för att ändra ordning i familjen",
+    "expiring_one": "{{count}} går ut snart",
+    "expiring_other": "{{count}} går ut snart"
+  },
+  "personScreen": {
+    "photoFailed": "Det gick inte att använda bilden",
+    "editPerson": "Redigera person",
+    "selectAndSend": "Välj och skicka",
+    "deletePerson": "Radera person",
+    "moreA11y": "Redigera eller radera {{name}}",
+    "changePhoto": "Byt bild",
+    "editProfile": "Redigera profil",
+    "documentsSection": "Deras dokument · {{count}}",
+    "addDocument": "Lägg till dokument",
+    "sendTogether": "Skicka tillsammans ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Det gick inte att spara",
+    "newPerson": "Ny person",
+    "addPhoto": "Lägg till bild",
+    "name": "Namn",
+    "namePlaceholder": "Vad heter hen?",
+    "role": "Vem det är",
+    "roleA11y": "Vem det är för dig: {{role}}",
+    "note": "Profilen stannar på den här telefonen. Den hjälper dig hålla ordning på allas dokument.",
+    "addToFamily": "Lägg till i familjen",
+    "roleSheetTitle": "Vem det är för dig"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Det gick inte att radera",
+    "title": "Radera kategorin {{name}}?",
+    "messageWithDocuments_one": "Den innehåller {{count}} dokument. Vad vill du göra med det?",
+    "messageWithDocuments_other": "Den innehåller {{count}} dokument. Vad vill du göra med dem?",
+    "messageWithDocumentsRestorable_one": "Den innehåller {{count}} dokument. Vad vill du göra med det? Du kan återställa kategorin från Ny kategori.",
+    "messageWithDocumentsRestorable_other": "Den innehåller {{count}} dokument. Vad vill du göra med dem? Du kan återställa kategorin från Ny kategori.",
+    "messageEmpty": "Kategorin är tom.",
+    "messageEmptyRestorable": "Kategorin är tom. Du kan återställa den från Ny kategori.",
+    "deleteAll": "Radera allt",
+    "confirm": "Radera kategori",
+    "choicesA11y": "Vad som ska hända med dokumenten",
+    "moveLabel": "Flytta till Övrigt",
+    "moveDetailPassword": "De stannar i appen, i Övrigt, utan användarnamn och lösenord",
+    "moveDetail": "De stannar i appen, i en allmän mapp",
+    "trashLabel": "Radera dem",
+    "trashDetail_one": "De flyttas till papperskorgen: du kan återställa dem i {{count}} dag",
+    "trashDetail_other": "De flyttas till papperskorgen: du kan återställa dem i {{count}} dagar"
+  },
+  "deletePerson": {
+    "title": "Ta bort {{name}} från familjen?",
+    "messageWithDocuments_one": "{{name}} har {{count}} dokument. Vad vill du göra med det?",
+    "messageWithDocuments_other": "{{name}} har {{count}} dokument. Vad vill du göra med dem?",
+    "messageEmpty": "Profilen tas bort från den här telefonen.",
+    "familyLabel": "Flytta till Hela familjen",
+    "familyDetail": "De stannar i appen, synliga för alla",
+    "trashDetail_one": "De följer med profilen: de ligger i papperskorgen i {{count}} dag",
+    "trashDetail_other": "De följer med profilen: de ligger i papperskorgen i {{count}} dagar"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Husdjur",
+      "document": "Dokument",
+      "home": "Hem",
+      "car": "Bil",
+      "health": "Hälsa",
+      "school": "Skola",
+      "work": "Jobb",
+      "keys": "Nycklar",
+      "travel": "Resor",
+      "expenses": "Utgifter"
+    },
+    "restoreFailed": "Det gick inte att återställa",
+    "editTitle": "Redigera kategori",
+    "newTitle": "Ny kategori",
+    "restoreSection": "Återställ en standardkategori",
+    "restoreA11y": "Återställ {{name}}",
+    "restoreHint": "Den kommer tillbaka som den var, med färger, symbol och fält. Eller skapa en ny nedan.",
+    "previewA11y": "Förhandsvisning av kategori",
+    "namePlaceholder": "T.ex. Husdjur",
+    "nameA11y": "Kategorinamn",
+    "color": "Färg",
+    "paletteColor": "Färg från Utseende",
+    "colorNumber": "Färg {{number}}",
+    "followsPaletteHint": "Färgen följer paletten som valts i Utseende.",
+    "ownColorHint": "Din egen färg: den ändras inte med Utseende.",
+    "icon": "Symbol",
+    "forWhom": "För vem",
+    "forWhomA11y": "Vem kategorin är för: {{name}}",
+    "forWhomHint": "Nya dokument i den här kategorin får den här personen från början.",
+    "create": "Skapa kategori"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Webbplats eller app",
+        "namePlaceholder": "Till exempel: Internetbank",
+        "userLabel": "Användarnamn eller e-post",
+        "userPlaceholder": "namn@epost.se",
+        "passwordLabel": "Lösenord",
+        "notePlaceholder": "Till exempel: säkerhetsfråga, återställningskod …"
+      },
+      "wifi": {
+        "name": "Wi-Fi",
+        "namePlaceholder": "Till exempel: Wi-Fi hemma",
+        "userLabel": "Nätverksnamn",
+        "userPlaceholder": "Andersson_5G",
+        "passwordLabel": "Nätverkslösenord",
+        "notePlaceholder": "Till exempel: routern står i vardagsrummet, bakom tv:n …"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Till exempel: Bankkort",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Till exempel: Julias kort …"
+      },
+      "other": {
+        "name": "Annat",
+        "namePlaceholder": "Till exempel: Larm hemma",
+        "userLabel": "Användarnamn",
+        "userPlaceholder": "Valfritt",
+        "passwordLabel": "Kod eller lösenord",
+        "notePlaceholder": "Vad den är till, var den används …"
+      }
+    },
+    "colors": {
+      "aqua": "Aqua",
+      "indigo": "Indigo",
+      "apricot": "Aprikos",
+      "pink": "Rosa",
+      "mint": "Mint",
+      "sky": "Himmel",
+      "graphite": "Grafit"
+    },
+    "icons": {
+      "key": "Nyckel",
+      "lock": "Hänglås",
+      "globe": "Jordglob",
+      "wifi": "Wi-Fi",
+      "bank": "Bank",
+      "card": "Kort",
+      "mail": "E-post",
+      "home": "Hem",
+      "car": "Bil",
+      "shield": "Sköld",
+      "cart": "Kundvagn",
+      "star": "Stjärna"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Bara siffror",
+    "strength": {
+      "weak": "Svagt",
+      "fair": "Godtagbart",
+      "good": "Bra",
+      "strong": "Starkt"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Bekräfta för att slå på låset"
+  },
+  "appLock": {
+    "prompt": "Lås upp Sottomano",
+    "unlock": "Lås upp",
+    "unlockWith": {
+      "faceId": "Lås upp med Face ID",
+      "touchId": "Lås upp med Touch ID",
+      "passcode": "Lås upp med lösenkod"
+    },
+    "message": "Dina dokument är skyddade"
+  },
+  "passwordForm": {
+    "showPrompt": "Visa lösenordet",
+    "copyPrompt": "Kopiera lösenordet",
+    "copiedTitle": "Kopierat",
+    "copiedMessage": "Det rensas från urklipp om 1 minut.",
+    "scannerUnavailableTitle": "Skannern är inte tillgänglig",
+    "scannerUnavailableMessage": "Välj bilden från ditt bildbibliotek.",
+    "saveFailed": "Det gick inte att spara",
+    "editTitle": "Redigera lösenord",
+    "newTitle": "Nytt lösenord",
+    "privacy": "De stannar bara på den här telefonen och öppnas med Face ID.",
+    "sections": {
+      "what": "Vad du sparar",
+      "name": "Namn",
+      "preview": "Förhandsvisning",
+      "access": "Inloggning",
+      "site": "Webbplats eller app",
+      "whose": "Vems är det",
+      "notes": "Anteckningar"
+    },
+    "typesLabel": "Typ av lösenord",
+    "customTypePlaceholder": "Vad är det? Larm, kassaskåp, hänglås …",
+    "customTypeLabel": "Vad det är",
+    "customTypeHint": "Det blir en ny typ, och nästa gång hittar du den bland valen.",
+    "previewTitle": "Så ser det ut i listan",
+    "previewText": "En färg och en symbol, eller en bild.",
+    "color": "Färg",
+    "colorLabel": "Förhandsvisningens färg",
+    "icon": "Symbol",
+    "iconLabel": "Förhandsvisningens symbol",
+    "image": "Bild",
+    "scan": "Skanna",
+    "gallery": "Från Bilder",
+    "removeImage": "Ta bort bilden och använd färg och symbol",
+    "passwordPlaceholder": "Skriv eller skapa",
+    "show": "Visa",
+    "hide": "Göm",
+    "copy": "Kopiera",
+    "saved": "Sparat",
+    "generate": "Skapa ett starkt lösenord",
+    "urlPlaceholder": "www.exempel.se",
+    "urlLabel": "Webbadress",
+    "wifiQrTitle": "QR-kod för gäster",
+    "wifiQrSubtitle": "De skannar den och ansluter",
+    "person": "Person",
+    "personA11y": "Person, {{name}}",
+    "favoriteTitle": "Lägg till i favoriter",
+    "favoriteSubtitle": "Du hittar det direkt på hemskärmen",
+    "saveButton": "Spara lösenord",
+    "saveHint": "Ange ett namn för att spara."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Inget lösenord",
+    "noPasswordMessage": "Lägg till det med Redigera.",
+    "showPrompt": {
+      "site": "Visa lösenord",
+      "wifi": "Visa nätverkslösenord",
+      "pin": "Visa PIN",
+      "other": "Visa kod eller lösenord"
+    },
+    "copyPrompt": {
+      "site": "Kopiera lösenord",
+      "wifi": "Kopiera nätverkslösenord",
+      "pin": "Kopiera PIN",
+      "other": "Kopiera kod eller lösenord"
+    },
+    "copyUser": {
+      "site": "Kopiera användarnamn eller e-post",
+      "wifi": "Kopiera nätverksnamn",
+      "pin": "Kopiera användarnamn",
+      "other": "Kopiera användarnamn"
+    },
+    "copiedTitle": "Kopierat",
+    "copiedMessage": "Det rensas från urklipp om 1 minut.",
+    "copiedTextTitle": "Kopierat",
+    "qrPrompt": "Visa QR-koden för gäster",
+    "invalidAddress": "Ogiltig adress",
+    "removeFavorite": "Ta bort från favoriter",
+    "favoriteTitle": "Lägg till i favoriter",
+    "favoriteSubtitle": "Du hittar det direkt på hemskärmen",
+    "moreActions": "Fler åtgärder",
+    "sections": {
+      "access": "Inloggning",
+      "site": "Webbplats eller app",
+      "wifiQr": "QR-kod för gäster",
+      "whose": "Vems är det",
+      "notes": "Anteckningar"
+    },
+    "hidden": "Dolt",
+    "show": "Visa",
+    "hide": "Göm",
+    "copy": "Kopiera",
+    "locked": "Synligt efter Face ID eller iPhones lösenkod",
+    "wifiQrLabel": "QR-kod för Wi-Fi-nätverket",
+    "qrHint": "De skannar den med kameran och ansluter.",
+    "qrLocked": "QR-koden innehåller lösenordet: den visas efter Face ID eller iPhones lösenkod.",
+    "qrNoNetwork": "Lägg till nätverksnamnet med Redigera för att få QR-koden.",
+    "showQr": "Visa QR-kod",
+    "hideQr": "Göm QR-kod",
+    "person": "Person",
+    "moveToTrash": "Flytta till papperskorgen"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Inget lösenord",
+    "noPasswordMessage": "Lägg till det med Redigera.",
+    "showPrompt": "Visa lösenordet",
+    "copyPrompt": "Kopiera lösenordet",
+    "copiedTitle": "Lösenordet kopierat",
+    "copiedMessage": "Det rensas från urklipp om 1 minut.",
+    "user": "Användarnamn",
+    "password": "Lösenord",
+    "hidden": "Lösenordet är dolt",
+    "show": "Visa",
+    "hide": "Göm",
+    "copy": "Kopiera"
+  },
+  "cardForm": {
+    "found": "Hittade: {{name}}",
+    "foundBarcode": "Hittade: streckkod {{name}}",
+    "handwritten": "Kod inskriven för hand",
+    "noCode": "Ingen kod lästes",
+    "photoOpenFailed": "Det gick inte att öppna bilden",
+    "saveFailed": "Det gick inte att spara",
+    "retakeFront": "Ta igen",
+    "retakePhoto": "Ta om bilden",
+    "recognized": "Kortet känns igen",
+    "tapRetake": "Tryck på Ta igen för att fotografera det",
+    "fromPhotos": "Från Bilder",
+    "cover": "Omslag",
+    "coverPhotoCaption": "Beskuren och uträtad från bilden av kortet",
+    "coverColorCaption": "Kortets färg, med namn och nummer",
+    "codeSection": "Kod att visa i kassan",
+    "photographCode": "Fotografera koden",
+    "barcode": "Streckkod",
+    "qrCode": "QR-kod",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Kort",
+    "typeNumber": "Skriv numret nedan",
+    "explain": "Sottomano känner själv igen om kortet har en streckkod eller en QR-kod. I kassan visas den stort, med skärmen på full ljusstyrka.",
+    "readTitle": "Uppgifter lästa från kortet",
+    "readText": "Kontrollera och rätta vid behov.",
+    "name": "Namn",
+    "namePlaceholder": "T.ex. Mataffären",
+    "type": "Typ",
+    "typePlaceholder": "T.ex. Bonuskort",
+    "number": "Nummer",
+    "numberPlaceholder": "T.ex. 0400 2219 8876",
+    "holder": "Innehavare",
+    "saveButton": "Spara kort",
+    "saveHint": "Ange kortets namn för att spara."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Bild av framsidan",
+      "barcode": "Fotografera streckkoden"
+    },
+    "photoOpenFailed": "Det gick inte att öppna bilden",
+    "permissionTitle": "Kameraåtkomst krävs",
+    "permissionText": "Sottomano använder kameran för att fotografera dina kort och läsa streckkoden.",
+    "allow": "Tillåt",
+    "openSettings": "Öppna Inställningar",
+    "frontCheck": "Framsidan: är den tydlig?",
+    "read": "Läst: {{value}}",
+    "notRead": "Koden lästes inte",
+    "notReadHint": "Behåll bilden: du skriver in numret i nästa steg.",
+    "retake": "Ta om",
+    "use": "Använd",
+    "focus": "Fokus",
+    "stepCount": "{{current}} av {{total}}",
+    "frameHint": "Rama in kortet i rutan",
+    "searching": "Letar efter koden …",
+    "chooseFromPhotos": "Välj från Bilder",
+    "shoot": "Ta bild",
+    "skip": "Hoppa över"
+  },
+  "cardDetail": {
+    "code": "Kod",
+    "photo": "Bild",
+    "barcodeLabel": "Streckkod",
+    "barcodePhotoLabel": "Bild av streckkoden",
+    "fullScreenHint": "Öppnar koden i helskärm",
+    "noCode": "Ingen kod. Tryck på ”Redigera” för att fotografera eller skriva in den.",
+    "tapHint": "Tryck på koden för att förstora den",
+    "person": "Person"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Det gick inte att spara ordningen",
+    "editCategory": "Redigera kategori",
+    "deleteCategory": "Radera kategori",
+    "reorderTitle": "Ändra ordning på kort",
+    "reorderHint": "Håll kvar på ett kort och dra det dit du vill.",
+    "yourCards": "Dina kort",
+    "title": "Kort",
+    "subtitle": "Tryck på ett kort för att visa koden i kassan",
+    "categoryMenuLabel": "Redigera eller radera kategorin {{name}}",
+    "addCard": "Lägg till kort",
+    "reorder": "Ändra ordning",
+    "newCard": "Nytt kort",
+    "cardDetails": "Kortdetaljer",
+    "categoryMenuTitle": "Kategorin {{name}}",
+    "cardCount_one": "{{count}} kort",
+    "cardCount_other": "{{count}} kort",
+    "cardOpenLabel": "{{label}}, stäng",
+    "cardClosedLabel": "{{label}}, visa koden",
+    "qrLabel": "Kortets QR-kod",
+    "barcodeLabel": "Kortets streckkod",
+    "fullScreenHint": "Öppnar koden i helskärm",
+    "noCode": "Ingen kod: tryck på Detaljer › Redigera för att fotografera eller skriva in den.",
+    "details": "Detaljer"
+  },
+  "walletCard": {
+    "untitled": "Nytt kort"
+  },
+  "barcodeView": {
+    "close": "Stäng koden"
+  },
+  "colorPicker": {
+    "color": "Färg",
+    "custom": "Din färg",
+    "hex": "Kod",
+    "hexLabel": "Färgkod"
+  },
+  "colorWheel": {
+    "label": "Färghjul: tryck eller dra för att välja",
+    "nextHue": "Nästa nyans",
+    "previousHue": "Föregående nyans"
+  },
+  "newCard": {
+    "title": "Nytt kort",
+    "missingCategory": "Kategorin ”Kort” finns inte längre."
+  },
+  "editCard": {
+    "title": "Redigera kort"
+  },
+  "unlock": {
+    "storeOnly": "Tillgängligt i App Store-versionen",
+    "remainingNone": "Du har använt alla gratisplatser.",
+    "remaining_one": "Du kan lägga till {{count}} till.",
+    "remaining_other": "Du kan lägga till {{count}} till.",
+    "tag": "Gratisversion · {{used}} av {{limit}} använda",
+    "title": "Alla dina dokument, utan gränser",
+    "intro": "Gratis för upp till {{limit}} dokument och kort. Lås upp med en enda betalning för att lägga till hur många du vill.",
+    "benefits": {
+      "unlimited": {
+        "title": "Obegränsat med dokument",
+        "text": "Räkningar, kort, garantier och allt annat"
+      },
+      "reminders": {
+        "title": "Påminnelser om förfallodagar",
+        "text": "Vi påminner dig innan det är för sent"
+      },
+      "offline": {
+        "title": "Fungerar utan internet",
+        "text": "Allt stannar på telefonen, säkerhetskopian också"
+      },
+      "family": {
+        "title": "Hela familjen",
+        "text": "En profil för alla där hemma"
+      }
+    },
+    "sectionTitle": "Din gratisversion",
+    "usageLabel": "Dokument och kort",
+    "usageValue": "{{used}} av {{limit}}",
+    "usageA11y": "Använda gratisplatser",
+    "keptNote": "De som redan är sparade är alltid dina, även utan att låsa upp.",
+    "priceTitle": "För alltid",
+    "priceText": "Inga gränser · en betalning",
+    "buy": "Lås upp för {{price}}",
+    "continueFree": "Fortsätt gratis",
+    "restore": "Återställ köp",
+    "terms": "Villkor",
+    "privacy": "Integritet"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Kategorin ”Övrigt”",
+    "otherCategoryMessage": "Den kan inte raderas: den innehåller dokumenten från raderade kategorier."
+  },
+  "quickActionMenu": {
+    "close": "Stäng menyn"
+  },
+  "quickActions": {
+    "open": "Öppna",
+    "unpin": "Ta bort från favoriter",
+    "pin": "Lägg till i favoriter",
+    "moveToTrash": "Flytta till papperskorgen",
+    "editCategory": "Redigera kategori",
+    "deleteCategory": "Radera kategori",
+    "editPerson": "Redigera person",
+    "deletePerson": "Radera person"
+  },
+  "shareCopies": {
+    "defaultName": "Dokument",
+    "fileNotFound": "Filen finns inte på telefonen."
+  },
+  "sendCompression": {
+    "tooBig": "Även med maximal komprimering är den över gränsen: dela gärna upp den i flera filer.",
+    "lowPpi": "Liten text kanske inte går att läsa."
+  },
+  "sendPreferences": {
+    "original": "Original"
+  },
+  "sendFileName": {
+    "fallback": "dokument"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Fram- och baksida kan inte kombineras just nu.",
+    "noPhotos": "Inga bilder att skicka.",
+    "fileFront": "framsida",
+    "fileBack": "baksida",
+    "filePage": "sida-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "dokument",
+    "title": "Skicka {{title}}",
+    "formatPhotos": "Bilder",
+    "actions": {
+      "email": "E-post",
+      "whatsapp": "WhatsApp",
+      "print": "Skriv ut",
+      "save": "Spara i Filer",
+      "copy": "Kopiera",
+      "other": "Mer"
+    },
+    "alerts": {
+      "savedToFiles": "Sparat i Filer",
+      "imageCopied": "Bilden kopierad",
+      "textCopied": "Texten kopierad",
+      "firstPageCopied": "Första sidan kopierades: klistra in den i ett meddelande.",
+      "pasteImage": "Klistra in den i ett meddelande eller en anteckning.",
+      "pdfNotCopied": "En PDF kan inte kopieras: namnet och anteckningen kopierades. Använd Mer för filen.",
+      "failed": "Det gick inte att slutföra"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDF:er",
+      "singlePdf": "En enda PDF",
+      "failed": "Filen kunde inte förberedas",
+      "preparing": "Förbereder …"
+    },
+    "includeNote": "Ta med dokumentets anteckning",
+    "noNote": "Det här dokumentet har ingen anteckning.",
+    "frontBackPage": "Fram- och baksida på en sida",
+    "frontBackImage": "Fram- och baksida i en bild",
+    "maxSize": "Maximal storlek",
+    "pdfAsIs": "PDF:en skickas som den är.",
+    "severalInfo": "En enda PDF: dokumenten efter varandra, med fram- och baksida av ID-handlingar och kort på samma sida.",
+    "quality": {
+      "high": "Hög kvalitet",
+      "good": "Bra kvalitet",
+      "low": "Låg kvalitet",
+      "minimum": "Lägsta kvalitet",
+      "original": "Originalkvalitet"
+    },
+    "skipped_one": "{{count}} dokument utan bilder tas inte med (importerade PDF:er kan inte sammanfogas än).",
+    "skipped_other": "{{count}} dokument utan bilder tas inte med (importerade PDF:er kan inte sammanfogas än)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Förbereder PDF:en …",
+    "progressRetry": "Förminskar bilderna (försök {{attempt}}) …",
+    "subtitle": "Skapad {{date}} med Sottomano · {{documents}}",
+    "subtitleWithTotal": "Skapad {{date}} med Sottomano · {{documents}} · totalt {{total}}",
+    "columns": {
+      "number": "Nr",
+      "document": "Dokument",
+      "date": "Datum",
+      "person": "Person",
+      "amount": "Belopp",
+      "page": "Sida"
+    },
+    "sentApart": "skickas separat",
+    "noPages": "inga sidor",
+    "paid": "betald",
+    "due": "att betala",
+    "invalidIndex": "Ogiltigt index"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "En PDF kan inte sammanfogas (lösenordsskyddad eller skadad): {{titles}}. I förteckningen står den som ”skickas separat”, och den följer med de andra.",
+    "sentApart_other": "{{count}} PDF:er kan inte sammanfogas (lösenordsskyddade eller skadade): {{titles}}. I förteckningen står de som ”skickas separat”, och de följer med de andra.",
+    "alerts": {
+      "prepareFailed": "Det gick inte att förbereda PDF:en",
+      "ready": "PDF:en är klar",
+      "noMailTitle": "Mail är inte konfigurerat",
+      "noMailMessage": "Lägg till ett konto i Mail, eller spara PDF:erna i Filer.",
+      "savedToFiles": "Sparat i Filer",
+      "sendFailed": "Det gick inte att skicka"
+    },
+    "readyMany": "{{number}} PDF:er klara",
+    "choices": {
+      "email": "E-post: alla PDF:er i ett meddelande",
+      "save": "Spara i Filer: alla i samma mapp",
+      "oneByOne": "Dela en i taget"
+    },
+    "intro": "Alla dokument i {{category}}, uppdelade per år: en PDF för varje år, med förteckning (dokument, datum, person, belopp, sida) och totalsumma. Året är förfallo- eller betalningsdagens; om inget av dem finns, året du lade till dem.",
+    "noDocuments": "Inga dokument det här året.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF:er",
+    "year": "År",
+    "allYears": "Alla år",
+    "maxPhotoSize": "Maximal bildstorlek",
+    "limitInfo": "Bilderna förminskas för att hålla sig inom gränsen; importerade PDF:er lämnas som de är.",
+    "prepare": "Förbered och skicka"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Något gick fel",
+      "restoredToOther": "Återställt till Övrigt",
+      "restoredPassword": "Dess kategori finns inte längre: dokumentet ligger i Övrigt, utan användarnamn och lösenord.",
+      "restoredMessage": "Dess kategori finns inte längre: dokumentet ligger i Övrigt.",
+      "deleteTitle": "Radera ”{{title}}” permanent?",
+      "deleteMessage": "Dess bilder och PDF:er raderas också. Det går inte att ångra.",
+      "emptyTitle": "Töm papperskorgen?",
+      "emptyMessage_one": "Dokumentet raderas med sina bilder och PDF:er. Det går inte att ångra.",
+      "emptyMessage_other": "De {{count}} dokumenten raderas med sina bilder och PDF:er. Det går inte att ångra.",
+      "emptyConfirm": "Töm"
+    },
+    "intro": "Raderade dokument ligger kvar här i {{days}} dagar och raderas sedan med sina bilder och PDF:er.",
+    "empty": "Papperskorgen är tom",
+    "deletedSoon": "Raderas snart",
+    "deletedIn": "Raderas om {{days}} dagar",
+    "restoreLabel": "Återställ {{title}}",
+    "deleteForeverLabel": "Radera {{title}} permanent",
+    "deleteForever": "Radera permanent",
+    "emptyTrash": "Töm papperskorgen"
+  },
+  "menu": {
+    "close": "Stäng menyn",
+    "home": "Hem",
+    "favorites": "Favoriter",
+    "deadlines": "Förfallodagar",
+    "deadlinesUrgent": "Förfallodagar, {{number}} att kolla",
+    "family": "Familj",
+    "cards": "Kort",
+    "backup": "Säkerhetskopia",
+    "backupDue": "Säkerhetskopia, dags nu",
+    "help": "Hjälp och kontakt",
+    "rate": "Betygsätt Sottomano",
+    "recommend": "Tipsa en vän",
+    "trash": "Papperskorg",
+    "trashCount": "Papperskorg, {{number}}",
+    "password": "Lösenord",
+    "scan": "Skanna",
+    "fromPhotos": "Från bilder",
+    "importFiles": "Importera filer",
+    "version": "Version {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Stäng notiser",
+    "title": "Notiser",
+    "markAllRead": "Markera som lästa",
+    "empty": "Inga notiser de senaste 7 dagarna.",
+    "today": "I dag",
+    "thisWeek": "Den här veckan",
+    "settings": "Notisinställningar",
+    "unreadItem": "Oläst. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Det gick ut {{date}}.",
+    "expiresToday": "Det går ut i dag.",
+    "expiresOn": "Det går ut {{distance}}, {{date}}.",
+    "amount": "Belopp {{amount}}.",
+    "backupTitle": "Säkerhetskopia",
+    "backupLate": "Det var länge sedan du säkerhetskopierade dina dokument.",
+    "backupNever": "Du har inte säkerhetskopierat dina dokument än."
+  },
+  "deadlineReminders": {
+    "title": "Kommande förfallodag",
+    "hiddenBody": "Ett dokument går ut {{date}} ({{distance}}). Öppna Sottomano för att se det.",
+    "body": "{{name}} går ut {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Utseende",
+      "security": "Säkerhet",
+      "reminders": "Påminnelser",
+      "backup": "Säkerhetskopia",
+      "info": "Om"
+    },
+    "calendarOff": "Av",
+    "alerts": {
+      "notificationsOffTitle": "Notiser är avstängda",
+      "notificationsOffMessage": "Tillåt notiser för Sottomano i iPhones Inställningar för att få påminnelser.",
+      "openSettings": "Öppna Inställningar"
+    },
+    "lastBackup": {
+      "never": "Aldrig",
+      "today": "I dag",
+      "yesterday": "I går",
+      "daysAgo_one": "För {{count}} dag sedan",
+      "daysAgo_other": "För {{count}} dagar sedan"
+    },
+    "categoryColors": "Kategorifärger",
+    "faceId": "Lås med Face ID",
+    "faceIdSubtitle": "Kräver ditt ansikte varje gång du öppnar appen",
+    "hidePreviews": "Göm förhandsvisningar",
+    "hidePreviewsSubtitle": "Notiserna visar inte dokumentet",
+    "notifications": "Notiser",
+    "reminderTime": "Tid för påminnelse",
+    "defaultReminder": "Standardpåminnelse",
+    "iconBadge": "Bricka på appsymbolen",
+    "iconBadgeSubtitle": "Förfallodagar som passerat eller inom 7 dagar",
+    "calendar": "Kalendern ”Sottomano”",
+    "notificationsBlocked": "Notiser är blockerade",
+    "notificationsBlockedSubtitle": "Tillåt dem i iPhones Inställningar",
+    "backupNote": "Säkerhetskopian är en fil som sparas på telefonen, i appen Filer. Du kan kopiera den vart du vill. Sottomano fungerar även utan internet.",
+    "createBackup": "Säkerhetskopiera nu",
+    "restoreBackup": "Återställ från säkerhetskopia",
+    "help": "Hjälp och kontakt",
+    "privacy": "Integritet",
+    "terms": "Användarvillkor",
+    "rate": "Betygsätt Sottomano",
+    "debug": {
+      "limitPreview": "Förhandsvisa gratisgränsen",
+      "limitPreviewSubtitle": "Bara för test: visar det låsta +, gränspanelen och kortet på Hem",
+      "emptyHome": "Förhandsvisa tom Hem",
+      "emptyHomeSubtitle": "Bara för test: Hem som om det inte fanns några dokument (dina data finns kvar)",
+      "onboarding": "Visa välkomstsidorna igen",
+      "onboardingSubtitle": "Bara för test: välkomstsidorna 1–4"
+    },
+    "version": "Sottomano · version {{version}}",
+    "theme": {
+      "title": "Tema",
+      "autoSubtitle": "Följer telefonens inställning",
+      "auto": "Automatiskt",
+      "light": "Ljust",
+      "dark": "Mörkt"
+    }
+  },
+  "backup": {
+    "title": "Säkerhetskopia",
+    "subtitle": "En kopia av alla dina dokument, sparad på telefonen.",
+    "keyProgress": "Skyddar med ditt lösenord … det kan ta upp till en minut",
+    "whenToday": "i dag kl. {{time}}",
+    "whenDate": "{{date}} kl. {{time}}",
+    "minLength": "Minst {{min}} tecken.",
+    "mismatch": "De två lösenorden matchar inte.",
+    "creating": "Skapar säkerhetskopian …",
+    "copyDialogTitle": "Kopiera säkerhetskopian",
+    "opening": "Öppnar säkerhetskopian …",
+    "checking": "Kontrollerar dokumenten …",
+    "restoring": "Återställer …",
+    "keepOpen": "Håll appen öppen tills det är klart.",
+    "forgotWarning": "Om du glömmer lösenordet går säkerhetskopian inte att öppna.",
+    "passwordPlaceholder": "Lösenord (minst {{min}} tecken)",
+    "repeatPlaceholder": "Upprepa lösenordet",
+    "createAndSave": "Skapa och spara",
+    "backupPassword": "Lösenord för säkerhetskopia",
+    "openBackup": "Öppna säkerhetskopia",
+    "completed": "Säkerhetskopian är klar",
+    "lastBackup": "Senaste säkerhetskopia",
+    "path": "Sottomano › Säkerhetskopia › {{name}}",
+    "copyElsewhere": "Kopiera filen någon annanstans",
+    "createNew": "Skapa en ny säkerhetskopia",
+    "noneTitle": "Du har inte gjort någon säkerhetskopia än",
+    "noneText": "Om du tappar bort eller byter telefon får du tillbaka allt med säkerhetskopian.",
+    "createNow": "Säkerhetskopiera nu",
+    "restoreSection": "Återställ",
+    "restoreTitle": "Har du en ny telefon?",
+    "restoreText": "Välj säkerhetskopian för att få tillbaka dina dokument, kort och påminnelser.",
+    "chooseFile": "Välj en säkerhetskopia",
+    "remindersSection": "Påminnelser",
+    "remindMe": "Påminn mig att säkerhetskopiera",
+    "remindMeValue": "Påminn mig att säkerhetskopiera: {{value}}",
+    "footnote": "Säkerhetskopian är en enda fil skyddad med lösenordet du väljer: dokument, bilder, kort, personer och påminnelser. Kopiera den någon annanstans (Filer, iCloud Drive, en dator) så att du har den kvar om du tappar bort telefonen.",
+    "alerts": {
+      "createFailed": "Säkerhetskopieringen misslyckades",
+      "copyFailed": "Det gick inte att kopiera",
+      "restoreTitle": "Återställa säkerhetskopian från {{date}}?",
+      "restoreMessage_one": "Den innehåller {{count}} dokument. Det som finns i appen nu ersätts.",
+      "restoreMessage_other": "Den innehåller {{count}} dokument. Det som finns i appen nu ersätts.",
+      "restoreFailed": "Återställningen misslyckades",
+      "restoreFailedMessage": "Inget i appen har ändrats.\n\n{{reason}}",
+      "restored": "Säkerhetskopian återställd",
+      "restoredMessage": "Dina dokument är tillbaka."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Varje vecka",
+      "month": "Varje månad",
+      "never": "Aldrig"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Den här filen är inte en säkerhetskopia från Sottomano.",
+    "newerVersion": "Den här säkerhetskopian gjordes med en nyare version av Sottomano. Uppdatera appen och försök igen.",
+    "empty": "Säkerhetskopian är tom eller ofullständig.",
+    "incomplete": "Säkerhetskopian är ofullständig.",
+    "wrongPassword": "Fel lösenord. Kontrollera stora och små bokstäver och försök igen.",
+    "damaged": "Säkerhetskopian är skadad eller ofullständig."
+  },
+  "createBackup": {
+    "incompleteFile": "Ofullständig fil: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Innehållet i säkerhetskopian är ogiltigt.",
+    "newerApp": "Den här säkerhetskopian kommer från en nyare version av Sottomano. Uppdatera appen och försök igen."
+  },
+  "zipReader": {
+    "invalid": "Ogiltigt arkiv",
+    "incomplete": "Ofullständigt arkiv"
+  },
+  "backupReminder": {
+    "none": "Du har inte gjort någon säkerhetskopia än",
+    "old_one": "Din senaste säkerhetskopia gjordes för {{count}} dag sedan",
+    "old_other": "Din senaste säkerhetskopia gjordes för {{count}} dagar sedan",
+    "link": "Säkerhetskopiera nu",
+    "close": "Stäng meddelandet",
+    "snooze_one": "Göm i {{count}} dag",
+    "snooze_other": "Göm i {{count}} dagar"
+  },
+  "calendarSettings": {
+    "title": "Kalender",
+    "intro": "Förfallodagarna hamnar i en separat kalender, ”Sottomano”. Du kan gömma den i appen Kalender; stänger du av den här raderas den.",
+    "details": "Varje förfallodag är en heldagshändelse ”Går ut: titel”, utan andra uppgifter från dokumentet. Om Sottomanos påminnelser är av varnar händelsen dig kl. 9.00 på påminnelsedagen; om de är på varnar bara appen, så att du inte får två varningar.",
+    "allowAccess": "Tillåt åtkomst till Kalender",
+    "denied": "Åtkomst till Kalender nekades. Du kan slå på den i iPhones Inställningar.",
+    "openSettings": "Öppna Inställningar",
+    "switchLabel": "Förfallodagar i kalendern ”Sottomano”",
+    "enabled_one": "{{count}} förfallodag i kalendern ”Sottomano”",
+    "enabled_other": "{{count}} förfallodagar i kalendern ”Sottomano”",
+    "removeConfirm": "Ta bort kalendern Sottomano och alla dess förfallodagar från Kalender?",
+    "remove": "Ta bort",
+    "removed": "Kalendern ”Sottomano” raderad"
+  },
+  "calendarSync": {
+    "eventTitle": "Går ut: {{title}}",
+    "cannotCreate": "Det gick inte att skapa kalendern ”Sottomano” på den här iPhonen."
+  },
+  "appearance": {
+    "intro": "Färgerna på standardkategorierna. Kategorier du har skapat behåller sin egen färg.",
+    "restoreButton": "Återställ standardkategorier",
+    "restoreHint": "Tar tillbaka standardkategorier du har raderat.",
+    "paletteLabel": "Paletten {{name}}",
+    "alerts": {
+      "restoreTitle": "Återställa standardkategorierna?",
+      "restoreMessage": "De du raderat kommer tillbaka med sitt ursprungliga namn, symbol och färg. Dina dokument och kategorierna du skapat ändras inte.",
+      "nothingTitle": "Inget att återställa",
+      "nothingMessage": "Alla standardkategorier finns redan på Hem.",
+      "restoredTitle": "Kategorier återställda",
+      "restoredMessage_one": "{{count}} kategori är tillbaka på Hem, före ”Övrigt”.",
+      "restoredMessage_other": "{{count}} kategorier är tillbaka på Hem, före ”Övrigt”.",
+      "restoreFailed": "Det gick inte att återställa"
+    }
+  },
+  "about": {
+    "version": "Version {{version}}",
+    "privacy": "Integritet",
+    "privacyFooter": "Om du slår på Kalender skrivs förfallodagarna till den iPhone-kalender du väljer. När du skickar ett dokument bestämmer du vem du delar det med.",
+    "onPhone": "Dina dokument stannar på telefonen",
+    "offline": "Inget konto och ingen server: fungerar även offline",
+    "noTracking": "Ingen spårning och inga annonser"
+  },
+  "terms": {
+    "intro": "De fullständiga användarvillkoren publiceras med App Store-versionen. Kort sagt:",
+    "free": "Sottomano är gratis för upp till {{limit}} dokument och kort",
+    "oneTime": "Upplåsningen är ett engångsköp, utan prenumeration",
+    "yours": "Dina dokument stannar på telefonen och tillhör dig",
+    "backup": "Gör en säkerhetskopia så att du inte förlorar dem om du byter telefon"
+  },
+  "limit": {
+    "later": "Senare",
+    "title": "Du har använt dina {{limit}} gratisplatser",
+    "text": "Allt du har sparat finns kvar och fungerar som vanligt. Lås upp Sottomano för att lägga till fler dokument och kort.",
+    "stillWorks": {
+      "view": "Visa dina dokument",
+      "send": "Skicka och dela dem",
+      "cards": "Visa dina kort i kassan",
+      "reminders": "Få påminnelser"
+    },
+    "blocked": "Lägg till fler dokument eller kort",
+    "unlock": "Lås upp utan gränser för {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}} av {{limit}} gratisplatser använda",
+    "accessibility": "{{title}}. Lås upp",
+    "unlock": "Lås upp"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Gratisversion: {{used}} av {{limit}} använda",
+    "titleMenu": "Gratis: {{used}} av {{limit}} använda",
+    "subtitle": "Lås upp utan gränser för {{price}}",
+    "accessibility": "{{title}}. Lås upp utan gränser för {{price}}",
+    "unlock": "Lås upp"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Välkommen till Sottomano",
+        "text": "ID-kort, bonuskort, räkningar, garantier: alla hushållets dokument på ett ställe, alltid till hands.",
+        "info": "De stannar på telefonen och fungerar även utan internet"
+      },
+      "scan": {
+        "title": "Fota en gång",
+        "text": "Skanna flera sidor också, eller importera bilder och PDF:er. Du hittar dem i ordning och skickar dem så lätta som behövs."
+      },
+      "deadlines": {
+        "title": "Vi håller koll på förfallodagar",
+        "text": "Vi påminner dig innan en räkning eller ett dokument går ut. I din kalender också, om du vill."
+      },
+      "cards": {
+        "title": "Dina kort alltid i fickan",
+        "text": "Fota dina bonuskort: i kassan visar du streckkoden eller QR-koden med ett tryck."
+      }
+    },
+    "skip": "Hoppa över",
+    "pageOf": "Sida {{page}} av {{total}}",
+    "start": "Kom igång",
+    "restore": "Återställ från säkerhetskopia",
+    "art": {
+      "bills": "Räkningar",
+      "cards": "Kort",
+      "health": "Hälsa",
+      "car": "Bil",
+      "pdfReady": "PDF klar",
+      "billTitle": "Elräkning",
+      "billExpires": "Förfaller om 2 dagar",
+      "gym": "Gym",
+      "library": "Bibliotek",
+      "supermarket": "Mataffär"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Det gick inte att öppna filen",
+    "title": "Fota ditt första dokument",
+    "text": "En räkning, ditt ID-kort eller garantin för tvättmaskinen: på några sekunder är det säkert och alltid till hands.",
+    "snap": "Fota ett dokument",
+    "pdf": "Ladda upp en PDF",
+    "folders": "Dina mappar",
+    "emptyAccessibility": "{{name}}, tom",
+    "empty": "Tom",
+    "newCategory": "Ny kategori"
+  },
+  "splashOverlay": {
+    "tagline": "Hushållets dokument, redo att skickas"
+  },
+  "appActions": {
+    "shareText": "Jag rekommenderar Sottomano: hushållets dokument, kort och förfallodagar alltid till hands, på telefonen och även utan internet.",
+    "rateTitle": "Betygsätt Sottomano",
+    "rateMessage": "Du kan lämna ett betyg när Sottomano finns i App Store.",
+    "lockUnavailableTitle": "Låset är inte tillgängligt",
+    "lockUnavailableMessage": "För att låsa Sottomano behöver du en lösenkod på din iPhone. Ställ in en i Inställningar › Face ID och lösenkod och försök sedan igen."
+  }
+}

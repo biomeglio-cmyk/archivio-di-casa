@@ -15,6 +15,7 @@ import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
 import type { TileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
+import { isLightColor } from '@/utils/colors';
 
 const UNSELECTED_TINT = '#8E8E93';
 
@@ -39,7 +40,8 @@ export function DocumentTileFace({ document, selected }: FaceProps) {
   const solid = showPhoto
     ? null
     : (document.coverColor ?? (category.isCards ? (document.cardColor ?? DEFAULT_CARD_COLOR) : null));
-  const textColor = solid ? '#FFFFFF' : category.colors.text;
+  // White on a picked color, dark on a very light one ("Il tuo colore" can be pale)
+  const textColor = solid ? (isLightColor(solid) ? '#1C1E2E' : '#FFFFFF') : category.colors.text;
 
   const content: ReactNode = (
     <>

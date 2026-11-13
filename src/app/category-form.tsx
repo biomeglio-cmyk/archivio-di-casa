@@ -7,6 +7,7 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActionSheet } from '@/components/action-sheet';
+import { ColorPicker } from '@/components/color-picker';
 import { IconSquare } from '@/components/icon-square';
 import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
@@ -27,7 +28,7 @@ import { listPeople } from '@/db/people';
 import type { Category, CategoryColors } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { builtinColorsFor, getPalette } from '@/settings/palette';
-import { categoryShadowRgb, categoryTint } from '@/utils/colors';
+import { categoryShadowRgb, categoryTint, colorsFromHex } from '@/utils/colors';
 
 // The 10 icons of the design first (Animali, Documento, Casa, Auto, Salute, Scuola, Lavoro, Chiavi,
 // Viaggi, Spese), then ours
@@ -64,7 +65,7 @@ export default function CategoryFormScreen() {
 }
 
 // docs/design/NuovaCategoria.dc.html: back and the title, the live preview (172 × 140 tile), NOME,
-// COLORE (our 13 colors of the palette chosen in Aspetto, 38pt circles), ICONA (5 per row, the chosen
+// COLORE (our 13 colors of the palette chosen in Aspetto, 38pt circles, and "Il tuo colore"), ICONA (5 per row, the chosen
 // one in the gradient), PER CHI È, and "Crea categoria" in the chosen gradient. Our extras: a
 // built-in can keep following Aspetto, more icons after the design's 10; names can hold emoji;
 // at the top, "Ripristina una categoria predefinita" for the built-ins removed with Cancella.
@@ -201,29 +202,40 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
         </View>
 
         <Text style={styles.section}>Colore</Text>
-        <View style={styles.colors} accessibilityRole="radiogroup" accessibilityLabel="Colore">
-          {/* Built-in: "Come Aspetto" follows the palette chosen in Menu › Aspetto */}
-          {paletteColors && (
-            <Swatch
-              colors={paletteColors}
-              label="Colore di Aspetto"
-              selected={followPalette}
-              onPress={() => setFollowPalette(true)}
-              symbol="paintpalette"
-            />
-          )}
-          {swatches.map((swatch, index) => (
-            <Swatch
-              key={swatch.bottom}
-              colors={swatch}
-              label={`Colore ${index + 1}`}
-              selected={!followPalette && swatch.bottom === colors.bottom}
-              onPress={() => {
-                setColors(swatch);
-                setFollowPalette(false);
-              }}
-            />
-          ))}
+        <View style={styles.colors}>
+          <ColorPicker
+            presets={[
+              // Built-in: "Colore di Aspetto" follows the palette chosen in Menu › Aspetto
+              ...(paletteColors
+                ? [
+                    {
+                      key: 'palette',
+                      name: 'Colore di Aspetto',
+                      colors: [paletteColors.top, paletteColors.bottom] as const,
+                      symbol: 'paintpalette' as const,
+                      symbolColor: paletteColors.text,
+                    },
+                  ]
+                : []),
+              ...swatches.map((swatch, index) => ({
+                key: swatch.bottom,
+                name: `Colore ${index + 1}`,
+                colors: [swatch.top, swatch.bottom] as const,
+              })),
+            ]}
+            value={followPalette && paletteColors ? 'palette' : colors.bottom}
+            onChange={(value) => {
+              if (value === 'palette') {
+                setFollowPalette(true);
+                return;
+              }
+              setFollowPalette(false);
+              // A preset of the palette, or "Il tuo colore": the whole set derived from the hex
+              setColors(swatches.find((swatch) => swatch.bottom === value) ?? colorsFromHex(value));
+            }}
+            size={38}
+            columns={7}
+          />
         </View>
         {paletteColors && (
           <Text style={styles.hint}>
@@ -299,32 +311,6 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   );
 }
 
-type SwatchProps = {
-  colors: CategoryColors;
-  label: string;
-  selected: boolean;
-  onPress: () => void;
-  symbol?: SFSymbol;
-};
-
-// A 38pt color circle with a white ring; the chosen one has an outer ring in its color
-function Swatch({ colors, label, selected, onPress, symbol }: SwatchProps) {
-  return (
-    <View style={styles.swatchCell}>
-      <Pressable
-        onPress={onPress}
-        accessibilityRole="radio"
-        accessibilityLabel={label}
-        accessibilityState={{ checked: selected }}
-        style={[styles.swatch, selected && { boxShadow: `0 0 0 2px ${colors.bottom}` }]}>
-        <LinearGradient colors={[colors.top, colors.bottom]} start={GRADIENT_START} end={GRADIENT_END} style={styles.swatchFill}>
-          {symbol && <SymbolView name={symbol} tintColor={colors.text} size={15} />}
-        </LinearGradient>
-      </Pressable>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -389,26 +375,6 @@ const styles = StyleSheet.create({
   },
   colors: {
     marginTop: 12,
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    rowGap: 12,
-  },
-  swatchCell: {
-    width: `${100 / 7}%`,
-    alignItems: 'center',
-  },
-  swatch: {
-    width: 38,
-    height: 38,
-    borderRadius: 19,
-    borderWidth: 3,
-    borderColor: '#FFFFFF',
-  },
-  swatchFill: {
-    flex: 1,
-    borderRadius: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
   hint: {
     marginTop: 8,

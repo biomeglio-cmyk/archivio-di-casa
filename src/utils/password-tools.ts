@@ -2,16 +2,17 @@ import * as Crypto from 'expo-crypto';
 
 import type { PasswordType } from '@/db/types';
 import type { Palette } from '@/constants/theme';
+import { t } from '@/i18n';
 
 // ——— "Forza" of a password: Debole / Media / Buona / Forte (PIN: "Solo numeri") ———
 
-const LEVEL_NAMES = ['Debole', 'Media', 'Buona', 'Forte'];
+const LEVEL_KEYS = ['weak', 'fair', 'good', 'strong'] as const;
 const LEVEL_COLORS = ['#E5243B', '#F59E0B', '#2FA3B8', '#1F9D6B'];
 
 export type Strength = { level: number; label: string; color: string }; // level 0 = nothing typed
 
 export function passwordStrength(password: string, type: PasswordType, p: Palette): Strength {
-  if (type === 'pin') return { level: 0, label: 'Solo numeri', color: p.textSecondary };
+  if (type === 'pin') return { level: 0, label: t('passwordTools.digitsOnly'), color: p.textSecondary };
   if (!password) return { level: 0, label: '', color: p.textSecondary };
   const classes = [/[a-z]/, /[A-Z]/, /\d/, /[^A-Za-z0-9]/].filter((re) => re.test(password)).length;
   let score = 1;
@@ -19,7 +20,7 @@ export function passwordStrength(password: string, type: PasswordType, p: Palett
   if (password.length >= 12 && classes >= 3) score = 3;
   if (password.length >= 16 && classes >= 3) score = 4;
   if (password.length < 8) score = 1;
-  return { level: score, label: LEVEL_NAMES[score - 1], color: LEVEL_COLORS[score - 1] };
+  return { level: score, label: t(`passwordTools.strength.${LEVEL_KEYS[score - 1]}`), color: LEVEL_COLORS[score - 1] };
 }
 
 // ——— "Genera una password sicura": readable words, numbers and a symbol ———

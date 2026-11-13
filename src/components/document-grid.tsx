@@ -13,6 +13,7 @@ import type { DocumentListItem } from '@/db/types';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 type Props = {
   documents: DocumentListItem[] | undefined;
@@ -28,6 +29,7 @@ type Props = {
 // is fixed: a tap ticks the document, and the dashed tile is hidden.
 export function DocumentGrid({ documents, hrefFor, selection, onAdd, onReorder, header }: Props) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
   const db = useSQLiteContext();
 
@@ -64,7 +66,7 @@ export function DocumentGrid({ documents, hrefFor, selection, onAdd, onReorder, 
               onOpen={(document) => router.push(hrefFor(document))}
               onReorder={onReorder}
               scrollableRef={scrollRef}
-              add={{ label: 'Aggiungi documento', onPress: onAdd }}
+              add={{ label: t('documentGrid.addDocument'), onPress: onAdd }}
             />
           )
         )}

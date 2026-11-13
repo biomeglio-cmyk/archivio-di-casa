@@ -1,4 +1,6 @@
 // Compression engine ported from PDFLeggero, with the same values.
+import { t } from '@/i18n';
+
 // It does not know how to draw images or PDFs: the caller passes a `render` function that
 // produces the file for one ladder step and reports its size. The engine only decides which
 // step to use, so the same logic serves PDFs, single JPEGs and front+back images.
@@ -37,14 +39,15 @@ const REFINE_MAX_QUALITY = 90;
 const REFINE_STEP = 4;
 const LOW_PPI = 100;
 
-export type QualityLabel = 'Alta' | 'Buona' | 'Bassa' | 'Minima';
+// Ids, translated when shown (send.quality.*): Alta, Buona, Bassa, Minima
+export type QualityLabel = 'high' | 'good' | 'low' | 'minimum';
 
-// Level 0–4 Alta, 5–9 Buona, 10–12 Bassa, 13–15 Minima
+// Level 0–4 high, 5–9 good, 10–12 low, 13–15 minimum
 export function qualityLabel(level: number): QualityLabel {
-  if (level <= 4) return 'Alta';
-  if (level <= 9) return 'Buona';
-  if (level <= 12) return 'Bassa';
-  return 'Minima';
+  if (level <= 4) return 'high';
+  if (level <= 9) return 'good';
+  if (level <= 12) return 'low';
+  return 'minimum';
 }
 
 // What a render must report back; T carries whatever the caller needs (file URIs, pages…)
@@ -61,9 +64,6 @@ export type CompressionResult<T> = {
   qualityLabel: QualityLabel;
   warnings: string[];
 };
-
-export const WARNING_TOO_BIG = 'Anche alla compressione massima supera il limite: valuta di dividerlo in più file.';
-export const WARNING_LOW_PPI = 'Il testo piccolo potrebbe non essere leggibile.';
 
 export async function compressToLimit<T>(
   render: (step: LadderStep) => Promise<Rendered<T>>,
@@ -122,7 +122,7 @@ export async function compressToLimit<T>(
 
 function finish<T>(output: Rendered<T>, level: number, quality: number, fits: boolean): CompressionResult<T> {
   const warnings: string[] = [];
-  if (!fits) warnings.push(WARNING_TOO_BIG);
-  if (output.ppi < LOW_PPI) warnings.push(WARNING_LOW_PPI);
+  if (!fits) warnings.push(t('sendCompression.tooBig'));
+  if (output.ppi < LOW_PPI) warnings.push(t('sendCompression.lowPpi'));
   return { output, level, quality, fits, qualityLabel: qualityLabel(level), warnings };
 }

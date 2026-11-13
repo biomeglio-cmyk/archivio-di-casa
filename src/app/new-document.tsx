@@ -1,4 +1,5 @@
 import { router, useLocalSearchParams } from 'expo-router';
+import type { TFunction } from 'i18next';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useState } from 'react';
 
@@ -9,6 +10,7 @@ import { ReadNotice } from '@/components/read-notice';
 import { getCategory } from '@/db/categories';
 import { insertDocument, setPinned } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useI18n } from '@/i18n';
 import { afterDocumentSaved } from '@/notifications/reminders';
 import { savePassword } from '@/security/password-vault';
 import { decodePendingFiles, type PendingFile } from '@/storage/pending-files';
@@ -21,18 +23,20 @@ function suggestTitle(files: PendingFile[]): string {
 
 // What the box under the pages says after a capture (Conferma design). Expo Go can't read the text
 // of a photo, so only the name of an imported PDF is "read"; otherwise it asks to check the fields.
-function readNotice(files: PendingFile[]): { title: string; text: string } | null {
+function readNotice(files: PendingFile[], t: TFunction): { title: string; text: string } | null {
   if (files.length === 0) return null;
   const suggested = suggestTitle(files);
-  if (suggested) return { title: 'Letto dal documento', text: `Nome preso dal file: ${suggested}. Controlla e correggi se serve.` };
-  const pages = files.length === 1 ? '1 pagina acquisita' : `${files.length} pagine acquisite`;
-  return { title: 'Controlla i dati', text: `${pages}. Scrivi il nome e, se c’è, la scadenza: la ritrovi in Scadenze.` };
+  if (suggested) {
+    return { title: t('newDocument.readTitle'), text: t('newDocument.readText', { name: suggested }) };
+  }
+  return { title: t('newDocument.checkTitle'), text: t('newDocument.checkText', { count: files.length }) };
 }
 
 // "Nuovo documento" (docs/design/Conferma.dc.html after a capture, Modifica.dc.html for the rest):
 // the shared form, plus the pages captured before (if any), which can still be added, removed and
 // reordered, and the "Letto dal documento" box
 export default function NewDocumentScreen() {
+  const { t } = useI18n();
   const db = useSQLiteContext();
   // Files arrive as a JSON route param from the "+" sheet or from the camera.
   // personId / categoryId preselect the person or the category ("Aggiungi documento" in their screens);
@@ -41,7 +45,7 @@ export default function NewDocumentScreen() {
   const [captured] = useState(() => decodePendingFiles(params.files));
   // The pages can still be added, removed and reordered before saving
   const [files, setFiles] = useState<EditableFile[]>(() => captured.map(fromPending));
-  const notice = readNotice(captured);
+  const notice = readNotice(captured, t);
   // "Nuovo…" in the Password folder: the Nuova password form (docs/design/NuovaPassword.dc.html)
   const categoryId = params.categoryId ? Number(params.categoryId) : null;
   const { data: category } = useDbQuery((d) => (categoryId ? getCategory(d, categoryId) : Promise.resolve(null)), [categoryId]);
@@ -58,7 +62,7 @@ export default function NewDocumentScreen() {
 
   return (
     <DocumentForm
-      heading="Nuovo documento"
+      heading={t('newDocument.heading')}
       initial={{
         title: suggestTitle(captured),
         personId: params.personId ? Number(params.personId) : null,

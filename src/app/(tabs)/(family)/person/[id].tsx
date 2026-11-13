@@ -31,11 +31,11 @@ import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
 import { deletePersonPhoto, storePersonPhoto } from '@/storage/person-photos';
 import { whenBelowLimit } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const TILE_HEIGHT = 132; // the document squares of the design
 
 const documentHref = (id: number) => ({ pathname: '/(tabs)/(family)/document/[id]', params: { id: String(id) } }) as const;
-const documentsLabel = (count: number) => (count === 1 ? '1 documento' : `${count} documenti`);
 
 // "Persona" (docs/design/Persona.dc.html): back and "…" (Modifica persona / Cancella persona), the
 // photo with "Cambia foto", name, "Partner · 6 documenti", "Modifica profilo", then "I SUOI DOCUMENTI"
@@ -59,6 +59,7 @@ export default function PersonScreen() {
 }
 
 function PersonContent({ person, documents }: { person: Person; documents: DocumentListItem[] }) {
+  const { t } = useI18n();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
@@ -68,7 +69,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
   const [sheetOpen, setSheetOpen] = useState(false);
 
   const role = roleLabel(person.role);
-  const subtitle = [person.role === 'me' ? null : role, documentsLabel(documents.length)].filter(Boolean).join(' · ');
+  const subtitle = [person.role === 'me' ? null : role, t('common.documents', { count: documents.length })].filter(Boolean).join(' · ');
   const selectedIds = documents.filter((d) => selection.selected.has(d.id)).map((d) => d.id);
   const edit = () => router.push({ pathname: '/person-form', params: { id: String(person.id) } });
   const addDocument = () =>
@@ -78,7 +79,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
     try {
       await saveDocumentOrder(db, 'person', items.map((d) => d.id));
     } catch (error) {
-      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('family.orderSaveFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -93,7 +94,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
       if (person.photoPath) deletePersonPhoto(person.photoPath);
     } catch (error) {
       if (stored) deletePersonPhoto(stored);
-      Alert.alert('Impossibile usare la foto', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('personScreen.photoFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -103,11 +104,11 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
   }
 
   const sheetActions: SheetAction[] = [
-    { key: 'edit', label: 'Modifica persona', symbol: 'pencil', onPress: edit },
+    { key: 'edit', label: t('personScreen.editPerson'), symbol: 'pencil', onPress: edit },
     ...(documents.some((d) => d.imageCount > 0)
-      ? [{ key: 'select', label: 'Seleziona e invia', symbol: 'checkmark.circle' as const, onPress: selection.start }]
+      ? [{ key: 'select', label: t('personScreen.selectAndSend'), symbol: 'checkmark.circle' as const, onPress: selection.start }]
       : []),
-    { key: 'delete', label: 'Cancella persona', symbol: 'trash', destructive: true, onPress: () => confirmDeletePerson(person) },
+    { key: 'delete', label: t('personScreen.deletePerson'), symbol: 'trash', destructive: true, onPress: () => confirmDeletePerson(person) },
   ];
 
   return (
@@ -117,15 +118,15 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
         contentInsetAdjustmentBehavior="never"
         contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: Spacing.belowContent }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={theme.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel={t('common.back')} color={theme.text} onPress={() => router.back()} />
           {selection.selecting ? (
             <Pressable onPress={selection.cancel} accessibilityRole="button" style={styles.cancel}>
-              <Text style={styles.cancelText}>Annulla</Text>
+              <Text style={styles.cancelText}>{t('common.cancel')}</Text>
             </Pressable>
           ) : (
             <RoundIconButton
               symbol="ellipsis"
-              accessibilityLabel={`Modifica o cancella ${person.name}`}
+              accessibilityLabel={t('personScreen.moreA11y', { name: person.name })}
               color={theme.text}
               onPress={() => setSheetOpen(true)}
             />
@@ -137,7 +138,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
             <View style={styles.avatarRing}>
               <PersonAvatar name={person.name} photoPath={person.photoPath} size={116} />
             </View>
-            <Pressable onPress={changePhoto} accessibilityRole="button" accessibilityLabel="Cambia foto" style={styles.camera}>
+            <Pressable onPress={changePhoto} accessibilityRole="button" accessibilityLabel={t('personScreen.changePhoto')} style={styles.camera}>
               <SymbolView name="camera" tintColor={theme.indigo} size={16} weight="semibold" />
             </Pressable>
           </View>
@@ -146,11 +147,11 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
           </Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
           <Pressable onPress={edit} accessibilityRole="button" style={({ pressed }) => [styles.editButton, pressed && styles.pressed]}>
-            <Text style={styles.editText}>Modifica profilo</Text>
+            <Text style={styles.editText}>{t('personScreen.editProfile')}</Text>
           </Pressable>
         </View>
 
-        <Text style={styles.section}>{`I suoi documenti · ${documents.length}`}</Text>
+        <Text style={styles.section}>{t('personScreen.documentsSection', { count: documents.length })}</Text>
         <View style={styles.grid}>
           {selection.selecting ? (
             <TileGrid
@@ -179,7 +180,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
               onOpen={(document) => router.push(documentHref(document.id))}
               onReorder={saveOrder}
               scrollableRef={scrollRef}
-              add={{ label: 'Aggiungi documento', onPress: addDocument }}
+              add={{ label: t('personScreen.addDocument'), onPress: addDocument }}
               tileHeight={TILE_HEIGHT}
             />
           )}
@@ -189,7 +190,7 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
       {selection.selecting && (
         <View style={[styles.sendBar, { bottom: insets.bottom + 90 }]}>
           <PrimaryButton
-            label={`Invia insieme (${selectedIds.length})`}
+            label={t('personScreen.sendTogether', { count: selectedIds.length })}
             symbol="square.and.arrow.up"
             disabled={selectedIds.length === 0}
             onPress={sendTogether}

@@ -1,4 +1,5 @@
 import type { DocumentListItem } from '@/db/types';
+import { t } from '@/i18n';
 import { formatDayMonth, formatMonthTitle, parseISODate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
@@ -39,20 +40,22 @@ export function dayAndMonth(iso: string, today: Date = new Date()): string {
 export function folderRowSubtitle(document: DocumentListItem): string {
   let when: string;
   if (document.paymentStatus === 'paid' && document.paidAt) {
-    when = `Pagata il ${dayAndMonth(document.paidAt)}`;
+    when = t('folder.paidOn', { date: dayAndMonth(document.paidAt) });
   } else if (document.expiresAt) {
-    when = `${daysUntil(document.expiresAt) < 0 ? 'Scaduta' : 'Scade'} il ${dayAndMonth(document.expiresAt)}`;
+    const date = dayAndMonth(document.expiresAt);
+    when = daysUntil(document.expiresAt) < 0 ? t('folder.expiredOn', { date }) : t('folder.expiresOn', { date });
   } else {
-    when = `Aggiunto il ${dayAndMonth(document.createdAt.slice(0, 10))}`;
+    when = t('folder.addedOn', { date: dayAndMonth(document.createdAt.slice(0, 10)) });
   }
   return [when, document.personName].filter(Boolean).join(' · ');
 }
 
 // "Nuova bolletta", "Nuova tessera" or "Nuovo documento": the dashed tile at the end of a folder
+// (called at render time, so the label follows the language)
 export function newItemLabel(builtinKey: string | null): string {
-  if (builtinKey === 'lightbulb') return 'Nuova bolletta';
-  if (builtinKey === 'creditcard') return 'Nuova tessera';
-  if (builtinKey === 'receipt') return 'Nuova garanzia';
-  if (builtinKey === 'key') return 'Nuova password';
-  return 'Nuovo documento';
+  if (builtinKey === 'lightbulb') return t('folder.newItem.bill');
+  if (builtinKey === 'creditcard') return t('folder.newItem.card');
+  if (builtinKey === 'receipt') return t('folder.newItem.warranty');
+  if (builtinKey === 'key') return t('folder.newItem.password');
+  return t('folder.newItem.document');
 }

@@ -12,6 +12,7 @@ import {
   type BackupSecrets,
 } from '@/backup/backup-layout';
 import { LATEST_SCHEMA_VERSION } from '@/db/migrations';
+import { t } from '@/i18n';
 import { passwordDocumentIds, readPassword } from '@/security/password-vault';
 import { isRemovedCardFrontCopy } from '@/storage/document-files';
 
@@ -122,7 +123,7 @@ export async function createBackup(
           let read = 0;
           while (read < size) {
             const bytes = await input.readBytes(Math.min(SLICE, size - read));
-            if (bytes.length === 0) throw new Error(`File incompleto: ${source.name}`);
+            if (bytes.length === 0) throw new Error(t('createBackup.incompleteFile', { name: source.name }));
             read += bytes.length;
             entry.push(bytes, read >= size);
             if (zipError) throw zipError;

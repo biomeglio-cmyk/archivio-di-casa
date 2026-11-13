@@ -11,7 +11,7 @@ import { PersonAvatar } from '@/components/person-avatar';
 import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Text, TextInput } from '@/components/text';
-import { PERSON_ROLES } from '@/constants/person-roles';
+import { PERSON_ROLES, roleChoiceLabel } from '@/constants/person-roles';
 import { cardSurface, type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getPerson, insertPerson, updatePerson } from '@/db/people';
@@ -19,6 +19,7 @@ import type { Person, PersonRole } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { deletePersonPhoto, storePersonPhoto } from '@/storage/person-photos';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 // "Nuova persona" (no id) or "Modifica persona" (?id=…)
 export default function PersonFormScreen() {
@@ -39,6 +40,7 @@ type PhotoChange = { kind: 'keep' } | { kind: 'new'; uri: string } | { kind: 're
 // "CHI È" (Partner, Figlio o figlia…; our extra "Sono io" gives the "Tu" badge), the note and
 // "Aggiungi alla famiglia"
 function PersonForm({ person }: { person: Person | null }) {
+  const { t } = useI18n();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
@@ -51,7 +53,7 @@ function PersonForm({ person }: { person: Person | null }) {
 
   const canSave = name.trim().length > 0 && !saving;
   const hasPhoto = photo.kind === 'new' || (photo.kind === 'keep' && Boolean(person?.photoPath));
-  const roleName = PERSON_ROLES.find((r) => r.value === role)?.label ?? '';
+  const roleName = roleChoiceLabel(role);
 
   async function changePhoto() {
     try {
@@ -59,7 +61,7 @@ function PersonForm({ person }: { person: Person | null }) {
       if (result === 'remove') setPhoto({ kind: 'remove' });
       else if (result) setPhoto({ kind: 'new', uri: result });
     } catch (error) {
-      Alert.alert('Impossibile usare la foto', String(error));
+      Alert.alert(t('personScreen.photoFailed'), String(error));
     }
   }
 
@@ -83,7 +85,7 @@ function PersonForm({ person }: { person: Person | null }) {
     } catch (error) {
       if (storedPath) deletePersonPhoto(storedPath);
       setSaving(false);
-      Alert.alert('Impossibile salvare', String(error));
+      Alert.alert(t('personForm.saveFailed'), String(error));
     }
   }
 
@@ -95,9 +97,9 @@ function PersonForm({ person }: { person: Person | null }) {
         automaticallyAdjustKeyboardInsets
         contentContainerStyle={[styles.page, { paddingBottom: insets.bottom + 36 }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={theme.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel={t('common.back')} color={theme.text} onPress={() => router.back()} />
           <Text style={styles.heading} accessibilityRole="header">
-            {person ? 'Modifica persona' : 'Nuova persona'}
+            {person ? t('personScreen.editPerson') : t('personForm.newPerson')}
           </Text>
           <View style={styles.barSpace} />
         </View>
@@ -106,7 +108,7 @@ function PersonForm({ person }: { person: Person | null }) {
           <Pressable
             onPress={changePhoto}
             accessibilityRole="button"
-            accessibilityLabel={hasPhoto ? 'Cambia foto' : 'Aggiungi foto'}
+            accessibilityLabel={hasPhoto ? t('personScreen.changePhoto') : t('personForm.addPhoto')}
             style={({ pressed }) => [styles.photo, !hasPhoto && styles.photoEmpty, pressed && styles.pressed]}>
             {hasPhoto ? (
               <PersonAvatar
@@ -118,43 +120,41 @@ function PersonForm({ person }: { person: Person | null }) {
             ) : (
               <>
                 <SymbolView name="camera" tintColor={theme.indigo} size={26} />
-                <Text style={styles.photoLabel}>Aggiungi foto</Text>
+                <Text style={styles.photoLabel}>{t('personForm.addPhoto')}</Text>
               </>
             )}
           </Pressable>
         </View>
 
-        <Text style={styles.section}>Nome</Text>
+        <Text style={styles.section}>{t('personForm.name')}</Text>
         <View style={styles.field}>
           <TextInput
             value={name}
             onChangeText={setName}
-            placeholder="Come si chiama?"
+            placeholder={t('personForm.namePlaceholder')}
             placeholderTextColor={theme.placeholder}
             autoFocus={!person}
             autoCapitalize="words"
             returnKeyType="done"
-            accessibilityLabel="Nome"
+            accessibilityLabel={t('personForm.name')}
             style={styles.input}
           />
         </View>
 
-        <Text style={styles.section}>Chi è</Text>
+        <Text style={styles.section}>{t('personForm.role')}</Text>
         <Pressable
           onPress={() => setRolesOpen(true)}
           accessibilityRole="button"
-          accessibilityLabel={`Chi è per te: ${roleName}`}
+          accessibilityLabel={t('personForm.roleA11y', { role: roleName })}
           style={({ pressed }) => [styles.field, styles.select, pressed && styles.pressed]}>
           <Text style={styles.selectText}>{roleName}</Text>
           <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={15} weight="semibold" />
         </Pressable>
 
-        <Text style={styles.note}>
-          Il profilo resta su questo telefono. Ti serve per tenere in ordine i documenti di ognuno.
-        </Text>
+        <Text style={styles.note}>{t('personForm.note')}</Text>
 
         <PrimaryButton
-          label={person ? 'Salva' : 'Aggiungi alla famiglia'}
+          label={person ? t('common.save') : t('personForm.addToFamily')}
           disabled={!canSave}
           onPress={save}
           style={styles.save}
@@ -163,12 +163,12 @@ function PersonForm({ person }: { person: Person | null }) {
 
       <ActionSheet
         visible={rolesOpen}
-        title="Chi è per te"
+        title={t('personForm.roleSheetTitle')}
         actions={PERSON_ROLES.map((r) => ({
-          key: r.value,
-          label: r.label,
-          symbol: r.value === role ? 'checkmark.circle.fill' : 'circle',
-          onPress: () => setRole(r.value),
+          key: r,
+          label: roleChoiceLabel(r),
+          symbol: r === role ? 'checkmark.circle.fill' : 'circle',
+          onPress: () => setRole(r),
         }))}
         onClose={() => setRolesOpen(false)}
       />

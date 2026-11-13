@@ -24,7 +24,9 @@ import {
   PASSWORD_INK,
   PASSWORD_NOTE,
   PASSWORD_TINT,
-  PASSWORD_TYPES,
+  passwordColorName,
+  passwordIconName,
+  passwordTypes,
   previewGradient,
   previewSymbol,
   typeMeta,
@@ -43,6 +45,7 @@ import {
 import { listPeople } from '@/db/people';
 import type { DocumentDetail, PasswordPreview, PasswordType } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useI18n } from '@/i18n';
 import { authenticate } from '@/security/app-lock';
 import { readPassword, savePassword } from '@/security/password-vault';
 import { chooseAction } from '@/utils/action-sheet';
@@ -71,6 +74,7 @@ type Props = {
 export function PasswordForm({ existing, categoryId, personId: initialPerson = null, hasSavedPassword = false }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const { data: people } = useDbQuery(listPeople, []);
@@ -134,7 +138,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       return;
     }
     if (keepsSaved) {
-      const value = await savedPassword('Mostra la password');
+      const value = await savedPassword(t('passwordForm.showPrompt'));
       if (value === null) return;
       setPassword(value);
       setLoadedSaved(true);
@@ -144,12 +148,12 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
 
   async function copy() {
     let value = password;
-    if (keepsSaved) value = (await savedPassword('Copia la password')) ?? '';
+    if (keepsSaved) value = (await savedPassword(t('passwordForm.copyPrompt'))) ?? '';
     if (!value) return;
     await Clipboard.setStringAsync(value, {
       ios: { localOnly: true, expiresAt: new Date(Date.now() + CLIPBOARD_SECONDS * 1000) },
     });
-    Alert.alert('Copiata', 'Sparisce dagli appunti tra 1 minuto.');
+    Alert.alert(t('passwordForm.copiedTitle'), t('passwordForm.copiedMessage'));
   }
 
   function generate() {
@@ -163,7 +167,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
     const result = await scanDocument({ tip: false });
     if (result === 'cancelled') return;
     if (result === 'unavailable') {
-      Alert.alert('Scanner non disponibile', 'Scegli l’immagine dalla galleria.');
+      Alert.alert(t('passwordForm.scannerUnavailableTitle'), t('passwordForm.scannerUnavailableMessage'));
       return;
     }
     setImage({ kind: 'new', uri: result.pages[0], source: 'scan' });
@@ -198,7 +202,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
 
   async function choosePerson() {
     if (!people) return;
-    const index = await chooseAction('Di chi è', ['Tutta la famiglia', ...people.map((p) => p.name)]);
+    const index = await chooseAction(t('passwordForm.sections.whose'), [t('common.wholeFamily'), ...people.map((p) => p.name)]);
     if (index !== null) setPersonId(index === 0 ? null : people[index - 1].id);
   }
 
@@ -238,12 +242,12 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       router.back();
     } catch (error) {
       setSaving(false);
-      Alert.alert('Impossibile salvare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('passwordForm.saveFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
   const types: { key: string; type: PasswordType; name: string; symbol: SFSymbol; written?: string }[] = [
-    ...PASSWORD_TYPES.map((t) => ({ key: t.id, type: t.id, name: t.name, symbol: t.symbol })),
+    ...passwordTypes().map((item) => ({ key: item.id, type: item.id, name: item.name, symbol: item.symbol })),
     ...(customTypes ?? []).map((written) => ({
       key: `custom-${written}`,
       type: 'other' as const,
@@ -252,11 +256,11 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       written,
     })),
   ];
-  const typeSelected = (t: (typeof types)[number]) =>
-    t.written
-      ? type === 'other' && customType.trim().toLowerCase() === t.written.toLowerCase()
-      : t.type === type && (t.type !== 'other' || !(customTypes ?? []).some((w) => w.toLowerCase() === customType.trim().toLowerCase()));
-  const personName = people?.find((p) => p.id === personId)?.name ?? 'Tutta la famiglia';
+  const typeSelected = (item: (typeof types)[number]) =>
+    item.written
+      ? type === 'other' && customType.trim().toLowerCase() === item.written.toLowerCase()
+      : item.type === type && (item.type !== 'other' || !(customTypes ?? []).some((w) => w.toLowerCase() === customType.trim().toLowerCase()));
+  const personName = people?.find((p) => p.id === personId)?.name ?? t('common.wholeFamily');
   const masked = keepsSaved ? '••••••••' : '';
 
   return (
@@ -267,9 +271,9 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       automaticallyAdjustKeyboardInsets
       contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 36 }]}>
       <View style={styles.bar}>
-        <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT(theme)} color={theme.text} onPress={() => router.back()} />
+        <RoundIconButton symbol="chevron.left" accessibilityLabel={t('common.back')} background={PASSWORD_TINT(theme)} color={theme.text} onPress={() => router.back()} />
         <Text style={styles.heading} accessibilityRole="header">
-          {existing ? 'Modifica password' : 'Nuova password'}
+          {existing ? t('passwordForm.editTitle') : t('passwordForm.newTitle')}
         </Text>
         <View style={styles.barSpace} />
       </View>
@@ -278,24 +282,24 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         <LinearGradient colors={PASSWORD_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={styles.privacyIcon}>
           <SymbolView name="faceid" tintColor="#FFFFFF" size={26} />
         </LinearGradient>
-        <Text style={styles.privacyText}>Restano solo su questo telefono e si aprono con Face ID.</Text>
+        <Text style={styles.privacyText}>{t('passwordForm.privacy')}</Text>
       </View>
 
-      <Section>Che cosa salvi</Section>
-      <View style={styles.types} accessibilityRole="radiogroup" accessibilityLabel="Tipo di password">
-        {types.map((t) => {
-          const on = typeSelected(t);
+      <Section>{t('passwordForm.sections.what')}</Section>
+      <View style={styles.types} accessibilityRole="radiogroup" accessibilityLabel={t('passwordForm.typesLabel')}>
+        {types.map((item) => {
+          const on = typeSelected(item);
           return (
-            <View key={t.key} style={styles.typeCell}>
+            <View key={item.key} style={styles.typeCell}>
               <Pressable
-                onPress={() => pickType(t.type, t.written)}
+                onPress={() => pickType(item.type, item.written)}
                 accessibilityRole="radio"
                 accessibilityState={{ checked: on }}
                 style={[styles.typeButton, on && styles.typeOn]}>
                 {on && <LinearGradient colors={PASSWORD_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={[StyleSheet.absoluteFill, styles.typeFill]} />}
-                <SymbolView name={t.symbol} tintColor={on ? '#FFFFFF' : theme.iconGrey} size={22} />
+                <SymbolView name={item.symbol} tintColor={on ? '#FFFFFF' : theme.iconGrey} size={22} />
                 <Text style={[styles.typeName, on && styles.typeNameOn]} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
-                  {t.name}
+                  {item.name}
                 </Text>
               </Pressable>
             </View>
@@ -309,29 +313,29 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             <TextInput
               value={customType}
               onChangeText={setCustomType}
-              placeholder="Che cos'è? Allarme, cassaforte, lucchetto…"
+              placeholder={t('passwordForm.customTypePlaceholder')}
               placeholderTextColor={theme.placeholder}
-              accessibilityLabel="Che cos'è"
+              accessibilityLabel={t('passwordForm.customTypeLabel')}
               style={styles.input}
             />
           </View>
-          <Text style={styles.hint}>Diventa un nuovo tipo e la prossima volta lo trovi tra le scelte.</Text>
+          <Text style={styles.hint}>{t('passwordForm.customTypeHint')}</Text>
         </>
       )}
 
-      <Section>Nome</Section>
+      <Section>{t('passwordForm.sections.name')}</Section>
       <View style={[styles.field, styles.whiteField]}>
         <TextInput
           value={title}
           onChangeText={setTitle}
           placeholder={meta.namePlaceholder}
           placeholderTextColor={theme.placeholder}
-          accessibilityLabel="Nome"
+          accessibilityLabel={t('passwordForm.sections.name')}
           style={styles.input}
         />
       </View>
 
-      <Section>Anteprima</Section>
+      <Section>{t('passwordForm.sections.preview')}</Section>
       <WhiteCard style={styles.previewCard}>
         <View style={styles.previewHead}>
           <PasswordPreviewTile
@@ -340,25 +344,25 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             imageUri={image.kind === 'new' ? image.uri : null}
           />
           <View style={styles.flex}>
-            <Text style={styles.previewTitle}>Come la vedi nell’elenco</Text>
-            <Text style={styles.previewText}>Colore e icona, oppure un’immagine.</Text>
+            <Text style={styles.previewTitle}>{t('passwordForm.previewTitle')}</Text>
+            <Text style={styles.previewText}>{t('passwordForm.previewText')}</Text>
           </View>
         </View>
 
-        <Text style={styles.small}>Colore</Text>
+        <Text style={styles.small}>{t('passwordForm.color')}</Text>
         <View style={styles.colors}>
           <ColorPicker
-            presets={PASSWORD_COLORS.map((c) => ({ key: c.key, name: c.name, colors: [c.top, c.bottom] as const }))}
+            presets={PASSWORD_COLORS.map((c) => ({ key: c.key, name: passwordColorName(c.key), colors: [c.top, c.bottom] as const }))}
             value={hasImage ? null : color === 'custom' ? hex : color}
             onChange={pickColor}
             columns={8}
-            label="Colore dell'anteprima"
+            label={t('passwordForm.colorLabel')}
             onDraggingChange={setWheelDragging}
           />
         </View>
 
-        <Text style={styles.small}>Icona</Text>
-        <View style={styles.icons} accessibilityRole="radiogroup" accessibilityLabel="Icona dell'anteprima">
+        <Text style={styles.small}>{t('passwordForm.icon')}</Text>
+        <View style={styles.icons} accessibilityRole="radiogroup" accessibilityLabel={t('passwordForm.iconLabel')}>
           {PASSWORD_ICONS.map((i) => {
             const on = !hasImage && i.symbol === chosenSymbol;
             return (
@@ -369,7 +373,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                     if (hasImage) setImage({ kind: 'remove' });
                   }}
                   accessibilityRole="radio"
-                  accessibilityLabel={i.name}
+                  accessibilityLabel={passwordIconName(i.key)}
                   accessibilityState={{ checked: on }}
                   style={styles.iconButton}>
                   {on && (
@@ -387,19 +391,19 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           })}
         </View>
 
-        <Text style={styles.small}>Immagine</Text>
+        <Text style={styles.small}>{t('passwordForm.image')}</Text>
         <View style={styles.imageButtons}>
-          <ImageButton label="Scansiona" symbol="doc.viewfinder" on={image.kind === 'new' && image.source === 'scan'} onPress={scanImage} />
-          <ImageButton label="Dalla galleria" symbol="photo" on={image.kind === 'new' && image.source === 'gallery'} onPress={galleryImage} />
+          <ImageButton label={t('passwordForm.scan')} symbol="doc.viewfinder" on={image.kind === 'new' && image.source === 'scan'} onPress={scanImage} />
+          <ImageButton label={t('passwordForm.gallery')} symbol="photo" on={image.kind === 'new' && image.source === 'gallery'} onPress={galleryImage} />
         </View>
         {hasImage && (
           <Pressable onPress={() => setImage({ kind: 'remove' })} accessibilityRole="button" style={styles.removeImage}>
-            <Text style={styles.removeImageText}>Togli l’immagine e usa colore e icona</Text>
+            <Text style={styles.removeImageText}>{t('passwordForm.removeImage')}</Text>
           </Pressable>
         )}
       </WhiteCard>
 
-      <Section>Accesso</Section>
+      <Section>{t('passwordForm.sections.access')}</Section>
       <WhiteCard style={styles.card}>
         {meta.userLabel !== null && (
           <>
@@ -433,7 +437,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                 setPassword(text);
                 setLoadedSaved(false);
               }}
-              placeholder={masked || (isPin ? '••••' : 'Scrivi o genera')}
+              placeholder={masked || (isPin ? '••••' : t('passwordForm.passwordPlaceholder'))}
               placeholderTextColor={masked ? theme.text : theme.textSecondary}
               secureTextEntry={!show}
               keyboardType={isPin ? 'number-pad' : 'default'}
@@ -444,10 +448,10 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
               style={[styles.accessInput, styles.passwordInput]}
             />
           </View>
-          <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={show ? 'Nascondi' : 'Mostra'} style={styles.eye}>
+          <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={show ? t('passwordForm.hide') : t('passwordForm.show')} style={styles.eye}>
             <SymbolView name={show ? 'eye.slash' : 'eye'} tintColor={theme.iconGrey} size={20} />
           </Pressable>
-          <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel="Copia" style={styles.eye}>
+          <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel={t('passwordForm.copy')} style={styles.eye}>
             <SymbolView name="doc.on.doc" tintColor={theme.iconGrey} size={19} />
           </Pressable>
         </View>
@@ -458,14 +462,14 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             ))}
           </View>
           <Text style={[styles.strengthLabel, { color: strength.color }]}>
-            {keepsSaved && !isPin ? 'Salvata' : strength.label}
+            {keepsSaved && !isPin ? t('passwordForm.saved') : strength.label}
           </Text>
         </View>
         {meta.canGenerate && (
           <View style={styles.generateRow}>
             <Pressable onPress={generate} accessibilityRole="button" style={({ pressed }) => [styles.generate, pressed && styles.pressed]}>
               <SymbolView name="wand.and.stars" tintColor={PASSWORD_INK(theme)} size={16} />
-              <Text style={styles.generateText}>Genera una password sicura</Text>
+              <Text style={styles.generateText}>{t('passwordForm.generate')}</Text>
             </Pressable>
           </View>
         )}
@@ -473,18 +477,18 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
 
       {type === 'site' && (
         <>
-          <Section>Sito o app</Section>
+          <Section>{t('passwordForm.sections.site')}</Section>
           <View style={[styles.field, styles.whiteField]}>
             <SymbolView name="link" tintColor={theme.textSecondary} size={18} />
             <TextInput
               value={url}
               onChangeText={setUrl}
-              placeholder="www.esempio.it"
+              placeholder={t('passwordForm.urlPlaceholder')}
               placeholderTextColor={theme.placeholder}
               keyboardType="url"
               autoCapitalize="none"
               autoCorrect={false}
-              accessibilityLabel="Indirizzo del sito"
+              accessibilityLabel={t('passwordForm.urlLabel')}
               style={styles.input}
             />
           </View>
@@ -496,29 +500,29 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           <Pressable onPress={() => setWifiQr(!wifiQr)} accessible={false} style={styles.switchRow}>
             <IconBox symbol="qrcode" />
             <View style={styles.flex}>
-              <Text style={styles.rowTitle}>QR per gli ospiti</Text>
-              <Text style={styles.rowSubtitle}>Lo inquadrano e si collegano</Text>
+              <Text style={styles.rowTitle}>{t('passwordForm.wifiQrTitle')}</Text>
+              <Text style={styles.rowSubtitle}>{t('passwordForm.wifiQrSubtitle')}</Text>
             </View>
-            <Switch value={wifiQr} onValueChange={setWifiQr} accessibilityLabel="QR per gli ospiti" />
+            <Switch value={wifiQr} onValueChange={setWifiQr} accessibilityLabel={t('passwordForm.wifiQrTitle')} />
           </Pressable>
         </WhiteCard>
       )}
 
-      <Section>Di chi è</Section>
+      <Section>{t('passwordForm.sections.whose')}</Section>
       <WhiteCard style={styles.card}>
         <View style={styles.personRow}>
           <View style={[styles.iconBox, { backgroundColor: theme.lilac }]}>
             <SymbolView name="person" tintColor={theme.indigo} size={19} />
           </View>
-          <Text style={styles.personLabel}>Persona</Text>
-          <Pressable onPress={choosePerson} accessibilityRole="button" accessibilityLabel={`Persona, ${personName}`} style={styles.select}>
+          <Text style={styles.personLabel}>{t('passwordForm.person')}</Text>
+          <Pressable onPress={choosePerson} accessibilityRole="button" accessibilityLabel={t('passwordForm.personA11y', { name: personName })} style={styles.select}>
             <Text style={styles.selectText}>{personName}</Text>
             <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={13} weight="semibold" />
           </Pressable>
         </View>
       </WhiteCard>
 
-      <Section>Note</Section>
+      <Section>{t('passwordForm.sections.notes')}</Section>
       <WhiteCard style={styles.notesCard}>
         <TextInput
           value={notes}
@@ -526,7 +530,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           placeholder={meta.notePlaceholder}
           placeholderTextColor={theme.placeholder}
           multiline
-          accessibilityLabel="Note"
+          accessibilityLabel={t('passwordForm.sections.notes')}
           style={styles.notes}
         />
       </WhiteCard>
@@ -537,15 +541,15 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             <SymbolView name={pinned ? 'heart.fill' : 'heart'} tintColor={theme.heart} size={19} />
           </View>
           <View style={styles.flex}>
-            <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>
-            <Text style={styles.rowSubtitle}>La trovi subito in home</Text>
+            <Text style={styles.rowTitle}>{t('passwordForm.favoriteTitle')}</Text>
+            <Text style={styles.rowSubtitle}>{t('passwordForm.favoriteSubtitle')}</Text>
           </View>
-          <Switch value={pinned} onValueChange={setPinnedState} accessibilityLabel="Aggiungi ai preferiti" />
+          <Switch value={pinned} onValueChange={setPinnedState} accessibilityLabel={t('passwordForm.favoriteTitle')} />
         </Pressable>
       </WhiteCard>
 
-      <PrimaryButton label="Salva password" disabled={!canSave} onPress={save} style={styles.save} />
-      {!title.trim() && <Text style={styles.note}>Per salvare scrivi il nome.</Text>}
+      <PrimaryButton label={t('passwordForm.saveButton')} disabled={!canSave} onPress={save} style={styles.save} />
+      {!title.trim() && <Text style={styles.note}>{t('passwordForm.saveHint')}</Text>}
     </ScrollView>
   );
 }

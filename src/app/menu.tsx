@@ -25,6 +25,7 @@ import { FONTS } from '@/constants/typography';
 import { getMenuCounts } from '@/db/menu-counts';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
+import { useI18n } from '@/i18n';
 import { whenBelowLimit } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
@@ -47,6 +48,7 @@ const BACKUP_DOT = '#F5824A';
 // the picker is up (a cancel leaves you in the menu).
 export default function MenuScreen() {
   const theme = useTheme();
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const { current } = useLocalSearchParams<{ current?: MenuSection }>();
   const { width: screenWidth } = useWindowDimensions();
@@ -117,7 +119,7 @@ export default function MenuScreen() {
           style={StyleSheet.absoluteFill}
           onPress={() => close()}
           accessibilityRole="button"
-          accessibilityLabel="Chiudi il menu"
+          accessibilityLabel={t('menu.close')}
         />
       </Animated.View>
 
@@ -136,12 +138,12 @@ export default function MenuScreen() {
             <LogoMark size={42} radius={9} />
           </View>
           <Text style={styles.brand} accessibilityRole="header" numberOfLines={1}>
-            Sottomano
+            {'Sottomano' /* i18n-ignore */}
           </Text>
           <Pressable
             onPress={() => close()}
             accessibilityRole="button"
-            accessibilityLabel="Chiudi il menu"
+            accessibilityLabel={t('menu.close')}
             style={({ pressed }) => [styles.close, pressed && styles.pressed]}>
             <SymbolView name="xmark" tintColor={theme.text} size={18} weight="semibold" />
           </Pressable>
@@ -152,25 +154,25 @@ export default function MenuScreen() {
         </View>
 
         <ScrollView style={styles.list} contentContainerStyle={styles.listContent} showsVerticalScrollIndicator={false}>
-          <MenuItem label="Home" symbol="house" active={current === 'home'} onPress={() => goToTab('/')} />
+          <MenuItem label={t('menu.home')} symbol="house" active={current === 'home'} onPress={() => goToTab('/')} />
           <MenuItem
-            label="Preferiti"
+            label={t('menu.favorites')}
             symbol="heart"
             active={current === 'favorites'}
             onPress={() => goToTab('/favorites')}
           />
           <MenuItem
-            label="Scadenze"
+            label={t('menu.deadlines')}
             symbol="calendar"
             active={current === 'deadlines'}
-            accessibilityLabel={urgent > 0 ? `Scadenze, ${urgent} da controllare` : 'Scadenze'}
+            accessibilityLabel={urgent > 0 ? t('menu.deadlinesUrgent', { number: urgent }) : t('menu.deadlines')}
             onPress={() => goToTab('/deadlines')}
             trailing={urgent > 0 ? <Badge count={urgent} /> : null}
           />
-          <MenuItem label="Famiglia" symbol="person.2" active={current === 'family'} onPress={() => goToTab('/family')} />
+          <MenuItem label={t('menu.family')} symbol="person.2" active={current === 'family'} onPress={() => goToTab('/family')} />
           {cardsId != null && (
             <MenuItem
-              label="Tessere"
+              label={t('menu.cards')}
               symbol="creditcard"
               active={current === 'cards'}
               onPress={() => goToTab({ pathname: '/category/[id]', params: { id: String(cardsId) } })}
@@ -178,40 +180,40 @@ export default function MenuScreen() {
           )}
 
           <Divider />
-          <MenuItem label="Impostazioni" symbol="gearshape" onPress={() => openScreen('/settings')} />
+          <MenuItem label={t('common.settings')} symbol="gearshape" onPress={() => openScreen('/settings')} />
           <MenuItem
-            label="Backup"
+            label={t('menu.backup')}
             symbol="icloud.and.arrow.up"
-            accessibilityLabel={backupDue ? 'Backup, da fare' : 'Backup'}
+            accessibilityLabel={backupDue ? t('menu.backupDue') : t('menu.backup')}
             onPress={() => openScreen('/backup')}
             trailing={backupDue ? <View style={styles.dot} /> : null}
           />
-          <MenuItem label="Aiuto e contatti" symbol="questionmark.circle" onPress={() => openScreen('/onboarding')} />
-          <MenuItem label="Valuta Sottomano" symbol="star" onPress={rateApp} />
-          <MenuItem label="Consiglialo a un amico" symbol="square.and.arrow.up" onPress={recommendApp} />
+          <MenuItem label={t('menu.help')} symbol="questionmark.circle" onPress={() => openScreen('/onboarding')} />
+          <MenuItem label={t('menu.rate')} symbol="star" onPress={rateApp} />
+          <MenuItem label={t('menu.recommend')} symbol="square.and.arrow.up" onPress={recommendApp} />
 
           {/* Our extras, after the entries of the design */}
           <Divider />
           <MenuItem
-            label="Cestino"
+            label={t('menu.trash')}
             symbol="trash"
-            accessibilityLabel={trash > 0 ? `Cestino, ${trash}` : 'Cestino'}
+            accessibilityLabel={trash > 0 ? t('menu.trashCount', { number: trash }) : t('menu.trash')}
             onPress={() => openScreen('/trash')}
             trailing={trash > 0 ? <Value text={String(trash)} /> : null}
           />
           {passwordId != null && (
             <MenuItem
-              label="Password"
+              label={t('menu.password')}
               symbol="key"
               onPress={() => goToTab({ pathname: '/category/[id]', params: { id: String(passwordId) } })}
             />
           )}
-          <MenuItem label="Scansiona" symbol="doc.viewfinder" onPress={() => whenBelowLimit(addByScan)} />
-          <MenuItem label="Dalle foto" symbol="photo.on.rectangle" onPress={() => whenBelowLimit(addFromPhotos)} />
-          <MenuItem label="Importa file" symbol="doc" onPress={() => whenBelowLimit(addFromFiles)} />
+          <MenuItem label={t('menu.scan')} symbol="doc.viewfinder" onPress={() => whenBelowLimit(addByScan)} />
+          <MenuItem label={t('menu.fromPhotos')} symbol="photo.on.rectangle" onPress={() => whenBelowLimit(addFromPhotos)} />
+          <MenuItem label={t('menu.importFiles')} symbol="doc" onPress={() => whenBelowLimit(addFromFiles)} />
         </ScrollView>
 
-        <Text style={styles.version}>Versione {version}</Text>
+        <Text style={styles.version}>{t('menu.version', { version })}</Text>
       </Animated.View>
     </View>
   );

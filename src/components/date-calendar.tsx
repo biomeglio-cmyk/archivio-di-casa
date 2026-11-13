@@ -7,8 +7,9 @@ import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
-import { monthName, weekdayLetters } from '@/i18n/format';
-import { formatMonthTitle, toISODate } from '@/utils/dates';
+import { useI18n } from '@/i18n';
+import { useFormat } from '@/i18n/use-format';
+import { toISODate } from '@/utils/dates';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const CELL = 38;
@@ -21,6 +22,8 @@ type Props = {
 // Month calendar of the Modifica design: ‹ month › on pale lilac, L M M G V S D, 38pt days;
 // the chosen day in the main gradient, today on lilac with indigo text
 export function DateCalendar({ value, onChange }: Props) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const styles = useThemedStyles(makeStyles);
   const [month, setMonth] = useState(() => new Date(value.getFullYear(), value.getMonth(), 1));
   const year = month.getFullYear();
@@ -38,14 +41,14 @@ export function DateCalendar({ value, onChange }: Props) {
   return (
     <View>
       <View style={styles.header}>
-        <MonthButton symbol="chevron.left" label="Mese precedente" onPress={() => shift(-1)} />
+        <MonthButton symbol="chevron.left" label={t('dateCalendar.previousMonth')} onPress={() => shift(-1)} />
         <Text style={styles.month} accessibilityRole="header">
-          {formatMonthTitle(year, monthIndex)}
+          {fmt.monthTitle(year, monthIndex)}
         </Text>
-        <MonthButton symbol="chevron.right" label="Mese successivo" onPress={() => shift(1)} />
+        <MonthButton symbol="chevron.right" label={t('dateCalendar.nextMonth')} onPress={() => shift(1)} />
       </View>
       <View style={styles.week} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-        {weekdayLetters().map((day, index) => (
+        {fmt.weekdayLetters().map((day, index) => (
           <Text key={index} style={styles.weekday}>
             {day}
           </Text>
@@ -62,7 +65,7 @@ export function DateCalendar({ value, onChange }: Props) {
               <Pressable
                 onPress={() => onChange(new Date(year, monthIndex, day))}
                 accessibilityRole="button"
-                accessibilityLabel={`${day} ${monthName(monthIndex)}`}
+                accessibilityLabel={fmt.dayMonth(new Date(year, monthIndex, day))}
                 accessibilityState={{ selected }}
                 style={[styles.day, today && !selected && styles.today]}>
                 {selected && (

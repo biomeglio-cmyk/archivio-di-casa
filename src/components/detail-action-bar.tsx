@@ -5,6 +5,7 @@ import { SecondaryButton } from '@/components/secondary-button';
 import { PIN_COLOR } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 // The heart color at 14%: "Nei preferiti" stands out from lilac
 const PIN_TINT = (p: Palette) => `${PIN_COLOR(p)}24`;
@@ -22,6 +23,7 @@ type Props = {
 // side by side, at any text size (one line each, shrinking a little instead of wrapping).
 // They sit in the scroll content, right after the data, and scroll with the page.
 export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
 
@@ -29,10 +31,10 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
 
   return (
     <View style={styles.container}>
-      {onAdd && <PrimaryButton label="Aggiungi pagine" symbol="plus" onPress={onAdd} singleLine />}
+      {onAdd && <PrimaryButton label={t('detailActionBar.addPages')} symbol="plus" onPress={onAdd} singleLine />}
       {pin && (
         <SecondaryButton
-          label={pin.pinned ? 'Nei preferiti' : 'Aggiungi ai preferiti'}
+          label={pin.pinned ? t('detailActionBar.pinned') : t('detailActionBar.pin')}
           symbol={pin.pinned ? 'heart.fill' : 'heart'}
           symbolColor={PIN_COLOR(theme)}
           onPress={pin.onToggle}
@@ -43,13 +45,13 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
         />
       )}
       {onRenew && (
-        <SecondaryButton label="Rinnovato" symbol="arrow.clockwise" onPress={onRenew} color={theme.text} singleLine />
+        <SecondaryButton label={t('detailActionBar.renewed')} symbol="arrow.clockwise" onPress={onRenew} color={theme.text} singleLine />
       )}
       {(onEdit || onDelete) && (
         <View style={styles.row}>
           {onEdit && (
             <SecondaryButton
-              label="Modifica"
+              label={t('common.edit')}
               symbol="pencil"
               onPress={onEdit}
               color={theme.text}
@@ -59,7 +61,7 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
           )}
           {onDelete && (
             <SecondaryButton
-              label="Cancella"
+              label={t('detailActionBar.delete')}
               symbol="trash"
               onPress={onDelete}
               background={theme.errorBackground}

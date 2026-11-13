@@ -8,6 +8,7 @@ import { Text } from '@/components/text';
 import type { GeneratedBarcode } from '@/utils/barcode';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 // White behind the barcode: scanners need dark bars on white
 const BARCODE_BACKGROUND = '#FFFFFF';
@@ -37,6 +38,7 @@ type FullScreenProps = {
 // a QR / PDF417 / DataMatrix stays upright. Tap anywhere to close.
 export function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: FullScreenProps) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const { width, height } = useWindowDimensions();
   const sideways = !barcode?.twoD;
   // The box: as long as the screen is tall when sideways
@@ -45,7 +47,7 @@ export function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: Ful
   return (
     <Modal visible={visible} animationType="fade" presentationStyle="fullScreen" onRequestClose={onClose}>
       <StatusBar hidden />
-      <Pressable style={styles.fullScreen} onPress={onClose} accessibilityRole="button" accessibilityLabel="Chiudi il codice">
+      <Pressable style={styles.fullScreen} onPress={onClose} accessibilityRole="button" accessibilityLabel={t('barcodeView.close')}>
         <View style={[styles.rotated, box, sideways && { transform: [{ rotate: '90deg' }] }]}>
           {barcode ? (
             <GeneratedCode barcode={barcode} maxWidth={box.width - 48} maxHeight={box.height - 120} />

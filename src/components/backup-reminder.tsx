@@ -9,6 +9,7 @@ import { Text } from '@/components/text';
 import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 const SNOOZE_DAYS = 7; // ✕ on the "old backup" notice hides it for a week
@@ -44,6 +45,7 @@ function noticeFor(now: number): Notice | null {
 export function BackupReminder() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const [now, setNow] = useState(() => Date.now());
   useFocusEffect(useCallback(() => setNow(Date.now()), []));
 
@@ -64,9 +66,7 @@ export function BackupReminder() {
   }
 
   const text =
-    notice.kind === 'none'
-      ? 'Non hai ancora fatto un backup'
-      : `Il tuo ultimo backup è di ${notice.days} giorni fa`;
+    notice.kind === 'none' ? t('backupReminder.none') : t('backupReminder.old', { count: notice.days });
 
   return (
     <View style={styles.box}>
@@ -76,13 +76,15 @@ export function BackupReminder() {
       <View style={styles.texts}>
         <Text style={styles.title}>{text}</Text>
         <Pressable onPress={() => router.push('/backup')} accessibilityRole="link" hitSlop={10}>
-          <Text style={styles.link}>Fai il backup</Text>
+          <Text style={styles.link}>{t('backupReminder.link')}</Text>
         </Pressable>
       </View>
       <Pressable
         onPress={dismiss}
         accessibilityRole="button"
-        accessibilityLabel={notice.kind === 'none' ? 'Chiudi avviso' : 'Nascondi per 7 giorni'}
+        accessibilityLabel={
+          notice.kind === 'none' ? t('backupReminder.close') : t('backupReminder.snooze', { count: SNOOZE_DAYS })
+        }
         hitSlop={4}
         style={styles.close}>
         <SymbolView name="xmark" tintColor={theme.textSecondary} size={16} weight="semibold" />

@@ -22,6 +22,7 @@ import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
 import type { CoverMode } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useI18n } from '@/i18n';
 import { barcodeTypeName, codeKindOf, generateBarcode, typeForKind, type CodeKind } from '@/utils/barcode';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
@@ -60,6 +61,7 @@ type Props = {
 export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { data: people } = useDbQuery(listPeople, []);
 
@@ -85,10 +87,10 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
   const preview = generateBarcode(code || null, barcodeType);
   const typeName = barcodeTypeName(barcodeType);
   const found = readByCamera
-    ? `Trovato: ${kind === 'qr' ? typeName : `codice a barre ${typeName ?? ''}`.trim()}`
+    ? (kind === 'qr' ? t('cardForm.found', { name: typeName ?? '' }) : t('cardForm.foundBarcode', { name: typeName ?? '' })).trim()
     : code
-      ? 'Codice scritto a mano'
-      : 'Nessun codice letto';
+      ? t('cardForm.handwritten')
+      : t('cardForm.noCode');
   const holder = people?.find((p) => p.id === personId)?.name ?? null;
   const showPhoto = (coverMode ?? (frontUri ? 'photo' : 'color')) === 'photo' && frontUri !== null;
   const face = {
@@ -140,7 +142,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
       setFrontUri(uri);
       setChanged((c) => ({ ...c, front: true }));
     } catch (error) {
-      Alert.alert('Impossibile aprire la foto', String(error));
+      Alert.alert(t('cardForm.photoOpenFailed'), String(error));
     }
   }
 
@@ -164,7 +166,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
       );
     } catch (error) {
       setSaving(false);
-      Alert.alert('Impossibile salvare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('cardForm.saveFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -191,37 +193,37 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
         {/* Dark top: the photographed card in its frame */}
         <View style={[styles.dark, { paddingTop: insets.top + 12 }]}>
           <View style={styles.darkBar}>
-            <DarkButton symbol="xmark" label="Chiudi" onPress={onCancel} />
+            <DarkButton symbol="xmark" label={t('common.close')} onPress={onCancel} />
             <Text style={styles.darkTitle} accessibilityRole="header">
               {heading}
             </Text>
-            <DarkButton symbol="camera.rotate" label="Scatta di nuovo" onPress={retakeFront} />
+            <DarkButton symbol="camera.rotate" label={t('cardForm.retakeFront')} onPress={retakeFront} />
           </View>
           <View style={styles.frameArea}>
             <LinearGradient colors={['#33365A', '#1C1E38']} style={[StyleSheet.absoluteFill, styles.frameGlow]} />
             <View style={styles.tilted}>{coverImage(232, 146)}</View>
             <View style={styles.frame} pointerEvents="none" />
             {/* On the box: take the front again (iOS scanner; cancelling keeps this one) */}
-            {frontUri && <RetakePill label="Rifai la foto" onPress={retakeFront} />}
+            {frontUri && <RetakePill label={t('cardForm.retakePhoto')} onPress={retakeFront} />}
           </View>
           <View style={styles.recognized}>
             <SymbolView name={frontUri ? 'checkmark.circle.fill' : 'camera'} tintColor="#FFFFFF" size={16} />
-            <Text style={styles.recognizedText}>{frontUri ? 'Tessera riconosciuta' : 'Tocca Scatta di nuovo per fotografarla'}</Text>
+            <Text style={styles.recognizedText}>{frontUri ? t('cardForm.recognized') : t('cardForm.tapRetake')}</Text>
           </View>
           {/* Ours: the front from the photo library (e.g. a macro shot made with the Camera app) */}
           <Pressable onPress={frontFromLibrary} accessibilityRole="button" hitSlop={8} style={styles.fromPhotos}>
             <SymbolView name="photo.on.rectangle" tintColor="#FFFFFF" size={15} />
-            <Text style={styles.fromPhotosText}>Dalle foto</Text>
+            <Text style={styles.fromPhotosText}>{t('cardForm.fromPhotos')}</Text>
           </Pressable>
         </View>
 
         <View style={styles.body}>
-          <Text style={styles.section}>Copertina</Text>
+          <Text style={styles.section}>{t('cardForm.cover')}</Text>
           <View style={styles.coverRow}>
             <View style={styles.coverShadow}>{coverImage(300, 188)}</View>
           </View>
           <Text style={styles.caption}>
-            {showPhoto ? 'Ritagliata e raddrizzata dalla foto della tessera' : 'Il colore della tessera, con il nome e il numero'}
+            {showPhoto ? t('cardForm.coverPhotoCaption') : t('cardForm.coverColorCaption')}
           </Text>
           <View style={styles.coverField}>
             <CoverField
@@ -234,7 +236,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
             />
           </View>
 
-          <Text style={styles.section}>Codice da mostrare alla cassa</Text>
+          <Text style={styles.section}>{t('cardForm.codeSection')}</Text>
           <WhiteCard style={styles.codeCard}>
             <View style={styles.foundRow}>
               <View style={styles.found}>
@@ -242,19 +244,19 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 <Text style={styles.foundText}>{found}</Text>
               </View>
               <Pressable onPress={() => setRetake('barcode')} accessibilityRole="button" hitSlop={10}>
-                <Text style={styles.link}>{barcodeUri ? 'Rifai la foto' : 'Fotografa il codice'}</Text>
+                <Text style={styles.link}>{barcodeUri ? t('cardForm.retakePhoto') : t('cardForm.photographCode')}</Text>
               </Pressable>
             </View>
             {/* The photo of the code, on dark like the card above, with "Rifai la foto" on it */}
             {barcodeUri && (
               <View style={styles.barcodeBox}>
                 <Image source={{ uri: barcodeUri }} style={StyleSheet.absoluteFill} contentFit="contain" accessibilityIgnoresInvertColors />
-                <RetakePill label="Rifai la foto" onPress={() => setRetake('barcode')} />
+                <RetakePill label={t('cardForm.retakePhoto')} onPress={() => setRetake('barcode')} />
               </View>
             )}
             <View style={styles.kind}>
               <Segmented
-                values={['Codice a barre', 'QR code']}
+                values={[t('cardForm.barcode'), t('cardForm.qrCode')]}
                 selectedIndex={kind === 'bar' ? 0 : 1}
                 onChange={(index) => setKind(index === 0 ? 'bar' : 'qr')}
               />
@@ -266,13 +268,14 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 <SymbolView name={kind === 'qr' ? 'qrcode' : 'barcode'} tintColor={theme.dashed} size={56} />
               )}
               <Text style={styles.previewNumber}>
-                {code ? (kind === 'qr' ? `${title.trim() || 'Tessera'} · ${spacedNumber(code)}` : spacedNumber(code)) : 'Scrivi il numero qui sotto'}
+                {code
+                  ? kind === 'qr'
+                    ? t('cardForm.qrCaption', { name: title.trim() || t('cardForm.defaultName'), number: spacedNumber(code) })
+                    : spacedNumber(code)
+                  : t('cardForm.typeNumber')}
               </Text>
             </View>
-            <Text style={styles.explain}>
-              Sottomano riconosce da solo se la tessera ha un codice a barre o un QR code. Alla cassa lo mostra grande, con
-              lo schermo al massimo della luminosità.
-            </Text>
+            <Text style={styles.explain}>{t('cardForm.explain')}</Text>
           </WhiteCard>
 
           <View style={styles.readBox}>
@@ -280,57 +283,57 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
               <SymbolView name="sparkles" tintColor="#FFFFFF" size={17} />
             </LinearGradient>
             <Text style={styles.readText}>
-              <Text style={styles.readTitle}>{'Dati letti dalla tessera\n'}</Text>
-              Controlla e correggi se serve.
+              <Text style={styles.readTitle}>{`${t('cardForm.readTitle')}\n`}</Text>
+              {t('cardForm.readText')}
             </Text>
           </View>
 
           <WhiteCard style={styles.fields}>
-            <FieldRow label="Nome">
+            <FieldRow label={t('cardForm.name')}>
               <TextInput
                 value={title}
                 onChangeText={setTitle}
-                placeholder="Es. Supermercato"
+                placeholder={t('cardForm.namePlaceholder')}
                 placeholderTextColor={theme.placeholder}
                 style={styles.input}
-                accessibilityLabel="Nome"
+                accessibilityLabel={t('cardForm.name')}
               />
             </FieldRow>
-            <FieldRow label="Tipo">
+            <FieldRow label={t('cardForm.type')}>
               <TextInput
                 value={docType}
                 onChangeText={setDocType}
-                placeholder="Es. Carta fedeltà"
+                placeholder={t('cardForm.typePlaceholder')}
                 placeholderTextColor={theme.placeholder}
                 style={styles.input}
-                accessibilityLabel="Tipo"
+                accessibilityLabel={t('cardForm.type')}
               />
             </FieldRow>
-            <FieldRow label="Numero">
+            <FieldRow label={t('cardForm.number')}>
               <TextInput
                 value={number}
                 onChangeText={setNumber}
-                placeholder="Es. 0400 2219 8876"
+                placeholder={t('cardForm.numberPlaceholder')}
                 placeholderTextColor={theme.placeholder}
                 autoCapitalize="characters"
                 autoCorrect={false}
                 style={styles.input}
-                accessibilityLabel="Numero"
+                accessibilityLabel={t('cardForm.number')}
               />
             </FieldRow>
-            <FieldRow label="Intestata a" last>
+            <FieldRow label={t('cardForm.holder')} last>
               <Choice
-                title="Intestata a"
+                title={t('cardForm.holder')}
                 value={personId}
                 options={[NONE, ...(people ?? []).map((p) => p.id)]}
-                labelFor={(id) => (id === NONE ? 'Nessuno' : (people?.find((p) => p.id === id)?.name ?? 'Nessuno'))}
+                labelFor={(id) => (id === NONE ? t('common.none') : (people?.find((p) => p.id === id)?.name ?? t('common.none')))}
                 onChange={setPersonId}
               />
             </FieldRow>
           </WhiteCard>
 
-          <PrimaryButton label="Salva tessera" disabled={!canSave} onPress={submit} style={styles.save} />
-          {!title.trim() && <Text style={styles.note}>Per salvare scrivi il nome della tessera.</Text>}
+          <PrimaryButton label={t('cardForm.saveButton')} disabled={!canSave} onPress={submit} style={styles.save} />
+          {!title.trim() && <Text style={styles.note}>{t('cardForm.saveHint')}</Text>}
         </View>
       </ScrollView>
 

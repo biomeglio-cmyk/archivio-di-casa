@@ -1,5 +1,7 @@
 import { Directory, File, Paths } from 'expo-file-system';
 
+import { t } from '@/i18n';
+
 // Shared and previewed files get a readable name ("Carta d'identità - Fronte.jpg") instead of
 // the internal one ("1731…-front.jpg"). The copies live in the cache: iOS may clear them, and
 // that's fine because they are recreated every time.
@@ -7,12 +9,12 @@ const FOLDER = 'condivisi';
 
 // Characters iOS or the receiving apps don't accept in file names
 function safeFileName(name: string): string {
-  return name.replace(/[/\\:*?"<>|]/g, '-').trim() || 'Documento';
+  return name.replace(/[/\\:*?"<>|]/g, '-').trim() || t('shareCopies.defaultName');
 }
 
 export async function namedCopy(source: File, baseName: string): Promise<File> {
   if (!source.exists) {
-    throw new Error('File non trovato sul telefono.');
+    throw new Error(t('shareCopies.fileNotFound'));
   }
   const directory = new Directory(Paths.cache, FOLDER);
   if (!directory.exists) {

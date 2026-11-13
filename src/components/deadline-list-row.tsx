@@ -9,10 +9,10 @@ import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
-import { describeDistance } from '@/utils/dates';
+import { useI18n } from '@/i18n';
+import { useFormat } from '@/i18n/use-format';
 import { daysUntil } from '@/utils/deadlines';
-import { formatEuro } from '@/utils/money';
-import { describeRepeat } from '@/utils/recurrence';
+import { describeEvery } from '@/utils/recurrence';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 export const DEADLINE_ROW_INSET = 74; // separators start after the date square (16 + 46 + 14 - 2)
@@ -28,12 +28,14 @@ type Props = {
 // a 13 line under it, chevron. This week: "€ 84,20 · tra 3 giorni" in indigo; later: what repeats
 // ("Ogni 2 anni") or the note. The Da pagare / Pagata badge when the document has a status.
 export function DeadlineListRow({ document, near, onPress, onLongPress }: Props) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   const days = daysUntil(document.expiresAt);
   const overdue = days < 0;
-  const subtitle = rowSubtitle(document, days, near);
+  const subtitle = rowSubtitle(document, days, near, fmt);
 
   return (
     <Pressable
@@ -45,8 +47,8 @@ export function DeadlineListRow({ document, near, onPress, onLongPress }: Props)
       }}
       delayLongPress={400}
       accessibilityRole="button"
-      accessibilityLabel={[document.title, subtitle, statusLabel(document)].filter(Boolean).join(', ')}
-      accessibilityHint="Tieni premuto per modificare o togliere la scadenza"
+      accessibilityLabel={[document.title, subtitle, statusLabel(document, t)].filter(Boolean).join(', ')}
+      accessibilityHint={t('deadlineListRow.hint')}
       style={[styles.row, pressed && styles.pressed]}>
       <DateSquare iso={document.expiresAt} highlighted={near && !overdue} />
       <View style={styles.texts}>
@@ -67,22 +69,20 @@ export function DeadlineListRow({ document, near, onPress, onLongPress }: Props)
   );
 }
 
-const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
-
 // Near: amount and distance ("€ 84,20 · tra 3 giorni"). Later: amount, then what repeats
 // ("Ogni 2 anni"), else the first line of the note, else the person or the category
-function rowSubtitle(document: DocumentListItem, days: number, near: boolean): string {
-  const amount = document.amountCents !== null ? formatEuro(document.amountCents) : null;
-  if (near) return [amount, describeDistance(days)].filter(Boolean).join(' · ');
-  const repeat = document.repeat ? capitalize(describeRepeat(document.repeat).replace('Si ripete ', '')) : null;
+function rowSubtitle(document: DocumentListItem, days: number, near: boolean, fmt: ReturnType<typeof useFormat>): string {
+  const amount = document.amountCents !== null ? fmt.euro(document.amountCents) : null;
+  if (near) return [amount, fmt.distance(days)].filter(Boolean).join(' · ');
+  const repeat = document.repeat ? describeEvery(document.repeat) : null;
   const note = document.notes?.split('\n')[0].trim() || null;
   const fallback = document.personName ?? document.category.name;
   return [amount, repeat ?? note ?? fallback].filter(Boolean).join(' · ');
 }
 
-function statusLabel(document: DocumentListItem): string | null {
-  if (document.paymentStatus === 'due') return 'da pagare';
-  if (document.paymentStatus === 'paid') return 'pagata';
+function statusLabel(document: DocumentListItem, t: ReturnType<typeof useI18n>['t']): string | null {
+  if (document.paymentStatus === 'due') return t('deadlineListRow.statusDue');
+  if (document.paymentStatus === 'paid') return t('deadlineListRow.statusPaid');
   return null;
 }
 

@@ -24,6 +24,7 @@ import { FONTS } from '@/constants/typography';
 import { listDocumentFiles, saveDocumentOrder } from '@/db/documents';
 import type { Category, DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useI18n } from '@/i18n';
 import { useMaxBrightness } from '@/hooks/use-max-brightness';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { generateBarcode } from '@/utils/barcode';
@@ -48,6 +49,7 @@ type Props = {
 export function CardsScreen({ category, cards }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -68,7 +70,7 @@ export function CardsScreen({ category, cards }: Props) {
     try {
       await saveDocumentOrder(db, 'category', items.map((d) => d.id));
     } catch (error) {
-      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('cardsScreen.orderSaveFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -77,11 +79,11 @@ export function CardsScreen({ category, cards }: Props) {
   const categoryActions: SheetAction[] = [
     {
       key: 'edit',
-      label: 'Modifica categoria',
+      label: t('cardsScreen.editCategory'),
       symbol: 'pencil',
       onPress: () => router.push({ pathname: '/category-form', params: { id: String(category.id) } }),
     },
-    { key: 'delete', label: 'Cancella categoria', symbol: 'trash', destructive: true, onPress: () => confirmDeleteCategory(category) },
+    { key: 'delete', label: t('cardsScreen.deleteCategory'), symbol: 'trash', destructive: true, onPress: () => confirmDeleteCategory(category) },
   ];
 
   return (
@@ -93,11 +95,11 @@ export function CardsScreen({ category, cards }: Props) {
         {reordering ? (
           <>
             <ReorderHeader
-              title="Riordina le tessere"
-              hint="Tieni premuto una tessera e trascinala dove vuoi."
+              title={t('cardsScreen.reorderTitle')}
+              hint={t('cardsScreen.reorderHint')}
               onDone={() => setReordering(false)}
             />
-            <Text style={styles.section}>Le tue tessere</Text>
+            <Text style={styles.section}>{t('cardsScreen.yourCards')}</Text>
             <View style={styles.reorderList}>
               <SortableList
                 items={cards}
@@ -123,21 +125,21 @@ export function CardsScreen({ category, cards }: Props) {
         ) : (
           <>
             <PageHeader
-              title={category.name === 'Tessere e card' ? 'Tessere' : category.name}
-              subtitle="Tocca una tessera per mostrare il codice alla cassa"
+              title={category.name === t('categories.builtin.cards') ? t('cardsScreen.title') : category.name}
+              subtitle={t('cardsScreen.subtitle')}
               tint={tint}
               right={
                 <>
                   <RoundIconButton
                     symbol="ellipsis"
-                    accessibilityLabel={`Modifica o cancella la categoria ${category.name}`}
+                    accessibilityLabel={t('cardsScreen.categoryMenuLabel', { name: category.name })}
                     background={tint}
                     color={theme.text}
                     onPress={() => setCategoryMenu(true)}
                   />
                   <RoundIconButton
                     symbol="plus"
-                    accessibilityLabel="Aggiungi tessera"
+                    accessibilityLabel={t('cardsScreen.addCard')}
                     background={tint}
                     color={theme.text}
                     onPress={add}
@@ -148,7 +150,7 @@ export function CardsScreen({ category, cards }: Props) {
             {cards.length > 1 && (
               <View style={styles.reorderLink}>
                 <Pressable onPress={() => setReordering(true)} accessibilityRole="button" hitSlop={14}>
-                  <Text style={styles.reorderText}>Riordina</Text>
+                  <Text style={styles.reorderText}>{t('cardsScreen.reorder')}</Text>
                 </Pressable>
               </View>
             )}
@@ -175,7 +177,7 @@ export function CardsScreen({ category, cards }: Props) {
               accessibilityRole="button"
               style={({ pressed }) => [styles.add, { borderColor: dashed }, pressed && { backgroundColor: tint }]}>
               <SymbolView name="plus" tintColor={onTint} size={22} />
-              <Text style={[styles.addLabel, { color: onTint }]}>Nuova tessera</Text>
+              <Text style={[styles.addLabel, { color: onTint }]}>{t('cardsScreen.newCard')}</Text>
             </Pressable>
           </>
         )}
@@ -188,7 +190,7 @@ export function CardsScreen({ category, cards }: Props) {
         actions={
           menuFor
             ? documentQuickActions(db, menuFor, detailHref(menuFor.id)).map((action) =>
-                action.key === 'open' ? { ...action, label: 'Dettagli della tessera' } : action,
+                action.key === 'open' ? { ...action, label: t('cardsScreen.cardDetails') } : action,
               )
             : []
         }
@@ -196,8 +198,8 @@ export function CardsScreen({ category, cards }: Props) {
       />
       <ActionSheet
         visible={categoryMenu}
-        title={`Categoria ${category.name}`}
-        subtitle={cards.length === 1 ? '1 tessera' : `${cards.length} tessere`}
+        title={t('cardsScreen.categoryMenuTitle', { name: category.name })}
+        subtitle={t('cardsScreen.cardCount', { count: cards.length })}
         actions={categoryActions}
         onClose={() => setCategoryMenu(false)}
       />
@@ -217,6 +219,7 @@ type CardProps = {
 // One card of the stack: closed = the top 86pt of its face; open = the whole face, then the code
 function WalletCard({ card, open, tint, onTint, onToggle, onLongPress }: CardProps) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const label = card.docType ? `${card.title}, ${card.docType}` : card.title;
   return (
     <View style={styles.card}>
@@ -226,7 +229,7 @@ function WalletCard({ card, open, tint, onTint, onToggle, onLongPress }: CardPro
         delayLongPress={400}
         accessibilityRole="button"
         accessibilityState={{ expanded: open }}
-        accessibilityLabel={`${label}${open ? ', chiudi' : ', mostra il codice'}`}
+        accessibilityLabel={open ? t('cardsScreen.cardOpenLabel', { label }) : t('cardsScreen.cardClosedLabel', { label })}
         style={{ height: open ? WALLET_CARD_HEIGHT : WALLET_CARD_PEEK, overflow: 'hidden' }}>
         <WalletCardFace card={{ ...card, holder: card.personName }} />
       </Pressable>
@@ -239,6 +242,7 @@ function WalletCard({ card, open, tint, onTint, onToggle, onLongPress }: CardPro
 // unknown), the number, "Chiudi" and "Dettagli". Tap the code: full screen.
 function CardCode({ card, tint, onTint, onClose }: { card: DocumentListItem; tint: string; onTint: string; onClose: () => void }) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const { width } = useWindowDimensions();
   const [fullScreen, setFullScreen] = useState(false);
   const { data: files } = useDbQuery((db) => listDocumentFiles(db, card.id), [card.id]);
@@ -253,8 +257,8 @@ function CardCode({ card, tint, onTint, onClose }: { card: DocumentListItem; tin
         <Pressable
           onPress={() => setFullScreen(true)}
           accessibilityRole="button"
-          accessibilityLabel={generated?.twoD ? 'QR code della tessera' : 'Codice a barre della tessera'}
-          accessibilityHint="Apre il codice a tutto schermo"
+          accessibilityLabel={generated?.twoD ? t('cardsScreen.qrLabel') : t('cardsScreen.barcodeLabel')}
+          accessibilityHint={t('cardsScreen.fullScreenHint')}
           style={styles.codeTouch}>
           {generated ? (
             <GeneratedCode barcode={generated} maxWidth={boxWidth} maxHeight={generated.twoD ? 150 : 80} />
@@ -263,7 +267,7 @@ function CardCode({ card, tint, onTint, onClose }: { card: DocumentListItem; tin
           )}
         </Pressable>
       ) : (
-        <Text style={styles.noCode}>Nessun codice: tocca Dettagli › Modifica per fotografarlo o scriverlo.</Text>
+        <Text style={styles.noCode}>{t('cardsScreen.noCode')}</Text>
       )}
       {card.barcodeValue ? (
         <Text style={styles.codeNumber} selectable>
@@ -272,13 +276,13 @@ function CardCode({ card, tint, onTint, onClose }: { card: DocumentListItem; tin
       ) : null}
       <View style={styles.codeButtons}>
         <Pressable onPress={onClose} accessibilityRole="button" style={({ pressed }) => [styles.pill, { backgroundColor: tint }, pressed && styles.pressed]}>
-          <Text style={[styles.pillText, { color: onTint }]}>Chiudi</Text>
+          <Text style={[styles.pillText, { color: onTint }]}>{t('common.close')}</Text>
         </Pressable>
         <Pressable
           onPress={() => router.push(detailHref(card.id))}
           accessibilityRole="button"
           style={({ pressed }) => [styles.pill, { backgroundColor: tint }, pressed && styles.pressed]}>
-          <Text style={[styles.pillText, { color: onTint }]}>Dettagli</Text>
+          <Text style={[styles.pillText, { color: onTint }]}>{t('cardsScreen.details')}</Text>
         </Pressable>
       </View>
       {(generated || photoUri) && (

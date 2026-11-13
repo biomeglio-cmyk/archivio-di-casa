@@ -2,6 +2,8 @@ import * as LocalAuthentication from 'expo-local-authentication';
 import Storage from 'expo-sqlite/kv-store';
 import { useSyncExternalStore } from 'react';
 
+import { t } from '@/i18n';
+
 // "Blocca con Face ID": on/off, kept on the phone in the key-value store (never in a backup)
 const KEY = 'security.appLock';
 
@@ -45,7 +47,7 @@ export function useAppLockEnabled(): boolean {
 export async function authenticate(promptMessage: string): Promise<boolean> {
   const result = await LocalAuthentication.authenticateAsync({
     promptMessage,
-    cancelLabel: 'Annulla',
+    cancelLabel: t('common.cancel'),
     disableDeviceFallback: false,
   });
   return result.success;
@@ -58,7 +60,7 @@ export type EnableResult = 'enabled' | 'no-passcode' | 'cancelled';
 export async function enableAppLock(): Promise<EnableResult> {
   const level = await LocalAuthentication.getEnrolledLevelAsync();
   if (level === LocalAuthentication.SecurityLevel.NONE) return 'no-passcode';
-  if (!(await authenticate('Conferma per attivare il blocco'))) return 'cancelled';
+  if (!(await authenticate(t('appLockAuth.enablePrompt')))) return 'cancelled';
   setAppLockEnabled(true);
   return 'enabled';
 }
@@ -67,15 +69,17 @@ export function disableAppLock(): void {
   setAppLockEnabled(false);
 }
 
-// Label of the button on the lock screen, from what this iPhone actually has
-export async function unlockLabel(): Promise<string> {
+export type UnlockMethod = 'faceId' | 'touchId' | 'passcode';
+
+// What unlocks this iPhone, for the label of the button on the lock screen
+export async function unlockMethod(): Promise<UnlockMethod> {
   try {
     const types = await LocalAuthentication.supportedAuthenticationTypesAsync();
     const enrolled = await LocalAuthentication.isEnrolledAsync();
-    if (enrolled && types.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) return 'Sblocca con Face ID';
-    if (enrolled && types.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) return 'Sblocca con Touch ID';
+    if (enrolled && types.includes(LocalAuthentication.AuthenticationType.FACIAL_RECOGNITION)) return 'faceId';
+    if (enrolled && types.includes(LocalAuthentication.AuthenticationType.FINGERPRINT)) return 'touchId';
   } catch {
     // fall through to the passcode
   }
-  return 'Sblocca con il codice';
+  return 'passcode';
 }

@@ -1,3 +1,4 @@
+import { t } from '@/i18n';
 import { parseISODate, toISODate } from '@/utils/dates';
 
 // "Si ripete": a deadline that comes back every N days, weeks, months or years
@@ -7,22 +8,24 @@ export type Repeat = { every: number; unit: RepeatUnit }; // every: 1…99
 export const REPEAT_UNITS: RepeatUnit[] = ['day', 'week', 'month', 'year'];
 export const MAX_REPEAT = 99;
 
-const NAMES: Record<RepeatUnit, { one: string; many: string }> = {
-  day: { one: 'giorno', many: 'giorni' },
-  week: { one: 'settimana', many: 'settimane' },
-  month: { one: 'mese', many: 'mesi' },
-  year: { one: 'anno', many: 'anni' },
-};
-
 // "giorni", "settimane"… (the unit names in the form)
 export function unitName(unit: RepeatUnit, every: number): string {
-  return every === 1 ? NAMES[unit].one : NAMES[unit].many;
+  return t(`recurrence.unit.${unit}`, { count: every });
+}
+
+// "6 mesi", "1 settimana" (the "Ogni" choices)
+export function unitCount(unit: RepeatUnit, every: number): string {
+  return t(`recurrence.count.${unit}`, { count: every });
+}
+
+// "Ogni 6 mesi", "Ogni anno", "Ogni settimana"
+export function describeEvery({ every, unit }: Repeat): string {
+  return t(`recurrence.every.${unit}`, { count: every });
 }
 
 // "Si ripete ogni 6 mesi", "Si ripete ogni anno", "Si ripete ogni settimana"
 export function describeRepeat({ every, unit }: Repeat): string {
-  if (every === 1) return unit === 'week' ? 'Si ripete ogni settimana' : `Si ripete ogni ${NAMES[unit].one}`;
-  return `Si ripete ogni ${every} ${NAMES[unit].many}`;
+  return t(`recurrence.repeats.${unit}`, { count: every });
 }
 
 // The occurrence `count` steps after `anchor`, always computed FROM THE ANCHOR, so the day of the

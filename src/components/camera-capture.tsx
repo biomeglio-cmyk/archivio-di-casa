@@ -14,6 +14,7 @@ import { FONTS } from '@/constants/typography';
 import { useLargestPictureSize } from '@/capture/picture-size';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 type Props = {
   onDone: (uris: string[]) => void; // the photos in the order they were taken
@@ -24,6 +25,7 @@ type Props = {
 // A document is N pages: after every shot "Rifai", "Aggiungi pagina" (keep it, shoot the next)
 // or "Fine" (keep it and stop). One page is enough.
 export function CameraCapture({ onDone, onCancel }: Props) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
@@ -74,18 +76,16 @@ export function CameraCapture({ onDone, onCancel }: Props) {
     return (
       <View style={[styles.screen, styles.centered, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <SymbolView name="camera" tintColor="#FFFFFF" size={44} />
-        <Text style={styles.permissionTitle}>Serve la fotocamera</Text>
-        <Text style={styles.permissionText}>
-          Sottomano usa la fotocamera solo per fotografare i tuoi documenti.
-        </Text>
+        <Text style={styles.permissionTitle}>{t('cameraCapture.permissionTitle')}</Text>
+        <Text style={styles.permissionText}>{t('cameraCapture.permissionText')}</Text>
         <View style={styles.permissionButton}>
           <PrimaryButton
-            label={permission.canAskAgain ? 'Consenti' : 'Apri Impostazioni'}
+            label={permission.canAskAgain ? t('cameraCapture.allow') : t('cameraCapture.openSettings')}
             onPress={() => (permission.canAskAgain ? requestPermission() : Linking.openSettings())}
           />
         </View>
         <Pressable onPress={() => onCancel()} hitSlop={12}>
-          <Text style={styles.link}>Annulla</Text>
+          <Text style={styles.link}>{t('common.cancel')}</Text>
         </Pressable>
       </View>
     );
@@ -99,18 +99,18 @@ export function CameraCapture({ onDone, onCancel }: Props) {
         <Image source={{ uri: previewUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
         <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
           <Text style={styles.instruction}>
-            {pageNumber === 1 ? 'Si legge bene?' : `Pagina ${pageNumber}: si legge bene?`}
+            {pageNumber === 1 ? t('cameraCapture.readable') : t('cameraCapture.pageReadable', { number: pageNumber })}
           </Text>
         </View>
         <View style={[styles.previewBar, { paddingBottom: insets.bottom + 16 }]}>
           <Pressable style={styles.secondaryButton} onPress={() => setPreviewUri(null)} accessibilityRole="button">
-            <Text style={styles.secondaryLabel}>Rifai</Text>
+            <Text style={styles.secondaryLabel}>{t('cameraCapture.retake')}</Text>
           </Pressable>
           <Pressable style={styles.secondaryButton} onPress={addPage} accessibilityRole="button">
-            <Text style={styles.secondaryLabel}>Aggiungi pagina</Text>
+            <Text style={styles.secondaryLabel}>{t('cameraCapture.addPage')}</Text>
           </Pressable>
           <View style={styles.flex}>
-            <PrimaryButton label="Fine" onPress={finish} />
+            <PrimaryButton label={t('common.done')} onPress={finish} />
           </View>
         </View>
       </View>
@@ -135,13 +135,13 @@ export function CameraCapture({ onDone, onCancel }: Props) {
       <GuideFrameOverlay frame={frame} />
 
       <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
-        <Pressable onPress={() => onCancel()} hitSlop={12} accessibilityLabel="Chiudi">
+        <Pressable onPress={() => onCancel()} hitSlop={12} accessibilityLabel={t('common.close')}>
           <SymbolView name="xmark" tintColor="#FFFFFF" size={22} />
         </Pressable>
       </View>
 
       <Text style={[styles.instruction, styles.instructionOverFrame, { top: frame.y - 56 }]}>
-        {pageNumber === 1 ? 'Inquadra il documento' : `Inquadra la pagina ${pageNumber}`}
+        {pageNumber === 1 ? t('cameraCapture.frameDocument') : t('cameraCapture.framePage', { number: pageNumber })}
       </Text>
 
       <View style={[styles.cameraBar, { paddingBottom: insets.bottom + 24 }]}>
@@ -149,15 +149,15 @@ export function CameraCapture({ onDone, onCancel }: Props) {
         <Pressable
           onPress={shoot}
           disabled={!ready || busy}
-          accessibilityLabel="Scatta"
+          accessibilityLabel={t('cameraCapture.shoot')}
           style={({ pressed }) => [styles.shutter, (pressed || busy) && styles.shutterPressed]}>
           <View style={styles.shutterInner} />
         </Pressable>
         <View style={styles.sideSlot}>
           {/* Changed idea after "Aggiungi pagina": finish with the pages already taken */}
           {pages.length > 0 && (
-            <Pressable onPress={() => onDone(pages)} hitSlop={12} accessibilityLabel={`Fine, ${pages.length} pagine`}>
-              <Text style={styles.link}>Fine</Text>
+            <Pressable onPress={() => onDone(pages)} hitSlop={12} accessibilityLabel={t('cameraCapture.finishWithPages', { count: pages.length })}>
+              <Text style={styles.link}>{t('common.done')}</Text>
             </Pressable>
           )}
         </View>

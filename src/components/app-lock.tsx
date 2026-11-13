@@ -6,7 +6,8 @@ import { FullWindowOverlay } from 'react-native-screens';
 import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
-import { LOCK_AFTER_MS, authenticate, isAppLockEnabled, unlockLabel, useAppLockEnabled } from '@/security/app-lock';
+import { t as translate, useI18n } from '@/i18n';
+import { LOCK_AFTER_MS, authenticate, isAppLockEnabled, unlockMethod, useAppLockEnabled, type UnlockMethod } from '@/security/app-lock';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
 
@@ -19,10 +20,11 @@ import { useThemedStyles } from '@/hooks/use-theme';
 // which a normal absolutely positioned View would not.
 export function AppLock() {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const enabled = useAppLockEnabled();
   const [locked, setLocked] = useState(isAppLockEnabled); // cold start: locked if the lock is on
   const [covered, setCovered] = useState(false);
-  const [label, setLabel] = useState('Sblocca');
+  const [method, setMethod] = useState<UnlockMethod | null>(null); // null until known: "Sblocca"
 
   const lockedRef = useRef(locked); // the latest value, for the AppState listener
   const authenticating = useRef(false);
@@ -37,7 +39,7 @@ export function AppLock() {
     if (authenticating.current) return; // one prompt at a time
     authenticating.current = true;
     try {
-      if (await authenticate('Sblocca Sottomano')) setLockedBoth(false);
+      if (await authenticate(translate('appLock.prompt'))) setLockedBoth(false);
     } finally {
       authenticating.current = false;
     }
@@ -45,7 +47,7 @@ export function AppLock() {
 
   // Cold start: ask right away
   useEffect(() => {
-    unlockLabel().then(setLabel);
+    unlockMethod().then(setMethod);
     if (lockedRef.current) unlock();
   }, [unlock]);
 
@@ -75,15 +77,17 @@ export function AppLock() {
   // Lock turned off from the Menu: nothing is shown. Turned on: the app is already unlocked.
   if (!enabled || (!locked && !covered)) return null;
 
+  const label = method ? t(`appLock.unlockWith.${method}`) : t('appLock.unlock');
+
   return (
     <FullWindowOverlay unstable_accessibilityContainerViewIsModal>
       <View style={styles.screen}>
         <SymbolView name="lock.fill" tintColor="#FFFFFF" size={56} />
         <Text style={styles.name} maxFontSizeMultiplier={1.5}>
-          Sottomano
+          {'Sottomano' /* i18n-ignore: brand */}
         </Text>
         <Text style={styles.message} maxFontSizeMultiplier={2}>
-          I tuoi documenti sono protetti
+          {t('appLock.message')}
         </Text>
         {locked && (
           <Pressable

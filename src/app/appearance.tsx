@@ -10,11 +10,12 @@ import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { cardSurface, Spacing, type Palette as ThemePalette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
-import { PALETTES, type Palette } from '@/constants/palettes';
+import { PALETTES, paletteName, type Palette } from '@/constants/palettes';
 import { BUILTIN_ORDER } from '@/db/builtin-categories';
 import { restoreBuiltinCategories } from '@/db/categories';
 import { setPaletteId, usePaletteId } from '@/settings/palette';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const MINI_COLUMNS = 7; // 13 mini tiles: a row of 7 and a row of 6
 
@@ -23,30 +24,29 @@ const MINI_COLUMNS = 7; // 13 mini tiles: a row of 7 and a row of 6
 export default function AppearanceScreen() {
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
+  const { t } = useI18n();
   const selected = usePaletteId();
 
   // Brings back the deleted built-in categories (original name, icon, color), before "Altro"
   function restoreCategories() {
     Alert.alert(
-      'Ripristinare le categorie predefinite?',
-      'Tornano quelle che hai eliminato, con nome, icona e colore originali. I documenti e le categorie create da te non cambiano.',
+      t('appearance.alerts.restoreTitle'),
+      t('appearance.alerts.restoreMessage'),
       [
-        { text: 'Annulla', style: 'cancel' },
+        { text: t('common.cancel'), style: 'cancel' },
         {
-          text: 'Ripristina',
+          text: t('common.restore'),
           onPress: async () => {
             try {
               const count = await restoreBuiltinCategories(db);
               Alert.alert(
-                count === 0 ? 'Niente da ripristinare' : 'Categorie ripristinate',
+                count === 0 ? t('appearance.alerts.nothingTitle') : t('appearance.alerts.restoredTitle'),
                 count === 0
-                  ? 'Tutte le categorie predefinite sono già nella Home.'
-                  : count === 1
-                    ? '1 categoria è tornata nella Home, prima di «Altro».'
-                    : `${count} categorie sono tornate nella Home, prima di «Altro».`,
+                  ? t('appearance.alerts.nothingMessage')
+                  : t('appearance.alerts.restoredMessage', { count }),
               );
             } catch (error) {
-              Alert.alert('Impossibile ripristinare', error instanceof Error ? error.message : String(error));
+              Alert.alert(t('appearance.alerts.restoreFailed'), error instanceof Error ? error.message : String(error));
             }
           },
         },
@@ -58,7 +58,7 @@ export default function AppearanceScreen() {
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
-          I colori delle categorie predefinite. Le categorie create da te mantengono il loro colore.
+          {t('appearance.intro')}
         </ThemedText>
         <View accessibilityRole="radiogroup" style={styles.list}>
           {PALETTES.map((palette) => (
@@ -71,16 +71,16 @@ export default function AppearanceScreen() {
           ))}
         </View>
         <View style={styles.restore}>
-          <SecondaryButton label="Ripristina categorie predefinite" symbol="arrow.counterclockwise" onPress={restoreCategories} />
+          <SecondaryButton label={t('appearance.restoreButton')} symbol="arrow.counterclockwise" onPress={restoreCategories} />
           <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
-            Rimette le categorie predefinite che hai eliminato.
+            {t('appearance.restoreHint')}
           </ThemedText>
         </View>
       </ScrollView>
 
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button variant="done" onPress={() => router.back()}>
-          Fine
+          {t('common.done')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
     </>
@@ -90,12 +90,13 @@ export default function AppearanceScreen() {
 function PaletteCard({ palette, selected, onPress }: { palette: Palette; selected: boolean; onPress: () => void }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   return (
     <Pressable
       onPress={onPress}
       accessibilityRole="radio"
       accessibilityState={{ checked: selected }}
-      accessibilityLabel={`Palette ${palette.name}`}
+      accessibilityLabel={t('appearance.paletteLabel', { name: paletteName(palette.id) })}
       style={({ pressed }) => [
         styles.card,
         cardSurface(theme),
@@ -103,7 +104,7 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
         pressed && styles.pressed,
       ]}>
       <View style={styles.cardHeader}>
-        <ThemedText style={styles.name}>{palette.name}</ThemedText>
+        <ThemedText style={styles.name}>{paletteName(palette.id)}</ThemedText>
         {selected && <SymbolView name="checkmark.circle.fill" tintColor={BRAND_COLOR(theme)} size={22} />}
       </View>
       <View style={styles.grid}>

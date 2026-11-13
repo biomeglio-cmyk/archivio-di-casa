@@ -23,7 +23,7 @@ import { FONTS } from '@/constants/typography';
 import { rescheduleReminders, updateAppBadge } from '@/notifications/reminders';
 import { disableAppLock, useAppLockEnabled } from '@/security/app-lock';
 import { usePaletteId } from '@/settings/palette';
-import { PALETTES } from '@/constants/palettes';
+import { paletteName } from '@/constants/palettes';
 import { getPreferences, savePreferences, type Preferences } from '@/settings/preferences';
 import { setEmptyHomePreview, useEmptyHomePreview } from '@/settings/debug-previews';
 import { FREE_LIMIT_ENFORCED, setLimitPreview, useLimitPreview } from '@/settings/free-limit';
@@ -31,7 +31,7 @@ import { chooseAction } from '@/utils/action-sheet';
 import { daysBefore } from '@/constants/deadline-options';
 import type { ThemeMode } from '@/settings/theme-mode';
 import type { LanguageSetting } from '@/settings/language';
-import { useI18n } from '@/i18n';
+import { t, useI18n } from '@/i18n';
 import { useLanguageSetting } from '@/i18n/use-language';
 import { Segmented } from '@/components/segmented';
 import { useTheme, useThemeMode, useThemedStyles } from '@/hooks/use-theme';
@@ -61,10 +61,10 @@ function timeLabel(hour: number, minute: number): string {
 }
 
 function lastBackupLabel(days: number | null): string {
-  if (days === null) return 'Mai fatto';
-  if (days === 0) return 'Oggi';
-  if (days === 1) return 'Ieri';
-  return `${days} giorni fa`;
+  if (days === null) return t('settings.lastBackup.never');
+  if (days === 0) return t('settings.lastBackup.today');
+  if (days === 1) return t('settings.lastBackup.yesterday');
+  return t('settings.lastBackup.daysAgo', { count: days });
 }
 
 // "Impostazioni" (docs/design/Impostazioni.dc.html), from the side menu: free version card,
@@ -76,6 +76,7 @@ export default function SettingsScreen() {
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
+  const { t, language } = useI18n();
   const lockEnabled = useAppLockEnabled();
   const paletteId = usePaletteId();
   const [preferences, setPreferences] = useState<Preferences>(getPreferences);
@@ -87,14 +88,15 @@ export default function SettingsScreen() {
   const [versionTaps, setVersionTaps] = useState(0);
   const emptyHomePreview = useEmptyHomePreview();
   const showDebug = versionTaps >= 5 || limitPreview || emptyHomePreview;
-  const [calendarLabel, setCalendarLabel] = useState('');
+  // The calendar title while sync is on, null when it is off ("Spento", translated at render)
+  const [calendarTitle, setCalendarTitle] = useState<string | null>(null);
 
   // Coming back from the iPhone Settings, Backup or Calendario: permission, dates and labels may have changed
   useFocusEffect(
     useCallback(() => {
       setNow(Date.now());
       const calendar = getCalendarSettings();
-      setCalendarLabel(calendar.enabled && calendar.calendarTitle ? calendar.calendarTitle : 'Spento');
+      setCalendarTitle(calendar.enabled && calendar.calendarTitle ? calendar.calendarTitle : null);
       Notifications.getPermissionsAsync().then((p) => setNotificationsBlocked(!p.granted && !p.canAskAgain));
     }, []),
   );
@@ -114,11 +116,11 @@ export default function SettingsScreen() {
       if (!permission.granted) {
         setNotificationsBlocked(!permission.canAskAgain);
         Alert.alert(
-          'Notifiche disattivate',
-          "Per ricevere i promemoria consenti le notifiche a Sottomano nelle Impostazioni dell'iPhone.",
+          t('settings.alerts.notificationsOffTitle'),
+          t('settings.alerts.notificationsOffMessage'),
           [
-            { text: 'Annulla', style: 'cancel' },
-            { text: 'Apri Impostazioni', onPress: () => Linking.openSettings() },
+            { text: t('common.cancel'), style: 'cancel' },
+            { text: t('settings.alerts.openSettings'), onPress: () => Linking.openSettings() },
           ],
         );
         return;
@@ -135,12 +137,12 @@ export default function SettingsScreen() {
   }
 
   async function chooseDefaultDays() {
-    const index = await chooseAction('Avviso predefinito', DAYS_OPTIONS.map(daysLabel));
+    const index = await chooseAction(t('settings.defaultReminder'), DAYS_OPTIONS.map(daysLabel));
     if (index !== null) update({ defaultReminderDays: DAYS_OPTIONS[index] });
   }
 
   const reminderTime = new Date(2000, 0, 1, preferences.reminderHour, preferences.reminderMinute);
-  const paletteName = PALETTES.find((p) => p.id === paletteId)?.name ?? '';
+  const currentPalette = paletteName(paletteId);
   const version = Constants.expoConfig?.version ?? '1.0';
   const open = (href: Href) => router.push(href);
 
@@ -151,69 +153,69 @@ export default function SettingsScreen() {
       <Pressable
         onPress={() => router.back()}
         accessibilityRole="button"
-        accessibilityLabel="Indietro"
+        accessibilityLabel={t('common.back')}
         style={({ pressed }) => [styles.back, pressed && styles.pressed]}>
         <SymbolView name="chevron.left" tintColor={theme.text} size={20} weight="semibold" />
       </Pressable>
       <Text style={styles.title} accessibilityRole="header">
-        Impostazioni
+        {t('common.settings')}
       </Text>
 
       <View style={styles.card}>
         <FreeUsageCard variant="settings" />
       </View>
 
-      <Section title="Aspetto">
+      <Section title={t('settings.sections.appearance')}>
         <ThemeRow />
         <LanguageRow />
         <SettingsRow
           symbol="paintpalette"
           tint={TINTS(theme).grey}
-          label="Colori delle categorie"
-          value={paletteName}
+          label={t('settings.categoryColors')}
+          value={currentPalette}
           onPress={() => open('/appearance')}
         />
       </Section>
 
-      <Section title="Sicurezza">
+      <Section title={t('settings.sections.security')}>
         <SettingsRow
           symbol="faceid"
           tint={TINTS(theme).security}
-          label="Blocca con Face ID"
-          subtitle="Chiede il volto ogni volta che apri l’app"
+          label={t('settings.faceId')}
+          subtitle={t('settings.faceIdSubtitle')}
           onPress={() => toggleLock(!lockEnabled)}
-          trailing={<Switch value={lockEnabled} onValueChange={toggleLock} accessibilityLabel="Blocca con Face ID" />}
+          trailing={<Switch value={lockEnabled} onValueChange={toggleLock} accessibilityLabel={t('settings.faceId')} />}
         />
         <SettingsRow
           symbol="eye.slash"
           tint={TINTS(theme).grey}
-          label="Nascondi anteprime"
-          subtitle="Nelle notifiche non si vede il documento"
+          label={t('settings.hidePreviews')}
+          subtitle={t('settings.hidePreviewsSubtitle')}
           onPress={() => update({ hidePreviews: !preferences.hidePreviews })}
           trailing={
             <Switch
               value={preferences.hidePreviews}
               onValueChange={(value) => update({ hidePreviews: value })}
-              accessibilityLabel="Nascondi anteprime"
+              accessibilityLabel={t('settings.hidePreviews')}
             />
           }
         />
       </Section>
 
-      <Section title="Promemoria">
+      <Section title={t('settings.sections.reminders')}>
         <SettingsRow
           symbol="bell"
           tint={TINTS(theme).reminders}
-          label="Notifiche"
+          label={t('settings.notifications')}
           onPress={() => toggleReminders(!preferences.remindersEnabled)}
           trailing={
-            <Switch value={preferences.remindersEnabled} onValueChange={toggleReminders} accessibilityLabel="Notifiche" />
+            <Switch value={preferences.remindersEnabled} onValueChange={toggleReminders} accessibilityLabel={t('settings.notifications')} />
           }
         />
         <SettingsRow
           symbol="clock"
           tint={TINTS(theme).reminders}
-          label="Orario degli avvisi"
+          label={t('settings.reminderTime')}
           value={timeLabel(preferences.reminderHour, preferences.reminderMinute)}
           expanded={timeOpen}
           onPress={() => setTimeOpen((value) => !value)}
@@ -225,7 +227,7 @@ export default function SettingsScreen() {
               value={reminderTime}
               mode="time"
               display="spinner"
-              locale="it_IT"
+              locale={language === 'it' ? 'it_IT' : 'en_GB'}
               accentColor={BRAND_COLOR(theme)}
               onValueChange={(_, date) => update({ reminderHour: date.getHours(), reminderMinute: date.getMinutes() })}
             />
@@ -234,73 +236,73 @@ export default function SettingsScreen() {
         <SettingsRow
           symbol="calendar"
           tint={TINTS(theme).reminders}
-          label="Avviso predefinito"
+          label={t('settings.defaultReminder')}
           value={daysLabel(preferences.defaultReminderDays)}
           onPress={chooseDefaultDays}
         />
         <SettingsRow
           symbol="app.badge"
           tint={TINTS(theme).reminders}
-          label="Numero sull’icona"
-          subtitle="Scadenze passate o entro 7 giorni"
+          label={t('settings.iconBadge')}
+          subtitle={t('settings.iconBadgeSubtitle')}
           onPress={() => update({ iconBadgeEnabled: !preferences.iconBadgeEnabled })}
           trailing={
             <Switch
               value={preferences.iconBadgeEnabled}
               onValueChange={(value) => update({ iconBadgeEnabled: value })}
-              accessibilityLabel="Numero sull’icona"
+              accessibilityLabel={t('settings.iconBadge')}
             />
           }
         />
         <SettingsRow
           symbol="calendar.badge.plus"
           tint={TINTS(theme).reminders}
-          label="Calendario «Sottomano»"
-          value={calendarLabel}
+          label={t('settings.calendar')}
+          value={calendarTitle ?? t('settings.calendarOff')}
           onPress={() => open('/calendar-settings')}
         />
         {notificationsBlocked && (
           <SettingsRow
             symbol="exclamationmark.triangle"
             tint={TINTS(theme).reminders}
-            label="Le notifiche sono bloccate"
-            subtitle="Consentile nelle Impostazioni dell’iPhone"
+            label={t('settings.notificationsBlocked')}
+            subtitle={t('settings.notificationsBlockedSubtitle')}
             onPress={() => Linking.openSettings()}
           />
         )}
       </Section>
 
       <Section
-        title="Backup"
-        note="Il backup è un file salvato sul tuo telefono, nell’app File. Puoi copiarlo dove vuoi. Sottomano funziona anche senza internet.">
+        title={t('settings.sections.backup')}
+        note={t('settings.backupNote')}>
         <SettingsRow
           symbol="icloud.and.arrow.up"
           tint={TINTS(theme).backup}
-          label="Crea un backup ora"
+          label={t('settings.createBackup')}
           value={lastBackupLabel(daysSinceLastBackup(now))}
           onPress={() => open({ pathname: '/backup', params: { action: 'create' } })}
         />
         <SettingsRow
           symbol="arrow.down.to.line"
           tint={TINTS(theme).backup}
-          label="Ripristina da un backup"
+          label={t('settings.restoreBackup')}
           onPress={() => open({ pathname: '/backup', params: { action: 'restore' } })}
         />
       </Section>
 
-      <Section title="Informazioni">
-        <SettingsRow symbol="questionmark.circle" tint={TINTS(theme).info} label="Aiuto e contatti" onPress={() => open('/onboarding')} />
-        <SettingsRow symbol="lock" tint={TINTS(theme).info} label="Privacy" onPress={() => open('/about')} />
-        <SettingsRow symbol="doc.text" tint={TINTS(theme).info} label="Termini d’uso" onPress={() => open('/terms')} />
-        <SettingsRow symbol="star" tint={TINTS(theme).info} label="Valuta Sottomano" onPress={rateApp} />
+      <Section title={t('settings.sections.info')}>
+        <SettingsRow symbol="questionmark.circle" tint={TINTS(theme).info} label={t('settings.help')} onPress={() => open('/onboarding')} />
+        <SettingsRow symbol="lock" tint={TINTS(theme).info} label={t('settings.privacy')} onPress={() => open('/about')} />
+        <SettingsRow symbol="doc.text" tint={TINTS(theme).info} label={t('settings.terms')} onPress={() => open('/terms')} />
+        <SettingsRow symbol="star" tint={TINTS(theme).info} label={t('settings.rate')} onPress={rateApp} />
         {showDebug && !FREE_LIMIT_ENFORCED && (
           <SettingsRow
             symbol="ladybug"
             tint={TINTS(theme).info}
-            label="Anteprima limite gratuito"
-            subtitle="Solo per le prove: mostra il + bloccato, il pannello del limite e la scheda in Home"
+            label={t('settings.debug.limitPreview')}
+            subtitle={t('settings.debug.limitPreviewSubtitle')}
             trailing={
-              <Switch value={limitPreview} onValueChange={setLimitPreview} accessibilityLabel="Anteprima limite gratuito" />
+              <Switch value={limitPreview} onValueChange={setLimitPreview} accessibilityLabel={t('settings.debug.limitPreview')} />
             }
           />
         )}
@@ -308,10 +310,10 @@ export default function SettingsScreen() {
           <SettingsRow
             symbol="ladybug"
             tint={TINTS(theme).info}
-            label="Anteprima Home vuota"
-            subtitle="Solo per le prove: la Home come se non ci fossero documenti (i dati restano)"
+            label={t('settings.debug.emptyHome')}
+            subtitle={t('settings.debug.emptyHomeSubtitle')}
             trailing={
-              <Switch value={emptyHomePreview} onValueChange={setEmptyHomePreview} accessibilityLabel="Anteprima Home vuota" />
+              <Switch value={emptyHomePreview} onValueChange={setEmptyHomePreview} accessibilityLabel={t('settings.debug.emptyHome')} />
             }
           />
         )}
@@ -319,15 +321,15 @@ export default function SettingsScreen() {
           <SettingsRow
             symbol="ladybug"
             tint={TINTS(theme).info}
-            label="Rivedi il benvenuto"
-            subtitle="Solo per le prove: le pagine Benvenuto 1–4"
+            label={t('settings.debug.onboarding')}
+            subtitle={t('settings.debug.onboardingSubtitle')}
             onPress={() => open('/onboarding')}
           />
         )}
       </Section>
 
       <Pressable onPress={() => setVersionTaps((n) => n + 1)} accessibilityRole="text" hitSlop={10}>
-        <Text style={styles.version}>Sottomano · versione {version}</Text>
+        <Text style={styles.version}>{t('settings.version', { version })}</Text>
       </Pressable>
     </ScrollView>
   );
@@ -341,6 +343,7 @@ function ThemeRow() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { mode, setMode } = useThemeMode();
+  const { t } = useI18n();
   return (
     <View style={styles.themeRow}>
       <View style={styles.themeHead}>
@@ -348,12 +351,12 @@ function ThemeRow() {
           <SymbolView name="moon" tintColor={theme.indigo} size={19} />
         </View>
         <View style={styles.rowTexts}>
-          <Text style={styles.rowLabel}>Tema</Text>
-          {mode === 'auto' && <Text style={styles.rowSubtitle}>Segue l’impostazione del telefono</Text>}
+          <Text style={styles.rowLabel}>{t('settings.theme.title')}</Text>
+          {mode === 'auto' && <Text style={styles.rowSubtitle}>{t('settings.theme.autoSubtitle')}</Text>}
         </View>
       </View>
       <Segmented
-        values={['Automatico', 'Chiaro', 'Scuro']}
+        values={[t('settings.theme.auto'), t('settings.theme.light'), t('settings.theme.dark')]}
         symbols={[undefined, 'sun.max', 'moon']}
         selectedIndex={THEME_MODES.indexOf(mode)}
         onChange={(index) => setMode(THEME_MODES[index])}

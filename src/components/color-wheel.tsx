@@ -6,6 +6,7 @@ import Svg, { Circle, Defs, Path, RadialGradient, Stop } from 'react-native-svg'
 import { wheelHex } from '@/utils/password-tools';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const SIZE = 200;
 const R = SIZE / 2;
@@ -31,6 +32,7 @@ function wedge(index: number): string {
 // down the page around is told to stop scrolling (onDraggingChange); a light tap of haptics on release.
 export function ColorWheel({ hue, radius, onChange, onDraggingChange }: Props) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   function pick(x: number, y: number) {
     const dx = x - R;
     const dy = y - R;
@@ -67,10 +69,10 @@ export function ColorWheel({ hue, radius, onChange, onDraggingChange }: Props) {
           style={styles.wheel}
           accessible
           accessibilityRole="adjustable"
-          accessibilityLabel="Ruota dei colori: tocca o trascina per scegliere"
+          accessibilityLabel={t('colorWheel.label')}
           accessibilityActions={[
-            { name: 'increment', label: 'Tinta successiva' },
-            { name: 'decrement', label: 'Tinta precedente' },
+            { name: 'increment', label: t('colorWheel.nextHue') },
+            { name: 'decrement', label: t('colorWheel.previousHue') },
           ]}
           onAccessibilityAction={(e) =>
             onChange((hue + (e.nativeEvent.actionName === 'increment' ? 30 : 330)) % 360, radius || 0.85)

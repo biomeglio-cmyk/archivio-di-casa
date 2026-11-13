@@ -3,6 +3,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import type { Category, CategoryColors, CategoryRecord, CategoryWithCount } from '@/db/types';
 import { BUILTIN_DEFAULTS } from '@/db/builtin-categories';
+import { t } from '@/i18n';
 import { builtinCategoryName } from '@/i18n/category-names';
 import { builtinColorsFor } from '@/settings/palette';
 
@@ -130,14 +131,14 @@ export function isOtherCategory(category: Pick<Category, 'builtinKey'>): boolean
 
 export async function otherCategoryId(db: SQLiteDatabase): Promise<number> {
   const row = await db.getFirstAsync<{ id: number }>('SELECT id FROM categories WHERE builtin_key = ?', OTHER_KEY);
-  if (!row) throw new Error('La categoria "Altro" non esiste.');
+  if (!row) throw new Error(t('categoriesDb.otherMissing'));
   return row.id;
 }
 
 // "Cancella" with documents, option 1: the documents move to "Altro". Returns their ids.
 export async function moveDocumentsToOther(db: SQLiteDatabase, id: number): Promise<number[]> {
   const otherId = await otherCategoryId(db);
-  if (otherId === id) throw new Error('La categoria "Altro" non si può eliminare.');
+  if (otherId === id) throw new Error(t('categoriesDb.otherNotDeletable'));
   const moved = await listDocumentIdsInCategory(db, id);
   // From "Password": the user names go too (no "Utente" field in "Altro")
   await db.runAsync(
@@ -161,7 +162,7 @@ export async function deleteCategory(db: SQLiteDatabase, id: number): Promise<vo
     id,
   );
   if (!row) return;
-  if (row.builtin_key === OTHER_KEY) throw new Error('La categoria "Altro" non si può eliminare.');
+  if (row.builtin_key === OTHER_KEY) throw new Error(t('categoriesDb.otherNotDeletable'));
   if (row.is_builtin === 1) {
     await db.runAsync('UPDATE categories SET hidden = 1 WHERE id = ?', id);
   } else {

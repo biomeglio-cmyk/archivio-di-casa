@@ -4,6 +4,7 @@ import Storage from 'expo-sqlite/kv-store';
 import { useEffect, useSyncExternalStore } from 'react';
 
 import { useDbQuery } from '@/hooks/use-db-query';
+import { t } from '@/i18n';
 
 // Free version (docs/design-guide.md, "Limite gratuito"): up to 7 elements in all, where an
 // element is a document or a card ("Tessere e card" items are documents too). Categories,
@@ -17,7 +18,10 @@ export const FREE_LIMIT = 7;
 // While false, the limit states can be previewed with the hidden switch of Impostazioni ›
 // Informazioni (tap the version 5 times).
 export const FREE_LIMIT_ENFORCED = false;
-export const UNLOCK_PRICE = '0,99 €';
+// The price as written in the active language ("0,99 €" / "€0.99"); call it at render time
+export function unlockPrice(): string {
+  return t('freeLimit.unlockPrice');
+}
 
 const UNLOCKED_KEY = 'app.unlocked';
 

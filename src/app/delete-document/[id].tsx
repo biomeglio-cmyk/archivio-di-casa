@@ -9,11 +9,13 @@ import { moveToTrash, TRASH_DAYS } from '@/db/trash';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 // "Cancella documento" (docs/design/CancellaDocumento.dc.html), a transparent route over the screen
 // that opened it. The document goes to our Cestino and can be recovered for 30 days (the design's
 // "solo da un backup" does not apply: the Cestino wins).
 export default function DeleteDocumentScreen() {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const documentId = Number(id);
@@ -30,15 +32,15 @@ export default function DeleteDocumentScreen() {
       router.back();
     } catch (error) {
       setBusy(false);
-      Alert.alert('Impossibile eliminare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('deleteDocument.deleteFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
   return (
     <ConfirmDialog
-      title={`Cancellare ${document.title}?`}
-      message={`Il documento e il suo promemoria vanno nel Cestino. Potrai recuperarlo da Menu › Cestino per ${TRASH_DAYS} giorni.`}
-      confirmLabel="Cancella documento"
+      title={t('deleteDocument.title', { title: document.title })}
+      message={t('deleteDocument.message', { count: TRASH_DAYS })}
+      confirmLabel={t('deleteDocument.confirm')}
       onConfirm={confirm}
       onCancel={() => router.back()}
       busy={busy}

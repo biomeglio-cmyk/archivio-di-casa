@@ -5,8 +5,8 @@ import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
-import { monthName } from '@/i18n/format';
-import { formatDate, parseISODate } from '@/utils/dates';
+import { useFormat } from '@/i18n/use-format';
+import { parseISODate } from '@/utils/dates';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
@@ -16,6 +16,7 @@ type Props = {
 
 // Day and month in a 46 × 50 square (lists of deadlines)
 export function DateSquare({ iso, highlighted = false }: Props) {
+  const fmt = useFormat();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const date = parseISODate(iso);
@@ -26,7 +27,7 @@ export function DateSquare({ iso, highlighted = false }: Props) {
         {date.getDate()}
       </Text>
       <Text style={[styles.month, { color }]} maxFontSizeMultiplier={1.2}>
-        {monthName(date.getMonth(), 'short')}
+        {fmt.monthName(date.getMonth(), 'short')}
       </Text>
     </>
   );
@@ -37,11 +38,11 @@ export function DateSquare({ iso, highlighted = false }: Props) {
       end={GRADIENT_END}
       style={[styles.square, styles.highlighted]}
       accessible
-      accessibilityLabel={formatDate(iso)}>
+      accessibilityLabel={fmt.date(iso)}>
       {content}
     </LinearGradient>
   ) : (
-    <View style={[styles.square, styles.idle]} accessible accessibilityLabel={formatDate(iso)}>
+    <View style={[styles.square, styles.idle]} accessible accessibilityLabel={fmt.date(iso)}>
       {content}
     </View>
   );

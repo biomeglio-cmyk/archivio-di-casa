@@ -2,8 +2,10 @@ import type { SFSymbol } from 'expo-symbols';
 
 import type { PasswordInfo, PasswordPreview, PasswordType } from '@/db/types';
 import { onSoftTint, softTint, type Palette } from '@/constants/theme';
+import { t } from '@/i18n';
 
-// Everything that changes with "Che cosa salvi" (docs/design/NuovaPassword.dc.html, its logic class)
+// Everything that changes with "Che cosa salvi" (docs/design/NuovaPassword.dc.html, its logic class).
+// The texts are translated when typeMeta() / passwordTypes() is called, never at module load.
 export type PasswordTypeMeta = {
   id: PasswordType;
   name: string; // "Sito o app"
@@ -17,90 +19,70 @@ export type PasswordTypeMeta = {
   canGenerate: boolean; // "Genera una password sicura": Sito and Altro
 };
 
-export const PASSWORD_TYPES: PasswordTypeMeta[] = [
-  {
-    id: 'site',
-    name: 'Sito o app',
-    symbol: 'globe',
-    namePlaceholder: 'Per esempio: Home banking',
-    userLabel: 'Utente o email',
-    userPlaceholder: 'nome@email.it',
-    userSymbol: 'envelope',
-    passwordLabel: 'Password',
-    notePlaceholder: 'Per esempio: domanda di sicurezza, codice di recupero…',
-    canGenerate: true,
-  },
-  {
-    id: 'wifi',
-    name: 'Wi-Fi',
-    symbol: 'wifi',
-    namePlaceholder: 'Per esempio: Wi-Fi di casa',
-    userLabel: 'Nome della rete',
-    userPlaceholder: 'CasaRossi_5G',
-    userSymbol: 'wifi',
-    passwordLabel: 'Password della rete',
-    notePlaceholder: 'Per esempio: il router è in sala, dietro la TV…',
-    canGenerate: false,
-  },
-  {
-    id: 'pin',
-    name: 'PIN',
-    symbol: 'circle.grid.3x3',
-    namePlaceholder: 'Per esempio: Bancomat',
-    userLabel: null,
-    userPlaceholder: '',
-    userSymbol: 'person',
-    passwordLabel: 'PIN',
-    notePlaceholder: 'Per esempio: carta di Giulia…',
-    canGenerate: false,
-  },
-  {
-    id: 'other',
-    name: 'Altro',
-    symbol: 'key',
-    namePlaceholder: 'Per esempio: Allarme di casa',
-    userLabel: 'Utente',
-    userPlaceholder: 'Facoltativo',
-    userSymbol: 'person',
-    passwordLabel: 'Codice o password',
-    notePlaceholder: 'A cosa serve, dove si usa…',
-    canGenerate: true,
-  },
+const PASSWORD_TYPE_IDS: { id: PasswordType; symbol: SFSymbol; hasUser: boolean; userSymbol: SFSymbol; canGenerate: boolean }[] = [
+  { id: 'site', symbol: 'globe', hasUser: true, userSymbol: 'envelope', canGenerate: true },
+  { id: 'wifi', symbol: 'wifi', hasUser: true, userSymbol: 'wifi', canGenerate: false },
+  { id: 'pin', symbol: 'circle.grid.3x3', hasUser: false, userSymbol: 'person', canGenerate: false },
+  { id: 'other', symbol: 'key', hasUser: true, userSymbol: 'person', canGenerate: true },
 ];
 
-export const typeMeta = (type: PasswordType) => PASSWORD_TYPES.find((t) => t.id === type) ?? PASSWORD_TYPES[3];
+function translatedMeta(base: (typeof PASSWORD_TYPE_IDS)[number]): PasswordTypeMeta {
+  const key = `passwordOptions.types.${base.id}`;
+  return {
+    id: base.id,
+    name: t(`${key}.name`),
+    symbol: base.symbol,
+    namePlaceholder: t(`${key}.namePlaceholder`),
+    userLabel: base.hasUser ? t(`${key}.userLabel`) : null,
+    userPlaceholder: base.hasUser ? t(`${key}.userPlaceholder`) : '',
+    userSymbol: base.userSymbol,
+    passwordLabel: t(`${key}.passwordLabel`),
+    notePlaceholder: t(`${key}.notePlaceholder`),
+    canGenerate: base.canGenerate,
+  };
+}
+
+// The four types, in the language in use
+export const passwordTypes = (): PasswordTypeMeta[] => PASSWORD_TYPE_IDS.map(translatedMeta);
+
+export const typeMeta = (type: PasswordType): PasswordTypeMeta =>
+  translatedMeta(PASSWORD_TYPE_IDS.find((item) => item.id === type) ?? PASSWORD_TYPE_IDS[3]);
 
 // "Wi-Fi", "PIN", or the type written for "Altro" ("Allarme")
 export function typeName(info: Pick<PasswordInfo, 'type' | 'customType'>): string {
   return info.type === 'other' && info.customType ? info.customType : typeMeta(info.type).name;
 }
 
-// The 7 colors of the preview
+// The 7 colors of the preview; their names (VoiceOver) come from passwordColorName()
 export const PASSWORD_COLORS = [
-  { key: 'aqua', name: 'Acqua', top: '#5CC8D8', bottom: '#2FA3B8' },
-  { key: 'indigo', name: 'Indaco', top: '#4A5CF0', bottom: '#8B6CF0' },
-  { key: 'apricot', name: 'Albicocca', top: '#FFA36E', bottom: '#F5824A' },
-  { key: 'pink', name: 'Rosa', top: '#F79BBA', bottom: '#EE7499' },
-  { key: 'mint', name: 'Menta', top: '#6FD3AE', bottom: '#45B68E' },
-  { key: 'sky', name: 'Cielo', top: '#86B4F7', bottom: '#6494EE' },
-  { key: 'graphite', name: 'Grafite', top: '#6B7290', bottom: '#3E4360' },
+  { key: 'aqua', top: '#5CC8D8', bottom: '#2FA3B8' },
+  { key: 'indigo', top: '#4A5CF0', bottom: '#8B6CF0' },
+  { key: 'apricot', top: '#FFA36E', bottom: '#F5824A' },
+  { key: 'pink', top: '#F79BBA', bottom: '#EE7499' },
+  { key: 'mint', top: '#6FD3AE', bottom: '#45B68E' },
+  { key: 'sky', top: '#86B4F7', bottom: '#6494EE' },
+  { key: 'graphite', top: '#6B7290', bottom: '#3E4360' },
 ] as const;
 
-// The 12 icons of the preview
-export const PASSWORD_ICONS: { key: string; name: string; symbol: SFSymbol }[] = [
-  { key: 'key', name: 'Chiave', symbol: 'key' },
-  { key: 'lock', name: 'Lucchetto', symbol: 'lock' },
-  { key: 'globe', name: 'Globo', symbol: 'globe' },
-  { key: 'wifi', name: 'Wi-Fi', symbol: 'wifi' },
-  { key: 'bank', name: 'Banca', symbol: 'building.columns' },
-  { key: 'card', name: 'Carta', symbol: 'creditcard' },
-  { key: 'mail', name: 'Email', symbol: 'envelope' },
-  { key: 'home', name: 'Casa', symbol: 'house' },
-  { key: 'car', name: 'Auto', symbol: 'car' },
-  { key: 'shield', name: 'Scudo', symbol: 'shield' },
-  { key: 'cart', name: 'Carrello', symbol: 'cart' },
-  { key: 'star', name: 'Stella', symbol: 'star' },
+export const passwordColorName = (key: string): string => t(`passwordOptions.colors.${key}`);
+
+// The 12 icons of the preview; their names (VoiceOver) come from passwordIconName()
+export const PASSWORD_ICONS: { key: string; symbol: SFSymbol }[] = [
+  { key: 'key', symbol: 'key' },
+  { key: 'lock', symbol: 'lock' },
+  { key: 'globe', symbol: 'globe' },
+  { key: 'wifi', symbol: 'wifi' },
+  { key: 'bank', symbol: 'building.columns' },
+  { key: 'card', symbol: 'creditcard' },
+  { key: 'mail', symbol: 'envelope' },
+  { key: 'home', symbol: 'house' },
+  { key: 'car', symbol: 'car' },
+  { key: 'shield', symbol: 'shield' },
+  { key: 'cart', symbol: 'cart' },
+  { key: 'star', symbol: 'star' },
 ];
+
+export const passwordIconName = (key: string): string => t(`passwordOptions.icons.${key}`);
 
 // The two gradient colors of a preview
 export function previewGradient(preview: PasswordPreview): [string, string] {

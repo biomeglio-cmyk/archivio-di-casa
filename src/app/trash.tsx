@@ -17,11 +17,8 @@ import { daysLeftInTrash, emptyTrash, restoreFromTrash, TRASH_DAYS } from '@/db/
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 import { resolveDocumentFile } from '@/storage/document-files';
-
-function showError(error: unknown) {
-  Alert.alert('Operazione non riuscita', error instanceof Error ? error.message : String(error));
-}
 
 // "Cestino" (Menu › Altro): the deleted documents, restorable for 30 days. Each one has
 // "Ripristina" and "Elimina definitivamente"; "Svuota cestino" deletes them all for good.
@@ -29,17 +26,20 @@ export default function TrashScreen() {
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const theme = useTheme();
+  const { t } = useI18n();
   const { data: documents } = useDbQuery(listTrashedDocuments, []);
+
+  function showError(error: unknown) {
+    Alert.alert(t('trash.alerts.failed'), error instanceof Error ? error.message : String(error));
+  }
 
   async function restore(document: DocumentListItem) {
     try {
       const { movedToOther } = await restoreFromTrash(db, document.id);
       if (movedToOther) {
         Alert.alert(
-          'Ripristinato in Altro',
-          document.category.isPassword
-            ? 'La sua categoria non c’è più: il documento è in Altro, senza nome utente e password.'
-            : 'La sua categoria non c’è più: il documento è in Altro.',
+          t('trash.alerts.restoredToOther'),
+          document.category.isPassword ? t('trash.alerts.restoredPassword') : t('trash.alerts.restoredMessage'),
         );
       }
     } catch (error) {
@@ -48,10 +48,10 @@ export default function TrashScreen() {
   }
 
   function deleteForever(document: DocumentListItem) {
-    Alert.alert(`Eliminare definitivamente "${document.title}"?`, 'Verranno eliminati anche foto e PDF. Non si può annullare.', [
-      { text: 'Annulla', style: 'cancel' },
+    Alert.alert(t('trash.alerts.deleteTitle', { title: document.title }), t('trash.alerts.deleteMessage'), [
+      { text: t('common.cancel'), style: 'cancel' },
       {
-        text: 'Elimina',
+        text: t('common.delete'),
         style: 'destructive',
         onPress: () => deleteDocumentForever(db, document.id).catch(showError),
       },
@@ -61,11 +61,11 @@ export default function TrashScreen() {
   function confirmEmpty() {
     const count = documents?.length ?? 0;
     Alert.alert(
-      'Svuotare il cestino?',
-      `${count === 1 ? 'Il documento verrà eliminato' : `I ${count} documenti verranno eliminati`} con foto e PDF. Non si può annullare.`,
+      t('trash.alerts.emptyTitle'),
+      t('trash.alerts.emptyMessage', { count }),
       [
-        { text: 'Annulla', style: 'cancel' },
-        { text: 'Svuota', style: 'destructive', onPress: () => emptyTrash(db).catch(showError) },
+        { text: t('common.cancel'), style: 'cancel' },
+        { text: t('trash.alerts.emptyConfirm'), style: 'destructive', onPress: () => emptyTrash(db).catch(showError) },
       ],
     );
   }
@@ -74,13 +74,13 @@ export default function TrashScreen() {
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
-          I documenti eliminati restano qui per {TRASH_DAYS} giorni, poi vengono cancellati con foto e PDF.
+          {t('trash.intro', { days: TRASH_DAYS })}
         </ThemedText>
 
         {documents?.length === 0 && (
           <View style={styles.empty}>
             <SymbolView name="trash" tintColor={theme.textSecondary} size={36} />
-            <ThemedText themeColor="textSecondary">Il cestino è vuoto</ThemedText>
+            <ThemedText themeColor="textSecondary">{t('trash.empty')}</ThemedText>
           </View>
         )}
 
@@ -105,7 +105,7 @@ export default function TrashScreen() {
                         {[document.category.name, document.personName].filter(Boolean).join(' · ')}
                       </ThemedText>
                       <ThemedText type="small" themeColor="textSecondary">
-                        {left <= 1 ? 'Verrà eliminato a breve' : `Verrà eliminato tra ${left} giorni`}
+                        {left <= 1 ? t('trash.deletedSoon') : t('trash.deletedIn', { days: left })}
                       </ThemedText>
                     </View>
                   </View>
@@ -113,18 +113,18 @@ export default function TrashScreen() {
                     <Pressable
                       onPress={() => restore(document)}
                       accessibilityRole="button"
-                      accessibilityLabel={`Ripristina ${document.title}`}
+                      accessibilityLabel={t('trash.restoreLabel', { title: document.title })}
                       hitSlop={6}
                       style={styles.action}>
-                      <Text style={[styles.actionText, { color: BRAND_COLOR(theme) }]}>Ripristina</Text>
+                      <Text style={[styles.actionText, { color: BRAND_COLOR(theme) }]}>{t('common.restore')}</Text>
                     </Pressable>
                     <Pressable
                       onPress={() => deleteForever(document)}
                       accessibilityRole="button"
-                      accessibilityLabel={`Elimina definitivamente ${document.title}`}
+                      accessibilityLabel={t('trash.deleteForeverLabel', { title: document.title })}
                       hitSlop={6}
                       style={styles.action}>
-                      <Text style={[styles.actionText, { color: DANGER_COLOR(theme) }]}>Elimina definitivamente</Text>
+                      <Text style={[styles.actionText, { color: DANGER_COLOR(theme) }]}>{t('trash.deleteForever')}</Text>
                     </Pressable>
                   </View>
                 </View>
@@ -136,12 +136,12 @@ export default function TrashScreen() {
 
       <Stack.Toolbar placement="left">
         <Stack.Toolbar.Button onPress={confirmEmpty} disabled={!documents?.length} tintColor={DANGER_COLOR(theme)}>
-          Svuota cestino
+          {t('trash.emptyTrash')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button variant="done" onPress={() => router.back()}>
-          Fine
+          {t('common.done')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
     </>

@@ -16,6 +16,7 @@ import { CARD_BARCODE_TYPES } from '@/constants/card-colors';
 import { useLargestPictureSize } from '@/capture/picture-size';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 export type CardStep = 'front' | 'barcode';
 
@@ -34,10 +35,6 @@ type Props = {
   onCancel: () => void;
 };
 
-const STEP_TITLE: Record<CardStep, string> = {
-  front: 'Foto del fronte',
-  barcode: 'Fotografa il codice a barre',
-};
 
 // Full-screen camera for a card: 1) the front, 2) the barcode, read live while framing it.
 // The front here only when the iOS scanner is missing (start-add-card.ts): full sensor size,
@@ -47,6 +44,7 @@ const STEP_TITLE: Record<CardStep, string> = {
 // Every shot gets a "Rifai / Usa" preview; both steps can use the photo library or be skipped.
 export function CardCapture({ steps, onDone, onCancel }: Props) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
   const picture = useLargestPictureSize(cameraRef); // full sensor resolution, not the preview size
@@ -118,7 +116,7 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
       }
       setPreviewUri(uri);
     } catch (error) {
-      Alert.alert('Impossibile aprire la foto', String(error));
+      Alert.alert(t('cardCapture.photoOpenFailed'), String(error));
     }
   }
 
@@ -132,18 +130,16 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
     return (
       <View style={[styles.screen, styles.centered, { paddingTop: insets.top, paddingBottom: insets.bottom }]}>
         <SymbolView name="camera" tintColor="#FFFFFF" size={44} />
-        <Text style={styles.permissionTitle}>Serve la fotocamera</Text>
-        <Text style={styles.permissionText}>
-          Sottomano usa la fotocamera per fotografare le tue carte e leggere il codice a barre.
-        </Text>
+        <Text style={styles.permissionTitle}>{t('cardCapture.permissionTitle')}</Text>
+        <Text style={styles.permissionText}>{t('cardCapture.permissionText')}</Text>
         <View style={styles.permissionButton}>
           <PrimaryButton
-            label={permission.canAskAgain ? 'Consenti' : 'Apri Impostazioni'}
+            label={permission.canAskAgain ? t('cardCapture.allow') : t('cardCapture.openSettings')}
             onPress={() => (permission.canAskAgain ? requestPermission() : Linking.openSettings())}
           />
         </View>
         <Pressable onPress={onCancel} hitSlop={12}>
-          <Text style={styles.link}>Annulla</Text>
+          <Text style={styles.link}>{t('common.cancel')}</Text>
         </Pressable>
       </View>
     );
@@ -157,18 +153,18 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
         <Image source={{ uri: previewUri }} style={StyleSheet.absoluteFill} contentFit="contain" />
         <View style={[styles.topBar, { paddingTop: insets.top + 8 }]}>
           <Text style={styles.instruction}>
-            {step === 'front' ? 'Fronte: si vede bene?' : code ? `Letto: ${code.value}` : 'Codice non letto'}
+            {step === 'front' ? t('cardCapture.frontCheck') : code ? t('cardCapture.read', { value: code.value }) : t('cardCapture.notRead')}
           </Text>
           {step === 'barcode' && !code && (
-            <Text style={styles.hint}>Tieni la foto: il numero lo scrivi tu nel passo dopo.</Text>
+            <Text style={styles.hint}>{t('cardCapture.notReadHint')}</Text>
           )}
         </View>
         <View style={[styles.previewBar, { paddingBottom: insets.bottom + 16 }]}>
           <Pressable style={styles.secondaryButton} onPress={() => setPreviewUri(null)} accessibilityRole="button">
-            <Text style={styles.secondaryLabel}>Rifai</Text>
+            <Text style={styles.secondaryLabel}>{t('cardCapture.retake')}</Text>
           </Pressable>
           <View style={styles.flex}>
-            <PrimaryButton label="Usa" onPress={() => next(previewUri)} />
+            <PrimaryButton label={t('cardCapture.use')} onPress={() => next(previewUri)} />
           </View>
         </View>
       </View>
@@ -200,38 +196,36 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
         style={StyleSheet.absoluteFill}
         onPress={(e) => refocus(e.nativeEvent.locationX, e.nativeEvent.locationY)}
         accessibilityRole="button"
-        accessibilityLabel="Metti a fuoco"
+        accessibilityLabel={t('cardCapture.focus')}
       />
       {focusRing && <View pointerEvents="none" style={[styles.focusRing, { left: focusRing.x - 36, top: focusRing.y - 36 }]} />}
 
       <View style={[styles.topBar, styles.topBarRow, { paddingTop: insets.top + 8 }]}>
-        <Pressable onPress={onCancel} hitSlop={12} accessibilityRole="button" accessibilityLabel="Chiudi">
+        <Pressable onPress={onCancel} hitSlop={12} accessibilityRole="button" accessibilityLabel={t('common.close')}>
           <SymbolView name="xmark" tintColor="#FFFFFF" size={22} />
         </Pressable>
         {steps.length > 1 && (
-          <Text style={styles.stepCount}>
-            {stepIndex + 1} di {steps.length}
-          </Text>
+          <Text style={styles.stepCount}>{t('cardCapture.stepCount', { current: stepIndex + 1, total: steps.length })}</Text>
         )}
       </View>
 
       <View style={[styles.overFrame, { bottom: height - frame.y + 12 }]}>
-        <Text style={styles.instruction}>{STEP_TITLE[step]}</Text>
-        {step === 'front' && <Text style={styles.hint}>Inquadra la carta dentro il riquadro</Text>}
+        <Text style={styles.instruction}>{t(`cardCapture.steps.${step}`)}</Text>
+        {step === 'front' && <Text style={styles.hint}>{t('cardCapture.frameHint')}</Text>}
       </View>
 
       {step === 'barcode' && (
         <View style={[styles.codeBadge, { top: frame.y + frame.height + 16 }, code && styles.codeBadgeFound]}>
           <SymbolView name={code ? 'checkmark.circle.fill' : 'barcode.viewfinder'} tintColor="#FFFFFF" size={18} />
           <Text style={styles.codeText} numberOfLines={2}>
-            {code ? `Letto: ${code.value}` : 'Cerco il codice…'}
+            {code ? t('cardCapture.read', { value: code.value }) : t('cardCapture.searching')}
           </Text>
         </View>
       )}
 
       <View style={[styles.cameraBar, { paddingBottom: insets.bottom + 24 }]}>
         <View style={styles.sideSlot}>
-          <Pressable onPress={fromLibrary} hitSlop={12} accessibilityRole="button" accessibilityLabel="Scegli dalle foto">
+          <Pressable onPress={fromLibrary} hitSlop={12} accessibilityRole="button" accessibilityLabel={t('cardCapture.chooseFromPhotos')}>
             <SymbolView name="photo.on.rectangle" tintColor="#FFFFFF" size={28} />
           </Pressable>
         </View>
@@ -239,13 +233,13 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
           onPress={shoot}
           disabled={!ready || busy}
           accessibilityRole="button"
-          accessibilityLabel="Scatta"
+          accessibilityLabel={t('cardCapture.shoot')}
           style={({ pressed }) => [styles.shutter, (pressed || busy) && styles.shutterPressed]}>
           <View style={styles.shutterInner} />
         </Pressable>
         <View style={styles.sideSlot}>
           <Pressable onPress={() => next(null)} hitSlop={12} accessibilityRole="button">
-            <Text style={styles.link}>Salta</Text>
+            <Text style={styles.link}>{t('cardCapture.skip')}</Text>
           </Pressable>
         </View>
       </View>

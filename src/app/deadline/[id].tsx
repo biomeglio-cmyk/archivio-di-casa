@@ -21,10 +21,11 @@ import { getDocumentDetail, saveDocumentDeadline } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 import { afterDocumentSaved } from '@/notifications/reminders';
 import { usePreferences } from '@/settings/preferences';
 import { parseISODate, toISODate } from '@/utils/dates';
-import { REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
+import { REPEAT_UNITS, unitCount, unitName, type RepeatUnit } from '@/utils/recurrence';
 
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 
@@ -32,6 +33,7 @@ const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1
 // or saved long ago): add, change or remove its deadline with "Si ripete" and "Promemoria".
 // Saves directly; the reminder, the «Sottomano» calendar event and Scadenze follow.
 export default function DeadlineScreen() {
+  const { t } = useI18n();
   const { id } = useLocalSearchParams<{ id: string }>();
   const documentId = Number(id);
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, documentId), [documentId]);
@@ -40,12 +42,13 @@ export default function DeadlineScreen() {
     <DeadlineContent document={document} />
   ) : (
     <Stack.Toolbar placement="left">
-      <Stack.Toolbar.Button onPress={() => router.back()}>Annulla</Stack.Toolbar.Button>
+      <Stack.Toolbar.Button onPress={() => router.back()}>{t('common.cancel')}</Stack.Toolbar.Button>
     </Stack.Toolbar>
   );
 }
 
 function DeadlineContent({ document }: { document: DocumentDetail }) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const theme = useTheme();
@@ -63,7 +66,7 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
       router.back();
     } catch (error) {
       setSaving(false);
-      Alert.alert('Impossibile salvare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('deadlineScreen.saveFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -80,9 +83,9 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
   }
 
   function remove() {
-    Alert.alert('Togliere la scadenza?', 'Il documento resta; spariscono promemoria ed evento nel calendario.', [
-      { text: 'Annulla', style: 'cancel' },
-      { text: 'Togli', style: 'destructive', onPress: () => run(() => saveDocumentDeadline(db, document.id, null)) },
+    Alert.alert(t('deadlines.removeAlert.title'), t('deadlines.removeAlert.message'), [
+      { text: t('common.cancel'), style: 'cancel' },
+      { text: t('deadlines.removeAlert.confirm'), style: 'destructive', onPress: () => run(() => saveDocumentDeadline(db, document.id, null)) },
     ]);
   }
 
@@ -92,38 +95,38 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
         <ThemedText style={styles.intro}>{document.title}</ThemedText>
 
         <View style={styles.dateGroup}>
-          <Group title="Data">
+          <Group title={t('deadlineScreen.date')}>
             <View style={styles.calendarBox}>
-              {/* Our calendar: Italian months, L M M G V S D, Monday first, whatever the phone language */}
+              {/* Our calendar: months and weekdays in the app language, Monday first */}
               <DateCalendar value={date} onChange={setDate} />
             </View>
           </Group>
         </View>
 
-        <Group footer="Il promemoria arriva sul telefono; con il calendario attivo la scadenza è anche in «Sottomano».">
-          <Row label="Si ripete" symbol="arrow.clockwise" first>
+        <Group footer={t('deadlineScreen.footer')}>
+          <Row label={t('deadlineSection.repeats')} symbol="arrow.clockwise" first>
             <Choice<RepeatUnit | 'never'>
-              title="Si ripete"
+              title={t('deadlineSection.repeats')}
               value={repeatUnit}
               options={['never', ...REPEAT_UNITS]}
-              labelFor={(unit) => (unit === 'never' ? 'Mai' : capitalize(unitName(unit, 2)))}
+              labelFor={(unit) => (unit === 'never' ? t('deadlineSection.never') : capitalize(unitName(unit, 2)))}
               onChange={setRepeatUnit}
             />
           </Row>
           {repeatUnit !== 'never' && (
-            <Row label="Ogni" symbol="number">
+            <Row label={t('deadlineScreen.every')} symbol="number">
               <Choice
-                title="Ogni"
+                title={t('deadlineScreen.every')}
                 value={repeatEvery}
                 options={EVERY_OPTIONS.slice(0, 31)}
-                labelFor={(n) => `${n} ${unitName(repeatUnit, n)}`}
+                labelFor={(n) => unitCount(repeatUnit, n)}
                 onChange={setRepeatEvery}
               />
             </Row>
           )}
-          <Row label="Promemoria" symbol="bell">
+          <Row label={t('deadlineSection.reminder')} symbol="bell">
             <Choice
-              title="Promemoria"
+              title={t('deadlineSection.reminder')}
               value={reminderDays}
               options={reminderChoices(reminderDays)}
               labelFor={(days) => reminderLabel(days, defaultReminderDays)}
@@ -135,7 +138,7 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
 
         {document.expiresAt && (
           <SecondaryButton
-            label="Togli la scadenza"
+            label={t('deadlines.removeDeadline')}
             symbol="calendar.badge.minus"
             onPress={remove}
             disabled={saving}
@@ -146,11 +149,11 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
       </ScrollView>
 
       <Stack.Toolbar placement="left">
-        <Stack.Toolbar.Button onPress={() => router.back()}>Annulla</Stack.Toolbar.Button>
+        <Stack.Toolbar.Button onPress={() => router.back()}>{t('common.cancel')}</Stack.Toolbar.Button>
       </Stack.Toolbar>
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button variant="done" disabled={saving} onPress={save}>
-          Salva
+          {t('common.save')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
     </>

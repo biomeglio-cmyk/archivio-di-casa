@@ -8,6 +8,7 @@ import { getLastBackupDate, isBackupDue } from '@/backup/backup-layout';
 import { listDocumentsWithExpiry } from '@/db/documents';
 import type { CategoryColors, DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { t as translate, useI18n } from '@/i18n';
 import { getPreferences, reminderDaysFor, usePreferences } from '@/settings/preferences';
 import { describeDistance, parseISODate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
@@ -102,20 +103,24 @@ function lastRing(document: DocumentListItem & { expiresAt: string }, now: numbe
   return rings.length ? Math.max(...rings) : null;
 }
 
-function deadlineBody(document: DocumentListItem & { expiresAt: string }, at: number): string {
+type Translate = typeof translate;
+
+function deadlineBody(document: DocumentListItem & { expiresAt: string }, at: number, t: Translate): string {
   const days = daysUntil(document.expiresAt, new Date(at));
+  const date = dayAndMonth(document.expiresAt);
   const when =
     days < 0
-      ? `È scaduto il ${dayAndMonth(document.expiresAt)}.`
+      ? t('notificationFeed.expiredOn', { date })
       : days === 0
-        ? 'Scade oggi.'
-        : `Scade ${describeDistance(days)}, il ${dayAndMonth(document.expiresAt)}.`;
-  const amount = document.amountCents !== null ? ` Importo ${formatEuro(document.amountCents)}.` : '';
+        ? t('notificationFeed.expiresToday')
+        : t('notificationFeed.expiresOn', { distance: describeDistance(days), date });
+  const amount = document.amountCents !== null ? ` ${t('notificationFeed.amount', { amount: formatEuro(document.amountCents) })}` : '';
   const note = document.notes?.split('\n')[0].trim();
   return `${when}${amount}${note ? ` ${note}` : ''}`;
 }
 
-export function buildFeed(documents: DocumentListItem[], now: number): FeedItem[] {
+// `t` from useI18n in components: a new function when the language changes, so the texts follow it
+export function buildFeed(documents: DocumentListItem[], now: number, t: Translate = translate): FeedItem[] {
   const items: FeedItem[] = [];
   for (const document of documents) {
     if (!document.expiresAt || document.paymentStatus === 'paid') continue;
@@ -126,7 +131,7 @@ export function buildFeed(documents: DocumentListItem[], now: number): FeedItem[
       id: `deadline-${document.id}-${at}`,
       at,
       title: document.title,
-      body: deadlineBody(dated, at),
+      body: deadlineBody(dated, at, t),
       symbol: document.category.isCards ? 'creditcard' : 'doc.text',
       colors: document.category.colors,
       href: { pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(document.id) } },
@@ -142,8 +147,8 @@ export function buildFeed(documents: DocumentListItem[], now: number): FeedItem[
     items.push({
       id: `backup-${new Date(at).toDateString()}`,
       at,
-      title: 'Backup',
-      body: last ? 'È passato un po’ dall’ultimo backup dei tuoi documenti.' : 'Non hai ancora fatto un backup dei tuoi documenti.',
+      title: t('notificationFeed.backupTitle'),
+      body: last ? t('notificationFeed.backupLate') : t('notificationFeed.backupNever'),
       symbol: 'externaldrive',
       colors: BACKUP_COLORS,
       href: '/backup',
@@ -155,6 +160,7 @@ export function buildFeed(documents: DocumentListItem[], now: number): FeedItem[
 // The feed, its read state and the unread count; refreshed when the app comes back and every minute
 export function useNotificationFeed() {
   const { data: documents } = useDbQuery(listDocumentsWithExpiry, []);
+  const { t } = useI18n();
   usePreferences(); // rebuilt when the reminder settings change
   const read = useSyncExternalStore(subscribe, readState);
   const [now, setNow] = useState(Date.now);
@@ -169,7 +175,7 @@ export function useNotificationFeed() {
     };
   }, []);
 
-  const items = buildFeed(documents ?? [], now);
+  const items = buildFeed(documents ?? [], now, t);
   const unread = items.filter((item) => isUnread(item, read)).length;
   return { items, read, unread, now };
 }

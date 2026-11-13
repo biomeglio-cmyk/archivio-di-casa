@@ -7,6 +7,7 @@ import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 type Props = {
   title: string; // "Scadenze", "Preferiti", "Tessere", "Famiglia"
@@ -21,12 +22,13 @@ type Props = {
 export function PageHeader({ title, subtitle, right, tint, onBack }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   return (
     <View>
       <View style={styles.bar}>
         <RoundIconButton
           symbol="chevron.left"
-          accessibilityLabel="Indietro"
+          accessibilityLabel={t('common.back')}
           background={tint ?? theme.lilac}
           color={theme.text}
           onPress={onBack ?? (() => router.back())}

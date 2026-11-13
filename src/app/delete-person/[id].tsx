@@ -7,6 +7,7 @@ import { ConfirmChoice, ConfirmDialog } from '@/components/confirm-dialog';
 import { countDocumentsOfPerson, deletePerson, getPerson } from '@/db/people';
 import { TRASH_DAYS } from '@/db/trash';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useI18n } from '@/i18n';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
 
@@ -16,6 +17,7 @@ type Choice = 'family' | 'trash';
 // opened it. With documents: pass them to "Tutta la famiglia" (default) or delete them too; deleted
 // documents go to our Cestino (recoverable for 30 days), never straight away.
 export default function DeletePersonScreen() {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const personId = Number(id);
@@ -35,32 +37,30 @@ export default function DeletePersonScreen() {
       router.back();
     } catch (error) {
       setBusy(false);
-      Alert.alert('Impossibile eliminare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('deleteCategory.deleteFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
-  const some = count === 1 ? '1 documento' : `${count} documenti`;
-
   return (
     <ConfirmDialog
-      title={`Togliere ${person.name} dalla famiglia?`}
-      message={count ? `${person.name} ha ${some}. Cosa vuoi farne?` : 'Il profilo sparisce da questo telefono.'}
-      confirmLabel={count && choice === 'trash' ? 'Cancella tutto' : 'Cancella persona'}
+      title={t('deletePerson.title', { name: person.name })}
+      message={count ? t('deletePerson.messageWithDocuments', { name: person.name, count }) : t('deletePerson.messageEmpty')}
+      confirmLabel={count && choice === 'trash' ? t('deleteCategory.deleteAll') : t('personScreen.deletePerson')}
       symbol="person.crop.circle.badge.minus"
       onConfirm={confirm}
       onCancel={() => router.back()}
       busy={busy}>
       {count ? (
-        <View style={styles.choices} accessibilityRole="radiogroup" accessibilityLabel="Cosa fare dei documenti">
+        <View style={styles.choices} accessibilityRole="radiogroup" accessibilityLabel={t('deleteCategory.choicesA11y')}>
           <ConfirmChoice
-            label="Passali a Tutta la famiglia"
-            detail="Restano nell’app, visibili a tutti"
+            label={t('deletePerson.familyLabel')}
+            detail={t('deletePerson.familyDetail')}
             checked={choice === 'family'}
             onPress={() => setChoice('family')}
           />
           <ConfirmChoice
-            label="Cancellali"
-            detail={`Spariscono insieme al profilo: restano nel Cestino per ${TRASH_DAYS} giorni`}
+            label={t('deleteCategory.trashLabel')}
+            detail={t('deletePerson.trashDetail', { count: TRASH_DAYS })}
             checked={choice === 'trash'}
             onPress={() => setChoice('trash')}
           />

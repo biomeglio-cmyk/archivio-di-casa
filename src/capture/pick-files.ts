@@ -2,6 +2,7 @@ import * as DocumentPicker from 'expo-document-picker';
 import * as ImagePicker from 'expo-image-picker';
 import { ActionSheetIOS } from 'react-native';
 
+import { t } from '@/i18n';
 import { pagesToFiles, type PendingFile } from '@/storage/pending-files';
 
 // "Scegli dalle foto": any number of images, as pages in the order they were tapped
@@ -35,7 +36,12 @@ export async function pickPdf(): Promise<PendingFile[] | null> {
 // Person photo: native iOS action sheet (take / choose / remove), then the native square crop.
 // Returns the URI of the square photo, 'remove', or null if cancelled.
 export async function pickPersonPhoto(hasPhoto: boolean): Promise<string | 'remove' | null> {
-  const options = ['Scatta una foto', 'Scegli dalle foto', ...(hasPhoto ? ['Rimuovi foto'] : []), 'Annulla'];
+  const options = [
+    t('pickFiles.takePhoto'),
+    t('pickFiles.choosePhoto'),
+    ...(hasPhoto ? [t('pickFiles.removePhoto')] : []),
+    t('common.cancel'),
+  ];
   const index = await new Promise<number>((resolve) =>
     ActionSheetIOS.showActionSheetWithOptions(
       {

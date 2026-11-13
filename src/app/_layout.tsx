@@ -1,4 +1,4 @@
-import '@/i18n'; // first: the language is ready before any screen
+import { useI18n } from '@/i18n'; // first: the language is ready before any screen
 import {
   Onest_400Regular,
   Onest_500Medium,
@@ -72,6 +72,8 @@ export default function RootLayout() {
 
 function RootContent() {
   const theme = useTheme();
+  // Stack titles follow the language live
+  const { t } = useI18n();
   // Changes after "Ripristina backup": every screen is rebuilt from the restored data
   const generation = useAppGeneration();
 
@@ -143,14 +145,14 @@ function RootContent() {
           />
           <Stack.Screen
             name="edit-document/[id]"
-            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Modifica documento' }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: t('navigation.titles.editDocument') }}
           />
           {/* "Aggiungi pagine" in the document detail: the pages editor of "Nuovo documento" */}
           <Stack.Screen
             name="document-pages/[id]"
             options={{
               presentation: 'modal',
-              title: 'Pagine',
+              title: t('navigation.titles.pages'),
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
@@ -159,7 +161,7 @@ function RootContent() {
             name="deadline/[id]"
             options={{
               presentation: 'modal',
-              title: 'Scadenza',
+              title: t('navigation.titles.deadline'),
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
@@ -168,7 +170,7 @@ function RootContent() {
             name="renew/[id]"
             options={{
               presentation: 'modal',
-              title: 'Rinnovato',
+              title: t('navigation.titles.renewed'),
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
@@ -176,13 +178,13 @@ function RootContent() {
             name="document-version/[id]"
             options={{
               presentation: 'modal',
-              title: 'Versione precedente',
+              title: t('navigation.titles.previousVersion'),
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           <Stack.Screen
             name="new-document"
-            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Nuovo documento' }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: t('navigation.titles.newDocument') }}
           />
           {/* "Impostazioni" from the side menu: a full page with its own back button */}
           <Stack.Screen name="settings" options={{ headerShown: false }} />
@@ -190,20 +192,20 @@ function RootContent() {
             name="appearance"
             options={{
               presentation: 'modal',
-              title: 'Aspetto',
+              title: t('navigation.titles.appearance'),
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
           <Stack.Screen
             name="backup"
-            options={{ presentation: 'modal', title: 'Backup', headerShown: false }}
+            options={{ presentation: 'modal', title: t('navigation.titles.backup'), headerShown: false }}
           />
           {/* "Invia al commercialista": button and "…" menu of Spese 730 */}
           <Stack.Screen
             name="tax-package"
             options={{
               presentation: 'modal',
-              title: 'Invia al commercialista',
+              title: t('navigation.titles.taxPackage'),
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
@@ -211,7 +213,7 @@ function RootContent() {
             name="trash"
             options={{
               presentation: 'modal',
-              title: 'Cestino',
+              title: t('navigation.titles.trash'),
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
@@ -246,7 +248,7 @@ function RootContent() {
             name="terms"
             options={{
               presentation: 'modal',
-              title: 'Termini d’uso',
+              title: t('navigation.titles.terms'),
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
@@ -254,7 +256,7 @@ function RootContent() {
             name="about"
             options={{
               presentation: 'modal',
-              title: 'Info e privacy',
+              title: t('navigation.titles.about'),
               headerTitleStyle: { fontFamily: FONTS.semiBold },
             }}
           />
@@ -265,11 +267,11 @@ function RootContent() {
           />
           <Stack.Screen
             name="new-card"
-            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Nuova tessera' }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: t('navigation.titles.newCard') }}
           />
           <Stack.Screen
             name="edit-card/[id]"
-            options={{ presentation: 'fullScreenModal', headerShown: false, title: 'Modifica tessera' }}
+            options={{ presentation: 'fullScreenModal', headerShown: false, title: t('navigation.titles.editCard') }}
           />
         </Stack>
         </Fragment>

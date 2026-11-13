@@ -10,17 +10,19 @@ import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { FreeUsage } from '@/settings/free-limit';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 // Home at the free limit (docs/design/HomeLimite.dc.html), in place of the backup notice:
 // "7 di 7 spazi gratuiti usati", "SBLOCCA" and the full bar, on pale lilac. Opens Sblocca.
 export function LimitCard({ usage }: { usage: FreeUsage }) {
   const styles = useThemedStyles(makeStyles);
-  const title = `${usage.used} di ${usage.limit} spazi gratuiti usati`;
+  const { t } = useI18n();
+  const title = t('limitCard.title', { used: usage.used, limit: usage.limit });
   return (
     <Pressable
       onPress={() => router.push('/unlock')}
       accessibilityRole="button"
-      accessibilityLabel={`${title}. Sblocca`}
+      accessibilityLabel={t('limitCard.accessibility', { title })}
       style={({ pressed }) => [styles.card, pressed && styles.pressed]}>
       <LinearGradient colors={BRAND_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={styles.icon}>
         <SymbolView name="lock.fill" tintColor="#FFFFFF" size={18} />
@@ -28,7 +30,7 @@ export function LimitCard({ usage }: { usage: FreeUsage }) {
       <View style={styles.texts}>
         <View style={styles.line}>
           <Text style={styles.title}>{title}</Text>
-          <Text style={styles.unlock}>Sblocca</Text>
+          <Text style={styles.unlock}>{t('limitCard.unlock')}</Text>
         </View>
         <ProgressBar share={usage.share} />
       </View>

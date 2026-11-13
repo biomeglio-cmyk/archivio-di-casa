@@ -69,5 +69,1516 @@
     "autoSubtitle": "Follows the phone language",
     "italian": "Italiano",
     "english": "English"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastel",
+    "vivid": "Vivid",
+    "earth": "Earth",
+    "sea": "Sea",
+    "sunset": "Sunset",
+    "night": "Night"
+  },
+  "home": {
+    "welcome": "Welcome to Sottomano",
+    "hello": "Hi!",
+    "searchPlaceholder": "Search for a document",
+    "favorites": "Favorites",
+    "seeAll": "See all",
+    "seeAllFavorites": "See all favorites",
+    "deadlines": "Deadlines",
+    "seeAllDeadlines": "See all deadlines",
+    "archive": "Archive",
+    "reorderDone": "Done reordering",
+    "reorder": "Reorder",
+    "reorderCategories": "Reorder categories",
+    "reorderHint": "Drag the categories into the order you like.",
+    "alerts": {
+      "orderNotSaved": "Couldn’t save the order"
+    },
+    "newCategory": "New category"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} card",
+    "cards_other": "{{count}} cards"
+  },
+  "folder": {
+    "paidOn": "Paid on {{date}}",
+    "expiredOn": "Expired on {{date}}",
+    "expiresOn": "Expires on {{date}}",
+    "addedOn": "Added on {{date}}",
+    "newItem": {
+      "bill": "New bill",
+      "card": "New card",
+      "warranty": "New warranty",
+      "password": "New password",
+      "document": "New document"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "All",
+      "documents": "Documents",
+      "cards": "Cards",
+      "deadlines": "Deadlines"
+    },
+    "paid": "paid",
+    "expiresOn": "expires on {{date}}",
+    "folderSubtitle_one": "Folder · {{count}} document",
+    "folderSubtitle_other": "Folder · {{count}} documents",
+    "card": "Card",
+    "deadlineSubtitle": "Deadline · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Search for a document",
+    "fieldLabel": "Search your documents",
+    "filter": "Filter",
+    "results_one": "{{count}} result",
+    "results_other": "{{count}} results",
+    "noResults": "No results",
+    "noResultsHint": "Try another word, for example the name of a shop.",
+    "hint": "Search names, folders, types, notes, cards and deadlines."
+  },
+  "navigation": {
+    "home": "Home",
+    "favorites": "Favorites",
+    "family": "Family",
+    "deadlines": "Deadlines",
+    "deadlinesToCheck_one": "Deadlines, {{count}} to check",
+    "deadlinesToCheck_other": "Deadlines, {{count}} to check",
+    "addLocked": "Add document, locked: free limit reached",
+    "addDocument": "Add a document",
+    "titles": {
+      "editDocument": "Edit document",
+      "pages": "Pages",
+      "deadline": "Deadline",
+      "renewed": "Renewed",
+      "previousVersion": "Previous version",
+      "newDocument": "New document",
+      "appearance": "Appearance",
+      "backup": "Backup",
+      "taxPackage": "Send to accountant",
+      "trash": "Trash",
+      "terms": "Terms of use",
+      "about": "About and privacy",
+      "newCard": "New card",
+      "editCard": "Edit card"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Drag to move it, or use the Move earlier and Move later actions",
+    "moveEarlier": "Move earlier",
+    "moveLater": "Move later",
+    "footer": "You reorder cards, the people in Family and Favorites the same way: press and hold a row and drag it by the handle on the right."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Press and hold: drag to move it, or release for actions"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Couldn’t save the order"
+    },
+    "reorderTitle": "Reorder favorites",
+    "reorderHint": "Press and hold a favorite and drag it wherever you like.",
+    "yourFavorites": "Your favorites",
+    "title": "Favorites",
+    "subtitle": "What you chose to keep close at hand",
+    "searchPlaceholder": "Search favorites",
+    "viewList": "List",
+    "viewGrid": "Grid",
+    "count_one": "{{count}} favorite",
+    "count_other": "{{count}} favorites",
+    "noMatch": "No favorites matching “{{query}}”.",
+    "empty": "You don’t have any favorites yet.",
+    "footer": "Tap the heart on any document to add it here.",
+    "footerGrid": "Tap the heart on any document to add it here. Press and hold a tile and drag it to reorder them.",
+    "footerList": "Tap the heart on any document to add it here. Press and hold a row to reorder them.",
+    "rowHint": "Press and hold to reorder favorites",
+    "unpin": "Remove from favorites",
+    "expires": "expires {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} to pay",
+    "alerts": {
+      "orderNotSaved": "Couldn’t save the order"
+    },
+    "actions": {
+      "editCategory": "Edit category",
+      "sendToAccountant": "Send to accountant",
+      "selectAndSend": "Select and send",
+      "reorder": "Reorder",
+      "deleteCategory": "Delete category"
+    },
+    "moreLabel": "Edit or delete the {{name}} category",
+    "searchIn": "Search in {{name}}",
+    "viewList": "List",
+    "viewGrid": "Grid",
+    "reorderHint": "Press and hold and drag the documents into the order you like.",
+    "allTypes": "All",
+    "noDocumentsFound": "No documents found.",
+    "sendTogether": "Send together ({{count}})",
+    "sheetTitle": "{{name}} category"
+  },
+  "folderRow": {
+    "due": "to pay",
+    "paid": "paid"
+  },
+  "homeSections": {
+    "expired": "Expired",
+    "expiresToday": "Expires today",
+    "expiresTomorrow": "Expires tomorrow",
+    "expiresInDays_one": "Expires in {{count}} day",
+    "expiresInDays_other": "Expires in {{count}} days",
+    "expiresOn": "Expires {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Remove from favorites",
+    "pin": "Add to favorites"
+  },
+  "searchBar": {
+    "clear": "Clear text"
+  },
+  "documentGrid": {
+    "addDocument": "Add document"
+  },
+  "homeHeader": {
+    "menu": "Menu",
+    "notifications": "Notifications",
+    "notificationsUnread_one": "Notifications, {{count}} unread",
+    "notificationsUnread_other": "Notifications, {{count}} unread"
+  },
+  "demoData": {
+    "people": {
+      "step": "Step",
+      "mom": "Mom",
+      "dad": "Dad"
+    },
+    "documents": {
+      "idCard": "ID card",
+      "drivingLicence": "Driving licence",
+      "passport": "Passport",
+      "electricityBill": "Electricity bill",
+      "carInsurance": "Car insurance",
+      "carTax": "Car tax",
+      "washingMachineWarranty": "Washing machine warranty",
+      "gymCard": "Gym card",
+      "rentalContract": "Rental contract",
+      "pharmacyReceipt": "Pharmacy receipt",
+      "reportCard": "School report"
+    },
+    "notes": {
+      "electricityBill": "Direct debit from the bank"
+    }
+  },
+  "documentTypes": {
+    "documents": "ID card|Driver’s license|Passport|Health card|Tax code",
+    "cards": "Loyalty|Gym|Library|Transport|Membership",
+    "utilities": "Electricity|Gas|Water|Internet|Phone|Waste",
+    "home": "Rent|Mortgage|HOA fees|Maintenance|Contract",
+    "insurance": "Car|Home|Health|Life|Travel",
+    "warranties": "Appliance|Electronics|Furniture|Receipt",
+    "car": "Road tax|Insurance|Inspection|Service|Registration",
+    "tax": "Pharmacy|Doctor visit|Dentist|Lab tests|Sport|School",
+    "householdStaff": "Payslip|Contributions|Contract",
+    "school": "Enrollment|Report card|Certificate|Canteen|School trip",
+    "pet": "Health booklet|Vaccine|Vet visit|Microchip",
+    "password": "Email|Bank|Social|Wi-Fi|Work"
+  },
+  "pageLabels": {
+    "front": "Front",
+    "back": "Back",
+    "page": "Page {{number}}"
+  },
+  "statusBadge": {
+    "due": "To pay",
+    "paid": "Paid"
+  },
+  "addActions": {
+    "openFileFailed": "Couldn’t open the file"
+  },
+  "pickFiles": {
+    "takePhoto": "Take photo",
+    "choosePhoto": "Choose from photos",
+    "removePhoto": "Remove photo"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Multiple pages",
+      "text": "You can scan several pages in a row: frame the next page before tapping Save."
+    },
+    "cardTip": {
+      "title": "True colors",
+      "text": "For the card’s true colors, tap the filters button in the scanner and choose “Photo”."
+    },
+    "gotIt": "Got it"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Camera access needed",
+    "permissionText": "Sottomano uses the camera only to photograph your documents.",
+    "allow": "Allow",
+    "openSettings": "Open Settings",
+    "readable": "Is it readable?",
+    "pageReadable": "Page {{number}}: is it readable?",
+    "retake": "Retake",
+    "addPage": "Add page",
+    "frameDocument": "Frame the document",
+    "framePage": "Frame page {{number}}",
+    "shoot": "Take photo",
+    "finishWithPages_one": "Done, {{count}} page",
+    "finishWithPages_other": "Done, {{count}} pages"
+  },
+  "coverField": {
+    "label": "Cover",
+    "photo": "Photo",
+    "color": "Color",
+    "noPhotoHint": "Without a photo the color is shown: add a page to use its photo as the cover.",
+    "categoryColor": "Folder color",
+    "colorNumber": "Color {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Add pages",
+    "pinned": "In favorites",
+    "pin": "Add to favorites",
+    "renewed": "Renewed",
+    "delete": "Delete"
+  },
+  "documentFilesView": {
+    "document": "Document",
+    "openFailed": "Couldn’t open the document",
+    "pageOfSwipe": "Page {{number}} of {{total}} · swipe to browse",
+    "openFullScreen": "{{label}}, open full screen",
+    "missingFile": "File not found on this phone."
+  },
+  "filesEditor": {
+    "addBack": "Add the back",
+    "addPage": "Add page",
+    "scan": "Scan",
+    "photograph": "Take photo",
+    "fromPhotos": "From photos",
+    "scannerUnavailableTitle": "Scanner not available",
+    "scannerUnavailableMessage": "Remove the pages with ✕ and add new ones.",
+    "replacePdf": "Replace PDF",
+    "importPdf": "Import a PDF",
+    "rescanAll": "Rescan all",
+    "openFileFailed": "Couldn’t open the file",
+    "page": "Page",
+    "newTag": "new",
+    "moveBefore": "Move {{name}} earlier",
+    "moveAfter": "Move {{name}} later",
+    "removePage": "Remove {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Document not found.",
+    "noPages": "No pages",
+    "photoPages_one": "Photo, {{count}} page",
+    "photoPages_other": "Photos, {{count}} pages",
+    "amount": "Amount",
+    "expired": "expired",
+    "inDays_one": "in {{count}} day",
+    "inDays_other": "in {{count}} days",
+    "deadline": "Deadline",
+    "folder": "Folder",
+    "status": "Status",
+    "person": "Person",
+    "number": "Number",
+    "notes": "Notes",
+    "inCalendar": "In calendar",
+    "view": "View document",
+    "unpin": "Remove from favorites",
+    "pin": "Add to favorites",
+    "addPages": "Add pages",
+    "renewed": "Renewed",
+    "delete": "Delete",
+    "details": "Details",
+    "remindMe": "Remind me",
+    "reminderNeedsDeadline": "Add a deadline to get a reminder",
+    "reminderWhen": "Reminder: {{when}}",
+    "noReminder": "No reminder",
+    "previousVersions": "Previous versions",
+    "versionUntil": "Until {{date}}",
+    "versionExpired": "expired {{date}}",
+    "paidOnMarkDue": "Paid on {{date}} · mark as to pay",
+    "markDue": "Mark as to pay",
+    "markPaid": "Mark as paid",
+    "firstOf": "1 of {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "To pay",
+    "statusPaid": "Paid",
+    "saveFailed": "Couldn’t save",
+    "folder": "Folder",
+    "person": "Person",
+    "type": "Type",
+    "otherType": "Type another one…",
+    "noType": "No type",
+    "typeExample": "For example: Electricity, Road tax, Dentist",
+    "dueOn": "On {{date}}",
+    "noDeadline": "No deadline",
+    "nameSection": "Name",
+    "namePlaceholder": "Document name",
+    "whereSection": "Where to save it",
+    "choose": "Choose…",
+    "deadlineSection": "Deadline",
+    "addDeadline": "Add deadline",
+    "remindMe": "Remind me",
+    "whenToRemind": "When to remind you",
+    "repeats": "Repeats",
+    "never": "Never",
+    "everySpan": "Every {{span}}",
+    "every": "Every",
+    "notesSection": "Notes",
+    "notesPlaceholder": "For example: paid by direct debit, ask for a refund…",
+    "pin": "Add to favorites",
+    "pinSubtitle": "Find it right away on the home screen",
+    "amountSection": "Amount and status",
+    "amount": "Amount",
+    "amountInEuro": "Amount in euros",
+    "accessSection": "Login",
+    "username": "Username",
+    "usernamePlaceholder": "name@example.com",
+    "password": "Password",
+    "passwordUnchanged": "•••••••• (unchanged)",
+    "passwordNote": "The password stays only in the iPhone Keychain.",
+    "numberSection": "Document number",
+    "numberPlaceholder": "E.g. CA12345AB",
+    "saveChanges": "Save changes",
+    "saveDocument": "Save document",
+    "amountHint": "Enter the amount like {{example}}.",
+    "missingNameAndFolder": "To save, enter the name and choose the folder.",
+    "missingName": "To save, enter the name.",
+    "missingFolder": "To save, choose the folder.",
+    "deleteDocument": "Delete document"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Scan",
+      "photos": "From photos",
+      "pdf": "From PDF file",
+      "card": "Card",
+      "manual": "Manual"
+    },
+    "hintFirst": "Frame the document · hold the phone still",
+    "hintNext": "Page {{number}} taken · frame the next one",
+    "title": "New document",
+    "flashOff": "Turn off flash",
+    "flashOn": "Turn on flash",
+    "scanWithIos": "Scan with the iOS scanner",
+    "tapToScan": "Tap to scan: it finds the edges by itself",
+    "permissionTitle": "Camera access needed",
+    "permissionText": "Sottomano uses it only to photograph your documents.",
+    "allow": "Allow",
+    "openSettings": "Open Settings",
+    "howToAdd": "How to add",
+    "chooseFromGallery": "Choose from library",
+    "shoot": "Take photo",
+    "goOnWith_one": "Continue with {{count}} page",
+    "goOnWith_other": "Continue with {{count}} pages",
+    "noPages": "No pages",
+    "countNext": "next ›",
+    "countPages": "pages"
+  },
+  "newDocument": {
+    "readTitle": "Read from the document",
+    "readText": "Name taken from the file: {{name}}. Check it and fix it if needed.",
+    "checkTitle": "Check the details",
+    "checkText_one": "{{count}} page captured. Enter the name and, if there is one, the deadline: you’ll find it in Deadlines.",
+    "checkText_other": "{{count}} pages captured. Enter the name and, if there is one, the deadline: you’ll find it in Deadlines.",
+    "heading": "New document"
+  },
+  "editDocument": {
+    "heading": "Edit document"
+  },
+  "documentVersion": {
+    "replacedOn": "Replaced on {{date}}",
+    "expiredOn": "expired on {{date}}",
+    "previewTitle": "{{title}} (previous version)"
+  },
+  "documentPages": {
+    "saveFailed": "Couldn’t save the pages"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Couldn’t delete",
+    "title": "Delete {{title}}?",
+    "message_one": "The document and its reminder go to the Trash. You can recover it from Menu › Trash for {{count}} day.",
+    "message_other": "The document and its reminder go to the Trash. You can recover it from Menu › Trash for {{count}} days.",
+    "confirm": "Delete document"
+  },
+  "renew": {
+    "saveFailed": "Couldn’t save",
+    "deadline": "Deadline",
+    "repeatFooter": "{{repeat}}: the new date is calculated from the old one.",
+    "was": "Was",
+    "newDeadline": "New deadline",
+    "newDocument": "New document",
+    "withScanFooter": "The current pages become a “Previous version”, which you’ll find in the details.",
+    "withoutScanFooter": "Turn it on if you have the new document to scan.",
+    "addNewScan": "Add the new scan"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · scroll down",
+    "pagesSubtitle_one": "{{count}} page",
+    "pagesSubtitle_other": "{{count}} pages · scroll down",
+    "pageOf": "Page {{number}} of {{total}}",
+    "noPages": "This document has no pages.",
+    "zoom": "Zoom",
+    "zoomOut": "Zoom out",
+    "zoomIn": "Zoom in",
+    "pageShort": "Page {{number}} of {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "day",
+      "day_other": "days",
+      "week_one": "week",
+      "week_other": "weeks",
+      "month_one": "month",
+      "month_other": "months",
+      "year_one": "year",
+      "year_other": "years"
+    },
+    "count": {
+      "day_one": "{{count}} day",
+      "day_other": "{{count}} days",
+      "week_one": "{{count}} week",
+      "week_other": "{{count}} weeks",
+      "month_one": "{{count}} month",
+      "month_other": "{{count}} months",
+      "year_one": "{{count}} year",
+      "year_other": "{{count}} years"
+    },
+    "every": {
+      "day_one": "Every day",
+      "day_other": "Every {{count}} days",
+      "week_one": "Every week",
+      "week_other": "Every {{count}} weeks",
+      "month_one": "Every month",
+      "month_other": "Every {{count}} months",
+      "year_one": "Every year",
+      "year_other": "Every {{count}} years"
+    },
+    "repeats": {
+      "day_one": "Repeats every day",
+      "day_other": "Repeats every {{count}} days",
+      "week_one": "Repeats every week",
+      "week_other": "Repeats every {{count}} weeks",
+      "month_one": "Repeats every month",
+      "month_other": "Repeats every {{count}} months",
+      "year_one": "Repeats every year",
+      "year_other": "Repeats every {{count}} years"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Needs attention",
+    "thisWeek": "This week",
+    "upcomingNone": "Nothing due in the coming months",
+    "upcoming_one": "{{count}} thing to do in the coming months",
+    "upcoming_other": "{{count}} things to do in the coming months"
+  },
+  "deadlineOptions": {
+    "sameDay": "On the day",
+    "daysBefore_one": "{{count}} day before",
+    "daysBefore_other": "{{count}} days before",
+    "defaultChoice": "{{label}} (default)"
+  },
+  "personRoles": {
+    "you": "You",
+    "choice": {
+      "me": "It’s me",
+      "partner": "Partner",
+      "child": "Son or daughter",
+      "parent": "Parent",
+      "sibling": "Brother or sister",
+      "other": "Other"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "The \"Other\" category doesn’t exist.",
+    "otherNotDeletable": "The \"Other\" category can’t be deleted."
+  },
+  "deadlineChip": {
+    "overdue": "Expired",
+    "today": "Today",
+    "dueToday": "Due today",
+    "dueIn_one": "Due in {{count}} day",
+    "dueIn_other": "Due in {{count}} days"
+  },
+  "deadlineListRow": {
+    "hint": "Touch and hold to edit or remove the deadline",
+    "statusDue": "to pay",
+    "statusPaid": "paid"
+  },
+  "deadlineSection": {
+    "title": "Deadline",
+    "emptyFooter": "With a reminder on your phone and, if turned on, in the “Sottomano” calendar.",
+    "add": "Add deadline",
+    "expiresOn": "Due on",
+    "repeats": "Repeats",
+    "never": "Never",
+    "reminder": "Reminder"
+  },
+  "dateCalendar": {
+    "previousMonth": "Previous month",
+    "nextMonth": "Next month"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Next week",
+    "previousWeek": "Previous week",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} deadline",
+    "dayWithDeadlines_other": "{{day}}, {{count}} deadlines"
+  },
+  "deadlines": {
+    "title": "Deadlines",
+    "newReminder": "New reminder",
+    "week": "Week",
+    "month": "Month",
+    "openDocument": "Open document",
+    "editDeadline": "Edit deadline",
+    "markDue": "Mark as to pay",
+    "markPaid": "Mark as paid",
+    "removeDeadline": "Remove deadline",
+    "removeAlert": {
+      "title": "Remove the deadline?",
+      "message": "The document stays; its reminder and calendar event are removed.",
+      "confirm": "Remove"
+    },
+    "emptyTitle": "No deadlines ahead",
+    "emptyText": "Tap + to add a document with a deadline: it will show up here and in the calendar.",
+    "sheetSubtitle": "Due {{date}}",
+    "dayRepeats": "repeats",
+    "dayReminder": "reminder",
+    "dayEmpty": "No deadlines on this day"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Couldn’t save",
+    "date": "Date",
+    "footer": "The reminder arrives on your phone; with the calendar turned on, the deadline is also in “Sottomano”.",
+    "every": "Every"
+  },
+  "family": {
+    "title": "Family",
+    "subtitle": "A profile for everyone at home",
+    "addPerson": "Add a person",
+    "members": "Members",
+    "orderSaveFailed": "Couldn’t save the order",
+    "reorderTitle": "Reorder family",
+    "reorderHint": "Touch and hold a person and drag them where you want.",
+    "privacyNote": "Everything stays on this phone. To send a document to someone, open it and tap Send.",
+    "youSpoken": "you",
+    "reorderA11yHint": "Touch and hold to reorder the family",
+    "expiring_one": "{{count}} expiring",
+    "expiring_other": "{{count}} expiring"
+  },
+  "personScreen": {
+    "photoFailed": "Couldn’t use the photo",
+    "editPerson": "Edit person",
+    "selectAndSend": "Select and send",
+    "deletePerson": "Delete person",
+    "moreA11y": "Edit or delete {{name}}",
+    "changePhoto": "Change photo",
+    "editProfile": "Edit profile",
+    "documentsSection": "Their documents · {{count}}",
+    "addDocument": "Add document",
+    "sendTogether": "Send together ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Couldn’t save",
+    "newPerson": "New person",
+    "addPhoto": "Add photo",
+    "name": "Name",
+    "namePlaceholder": "What’s their name?",
+    "role": "Who they are",
+    "roleA11y": "Who they are to you: {{role}}",
+    "note": "The profile stays on this phone. It helps you keep everyone’s documents in order.",
+    "addToFamily": "Add to family",
+    "roleSheetTitle": "Who they are to you"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Couldn’t delete",
+    "title": "Delete the {{name}} category?",
+    "messageWithDocuments_one": "It contains {{count}} document. What do you want to do with it?",
+    "messageWithDocuments_other": "It contains {{count}} documents. What do you want to do with them?",
+    "messageWithDocumentsRestorable_one": "It contains {{count}} document. What do you want to do with it? You can restore the category from New category.",
+    "messageWithDocumentsRestorable_other": "It contains {{count}} documents. What do you want to do with them? You can restore the category from New category.",
+    "messageEmpty": "The category is empty.",
+    "messageEmptyRestorable": "The category is empty. You can restore it from New category.",
+    "deleteAll": "Delete everything",
+    "confirm": "Delete category",
+    "choicesA11y": "What to do with the documents",
+    "moveLabel": "Move them to Other",
+    "moveDetailPassword": "They stay in the app, in Other, without username and password",
+    "moveDetail": "They stay in the app, in a general folder",
+    "trashLabel": "Delete them",
+    "trashDetail_one": "They go to the Trash: you can recover them for {{count}} day",
+    "trashDetail_other": "They go to the Trash: you can recover them for {{count}} days"
+  },
+  "deletePerson": {
+    "title": "Remove {{name}} from the family?",
+    "messageWithDocuments_one": "{{name}} has {{count}} document. What do you want to do with it?",
+    "messageWithDocuments_other": "{{name}} has {{count}} documents. What do you want to do with them?",
+    "messageEmpty": "The profile is removed from this phone.",
+    "familyLabel": "Move them to Whole family",
+    "familyDetail": "They stay in the app, visible to everyone",
+    "trashDetail_one": "They go with the profile: they stay in the Trash for {{count}} day",
+    "trashDetail_other": "They go with the profile: they stay in the Trash for {{count}} days"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Pets",
+      "document": "Document",
+      "home": "Home",
+      "car": "Car",
+      "health": "Health",
+      "school": "School",
+      "work": "Work",
+      "keys": "Keys",
+      "travel": "Travel",
+      "expenses": "Expenses"
+    },
+    "restoreFailed": "Couldn’t restore",
+    "editTitle": "Edit category",
+    "newTitle": "New category",
+    "restoreSection": "Restore a default category",
+    "restoreA11y": "Restore {{name}}",
+    "restoreHint": "It comes back as it was, with its colors, icon and fields. Or create a new one below.",
+    "previewA11y": "Category preview",
+    "namePlaceholder": "E.g. Pets",
+    "nameA11y": "Category name",
+    "color": "Color",
+    "paletteColor": "Appearance color",
+    "colorNumber": "Color {{number}}",
+    "followsPaletteHint": "The color follows the palette chosen in Appearance.",
+    "ownColorHint": "Your own color: it doesn’t change with Appearance.",
+    "icon": "Icon",
+    "forWhom": "For whom",
+    "forWhomA11y": "Who this category is for: {{name}}",
+    "forWhomHint": "New documents in this category start with this person.",
+    "create": "Create category"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Website or app",
+        "namePlaceholder": "For example: Online banking",
+        "userLabel": "Username or email",
+        "userPlaceholder": "name@email.com",
+        "passwordLabel": "Password",
+        "notePlaceholder": "For example: security question, recovery code…"
+      },
+      "wifi": {
+        "name": "Wi-Fi",
+        "namePlaceholder": "For example: Home Wi-Fi",
+        "userLabel": "Network name",
+        "userPlaceholder": "SmithHome_5G",
+        "passwordLabel": "Network password",
+        "notePlaceholder": "For example: the router is in the living room, behind the TV…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "For example: Debit card",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "For example: Julia’s card…"
+      },
+      "other": {
+        "name": "Other",
+        "namePlaceholder": "For example: Home alarm",
+        "userLabel": "Username",
+        "userPlaceholder": "Optional",
+        "passwordLabel": "Code or password",
+        "notePlaceholder": "What it’s for, where it’s used…"
+      }
+    },
+    "colors": {
+      "aqua": "Aqua",
+      "indigo": "Indigo",
+      "apricot": "Apricot",
+      "pink": "Pink",
+      "mint": "Mint",
+      "sky": "Sky",
+      "graphite": "Graphite"
+    },
+    "icons": {
+      "key": "Key",
+      "lock": "Padlock",
+      "globe": "Globe",
+      "wifi": "Wi-Fi",
+      "bank": "Bank",
+      "card": "Card",
+      "mail": "Email",
+      "home": "Home",
+      "car": "Car",
+      "shield": "Shield",
+      "cart": "Cart",
+      "star": "Star"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Digits only",
+    "strength": {
+      "weak": "Weak",
+      "fair": "Fair",
+      "good": "Good",
+      "strong": "Strong"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Confirm to turn on the lock"
+  },
+  "appLock": {
+    "prompt": "Unlock Sottomano",
+    "unlock": "Unlock",
+    "unlockWith": {
+      "faceId": "Unlock with Face ID",
+      "touchId": "Unlock with Touch ID",
+      "passcode": "Unlock with passcode"
+    },
+    "message": "Your documents are protected"
+  },
+  "passwordForm": {
+    "showPrompt": "Show the password",
+    "copyPrompt": "Copy the password",
+    "copiedTitle": "Copied",
+    "copiedMessage": "It will be cleared from the clipboard in 1 minute.",
+    "scannerUnavailableTitle": "Scanner not available",
+    "scannerUnavailableMessage": "Choose the image from your photo library.",
+    "saveFailed": "Couldn’t save",
+    "editTitle": "Edit password",
+    "newTitle": "New password",
+    "privacy": "They stay only on this phone and open with Face ID.",
+    "sections": {
+      "what": "What you’re saving",
+      "name": "Name",
+      "preview": "Preview",
+      "access": "Sign-in",
+      "site": "Website or app",
+      "whose": "Whose is it",
+      "notes": "Notes"
+    },
+    "typesLabel": "Password type",
+    "customTypePlaceholder": "What is it? Alarm, safe, padlock…",
+    "customTypeLabel": "What it is",
+    "customTypeHint": "It becomes a new type, and next time you’ll find it among the choices.",
+    "previewTitle": "How it looks in the list",
+    "previewText": "A color and an icon, or an image.",
+    "color": "Color",
+    "colorLabel": "Preview color",
+    "icon": "Icon",
+    "iconLabel": "Preview icon",
+    "image": "Image",
+    "scan": "Scan",
+    "gallery": "From Photos",
+    "removeImage": "Remove the image and use color and icon",
+    "passwordPlaceholder": "Type or generate",
+    "show": "Show",
+    "hide": "Hide",
+    "copy": "Copy",
+    "saved": "Saved",
+    "generate": "Generate a strong password",
+    "urlPlaceholder": "www.example.com",
+    "urlLabel": "Website address",
+    "wifiQrTitle": "QR code for guests",
+    "wifiQrSubtitle": "They scan it and connect",
+    "person": "Person",
+    "personA11y": "Person, {{name}}",
+    "favoriteTitle": "Add to favorites",
+    "favoriteSubtitle": "You’ll find it right on the home screen",
+    "saveButton": "Save password",
+    "saveHint": "Enter a name to save."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "No password",
+    "noPasswordMessage": "Add it with Edit.",
+    "showPrompt": {
+      "site": "Show password",
+      "wifi": "Show network password",
+      "pin": "Show PIN",
+      "other": "Show code or password"
+    },
+    "copyPrompt": {
+      "site": "Copy password",
+      "wifi": "Copy network password",
+      "pin": "Copy PIN",
+      "other": "Copy code or password"
+    },
+    "copyUser": {
+      "site": "Copy username or email",
+      "wifi": "Copy network name",
+      "pin": "Copy username",
+      "other": "Copy username"
+    },
+    "copiedTitle": "Copied",
+    "copiedMessage": "It will be cleared from the clipboard in 1 minute.",
+    "copiedTextTitle": "Copied",
+    "qrPrompt": "Show the QR code for guests",
+    "invalidAddress": "Invalid address",
+    "removeFavorite": "Remove from favorites",
+    "favoriteTitle": "Add to favorites",
+    "favoriteSubtitle": "You’ll find it right on the home screen",
+    "moreActions": "More actions",
+    "sections": {
+      "access": "Sign-in",
+      "site": "Website or app",
+      "wifiQr": "QR code for guests",
+      "whose": "Whose is it",
+      "notes": "Notes"
+    },
+    "hidden": "Hidden",
+    "show": "Show",
+    "hide": "Hide",
+    "copy": "Copy",
+    "locked": "Visible after Face ID or the iPhone passcode",
+    "wifiQrLabel": "Wi-Fi network QR code",
+    "qrHint": "They scan it with the camera and connect.",
+    "qrLocked": "The QR code contains the password: it’s visible after Face ID or the iPhone passcode.",
+    "qrNoNetwork": "Add the network name with Edit to get the QR code.",
+    "showQr": "Show QR code",
+    "hideQr": "Hide QR code",
+    "person": "Person",
+    "moveToTrash": "Move to Trash"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "No password",
+    "noPasswordMessage": "Add it with Edit.",
+    "showPrompt": "Show the password",
+    "copyPrompt": "Copy the password",
+    "copiedTitle": "Password copied",
+    "copiedMessage": "It will be cleared from the clipboard in 1 minute.",
+    "user": "Username",
+    "password": "Password",
+    "hidden": "Password hidden",
+    "show": "Show",
+    "hide": "Hide",
+    "copy": "Copy"
+  },
+  "cardForm": {
+    "found": "Found: {{name}}",
+    "foundBarcode": "Found: barcode {{name}}",
+    "handwritten": "Code typed by hand",
+    "noCode": "No code read",
+    "photoOpenFailed": "Couldn’t open the photo",
+    "saveFailed": "Couldn’t save",
+    "retakeFront": "Take again",
+    "retakePhoto": "Retake photo",
+    "recognized": "Card recognized",
+    "tapRetake": "Tap Take again to photograph it",
+    "fromPhotos": "From Photos",
+    "cover": "Cover",
+    "coverPhotoCaption": "Cropped and straightened from the photo of the card",
+    "coverColorCaption": "The card’s color, with its name and number",
+    "codeSection": "Code to show at the checkout",
+    "photographCode": "Photograph the code",
+    "barcode": "Barcode",
+    "qrCode": "QR code",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Card",
+    "typeNumber": "Type the number below",
+    "explain": "Sottomano recognizes by itself whether the card has a barcode or a QR code. At the checkout it shows it large, with the screen at full brightness.",
+    "readTitle": "Details read from the card",
+    "readText": "Check them and correct if needed.",
+    "name": "Name",
+    "namePlaceholder": "E.g. Supermarket",
+    "type": "Type",
+    "typePlaceholder": "E.g. Loyalty card",
+    "number": "Number",
+    "numberPlaceholder": "E.g. 0400 2219 8876",
+    "holder": "Holder",
+    "saveButton": "Save card",
+    "saveHint": "Enter the card’s name to save."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Photo of the front",
+      "barcode": "Photograph the barcode"
+    },
+    "photoOpenFailed": "Couldn’t open the photo",
+    "permissionTitle": "Camera access needed",
+    "permissionText": "Sottomano uses the camera to photograph your cards and read their barcode.",
+    "allow": "Allow",
+    "openSettings": "Open Settings",
+    "frontCheck": "Front: is it clear?",
+    "read": "Read: {{value}}",
+    "notRead": "Code not read",
+    "notReadHint": "Keep the photo: you’ll type the number in the next step.",
+    "retake": "Retake",
+    "use": "Use",
+    "focus": "Focus",
+    "stepCount": "{{current}} of {{total}}",
+    "frameHint": "Frame the card inside the box",
+    "searching": "Looking for the code…",
+    "chooseFromPhotos": "Choose from Photos",
+    "shoot": "Take photo",
+    "skip": "Skip"
+  },
+  "cardDetail": {
+    "code": "Code",
+    "photo": "Photo",
+    "barcodeLabel": "Barcode",
+    "barcodePhotoLabel": "Photo of the barcode",
+    "fullScreenHint": "Opens the code full screen",
+    "noCode": "No code. Tap “Edit” to photograph or type it.",
+    "tapHint": "Tap the code to enlarge it",
+    "person": "Person"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Couldn’t save the order",
+    "editCategory": "Edit category",
+    "deleteCategory": "Delete category",
+    "reorderTitle": "Reorder cards",
+    "reorderHint": "Touch and hold a card, then drag it where you want.",
+    "yourCards": "Your cards",
+    "title": "Cards",
+    "subtitle": "Tap a card to show its code at the checkout",
+    "categoryMenuLabel": "Edit or delete the {{name}} category",
+    "addCard": "Add card",
+    "reorder": "Reorder",
+    "newCard": "New card",
+    "cardDetails": "Card details",
+    "categoryMenuTitle": "{{name}} category",
+    "cardCount_one": "{{count}} card",
+    "cardCount_other": "{{count}} cards",
+    "cardOpenLabel": "{{label}}, close",
+    "cardClosedLabel": "{{label}}, show the code",
+    "qrLabel": "Card QR code",
+    "barcodeLabel": "Card barcode",
+    "fullScreenHint": "Opens the code full screen",
+    "noCode": "No code: tap Details › Edit to photograph or type it.",
+    "details": "Details"
+  },
+  "walletCard": {
+    "untitled": "New card"
+  },
+  "barcodeView": {
+    "close": "Close the code"
+  },
+  "colorPicker": {
+    "color": "Color",
+    "custom": "Your color",
+    "hex": "Code",
+    "hexLabel": "Color code"
+  },
+  "colorWheel": {
+    "label": "Color wheel: tap or drag to choose",
+    "nextHue": "Next hue",
+    "previousHue": "Previous hue"
+  },
+  "newCard": {
+    "title": "New card",
+    "missingCategory": "The \"Cards\" category no longer exists."
+  },
+  "editCard": {
+    "title": "Edit card"
+  },
+  "unlock": {
+    "storeOnly": "Available in the App Store version",
+    "remainingNone": "You’ve used all the free slots.",
+    "remaining_one": "You can add {{count}} more.",
+    "remaining_other": "You can add {{count}} more.",
+    "tag": "Free version · {{used}} of {{limit}} used",
+    "title": "All your documents, no limits",
+    "intro": "Free for up to {{limit}} documents and cards. To add as many as you like, unlock it with a single payment.",
+    "benefits": {
+      "unlimited": {
+        "title": "Unlimited documents",
+        "text": "Bills, cards, warranties and everything else"
+      },
+      "reminders": {
+        "title": "Deadline reminders",
+        "text": "We remind you before it’s too late"
+      },
+      "offline": {
+        "title": "Works without internet",
+        "text": "Everything stays on your phone, backup included"
+      },
+      "family": {
+        "title": "The whole family",
+        "text": "A profile for everyone at home"
+      }
+    },
+    "sectionTitle": "Your free version",
+    "usageLabel": "Documents and cards",
+    "usageValue": "{{used}} of {{limit}}",
+    "usageA11y": "Free slots used",
+    "keptNote": "The ones already saved are always yours, even without unlocking.",
+    "priceTitle": "Forever",
+    "priceText": "No limits · one payment",
+    "buy": "Unlock for {{price}}",
+    "continueFree": "Continue for free",
+    "restore": "Restore purchase",
+    "terms": "Terms",
+    "privacy": "Privacy"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "The \"Other\" category",
+    "otherCategoryMessage": "It can’t be deleted: it holds the documents of deleted categories."
+  },
+  "quickActionMenu": {
+    "close": "Close menu"
+  },
+  "quickActions": {
+    "open": "Open",
+    "unpin": "Remove from favorites",
+    "pin": "Add to favorites",
+    "moveToTrash": "Move to Trash",
+    "editCategory": "Edit category",
+    "deleteCategory": "Delete category",
+    "editPerson": "Edit person",
+    "deletePerson": "Delete person"
+  },
+  "shareCopies": {
+    "defaultName": "Document",
+    "fileNotFound": "File not found on the phone."
+  },
+  "sendCompression": {
+    "tooBig": "Even at maximum compression it’s over the limit: consider splitting it into several files.",
+    "lowPpi": "Small text may not be readable."
+  },
+  "sendPreferences": {
+    "original": "Original"
+  },
+  "sendFileName": {
+    "fallback": "document"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Front and back can’t be combined right now.",
+    "noPhotos": "No photos to send.",
+    "fileFront": "front",
+    "fileBack": "back",
+    "filePage": "page-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "documents",
+    "title": "Send {{title}}",
+    "formatPhotos": "Photos",
+    "actions": {
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "print": "Print",
+      "save": "Save to Files",
+      "copy": "Copy",
+      "other": "More"
+    },
+    "alerts": {
+      "savedToFiles": "Saved to Files",
+      "imageCopied": "Image copied",
+      "textCopied": "Text copied",
+      "firstPageCopied": "The first page was copied: paste it into a message.",
+      "pasteImage": "Paste it into a message or a note.",
+      "pdfNotCopied": "A PDF can’t be copied: the name and the note were copied. For the file, use More.",
+      "failed": "Couldn’t complete"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDFs",
+      "singlePdf": "Single PDF",
+      "failed": "The file couldn’t be prepared",
+      "preparing": "Preparing…"
+    },
+    "includeNote": "Include the document’s note",
+    "noNote": "This document has no note.",
+    "frontBackPage": "Front and back on one page",
+    "frontBackImage": "Front and back in one image",
+    "maxSize": "Maximum size",
+    "pdfAsIs": "The PDF is sent as it is.",
+    "severalInfo": "A single PDF: the documents one after another, with the front and back of IDs and cards on the same page.",
+    "quality": {
+      "high": "High quality",
+      "good": "Good quality",
+      "low": "Low quality",
+      "minimum": "Minimum quality",
+      "original": "Original quality"
+    },
+    "skipped_one": "{{count}} document without photos isn’t included (imported PDFs can’t be merged yet).",
+    "skipped_other": "{{count}} documents without photos aren’t included (imported PDFs can’t be merged yet)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Preparing the PDF…",
+    "progressRetry": "Reducing the photos (attempt {{attempt}})…",
+    "subtitle": "Prepared on {{date}} with Sottomano · {{documents}}",
+    "subtitleWithTotal": "Prepared on {{date}} with Sottomano · {{documents}} · total {{total}}",
+    "columns": {
+      "number": "No.",
+      "document": "Document",
+      "date": "Date",
+      "person": "Person",
+      "amount": "Amount",
+      "page": "Page"
+    },
+    "sentApart": "sent separately",
+    "noPages": "no pages",
+    "paid": "paid",
+    "due": "to pay",
+    "invalidIndex": "Invalid index"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "One PDF can’t be merged (password-protected or damaged): {{titles}}. The index marks it “sent separately”, and it goes along with the others.",
+    "sentApart_other": "{{count}} PDFs can’t be merged (password-protected or damaged): {{titles}}. The index marks them “sent separately”, and they go along with the others.",
+    "alerts": {
+      "prepareFailed": "Couldn’t prepare the PDF",
+      "ready": "PDF ready",
+      "noMailTitle": "Mail isn’t set up",
+      "noMailMessage": "Add an account in Mail, or save the PDFs to Files.",
+      "savedToFiles": "Saved to Files",
+      "sendFailed": "Couldn’t send"
+    },
+    "readyMany": "{{number}} PDFs ready",
+    "choices": {
+      "email": "Email: all the PDFs in one message",
+      "save": "Save to Files: all in the same folder",
+      "oneByOne": "Share one at a time"
+    },
+    "intro": "All the documents in {{category}}, divided by year: one PDF for each year, with its index (document, date, person, amount, page) and the total. The year is that of the deadline or the payment; if neither is set, the year you added them.",
+    "noDocuments": "No documents in this year.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDFs",
+    "year": "Year",
+    "allYears": "All years",
+    "maxPhotoSize": "Maximum photo size",
+    "limitInfo": "Photos are reduced to stay within the limit; imported PDFs stay as they are.",
+    "prepare": "Prepare and send"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Something went wrong",
+      "restoredToOther": "Restored to Other",
+      "restoredPassword": "Its category no longer exists: the document is in Other, without username and password.",
+      "restoredMessage": "Its category no longer exists: the document is in Other.",
+      "deleteTitle": "Delete \"{{title}}\" permanently?",
+      "deleteMessage": "Its photos and PDFs will be deleted too. This can’t be undone.",
+      "emptyTitle": "Empty the Trash?",
+      "emptyMessage_one": "The document will be deleted with its photos and PDFs. This can’t be undone.",
+      "emptyMessage_other": "The {{count}} documents will be deleted with their photos and PDFs. This can’t be undone.",
+      "emptyConfirm": "Empty"
+    },
+    "intro": "Deleted documents stay here for {{days}} days, then they are erased with their photos and PDFs.",
+    "empty": "The Trash is empty",
+    "deletedSoon": "Will be deleted soon",
+    "deletedIn": "Will be deleted in {{days}} days",
+    "restoreLabel": "Restore {{title}}",
+    "deleteForeverLabel": "Delete {{title}} permanently",
+    "deleteForever": "Delete permanently",
+    "emptyTrash": "Empty Trash"
+  },
+  "menu": {
+    "close": "Close the menu",
+    "home": "Home",
+    "favorites": "Favorites",
+    "deadlines": "Deadlines",
+    "deadlinesUrgent": "Deadlines, {{number}} to check",
+    "family": "Family",
+    "cards": "Cards",
+    "backup": "Backup",
+    "backupDue": "Backup, due",
+    "help": "Help and contact",
+    "rate": "Rate Sottomano",
+    "recommend": "Recommend it to a friend",
+    "trash": "Trash",
+    "trashCount": "Trash, {{number}}",
+    "password": "Passwords",
+    "scan": "Scan",
+    "fromPhotos": "From photos",
+    "importFiles": "Import files",
+    "version": "Version {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Close notifications",
+    "title": "Notifications",
+    "markAllRead": "Mark as read",
+    "empty": "No notifications in the last 7 days.",
+    "today": "Today",
+    "thisWeek": "This week",
+    "settings": "Notification settings",
+    "unreadItem": "Unread. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "It expired on {{date}}.",
+    "expiresToday": "It expires today.",
+    "expiresOn": "It expires {{distance}}, on {{date}}.",
+    "amount": "Amount {{amount}}.",
+    "backupTitle": "Backup",
+    "backupLate": "It’s been a while since the last backup of your documents.",
+    "backupNever": "You haven’t backed up your documents yet."
+  },
+  "deadlineReminders": {
+    "title": "Upcoming deadline",
+    "hiddenBody": "A document expires {{date}} ({{distance}}). Open Sottomano to see it.",
+    "body": "{{name}} expires {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Appearance",
+      "security": "Security",
+      "reminders": "Reminders",
+      "backup": "Backup",
+      "info": "About"
+    },
+    "calendarOff": "Off",
+    "alerts": {
+      "notificationsOffTitle": "Notifications are off",
+      "notificationsOffMessage": "To get reminders, allow notifications for Sottomano in the iPhone Settings.",
+      "openSettings": "Open Settings"
+    },
+    "lastBackup": {
+      "never": "Never",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "daysAgo_one": "{{count}} day ago",
+      "daysAgo_other": "{{count}} days ago"
+    },
+    "categoryColors": "Category colors",
+    "faceId": "Lock with Face ID",
+    "faceIdSubtitle": "Asks for your face every time you open the app",
+    "hidePreviews": "Hide previews",
+    "hidePreviewsSubtitle": "Notifications don’t show the document",
+    "notifications": "Notifications",
+    "reminderTime": "Reminder time",
+    "defaultReminder": "Default reminder",
+    "iconBadge": "Badge on the app icon",
+    "iconBadgeSubtitle": "Deadlines passed or within 7 days",
+    "calendar": "“Sottomano” calendar",
+    "notificationsBlocked": "Notifications are blocked",
+    "notificationsBlockedSubtitle": "Allow them in the iPhone Settings",
+    "backupNote": "The backup is a file saved on your phone, in the Files app. You can copy it wherever you like. Sottomano works without internet too.",
+    "createBackup": "Back up now",
+    "restoreBackup": "Restore from a backup",
+    "help": "Help and contact",
+    "privacy": "Privacy",
+    "terms": "Terms of use",
+    "rate": "Rate Sottomano",
+    "debug": {
+      "limitPreview": "Free limit preview",
+      "limitPreviewSubtitle": "For testing only: shows the locked +, the limit panel and the card on Home",
+      "emptyHome": "Empty Home preview",
+      "emptyHomeSubtitle": "For testing only: Home as if there were no documents (your data stays)",
+      "onboarding": "Replay the welcome",
+      "onboardingSubtitle": "For testing only: the Welcome pages 1–4"
+    },
+    "version": "Sottomano · version {{version}}",
+    "theme": {
+      "title": "Theme",
+      "autoSubtitle": "Follows the phone setting",
+      "auto": "Automatic",
+      "light": "Light",
+      "dark": "Dark"
+    }
+  },
+  "backup": {
+    "title": "Backup",
+    "subtitle": "A copy of all your documents, saved on your phone.",
+    "keyProgress": "Protecting with your password… this can take up to a minute",
+    "whenToday": "today at {{time}}",
+    "whenDate": "{{date}} at {{time}}",
+    "minLength": "At least {{min}} characters.",
+    "mismatch": "The two passwords don’t match.",
+    "creating": "Creating the backup…",
+    "copyDialogTitle": "Copy the backup",
+    "opening": "Opening the backup…",
+    "checking": "Checking the documents…",
+    "restoring": "Restoring…",
+    "keepOpen": "Keep the app open until it’s done.",
+    "forgotWarning": "If you forget the password, the backup can’t be opened.",
+    "passwordPlaceholder": "Password (at least {{min}} characters)",
+    "repeatPlaceholder": "Repeat the password",
+    "createAndSave": "Create and save",
+    "backupPassword": "Backup password",
+    "openBackup": "Open backup",
+    "completed": "Backup complete",
+    "lastBackup": "Last backup",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Copy the file elsewhere",
+    "createNew": "Create a new backup",
+    "noneTitle": "You haven’t made a backup yet",
+    "noneText": "If you lose or change your phone, the backup brings everything back.",
+    "createNow": "Back up now",
+    "restoreSection": "Restore",
+    "restoreTitle": "Got a new phone?",
+    "restoreText": "Choose the backup file to get your documents, cards and reminders back.",
+    "chooseFile": "Choose a backup file",
+    "remindersSection": "Reminders",
+    "remindMe": "Remind me to back up",
+    "remindMeValue": "Remind me to back up: {{value}}",
+    "footnote": "The backup is a single file protected by the password you choose: documents, photos, cards, people and reminders. Copy it elsewhere (Files, iCloud Drive, a computer) so you still have it if you lose your phone.",
+    "alerts": {
+      "createFailed": "Backup failed",
+      "copyFailed": "Couldn’t copy",
+      "restoreTitle": "Restore the backup from {{date}}?",
+      "restoreMessage_one": "It contains {{count}} document. What’s in the app now will be replaced.",
+      "restoreMessage_other": "It contains {{count}} documents. What’s in the app now will be replaced.",
+      "restoreFailed": "Restore failed",
+      "restoreFailedMessage": "Nothing in the app has changed.\n\n{{reason}}",
+      "restored": "Backup restored",
+      "restoredMessage": "Your documents are back."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Every week",
+      "month": "Every month",
+      "never": "Never"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "This file isn’t a Sottomano backup.",
+    "newerVersion": "This backup was made by a newer version of Sottomano. Update the app and try again.",
+    "empty": "The backup file is empty or incomplete.",
+    "incomplete": "The backup file is incomplete.",
+    "wrongPassword": "Wrong password. Check upper and lower case and try again.",
+    "damaged": "The backup file is damaged or incomplete."
+  },
+  "createBackup": {
+    "incompleteFile": "Incomplete file: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "The content of the backup isn’t valid.",
+    "newerApp": "This backup comes from a newer version of Sottomano. Update the app and try again."
+  },
+  "zipReader": {
+    "invalid": "Invalid archive",
+    "incomplete": "Incomplete archive"
+  },
+  "backupReminder": {
+    "none": "You haven’t made a backup yet",
+    "old_one": "Your last backup was {{count}} day ago",
+    "old_other": "Your last backup was {{count}} days ago",
+    "link": "Back up now",
+    "close": "Close notice",
+    "snooze_one": "Hide for {{count}} day",
+    "snooze_other": "Hide for {{count}} days"
+  },
+  "calendarSettings": {
+    "title": "Calendar",
+    "intro": "Deadlines go into a separate calendar, “Sottomano”. You can hide it in the Calendar app; turning it off here deletes it.",
+    "details": "Each deadline is an all-day event “Expires: title”, with no other details from the document. If Sottomano’s reminders are off, the event alerts you at 9:00 on the reminder day; if they’re on, only the app alerts you, so you don’t get two alerts.",
+    "allowAccess": "Allow access to Calendar",
+    "denied": "Access to Calendar was denied. You can turn it on in the iPhone Settings.",
+    "openSettings": "Open Settings",
+    "switchLabel": "Deadlines in the “Sottomano” calendar",
+    "enabled_one": "{{count}} deadline in the “Sottomano” calendar",
+    "enabled_other": "{{count}} deadlines in the “Sottomano” calendar",
+    "removeConfirm": "Remove the Sottomano calendar and all its deadlines from Calendar?",
+    "remove": "Remove",
+    "removed": "“Sottomano” calendar deleted"
+  },
+  "calendarSync": {
+    "eventTitle": "Expires: {{title}}",
+    "cannotCreate": "Couldn’t create the “Sottomano” calendar on this iPhone."
+  },
+  "appearance": {
+    "intro": "The colors of the default categories. Categories you created keep their own color.",
+    "restoreButton": "Restore default categories",
+    "restoreHint": "Brings back the default categories you deleted.",
+    "paletteLabel": "{{name}} palette",
+    "alerts": {
+      "restoreTitle": "Restore the default categories?",
+      "restoreMessage": "The ones you deleted come back with their original name, icon and color. Your documents and the categories you created don’t change.",
+      "nothingTitle": "Nothing to restore",
+      "nothingMessage": "All the default categories are already on Home.",
+      "restoredTitle": "Categories restored",
+      "restoredMessage_one": "{{count}} category is back on Home, before “Other”.",
+      "restoredMessage_other": "{{count}} categories are back on Home, before “Other”.",
+      "restoreFailed": "Couldn’t restore"
+    }
+  },
+  "about": {
+    "version": "Version {{version}}",
+    "privacy": "Privacy",
+    "privacyFooter": "If you turn on Calendar, deadlines are written to the iPhone calendar you choose. When you send a document, you decide who to share it with.",
+    "onPhone": "Your documents stay on your phone",
+    "offline": "No account and no server: it works offline too",
+    "noTracking": "No tracking and no ads"
+  },
+  "terms": {
+    "intro": "The full terms of use will be published with the App Store version. In short:",
+    "free": "Sottomano is free for up to {{limit}} documents and cards",
+    "oneTime": "Unlocking is a one-time purchase, with no subscription",
+    "yours": "Your documents stay on your phone and belong to you",
+    "backup": "Make a backup so you don’t lose them if you change phone"
+  },
+  "limit": {
+    "later": "Later",
+    "title": "You’ve used your {{limit}} free spaces",
+    "text": "Everything you’ve saved stays here and works as always. To add more documents and cards, unlock Sottomano.",
+    "stillWorks": {
+      "view": "View your documents",
+      "send": "Send and share them",
+      "cards": "Show your cards at the checkout",
+      "reminders": "Get reminders"
+    },
+    "blocked": "Add more documents or cards",
+    "unlock": "Unlock without limits for {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}} of {{limit}} free spaces used",
+    "accessibility": "{{title}}. Unlock",
+    "unlock": "Unlock"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Free version: {{used}} of {{limit}} used",
+    "titleMenu": "Free: {{used}} of {{limit}} used",
+    "subtitle": "Unlock without limits for {{price}}",
+    "accessibility": "{{title}}. Unlock without limits for {{price}}",
+    "unlock": "Unlock"
+  },
+  "freeLimit": {
+    "unlockPrice": "€0.99"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Welcome to Sottomano",
+        "text": "ID cards, loyalty cards, bills, warranties: all your household documents in one place, always at hand.",
+        "info": "They stay on your phone and work even without internet"
+      },
+      "scan": {
+        "title": "Snap it once",
+        "text": "Scan several pages too, or import photos and PDFs. You’ll find them in order and send them as light as needed."
+      },
+      "deadlines": {
+        "title": "We keep an eye on deadlines",
+        "text": "We remind you before a bill or a document expires. In your Calendar too, if you like."
+      },
+      "cards": {
+        "title": "Your cards always in your pocket",
+        "text": "Snap your loyalty cards: at the checkout, show the barcode or QR code with one tap."
+      }
+    },
+    "skip": "Skip",
+    "pageOf": "Page {{page}} of {{total}}",
+    "start": "Get started",
+    "restore": "Restore from a backup",
+    "art": {
+      "bills": "Bills",
+      "cards": "Cards",
+      "health": "Health",
+      "car": "Car",
+      "pdfReady": "PDF ready",
+      "billTitle": "Electricity bill",
+      "billExpires": "Due in 2 days",
+      "gym": "Gym",
+      "library": "Library",
+      "supermarket": "Supermarket"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Couldn’t open the file",
+    "title": "Snap your first document",
+    "text": "A bill, your ID card or the washing machine warranty: in a few seconds it’s safe and always at hand.",
+    "snap": "Snap a document",
+    "pdf": "Upload a PDF",
+    "folders": "Your folders",
+    "emptyAccessibility": "{{name}}, empty",
+    "empty": "Empty",
+    "newCategory": "New category"
+  },
+  "splashOverlay": {
+    "tagline": "Your household documents, ready to send"
+  },
+  "appActions": {
+    "shareText": "I recommend Sottomano: your household documents, cards and deadlines always at hand, on your phone and even without internet.",
+    "rateTitle": "Rate Sottomano",
+    "rateMessage": "You’ll be able to leave a rating once Sottomano is on the App Store.",
+    "lockUnavailableTitle": "Lock not available",
+    "lockUnavailableMessage": "To lock Sottomano you need a passcode on your iPhone. Set one in Settings › Face ID & Passcode, then try again."
   }
 }

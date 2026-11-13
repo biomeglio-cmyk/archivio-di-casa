@@ -1,5 +1,7 @@
 import Storage from 'expo-sqlite/kv-store';
 
+import { t } from '@/i18n';
+
 // What is inside the archive of a .sottomano file:
 //   manifest.json      what and when (BackupManifest)
 //   sottomano.db       the database (documents, people, categories, deadlines…)
@@ -53,11 +55,12 @@ export function saveLastBackupDate(date: Date): void {
 // A backup is "due" when there is none, or the last one is older than that (Home notice,
 // orange dot in the Menu, the Backup notification).
 export type BackupFrequency = 'week' | 'month' | 'never';
-export const BACKUP_FREQUENCIES: { value: BackupFrequency; label: string }[] = [
-  { value: 'week', label: 'Ogni settimana' },
-  { value: 'month', label: 'Ogni mese' },
-  { value: 'never', label: 'Mai' },
-];
+export const BACKUP_FREQUENCIES: BackupFrequency[] = ['week', 'month', 'never'];
+
+// "Ogni settimana" / "Ogni mese" / "Mai", in the active language
+export function backupFrequencyLabel(frequency: BackupFrequency): string {
+  return t(`backupLayout.frequency.${frequency}`);
+}
 const FREQUENCY_KEY = 'backup.reminderFrequency';
 const DAY_MS = 24 * 60 * 60 * 1000;
 

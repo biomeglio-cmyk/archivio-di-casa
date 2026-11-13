@@ -5,7 +5,8 @@ import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 're
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { weekdayName } from '@/i18n/format';
+import { useI18n } from '@/i18n';
+import { useFormat } from '@/i18n/use-format';
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
@@ -23,6 +24,7 @@ const BELL_FROM_RIGHT = 100; // center of the bell in Home: margin 22 + logo 44 
 // Tap outside to close.
 export default function NotificationsPanel() {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { height } = useWindowDimensions();
   const { items, read, now } = useNotificationFeed();
@@ -41,21 +43,21 @@ export default function NotificationsPanel() {
 
   return (
     <Animated.View entering={FadeIn.duration(150)} style={styles.dim}>
-      <Pressable style={StyleSheet.absoluteFill} onPress={() => router.back()} accessibilityRole="button" accessibilityLabel="Chiudi le notifiche" />
+      <Pressable style={StyleSheet.absoluteFill} onPress={() => router.back()} accessibilityRole="button" accessibilityLabel={t('notificationsPanel.close')} />
       <View style={[styles.panel, { top, maxHeight: height - top - insets.bottom - 24 }]} accessibilityViewIsModal>
         <View style={styles.arrow} />
         <View style={styles.head}>
           <Text style={styles.title} accessibilityRole="header">
-            Notifiche
+            {t('notificationsPanel.title')}
           </Text>
           <Pressable onPress={markAllRead} accessibilityRole="button" hitSlop={14}>
-            <Text style={styles.markAll}>Segna come lette</Text>
+            <Text style={styles.markAll}>{t('notificationsPanel.markAllRead')}</Text>
           </Pressable>
         </View>
         <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-          {items.length === 0 && <Text style={styles.empty}>Nessuna notifica negli ultimi 7 giorni.</Text>}
-          {today.length > 0 && <Group title="Oggi" items={today} read={read} onOpen={open} withTime />}
-          {earlier.length > 0 && <Group title="Questa settimana" items={earlier} read={read} onOpen={open} />}
+          {items.length === 0 && <Text style={styles.empty}>{t('notificationsPanel.empty')}</Text>}
+          {today.length > 0 && <Group title={t('notificationsPanel.today')} items={today} read={read} onOpen={open} withTime />}
+          {earlier.length > 0 && <Group title={t('notificationsPanel.thisWeek')} items={earlier} read={read} onOpen={open} />}
           <Pressable
             onPress={() => {
               router.back();
@@ -63,7 +65,7 @@ export default function NotificationsPanel() {
             }}
             accessibilityRole="button"
             style={({ pressed }) => [styles.settings, pressed && styles.pressed]}>
-            <Text style={styles.settingsText}>Impostazioni notifiche</Text>
+            <Text style={styles.settingsText}>{t('notificationsPanel.settings')}</Text>
           </Pressable>
         </ScrollView>
       </View>
@@ -81,6 +83,8 @@ type GroupProps = {
 
 function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
+  const fmt = useFormat();
   return (
     <>
       <Text style={styles.section}>{title}</Text>
@@ -90,13 +94,17 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
           const date = new Date(item.at);
           const when = withTime
             ? `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`
-            : weekdayName(date.getDay(), 'short');
+            : fmt.weekdayName(date.getDay(), 'short');
           return (
             <Pressable
               key={item.id}
               onPress={() => onOpen(item)}
               accessibilityRole="button"
-              accessibilityLabel={`${unread ? 'Non letta. ' : ''}${item.title}, ${item.body}`}
+              accessibilityLabel={
+                unread
+                  ? t('notificationsPanel.unreadItem', { title: item.title, body: item.body })
+                  : `${item.title}, ${item.body}`
+              }
               style={({ pressed }) => [styles.item, unread && styles.itemUnread, pressed && styles.pressed]}>
               <LinearGradient
                 colors={[item.colors.top, item.colors.bottom]}

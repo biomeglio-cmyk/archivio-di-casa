@@ -11,6 +11,7 @@ import { getDocumentDetail, listDocumentFiles, saveDocumentEdits, setPinned } fr
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useLeaveWhenDeleted } from '@/hooks/use-leave-when-deleted';
+import { useI18n } from '@/i18n';
 import { afterDocumentSaved } from '@/notifications/reminders';
 import { deletePassword, readPassword, savePassword } from '@/security/password-vault';
 
@@ -55,12 +56,13 @@ function EditDocumentContent({
   savedFiles: DocumentFile[];
   hasPassword: boolean;
 }) {
+  const { t } = useI18n();
   const db = useSQLiteContext();
   const [files, setFiles] = useState<EditableFile[]>(() => savedFiles.map(fromExisting));
 
   return (
     <DocumentForm
-      heading="Modifica documento"
+      heading={t('editDocument.heading')}
       initial={document}
       initialPinned={document.isPinned}
       onDelete={() => confirmDeleteDocument(document)}

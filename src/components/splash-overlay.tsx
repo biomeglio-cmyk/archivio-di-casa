@@ -10,6 +10,7 @@ import { BRAND_GRADIENT } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const HOLD_MS = 700; // logo on screen…
 const FADE_MS = 300; // …then a fade into the app: about one second in total
@@ -20,6 +21,7 @@ const GLYPH_ASPECT = 712 / 657; // logo-glyph.png is 712 × 657 px
 // document, "sottomano" and the tagline. It fades out on top of the first screen (Home).
 export function SplashOverlay() {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const [visible, setVisible] = useState(true);
   const [shown, setShown] = useState(false);
 
@@ -44,8 +46,9 @@ export function SplashOverlay() {
           SplashScreen.hideAsync().finally(() => setShown(true));
         }}>
         <Image source={require('@/assets/images/logo-glyph.png')} style={styles.glyph} contentFit="contain" />
+        {/* i18n-ignore: brand */}
         <Text style={styles.name}>Sottomano</Text>
-        <Text style={styles.tagline}>I documenti di casa, pronti da inviare</Text>
+        <Text style={styles.tagline}>{t('splashOverlay.tagline')}</Text>
       </LinearGradient>
     </Animated.View>
   );

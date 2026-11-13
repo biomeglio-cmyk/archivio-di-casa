@@ -5,6 +5,7 @@ import { PDFDocument, StandardFonts, rgb, type PDFFont, type PDFPage } from 'pdf
 
 import { listDocumentFiles, listDocumentsByCategory } from '@/db/documents';
 import type { DocumentFile, DocumentListItem } from '@/db/types';
+import { t } from '@/i18n';
 import { compressToLimit, type LadderStep, type QualityLabel } from '@/send/compression';
 import { fileBaseName } from '@/send/file-name';
 import { imageSize, renderImage } from '@/send/images';
@@ -95,7 +96,7 @@ export type TaxPackage = {
   files: PreparedFile[]; // the main PDF first, then the PDFs sent apart
   pages: number;
   bytes: number; // the main PDF
-  quality: QualityLabel | 'Originale';
+  quality: QualityLabel | 'original';
   sentApart: string[]; // titles of the documents whose PDF could not be merged
   warnings: string[];
 };
@@ -116,12 +117,12 @@ export async function buildTaxPackage(
 
   try {
     let built: Built & { bytes: number };
-    let quality: QualityLabel | 'Originale' = 'Originale';
+    let quality: QualityLabel | 'original' = 'original';
     const warnings: string[] = [];
     let attempt = 0;
     const render = async (step: LadderStep | null) => {
       attempt++;
-      onProgress?.(attempt === 1 ? 'Preparo il PDF…' : `Riduco le foto (tentativo ${attempt})…`);
+      onProgress?.(attempt === 1 ? t('taxPackageBuilder.progressFirst') : t('taxPackageBuilder.progressRetry', { attempt }));
       const result = await buildPdf(items, title, step, new File(work, `tentativo-${attempt}.pdf`));
       return { ...result, bytes: new File(result.uri).size ?? 0 };
     };
@@ -255,9 +256,13 @@ function drawIndex(
     let y = PAGE.height - MARGIN;
     if (pageIndex === 0) {
       page.drawText(safe(title), { x: MARGIN, y: y - 20, size: 20, font: bold, color: black });
-      const count = items.length === 1 ? '1 documento' : `${items.length} documenti`;
-      const sum = total > 0 ? ` · totale ${formatEuro(total)}` : '';
-      page.drawText(safe(`Preparato il ${formatDate(toISODate(new Date()))} con Sottomano · ${count}${sum}`), {
+      const values = {
+        date: formatDate(toISODate(new Date())),
+        documents: t('common.documents', { count: items.length }),
+        total: formatEuro(total),
+      };
+      const subtitle = total > 0 ? t('taxPackageBuilder.subtitleWithTotal', values) : t('taxPackageBuilder.subtitle', values);
+      page.drawText(safe(subtitle), {
         x: MARGIN,
         y: y - 42,
         size: 10,
@@ -266,16 +271,29 @@ function drawIndex(
       });
       y -= HEADER_HEIGHT - 28;
     }
-    page.drawText('N.', { x: columns.number, y, size: 9, font: bold, color: grey });
-    page.drawText('Documento', { x: columns.title, y, size: 9, font: bold, color: grey });
-    page.drawText('Data', { x: columns.date, y, size: 9, font: bold, color: grey });
-    page.drawText('Persona', { x: columns.person, y, size: 9, font: bold, color: grey });
-    page.drawText('Importo', { x: columns.amount - bold.widthOfTextAtSize('Importo', 9), y, size: 9, font: bold, color: grey });
-    page.drawText('Pagina', { x: columns.page - bold.widthOfTextAtSize('Pagina', 9), y, size: 9, font: bold, color: grey });
+    const head = {
+      number: safe(t('taxPackageBuilder.columns.number')),
+      title: safe(t('taxPackageBuilder.columns.document')),
+      date: safe(t('taxPackageBuilder.columns.date')),
+      person: safe(t('taxPackageBuilder.columns.person')),
+      amount: safe(t('taxPackageBuilder.columns.amount')),
+      page: safe(t('taxPackageBuilder.columns.page')),
+    };
+    page.drawText(head.number, { x: columns.number, y, size: 9, font: bold, color: grey });
+    page.drawText(head.title, { x: columns.title, y, size: 9, font: bold, color: grey });
+    page.drawText(head.date, { x: columns.date, y, size: 9, font: bold, color: grey });
+    page.drawText(head.person, { x: columns.person, y, size: 9, font: bold, color: grey });
+    page.drawText(head.amount, { x: columns.amount - bold.widthOfTextAtSize(head.amount, 9), y, size: 9, font: bold, color: grey });
+    page.drawText(head.page, { x: columns.page - bold.widthOfTextAtSize(head.page, 9), y, size: 9, font: bold, color: grey });
     y -= 8;
     page.drawLine({ start: { x: MARGIN, y }, end: { x: PAGE.width - MARGIN, y }, thickness: 0.5, color: grey });
     return { page, y: y - (ROW_HEIGHT - 4) };
   };
+
+  const sentApartText = safe(t('taxPackageBuilder.sentApart'));
+  const noPagesText = safe(t('taxPackageBuilder.noPages'));
+  const paidText = t('taxPackageBuilder.paid');
+  const dueText = t('taxPackageBuilder.due');
 
   let pageIndex = 0;
   let { page, y } = newPage(pageIndex);
@@ -288,13 +306,13 @@ function drawIndex(
     }
     const { document } = item;
     const where = sentApart.has(document.id)
-      ? 'inviato a parte'
+      ? sentApartText
       : startPage.has(document.id)
         ? String(startPage.get(document.id))
-        : 'senza pagine';
+        : noPagesText;
     page.drawText(String(index + 1), { x: columns.number, y, size: 10, font, color: grey });
     // "Visita (Dentista) · pagata": the title with its Tipo and its payment status
-    const status = document.paymentStatus === 'paid' ? ' · pagata' : document.paymentStatus === 'due' ? ' · da pagare' : '';
+    const status = document.paymentStatus === 'paid' ? ` · ${paidText}` : document.paymentStatus === 'due' ? ` · ${dueText}` : '';
     const name = `${document.title}${document.docType ? ` (${document.docType})` : ''}${status}`;
     page.drawText(fit(name, font, 10, columns.date - columns.title - 8), { x: columns.title, y, size: 10, font, color: black });
     page.drawText(formatDate(item.date), { x: columns.date, y, size: 10, font, color: black });
@@ -314,7 +332,7 @@ function drawIndex(
     rowsLeft--;
   });
   // The content page numbers were computed with this many index pages
-  if (pageIndex + 1 !== indexPages) throw new Error('Indice non valido');
+  if (pageIndex + 1 !== indexPages) throw new Error(t('taxPackageBuilder.invalidIndex'));
 }
 
 // Characters the standard PDF fonts can write (WinAnsi); anything else becomes "?"

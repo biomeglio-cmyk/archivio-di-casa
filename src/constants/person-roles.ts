@@ -1,23 +1,22 @@
 import type { PersonRole } from '@/db/types';
+import { t } from '@/i18n';
 
 // "Chi è" in Nuova persona (docs/design/NuovoUtente.dc.html), plus "Sono io" for the "Tu" badge
-export const PERSON_ROLES: { value: PersonRole; label: string }[] = [
-  { value: 'me', label: 'Sono io' },
-  { value: 'partner', label: 'Partner' },
-  { value: 'child', label: 'Figlio o figlia' },
-  { value: 'parent', label: 'Genitore' },
-  { value: 'sibling', label: 'Fratello o sorella' },
-  { value: 'other', label: 'Altro' },
-];
+export const PERSON_ROLES: PersonRole[] = ['me', 'partner', 'child', 'parent', 'sibling', 'other'];
+
+// The choice in "Chi è": "Sono io", "Partner", "Figlio o figlia"…
+export function roleChoiceLabel(role: PersonRole): string {
+  return t(`personRoles.choice.${role}`);
+}
 
 // "Partner", "Figlio o figlia"…; "Tu" for the owner; null when not said
 export function roleLabel(role: PersonRole | null): string | null {
-  if (role === 'me') return 'Tu';
-  return PERSON_ROLES.find((r) => r.value === role)?.label ?? null;
+  if (role === 'me') return t('personRoles.you');
+  return role && isPersonRole(role) ? roleChoiceLabel(role) : null;
 }
 
 export function isPersonRole(value: string | null): value is PersonRole {
-  return PERSON_ROLES.some((r) => r.value === value);
+  return PERSON_ROLES.some((r) => r === value);
 }
 
 // The avatar gradients of the design (lilac, blue, pink, mint, yellow, apricot), one per person

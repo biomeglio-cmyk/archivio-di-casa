@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useI18n } from '@/i18n';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 export type SheetAction = {
@@ -29,6 +30,7 @@ type Props = {
 // runs after the sheet is gone, so its alerts and screens are never hidden behind it.
 export function ActionSheet({ visible, title, subtitle, actions, onClose }: Props) {
   const theme = useTheme();
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const pending = useRef<(() => void) | null>(null);
@@ -54,7 +56,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
           style={StyleSheet.absoluteFill}
           onPress={onClose}
           accessibilityRole="button"
-          accessibilityLabel="Chiudi"
+          accessibilityLabel={t('common.close')}
         />
         <View style={[styles.sheet, { paddingBottom: Math.max(insets.bottom, 20) + 14 }]} accessibilityRole="menu">
           <View style={styles.grabber} />
@@ -81,7 +83,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
               );
             })}
             <Pressable onPress={onClose} accessibilityRole="button" style={styles.cancel}>
-              <Text style={styles.cancelLabel}>Annulla</Text>
+              <Text style={styles.cancelLabel}>{t('common.cancel')}</Text>
             </Pressable>
           </View>
         </View>

@@ -6,6 +6,7 @@ import { Text, TextInput } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { type Palette, Radius } from '@/constants/theme';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 type Props = {
   value: string;
@@ -23,6 +24,7 @@ const LENS_COLOR = '#6D5CE6'; // the magnifying glass of the design
 export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
+  const { t } = useI18n();
   const inputRef = useRef<TextInputInstance>(null);
   const [focused, setFocused] = useState(false);
   const active = focused || value.length > 0;
@@ -71,7 +73,7 @@ export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
             onPress={() => onChangeText('')}
             hitSlop={10}
             accessibilityRole="button"
-            accessibilityLabel="Cancella testo">
+            accessibilityLabel={t('searchBar.clear')}>
             <SymbolView name="xmark.circle.fill" tintColor={theme.textSecondary} size={18} />
           </Pressable>
         )}
@@ -79,7 +81,7 @@ export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
       </Pressable>
       {active && (
         <Pressable onPress={cancel} hitSlop={8} accessibilityRole="button" style={styles.cancelButton}>
-          <Text style={styles.cancel}>Annulla</Text>
+          <Text style={styles.cancel}>{t('common.cancel')}</Text>
         </Pressable>
       )}
     </View>

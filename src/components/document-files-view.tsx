@@ -9,6 +9,7 @@ import { ThemedText } from '@/components/themed-text';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import type { Category, DocumentFile } from '@/db/types';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
 import { previewDocumentFiles } from '@/storage/preview-files';
 import { pageLabel, usesFrontBack } from '@/utils/page-labels';
@@ -25,6 +26,7 @@ const PAGE_ASPECT_RATIO = 3 / 4; // scanned pages are usually portrait sheets
 // Photos and PDFs attached to a document: one photo alone (no label, no selector), two with a
 // switch ("Fronte/Retro" for IDs and cards, else "Pagina 1/2"), 3+ swiped page by page
 export function DocumentFilesView({ title, category, files }: Props) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const [imageIndex, setImageIndex] = useState(0);
   const [pagerWidth, setPagerWidth] = useState(0);
@@ -36,14 +38,14 @@ export function DocumentFilesView({ title, category, files }: Props) {
   const shownIndex = Math.min(imageIndex, images.length - 1);
   const shownImage = images[shownIndex];
   const frontBack = usesFrontBack(category, images.length);
-  const labelAt = (index: number) => pageLabel(index, images.length, frontBack) ?? 'Documento';
+  const labelAt = (index: number) => pageLabel(index, images.length, frontBack) ?? t('documentFilesView.document');
 
   // Tapping the photo opens all faces full screen, starting from the one on screen
   async function openImages() {
     try {
       await previewDocumentFiles(title, category, images, shownIndex);
     } catch (error) {
-      Alert.alert('Impossibile aprire il documento', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('documentFilesView.openFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -69,7 +71,7 @@ export function DocumentFilesView({ title, category, files }: Props) {
             </ScrollView>
           )}
           <ThemedText type="small" themeColor="textSecondary" style={styles.pageCount}>
-            {`Pagina ${shownIndex + 1} di ${images.length} · scorri per sfogliare`}
+            {t('documentFilesView.pageOfSwipe', { number: shownIndex + 1, total: images.length })}
           </ThemedText>
         </View>
       )}
@@ -96,6 +98,7 @@ export function DocumentFilesView({ title, category, files }: Props) {
 type ImageFileProps = { file: DocumentFile; label: string; aspectRatio: number; onPress: () => void };
 
 function ImageFile({ file, label, aspectRatio, onPress }: ImageFileProps) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   const stored = resolveDocumentFile(file.path);
@@ -103,7 +106,7 @@ function ImageFile({ file, label, aspectRatio, onPress }: ImageFileProps) {
   if (!stored.exists) return <MissingFile />;
 
   return (
-    <Pressable onPress={onPress} accessibilityLabel={`${label}, apri a schermo intero`}>
+    <Pressable onPress={onPress} accessibilityLabel={t('documentFilesView.openFullScreen', { label })}>
       <Image
         source={{ uri: stored.uri }}
         style={[styles.image, { aspectRatio, backgroundColor: theme.surface }]}
@@ -135,12 +138,13 @@ function PdfFile({ file }: { file: DocumentFile }) {
 }
 
 function MissingFile() {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   return (
     <View style={[styles.missing, { backgroundColor: theme.surface }]}>
       <SymbolView name="exclamationmark.triangle" tintColor={theme.textSecondary} size={24} />
-      <ThemedText themeColor="textSecondary">File non trovato sul telefono.</ThemedText>
+      <ThemedText themeColor="textSecondary">{t('documentFilesView.missingFile')}</ThemedText>
     </View>
   );
 }

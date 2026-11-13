@@ -13,6 +13,7 @@ import {
 } from '@/backup/backup-layout';
 import { extractEntry, listEntries } from '@/backup/zip-reader';
 import { LATEST_SCHEMA_VERSION, migrateDbIfNeeded } from '@/db/migrations';
+import { t } from '@/i18n';
 import { deletePassword, passwordDocumentIds, savePassword } from '@/security/password-vault';
 
 export type RestoreProgress = { phase: 'key' | 'decrypt' | 'extract'; done: number; total: number };
@@ -94,7 +95,7 @@ export async function prepareRestore(
     }
 
     // Extract, accepting only the names we write ourselves
-    const damaged = new BackupError('damaged', 'Il contenuto del backup non è valido.');
+    const damaged = new BackupError('damaged', t('restoreBackup.invalidContent'));
     work.create({ intermediates: true });
     for (const folder of BACKUP_FOLDERS) new Directory(work, folder).create();
     const archive = zip.open(FileMode.ReadOnly);
@@ -151,7 +152,7 @@ export async function prepareRestore(
       if (check?.quick_check !== 'ok') throw damaged;
       const version = (await restored.getFirstAsync<{ user_version: number }>('PRAGMA user_version'))?.user_version ?? 0;
       if (version > LATEST_SCHEMA_VERSION) {
-        throw new BackupError('newer-app', 'Questo backup viene da una versione più recente di Sottomano. Aggiorna l\'app e riprova.');
+        throw new BackupError('newer-app', t('restoreBackup.newerApp'));
       }
       const row = await restored.getFirstAsync<{ n: number }>('SELECT COUNT(*) AS n FROM documents');
       documentCount = row?.n ?? 0;

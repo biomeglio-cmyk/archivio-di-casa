@@ -9,12 +9,14 @@ import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
 import { onSoftTint, type Palette, softTint } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
-import { FREE_LIMIT, UNLOCK_PRICE } from '@/settings/free-limit';
+import { FREE_LIMIT, unlockPrice } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#15332A');
 const MINT_INK = (p: Palette) => onSoftTint(p, '#1F7A5A', '#7FE0BC');
-const STILL_WORKS = ['Consultare i tuoi documenti', 'Inviarli e condividerli', 'Mostrare le tessere alla cassa', 'Ricevere i promemoria'];
+// What keeps working at the limit: keys of limit.stillWorks
+const STILL_WORKS = ['view', 'send', 'cards', 'reminders'] as const;
 
 // The limit panel (docs/design/ProvaFinita.dc.html), a sheet over the screen that tried to add:
 // the logo, "Hai usato i 7 spazi gratuiti", what keeps working (ticks) and what doesn't (lock),
@@ -23,10 +25,11 @@ export default function LimitPanel() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
+  const { t } = useI18n();
 
   return (
     <Animated.View entering={FadeIn.duration(160)} style={styles.dim}>
-      <Pressable style={StyleSheet.absoluteFill} onPress={() => router.back()} accessibilityRole="button" accessibilityLabel="Più tardi" />
+      <Pressable style={StyleSheet.absoluteFill} onPress={() => router.back()} accessibilityRole="button" accessibilityLabel={t('limit.later')} />
       <Animated.View
         entering={SlideInDown.duration(240)}
         style={[styles.sheet, { paddingBottom: Math.max(insets.bottom, 20) + 14 }]}
@@ -36,35 +39,32 @@ export default function LimitPanel() {
           <LogoMark size={60} radius={14} />
         </View>
         <Text style={styles.title} accessibilityRole="header">
-          {`Hai usato i ${FREE_LIMIT} spazi gratuiti`}
+          {t('limit.title', { limit: FREE_LIMIT })}
         </Text>
-        <Text style={styles.text}>
-          Tutto quello che hai salvato resta qui e funziona come sempre. Per aggiungere altri documenti e tessere, sblocca
-          Sottomano.
-        </Text>
+        <Text style={styles.text}>{t('limit.text')}</Text>
         <View style={styles.list}>
           {STILL_WORKS.map((item) => (
             <View key={item} style={styles.item}>
               <View style={[styles.mark, styles.markOn]}>
                 <SymbolView name="checkmark" tintColor={MINT_INK(theme)} size={13} weight="bold" />
               </View>
-              <Text style={styles.itemText}>{item}</Text>
+              <Text style={styles.itemText}>{t(`limit.stillWorks.${item}`)}</Text>
             </View>
           ))}
           <View style={styles.item}>
             <View style={[styles.mark, styles.markOff]}>
               <SymbolView name="lock.fill" tintColor={theme.textSecondary} size={12} />
             </View>
-            <Text style={[styles.itemText, styles.itemOff]}>Aggiungere altri documenti o tessere</Text>
+            <Text style={[styles.itemText, styles.itemOff]}>{t('limit.blocked')}</Text>
           </View>
         </View>
         <PrimaryButton
-          label={`Sblocca senza limiti a ${UNLOCK_PRICE}`}
+          label={t('limit.unlock', { price: unlockPrice() })}
           onPress={() => router.replace('/unlock')}
           style={styles.unlock}
         />
         <Pressable onPress={() => router.back()} accessibilityRole="button" style={styles.later}>
-          <Text style={styles.laterText}>Più tardi</Text>
+          <Text style={styles.laterText}>{t('limit.later')}</Text>
         </Pressable>
       </Animated.View>
     </Animated.View>

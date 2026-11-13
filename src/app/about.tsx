@@ -9,10 +9,12 @@ import { ThemedText } from '@/components/themed-text';
 import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 // "Info e privacy" (from the Menu): app version and what happens to the user's documents
 export default function AboutScreen() {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const version = Constants.expoConfig?.version ?? '1.0.0';
 
   return (
@@ -20,22 +22,22 @@ export default function AboutScreen() {
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <View style={styles.brand}>
           <LogoMark size={72} radius={16} />
-          <ThemedText style={styles.name}>sottomano</ThemedText>
-          <ThemedText themeColor="textSecondary">Versione {version}</ThemedText>
+          <ThemedText style={styles.name}>sottomano</ThemedText>{/* i18n-ignore: brand */}
+          <ThemedText themeColor="textSecondary">{t('about.version', { version })}</ThemedText>
         </View>
 
         <Group
-          title="Privacy"
-          footer="Se attivi il Calendario, le scadenze vengono scritte nel calendario dell'iPhone che scegli tu. Quando invii un documento, decidi tu con chi condividerlo.">
-          <Row label="I tuoi documenti restano sul telefono" symbol="lock.iphone" first />
-          <Row label="Nessun account e nessun server: funziona anche offline" symbol="wifi.slash" />
-          <Row label="Nessun tracciamento e nessuna pubblicità" symbol="eye.slash" />
+          title={t('about.privacy')}
+          footer={t('about.privacyFooter')}>
+          <Row label={t('about.onPhone')} symbol="lock.iphone" first />
+          <Row label={t('about.offline')} symbol="wifi.slash" />
+          <Row label={t('about.noTracking')} symbol="eye.slash" />
         </Group>
       </ScrollView>
 
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button variant="done" onPress={() => router.back()}>
-          Fine
+          {t('common.done')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
     </>

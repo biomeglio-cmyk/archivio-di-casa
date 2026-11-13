@@ -6,6 +6,7 @@ import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import { getDocumentDetail, listDocumentFiles, saveCardEdits } from '@/db/documents';
 import type { DocumentDetail, DocumentFile, FileSide } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useI18n } from '@/i18n';
 import { resolveDocumentFile } from '@/storage/document-files';
 import type { PendingFile } from '@/storage/pending-files';
 
@@ -27,12 +28,13 @@ function photoOf(files: DocumentFile[], sides: FileSide[]): DocumentFile | undef
 
 function EditCardContent({ card, savedFiles }: { card: DocumentDetail; savedFiles: DocumentFile[] }) {
   const db = useSQLiteContext();
+  const { t } = useI18n();
   const front = photoOf(savedFiles, ['card_front', 'front']);
   const barcode = photoOf(savedFiles, ['barcode']);
 
   return (
     <CardForm
-      heading="Modifica tessera"
+      heading={t('editCard.title')}
       onCancel={() => router.back()}
       initial={{
         title: card.title,

@@ -1,3 +1,4 @@
+import { t } from '@/i18n';
 import { BUILTIN_ORDER } from '@/db/builtin-categories';
 import type { CategoryColors } from '@/db/types';
 
@@ -50,7 +51,7 @@ const fromGuide = ([top, bottom, shadow, tint, onTint, darkTint, darkOnTint]: Gu
 const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [
   {
     id: 'vivid',
-    name: 'Vivace',
+    name: 'Vivace', // i18n-ignore (shown through paletteName)
     colors: [
       ['#4C8DF6', '#2F6FDB', '#FFFFFF'],
       ['#8B5CF6', '#6D3FE0', '#FFFFFF'],
@@ -69,7 +70,7 @@ const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [
   },
   {
     id: 'earth',
-    name: 'Terra',
+    name: 'Terra', // i18n-ignore (shown through paletteName)
     colors: [
       ['#E6E1D6', '#CFC6B3', '#4A3F2C'],
       ['#E3DCE2', '#C9BCC6', '#4B3646'],
@@ -88,7 +89,7 @@ const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [
   },
   {
     id: 'sea',
-    name: 'Mare',
+    name: 'Mare', // i18n-ignore (shown through paletteName)
     colors: [
       ['#E3F0FB', '#B9D8F2', '#174A78'],
       ['#E6EEFA', '#C2D2F0', '#2A3F7A'],
@@ -107,7 +108,7 @@ const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [
   },
   {
     id: 'sunset',
-    name: 'Tramonto',
+    name: 'Tramonto', // i18n-ignore (shown through paletteName)
     colors: [
       ['#FDE8E4', '#F7C3B8', '#7A2E20'],
       ['#FBE6EF', '#F2BCD3', '#7A2148'],
@@ -126,7 +127,7 @@ const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [
   },
   {
     id: 'night',
-    name: 'Notte',
+    name: 'Notte', // i18n-ignore (shown through paletteName)
     colors: [
       ['#22324F', '#1A2740', '#BFD3F7'],
       ['#2E2550', '#231C40', '#D2C6F6'],
@@ -148,8 +149,13 @@ const OTHER_PALETTES: { id: PaletteId; name: string; colors: Triple[] }[] = [
 export const DEFAULT_PALETTE: PaletteId = 'sottomano';
 
 export const PALETTES: Palette[] = [
-  { id: 'sottomano', name: 'Sottomano', colors: SOTTOMANO.map(fromGuide) },
+  { id: 'sottomano', name: 'Sottomano', colors: SOTTOMANO.map(fromGuide) }, // i18n-ignore (shown through paletteName)
   // Pastello: the original colors, the same the database was created with
-  { id: 'pastel', name: 'Pastello', colors: BUILTIN_ORDER.map((c) => c.colors) },
+  { id: 'pastel', name: 'Pastello', colors: BUILTIN_ORDER.map((c) => c.colors) }, // i18n-ignore (shown through paletteName)
   ...OTHER_PALETTES.map((p) => ({ id: p.id, name: p.name, colors: p.colors.map(toColors) })),
 ];
+
+// The palette name in the active language ("Pastello" / "Pastel")
+export function paletteName(id: PaletteId): string {
+  return t(`palettes.${id}`);
+}

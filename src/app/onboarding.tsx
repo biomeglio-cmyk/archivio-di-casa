@@ -13,35 +13,22 @@ import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { markOnboardingSeen } from '@/onboarding/onboarding-flag';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
+import { capitalize } from '@/utils/dates';
+import { monthName } from '@/i18n/format';
 
 const ART_WIDTH = 338; // the illustration box of the design (390 - 2 × 26)
 const ART_HEIGHT = 380;
 const SIDE = 26;
 
-type Page = { title: string; text: string; art: () => ReactNode; info?: string };
+// id: the texts are onboarding.pages.<id>.title / .text (/ .info)
+type Page = { id: 'welcome' | 'scan' | 'deadlines' | 'cards'; art: () => ReactNode; info?: boolean };
 
 const PAGES: Page[] = [
-  {
-    title: 'Benvenuto in Sottomano',
-    text: "Carte d'identità, tessere, bollette, garanzie: tutti i documenti di casa in un posto solo, sempre a portata di mano.",
-    art: WelcomeArt,
-    info: 'Restano sul tuo telefono e funzionano anche senza internet',
-  },
-  {
-    title: 'Fotografa una volta',
-    text: 'Scansiona anche più pagine o importa foto e PDF. Li ritrovi in ordine e li invii leggeri quanto serve.',
-    art: ScanArt,
-  },
-  {
-    title: 'Alle scadenze pensiamo noi',
-    text: 'Ti avvisiamo prima che scada una bolletta o un documento. Se vuoi, anche nel Calendario.',
-    art: DeadlineArt,
-  },
-  {
-    title: 'Le tessere sempre in tasca',
-    text: 'Fotografa le tue tessere: alla cassa mostri il codice a barre o il QR con un tocco.',
-    art: CardsArt,
-  },
+  { id: 'welcome', art: WelcomeArt, info: true },
+  { id: 'scan', art: ScanArt },
+  { id: 'deadlines', art: DeadlineArt },
+  { id: 'cards', art: CardsArt },
 ];
 
 // "Benvenuto" 1–4 (docs/design/Benvenuto*.dc.html), first launch only (and again from Aiuto):
@@ -53,6 +40,7 @@ export default function OnboardingScreen() {
   const styles = useThemedStyles(makeStyles);
   const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
+  const { t } = useI18n();
   const scrollRef = useRef<ScrollViewInstance>(null);
   const [page, setPage] = useState(0);
   const last = page === PAGES.length - 1;
@@ -82,7 +70,7 @@ export default function OnboardingScreen() {
       <View style={styles.topBar}>
         {!last && (
           <Pressable onPress={close} hitSlop={12} accessibilityRole="button" style={styles.skipButton}>
-            <Text style={styles.skip}>Salta</Text>
+            <Text style={styles.skip}>{t('onboarding.skip')}</Text>
           </Pressable>
         )}
       </View>
@@ -95,23 +83,23 @@ export default function OnboardingScreen() {
         onMomentumScrollEnd={(e) => setPage(Math.round(e.nativeEvent.contentOffset.x / width))}
         style={styles.pager}>
         {PAGES.map((p, index) => (
-          <ScrollView key={p.title} style={{ width }} contentContainerStyle={styles.page} showsVerticalScrollIndicator={false}>
+          <ScrollView key={p.id} style={{ width }} contentContainerStyle={styles.page} showsVerticalScrollIndicator={false}>
             <View style={{ height: ART_HEIGHT * scale, alignItems: 'center' }} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
               <View style={[styles.art, { transform: [{ scale }], marginTop: (ART_HEIGHT * (scale - 1)) / 2 }]}>{p.art()}</View>
             </View>
             <Text style={[styles.title, index === 0 && styles.titleFirst]} accessibilityRole="header">
-              {p.title}
+              {t(`onboarding.pages.${p.id}.title`)}
             </Text>
-            <Text style={styles.text}>{p.text}</Text>
+            <Text style={styles.text}>{t(`onboarding.pages.${p.id}.text`)}</Text>
             {p.info && (
               <View style={styles.info}>
                 <SymbolView name="lock.shield" tintColor={theme.indigo} size={22} />
-                <Text style={styles.infoText}>{p.info}</Text>
+                <Text style={styles.infoText}>{t(`onboarding.pages.${p.id}.info`)}</Text>
               </View>
             )}
-            <View style={styles.dots} accessible accessibilityLabel={`Pagina ${index + 1} di ${PAGES.length}`}>
+            <View style={styles.dots} accessible accessibilityLabel={t('onboarding.pageOf', { page: index + 1, total: PAGES.length })}>
               {PAGES.map((other, dot) => (
-                <View key={other.title} style={[styles.dot, dot === index && styles.dotActive]} />
+                <View key={other.id} style={[styles.dot, dot === index && styles.dotActive]} />
               ))}
             </View>
           </ScrollView>
@@ -119,10 +107,10 @@ export default function OnboardingScreen() {
       </ScrollView>
 
       <View style={styles.footer}>
-        <PrimaryButton label={last ? 'Inizia' : 'Avanti'} onPress={next} />
+        <PrimaryButton label={last ? t('onboarding.start') : t('common.next')} onPress={next} />
         {(page === 0 || last) && (
           <Pressable onPress={restore} accessibilityRole="button" hitSlop={8} style={styles.restore}>
-            <Text style={styles.restoreText}>Ripristina da un backup</Text>
+            <Text style={styles.restoreText}>{t('onboarding.restore')}</Text>
           </Pressable>
         )}
       </View>
@@ -179,13 +167,14 @@ function MiniTile({ name, symbol, colors, shadow, left, top, rotate }: {
 function WelcomeArt() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   return (
     <>
       <Circle color={theme.lilac} />
-      <MiniTile name="Bollette" symbol="bolt" colors={['#FFA36E', '#F5824A']} shadow="245, 130, 74" left={28} top={46} rotate="-8deg" />
-      <MiniTile name="Tessere" symbol="creditcard" colors={['#6FD3AE', '#45B68E']} shadow="69, 182, 142" left={182} top={24} rotate="7deg" />
-      <MiniTile name="Salute" symbol="heart" colors={['#F79BBA', '#EE7499']} shadow="238, 116, 153" left={196} top={214} rotate="-6deg" />
-      <MiniTile name="Auto" symbol="car" colors={['#86B4F7', '#6494EE']} shadow="100, 148, 238" left={38} top={232} rotate="5deg" />
+      <MiniTile name={t('onboarding.art.bills')} symbol="bolt" colors={['#FFA36E', '#F5824A']} shadow="245, 130, 74" left={28} top={46} rotate="-8deg" />
+      <MiniTile name={t('onboarding.art.cards')} symbol="creditcard" colors={['#6FD3AE', '#45B68E']} shadow="69, 182, 142" left={182} top={24} rotate="7deg" />
+      <MiniTile name={t('onboarding.art.health')} symbol="heart" colors={['#F79BBA', '#EE7499']} shadow="238, 116, 153" left={196} top={214} rotate="-6deg" />
+      <MiniTile name={t('onboarding.art.car')} symbol="car" colors={['#86B4F7', '#6494EE']} shadow="100, 148, 238" left={38} top={232} rotate="5deg" />
       <View style={styles.centerLogo}>
         <LogoMark size={88} radius={22} />
       </View>
@@ -225,6 +214,7 @@ function Paper({ left, top, rotate, accent, shadow, highlight = false }: {
 function ScanArt() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   return (
     <>
       <Circle color={theme.lilac} />
@@ -239,8 +229,8 @@ function ScanArt() {
           <SymbolView name="doc.fill" tintColor="#FFFFFF" size={14} />
         </Gradient>
         <View>
-          <Text style={styles.pdfTitle}>PDF pronto</Text>
-          <Text style={styles.pdfSize}>980 KB</Text>
+          <Text style={styles.pdfTitle}>{t('onboarding.art.pdfReady')}</Text>
+          <Text style={styles.pdfSize}>980 KB</Text>{/* i18n-ignore: illustration size */}
         </View>
       </View>
     </>
@@ -249,13 +239,14 @@ function ScanArt() {
 
 function DeadlineArt() {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const days = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
   return (
     <>
       <Circle color="#FFF0E7" />
       <View style={styles.miniCalendar}>
         <View style={styles.calendarHead}>
-          <Text style={styles.calendarMonth}>Novembre</Text>
+          <Text style={styles.calendarMonth}>{capitalize(monthName(10))}</Text>
           <Text style={styles.calendarYear}>2026</Text>
         </View>
         <View style={styles.calendarGrid}>
@@ -277,8 +268,8 @@ function DeadlineArt() {
           <SymbolView name="bolt" tintColor="#FFFFFF" size={18} />
         </Gradient>
         <View>
-          <Text style={styles.reminderTitle}>Bolletta luce</Text>
-          <Text style={styles.reminderText}>Scade tra 2 giorni</Text>
+          <Text style={styles.reminderTitle}>{t('onboarding.art.billTitle')}</Text>
+          <Text style={styles.reminderText}>{t('onboarding.art.billExpires')}</Text>
         </View>
       </View>
       <Gradient colors={BRAND_GRADIENT} style={styles.bellBadge}>
@@ -318,12 +309,13 @@ function WalletCard({ name, colors, accent, left, top, rotate }: {
 
 function CardsArt() {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   return (
     <>
       <Circle color="#E6F7F0" />
-      <WalletCard name="Palestra" colors={['#FF6F9B', '#E8457A']} accent="#FFD27A" left={40} top={60} rotate="-10deg" />
-      <WalletCard name="Biblioteca" colors={BRAND_GRADIENT} accent="#FF9A70" left={70} top={120} rotate="-2deg" />
-      <WalletCard name="Supermercato" colors={['#2ECC9A', '#13A37B']} accent="#F5CB6B" left={96} top={186} rotate="7deg" />
+      <WalletCard name={t('onboarding.art.gym')} colors={['#FF6F9B', '#E8457A']} accent="#FFD27A" left={40} top={60} rotate="-10deg" />
+      <WalletCard name={t('onboarding.art.library')} colors={BRAND_GRADIENT} accent="#FF9A70" left={70} top={120} rotate="-2deg" />
+      <WalletCard name={t('onboarding.art.supermarket')} colors={['#2ECC9A', '#13A37B']} accent="#F5CB6B" left={96} top={186} rotate="7deg" />
       <Gradient colors={BRAND_GRADIENT} style={styles.scanBadge}>
         <SymbolView name="barcode.viewfinder" tintColor="#FFFFFF" size={26} />
       </Gradient>

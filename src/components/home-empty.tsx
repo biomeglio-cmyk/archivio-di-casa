@@ -14,6 +14,7 @@ import { encodePendingFiles } from '@/storage/pending-files';
 import { categoryTint } from '@/utils/colors';
 import { whenBelowLimit } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { t, useI18n } from '@/i18n';
 
 // "Carica un PDF": the file picker, then Nuovo documento with the PDF attached
 async function loadPdf() {
@@ -21,7 +22,7 @@ async function loadPdf() {
     const files = await pickPdf();
     if (files) router.push({ pathname: '/new-document', params: { files: encodePendingFiles(files) } });
   } catch (error) {
-    Alert.alert('Impossibile aprire il file', String(error));
+    Alert.alert(t('homeEmpty.openFailed'), String(error));
   }
 }
 
@@ -33,6 +34,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { width } = useWindowDimensions();
+  const { t } = useI18n();
   const tileWidth = (width - Spacing.side * 2 - 12) / 2;
   return (
     <>
@@ -49,19 +51,17 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
           </View>
         </View>
         <Text style={styles.title} accessibilityRole="header">
-          Fotografa il tuo primo documento
+          {t('homeEmpty.title')}
         </Text>
-        <Text style={styles.text}>
-          Una bolletta, la carta d’identità o la garanzia della lavatrice: in pochi secondi è al sicuro e sempre sottomano.
-        </Text>
-        <PrimaryButton label="Fotografa un documento" symbol="camera" onPress={() => whenBelowLimit(() => router.push('/add-document'))} style={styles.button} />
+        <Text style={styles.text}>{t('homeEmpty.text')}</Text>
+        <PrimaryButton label={t('homeEmpty.snap')} symbol="camera" onPress={() => whenBelowLimit(() => router.push('/add-document'))} style={styles.button} />
         <Pressable onPress={() => whenBelowLimit(loadPdf)} accessibilityRole="button" style={({ pressed }) => [styles.pdf, pressed && styles.pressed]}>
           <SymbolView name="doc" tintColor={theme.accent} size={18} />
-          <Text style={styles.pdfText}>Carica un PDF</Text>
+          <Text style={styles.pdfText}>{t('homeEmpty.pdf')}</Text>
         </Pressable>
       </View>
 
-      <Text style={styles.section}>Le tue cartelle</Text>
+      <Text style={styles.section}>{t('homeEmpty.folders')}</Text>
       <View style={styles.grid}>
         {categories.map((category) => {
           const { tint, onTint } = categoryTint(category.colors, theme);
@@ -70,14 +70,14 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
               key={category.id}
               onPress={() => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
               accessibilityRole="button"
-              accessibilityLabel={`${category.name}, vuota`}
+              accessibilityLabel={t('homeEmpty.emptyAccessibility', { name: category.name })}
               style={({ pressed }) => [styles.folder, { width: tileWidth, backgroundColor: tint }, pressed && styles.pressed]}>
               <SymbolView name={category.symbol} tintColor={onTint} size={22} />
               <View>
                 <Text style={[styles.folderName, { color: onTint }]} numberOfLines={1}>
                   {category.name}
                 </Text>
-                <Text style={[styles.folderCount, { color: onTint }]}>Vuota</Text>
+                <Text style={[styles.folderCount, { color: onTint }]}>{t('homeEmpty.empty')}</Text>
               </View>
             </Pressable>
           );
@@ -87,7 +87,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
           accessibilityRole="button"
           style={({ pressed }) => [styles.folder, styles.add, { width: tileWidth }, pressed && { backgroundColor: theme.paleLilac }]}>
           <SymbolView name="plus" tintColor={theme.textSecondary} size={22} />
-          <Text style={styles.addText}>Nuova categoria</Text>
+          <Text style={styles.addText}>{t('homeEmpty.newCategory')}</Text>
         </Pressable>
       </View>
     </>

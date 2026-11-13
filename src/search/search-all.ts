@@ -2,6 +2,7 @@ import type { Href } from 'expo-router';
 import type { SFSymbol } from 'expo-symbols';
 
 import type { CategoryColors, CategoryWithCount, DocumentListItem } from '@/db/types';
+import { t } from '@/i18n';
 import { findMatch, normalizeText, snippetAround, type MatchRange } from '@/search/text-match';
 import { describeDistance } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
@@ -10,11 +11,12 @@ import { dayAndMonth } from '@/utils/folder';
 export type SearchKind = 'doc' | 'card' | 'deadline';
 export type SearchFilterKey = 'all' | SearchKind;
 
-export const SEARCH_FILTERS: { key: SearchFilterKey; label: string }[] = [
-  { key: 'all', label: 'Tutto' },
-  { key: 'doc', label: 'Documenti' },
-  { key: 'card', label: 'Tessere' },
-  { key: 'deadline', label: 'Scadenze' },
+// The chip labels are translated at render time: t(filter.labelKey)
+export const SEARCH_FILTERS: { key: SearchFilterKey; labelKey: string }[] = [
+  { key: 'all', labelKey: 'searchAll.filters.all' },
+  { key: 'doc', labelKey: 'searchAll.filters.documents' },
+  { key: 'card', labelKey: 'searchAll.filters.cards' },
+  { key: 'deadline', labelKey: 'searchAll.filters.deadlines' },
 ];
 
 export type SearchResult = {
@@ -35,9 +37,9 @@ const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1
 function documentSubtitle(document: DocumentListItem): string {
   const detail =
     document.paymentStatus === 'paid'
-      ? 'pagata'
+      ? t('searchAll.paid')
       : document.expiresAt
-        ? `scade il ${dayAndMonth(document.expiresAt)}`
+        ? t('searchAll.expiresOn', { date: dayAndMonth(document.expiresAt) })
         : (document.docType ?? document.personName);
   return [document.category.name, detail].filter(Boolean).join(' · ');
 }
@@ -45,6 +47,7 @@ function documentSubtitle(document: DocumentListItem): string {
 // Ricerca (docs/design/Ricerca.dc.html): while typing, in names, folders, Tipo, numbers, people,
 // notes, cards and deadlines, ignoring case and accents. A document with a deadline is found
 // twice: as a document and as a deadline ("Scadenze" filter). Notes: the snippet is highlighted.
+// Called at render time: the subtitles follow the current language.
 export function searchEverything(
   documents: DocumentListItem[],
   categories: CategoryWithCount[],
@@ -62,7 +65,7 @@ export function searchEverything(
       kind: category.isCards ? 'card' : 'doc',
       title: category.name,
       titleMatch: match,
-      subtitle: `Cartella · ${category.documentCount === 1 ? '1 documento' : `${category.documentCount} documenti`}`,
+      subtitle: t('searchAll.folderSubtitle', { count: category.documentCount }),
       subtitleMatch: null,
       symbol: 'folder',
       colors: category.colors,
@@ -86,7 +89,7 @@ export function searchEverything(
     const note = noteMatch && document.notes ? snippetAround(document.notes, noteMatch) : null;
     const isCard = document.category.isCards;
     const subtitle = isCard
-      ? ['Tessera', document.docType, document.personName].filter(Boolean).join(' · ')
+      ? [t('searchAll.card'), document.docType, document.personName].filter(Boolean).join(' · ')
       : documentSubtitle(document);
     const href: Href = { pathname: '/(tabs)/(archive)/document/[id]', params: { id: String(document.id) } };
     results.push({
@@ -107,7 +110,7 @@ export function searchEverything(
         kind: 'deadline',
         title: document.title,
         titleMatch,
-        subtitle: `Scadenza · ${describeDistance(daysUntil(document.expiresAt))}`,
+        subtitle: t('searchAll.deadlineSubtitle', { distance: describeDistance(daysUntil(document.expiresAt)) }),
         subtitleMatch: null,
         symbol: 'calendar',
         colors: document.category.colors,

@@ -7,14 +7,18 @@ import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
+import { useI18n } from '@/i18n';
 import { useNotificationFeed } from '@/notifications/feed';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+
+const BRAND = 'Sottomano'; // i18n-ignore (brand name, not translated)
 
 // Top of Home (docs/design/Main.dc.html): ≡ menu on the left; on the right the bell, with the
 // number of unread notifications, which opens the Notifiche panel, and the logo.
 export function HomeHeader() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const { unread } = useNotificationFeed();
   const menu = usePressed();
   const bell = usePressed();
@@ -26,7 +30,7 @@ export function HomeHeader() {
         {...menu.handlers}
         onPress={() => router.push({ pathname: '/menu', params: { current: 'home' } })}
         accessibilityRole="button"
-        accessibilityLabel="Menu"
+        accessibilityLabel={t('homeHeader.menu')}
         style={[styles.menu, menu.pressed && styles.pressed]}>
         <SymbolView name="line.3.horizontal" tintColor={theme.text} size={22} weight="medium" />
       </Pressable>
@@ -35,7 +39,7 @@ export function HomeHeader() {
           {...bell.handlers}
           onPress={() => router.push('/notifications')}
           accessibilityRole="button"
-          accessibilityLabel={count > 0 ? `Notifiche, ${count} non lette` : 'Notifiche'}
+          accessibilityLabel={count > 0 ? t('homeHeader.notificationsUnread', { count }) : t('homeHeader.notifications')}
           style={[styles.bell, bell.pressed && styles.pressed]}>
           <SymbolView name="bell" tintColor={theme.text} size={21} weight="medium" />
           {count > 0 && (
@@ -46,7 +50,7 @@ export function HomeHeader() {
             </View>
           )}
         </Pressable>
-        <View style={styles.logo} accessible accessibilityRole="image" accessibilityLabel="Sottomano">
+        <View style={styles.logo} accessible accessibilityRole="image" accessibilityLabel={BRAND}>
           <LogoMark size={44} radius={10} />
         </View>
       </View>

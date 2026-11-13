@@ -3,6 +3,7 @@ import * as Calendar from 'expo-calendar/legacy';
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { APP_CALENDAR_TITLE, getCalendarSettings, saveCalendarSettings } from '@/calendar/calendar-settings';
+import { t } from '@/i18n';
 import { getPreferences, reminderDaysFor } from '@/settings/preferences';
 import { parseISODate } from '@/utils/dates';
 
@@ -40,7 +41,7 @@ function eventDetails(doc: EventSource & { expires_at: string }) {
   const days = reminderDaysFor(doc.reminder_days, preferences);
   // No alarm while the app reminds, or when "Ricordamelo" is off for this document (days < 0)
   const alarms = preferences.remindersEnabled || days < 0 ? [] : [{ relativeOffset: -days * 24 * 60 + REMINDER_HOUR * 60 }];
-  return { title: `Scade: ${doc.title}`, startDate: day, endDate: day, allDay: true, alarms };
+  return { title: t('calendarSync.eventTitle', { title: doc.title }), startDate: day, endDate: day, allDay: true, alarms };
 }
 
 async function setEventId(db: SQLiteDatabase, documentId: number, eventId: string | null) {
@@ -116,7 +117,7 @@ async function createAppCalendar(): Promise<string> {
     return await Calendar.createCalendarAsync({ ...details, sourceId: source.id, source });
   } catch {
     const local = (await Calendar.getSourcesAsync()).find((s) => s.type === Calendar.SourceType.LOCAL);
-    if (!local) throw new Error('Impossibile creare il calendario «Sottomano» su questo iPhone.');
+    if (!local) throw new Error(t('calendarSync.cannotCreate'));
     return Calendar.createCalendarAsync({ ...details, sourceId: local.id, source: local });
   }
 }

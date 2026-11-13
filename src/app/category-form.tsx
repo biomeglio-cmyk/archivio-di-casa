@@ -32,20 +32,21 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { builtinColorsFor, getPalette } from '@/settings/palette';
 import { categoryShadowRgb, categoryTint, colorsFromHex } from '@/utils/colors';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 // The 10 icons of the design first (Animali, Documento, Casa, Auto, Salute, Scuola, Lavoro, Chiavi,
-// Viaggi, Spese), then ours
+// Viaggi, Spese), then ours. `name` is the key of the spoken name in categoryForm.icons.
 const DESIGN_SYMBOLS: { symbol: SFSymbol; name: string }[] = [
-  { symbol: 'pawprint', name: 'Animali' },
-  { symbol: 'doc.text', name: 'Documento' },
-  { symbol: 'house', name: 'Casa' },
-  { symbol: 'car', name: 'Auto' },
-  { symbol: 'heart', name: 'Salute' },
-  { symbol: 'graduationcap', name: 'Scuola' },
-  { symbol: 'briefcase', name: 'Lavoro' },
-  { symbol: 'key', name: 'Chiavi' },
-  { symbol: 'airplane', name: 'Viaggi' },
-  { symbol: 'banknote', name: 'Spese' },
+  { symbol: 'pawprint', name: 'pets' },
+  { symbol: 'doc.text', name: 'document' },
+  { symbol: 'house', name: 'home' },
+  { symbol: 'car', name: 'car' },
+  { symbol: 'heart', name: 'health' },
+  { symbol: 'graduationcap', name: 'school' },
+  { symbol: 'briefcase', name: 'work' },
+  { symbol: 'key', name: 'keys' },
+  { symbol: 'airplane', name: 'travel' },
+  { symbol: 'banknote', name: 'expenses' },
 ];
 
 // "Nuova categoria" (no id) or "Modifica categoria" (?id=…)
@@ -73,6 +74,7 @@ export default function CategoryFormScreen() {
 // built-in can keep following Aspetto, more icons after the design's 10; names can hold emoji;
 // at the top, "Ripristina una categoria predefinita" for the built-ins removed with Cancella.
 function CategoryForm({ category, count }: { category: Category | null; count: number }) {
+  const { t } = useI18n();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
@@ -99,11 +101,11 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   // Our 13 colors (the palette of Aspetto), without repeats
   const swatches = palette.colors.filter((c, index, all) => all.findIndex((other) => other.bottom === c.bottom) === index);
   // The icons: this category's own first (a built-in's original icon included), the design's, then ours
-  const named = new Map(DESIGN_SYMBOLS.map((d) => [d.symbol, d.name]));
+  const named = new Map(DESIGN_SYMBOLS.map((d) => [d.symbol, t(`categoryForm.icons.${d.name}`)]));
   const symbols = [
     ...new Set([category?.symbol, builtinKey as SFSymbol | null, ...DESIGN_SYMBOLS.map((d) => d.symbol), ...CATEGORY_SYMBOLS]),
   ].filter((s): s is SFSymbol => Boolean(s));
-  const personName = people?.find((p) => p.id === personId)?.name ?? 'Tutta la famiglia';
+  const personName = people?.find((p) => p.id === personId)?.name ?? t('common.wholeFamily');
   const canSave = name.trim().length > 0 && !saving;
 
   // "Ripristina": the built-in comes back as it was (its forms, color and icon), before "Altro"
@@ -112,7 +114,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
       await restoreBuiltinCategory(db, builtin.id);
       router.back();
     } catch (error) {
-      Alert.alert('Impossibile ripristinare', String(error));
+      Alert.alert(t('categoryForm.restoreFailed'), String(error));
     }
   }
 
@@ -128,7 +130,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
       router.back();
     } catch (error) {
       setSaving(false);
-      Alert.alert('Impossibile salvare', String(error));
+      Alert.alert(t('personForm.saveFailed'), String(error));
     }
   }
 
@@ -143,9 +145,9 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
         automaticallyAdjustKeyboardInsets
         contentContainerStyle={[styles.page, { paddingBottom: insets.bottom + 36 }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" color={theme.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel={t('common.back')} color={theme.text} onPress={() => router.back()} />
           <Text style={styles.heading} accessibilityRole="header">
-            {category ? 'Modifica categoria' : 'Nuova categoria'}
+            {category ? t('categoryForm.editTitle') : t('categoryForm.newTitle')}
           </Text>
           <View style={styles.barSpace} />
         </View>
@@ -153,24 +155,24 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
         {/* New category only: the built-ins removed with "Cancella categoria" can come back */}
         {!category && hiddenBuiltins && hiddenBuiltins.length > 0 && (
           <>
-            <Text style={styles.section}>Ripristina una categoria predefinita</Text>
+            <Text style={styles.section}>{t('categoryForm.restoreSection')}</Text>
             <View style={styles.restoreCard}>
               {hiddenBuiltins.map((builtin, index) => (
                 <Pressable
                   key={builtin.id}
                   onPress={() => restore(builtin)}
                   accessibilityRole="button"
-                  accessibilityLabel={`Ripristina ${builtin.name}`}
+                  accessibilityLabel={t('categoryForm.restoreA11y', { name: builtin.name })}
                   style={({ pressed }) => [styles.restoreRow, index > 0 && styles.restoreDivider, pressed && styles.pressed]}>
                   <IconSquare symbol={builtin.symbol} colors={builtin.colors} size={40} />
                   <Text style={styles.restoreName} numberOfLines={1}>
                     {builtin.name}
                   </Text>
-                  <Text style={styles.restoreAction}>Ripristina</Text>
+                  <Text style={styles.restoreAction}>{t('common.restore')}</Text>
                 </Pressable>
               ))}
             </View>
-            <Text style={styles.hint}>Torna com’era, con i suoi colori, l’icona e i suoi campi. Oppure creane una nuova qui sotto.</Text>
+            <Text style={styles.hint}>{t('categoryForm.restoreHint')}</Text>
           </>
         )}
 
@@ -183,34 +185,34 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
             style={[styles.preview, { boxShadow: shadow }]}
             accessible
             accessibilityRole="image"
-            accessibilityLabel="Anteprima della categoria">
+            accessibilityLabel={t('categoryForm.previewA11y')}>
             <SymbolView name={symbol} tintColor={shown.text} size={30} />
             <View>
               <Text style={[styles.previewName, { color: shown.text }]} numberOfLines={2}>
-                {name.trim() || 'Nome'}
+                {name.trim() || t('personForm.name')}
               </Text>
               <Text style={[styles.previewCount, { color: shown.text }]}>
-                {count === 1 ? '1 documento' : `${count} documenti`}
+                {t('common.documents', { count })}
               </Text>
             </View>
           </LinearGradient>
         </View>
 
-        <Text style={styles.section}>Nome</Text>
+        <Text style={styles.section}>{t('personForm.name')}</Text>
         <View style={styles.field}>
           <TextInput
             value={name}
             onChangeText={setName}
-            placeholder="Es. Animali"
+            placeholder={t('categoryForm.namePlaceholder')}
             placeholderTextColor={theme.placeholder}
             autoFocus={!category}
             returnKeyType="done"
-            accessibilityLabel="Nome della categoria"
+            accessibilityLabel={t('categoryForm.nameA11y')}
             style={styles.input}
           />
         </View>
 
-        <Text style={styles.section}>Colore</Text>
+        <Text style={styles.section}>{t('categoryForm.color')}</Text>
         <View style={styles.colors}>
           <ColorPicker
             presets={[
@@ -219,7 +221,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
                 ? [
                     {
                       key: 'palette',
-                      name: 'Colore di Aspetto',
+                      name: t('categoryForm.paletteColor'),
                       colors: [paletteColors.top, paletteColors.bottom] as const,
                       symbol: 'paintpalette' as const,
                       symbolColor: paletteColors.text,
@@ -228,7 +230,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
                 : []),
               ...swatches.map((swatch, index) => ({
                 key: swatch.bottom,
-                name: `Colore ${index + 1}`,
+                name: t('categoryForm.colorNumber', { number: index + 1 }),
                 colors: [swatch.top, swatch.bottom] as const,
               })),
             ]}
@@ -249,12 +251,12 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
         </View>
         {paletteColors && (
           <Text style={styles.hint}>
-            {followPalette ? 'Il colore segue la palette scelta in Aspetto.' : 'Colore scelto da te: non cambia con Aspetto.'}
+            {followPalette ? t('categoryForm.followsPaletteHint') : t('categoryForm.ownColorHint')}
           </Text>
         )}
 
-        <Text style={styles.section}>Icona</Text>
-        <View style={styles.icons} accessibilityRole="radiogroup" accessibilityLabel="Icona">
+        <Text style={styles.section}>{t('categoryForm.icon')}</Text>
+        <View style={styles.icons} accessibilityRole="radiogroup" accessibilityLabel={t('categoryForm.icon')}>
           {symbols.map((s) => {
             const selected = s === symbol;
             return (
@@ -275,21 +277,21 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           })}
         </View>
 
-        <Text style={styles.section}>Per chi è</Text>
+        <Text style={styles.section}>{t('categoryForm.forWhom')}</Text>
         <Pressable
           onPress={() => setPeopleOpen(true)}
           accessibilityRole="button"
-          accessibilityLabel={`Per chi è questa categoria: ${personName}`}
+          accessibilityLabel={t('categoryForm.forWhomA11y', { name: personName })}
           style={({ pressed }) => [styles.field, styles.select, pressed && styles.pressed]}>
           <Text style={styles.selectText} numberOfLines={1}>
             {personName}
           </Text>
           <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={15} weight="semibold" />
         </Pressable>
-        <Text style={styles.hint}>I nuovi documenti di questa categoria partono con questa persona.</Text>
+        <Text style={styles.hint}>{t('categoryForm.forWhomHint')}</Text>
 
         <PrimaryButton
-          label={category ? 'Salva' : 'Crea categoria'}
+          label={category ? t('common.save') : t('categoryForm.create')}
           disabled={!canSave}
           onPress={save}
           gradient={gradient}
@@ -300,11 +302,11 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
 
       <ActionSheet
         visible={peopleOpen}
-        title="Per chi è"
+        title={t('categoryForm.forWhom')}
         actions={[
           {
             key: 'all',
-            label: 'Tutta la famiglia',
+            label: t('common.wholeFamily'),
             symbol: personId === null ? 'checkmark.circle.fill' : 'person.2',
             onPress: () => setPersonId(null),
           },

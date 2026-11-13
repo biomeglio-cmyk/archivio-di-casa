@@ -6,6 +6,7 @@ import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
+import { useI18n } from '@/i18n';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
@@ -33,6 +34,7 @@ export function ConfirmDialog({
   children,
 }: Props) {
   const theme = useTheme();
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   return (
     <Animated.View entering={FadeIn.duration(160)} style={styles.dim}>
@@ -40,7 +42,7 @@ export function ConfirmDialog({
         style={StyleSheet.absoluteFill}
         onPress={onCancel}
         accessibilityRole="button"
-        accessibilityLabel="Annulla"
+        accessibilityLabel={t('common.cancel')}
       />
       <Animated.View
         entering={ZoomIn.duration(180)}
@@ -67,7 +69,7 @@ export function ConfirmDialog({
           onPress={onCancel}
           accessibilityRole="button"
           style={({ pressed }) => [styles.cancel, pressed && styles.pressed]}>
-          <Text style={styles.cancelLabel}>Annulla</Text>
+          <Text style={styles.cancelLabel}>{t('common.cancel')}</Text>
         </Pressable>
       </Animated.View>
     </Animated.View>

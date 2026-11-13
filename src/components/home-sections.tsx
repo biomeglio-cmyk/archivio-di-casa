@@ -13,6 +13,7 @@ import { type Palette, Radius, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
+import { t, useI18n } from '@/i18n';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { categoryShadowRgb, hexToRgb } from '@/utils/colors';
 import { describeDistance, formatShortDate } from '@/utils/dates';
@@ -33,11 +34,11 @@ function openDocument(document: DocumentListItem) {
 function favoriteSubtitle(document: DocumentListItem): string {
   if (document.expiresAt) {
     const days = daysUntil(document.expiresAt);
-    if (days < 0) return 'Scaduta';
-    if (days === 0) return 'Scade oggi';
-    if (days === 1) return 'Scade domani';
-    if (days <= 30) return `Scade tra ${days} giorni`;
-    return `Scade ${formatShortDate(document.expiresAt)}`;
+    if (days < 0) return t('homeSections.expired');
+    if (days === 0) return t('homeSections.expiresToday');
+    if (days === 1) return t('homeSections.expiresTomorrow');
+    if (days <= 30) return t('homeSections.expiresInDays', { count: days });
+    return t('homeSections.expiresOn', { date: formatShortDate(document.expiresAt) });
   }
   return [document.category.name, document.personName].filter(Boolean).join(' · ');
 }
@@ -47,6 +48,7 @@ function favoriteSubtitle(document: DocumentListItem): string {
 // Name 17/600 and the deadline 13/400 at the bottom, in white.
 export function FavoriteTile({ document }: { document: DocumentListItem }) {
   const styles = useThemedStyles(makeStyles);
+  useI18n(); // re-render when the language changes
   const { pressed, handlers } = usePressed();
   const { category } = document;
   const showPhoto = document.firstImagePath !== null && document.coverMode !== 'color';
@@ -113,6 +115,7 @@ function deadlineSubtitle(document: DocumentListItem, days: number): string {
 export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  useI18n(); // re-render when the language changes
   const { pressed, handlers } = usePressed();
   if (!document.expiresAt) return null;
   const days = daysUntil(document.expiresAt);

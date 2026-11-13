@@ -25,6 +25,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const BACKGROUND = '#1A1C30';
 const SIDE_MARGIN = 30; // equal margins left and right of a page at 100% (design: 330 of 390)
@@ -40,6 +41,7 @@ const A4_RATIO = 210 / 297;
 // are stacked and centered. Pinch or the buttons zoom around the center (the iOS scroll view zoom).
 // A PDF is drawn by iOS (WKWebView) in the same centered frame: its pages scroll inside it.
 export default function ViewDocumentScreen() {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const documentId = Number(id);
@@ -70,11 +72,7 @@ export default function ViewDocumentScreen() {
   };
   const sizes = images.map((file) => fit(ratios[file.id] ?? A4_RATIO));
 
-  const subtitle = pdf
-    ? 'PDF · scorri in basso'
-    : pageCount === 1
-      ? '1 pagina'
-      : `${pageCount ?? 0} pagine · scorri in basso`;
+  const subtitle = pdf ? t('viewDocument.pdfSubtitle') : t('viewDocument.pagesSubtitle', { count: pageCount ?? 0 });
 
   // Scroll or pinch: remember the visible area; the page is the one under the middle of the screen
   function onScroll(event: NativeSyntheticEvent<NativeScrollEvent>) {
@@ -139,11 +137,11 @@ export default function ViewDocumentScreen() {
                 }}
                 style={[styles.page, sizes[index]]}
                 contentFit="contain"
-                accessibilityLabel={`Pagina ${index + 1} di ${images.length}`}
+                accessibilityLabel={t('viewDocument.pageOf', { number: index + 1, total: images.length })}
               />
             ))
           )}
-          {files && !pdf && images.length === 0 && <Text style={styles.empty}>Questo documento non ha pagine.</Text>}
+          {files && !pdf && images.length === 0 && <Text style={styles.empty}>{t('viewDocument.noPages')}</Text>}
         </View>
       </ScrollView>
 
@@ -151,23 +149,23 @@ export default function ViewDocumentScreen() {
         colors={[BACKGROUND, 'rgba(26, 28, 48, 0)']}
         style={[styles.top, { paddingTop: insets.top + 8 }]}
         pointerEvents="box-none">
-        <RoundButton symbol="xmark" label="Chiudi" onPress={() => router.back()} />
+        <RoundButton symbol="xmark" label={t('common.close')} onPress={() => router.back()} />
         <View style={styles.titleBox}>
           <Text style={styles.title} numberOfLines={1}>
             {document?.title ?? ''}
           </Text>
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
-        <RoundButton symbol="square.and.arrow.up" label="Invia" onPress={send} />
+        <RoundButton symbol="square.and.arrow.up" label={t('common.send')} onPress={send} />
       </LinearGradient>
 
       <View
         style={[styles.zoomBar, { bottom: insets.bottom + 30 }]}
         accessibilityRole="toolbar"
-        accessibilityLabel="Zoom">
+        accessibilityLabel={t('viewDocument.zoom')}>
         <RoundButton
           symbol="minus"
-          label="Riduci"
+          label={t('viewDocument.zoomOut')}
           transparent
           disabled={zoom <= ZOOM_MIN + 0.01}
           onPress={() => zoomTo(zoom - ZOOM_STEP)}
@@ -177,13 +175,13 @@ export default function ViewDocumentScreen() {
         </Text>
         <RoundButton
           symbol="plus"
-          label="Ingrandisci"
+          label={t('viewDocument.zoomIn')}
           transparent
           disabled={zoom >= ZOOM_MAX - 0.01}
           onPress={() => zoomTo(zoom + ZOOM_STEP)}
         />
         <View style={styles.divider} />
-        <Text style={styles.pageLabel}>{pageCount ? `Pag. ${page} di ${pageCount}` : 'PDF'}</Text>
+        <Text style={styles.pageLabel}>{pageCount ? t('viewDocument.pageShort', { number: page, total: pageCount }) : 'PDF'}</Text>
       </View>
     </View>
   );

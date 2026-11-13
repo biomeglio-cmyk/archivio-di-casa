@@ -11,7 +11,8 @@ import { WhiteCard } from '@/components/white-card';
 import { type Palette, Spacing } from '@/constants/theme';
 import { getCategory } from '@/db/categories';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { formatBytes, loadSendPreferences, SIZE_LIMITS, type SizeLimit } from '@/send/send-preferences';
+import { useI18n } from '@/i18n';
+import { formatBytes, loadSendPreferences, SIZE_LIMITS, sizeLimitLabel, type SizeLimit } from '@/send/send-preferences';
 import { emailFiles, saveToFiles, shareFiles } from '@/send/deliver';
 import type { PreparedFile } from '@/send/prepare';
 import { buildYearPackages, loadTaxItems, taxYears, yearTitle } from '@/send/tax-package';
@@ -25,6 +26,7 @@ const ALL_YEARS = 0; // "Tutti gli anni"
 // index and total; one year makes just that PDF. PDFs that can't be merged go along, apart.
 export default function TaxPackageScreen() {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const { categoryId } = useLocalSearchParams<{ categoryId: string }>();
   const id = Number(categoryId);
   const { data: category } = useDbQuery((db) => getCategory(db, id), [id]);
@@ -41,24 +43,30 @@ export default function TaxPackageScreen() {
 
   async function prepare() {
     if (!items || !category) return;
-    setProgress('Preparo il PDF…');
+    setProgress(t('taxPackageBuilder.progressFirst'));
     try {
       const result = await buildYearPackages(items, category.name, limitBytes, setProgress);
       setProgress(null);
       const label = year === ALL_YEARS ? category.name : yearTitle(category.name, year);
       const pdfs = result.years
-        .map((y) => `${yearTitle(category.name, y.year)}: ${y.pages === 1 ? '1 pagina' : `${y.pages} pagine`}, ${formatBytes(y.bytes)}`)
+        .map((y) =>
+          t('taxPackage.yearLine', {
+            title: yearTitle(category.name, y.year),
+            pages: t('common.pages', { count: y.pages }),
+            size: formatBytes(y.bytes),
+          }),
+        )
         .join('\n');
       const notes = [
         ...result.warnings,
         result.sentApart.length > 0
-          ? `${result.sentApart.length === 1 ? 'Un PDF non si può unire' : `${result.sentApart.length} PDF non si possono unire`} (protetto da password o danneggiato): ${result.sentApart.join(', ')}. Nell'indice è segnato «inviato a parte» e lo mandi insieme agli altri.`
+          ? t('taxPackage.sentApart', { count: result.sentApart.length, titles: result.sentApart.join(', ') })
           : null,
       ].filter(Boolean);
       await deliver(result.files, label, [pdfs, ...notes].join('\n\n'));
     } catch (error) {
       setProgress(null);
-      Alert.alert('Impossibile preparare il PDF', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('taxPackage.alerts.prepareFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -67,27 +75,27 @@ export default function TaxPackageScreen() {
   // saved in one folder of File; the share sheet one after another stays as the last choice.
   async function deliver(files: PreparedFile[], label: string, summary: string) {
     if (files.length === 1) {
-      Alert.alert('PDF pronto', summary, [
-        { text: 'Annulla', style: 'cancel' },
-        { text: 'Condividi', onPress: () => void shareFiles(files, label) },
+      Alert.alert(t('taxPackage.alerts.ready'), summary, [
+        { text: t('common.cancel'), style: 'cancel' },
+        { text: t('common.share'), onPress: () => void shareFiles(files, label) },
       ]);
       return;
     }
-    const choice = await chooseAction(`${files.length} PDF pronti`, [
-      'Email: tutti i PDF in un messaggio',
-      'Salva in File: tutti nella stessa cartella',
-      'Condividi uno alla volta',
+    const choice = await chooseAction(t('taxPackage.readyMany', { number: files.length }), [
+      t('taxPackage.choices.email'),
+      t('taxPackage.choices.save'),
+      t('taxPackage.choices.oneByOne'),
     ]);
     try {
       if (choice === 0 && !(await emailFiles(files, label, summary))) {
-        Alert.alert('Mail non configurata', 'Aggiungi un account in Mail, oppure salva i PDF in File.');
+        Alert.alert(t('taxPackage.alerts.noMailTitle'), t('taxPackage.alerts.noMailMessage'));
       } else if (choice === 1 && (await saveToFiles(files))) {
-        Alert.alert('Salvati in File', files.map((f) => f.name).join('\n'));
+        Alert.alert(t('taxPackage.alerts.savedToFiles'), files.map((f) => f.name).join('\n'));
       } else if (choice === 2) {
         await shareFiles(files, label);
       }
     } catch (error) {
-      Alert.alert('Impossibile inviare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('taxPackage.alerts.sendFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -95,25 +103,34 @@ export default function TaxPackageScreen() {
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
-          Tutti i documenti di {category?.name ?? 'Spese 730'}, divisi per anno: un PDF per ogni anno, con il suo indice
-          (documento, data, persona, importo, pagina) e il totale. L&apos;anno è quello della scadenza o del pagamento;
-          se mancano, quello in cui li hai aggiunti.
+          {t('taxPackage.intro', { category: category?.name ?? t('categories.builtin.tax') })}
         </ThemedText>
 
         <Group
           footer={
             items
               ? items.length === 0
-                ? 'Nessun documento in questo anno.'
-                : `${items.length === 1 ? '1 documento' : `${items.length} documenti`}: ${photos} foto, ${pdfs} PDF${year === ALL_YEARS && years ? ` · ${years.length === 1 ? '1 anno' : `${years.length} anni`}` : ''}.`
+                ? t('taxPackage.noDocuments')
+                : year === ALL_YEARS && years
+                  ? t('taxPackage.summaryWithYears', {
+                      documents: t('common.documents', { count: items.length }),
+                      photos: t('common.photos', { count: photos }),
+                      pdfs: t('taxPackage.pdfs', { count: pdfs }),
+                      years: t('dates.years', { count: years.length }),
+                    })
+                  : t('taxPackage.summary', {
+                      documents: t('common.documents', { count: items.length }),
+                      photos: t('common.photos', { count: photos }),
+                      pdfs: t('taxPackage.pdfs', { count: pdfs }),
+                    })
               : undefined
           }>
-          <Row label="Anno" symbol="calendar" first>
+          <Row label={t('taxPackage.year')} symbol="calendar" first>
             <Choice
-              title="Anno"
+              title={t('taxPackage.year')}
               value={year}
               options={[ALL_YEARS, ...(years ?? [])]}
-              labelFor={(y) => (y === ALL_YEARS ? 'Tutti gli anni' : String(y))}
+              labelFor={(y) => (y === ALL_YEARS ? t('taxPackage.allYears') : String(y))}
               onChange={setYear}
             />
           </Row>
@@ -121,16 +138,16 @@ export default function TaxPackageScreen() {
 
         <View style={styles.group}>
           <ThemedText type="smallBold" themeColor="textSecondary" style={styles.groupTitle}>
-            Peso massimo delle foto
+            {t('taxPackage.maxPhotoSize')}
           </ThemedText>
           <Segmented
-            values={SIZE_LIMITS.map((l) => l.label)}
+            values={SIZE_LIMITS.map(sizeLimitLabel)}
             selectedIndex={SIZE_LIMITS.findIndex((l) => l.key === limit)}
             enabled={!busy}
             onChange={(index) => setLimit(SIZE_LIMITS[index].key)}
           />
           <ThemedText type="small" themeColor="textSecondary">
-            Le foto vengono ridotte per stare nel limite; i PDF importati restano come sono.
+            {t('taxPackage.limitInfo')}
           </ThemedText>
         </View>
 
@@ -141,7 +158,7 @@ export default function TaxPackageScreen() {
           </WhiteCard>
         ) : (
           <PrimaryButton
-            label="Prepara e invia"
+            label={t('taxPackage.prepare')}
             symbol="square.and.arrow.up"
             disabled={!items?.length || !category}
             onPress={prepare}
@@ -151,7 +168,7 @@ export default function TaxPackageScreen() {
 
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button variant="done" onPress={() => router.back()}>
-          Fine
+          {t('common.done')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
     </>

@@ -29,6 +29,7 @@ import { isOtherCategory } from '@/db/categories';
 import { saveDocumentOrder } from '@/db/documents';
 import type { Category, DocumentListItem } from '@/db/types';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
+import { useI18n } from '@/i18n';
 import { searchDocuments } from '@/search/search-documents';
 import { TAX_CATEGORY_KEY } from '@/send/tax-package';
 import { getFolderView, saveFolderView, type FolderView } from '@/settings/folder-view';
@@ -47,10 +48,6 @@ const documentHref = (document: DocumentListItem): Href => ({
   params: { id: String(document.id) },
 });
 
-function countLabel(count: number): string {
-  return count === 1 ? '1 documento' : `${count} documenti`;
-}
-
 // A folder (docs/design/Archivio.dc.html): round buttons and inactive chips on the category tint,
 // title and "12 documenti · 1 da pagare", chips "Tutte" + one per Tipo in the folder (they wrap),
 // documents by month in white cards, the dashed "Nuovo…" tile. "Elenco / Griglia" (remembered)
@@ -62,6 +59,7 @@ function countLabel(count: number): string {
 export function FolderScreen({ category, documents }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -82,15 +80,17 @@ export function FolderScreen({ category, documents }: Props) {
   const { tint, onTint, dashed } = categoryTint(category.colors, theme);
   const gradient = [category.colors.top, category.colors.bottom] as const;
   const due = documents.filter((d) => d.paymentStatus === 'due').length;
-  const subtitle = [countLabel(documents.length), due > 0 ? `${due} da pagare` : null].filter(Boolean).join(' · ');
+  const subtitle = [t('common.documents', { count: documents.length }), due > 0 ? t('folderScreen.toPay', { count: due }) : null]
+    .filter(Boolean)
+    .join(' · ');
 
   // Chips: the Tipo values present in the folder, in the order they first appear
   const types: string[] = [];
   for (const document of documents) {
     const value = document.docType?.trim();
-    if (value && !types.some((t) => t.toLowerCase() === value.toLowerCase())) types.push(value);
+    if (value && !types.some((v) => v.toLowerCase() === value.toLowerCase())) types.push(value);
   }
-  const activeType = type && types.some((t) => t.toLowerCase() === type.toLowerCase()) ? type : null;
+  const activeType = type && types.some((v) => v.toLowerCase() === type.toLowerCase()) ? type : null;
 
   let shown = activeType
     ? documents.filter((d) => d.docType?.trim().toLowerCase() === activeType.toLowerCase())
@@ -112,7 +112,7 @@ export function FolderScreen({ category, documents }: Props) {
         items.map((d) => d.id),
       );
     } catch (error) {
-      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('folderScreen.alerts.orderNotSaved'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -132,7 +132,7 @@ export function FolderScreen({ category, documents }: Props) {
   const sheetActions: SheetAction[] = [
     {
       key: 'edit',
-      label: 'Modifica categoria',
+      label: t('folderScreen.actions.editCategory'),
       symbol: 'pencil',
       onPress: () => router.push({ pathname: '/category-form', params: { id: String(category.id) } }),
     },
@@ -140,20 +140,20 @@ export function FolderScreen({ category, documents }: Props) {
       ? [
           {
             key: 'tax',
-            label: 'Invia al commercialista',
+            label: t('folderScreen.actions.sendToAccountant'),
             symbol: 'paperplane' as const,
             onPress: openTaxPackage,
           },
         ]
       : []),
     ...(documents.some((d) => d.imageCount > 0)
-      ? [{ key: 'select', label: 'Seleziona e invia', symbol: 'checkmark.circle' as const, onPress: selection.start }]
+      ? [{ key: 'select', label: t('folderScreen.actions.selectAndSend'), symbol: 'checkmark.circle' as const, onPress: selection.start }]
       : []),
     ...(documents.length > 1
       ? [
           {
             key: 'reorder',
-            label: 'Riordina',
+            label: t('folderScreen.actions.reorder'),
             symbol: 'arrow.up.arrow.down' as const,
             onPress: () => setReordering(true),
           },
@@ -164,7 +164,7 @@ export function FolderScreen({ category, documents }: Props) {
       : [
           {
             key: 'delete',
-            label: 'Cancella categoria',
+            label: t('folderScreen.actions.deleteCategory'),
             symbol: 'trash' as const,
             destructive: true,
             onPress: () => confirmDeleteCategory(category),
@@ -182,7 +182,7 @@ export function FolderScreen({ category, documents }: Props) {
         <View style={styles.header}>
           <RoundIconButton
             symbol="chevron.left"
-            accessibilityLabel="Indietro"
+            accessibilityLabel={t('common.back')}
             background={tint}
             color={theme.text}
             onPress={() => router.back()}
@@ -192,20 +192,20 @@ export function FolderScreen({ category, documents }: Props) {
               onPress={() => (reordering ? setReordering(false) : selection.cancel())}
               accessibilityRole="button"
               style={[styles.done, { backgroundColor: tint }]}>
-              <Text style={[styles.doneText, { color: onTint }]}>{reordering ? 'Fine' : 'Annulla'}</Text>
+              <Text style={[styles.doneText, { color: onTint }]}>{reordering ? t('common.done') : t('common.cancel')}</Text>
             </Pressable>
           ) : (
             <View style={styles.headerRight}>
               <RoundIconButton
                 symbol="ellipsis"
-                accessibilityLabel={`Modifica o cancella la categoria ${category.name}`}
+                accessibilityLabel={t('folderScreen.moreLabel', { name: category.name })}
                 background={tint}
                 color={theme.text}
                 onPress={() => setSheetOpen(true)}
               />
               <RoundIconButton
                 symbol="magnifyingglass"
-                accessibilityLabel={`Cerca in ${category.name}`}
+                accessibilityLabel={t('folderScreen.searchIn', { name: category.name })}
                 background={tint}
                 color={theme.text}
                 onPress={() => {
@@ -224,7 +224,7 @@ export function FolderScreen({ category, documents }: Props) {
 
         {isTaxFolder && !reordering && !selection.selecting && (
           <PrimaryButton
-            label="Invia al commercialista"
+            label={t('folderScreen.actions.sendToAccountant')}
             symbol="paperplane.fill"
             gradient={gradient}
             shadow={tintedShadow(categoryShadowRgb(category.colors))}
@@ -237,7 +237,7 @@ export function FolderScreen({ category, documents }: Props) {
         {!reordering && (
           <View style={styles.viewSwitch}>
             <Segmented
-              values={['Elenco', 'Griglia']}
+              values={[t('folderScreen.viewList'), t('folderScreen.viewGrid')]}
               selectedIndex={view === 'list' ? 0 : 1}
               onChange={(index) => changeView(index === 0 ? 'list' : 'grid')}
               tint={tint}
@@ -248,13 +248,13 @@ export function FolderScreen({ category, documents }: Props) {
 
         {searchOpen && !reordering && (
           <View style={styles.search}>
-            <SearchBar value={query} onChangeText={setQuery} placeholder={`Cerca in ${category.name}`} />
+            <SearchBar value={query} onChangeText={setQuery} placeholder={t('folderScreen.searchIn', { name: category.name })} />
           </View>
         )}
 
         {reordering ? (
           <>
-            <Text style={styles.hint}>Tieni premuto e trascina i documenti nell’ordine che preferisci.</Text>
+            <Text style={styles.hint}>{t('folderScreen.reorderHint')}</Text>
             <View style={styles.grid}>
               <SortableTileGrid
                 items={documents}
@@ -273,7 +273,7 @@ export function FolderScreen({ category, documents }: Props) {
             <View style={styles.chips}>
               <ChipGroup>
                 <Chip
-                  label="Tutte"
+                  label={t('folderScreen.allTypes')}
                   selected={activeType === null}
                   onPress={() => setType(null)}
                   gradient={gradient}
@@ -333,7 +333,7 @@ export function FolderScreen({ category, documents }: Props) {
             ) : (
               <>
                 {months.length === 0 && documents.length > 0 && (
-                  <Text style={styles.empty}>Nessun documento trovato.</Text>
+                  <Text style={styles.empty}>{t('folderScreen.noDocumentsFound')}</Text>
                 )}
 
                 {months.map((month) => (
@@ -400,7 +400,7 @@ export function FolderScreen({ category, documents }: Props) {
       {selection.selecting && (
         <View style={[styles.sendBar, { bottom: insets.bottom + 90 }]}>
           <PrimaryButton
-            label={`Invia insieme (${selectedIds.length})`}
+            label={t('folderScreen.sendTogether', { count: selectedIds.length })}
             symbol="square.and.arrow.up"
             disabled={selectedIds.length === 0}
             gradient={gradient}
@@ -412,8 +412,8 @@ export function FolderScreen({ category, documents }: Props) {
 
       <ActionSheet
         visible={sheetOpen}
-        title={`Categoria ${category.name}`}
-        subtitle={countLabel(documents.length)}
+        title={t('folderScreen.sheetTitle', { name: category.name })}
+        subtitle={t('common.documents', { count: documents.length })}
         actions={sheetActions}
         onClose={() => setSheetOpen(false)}
       />

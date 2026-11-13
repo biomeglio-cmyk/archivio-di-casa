@@ -21,6 +21,7 @@ import { resolveDocumentFile } from '@/storage/document-files';
 import { BarcodeFullScreen, GeneratedCode } from '@/components/barcode-view';
 import { generateBarcode } from '@/utils/barcode';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 // White behind the barcode in light and dark mode: scanners need dark bars on white
 const BARCODE_BACKGROUND = '#FFFFFF';
@@ -37,6 +38,7 @@ type Props = {
 // ready to be shown at the checkout with the screen at full brightness
 export function CardDetail({ card, files, pin }: Props) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const { width } = useWindowDimensions();
   const [fullScreen, setFullScreen] = useState(false);
   useMaxBrightness();
@@ -61,7 +63,7 @@ export function CardDetail({ card, files, pin }: Props) {
           {/* Both available: choose between the generated code and the photo */}
           {generated && barcodeUri && (
             <Segmented
-              values={['Codice', 'Foto']}
+              values={[t('cardDetail.code'), t('cardDetail.photo')]}
               selectedIndex={view === 'code' ? 0 : 1}
               onChange={(index) => setView(index === 0 ? 'code' : 'photo')}
             />
@@ -71,8 +73,8 @@ export function CardDetail({ card, files, pin }: Props) {
             <Pressable
               onPress={() => setFullScreen(true)}
               accessibilityRole="button"
-              accessibilityLabel={showCode ? 'Codice a barre' : 'Foto del codice a barre'}
-              accessibilityHint="Apre il codice a tutto schermo">
+              accessibilityLabel={showCode ? t('cardDetail.barcodeLabel') : t('cardDetail.barcodePhotoLabel')}
+              accessibilityHint={t('cardDetail.fullScreenHint')}>
               {showCode ? (
                 <GeneratedCode barcode={generated!} maxWidth={codeWidth} maxHeight={CODE_MAX_HEIGHT} />
               ) : (
@@ -81,7 +83,7 @@ export function CardDetail({ card, files, pin }: Props) {
             </Pressable>
           ) : (
             !card.barcodeValue && (
-              <Text style={styles.empty}>Nessun codice. Tocca «Modifica» per fotografarlo o scriverlo.</Text>
+              <Text style={styles.empty}>{t('cardDetail.noCode')}</Text>
             )
           )}
           {card.barcodeValue && (
@@ -89,12 +91,12 @@ export function CardDetail({ card, files, pin }: Props) {
               {card.barcodeValue}
             </Text>
           )}
-          {(showCode || barcodeUri) && <Text style={styles.tapHint}>Tocca il codice per ingrandirlo</Text>}
+          {(showCode || barcodeUri) && <Text style={styles.tapHint}>{t('cardDetail.tapHint')}</Text>}
         </View>
 
         {card.person && (
           <WhiteCard style={styles.infoCard}>
-            <ThemedText themeColor="textSecondary">Persona</ThemedText>
+            <ThemedText themeColor="textSecondary">{t('cardDetail.person')}</ThemedText>
             <View style={styles.person}>
               <PersonAvatar name={card.person.name} photoPath={card.person.photoPath} size={28} />
               <ThemedText style={styles.personName}>{card.person.name}</ThemedText>

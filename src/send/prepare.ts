@@ -2,6 +2,7 @@ import { Directory, File, Paths } from 'expo-file-system';
 
 import type { ComposeOptions } from '@/components/front-back-composer';
 import type { Category, DocumentFile } from '@/db/types';
+import { t } from '@/i18n';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { compressToLimit, type LadderStep, type QualityLabel, type Rendered } from '@/send/compression';
 import { imageSize, renderImage } from '@/send/images';
@@ -31,7 +32,7 @@ export type PreparedSend = {
   files: PreparedFile[];
   pages: number | null; // PDF pages (null for JPEG or an imported PDF we don't open)
   bytes: number; // total
-  quality: QualityLabel | 'Originale';
+  quality: QualityLabel | 'original';
   warnings: string[];
 };
 
@@ -119,7 +120,7 @@ async function renderJpeg(
   composer: Composer | null,
 ): Promise<Rendered<JpegResult>> {
   if (together && isFrontBack(format, faces)) {
-    if (!composer) throw new Error('Impossibile unire fronte e retro in questo momento.');
+    if (!composer) throw new Error(t('sendPrepare.cannotCombine'));
     // The combined image is as wide as one face printed at its size
     const printedWidth = printedSizeMm(format, faces[0].aspect, false).width;
     const width = step ? Math.round((step.maxPpi * printedWidth) / 25.4 * step.scale) : undefined;
@@ -158,14 +159,14 @@ export async function prepareSend(
   const importedPdf = docs.length === 1 ? docs[0].files.find((f) => f.kind === 'pdf') : undefined;
   if (importedPdf) {
     const file = await toOutput(resolveDocumentFile(importedPdf.path).uri, `${baseName}.pdf`);
-    return { files: [file], pages: null, bytes: file.bytes, quality: 'Originale', warnings: [] };
+    return { files: [file], pages: null, bytes: file.bytes, quality: 'original', warnings: [] };
   }
 
   const prepared = await Promise.all(
     docs.map(async (doc) => ({ faces: await facesOf(doc), format: printFormatFor(doc.category) })),
   );
   const withFaces = prepared.filter((d) => d.faces.length > 0);
-  if (withFaces.length === 0) throw new Error('Nessuna foto da inviare.');
+  if (withFaces.length === 0) throw new Error(t('sendPrepare.noPhotos'));
 
   // Several documents always become one PDF, each document on its own page
   const format: SendFormat = docs.length > 1 ? 'pdf' : options.format;
@@ -174,7 +175,7 @@ export async function prepareSend(
   if (format === 'pdf') {
     if (options.limitBytes === null) {
       const pdf = await renderPdf(withFaces, together, null);
-      return single(await toOutput(pdf.uri, `${baseName}.pdf`), pdf.pages, 'Originale', []);
+      return single(await toOutput(pdf.uri, `${baseName}.pdf`), pdf.pages, 'original', []);
     }
     const result = await compressToLimit((step) => renderPdf(withFaces, together, step), options.limitBytes);
     const file = await toOutput(result.output.uri, `${baseName}.pdf`);
@@ -184,7 +185,7 @@ export async function prepareSend(
   const { faces, format: printFormat } = withFaces[0];
   const render = (step: LadderStep | null) => renderJpeg(faces, printFormat, together, step, composer);
   let output: Rendered<JpegResult>;
-  let quality: QualityLabel | 'Originale' = 'Originale';
+  let quality: QualityLabel | 'original' = 'original';
   let warnings: string[] = [];
   if (options.limitBytes === null) {
     output = await render(null);
@@ -200,8 +201,8 @@ export async function prepareSend(
     output.uris.length === 1
       ? [`${baseName}.jpg`]
       : isFrontBack(printFormat, faces)
-        ? [`${baseName}-fronte.jpg`, `${baseName}-retro.jpg`]
-        : output.uris.map((_, index) => `${baseName}-pagina-${index + 1}.jpg`);
+        ? [`${baseName}-${t('sendPrepare.fileFront')}.jpg`, `${baseName}-${t('sendPrepare.fileBack')}.jpg`]
+        : output.uris.map((_, index) => `${baseName}-${t('sendPrepare.filePage', { number: index + 1 })}.jpg`);
   const files: PreparedFile[] = [];
   for (const [index, uri] of output.uris.entries()) {
     files.push(await toOutput(uri, names[index]));
@@ -209,6 +210,6 @@ export async function prepareSend(
   return { files, pages: null, bytes: files.reduce((sum, f) => sum + f.bytes, 0), quality, warnings };
 }
 
-function single(file: PreparedFile, pages: number, quality: QualityLabel | 'Originale', warnings: string[]): PreparedSend {
+function single(file: PreparedFile, pages: number, quality: QualityLabel | 'original', warnings: string[]): PreparedSend {
   return { files: [file], pages, bytes: file.bytes, quality, warnings };
 }

@@ -17,6 +17,7 @@ import { encodePendingFiles, pagesToFiles } from '@/storage/pending-files';
 import { useLargestPictureSize } from '@/capture/picture-size';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const DARK = '#12142A';
 const PAGE_RATIO = 210 / 297; // the frame has the shape of an A4 page
@@ -33,6 +34,7 @@ type Mode = { key: string; label: string; onPress?: () => void };
 // shutter. Its pages go to Nuovo documento. Only where there is no system scanner, our own camera
 // with the page frame takes its place (no live edge detection: "Inquadra il documento").
 export default function AddDocumentScreen() {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const [permission, requestPermission] = useCameraPermissions();
@@ -87,31 +89,31 @@ export default function AddDocumentScreen() {
   }
 
   const modes: Mode[] = [
-    { key: 'scan', label: 'Scansiona', onPress: useOwnCamera ? undefined : scan },
-    { key: 'photos', label: 'Dalle foto', onPress: addFromPhotos },
-    { key: 'pdf', label: 'Da file PDF', onPress: addFromFiles },
-    { key: 'card', label: 'Tessera', onPress: () => startAddCard('replace') },
-    { key: 'manual', label: 'A mano', onPress: () => router.replace('/new-document') },
+    { key: 'scan', label: t('addDocument.modes.scan'), onPress: useOwnCamera ? undefined : scan },
+    { key: 'photos', label: t('addDocument.modes.photos'), onPress: addFromPhotos },
+    { key: 'pdf', label: t('addDocument.modes.pdf'), onPress: addFromFiles },
+    { key: 'card', label: t('addDocument.modes.card'), onPress: () => startAddCard('replace') },
+    { key: 'manual', label: t('addDocument.modes.manual'), onPress: () => router.replace('/new-document') },
   ];
 
   const hint =
     pages.length === 0
-      ? 'Inquadra il documento · tieni fermo il telefono'
-      : `Pagina ${pages.length} presa · inquadra la successiva`;
+      ? t('addDocument.hintFirst')
+      : t('addDocument.hintNext', { number: pages.length });
 
   return (
     <View style={[styles.screen, { paddingTop: insets.top + 12, paddingBottom: insets.bottom + 16 }]}>
       {/* Dark screen: light clock and battery in both themes */}
       <StatusBar style="light" />
       <View style={styles.bar}>
-        <DarkButton symbol="xmark" label="Chiudi" onPress={() => router.back()} />
+        <DarkButton symbol="xmark" label={t('common.close')} onPress={() => router.back()} />
         <Text style={styles.title} accessibilityRole="header">
-          Nuovo documento
+          {t('addDocument.title')}
         </Text>
         {useOwnCamera ? (
           <DarkButton
             symbol={torch ? 'bolt.fill' : 'bolt.slash'}
-            label={torch ? 'Spegni il flash' : 'Accendi il flash'}
+            label={torch ? t('addDocument.flashOff') : t('addDocument.flashOn')}
             onPress={() => setTorch((on) => !on)}
           />
         ) : (
@@ -125,7 +127,7 @@ export default function AddDocumentScreen() {
           <Pressable
             onPress={scan}
             accessibilityRole="button"
-            accessibilityLabel="Scansiona con lo scanner di iOS"
+            accessibilityLabel={t('addDocument.scanWithIos')}
             style={styles.scannerIdle}>
             <View style={styles.sheet} accessibilityElementsHidden>
               <View style={[styles.sheetLine, { width: 70, height: 12, backgroundColor: '#CFC8C3' }]} />
@@ -138,7 +140,7 @@ export default function AddDocumentScreen() {
             <View style={styles.sheetFrame} pointerEvents="none" />
             <View style={styles.hint} pointerEvents="none">
               <SymbolView name="doc.viewfinder" tintColor="#FFFFFF" size={16} />
-              <Text style={styles.hintText}>Tocca per scansionare: trova i bordi da solo</Text>
+              <Text style={styles.hintText}>{t('addDocument.tapToScan')}</Text>
             </View>
           </Pressable>
         ) : permission?.granted ? (
@@ -169,20 +171,20 @@ export default function AddDocumentScreen() {
           permission && (
             <View style={styles.permission}>
               <SymbolView name="camera" tintColor="#FFFFFF" size={40} />
-              <Text style={styles.permissionTitle}>Serve la fotocamera</Text>
-              <Text style={styles.permissionText}>Sottomano la usa solo per fotografare i tuoi documenti.</Text>
+              <Text style={styles.permissionTitle}>{t('addDocument.permissionTitle')}</Text>
+              <Text style={styles.permissionText}>{t('addDocument.permissionText')}</Text>
               <Pressable
                 onPress={() => (permission.canAskAgain ? requestPermission() : Linking.openSettings())}
                 accessibilityRole="button"
                 style={styles.permissionButton}>
-                <Text style={styles.permissionButtonText}>{permission.canAskAgain ? 'Consenti' : 'Apri Impostazioni'}</Text>
+                <Text style={styles.permissionButtonText}>{permission.canAskAgain ? t('addDocument.allow') : t('addDocument.openSettings')}</Text>
               </Pressable>
             </View>
           )
         )}
       </View>
 
-      <View style={styles.modes} accessibilityRole="tablist" accessibilityLabel="Come aggiungere">
+      <View style={styles.modes} accessibilityRole="tablist" accessibilityLabel={t('addDocument.howToAdd')}>
         {modes.map((mode) => {
           const active = mode.key === 'scan';
           return (
@@ -199,14 +201,14 @@ export default function AddDocumentScreen() {
       </View>
 
       <View style={styles.controls}>
-        <Pressable onPress={addFromPhotos} accessibilityRole="button" accessibilityLabel="Scegli dalla galleria" style={styles.gallery}>
+        <Pressable onPress={addFromPhotos} accessibilityRole="button" accessibilityLabel={t('addDocument.chooseFromGallery')} style={styles.gallery}>
           <SymbolView name="photo.on.rectangle" tintColor="#FFFFFF" size={22} />
         </Pressable>
         <Pressable
           onPress={useOwnCamera ? shoot : scan}
           disabled={useOwnCamera && (!ready || busy)}
           accessibilityRole="button"
-          accessibilityLabel={useOwnCamera ? 'Scatta' : 'Scansiona'}
+          accessibilityLabel={useOwnCamera ? t('addDocument.shoot') : t('addDocument.modes.scan')}
           style={({ pressed }) => [styles.shutter, (pressed || (useOwnCamera && (busy || !ready))) && styles.dimmed]}>
           <View style={styles.shutterInner} />
         </Pressable>
@@ -214,10 +216,10 @@ export default function AddDocumentScreen() {
           onPress={goOn}
           disabled={pages.length === 0}
           accessibilityRole="button"
-          accessibilityLabel={pages.length ? `Avanti con ${pages.length} pagine` : 'Nessuna pagina'}
+          accessibilityLabel={pages.length ? t('addDocument.goOnWith', { count: pages.length }) : t('addDocument.noPages')}
           style={styles.count}>
           <Text style={styles.countNumber}>{pages.length}</Text>
-          <Text style={styles.countLabel}>{pages.length ? 'avanti ›' : 'pagine'}</Text>
+          <Text style={styles.countLabel}>{pages.length ? t('addDocument.countNext') : t('addDocument.countPages')}</Text>
         </Pressable>
       </View>
     </View>

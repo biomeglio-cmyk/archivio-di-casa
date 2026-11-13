@@ -3,6 +3,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 import Storage from 'expo-sqlite/kv-store';
 
 import { countUrgentDeadlines } from '@/db/urgent-count';
+import { t } from '@/i18n';
 import { getPreferences, reminderDaysFor, type Preferences } from '@/settings/preferences';
 import { addDaysIso, describeDistance, formatShortDate, parseISODate, toISODate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
@@ -95,9 +96,10 @@ function urgentCountOn(day: Date, expiryDates: string[]): number {
 function reminderBody(doc: ReminderSource, at: Date, hidePreviews: boolean): string {
   const distance = describeDistance(daysUntil(doc.expires_at, at));
   // "Nascondi anteprime": nothing about the document on the lock screen
-  if (hidePreviews) return `Un documento scade ${formatShortDate(doc.expires_at)} (${distance}). Apri Sottomano per vederlo.`;
-  const who = doc.person_name ? ` · ${doc.person_name}` : '';
-  return `${doc.title}${who} scade ${formatShortDate(doc.expires_at)} (${distance})`;
+  const date = formatShortDate(doc.expires_at);
+  if (hidePreviews) return t('deadlineReminders.hiddenBody', { date, distance });
+  const name = doc.person_name ? `${doc.title} · ${doc.person_name}` : doc.title;
+  return t('deadlineReminders.body', { name, date, distance });
 }
 
 // Rebuilds all reminders: on app start, and after every create, edit or delete. Never throws.
@@ -132,7 +134,7 @@ export async function rescheduleReminders(db: SQLiteDatabase): Promise<void> {
       await Notifications.scheduleNotificationAsync({
         identifier: `deadline-${doc.id}`,
         content: {
-          title: 'Scadenza in arrivo',
+          title: t('deadlineReminders.title'),
           body: reminderBody(doc, at, preferences.hidePreviews),
           sound: 'default',
           // The app icon shows the right number when this reminder arrives

@@ -14,6 +14,7 @@ import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand'
 import { onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useI18n } from '@/i18n';
 import { copyToClipboard, emailFiles, printFiles, saveToFiles, shareFiles } from '@/send/deliver';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { categoryTint } from '@/utils/colors';
@@ -27,6 +28,7 @@ import {
   loadSendPreferences,
   saveSendPreferences,
   SIZE_LIMITS,
+  sizeLimitLabel,
   type SendPreferences,
 } from '@/send/send-preferences';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -52,24 +54,24 @@ type Result = { key: string; prepared?: PreparedSend; error?: string };
 
 type DeliverAction = 'email' | 'whatsapp' | 'print' | 'save' | 'copy' | 'other';
 
-// The six actions of the design, in its colors
+// The six actions of the design, in its colors (labels: send.actions.<key>)
 const ACTIONS: {
   key: DeliverAction;
-  label: string;
   symbol: SFSymbol;
   gradient?: readonly [string, string];
   shadow?: string;
 }[] = [
-  { key: 'email', label: 'Email', symbol: 'envelope', gradient: BRAND_GRADIENT, shadow: '100, 90, 235' },
-  { key: 'whatsapp', label: 'WhatsApp', symbol: 'message', gradient: ['#3DD37A', '#1FA855'], shadow: '31, 168, 85' },
-  { key: 'print', label: 'Stampa', symbol: 'printer', gradient: ['#A9AFC4', '#6E7591'], shadow: '110, 117, 145' },
-  { key: 'save', label: 'Salva in File', symbol: 'folder', gradient: ['#86B4F7', '#6494EE'], shadow: '100, 148, 238' },
-  { key: 'copy', label: 'Copia', symbol: 'doc.on.doc', gradient: ['#FFA36E', '#F5824A'], shadow: '245, 130, 74' },
-  { key: 'other', label: 'Altro', symbol: 'ellipsis' },
+  { key: 'email', symbol: 'envelope', gradient: BRAND_GRADIENT, shadow: '100, 90, 235' },
+  { key: 'whatsapp', symbol: 'message', gradient: ['#3DD37A', '#1FA855'], shadow: '31, 168, 85' },
+  { key: 'print', symbol: 'printer', gradient: ['#A9AFC4', '#6E7591'], shadow: '110, 117, 145' },
+  { key: 'save', symbol: 'folder', gradient: ['#86B4F7', '#6494EE'], shadow: '100, 148, 238' },
+  { key: 'copy', symbol: 'doc.on.doc', gradient: ['#FFA36E', '#F5824A'], shadow: '245, 130, 74' },
+  { key: 'other', symbol: 'ellipsis' },
 ];
 
 function SendForm({ items, label }: { items: SendItem[]; label: string | null }) {
   const theme = useTheme();
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const composerRef = useRef<FrontBackComposerHandle>(null);
@@ -92,8 +94,8 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
   const limit = importedPdf ? SIZE_LIMITS[0] : (SIZE_LIMITS.find((l) => l.key === preferences.limit) ?? SIZE_LIMITS[1]);
   const needsComposer = Boolean(single && twoFaces && format === 'jpeg' && together);
 
-  const title = single ? single.title : `${items.length} documenti`;
-  const baseName = single ? fileBaseName([single.title, single.personName]) : fileBaseName(['documenti', label]);
+  const title = single ? single.title : t('common.documents', { count: items.length });
+  const baseName = single ? fileBaseName([single.title, single.personName]) : fileBaseName([t('send.fileNameSeveral'), label]);
   const front = single?.files.find((f) => f.kind === 'image' && f.side !== 'back');
   const back = single?.files.find((f) => f.kind === 'image' && f.side === 'back');
 
@@ -154,20 +156,20 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       } else if (action === 'print') {
         await printFiles(prepared.files);
       } else if (action === 'save') {
-        if (await saveToFiles(prepared.files)) Alert.alert('Salvato in File', prepared.files.map((f) => f.name).join('\n'));
+        if (await saveToFiles(prepared.files)) Alert.alert(t('send.alerts.savedToFiles'), prepared.files.map((f) => f.name).join('\n'));
       } else {
         const copied = await copyToClipboard(prepared.files, copyText);
         Alert.alert(
-          copied === 'image' ? 'Immagine copiata' : 'Testo copiato',
+          copied === 'image' ? t('send.alerts.imageCopied') : t('send.alerts.textCopied'),
           copied === 'image'
             ? prepared.files.length > 1
-              ? 'È stata copiata la prima pagina: incollala in un messaggio.'
-              : 'Incollala in un messaggio o in una nota.'
-            : 'Un PDF non si può copiare: sono stati copiati il nome e la nota. Per il file usa Altro.',
+              ? t('send.alerts.firstPageCopied')
+              : t('send.alerts.pasteImage')
+            : t('send.alerts.pdfNotCopied'),
         );
       }
     } catch (error) {
-      Alert.alert('Impossibile completare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('send.alerts.failed'), error instanceof Error ? error.message : String(error));
     } finally {
       setDelivering(false);
     }
@@ -179,19 +181,17 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
     ? [
         format === 'pdf'
           ? prepared.files.length > 1
-            ? `${prepared.files.length} PDF`
-            : 'PDF unico'
-          : prepared.files.length === 1
-            ? '1 foto'
-            : `${prepared.files.length} foto`,
-        prepared.pages !== null ? (prepared.pages === 1 ? '1 pagina' : `${prepared.pages} pagine`) : null,
+            ? t('send.meta.pdfs', { number: prepared.files.length })
+            : t('send.meta.singlePdf')
+          : t('common.photos', { count: prepared.files.length }),
+        prepared.pages !== null ? t('common.pages', { count: prepared.pages }) : null,
         formatBytes(prepared.bytes),
       ]
         .filter(Boolean)
         .join(' · ')
     : error
-      ? 'Non è stato possibile preparare il file'
-      : 'Preparazione…';
+      ? t('send.meta.failed')
+      : t('send.meta.preparing');
   const ready = Boolean(prepared) && !delivering;
   const firstPhoto = single?.files.find((f) => f.kind === 'image');
   const { tint, onTint } = single ? categoryTint(single.category.colors, theme) : { tint: theme.lilac, onTint: theme.indigo };
@@ -212,7 +212,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
         </View>
         <View style={styles.flex}>
           <Text style={styles.title} numberOfLines={2} accessibilityRole="header">
-            {`Invia ${title}`}
+            {t('send.title', { title })}
           </Text>
           <View style={styles.metaRow}>
             {busy && <ActivityIndicator size="small" />}
@@ -225,7 +225,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
 
       <View style={styles.format}>
         <Segmented
-          values={['PDF', 'Foto']}
+          values={['PDF', t('send.formatPhotos')]}
           selectedIndex={format === 'pdf' ? 0 : 1}
           enabled={!multi && !importedPdf}
           onChange={(index) => update({ format: index === 0 ? 'pdf' : 'jpeg' })}
@@ -255,49 +255,47 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
               </View>
             )}
             <Text style={styles.actionLabel} numberOfLines={1} adjustsFontSizeToFit minimumFontScale={0.8}>
-              {action.label}
+              {t(`send.actions.${action.key}`)}
             </Text>
           </Pressable>
         ))}
       </View>
 
       <View style={styles.noteRow}>
-        <Text style={styles.noteLabel}>Includi la nota del documento</Text>
+        <Text style={styles.noteLabel}>{t('send.includeNote')}</Text>
         <Switch
           value={includeNote}
           onValueChange={setIncludeNote}
           disabled={!single?.notes}
-          accessibilityLabel="Includi la nota del documento"
+          accessibilityLabel={t('send.includeNote')}
         />
       </View>
-      {single && !single.notes && <Text style={styles.small}>Questo documento non ha una nota.</Text>}
+      {single && !single.notes && <Text style={styles.small}>{t('send.noNote')}</Text>}
 
       {/* Our extras: front and back together, the weight limit, the files that will go */}
       {single && twoFaces && (
         <View style={styles.noteRow}>
           <Text style={styles.noteLabel}>
-            {format === 'pdf' ? 'Fronte e retro su una pagina' : "Fronte e retro in un'immagine"}
+            {format === 'pdf' ? t('send.frontBackPage') : t('send.frontBackImage')}
           </Text>
           <Switch
             value={together}
             onValueChange={(value) => update({ together: value })}
-            accessibilityLabel={format === 'pdf' ? 'Fronte e retro su una pagina' : "Fronte e retro in un'immagine"}
+            accessibilityLabel={format === 'pdf' ? t('send.frontBackPage') : t('send.frontBackImage')}
           />
         </View>
       )}
 
-      <Text style={styles.section}>Peso massimo</Text>
+      <Text style={styles.section}>{t('send.maxSize')}</Text>
       <Segmented
-        values={SIZE_LIMITS.map((l) => l.label)}
+        values={SIZE_LIMITS.map(sizeLimitLabel)}
         selectedIndex={SIZE_LIMITS.indexOf(limit)}
         enabled={!importedPdf}
         onChange={(index) => update({ limit: SIZE_LIMITS[index].key })}
       />
-      {importedPdf && <Text style={styles.small}>Il PDF viene inviato così com’è.</Text>}
+      {importedPdf && <Text style={styles.small}>{t('send.pdfAsIs')}</Text>}
       {multi && (
-        <Text style={styles.small}>
-          Un unico PDF: i documenti uno dopo l’altro, fronte e retro di documenti d’identità e tessere sulla stessa pagina.
-        </Text>
+        <Text style={styles.small}>{t('send.severalInfo')}</Text>
       )}
 
       {prepared && (
@@ -311,7 +309,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
               <Text style={styles.small}>{formatBytes(file.bytes)}</Text>
             </View>
           ))}
-          <Text style={styles.small}>{`Qualità ${prepared.quality.toLowerCase()}`}</Text>
+          <Text style={styles.small}>{t(`send.quality.${prepared.quality}`)}</Text>
         </View>
       )}
 
@@ -319,12 +317,12 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
       {prepared?.warnings.map((warning) => <Warning key={warning} text={warning} />)}
       {skipped > 0 && (
         <Warning
-          text={`${skipped === 1 ? '1 documento senza foto non è incluso' : `${skipped} documenti senza foto non sono inclusi`} (i PDF importati non si possono ancora unire).`}
+          text={t('send.skipped', { count: skipped })}
         />
       )}
 
       <Pressable onPress={() => router.back()} accessibilityRole="button" style={({ pressed }) => [styles.cancel, pressed && styles.dimmed]}>
-        <Text style={styles.cancelText}>Annulla</Text>
+        <Text style={styles.cancelText}>{t('common.cancel')}</Text>
       </Pressable>
 
       {/* Off screen: draws front and back into one JPEG when that option is chosen */}

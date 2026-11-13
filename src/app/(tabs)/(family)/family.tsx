@@ -23,16 +23,16 @@ import type { PersonWithCount } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const ROW_INSET = 78; // separators start after the 48pt avatar
-
-const documentsLabel = (count: number) => (count === 1 ? '1 documento' : `${count} documenti`);
 
 // "Famiglia" (docs/design/Utenti.dc.html): back and "+", title and "Un profilo per ogni persona di
 // casa", "COMPONENTI" with one row per person (avatar, name, the "Tu" badge, "N documenti"), the
 // dashed "Aggiungi una persona" and the privacy note. Long press on a row: "Riordina"
 // (docs/design/RiordinaLista.dc.html). Our extra: "N in scadenza" in red.
 export default function FamilyScreen() {
+  const { t } = useI18n();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
@@ -46,7 +46,7 @@ export default function FamilyScreen() {
     try {
       await savePeopleOrder(db, ordered.map((p) => p.id));
     } catch (error) {
-      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('family.orderSaveFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -65,11 +65,11 @@ export default function FamilyScreen() {
         {reordering && people ? (
           <>
             <ReorderHeader
-              title="Riordina la famiglia"
-              hint="Tieni premuto una persona e trascinala dove vuoi."
+              title={t('family.reorderTitle')}
+              hint={t('family.reorderHint')}
               onDone={() => setReordering(false)}
             />
-            <Text style={styles.section}>Componenti</Text>
+            <Text style={styles.section}>{t('family.members')}</Text>
             <View style={styles.reorderList}>
               <SortableList
                 items={people}
@@ -83,7 +83,7 @@ export default function FamilyScreen() {
                       </View>
                     }
                     title={person.name}
-                    subtitle={documentsLabel(person.documentCount)}
+                    subtitle={t('common.documents', { count: person.documentCount })}
                   />
                 )}
                 onReorder={saveOrder}
@@ -95,16 +95,16 @@ export default function FamilyScreen() {
         ) : (
           <>
             <PageHeader
-              title="Famiglia"
-              subtitle="Un profilo per ogni persona di casa"
+              title={t('family.title')}
+              subtitle={t('family.subtitle')}
               onBack={goHome}
               right={
-                <RoundIconButton symbol="plus" accessibilityLabel="Aggiungi una persona" color={theme.text} onPress={addPerson} />
+                <RoundIconButton symbol="plus" accessibilityLabel={t('family.addPerson')} color={theme.text} onPress={addPerson} />
               }
             />
             {people && people.length > 0 && (
               <>
-                <Text style={styles.section}>Componenti</Text>
+                <Text style={styles.section}>{t('family.members')}</Text>
                 <WhiteCard style={styles.card}>
                   {people.map((person, index) => (
                     <Fragment key={person.id}>
@@ -121,14 +121,12 @@ export default function FamilyScreen() {
               accessibilityRole="button"
               style={({ pressed }) => [styles.add, pressed && styles.addPressed]}>
               <SymbolView name="plus" tintColor={theme.textSecondary} size={24} weight="semibold" />
-              <Text style={styles.addLabel}>Aggiungi una persona</Text>
+              <Text style={styles.addLabel}>{t('family.addPerson')}</Text>
             </Pressable>
 
             <View style={styles.note}>
               <SymbolView name="lock" tintColor={theme.indigo} size={18} />
-              <Text style={styles.noteText}>
-                Tutto resta su questo telefono. Per mandare un documento a qualcuno, aprilo e tocca Invia.
-              </Text>
+              <Text style={styles.noteText}>{t('family.privacyNote')}</Text>
             </View>
           </>
         )}
@@ -138,13 +136,14 @@ export default function FamilyScreen() {
 }
 
 function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPress: () => void }) {
+  const { t } = useI18n();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const { pressed, handlers } = usePressed();
   const actions = personQuickActions(db, person);
   const role = roleLabel(person.role);
-  const details = [documentsLabel(person.documentCount)];
+  const details = [t('common.documents', { count: person.documentCount })];
 
   return (
     <Pressable
@@ -153,8 +152,8 @@ function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPre
       onLongPress={onLongPress}
       delayLongPress={400}
       accessibilityRole="button"
-      accessibilityLabel={[person.name, person.role === 'me' ? 'tu' : role, ...details].filter(Boolean).join(', ')}
-      accessibilityHint="Tieni premuto per riordinare la famiglia"
+      accessibilityLabel={[person.name, person.role === 'me' ? t('family.youSpoken') : role, ...details].filter(Boolean).join(', ')}
+      accessibilityHint={t('family.reorderA11yHint')}
       accessibilityActions={accessibilityActionsOf(actions)}
       onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
       style={[styles.row, pressed && styles.rowPressed]}>
@@ -164,11 +163,11 @@ function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPre
           <Text style={styles.name} numberOfLines={1}>
             {person.name}
           </Text>
-          {person.role === 'me' && <Text style={styles.me}>Tu</Text>}
+          {person.role === 'me' && <Text style={styles.me}>{t('personRoles.you')}</Text>}
         </View>
         <Text style={styles.count} numberOfLines={1}>
           {details.join(' · ')}
-          {person.expiringCount > 0 && <Text style={styles.expiring}>{` · ${person.expiringCount} in scadenza`}</Text>}
+          {person.expiringCount > 0 && <Text style={styles.expiring}>{` · ${t('family.expiring', { count: person.expiringCount })}`}</Text>}
         </Text>
       </View>
       <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={15} weight="semibold" />

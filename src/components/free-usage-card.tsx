@@ -8,9 +8,10 @@ import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { getFreeUsage, UNLOCK_PRICE } from '@/settings/free-limit';
+import { getFreeUsage, unlockPrice } from '@/settings/free-limit';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 type Props = {
   variant: 'menu' | 'settings'; // menu: "Gratis: …" with a chevron; settings: bigger, white "Sblocca" pill
@@ -20,16 +21,19 @@ type Props = {
 // Purple card "Gratis: 5 di 7 usati" / "Versione gratuita: 5 di 7 usati" with its bar; opens Sblocca
 export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }: Props) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const { data: usage } = useDbQuery(getFreeUsage, []);
   if (!usage || usage.unlocked) return null;
   const settings = variant === 'settings';
-  const title = `${settings ? 'Versione gratuita' : 'Gratis'}: ${usage.used} di ${usage.limit} usati`;
+  const counts = { used: usage.used, limit: usage.limit };
+  const title = settings ? t('freeUsageCard.titleSettings', counts) : t('freeUsageCard.titleMenu', counts);
+  const price = unlockPrice();
 
   return (
     <Pressable
       onPress={onOpen}
       accessibilityRole="button"
-      accessibilityLabel={`${title}. Sblocca senza limiti a ${UNLOCK_PRICE}`}
+      accessibilityLabel={t('freeUsageCard.accessibility', { title, price })}
       style={({ pressed }) => [settings ? styles.cardSettings : styles.cardMenu, pressed && styles.pressed]}>
       <LinearGradient
         colors={BRAND_GRADIENT}
@@ -41,14 +45,14 @@ export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }
         </View>
         <View style={styles.texts}>
           <Text style={[styles.title, settings && styles.titleSettings]}>{title}</Text>
-          <Text style={styles.subtitle}>Sblocca senza limiti a {UNLOCK_PRICE}</Text>
+          <Text style={styles.subtitle}>{t('freeUsageCard.subtitle', { price })}</Text>
           <View style={styles.bar}>
             <ProgressBar share={usage.share} onGradient />
           </View>
         </View>
         {settings ? (
           <View style={styles.pill}>
-            <Text style={styles.pillText}>Sblocca</Text>
+            <Text style={styles.pillText}>{t('freeUsageCard.unlock')}</Text>
           </View>
         ) : (
           <SymbolView name="chevron.right" tintColor="#FFFFFF" size={14} weight="semibold" />

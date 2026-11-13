@@ -1,3 +1,4 @@
+import { t } from '@/i18n';
 import { MAX_REPEAT } from '@/utils/recurrence';
 
 // Choices shared by the document form and the "Scadenza" screen
@@ -13,21 +14,22 @@ export const REMINDER_DAYS = [0, 1, 2, 7, 15, 30, 60, 90];
 
 // "Il giorno stesso", "1 giorno prima", "2 giorni prima", "7 giorni prima"…
 export function daysBefore(days: number): string {
-  if (days === 0) return 'Il giorno stesso';
-  if (days === 1) return '1 giorno prima';
-  return `${days} giorni prima`;
+  if (days === 0) return t('deadlineOptions.sameDay');
+  return t('deadlineOptions.daysBefore', { count: days });
 }
 
 // The value shown in a row: the default is written as its days, without "(predefinito)"
 export function reminderLabel(days: number, defaultDays: number): string {
   if (days === DEFAULT_REMINDER) return daysBefore(defaultDays);
-  if (days === NO_REMINDER) return 'Nessuno';
+  if (days === NO_REMINDER) return t('common.none');
   return daysBefore(days);
 }
 
 // In the list of choices the default is marked, so it isn't mistaken for the same days chosen by hand
 export function reminderChoiceLabel(days: number, defaultDays: number): string {
-  return days === DEFAULT_REMINDER ? `${daysBefore(defaultDays)} (predefinito)` : reminderLabel(days, defaultDays);
+  return days === DEFAULT_REMINDER
+    ? t('deadlineOptions.defaultChoice', { label: daysBefore(defaultDays) })
+    : reminderLabel(days, defaultDays);
 }
 
 // The saved reminder_days of a document as a picker value, and back

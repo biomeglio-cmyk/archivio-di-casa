@@ -1,4 +1,5 @@
 import { Image } from 'expo-image';
+import type { TFunction } from 'i18next';
 import { router, useLocalSearchParams, type Href } from 'expo-router';
 import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
@@ -42,18 +43,20 @@ import { usePressed } from '@/hooks/use-pressed';
 import { usePreferences } from '@/settings/preferences';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { categoryShadowRgb, categoryTint } from '@/utils/colors';
-import { formatDate, formatMonthTitle, parseISODate, toISODate } from '@/utils/dates';
+import { parseISODate, toISODate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 import { dayAndMonth, folderDate } from '@/utils/folder';
-import { formatEuro } from '@/utils/money';
 import { PIN_TINT } from '@/constants/brand';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
+import { useFormat } from '@/i18n/use-format';
 
 const PIN_BACKGROUND = (p: Palette) => PIN_TINT(p);
 const PIN_COLOR = (p: Palette) => p.heart;
 
 // Detail of one document (or of a card). Used by the document/[id] screen of every tab.
 export default function DocumentDetail() {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, Number(id)), [id]);
@@ -69,7 +72,7 @@ export default function DocumentDetail() {
     return (
       <View style={styles.missing}>
         <Stack.Screen options={{ title: '' }} />
-        <ThemedText themeColor="textSecondary">Documento non trovato.</ThemedText>
+        <ThemedText themeColor="textSecondary">{t('documentDetail.notFound')}</ThemedText>
       </View>
     );
   }
@@ -100,11 +103,11 @@ export default function DocumentDetail() {
 }
 
 // "1 pagina", "PDF", "3 pagine"
-function filesLabel(files: DocumentFile[]): string {
+function filesLabel(files: DocumentFile[], t: TFunction): string {
   if (files.some((f) => f.kind === 'pdf')) return 'PDF';
   const pages = files.filter((f) => f.kind === 'image').length;
-  if (pages === 0) return 'Nessuna pagina';
-  return pages === 1 ? 'Foto, 1 pagina' : `Foto, ${pages} pagine`;
+  if (pages === 0) return t('documentDetail.noPages');
+  return t('documentDetail.photoPages', { count: pages });
 }
 
 // The document (docs/design/Documento.dc.html): back button on the category tint, the preview
@@ -122,6 +125,8 @@ function DocumentScreen({
   files: DocumentFile[];
   onTogglePin: () => void;
 }) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
@@ -136,7 +141,7 @@ function DocumentScreen({
   const calendar = getCalendarSettings();
 
   const month = parseISODate(folderDate(document));
-  const subtitle = `${formatMonthTitle(month.getFullYear(), month.getMonth())} · ${filesLabel(files)}`;
+  const subtitle = `${fmt.monthTitle(month.getFullYear(), month.getMonth())} · ${filesLabel(files, t)}`;
   const days = document.expiresAt ? daysUntil(document.expiresAt) : null;
   const reminderOn = document.expiresAt !== null && document.reminderDays !== -1;
   const params = { id: String(document.id) };
@@ -152,13 +157,20 @@ function DocumentScreen({
 
   const details: { label: string; value: ReactNode }[] = [];
   if (document.amountCents !== null) {
-    details.push({ label: 'Importo', value: <Text style={styles.amount}>{formatEuro(document.amountCents)}</Text> });
+    details.push({ label: t('documentDetail.amount'), value: <Text style={styles.amount}>{fmt.euro(document.amountCents)}</Text> });
   }
   if (document.expiresAt && days !== null) {
     const near = days <= 7;
-    const distance = days < 0 ? 'scaduta' : days === 0 ? 'oggi' : days === 1 ? 'domani' : `tra ${days} giorni`;
+    const distance =
+      days < 0
+        ? t('documentDetail.expired')
+        : days === 0
+          ? t('dates.today')
+          : days === 1
+            ? t('dates.tomorrow')
+            : t('documentDetail.inDays', { count: days });
     details.push({
-      label: 'Scadenza',
+      label: t('documentDetail.deadline'),
       value: (
         <Text style={[styles.value, near && styles.valueAlert]}>
           {dayAndMonth(document.expiresAt)} · {distance}
@@ -167,17 +179,17 @@ function DocumentScreen({
     });
   }
   details.push({
-    label: 'Cartella',
+    label: t('documentDetail.folder'),
     value: (
       <Text style={styles.value}>{document.docType ? `${category.name} › ${document.docType}` : category.name}</Text>
     ),
   });
   if (document.paymentStatus) {
-    details.push({ label: 'Stato', value: <StatusBadge status={document.paymentStatus} /> });
+    details.push({ label: t('documentDetail.status'), value: <StatusBadge status={document.paymentStatus} /> });
   }
   if (person) {
     details.push({
-      label: 'Persona',
+      label: t('documentDetail.person'),
       value: (
         <View style={styles.person}>
           <PersonAvatar name={person.name} photoPath={person.photoPath} size={26} />
@@ -188,16 +200,16 @@ function DocumentScreen({
   }
   if (document.number)
     details.push({
-      label: 'Numero',
+      label: t('documentDetail.number'),
       value: (
         <Text style={styles.value} selectable>
           {document.number}
         </Text>
       ),
     });
-  if (document.notes) details.push({ label: 'Note', value: <Text style={styles.value}>{document.notes}</Text> });
+  if (document.notes) details.push({ label: t('documentDetail.notes'), value: <Text style={styles.value}>{document.notes}</Text> });
   if (calendar.enabled && document.calendarEventId && calendar.calendarTitle) {
-    details.push({ label: 'Nel calendario', value: <Text style={styles.value}>{calendar.calendarTitle}</Text> });
+    details.push({ label: t('documentDetail.inCalendar'), value: <Text style={styles.value}>{calendar.calendarTitle}</Text> });
   }
 
   return (
@@ -206,7 +218,7 @@ function DocumentScreen({
       contentContainerStyle={[styles.content, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 110 }]}>
       <RoundIconButton
         symbol="chevron.left"
-        accessibilityLabel="Indietro"
+        accessibilityLabel={t('common.back')}
         background={tint}
         color={theme.text}
         onPress={() => router.back()}
@@ -230,7 +242,7 @@ function DocumentScreen({
             <ActionRow
               key="view"
               symbol="eye"
-              label="Visualizza documento"
+              label={t('documentDetail.view')}
               tint={tint}
               color={onTint}
               chevron
@@ -241,7 +253,7 @@ function DocumentScreen({
             <ActionRow
               key="send"
               symbol="square.and.arrow.up"
-              label="Invia"
+              label={t('common.send')}
               tint={tint}
               color={onTint}
               chevron
@@ -251,7 +263,7 @@ function DocumentScreen({
           <ActionRow
             key="pin"
             symbol={document.isPinned ? 'heart.fill' : 'heart'}
-            label={document.isPinned ? 'Togli dai preferiti' : 'Aggiungi ai preferiti'}
+            label={document.isPinned ? t('documentDetail.unpin') : t('documentDetail.pin')}
             tint={PIN_BACKGROUND(theme)}
             color={PIN_COLOR(theme)}
             selected={document.isPinned}
@@ -260,7 +272,7 @@ function DocumentScreen({
           <ActionRow
             key="edit"
             symbol="pencil"
-            label="Modifica"
+            label={t('common.edit')}
             tint={tint}
             color={onTint}
             chevron
@@ -269,7 +281,7 @@ function DocumentScreen({
           <ActionRow
             key="pages"
             symbol="plus"
-            label="Aggiungi pagine"
+            label={t('documentDetail.addPages')}
             tint={tint}
             color={onTint}
             chevron
@@ -279,7 +291,7 @@ function DocumentScreen({
             <ActionRow
               key="renew"
               symbol="arrow.clockwise"
-              label="Rinnovato"
+              label={t('documentDetail.renewed')}
               tint={tint}
               color={onTint}
               chevron
@@ -289,7 +301,7 @@ function DocumentScreen({
           <ActionRow
             key="delete"
             symbol="trash"
-            label="Cancella"
+            label={t('documentDetail.delete')}
             tint={theme.errorBackground}
             color={theme.error}
             destructive
@@ -306,7 +318,7 @@ function DocumentScreen({
       </WhiteCard>
 
       <Text style={styles.sectionTitle} accessibilityRole="header">
-        Dettagli
+        {t('documentDetail.details')}
       </Text>
       <WhiteCard style={styles.details}>
         {details.map((detail, index) => (
@@ -320,20 +332,22 @@ function DocumentScreen({
       <WhiteCard style={styles.reminder}>
         <IconSquare symbol="bell" colors={category.colors} size={40} shadow />
         <View style={styles.reminderTexts}>
-          <Text style={styles.reminderTitle}>Ricordamelo</Text>
+          <Text style={styles.reminderTitle}>{t('documentDetail.remindMe')}</Text>
           <Text style={styles.reminderText}>
             {!document.expiresAt
-              ? 'Aggiungi una scadenza per avere un promemoria'
+              ? t('documentDetail.reminderNeedsDeadline')
               : reminderOn
-                ? `${reminderLabel(reminderPickerValue(document.reminderDays), defaultReminderDays)} della scadenza`
-                : 'Nessun promemoria'}
+                ? t('documentDetail.reminderWhen', {
+                    when: reminderLabel(reminderPickerValue(document.reminderDays), defaultReminderDays),
+                  })
+                : t('documentDetail.noReminder')}
           </Text>
         </View>
         <Switch
           value={reminderOn}
           onValueChange={toggleReminder}
           gradient={gradient}
-          accessibilityLabel="Ricordamelo"
+          accessibilityLabel={t('documentDetail.remindMe')}
         />
       </WhiteCard>
 
@@ -351,14 +365,14 @@ function DocumentScreen({
       {/* The pages it had before each "Rinnovato" with a new scan */}
       {versions && versions.length > 0 && (
         <View style={styles.extra}>
-          <Group title="Versioni precedenti">
+          <Group title={t('documentDetail.previousVersions')}>
             {versions.map((version, index) => (
               <Row
                 key={version.id}
                 first={index === 0}
                 symbol="clock.arrow.circlepath"
-                label={`Fino al ${formatDate(toISODate(new Date(version.archivedAt)))}`}
-                value={version.expiresAt ? `scadeva ${formatDate(version.expiresAt)}` : undefined}
+                label={t('documentDetail.versionUntil', { date: fmt.date(toISODate(new Date(version.archivedAt))) })}
+                value={version.expiresAt ? t('documentDetail.versionExpired', { date: fmt.date(version.expiresAt) }) : undefined}
                 onPress={() => router.push({ pathname: '/document-version/[id]', params: { id: String(version.id) } })}
               />
             ))}
@@ -372,8 +386,8 @@ function DocumentScreen({
           <SecondaryButton
             label={
               document.paidAt
-                ? `Pagata il ${dayAndMonth(document.paidAt)} · segna come da pagare`
-                : 'Segna come da pagare'
+                ? t('documentDetail.paidOnMarkDue', { date: dayAndMonth(document.paidAt) })
+                : t('documentDetail.markDue')
             }
             symbol="arrow.uturn.backward"
             background={tint}
@@ -385,7 +399,7 @@ function DocumentScreen({
         (document.paymentStatus === 'due' || document.amountCents !== null || category.builtinKey === 'lightbulb') && (
           <View style={styles.pay}>
             <PrimaryButton
-              label="Segna come pagata"
+              label={t('documentDetail.markPaid')}
               symbol="checkmark"
               gradient={gradient}
               shadow={shadow}
@@ -410,6 +424,7 @@ function Preview({
   tint: string;
   onPress?: () => void;
 }) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   const images = files.filter((f) => f.kind === 'image');
@@ -423,7 +438,7 @@ function Preview({
       onPress={onPress}
       disabled={!onPress}
       accessibilityRole="button"
-      accessibilityLabel={onPress ? 'Visualizza documento' : 'Nessuna pagina'}
+      accessibilityLabel={onPress ? t('documentDetail.view') : t('documentDetail.noPages')}
       style={[styles.preview, { backgroundColor: tint }, pressed && styles.pressed]}>
       <View style={styles.page}>
         {first ? (
@@ -435,13 +450,14 @@ function Preview({
               tintColor={document.category.colors.bottom}
               size={40}
             />
+            {/* i18n-ignore */}
             {pdf && <Text style={styles.pdfLabel}>PDF</Text>}
           </View>
         )}
       </View>
       {count !== null && count > 1 && (
         <View style={styles.pageCount}>
-          <Text style={styles.pageCountText}>1 di {count}</Text>
+          <Text style={styles.pageCountText}>{t('documentDetail.firstOf', { total: count })}</Text>
         </View>
       )}
     </Pressable>

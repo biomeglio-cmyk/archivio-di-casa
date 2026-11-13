@@ -6,28 +6,31 @@ import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
 import { type Palette, Spacing } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
+import { FREE_LIMIT } from '@/settings/free-limit';
 
 // "Termini d'uso" (Impostazioni › Informazioni, Sblocca). A placeholder: the real terms are
 // written and published with the App Store version.
 export default function TermsScreen() {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   return (
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <ThemedText themeColor="textSecondary" style={styles.intro}>
-          I termini d’uso completi saranno pubblicati con la versione dell’App Store. In breve:
+          {t('terms.intro')}
         </ThemedText>
         <Group>
-          <Row label="Sottomano è gratis fino a 7 documenti e tessere" symbol="gift" first />
-          <Row label="Lo sblocco è un acquisto unico, senza abbonamento" symbol="checkmark.seal" />
-          <Row label="I tuoi documenti restano sul tuo telefono e sono tuoi" symbol="lock.iphone" />
-          <Row label="Fai un backup per non perderli se cambi telefono" symbol="icloud.and.arrow.up" />
+          <Row label={t('terms.free', { limit: FREE_LIMIT })} symbol="gift" first />
+          <Row label={t('terms.oneTime')} symbol="checkmark.seal" />
+          <Row label={t('terms.yours')} symbol="lock.iphone" />
+          <Row label={t('terms.backup')} symbol="icloud.and.arrow.up" />
         </Group>
       </ScrollView>
 
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button variant="done" onPress={() => router.back()}>
-          Fine
+          {t('common.done')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
     </>

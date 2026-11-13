@@ -5,17 +5,19 @@ import { CardForm } from '@/components/card-form';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import { getCardsCategory } from '@/db/categories';
 import { insertCard } from '@/db/documents';
+import { useI18n } from '@/i18n';
 import type { PendingFile } from '@/storage/pending-files';
 
 // "Nuova tessera" (docs/design/NuovaTessera.dc.html): the photos and the code come from the camera
 // as route params
 export default function NewCardScreen() {
   const db = useSQLiteContext();
+  const { t } = useI18n();
   const params = useLocalSearchParams<{ front?: string; barcode?: string; code?: string; codeType?: string }>();
 
   return (
     <CardForm
-      heading="Nuova tessera"
+      heading={t('newCard.title')}
       onCancel={() => router.back()}
       initial={{
         title: '',
@@ -30,7 +32,7 @@ export default function NewCardScreen() {
       }}
       onSubmit={async (values) => {
         const category = await getCardsCategory(db);
-        if (!category) throw new Error('La categoria "Tessere e card" non esiste più.');
+        if (!category) throw new Error(t('newCard.missingCategory'));
         const files: PendingFile[] = [];
         if (values.frontUri) files.push({ uri: values.frontUri, kind: 'image', side: 'card_front' });
         if (values.barcodeUri) files.push({ uri: values.barcodeUri, kind: 'image', side: 'barcode' });

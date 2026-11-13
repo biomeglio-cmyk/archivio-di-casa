@@ -17,6 +17,7 @@ import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
+import { useI18n } from '@/i18n';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { folderRowSubtitle } from '@/utils/folder';
 import { formatEuro } from '@/utils/money';
@@ -40,6 +41,7 @@ type Props = {
 export function FolderRow({ document, onPress, actions, onLongPress, selection }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n(); // also re-renders the subtitle when the language changes
   const { pressed, handlers } = usePressed();
   const ref = useRef<ComponentRef<typeof View>>(null);
   const { category } = document;
@@ -47,7 +49,7 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
   const showPhoto = document.firstImagePath !== null && document.coverMode === 'photo';
   const solid = document.coverColor ?? (category.isCards ? (document.cardColor ?? DEFAULT_CARD_COLOR) : null);
   const amount = document.amountCents !== null ? formatEuro(document.amountCents) : null;
-  const status = document.paymentStatus === 'due' ? 'da pagare' : document.paymentStatus === 'paid' ? 'pagata' : null;
+  const status = document.paymentStatus === 'due' ? t('folderRow.due') : document.paymentStatus === 'paid' ? t('folderRow.paid') : null;
 
   function longPress() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);

@@ -9,6 +9,7 @@ import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { authenticate } from '@/security/app-lock';
 import { readPassword } from '@/security/password-vault';
+import { useI18n } from '@/i18n';
 import { type Palette } from '@/constants/theme';
 
 const CLIPBOARD_SECONDS = 60;
@@ -25,6 +26,7 @@ type Props = {
 export function PasswordCard({ documentId, username }: Props) {
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
+  const { t } = useI18n();
   const [shown, setShown] = useState<string | null>(null);
 
   useEffect(() => {
@@ -37,7 +39,7 @@ export function PasswordCard({ documentId, username }: Props) {
   async function unlockedPassword(reason: string): Promise<string | null> {
     if (!(await authenticate(reason))) return null;
     const value = await readPassword(documentId);
-    if (value === null) Alert.alert('Nessuna password', 'Aggiungila con Modifica.');
+    if (value === null) Alert.alert(t('passwordCard.noPasswordTitle'), t('passwordCard.noPasswordMessage'));
     return value;
   }
 
@@ -46,16 +48,16 @@ export function PasswordCard({ documentId, username }: Props) {
       setShown(null);
       return;
     }
-    setShown(await unlockedPassword('Mostra la password'));
+    setShown(await unlockedPassword(t('passwordCard.showPrompt')));
   }
 
   async function copy() {
-    const value = await unlockedPassword('Copia la password');
+    const value = await unlockedPassword(t('passwordCard.copyPrompt'));
     if (value === null) return;
     await Clipboard.setStringAsync(value, {
       ios: { localOnly: true, expiresAt: new Date(Date.now() + CLIPBOARD_SECONDS * 1000) },
     });
-    Alert.alert('Password copiata', 'Sparisce dagli appunti tra 1 minuto.');
+    Alert.alert(t('passwordCard.copiedTitle'), t('passwordCard.copiedMessage'));
   }
 
   const line = { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.backgroundSelected };
@@ -63,25 +65,25 @@ export function PasswordCard({ documentId, username }: Props) {
   return (
     <WhiteCard style={styles.card}>
       <View style={styles.row}>
-        <ThemedText themeColor="textSecondary">Utente</ThemedText>
+        <ThemedText themeColor="textSecondary">{t('passwordCard.user')}</ThemedText>
         <ThemedText style={styles.value} selectable>
           {username ?? '—'}
         </ThemedText>
       </View>
       <View style={[styles.row, line]}>
-        <ThemedText themeColor="textSecondary">Password</ThemedText>
+        <ThemedText themeColor="textSecondary">{t('passwordCard.password')}</ThemedText>
         <ThemedText
           style={[styles.value, styles.password]}
-          accessibilityLabel={shown === null ? 'Password nascosta' : shown}>
+          accessibilityLabel={shown === null ? t('passwordCard.hidden') : shown}>
           {shown ?? '••••••••'}
         </ThemedText>
       </View>
       <View style={[styles.actions, line]}>
         <Pressable onPress={toggleShow} accessibilityRole="button" hitSlop={6} style={styles.action}>
-          <Text style={styles.actionText}>{shown === null ? 'Mostra' : 'Nascondi'}</Text>
+          <Text style={styles.actionText}>{shown === null ? t('passwordCard.show') : t('passwordCard.hide')}</Text>
         </Pressable>
         <Pressable onPress={copy} accessibilityRole="button" hitSlop={6} style={styles.action}>
-          <Text style={styles.actionText}>Copia</Text>
+          <Text style={styles.actionText}>{t('passwordCard.copy')}</Text>
         </Pressable>
       </View>
     </WhiteCard>

@@ -13,6 +13,7 @@ import {
 } from '@/db/categories';
 import { moveToTrash, TRASH_DAYS } from '@/db/trash';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useI18n } from '@/i18n';
 import { deletePassword } from '@/security/password-vault';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
@@ -25,6 +26,7 @@ type Choice = 'move' | 'trash';
 // deleted (its "…" never offers it). A built-in category (Tessere e card, Password… with their own
 // forms) is only hidden: Nuova categoria › "Ripristina una categoria predefinita" brings it back.
 export default function DeleteCategoryScreen() {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const categoryId = Number(id);
@@ -51,37 +53,38 @@ export default function DeleteCategoryScreen() {
       router.back();
     } catch (error) {
       setBusy(false);
-      Alert.alert('Impossibile eliminare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('deleteCategory.deleteFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
-  const some = count === 1 ? '1 documento' : `${count} documenti`;
   // A built-in is only hidden: it comes back from Nuova categoria › "Ripristina una categoria predefinita"
-  const restorable = category.isBuiltin ? ' Potrai ripristinarla da Nuova categoria.' : '';
+  const message = count
+    ? t(category.isBuiltin ? 'deleteCategory.messageWithDocumentsRestorable' : 'deleteCategory.messageWithDocuments', { count })
+    : t(category.isBuiltin ? 'deleteCategory.messageEmptyRestorable' : 'deleteCategory.messageEmpty');
 
   return (
     <ConfirmDialog
-      title={`Cancellare la categoria ${category.name}?`}
-      message={count ? `Dentro ci sono ${some}. Cosa vuoi farne?${restorable}` : `La categoria è vuota.${restorable}`}
-      confirmLabel={count && choice === 'trash' ? 'Cancella tutto' : 'Cancella la categoria'}
+      title={t('deleteCategory.title', { name: category.name })}
+      message={message}
+      confirmLabel={count && choice === 'trash' ? t('deleteCategory.deleteAll') : t('deleteCategory.confirm')}
       onConfirm={confirm}
       onCancel={() => router.back()}
       busy={busy}>
       {count ? (
-        <View style={styles.choices} accessibilityRole="radiogroup" accessibilityLabel="Cosa fare dei documenti">
+        <View style={styles.choices} accessibilityRole="radiogroup" accessibilityLabel={t('deleteCategory.choicesA11y')}>
           <ConfirmChoice
-            label="Spostali in Altro"
+            label={t('deleteCategory.moveLabel')}
             detail={
               category.isPassword
-                ? 'Restano nell’app, in Altro, senza nome utente e password'
-                : 'Restano nell’app, in una cartella generica'
+                ? t('deleteCategory.moveDetailPassword')
+                : t('deleteCategory.moveDetail')
             }
             checked={choice === 'move'}
             onPress={() => setChoice('move')}
           />
           <ConfirmChoice
-            label="Cancellali"
-            detail={`Vanno nel Cestino: puoi recuperarli per ${TRASH_DAYS} giorni`}
+            label={t('deleteCategory.trashLabel')}
+            detail={t('deleteCategory.trashDetail', { count: TRASH_DAYS })}
             checked={choice === 'trash'}
             onPress={() => setChoice('trash')}
           />

@@ -3,6 +3,7 @@ import { Alert } from 'react-native';
 
 import { pickPdf, pickPhotos } from '@/capture/pick-files';
 import { scanDocument } from '@/capture/scan-document';
+import { t } from '@/i18n';
 import { encodePendingFiles, pagesToFiles, type PendingFile } from '@/storage/pending-files';
 
 // The ways to add a document, shared by the "+" sheet and the Menu. Both are sheets, so they are
@@ -35,7 +36,7 @@ async function attach(pick: () => Promise<PendingFile[] | null>): Promise<void> 
     const files = await pick();
     if (files) openNewDocument(files);
   } catch (error) {
-    Alert.alert('Impossibile aprire il file', String(error));
+    Alert.alert(t('addActions.openFileFailed'), String(error));
   }
 }
 

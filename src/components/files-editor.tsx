@@ -13,6 +13,7 @@ import { BRAND_COLOR } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import type { Category, DocumentFile, FileSide } from '@/db/types';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { pagesToFiles, type PendingFile } from '@/storage/pending-files';
 import { chooseAction } from '@/utils/action-sheet';
@@ -78,6 +79,7 @@ type Props = {
 // remove it and arrows to move it, then ALWAYS the big "+ Aggiungi pagina" (scanner or photos).
 // A document with an imported PDF shows the PDF instead.
 export function FilesEditor({ files, category, onChange, autoAdd = false }: Props) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const [camera, setCamera] = useState(false); // app camera, when the scanner isn't available
   const canScan = isScannerAvailable();
@@ -87,7 +89,7 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
   const others = files.filter((f) => f.kind !== 'image');
   const frontBack = usesFrontBack(category, images.length);
   const cardLike = usesFrontBack(category, 2); // an ID or a card: its second page is the back
-  const addLabel = cardLike && images.length === 1 ? 'Aggiungi il retro' : 'Aggiungi pagina';
+  const addLabel = cardLike && images.length === 1 ? t('filesEditor.addBack') : t('filesEditor.addPage');
 
   function setImages(next: EditableFile[]) {
     onChange([...others, ...next]);
@@ -108,9 +110,14 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
     setImages(next);
   }
 
+  function showError(error: unknown): null {
+    Alert.alert(t('filesEditor.openFileFailed'), error instanceof Error ? error.message : String(error));
+    return null;
+  }
+
   // "+ Aggiungi pagina": scanner (or camera) or photos; the new pages go at the end
   async function addPages() {
-    const choice = await chooseAction(addLabel, [canScan ? 'Scansiona' : 'Fotografa', 'Dalle foto']);
+    const choice = await chooseAction(addLabel, [canScan ? t('filesEditor.scan') : t('filesEditor.photograph'), t('filesEditor.fromPhotos')]);
     if (choice === 0) {
       const result = canScan ? await scanDocument() : 'unavailable';
       if (result === 'unavailable') setCamera(true);
@@ -133,7 +140,7 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
   async function rescan() {
     const result = await scanDocument();
     if (result === 'unavailable') {
-      Alert.alert('Scanner non disponibile', 'Togli le pagine con ✕ e aggiungine di nuove.');
+      Alert.alert(t('filesEditor.scannerUnavailableTitle'), t('filesEditor.scannerUnavailableMessage'));
     } else if (result !== 'cancelled') {
       setImages(pagesToFiles(result.pages).map(fromPending));
     }
@@ -148,7 +155,7 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
     return (
       <View style={styles.grid}>
         <PageThumb file={pdf} label="PDF" />
-        <AddTile label="Sostituisci PDF" symbol="doc" onPress={changePdf} />
+        <AddTile label={t('filesEditor.replacePdf')} symbol="doc" onPress={changePdf} />
       </View>
     );
   }
@@ -170,11 +177,11 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
         <AddTile label={addLabel} symbol="plus" onPress={addPages} />
       </View>
 
-      {images.length === 0 && <SecondaryButton label="Importa un PDF" symbol="doc" onPress={changePdf} />}
+      {images.length === 0 && <SecondaryButton label={t('filesEditor.importPdf')} symbol="doc" onPress={changePdf} />}
 
       {images.length > 0 && canScan && (
         <Pressable onPress={rescan} hitSlop={8} accessibilityRole="button" style={styles.rescan}>
-          <Text style={styles.link}>Riscansiona tutto</Text>
+          <Text style={styles.link}>{t('filesEditor.rescanAll')}</Text>
         </Pressable>
       )}
 
@@ -194,11 +201,6 @@ export function FilesEditor({ files, category, onChange, autoAdd = false }: Prop
   );
 }
 
-function showError(error: unknown): null {
-  Alert.alert('Impossibile aprire il file', error instanceof Error ? error.message : String(error));
-  return null;
-}
-
 type ThumbProps = {
   file: EditableFile;
   label: string | null; // null = a single page: no label
@@ -209,19 +211,20 @@ type ThumbProps = {
 
 // One page: a mini sheet on lilac with ✕, its label, and ‹ › to move it (also for VoiceOver)
 function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProps) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
-  const name = label ?? 'Pagina';
+  const name = label ?? t('filesEditor.page');
   const canMove = Boolean(onMoveLeft || onMoveRight);
-  const caption = [label, file.pending && file.kind === 'image' ? 'nuova' : null].filter(Boolean).join(' · ');
+  const caption = [label, file.pending && file.kind === 'image' ? t('filesEditor.newTag') : null].filter(Boolean).join(' · ');
 
   return (
     <View
       style={[styles.cell, { backgroundColor: theme.lilac }]}
       accessible={false}
       accessibilityActions={[
-        ...(onMoveLeft ? [{ name: 'left', label: `Sposta ${name} prima` }] : []),
-        ...(onMoveRight ? [{ name: 'right', label: `Sposta ${name} dopo` }] : []),
+        ...(onMoveLeft ? [{ name: 'left', label: t('filesEditor.moveBefore', { name }) }] : []),
+        ...(onMoveRight ? [{ name: 'right', label: t('filesEditor.moveAfter', { name }) }] : []),
       ]}
       onAccessibilityAction={(event) => (event.nativeEvent.actionName === 'left' ? onMoveLeft?.() : onMoveRight?.())}>
       <View style={styles.sheet}>
@@ -243,15 +246,15 @@ function PageThumb({ file, label, onRemove, onMoveLeft, onMoveRight }: ThumbProp
           onPress={onRemove}
           hitSlop={10}
           accessibilityRole="button"
-          accessibilityLabel={`Togli ${name}`}
+          accessibilityLabel={t('filesEditor.removePage', { name })}
           style={styles.remove}>
           <SymbolView name="xmark.circle.fill" tintColor={theme.textSecondary} size={22} />
         </Pressable>
       )}
       {canMove && (
         <View style={styles.arrows}>
-          <Arrow symbol="chevron.left" label={`Sposta ${name} prima`} onPress={onMoveLeft} />
-          <Arrow symbol="chevron.right" label={`Sposta ${name} dopo`} onPress={onMoveRight} />
+          <Arrow symbol="chevron.left" label={t('filesEditor.moveBefore', { name })} onPress={onMoveLeft} />
+          <Arrow symbol="chevron.right" label={t('filesEditor.moveAfter', { name })} onPress={onMoveRight} />
         </View>
       )}
     </View>

@@ -20,6 +20,7 @@ import { FONTS } from '@/constants/typography';
 import { setPinned } from '@/db/documents';
 import type { DocumentDetail, PasswordInfo } from '@/db/types';
 import { useMaxBrightness } from '@/hooks/use-max-brightness';
+import { useI18n } from '@/i18n';
 import { authenticate } from '@/security/app-lock';
 import { readPassword } from '@/security/password-vault';
 import { generateBarcode } from '@/utils/barcode';
@@ -37,6 +38,7 @@ const CLIPBOARD_SECONDS = 60;
 export function PasswordDetail({ document }: { document: DocumentDetail }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const info: PasswordInfo = document.password ?? {
@@ -66,7 +68,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
   async function unlocked(reason: string): Promise<string | null> {
     if (!(await authenticate(reason))) return null;
     const value = await readPassword(document.id);
-    if (value === null) Alert.alert('Nessuna password', 'Aggiungila con Modifica.');
+    if (value === null) Alert.alert(t('passwordDetail.noPasswordTitle'), t('passwordDetail.noPasswordMessage'));
     return value;
   }
 
@@ -75,21 +77,21 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
       setShown(null);
       return;
     }
-    setShown(await unlocked(`Mostra ${meta.passwordLabel.toLowerCase()}`));
+    setShown(await unlocked(t(`passwordDetail.showPrompt.${info.type}`)));
   }
 
   async function copy() {
-    const value = shown ?? (await unlocked(`Copia ${meta.passwordLabel.toLowerCase()}`));
+    const value = shown ?? (await unlocked(t(`passwordDetail.copyPrompt.${info.type}`)));
     if (value === null) return;
     await Clipboard.setStringAsync(value, {
       ios: { localOnly: true, expiresAt: new Date(Date.now() + CLIPBOARD_SECONDS * 1000) },
     });
-    Alert.alert('Copiata', 'Sparisce dagli appunti tra 1 minuto.');
+    Alert.alert(t('passwordDetail.copiedTitle'), t('passwordDetail.copiedMessage'));
   }
 
   async function copyText(value: string) {
     await Clipboard.setStringAsync(value);
-    Alert.alert('Copiato', value);
+    Alert.alert(t('passwordDetail.copiedTextTitle'), value);
   }
 
   async function toggleQr() {
@@ -97,18 +99,18 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
       setQr(null);
       return;
     }
-    setQr(await unlocked('Mostra il QR per gli ospiti'));
+    setQr(await unlocked(t('passwordDetail.qrPrompt')));
   }
 
   function openSite() {
     if (!info.url) return;
     const address = /^[a-z]+:\/\//i.test(info.url) ? info.url : `https://${info.url}`;
-    Linking.openURL(address).catch(() => Alert.alert('Indirizzo non valido', info.url ?? ''));
+    Linking.openURL(address).catch(() => Alert.alert(t('passwordDetail.invalidAddress'), info.url ?? ''));
   }
 
   const strength = shown !== null ? passwordStrength(shown, info.type, theme) : null;
   const generated = qr !== null && document.username ? generateBarcode(wifiQrPayload(document.username, qr), 'qr') : null;
-  const subtitle = [typeName(info), document.person?.name ?? 'Tutta la famiglia'].join(' · ');
+  const subtitle = [typeName(info), document.person?.name ?? t('common.wholeFamily')].join(' · ');
 
   return (
     <>
@@ -116,18 +118,18 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
         style={styles.screen}
         contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 40 }]}>
         <View style={styles.bar}>
-          <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" background={PASSWORD_TINT(theme)} color={theme.text} onPress={() => router.back()} />
+          <RoundIconButton symbol="chevron.left" accessibilityLabel={t('common.back')} background={PASSWORD_TINT(theme)} color={theme.text} onPress={() => router.back()} />
           <View style={styles.barRight}>
             <RoundIconButton
               symbol={document.isPinned ? 'heart.fill' : 'heart'}
-              accessibilityLabel={document.isPinned ? 'Togli dai preferiti' : 'Aggiungi ai preferiti'}
+              accessibilityLabel={document.isPinned ? t('passwordDetail.removeFavorite') : t('passwordDetail.favoriteTitle')}
               background={PASSWORD_TINT(theme)}
               color={theme.heart}
               onPress={() => setPinned(db, document.id, !document.isPinned)}
             />
             <RoundIconButton
               symbol="ellipsis"
-              accessibilityLabel="Altre azioni"
+              accessibilityLabel={t('passwordDetail.moreActions')}
               background={PASSWORD_TINT(theme)}
               color={theme.text}
               onPress={() => setMenuOpen(true)}
@@ -143,7 +145,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
           <Text style={styles.subtitle}>{subtitle}</Text>
         </View>
 
-        <Section>Accesso</Section>
+        <Section>{t('passwordDetail.sections.access')}</Section>
         <WhiteCard style={styles.card}>
           {meta.userLabel !== null && (
             <>
@@ -156,7 +158,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
                   </Text>
                 </View>
                 {document.username ? (
-                  <Pressable onPress={() => copyText(document.username!)} accessibilityRole="button" accessibilityLabel={`Copia ${meta.userLabel}`} style={styles.round}>
+                  <Pressable onPress={() => copyText(document.username!)} accessibilityRole="button" accessibilityLabel={t(`passwordDetail.copyUser.${info.type}`)} style={styles.round}>
                     <SymbolView name="doc.on.doc" tintColor={theme.iconGrey} size={19} />
                   </Pressable>
                 ) : null}
@@ -170,15 +172,15 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
               <Text style={styles.label}>{meta.passwordLabel}</Text>
               <Text
                 style={[styles.value, styles.password, shown === null && styles.masked]}
-                accessibilityLabel={shown === null ? 'Nascosta' : shown}
+                accessibilityLabel={shown === null ? t('passwordDetail.hidden') : shown}
                 selectable={shown !== null}>
                 {shown ?? '••••••••'}
               </Text>
             </View>
-            <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={shown === null ? 'Mostra' : 'Nascondi'} style={styles.round}>
+            <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={shown === null ? t('passwordDetail.show') : t('passwordDetail.hide')} style={styles.round}>
               <SymbolView name={shown === null ? 'eye' : 'eye.slash'} tintColor={theme.iconGrey} size={20} />
             </Pressable>
-            <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel="Copia" style={styles.round}>
+            <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel={t('passwordDetail.copy')} style={styles.round}>
               <SymbolView name="doc.on.doc" tintColor={theme.iconGrey} size={19} />
             </Pressable>
           </View>
@@ -193,14 +195,14 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
                 <Text style={[styles.strengthLabel, { color: strength.color }]}>{strength.label}</Text>
               </>
             ) : (
-              <Text style={styles.locked}>Si vede dopo Face ID o il codice dell’iPhone</Text>
+              <Text style={styles.locked}>{t('passwordDetail.locked')}</Text>
             )}
           </View>
         </WhiteCard>
 
         {info.type === 'site' && info.url && (
           <>
-            <Section>Sito o app</Section>
+            <Section>{t('passwordDetail.sections.site')}</Section>
             <WhiteCard style={styles.card}>
               <Pressable onPress={openSite} accessibilityRole="link" style={styles.row}>
                 <IconBox symbol="link" />
@@ -215,47 +217,47 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
 
         {info.type === 'wifi' && info.wifiQr && (
           <>
-            <Section>QR per gli ospiti</Section>
+            <Section>{t('passwordDetail.sections.wifiQr')}</Section>
             <WhiteCard style={styles.qrCard}>
               {generated ? (
                 <>
-                  <View style={styles.qrBox} accessibilityLabel="QR della rete Wi-Fi" accessible>
+                  <View style={styles.qrBox} accessibilityLabel={t('passwordDetail.wifiQrLabel')} accessible>
                     <GeneratedCode barcode={generated} maxWidth={220} maxHeight={220} />
                   </View>
                   <Text style={styles.qrNetwork}>{document.username}</Text>
-                  <Text style={styles.qrHint}>Lo inquadrano con la fotocamera e si collegano.</Text>
+                  <Text style={styles.qrHint}>{t('passwordDetail.qrHint')}</Text>
                 </>
               ) : (
                 <Text style={styles.qrHint}>
                   {document.username
-                    ? 'Il QR contiene la password: si vede dopo Face ID o il codice dell’iPhone.'
-                    : 'Aggiungi il nome della rete con Modifica per avere il QR.'}
+                    ? t('passwordDetail.qrLocked')
+                    : t('passwordDetail.qrNoNetwork')}
                 </Text>
               )}
               {document.username ? (
                 <Pressable onPress={toggleQr} accessibilityRole="button" style={({ pressed }) => [styles.qrButton, pressed && styles.pressed]}>
                   <SymbolView name={qr ? 'eye.slash' : 'qrcode'} tintColor={PASSWORD_INK(theme)} size={17} />
-                  <Text style={styles.qrButtonText}>{qr ? 'Nascondi il QR' : 'Mostra il QR'}</Text>
+                  <Text style={styles.qrButtonText}>{qr ? t('passwordDetail.hideQr') : t('passwordDetail.showQr')}</Text>
                 </Pressable>
               ) : null}
             </WhiteCard>
           </>
         )}
 
-        <Section>Di chi è</Section>
+        <Section>{t('passwordDetail.sections.whose')}</Section>
         <WhiteCard style={styles.card}>
           <View style={styles.row}>
             <View style={[styles.iconBox, { backgroundColor: theme.lilac }]}>
               <SymbolView name="person" tintColor={theme.indigo} size={19} />
             </View>
-            <Text style={styles.personLabel}>Persona</Text>
-            <Text style={[styles.flex, styles.value]}>{document.person?.name ?? 'Tutta la famiglia'}</Text>
+            <Text style={styles.personLabel}>{t('passwordDetail.person')}</Text>
+            <Text style={[styles.flex, styles.value]}>{document.person?.name ?? t('common.wholeFamily')}</Text>
           </View>
         </WhiteCard>
 
         {document.notes ? (
           <>
-            <Section>Note</Section>
+            <Section>{t('passwordDetail.sections.notes')}</Section>
             <WhiteCard style={styles.notesCard}>
               <Text style={styles.notes} selectable>
                 {document.notes}
@@ -270,13 +272,13 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
               <SymbolView name={document.isPinned ? 'heart.fill' : 'heart'} tintColor={theme.heart} size={19} />
             </View>
             <View style={styles.flex}>
-              <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>
-              <Text style={styles.label}>La trovi subito in home</Text>
+              <Text style={styles.rowTitle}>{t('passwordDetail.favoriteTitle')}</Text>
+              <Text style={styles.label}>{t('passwordDetail.favoriteSubtitle')}</Text>
             </View>
             <Switch
               value={document.isPinned}
               onValueChange={(on) => setPinned(db, document.id, on)}
-              accessibilityLabel="Aggiungi ai preferiti"
+              accessibilityLabel={t('passwordDetail.favoriteTitle')}
             />
           </Pressable>
         </WhiteCard>
@@ -286,7 +288,7 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
           accessibilityRole="button"
           style={({ pressed }) => [styles.edit, pressed && styles.pressed]}>
           <SymbolView name="pencil" tintColor={PASSWORD_INK(theme)} size={17} />
-          <Text style={styles.editText}>Modifica</Text>
+          <Text style={styles.editText}>{t('common.edit')}</Text>
         </Pressable>
       </ScrollView>
 
@@ -297,11 +299,11 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
         actions={[
           {
             key: 'edit',
-            label: 'Modifica',
+            label: t('common.edit'),
             symbol: 'pencil',
             onPress: () => router.push({ pathname: '/edit-document/[id]', params: { id: String(document.id) } }),
           },
-          { key: 'delete', label: 'Sposta nel cestino', symbol: 'trash', destructive: true, onPress: () => confirmDeleteDocument(document) },
+          { key: 'delete', label: t('passwordDetail.moveToTrash'), symbol: 'trash', destructive: true, onPress: () => confirmDeleteDocument(document) },
         ]}
         onClose={() => setMenuOpen(false)}
       />

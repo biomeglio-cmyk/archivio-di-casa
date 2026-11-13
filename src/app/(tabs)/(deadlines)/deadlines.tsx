@@ -18,9 +18,10 @@ import { FONTS } from '@/constants/typography';
 import { listDocumentsWithExpiry, saveDocumentDeadline, setPaymentStatus } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { addDaysIso, formatDayMonth, formatShortDate, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
+import { useI18n } from '@/i18n';
+import { useFormat } from '@/i18n/use-format';
+import { addDaysIso, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 import { groupDeadlines, upcomingSummary } from '@/utils/deadlines';
-import { formatEuro } from '@/utils/money';
 import { whenBelowLimit } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
@@ -35,6 +36,8 @@ const documentHref = (id: number) =>
 // what has expired, the Da pagare / Pagata badge, and a long press on a row to change, mark as paid
 // or take away the deadline (repeats, reminders and the «Sottomano» calendar follow on save).
 export default function DeadlinesScreen() {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
@@ -92,10 +95,10 @@ export default function DeadlinesScreen() {
 
   function sheetActions(document: Dated): SheetAction[] {
     const actions: SheetAction[] = [
-      { key: 'open', label: 'Apri il documento', symbol: 'doc.text', onPress: () => open(document) },
+      { key: 'open', label: t('deadlines.openDocument'), symbol: 'doc.text', onPress: () => open(document) },
       {
         key: 'edit',
-        label: 'Modifica scadenza',
+        label: t('deadlines.editDeadline'),
         symbol: 'calendar.badge.clock',
         onPress: () => router.push({ pathname: '/deadline/[id]', params: { id: String(document.id) } }),
       },
@@ -104,20 +107,20 @@ export default function DeadlinesScreen() {
       const paid = document.paymentStatus === 'paid';
       actions.push({
         key: 'paid',
-        label: paid ? 'Segna da pagare' : 'Segna come pagata',
+        label: paid ? t('deadlines.markDue') : t('deadlines.markPaid'),
         symbol: paid ? 'arrow.uturn.backward.circle' : 'checkmark.circle',
         onPress: () => void setPaymentStatus(db, document.id, paid ? 'due' : 'paid'),
       });
     }
     actions.push({
       key: 'remove',
-      label: 'Togli la scadenza',
+      label: t('deadlines.removeDeadline'),
       symbol: 'calendar.badge.minus',
       destructive: true,
       onPress: () =>
-        Alert.alert('Togliere la scadenza?', 'Il documento resta; spariscono promemoria ed evento nel calendario.', [
-          { text: 'Annulla', style: 'cancel' },
-          { text: 'Togli', style: 'destructive', onPress: () => void saveDocumentDeadline(db, document.id, null) },
+        Alert.alert(t('deadlines.removeAlert.title'), t('deadlines.removeAlert.message'), [
+          { text: t('common.cancel'), style: 'cancel' },
+          { text: t('deadlines.removeAlert.confirm'), style: 'destructive', onPress: () => void saveDocumentDeadline(db, document.id, null) },
         ]),
     });
     return actions;
@@ -131,15 +134,15 @@ export default function DeadlinesScreen() {
         contentInsetAdjustmentBehavior="never"
         contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: Spacing.belowContent }]}>
         <PageHeader
-          title="Scadenze"
+          title={t('deadlines.title')}
           subtitle={documents ? upcomingSummary(upcoming) : ' '}
           onBack={goHome}
-          right={<RoundIconButton symbol="plus" accessibilityLabel="Nuovo promemoria" color={theme.text} onPress={addReminder} />}
+          right={<RoundIconButton symbol="plus" accessibilityLabel={t('deadlines.newReminder')} color={theme.text} onPress={addReminder} />}
         />
 
         <View style={styles.switch}>
           <Segmented
-            values={['Settimana', 'Mese']}
+            values={[t('deadlines.week'), t('deadlines.month')]}
             selectedIndex={view === 'week' ? 0 : 1}
             onChange={(index) => changeView(index === 0 ? 'week' : 'month')}
           />
@@ -199,10 +202,8 @@ export default function DeadlinesScreen() {
         {documents && sections.length === 0 && (
           <View style={styles.empty}>
             <SymbolView name="calendar.badge.checkmark" tintColor={theme.textSecondary} size={40} />
-            <Text style={styles.emptyTitle}>Nessuna scadenza in vista</Text>
-            <Text style={styles.emptyText}>
-              Tocca + per aggiungere un documento con una scadenza: comparirà qui e nel calendario.
-            </Text>
+            <Text style={styles.emptyTitle}>{t('deadlines.emptyTitle')}</Text>
+            <Text style={styles.emptyText}>{t('deadlines.emptyText')}</Text>
           </View>
         )}
       </ScrollView>
@@ -210,7 +211,7 @@ export default function DeadlinesScreen() {
       <ActionSheet
         visible={sheetFor !== null}
         title={sheetFor?.title ?? ''}
-        subtitle={sheetFor ? `Scade ${formatShortDate(sheetFor.expiresAt)}` : undefined}
+        subtitle={sheetFor ? t('deadlines.sheetSubtitle', { date: fmt.shortDate(sheetFor.expiresAt) }) : undefined}
         actions={sheetFor ? sheetActions(sheetFor) : []}
         onClose={() => setSheetFor(null)}
       />
@@ -221,11 +222,13 @@ export default function DeadlinesScreen() {
 // "14 NOVEMBRE" and the deadlines of that day (dot in the category color, name, amount), or
 // "Nessuna scadenza in questo giorno", on pale lilac
 function DayDeadlines({ iso, items, onOpen }: { iso: string; items: Dated[]; onOpen: (d: Dated) => void }) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const styles = useThemedStyles(makeStyles);
   const date = parseISODate(iso);
   return (
     <View style={styles.dayBox}>
-      <Text style={styles.dayTitle}>{formatDayMonth(date)}</Text>
+      <Text style={styles.dayTitle}>{fmt.dayMonth(date)}</Text>
       {items.map((item) => (
         <Pressable
           key={item.id}
@@ -237,11 +240,11 @@ function DayDeadlines({ iso, items, onOpen }: { iso: string; items: Dated[]; onO
             {item.title}
           </Text>
           <Text style={styles.dayItemSide} numberOfLines={1}>
-            {item.amountCents !== null ? formatEuro(item.amountCents) : item.repeat ? 'si ripete' : 'promemoria'}
+            {item.amountCents !== null ? fmt.euro(item.amountCents) : item.repeat ? t('deadlines.dayRepeats') : t('deadlines.dayReminder')}
           </Text>
         </Pressable>
       ))}
-      {items.length === 0 && <Text style={styles.dayEmpty}>Nessuna scadenza in questo giorno</Text>}
+      {items.length === 0 && <Text style={styles.dayEmpty}>{t('deadlines.dayEmpty')}</Text>}
     </View>
   );
 }

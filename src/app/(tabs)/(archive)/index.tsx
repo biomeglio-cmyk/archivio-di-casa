@@ -23,6 +23,7 @@ import { listCategoriesWithCounts, saveCategoryOrder } from '@/db/categories';
 import { listDocumentsWithExpiry, listPinnedDocuments } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useI18n } from '@/i18n';
 import { hasSeenOnboarding } from '@/onboarding/onboarding-flag';
 import { useEmptyHomePreview } from '@/settings/debug-previews';
 import { useFreeLimit } from '@/settings/free-limit';
@@ -43,6 +44,7 @@ function nextDeadline(documents: DocumentListItem[]): DocumentListItem | null {
 // The search field opens Ricerca (docs/design/Ricerca.dc.html).
 export default function ArchiveScreen() {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const db = useSQLiteContext();
   const scrollRef = useAnimatedRef<Animated.ScrollView>(); // the page scrolls while a category is dragged
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
@@ -77,14 +79,14 @@ export default function ArchiveScreen() {
         <HomeHeader />
         {/* Home vuota greets the new user (it wraps between words, never inside one) */}
         <Text style={styles.hello} accessibilityRole="header" lineBreakStrategyIOS="standard">
-          {empty && categories ? 'Benvenuto in Sottomano' : 'Ciao!'}
+          {empty && categories ? t('home.welcome') : t('home.hello')}
         </Text>
         {empty && categories ? (
           <HomeEmpty categories={categories} />
         ) : (
           <>
             <View style={styles.search}>
-              <SearchBar value="" onChangeText={() => undefined} placeholder="Cerca un documento" onOpen={() => router.push('/search')} />
+              <SearchBar value="" onChangeText={() => undefined} placeholder={t('home.searchPlaceholder')} onOpen={() => router.push('/search')} />
             </View>
 
             <View style={styles.notice}>
@@ -94,10 +96,10 @@ export default function ArchiveScreen() {
             {favorites.length > 0 && (
               <View style={styles.section}>
                 <SectionHeader
-                  title="Preferiti"
+                  title={t('home.favorites')}
                   action={{
-                    label: 'Vedi tutto',
-                    accessibilityLabel: 'Vedi tutti i preferiti',
+                    label: t('home.seeAll'),
+                    accessibilityLabel: t('home.seeAllFavorites'),
                     onPress: () => router.navigate('/(tabs)/(favorites)/favorites'),
                   }}
                 />
@@ -114,10 +116,10 @@ export default function ArchiveScreen() {
             {next && (
               <View style={styles.section}>
                 <SectionHeader
-                  title="Scadenze"
+                  title={t('home.deadlines')}
                   action={{
-                    label: 'Vedi tutto',
-                    accessibilityLabel: 'Vedi tutte le scadenze',
+                    label: t('home.seeAll'),
+                    accessibilityLabel: t('home.seeAllDeadlines'),
                     onPress: () => router.navigate('/(tabs)/(deadlines)/deadlines'),
                   }}
                 />
@@ -127,17 +129,17 @@ export default function ArchiveScreen() {
 
             <View style={styles.section}>
               <SectionHeader
-                title="Archivio"
+                title={t('home.archive')}
                 action={
                   categories && categories.length > 1
                     ? reordering
-                      ? { label: 'Fine', accessibilityLabel: 'Fine riordino', onPress: () => setReordering(false) }
-                      : { label: 'Riordina', accessibilityLabel: 'Riordina le categorie', onPress: () => setReordering(true) }
+                      ? { label: t('common.done'), accessibilityLabel: t('home.reorderDone'), onPress: () => setReordering(false) }
+                      : { label: t('home.reorder'), accessibilityLabel: t('home.reorderCategories'), onPress: () => setReordering(true) }
                     : undefined
                 }
               />
               {reordering && (
-                <Text style={styles.reorderHint}>Trascina le categorie nell’ordine che preferisci.</Text>
+                <Text style={styles.reorderHint}>{t('home.reorderHint')}</Text>
               )}
               {categories && (
                 <SortableTileGrid
@@ -151,10 +153,10 @@ export default function ArchiveScreen() {
                   onOpen={(category) => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } })}
                   onReorder={(ordered) =>
                     saveCategoryOrder(db, ordered.map((c) => c.id)).catch((error: unknown) =>
-                      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error)),
+                      Alert.alert(t('home.alerts.orderNotSaved'), error instanceof Error ? error.message : String(error)),
                     )
                   }
-                  add={{ label: 'Nuova categoria', onPress: () => router.push('/category-form') }}
+                  add={{ label: t('home.newCategory'), onPress: () => router.push('/category-form') }}
                   scrollableRef={scrollRef}
                 />
               )}

@@ -8,6 +8,7 @@ import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette, Radius, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { Category } from '@/db/types';
+import { t } from '@/i18n';
 import { categoryShadowRgb } from '@/utils/colors';
 import { useThemedStyles } from '@/hooks/use-theme';
 
@@ -20,8 +21,9 @@ export const CATEGORY_TILE_HEIGHT = 132; // Home squares of the guide
 
 // "12 documenti", "1 documento"; "5 tessere" for "Tessere e card" (VoiceOver label of the tile)
 export function describeCategoryCount(category: Pick<Category, 'isCards'>, count: number): string {
-  if (category.isCards) return count === 1 ? '1 tessera' : `${count} tessere`;
-  return count === 1 ? '1 documento' : `${count} documenti`;
+  // Called at render time by the screens, which re-render when the language changes
+  if (category.isCards) return t('categoryTile.cards', { count });
+  return t('common.documents', { count });
 }
 
 // Square of a category in Home (docs/design/Main.dc.html): 135° gradient in the palette colors

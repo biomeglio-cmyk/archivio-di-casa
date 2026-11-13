@@ -3,6 +3,8 @@ import { sha256 } from '@noble/hashes/sha2.js';
 import { AESEncryptionKey, AESSealedData, aesDecryptAsync, aesEncryptAsync, getRandomBytes } from 'expo-crypto';
 import type { FileHandle } from 'expo-file-system';
 
+import { t } from '@/i18n';
+
 // The .sottomano file: a header, then the zip archive encrypted in chunks.
 //
 //   offset  size  field
@@ -72,14 +74,14 @@ export function newHeader(): BackupHeader {
 }
 
 export function parseHeader(bytes: Uint8Array): BackupHeader {
-  const notABackup = new BackupError('not-a-backup', 'Questo file non è un backup di Sottomano.');
+  const notABackup = new BackupError('not-a-backup', t('backupCrypto.notABackup'));
   if (bytes.length < HEADER_SIZE || MAGIC.some((byte, i) => bytes[i] !== byte)) throw notABackup;
   const view = new DataView(bytes.buffer, bytes.byteOffset, HEADER_SIZE);
   let offset = MAGIC.length;
   const version = bytes[offset++];
   const kdf = bytes[offset++];
   if (version !== FORMAT_VERSION || kdf !== KDF_PBKDF2_SHA256) {
-    throw new BackupError('newer-version', 'Questo backup è stato creato da una versione più recente di Sottomano. Aggiorna l\'app e riprova.');
+    throw new BackupError('newer-version', t('backupCrypto.newerVersion'));
   }
   const iterations = view.getUint32(offset);
   offset += 4;
@@ -208,14 +210,14 @@ export async function decryptChunks(
   input.offset = HEADER_SIZE;
   let position = HEADER_SIZE;
   let index = 0;
-  if (total <= HEADER_SIZE) throw new BackupError('damaged', 'Il file del backup è vuoto o incompleto.');
+  if (total <= HEADER_SIZE) throw new BackupError('damaged', t('backupCrypto.empty'));
 
   while (position < total) {
     const size = Math.min(header.chunkSize + TAG_SIZE, total - position);
     const last = position + size >= total;
     const sealedBytes = await input.readBytes(size);
     if (sealedBytes.length !== size || size <= TAG_SIZE) {
-      throw new BackupError('damaged', 'Il file del backup è incompleto.');
+      throw new BackupError('damaged', t('backupCrypto.incomplete'));
     }
     let plain: Uint8Array;
     try {
@@ -223,8 +225,8 @@ export async function decryptChunks(
       plain = await aesDecryptAsync(sealed, key, { additionalData: header.bytes });
     } catch {
       throw index === 0
-        ? new BackupError('wrong-password', 'Password sbagliata. Controlla maiuscole e minuscole e riprova.')
-        : new BackupError('damaged', 'Il file del backup è danneggiato o incompleto.');
+        ? new BackupError('wrong-password', t('backupCrypto.wrongPassword'))
+        : new BackupError('damaged', t('backupCrypto.damaged'));
     }
     await output.writeBytes(plain);
     position += size;

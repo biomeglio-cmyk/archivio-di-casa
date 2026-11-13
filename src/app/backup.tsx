@@ -14,6 +14,7 @@ import { reloadApp } from '@/backup/app-reload';
 import { BackupError } from '@/backup/backup-crypto';
 import {
   BACKUP_FREQUENCIES,
+  backupFrequencyLabel,
   getBackupFrequency,
   getSavedBackup,
   saveBackupFrequency,
@@ -42,10 +43,12 @@ import { type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatBytes } from '@/send/send-preferences';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { t, useI18n } from '@/i18n';
+import { intlLocale } from '@/i18n/format';
 
 const MIN_PASSWORD = 8;
 // While the key is derived from the password (PBKDF2, slow in pure JS): create and restore
-const KEY_LABEL = 'Protezione con la password in corso… può richiedere fino a un minuto';
+const keyLabel = () => t('backup.keyProgress');
 
 type Step =
   | { kind: 'idle' }
@@ -58,7 +61,7 @@ const APRICOT = '#F5824A';
 const BACKUP_FOLDER = 'Backup'; // in the app's own folder on the phone
 
 function formatBackupDate(date: Date): string {
-  return date.toLocaleDateString('it-IT', { day: 'numeric', month: 'long', year: 'numeric' });
+  return date.toLocaleDateString(intlLocale(), { day: 'numeric', month: 'long', year: 'numeric' });
 }
 
 // "Backup 11-11-2026"
@@ -71,8 +74,9 @@ function backupName(date: Date): string {
 function whenText(iso: string): string {
   const date = new Date(iso);
   const time = `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`;
-  const day = date.toDateString() === new Date().toDateString() ? 'oggi' : formatBackupDate(date);
-  return `${day} alle ${time}`;
+  return date.toDateString() === new Date().toDateString()
+    ? t('backup.whenToday', { time })
+    : t('backup.whenDate', { date: formatBackupDate(date), time });
 }
 
 // The kept backup, if its file is still on the phone
@@ -93,6 +97,7 @@ export default function BackupScreen() {
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
+  const { t } = useI18n();
   const [step, setStep] = useState<Step>({ kind: 'idle' });
   const [password, setPassword] = useState('');
   const [repeat, setRepeat] = useState('');
@@ -131,19 +136,19 @@ export default function BackupScreen() {
 
   const passwordProblem =
     password.length < MIN_PASSWORD
-      ? `Almeno ${MIN_PASSWORD} caratteri.`
+      ? t('backup.minLength', { min: MIN_PASSWORD })
       : repeat.length > 0 && repeat !== password
-        ? 'Le due password non coincidono.'
+        ? t('backup.mismatch')
         : null;
 
   async function create() {
     const chosen = password;
-    progress(KEY_LABEL, null);
+    progress(keyLabel(), null);
     try {
       const file = await createBackup(db, chosen, (p) =>
         p.phase === 'key'
-          ? progress(KEY_LABEL, null)
-          : progress('Creo il backup…', p.total > 0 ? p.done / p.total : null),
+          ? progress(keyLabel(), null)
+          : progress(t('backup.creating'), p.total > 0 ? p.done / p.total : null),
       );
       const now = new Date();
       // Kept on the phone in Sottomano › Backup: the new one replaces the previous
@@ -167,7 +172,7 @@ export default function BackupScreen() {
       reset();
     } catch (e) {
       reset();
-      Alert.alert('Backup non riuscito', e instanceof Error ? e.message : String(e));
+      Alert.alert(t('backup.alerts.createFailed'), e instanceof Error ? e.message : String(e));
     }
   }
 
@@ -178,10 +183,10 @@ export default function BackupScreen() {
       await Sharing.shareAsync(saved.uri, {
         mimeType: 'application/octet-stream',
         UTI: 'public.data',
-        dialogTitle: 'Copia il backup',
+        dialogTitle: t('backup.copyDialogTitle'),
       });
     } catch (e) {
-      Alert.alert('Impossibile copiare', e instanceof Error ? e.message : String(e));
+      Alert.alert(t('backup.alerts.copyFailed'), e instanceof Error ? e.message : String(e));
     }
   }
 
@@ -203,13 +208,13 @@ export default function BackupScreen() {
 
   async function openBackup(uri: string, name: string) {
     const typed = password;
-    progress(KEY_LABEL, null);
+    progress(keyLabel(), null);
     let prepared;
     try {
       prepared = await prepareRestore(uri, typed, (p) => {
-        if (p.phase === 'key') progress(KEY_LABEL, null);
-        else if (p.phase === 'decrypt') progress('Apro il backup…', p.done / p.total);
-        else progress('Controllo i documenti…', p.total > 0 ? p.done / p.total : null);
+        if (p.phase === 'key') progress(keyLabel(), null);
+        else if (p.phase === 'decrypt') progress(t('backup.opening'), p.done / p.total);
+        else progress(t('backup.checking'), p.total > 0 ? p.done / p.total : null);
       });
     } catch (e) {
       // Nothing of the current data was touched: back to the password, with the reason
@@ -220,36 +225,42 @@ export default function BackupScreen() {
     }
 
     const date = formatBackupDate(new Date(prepared.manifest.createdAt));
-    const count = prepared.documentCount === 1 ? '1 documento' : `${prepared.documentCount} documenti`;
-    Alert.alert(`Ripristinare il backup del ${date}?`, `Contiene ${count}. Il contenuto attuale verrà sostituito.`, [
-      {
-        text: 'Annulla',
-        style: 'cancel',
-        onPress: () => {
-          discardPreparedRestore();
-          discardPickedFile(uri);
-          reset();
+    Alert.alert(
+      t('backup.alerts.restoreTitle', { date }),
+      t('backup.alerts.restoreMessage', { count: prepared.documentCount }),
+      [
+        {
+          text: t('common.cancel'),
+          style: 'cancel',
+          onPress: () => {
+            discardPreparedRestore();
+            discardPickedFile(uri);
+            reset();
+          },
         },
-      },
-      { text: 'Ripristina', style: 'destructive', onPress: () => restore(uri, prepared) },
-    ]);
+        { text: t('common.restore'), style: 'destructive', onPress: () => restore(uri, prepared) },
+      ],
+    );
   }
 
   async function restore(uri: string, prepared: PreparedRestore) {
-    progress('Ripristino…', null);
+    progress(t('backup.restoring'), null);
     try {
       await applyRestore(db, prepared);
     } catch (e) {
       discardPickedFile(uri);
       reset();
-      Alert.alert('Ripristino non riuscito', `Il contenuto attuale è rimasto com'era.\n\n${e instanceof Error ? e.message : String(e)}`);
+      Alert.alert(
+        t('backup.alerts.restoreFailed'),
+        t('backup.alerts.restoreFailedMessage', { reason: e instanceof Error ? e.message : String(e) }),
+      );
       return;
     }
     discardPickedFile(uri);
     // Close the sheets, then rebuild every screen from the restored data (back on Home)
-    Alert.alert('Backup ripristinato', 'I tuoi documenti sono tornati.', [
+    Alert.alert(t('backup.alerts.restored'), t('backup.alerts.restoredMessage'), [
       {
-        text: 'OK',
+        text: t('common.ok'),
         onPress: () => {
           if (router.canDismiss()) router.dismissAll();
           reloadApp();
@@ -277,18 +288,18 @@ export default function BackupScreen() {
           </View>
         )}
         <ThemedText type="small" themeColor="textSecondary" style={styles.center}>
-          Tieni aperta l&apos;app finché non ha finito.
+          {t('backup.keepOpen')}
         </ThemedText>
       </View>
     );
   } else if (step.kind === 'create') {
     body = (
       <View style={styles.form}>
-        <ThemedText style={styles.warning}>Se dimentichi la password, il backup non si può aprire.</ThemedText>
+        <ThemedText style={styles.warning}>{t('backup.forgotWarning')}</ThemedText>
         <TextField
           value={password}
           onChangeText={setPassword}
-          placeholder="Password (almeno 8 caratteri)"
+          placeholder={t('backup.passwordPlaceholder', { min: MIN_PASSWORD })}
           secureTextEntry
           textContentType="newPassword"
           autoCapitalize="none"
@@ -298,7 +309,7 @@ export default function BackupScreen() {
         <TextField
           value={repeat}
           onChangeText={setRepeat}
-          placeholder="Ripeti la password"
+          placeholder={t('backup.repeatPlaceholder')}
           secureTextEntry
           textContentType="newPassword"
           autoCapitalize="none"
@@ -310,12 +321,12 @@ export default function BackupScreen() {
           </ThemedText>
         )}
         <PrimaryButton
-          label="Crea e salva"
+          label={t('backup.createAndSave')}
           symbol="lock.doc"
           disabled={passwordProblem !== null || repeat !== password}
           onPress={create}
         />
-        <SecondaryButton label="Annulla" onPress={reset} />
+        <SecondaryButton label={t('common.cancel')} onPress={reset} />
       </View>
     );
   } else if (step.kind === 'restore') {
@@ -330,7 +341,7 @@ export default function BackupScreen() {
             setPassword(text);
             setError(null);
           }}
-          placeholder="Password del backup"
+          placeholder={t('backup.backupPassword')}
           secureTextEntry
           textContentType="password"
           autoCapitalize="none"
@@ -340,16 +351,16 @@ export default function BackupScreen() {
         />
         {error && <ThemedText style={{ color: DANGER_COLOR(theme) }}>{error}</ThemedText>}
         <PrimaryButton
-          label="Apri backup"
+          label={t('backup.openBackup')}
           symbol="lock.open"
           disabled={password.length === 0}
           onPress={() => openBackup(step.uri, step.name)}
         />
-        <SecondaryButton label="Annulla" onPress={reset} />
+        <SecondaryButton label={t('common.cancel')} onPress={reset} />
       </View>
     );
   } else {
-    const documents = saved ? (saved.documents === 1 ? '1 documento' : `${saved.documents} documenti`) : '';
+    const documents = saved ? t('common.documents', { count: saved.documents }) : '';
     body = (
       <>
         {saved ? (
@@ -357,15 +368,15 @@ export default function BackupScreen() {
             <LinearGradient colors={['#6FD3AE', '#45B68E']} start={GRADIENT_START} end={GRADIENT_END} style={styles.doneCircle}>
               <SymbolView name="checkmark" tintColor="#FFFFFF" size={30} weight="bold" />
             </LinearGradient>
-            <Text style={styles.statusTitle}>{justCreated ? 'Backup completato' : 'Ultimo backup'}</Text>
+            <Text style={styles.statusTitle}>{justCreated ? t('backup.completed') : t('backup.lastBackup')}</Text>
             <Text style={styles.statusText}>{`${documents} · ${formatBytes(saved.bytes)} · ${whenText(saved.createdAt)}`}</Text>
             <View style={styles.path}>
               <SymbolView name="folder" tintColor={theme.indigo} size={18} />
-              <Text style={styles.pathText}>{`Sottomano › Backup › ${saved.name}`}</Text>
+              <Text style={styles.pathText}>{t('backup.path', { name: saved.name })}</Text>
             </View>
-            <SoftButton symbol="square.and.arrow.up" label="Copia il file altrove" onPress={copyElsewhere} />
+            <SoftButton symbol="square.and.arrow.up" label={t('backup.copyElsewhere')} onPress={copyElsewhere} />
             <Pressable onPress={() => setStep({ kind: 'create' })} accessibilityRole="button" hitSlop={8} style={styles.again}>
-              <Text style={styles.againText}>Crea un nuovo backup</Text>
+              <Text style={styles.againText}>{t('backup.createNew')}</Text>
             </Pressable>
           </WhiteCard>
         ) : (
@@ -373,10 +384,10 @@ export default function BackupScreen() {
             <View style={styles.idleCircle}>
               <SymbolView name="externaldrive.badge.icloud" tintColor={APRICOT} size={30} />
             </View>
-            <Text style={styles.statusTitle}>Non hai ancora fatto un backup</Text>
-            <Text style={styles.statusText}>Se perdi o cambi telefono, con il backup ritrovi tutto.</Text>
+            <Text style={styles.statusTitle}>{t('backup.noneTitle')}</Text>
+            <Text style={styles.statusText}>{t('backup.noneText')}</Text>
             <PrimaryButton
-              label="Crea backup ora"
+              label={t('backup.createNow')}
               symbol="arrow.down.doc"
               onPress={() => setStep({ kind: 'create' })}
               style={styles.create}
@@ -384,32 +395,29 @@ export default function BackupScreen() {
           </WhiteCard>
         )}
 
-        <Text style={styles.section}>Ripristina</Text>
+        <Text style={styles.section}>{t('backup.restoreSection')}</Text>
         <WhiteCard style={styles.restoreCard}>
-          <Text style={styles.restoreTitle}>Hai cambiato telefono?</Text>
-          <Text style={styles.restoreText}>Scegli il file di backup e ritrovi documenti, tessere e promemoria.</Text>
-          <SoftButton symbol="arrow.counterclockwise" label="Scegli un file di backup" onPress={pickBackup} plain />
+          <Text style={styles.restoreTitle}>{t('backup.restoreTitle')}</Text>
+          <Text style={styles.restoreText}>{t('backup.restoreText')}</Text>
+          <SoftButton symbol="arrow.counterclockwise" label={t('backup.chooseFile')} onPress={pickBackup} plain />
         </WhiteCard>
 
-        <Text style={styles.section}>Promemoria</Text>
+        <Text style={styles.section}>{t('backup.remindersSection')}</Text>
         <WhiteCard style={styles.reminder}>
           <View style={styles.reminderIcon}>
             <SymbolView name="bell" tintColor={APRICOT} size={18} />
           </View>
-          <Text style={styles.reminderLabel}>Ricordami di fare il backup</Text>
+          <Text style={styles.reminderLabel}>{t('backup.remindMe')}</Text>
           <Pressable
             onPress={() => setFrequencyOpen(true)}
             accessibilityRole="button"
-            accessibilityLabel={`Ricordami di fare il backup: ${BACKUP_FREQUENCIES.find((f) => f.value === frequency)?.label}`}
+            accessibilityLabel={t('backup.remindMeValue', { value: backupFrequencyLabel(frequency) })}
             style={styles.select}>
-            <Text style={styles.selectText}>{BACKUP_FREQUENCIES.find((f) => f.value === frequency)?.label}</Text>
+            <Text style={styles.selectText}>{backupFrequencyLabel(frequency)}</Text>
             <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={12} weight="semibold" />
           </Pressable>
         </WhiteCard>
-        <Text style={styles.footnote}>
-          Il backup è un unico file protetto dalla password che scegli: documenti, foto, tessere, persone e promemoria.
-          Copialo altrove (File, iCloud Drive, un computer) per ritrovarlo anche se perdi il telefono.
-        </Text>
+        <Text style={styles.footnote}>{t('backup.footnote')}</Text>
       </>
     );
   }
@@ -427,27 +435,27 @@ export default function BackupScreen() {
           {!working && (
             <RoundIconButton
               symbol="chevron.left"
-              accessibilityLabel="Indietro"
+              accessibilityLabel={t('common.back')}
               color={theme.text}
               onPress={() => (step.kind === 'idle' ? router.back() : reset())}
             />
           )}
           <Text style={styles.title} accessibilityRole="header">
-            Backup
+            {t('backup.title')}
           </Text>
-          <Text style={styles.subtitle}>Una copia di tutti i tuoi documenti, salvata sul telefono.</Text>
+          <Text style={styles.subtitle}>{t('backup.subtitle')}</Text>
         </View>
         {body}
       </ScrollView>
 
       <ActionSheet
         visible={frequencyOpen}
-        title="Ricordami di fare il backup"
-        actions={BACKUP_FREQUENCIES.map((f) => ({
-          key: f.value,
-          label: f.label,
-          symbol: f.value === frequency ? 'checkmark.circle.fill' : 'circle',
-          onPress: () => chooseFrequency(f.value),
+        title={t('backup.remindMe')}
+        actions={BACKUP_FREQUENCIES.map((value) => ({
+          key: value,
+          label: backupFrequencyLabel(value),
+          symbol: value === frequency ? 'checkmark.circle.fill' : 'circle',
+          onPress: () => chooseFrequency(value),
         }))}
         onClose={() => setFrequencyOpen(false)}
       />

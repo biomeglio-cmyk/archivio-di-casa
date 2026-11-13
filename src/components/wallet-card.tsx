@@ -11,6 +11,7 @@ import { resolveDocumentFile } from '@/storage/document-files';
 import { isLightColor, mixWithWhite } from '@/utils/colors';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 export const WALLET_CARD_HEIGHT = 214; // open card in Tessere
 export const WALLET_CARD_PEEK = 86; // closed card: only its top shows
@@ -38,6 +39,7 @@ export function spacedNumber(value: string | null): string {
 // and the holder in capitals
 export function WalletCardFace({ card, height = WALLET_CARD_HEIGHT, scale = 1, usePhoto = true }: Props) {
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   if (usePhoto && card.firstImagePath && card.coverMode !== 'color') {
     return (
       <View style={[styles.face, { height }]}>
@@ -64,7 +66,7 @@ export function WalletCardFace({ card, height = WALLET_CARD_HEIGHT, scale = 1, u
       <View style={[styles.circle, styles.circleBottom, circle(size(140)), { right: size(40), bottom: -size(70) }]} />
       <View style={styles.top}>
         <Text style={[styles.brand, ink, { fontSize: size(20) }]} numberOfLines={1} maxFontSizeMultiplier={1.2}>
-          {card.title || 'Nuova tessera'}
+          {card.title || t('walletCard.untitled')}
         </Text>
         {card.docType ? (
           <Text style={[styles.type, ink, { fontSize: size(12) }]} numberOfLines={1} maxFontSizeMultiplier={1.2}>

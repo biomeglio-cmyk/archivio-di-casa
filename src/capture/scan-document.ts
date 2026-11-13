@@ -2,6 +2,7 @@ import { CameraView } from 'expo-camera';
 import Storage from 'expo-sqlite/kv-store';
 import { Alert } from 'react-native';
 
+import { t } from '@/i18n';
 
 // iOS document scanner (VisionKit, the same as Note and WhatsApp): finds the edges of the paper,
 // straightens it and lets the user shoot several pages. Pages arrive as JPEGs in the cache;
@@ -25,14 +26,12 @@ const TIPS = {
   // The iOS scanner keeps going page after page, but that isn't obvious
   document: {
     key: 'scanner.tipShown',
-    title: 'Più pagine',
-    text: 'Puoi scansionare più pagine di fila: inquadra la pagina successiva prima di toccare Salva.',
+    textKey: 'documentTip',
   },
   // The scanner "enhances" a card like paper (yellowish); its filter button has "Foto"
   card: {
     key: 'scanner.cardTipShown',
-    title: 'Colori veri',
-    text: 'Per i colori veri della tessera tocca il pulsante dei filtri nello scanner e scegli «Foto».',
+    textKey: 'cardTip',
   },
 } as const;
 
@@ -42,7 +41,12 @@ function showTipOnce(kind: keyof typeof TIPS): Promise<void> {
   if (Storage.getItemSync(tip.key) === '1') return Promise.resolve();
   Storage.setItemSync(tip.key, '1');
   return new Promise((resolve) => {
-    Alert.alert(tip.title, tip.text, [{ text: 'Ho capito', onPress: () => resolve() }], { cancelable: false });
+    Alert.alert(
+      t(`scanDocument.${tip.textKey}.title`),
+      t(`scanDocument.${tip.textKey}.text`),
+      [{ text: t('scanDocument.gotIt'), onPress: () => resolve() }],
+      { cancelable: false },
+    );
   });
 }
 

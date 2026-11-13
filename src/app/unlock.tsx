@@ -11,26 +11,23 @@ import { WhiteCard } from '@/components/white-card';
 import { onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { getFreeUsage, UNLOCK_PRICE } from '@/settings/free-limit';
+import { t as translate, useI18n } from '@/i18n';
+import { getFreeUsage, unlockPrice } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#15332A');
 const MINT_INK = (p: Palette) => onSoftTint(p, '#1F7A5A', '#7FE0BC');
-const BENEFITS = [
-  { title: 'Documenti senza limiti', text: 'Bollette, tessere, garanzie e tutto il resto' },
-  { title: 'Promemoria delle scadenze', text: 'Ti avvisiamo prima che sia tardi' },
-  { title: 'Funziona senza internet', text: 'Tutto resta sul tuo telefono, anche il backup' },
-  { title: 'Tutta la famiglia', text: 'Un profilo per ogni persona di casa' },
-];
+// Keys of unlock.benefits.<key>.title / .text
+const BENEFITS = ['unlimited', 'reminders', 'offline', 'family'] as const;
 
 // The purchase needs StoreKit, which only works in a build from the App Store (not in Expo Go)
 function storeOnly() {
-  Alert.alert("Disponibile nella versione dell'App Store");
+  Alert.alert(translate('unlock.storeOnly'));
 }
 
 function remainingText(remaining: number): string {
-  if (remaining === 0) return 'Hai usato tutti gli spazi gratuiti.';
-  return `Ne puoi aggiungere ancora ${remaining}.`;
+  if (remaining === 0) return translate('unlock.remainingNone');
+  return translate('unlock.remaining', { count: remaining });
 }
 
 // "Sblocca" (docs/design/Sblocca.dc.html): what the free version allows, how much is used, the
@@ -38,6 +35,7 @@ function remainingText(remaining: number): string {
 export default function UnlockScreen() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { data: usage } = useDbQuery(getFreeUsage, []);
   const used = usage?.used ?? 0;
@@ -51,85 +49,79 @@ export default function UnlockScreen() {
         <Pressable
           onPress={() => router.back()}
           accessibilityRole="button"
-          accessibilityLabel="Chiudi"
+          accessibilityLabel={t('common.close')}
           style={({ pressed }) => [styles.close, pressed && styles.pressed]}>
           <SymbolView name="xmark" tintColor={theme.text} size={18} weight="semibold" />
         </Pressable>
       </View>
 
       <View style={styles.hero}>
-        <View style={styles.logo} accessible accessibilityRole="image" accessibilityLabel="Sottomano">
+        <View style={styles.logo} accessible accessibilityRole="image" accessibilityLabel="Sottomano" /* i18n-ignore: brand */>
           <LogoMark size={76} radius={17} />
         </View>
         <View style={styles.tag}>
-          <Text style={styles.tagText}>
-            Versione gratuita · {used} di {limit} usati
-          </Text>
+          <Text style={styles.tagText}>{t('unlock.tag', { used, limit })}</Text>
         </View>
         <Text style={styles.title} accessibilityRole="header">
-          Tutti i tuoi documenti, senza limiti
+          {t('unlock.title')}
         </Text>
-        <Text style={styles.intro}>
-          Gratis fino a {limit} documenti e tessere. Per aggiungerne quanti vuoi, la sblocchi con un solo pagamento.
-        </Text>
+        <Text style={styles.intro}>{t('unlock.intro', { limit })}</Text>
       </View>
 
       <WhiteCard style={styles.benefits}>
         {BENEFITS.map((benefit) => (
-          <View key={benefit.title} style={styles.benefit}>
+          <View key={benefit} style={styles.benefit}>
             <View style={styles.check}>
               <SymbolView name="checkmark" tintColor={MINT_INK(theme)} size={13} weight="bold" />
             </View>
             <View style={styles.benefitTexts}>
-              <Text style={styles.benefitTitle}>{benefit.title}</Text>
-              <Text style={styles.benefitText}>{benefit.text}</Text>
+              <Text style={styles.benefitTitle}>{t(`unlock.benefits.${benefit}.title`)}</Text>
+              <Text style={styles.benefitText}>{t(`unlock.benefits.${benefit}.text`)}</Text>
             </View>
           </View>
         ))}
       </WhiteCard>
 
       <Text style={styles.sectionTitle} accessibilityRole="header">
-        La tua versione gratuita
+        {t('unlock.sectionTitle')}
       </Text>
       <WhiteCard style={styles.usage}>
         <View style={styles.usageRow}>
-          <Text style={styles.usageLabel}>Documenti e tessere</Text>
-          <Text style={styles.usageValue}>
-            {used} di {limit}
-          </Text>
+          <Text style={styles.usageLabel}>{t('unlock.usageLabel')}</Text>
+          <Text style={styles.usageValue}>{t('unlock.usageValue', { used, limit })}</Text>
         </View>
         <View style={styles.usageBar}>
           <ProgressBar
             share={usage?.share ?? 0}
             height={10}
-            accessibilityLabel="Spazi gratuiti usati"
+            accessibilityLabel={t('unlock.usageA11y')}
             max={limit}
             now={Math.min(used, limit)}
           />
         </View>
         <Text style={styles.usageNote}>
-          {remainingText(usage?.remaining ?? limit)} Quelli già salvati restano sempre tuoi, anche senza sbloccare.
+          {remainingText(usage?.remaining ?? limit)} {t('unlock.keptNote')}
         </Text>
       </WhiteCard>
 
       <View style={styles.price}>
         <View style={styles.priceTexts}>
-          <Text style={styles.priceTitle}>Per sempre</Text>
-          <Text style={styles.priceText}>Senza limiti · un solo pagamento</Text>
+          <Text style={styles.priceTitle}>{t('unlock.priceTitle')}</Text>
+          <Text style={styles.priceText}>{t('unlock.priceText')}</Text>
         </View>
-        <Text style={styles.priceValue}>{UNLOCK_PRICE}</Text>
+        <Text style={styles.priceValue}>{unlockPrice()}</Text>
       </View>
 
       <View style={styles.buy}>
-        <PrimaryButton label={`Sblocca per ${UNLOCK_PRICE}`} onPress={storeOnly} />
+        <PrimaryButton label={t('unlock.buy', { price: unlockPrice() })} onPress={storeOnly} />
       </View>
       <Pressable onPress={() => router.back()} accessibilityRole="button" style={styles.free}>
-        <Text style={styles.freeText}>Continua gratis</Text>
+        <Text style={styles.freeText}>{t('unlock.continueFree')}</Text>
       </Pressable>
       <View style={styles.links}>
-        <Link label="Ripristina acquisto" onPress={storeOnly} />
-        <Link label="Termini" onPress={() => router.push('/terms')} />
-        <Link label="Privacy" onPress={() => router.push('/about')} />
+        <Link label={t('unlock.restore')} onPress={storeOnly} />
+        <Link label={t('unlock.terms')} onPress={() => router.push('/terms')} />
+        <Link label={t('unlock.privacy')} onPress={() => router.push('/about')} />
       </View>
     </ScrollView>
   );

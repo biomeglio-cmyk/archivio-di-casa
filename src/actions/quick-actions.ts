@@ -6,6 +6,7 @@ import { confirmDeleteCategory, confirmDeleteDocument, confirmDeletePerson } fro
 import { isOtherCategory } from '@/db/categories';
 import { setPinned } from '@/db/documents';
 import type { Category, DocumentListItem, Person } from '@/db/types';
+import { t } from '@/i18n';
 
 // One entry of the quick-action menu (long press on a tile) and of the VoiceOver actions
 export type QuickAction = {
@@ -20,22 +21,22 @@ export type QuickAction = {
 export function documentQuickActions(db: SQLiteDatabase, document: DocumentListItem, href: Href): QuickAction[] {
   const editPath = document.category.isCards ? '/edit-card/[id]' : '/edit-document/[id]';
   return [
-    { key: 'open', label: 'Apri', symbol: 'arrow.up.forward.app', onPress: () => router.push(href) },
+    { key: 'open', label: t('quickActions.open'), symbol: 'arrow.up.forward.app', onPress: () => router.push(href) },
     {
       key: 'pin',
-      label: document.isPinned ? 'Togli dai preferiti' : 'Aggiungi ai preferiti',
+      label: document.isPinned ? t('quickActions.unpin') : t('quickActions.pin'),
       symbol: document.isPinned ? 'heart.slash' : 'heart',
       onPress: () => void setPinned(db, document.id, !document.isPinned),
     },
     {
       key: 'edit',
-      label: 'Modifica',
+      label: t('common.edit'),
       symbol: 'pencil',
       onPress: () => router.push({ pathname: editPath, params: { id: String(document.id) } }),
     },
     {
       key: 'trash',
-      label: 'Sposta nel cestino',
+      label: t('quickActions.moveToTrash'),
       symbol: 'trash',
       destructive: true,
       onPress: () => confirmDeleteDocument(document),
@@ -48,13 +49,13 @@ export function categoryQuickActions(db: SQLiteDatabase, category: Category): Qu
   const actions: QuickAction[] = [
     {
       key: 'open',
-      label: 'Apri',
+      label: t('quickActions.open'),
       symbol: 'arrow.up.forward.app',
       onPress: () => router.push({ pathname: '/category/[id]', params: { id: String(category.id) } }),
     },
     {
       key: 'edit',
-      label: 'Modifica categoria',
+      label: t('quickActions.editCategory'),
       symbol: 'pencil',
       onPress: () => router.push({ pathname: '/category-form', params: { id: String(category.id) } }),
     },
@@ -62,7 +63,7 @@ export function categoryQuickActions(db: SQLiteDatabase, category: Category): Qu
   if (!isOtherCategory(category)) {
     actions.push({
       key: 'delete',
-      label: 'Cancella categoria',
+      label: t('quickActions.deleteCategory'),
       symbol: 'trash',
       destructive: true,
       onPress: () => confirmDeleteCategory(category),
@@ -76,19 +77,19 @@ export function personQuickActions(db: SQLiteDatabase, person: Person): QuickAct
   return [
     {
       key: 'open',
-      label: 'Apri',
+      label: t('quickActions.open'),
       symbol: 'arrow.up.forward.app',
       onPress: () => router.push({ pathname: '/person/[id]', params: { id: String(person.id) } }),
     },
     {
       key: 'edit',
-      label: 'Modifica persona',
+      label: t('quickActions.editPerson'),
       symbol: 'pencil',
       onPress: () => router.push({ pathname: '/person-form', params: { id: String(person.id) } }),
     },
     {
       key: 'delete',
-      label: 'Cancella persona',
+      label: t('quickActions.deletePerson'),
       symbol: 'trash',
       destructive: true,
       onPress: () => confirmDeletePerson(person),

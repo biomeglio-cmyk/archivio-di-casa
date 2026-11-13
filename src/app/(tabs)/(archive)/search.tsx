@@ -14,6 +14,7 @@ import { listCategoriesWithCounts } from '@/db/categories';
 import { listAllDocuments } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
+import { useI18n } from '@/i18n';
 import { SEARCH_FILTERS, searchEverything, type SearchFilterKey, type SearchResult } from '@/search/search-all';
 import { highlight, type MatchRange } from '@/search/text-match';
 import { categoryShadowRgb } from '@/utils/colors';
@@ -32,6 +33,7 @@ const MARK_TEXT = (p: Palette) => onSoftTint(p, '#3A2BC8', '#B3A8FF');
 export default function SearchScreen() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const insets = useSafeAreaInsets();
   const { data: documents } = useDbQuery(listAllDocuments, []);
   const { data: categories } = useDbQuery(listCategoriesWithCounts, []);
@@ -60,24 +62,24 @@ export default function SearchScreen() {
           <TextInput
             value={query}
             onChangeText={setQuery}
-            placeholder="Cerca un documento"
+            placeholder={t('search.placeholder')}
             placeholderTextColor={theme.placeholder}
             autoFocus
             returnKeyType="search"
             clearButtonMode="while-editing"
-            accessibilityLabel="Cerca tra i documenti"
+            accessibilityLabel={t('search.fieldLabel')}
             style={styles.input}
           />
         </View>
         <Pressable onPress={() => router.back()} accessibilityRole="button" hitSlop={8}>
-          <Text style={styles.cancel}>Annulla</Text>
+          <Text style={styles.cancel}>{t('common.cancel')}</Text>
         </Pressable>
       </View>
 
-      <View style={styles.filters} accessibilityLabel="Filtra">
+      <View style={styles.filters} accessibilityLabel={t('search.filter')}>
         <ChipGroup>
           {SEARCH_FILTERS.map((f) => (
-            <Chip key={f.key} label={f.label} selected={filter === f.key} onPress={() => setFilter(f.key)} />
+            <Chip key={f.key} label={t(f.labelKey)} selected={filter === f.key} onPress={() => setFilter(f.key)} />
           ))}
         </ChipGroup>
       </View>
@@ -85,7 +87,7 @@ export default function SearchScreen() {
       {typed ? (
         <>
           <Text style={styles.count} accessibilityLiveRegion="polite">
-            {results.length === 1 ? '1 risultato' : `${results.length} risultati`}
+            {t('search.results', { count: results.length })}
           </Text>
           <View style={styles.list}>
             {results.map((result) => (
@@ -93,16 +95,14 @@ export default function SearchScreen() {
             ))}
             {results.length === 0 && (
               <View style={styles.none}>
-                <Text style={styles.noneTitle}>Nessun risultato</Text>
-                <Text style={styles.noneText}>Prova con un’altra parola, per esempio il nome di un negozio.</Text>
+                <Text style={styles.noneTitle}>{t('search.noResults')}</Text>
+                <Text style={styles.noneText}>{t('search.noResultsHint')}</Text>
               </View>
             )}
           </View>
         </>
       ) : (
-        <Text style={styles.hint}>
-          Cerca nei nomi, nelle cartelle, nei tipi, nelle note, nelle tessere e nelle scadenze.
-        </Text>
+        <Text style={styles.hint}>{t('search.hint')}</Text>
       )}
     </ScrollView>
   );

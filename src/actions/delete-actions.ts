@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { Alert } from 'react-native';
 
 import { isOtherCategory } from '@/db/categories';
+import { t } from '@/i18n';
 
 // Confirmation dialogs for destructive actions, shared by detail screens, swipe actions and menus.
 // `onDeleted` runs only if the user confirmed and the deletion succeeded.
@@ -21,7 +22,7 @@ export function confirmDeletePerson(person: { id: number }) {
 // (src/app/delete-category/[id].tsx) with the choice "Spostali in Altro" / "Cancellali"
 export function confirmDeleteCategory(category: { id: number; builtinKey: string | null }) {
   if (isOtherCategory(category)) {
-    Alert.alert('Categoria "Altro"', 'Non si può eliminare: accoglie i documenti delle categorie eliminate.');
+    Alert.alert(t('deleteActions.otherCategoryTitle'), t('deleteActions.otherCategoryMessage'));
     return;
   }
   router.push({ pathname: '/delete-category/[id]', params: { id: String(category.id) } });

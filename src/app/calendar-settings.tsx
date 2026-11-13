@@ -17,6 +17,7 @@ import { WhiteCard } from '@/components/white-card';
 import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
 
@@ -25,6 +26,7 @@ type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
 export default function CalendarSettingsSheet() {
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
+  const { t } = useI18n();
   const [permission, setPermission] = useState<PermissionState>('unknown');
   const [settings, setSettings] = useState<CalendarSettings>(getCalendarSettings);
   const [busy, setBusy] = useState(false);
@@ -56,7 +58,7 @@ export default function CalendarSettingsSheet() {
     try {
       setStatus(await task());
     } catch (error) {
-      Alert.alert('Calendario', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('calendarSettings.title'), error instanceof Error ? error.message : String(error));
     } finally {
       setSettings(getCalendarSettings());
       setBusy(false);
@@ -67,19 +69,19 @@ export default function CalendarSettingsSheet() {
     if (enabled) {
       run(async () => {
         const count = await enableCalendarSync(db);
-        return `${count === 1 ? '1 scadenza' : `${count} scadenze`} nel calendario «Sottomano»`;
+        return t('calendarSettings.enabled', { count });
       });
       return;
     }
-    Alert.alert('Togliere il calendario Sottomano e tutte le sue scadenze dal Calendario?', undefined, [
-      { text: 'Annulla', style: 'cancel' },
+    Alert.alert(t('calendarSettings.removeConfirm'), undefined, [
+      { text: t('common.cancel'), style: 'cancel' },
       {
-        text: 'Togli',
+        text: t('calendarSettings.remove'),
         style: 'destructive',
         onPress: () =>
           run(async () => {
             await disableCalendarSync(db);
-            return 'Calendario «Sottomano» cancellato';
+            return t('calendarSettings.removed');
           }),
       },
     ]);
@@ -87,33 +89,26 @@ export default function CalendarSettingsSheet() {
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <ThemedText style={styles.title}>Calendario</ThemedText>
-      <ThemedText themeColor="textSecondary">
-        Le scadenze vanno in un calendario separato, «Sottomano». Puoi nasconderlo nell&apos;app Calendario; spegnendo
-        qui, viene cancellato.
-      </ThemedText>
+      <ThemedText style={styles.title}>{t('calendarSettings.title')}</ThemedText>
+      <ThemedText themeColor="textSecondary">{t('calendarSettings.intro')}</ThemedText>
       <ThemedText type="small" themeColor="textSecondary">
-        Ogni scadenza è un evento di tutto il giorno «Scade: titolo», senza altri dati del documento. Se i promemoria di
-        sottomano sono spenti, l&apos;evento avvisa alle 9 nel giorno del promemoria; se sono accesi avvisa solo
-        l&apos;app, così non ricevi due avvisi.
+        {t('calendarSettings.details')}
       </ThemedText>
 
-      {permission === 'ask' && <PrimaryButton label="Consenti accesso al Calendario" onPress={askPermission} />}
+      {permission === 'ask' && <PrimaryButton label={t('calendarSettings.allowAccess')} onPress={askPermission} />}
 
       {permission === 'denied' && (
         <>
-          <ThemedText themeColor="textSecondary">
-            L&apos;accesso al Calendario è stato negato. Puoi attivarlo nelle Impostazioni dell&apos;iPhone.
-          </ThemedText>
-          <PrimaryButton label="Apri Impostazioni" onPress={() => Linking.openSettings()} />
+          <ThemedText themeColor="textSecondary">{t('calendarSettings.denied')}</ThemedText>
+          <PrimaryButton label={t('calendarSettings.openSettings')} onPress={() => Linking.openSettings()} />
         </>
       )}
 
       {permission === 'granted' && (
         <>
           <WhiteCard style={[styles.card, styles.switchRow]}>
-            <ThemedText style={styles.switchLabel}>Scadenze nel calendario «Sottomano»</ThemedText>
-            <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} accessibilityLabel="Scadenze nel calendario «Sottomano»" />
+            <ThemedText style={styles.switchLabel}>{t('calendarSettings.switchLabel')}</ThemedText>
+            <Switch value={settings.enabled} onValueChange={toggle} disabled={busy} accessibilityLabel={t('calendarSettings.switchLabel')} />
           </WhiteCard>
 
           {busy && <ActivityIndicator />}

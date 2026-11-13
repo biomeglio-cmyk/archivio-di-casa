@@ -21,6 +21,7 @@ import { QuickActionMenu, type QuickMenuTarget } from '@/components/quick-action
 import { TILE_COLUMNS, TILE_GAP, useTileSize } from '@/hooks/use-tile-size';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const DRAG_DELAY_MS = 400; // long press before a tile lifts, like the iOS Home Screen
 const REORDER_DRAG_DELAY_MS = 120; // "Riordina": a short touch is enough to pick a tile up
@@ -74,6 +75,7 @@ export function SortableTileGrid<T>({
   reordering = false,
   actionsFor,
 }: Props<T>) {
+  const { t } = useI18n();
   const gridSize = useTileSize(); // the width comes from the grid column
   const tileSize = cardShaped
     ? { width: gridSize.width, minHeight: Math.round(gridSize.width / CARD_ASPECT_RATIO) }
@@ -191,13 +193,13 @@ export function SortableTileGrid<T>({
                 accessibilityLabel={labelFor(item)}
                 accessibilityHint={
                   reordering
-                    ? 'Trascina per spostarlo, oppure usa le azioni Sposta prima e Sposta dopo'
-                    : 'Tieni premuto: trascina per spostarlo, oppure lascia per le azioni'
+                    ? t('sortableList.dragHint')
+                    : t('sortableTileGrid.holdHint')
                 }
                 accessibilityActions={[
                   { name: 'activate' },
-                  { name: 'earlier', label: 'Sposta prima' },
-                  { name: 'later', label: 'Sposta dopo' },
+                  { name: 'earlier', label: t('sortableList.moveEarlier') },
+                  { name: 'later', label: t('sortableList.moveLater') },
                   ...(reordering ? [] : accessibilityActionsOf(quick)),
                 ]}
                 onAccessibilityAction={(event) => {

@@ -1,3 +1,4 @@
+import { t } from '@/i18n';
 import { monthName } from '@/i18n/format';
 import { addDaysIso, capitalize, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 
@@ -51,8 +52,8 @@ export function groupDeadlines<T extends WithExpiry>(documents: T[], now: Date =
   }
 
   const sections: DeadlineSection<T>[] = [];
-  if (overdue.length) sections.push({ key: 'overdue', title: 'Da sistemare', kind: 'overdue', data: overdue });
-  if (week.length) sections.push({ key: 'week', title: 'Questa settimana', kind: 'week', data: week });
+  if (overdue.length) sections.push({ key: 'overdue', title: t('deadlineUtils.overdue'), kind: 'overdue', data: overdue });
+  if (week.length) sections.push({ key: 'week', title: t('deadlineUtils.thisWeek'), kind: 'week', data: week });
   for (const [key, data] of months) {
     sections.push({ key, title: monthSectionTitle(key, now), kind: 'month', data });
   }
@@ -61,6 +62,6 @@ export function groupDeadlines<T extends WithExpiry>(documents: T[], now: Date =
 
 // "4 cose da fare nei prossimi mesi": the deadlines from today on
 export function upcomingSummary(count: number): string {
-  if (count === 0) return 'Niente in scadenza nei prossimi mesi';
-  return count === 1 ? '1 cosa da fare nei prossimi mesi' : `${count} cose da fare nei prossimi mesi`;
+  if (count === 0) return t('deadlineUtils.upcomingNone');
+  return t('deadlineUtils.upcoming', { count });
 }

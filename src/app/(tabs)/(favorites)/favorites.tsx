@@ -27,6 +27,7 @@ import { listPinnedDocuments, savePinnedOrder, setPinned } from '@/db/documents'
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { usePressed } from '@/hooks/use-pressed';
+import { t as translate, useI18n } from '@/i18n';
 import { findMatch, normalizeText } from '@/search/text-match';
 import { getFavoritesView, saveFavoritesView, type FolderView } from '@/settings/folder-view';
 import { describeDistance } from '@/utils/dates';
@@ -47,6 +48,7 @@ const documentHref = (id: number) =>
 export default function FavoritesScreen() {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
@@ -72,7 +74,7 @@ export default function FavoritesScreen() {
     try {
       await savePinnedOrder(db, ordered.map((d) => d.id));
     } catch (error) {
-      Alert.alert('Impossibile salvare l’ordine', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('favorites.alerts.orderNotSaved'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -94,11 +96,11 @@ export default function FavoritesScreen() {
         {reordering ? (
           <>
             <ReorderHeader
-              title="Riordina i preferiti"
-              hint="Tieni premuto un preferito e trascinalo dove vuoi."
+              title={t('favorites.reorderTitle')}
+              hint={t('favorites.reorderHint')}
               onDone={() => setReordering(false)}
             />
-            <Text style={styles.section}>I tuoi preferiti</Text>
+            <Text style={styles.section}>{t('favorites.yourFavorites')}</Text>
             <View style={styles.list}>
               <SortableList
                 items={items}
@@ -120,13 +122,13 @@ export default function FavoritesScreen() {
         ) : (
           <>
             <PageHeader
-              title="Preferiti"
-              subtitle="Quello che hai scelto di tenere a portata di mano"
+              title={t('favorites.title')}
+              subtitle={t('favorites.subtitle')}
               onBack={goHome}
               right={
                 <RoundIconButton
                   symbol="magnifyingglass"
-                  accessibilityLabel="Cerca nei preferiti"
+                  accessibilityLabel={t('favorites.searchPlaceholder')}
                   color={theme.text}
                   onPress={() => {
                     setSearchOpen((open) => !open);
@@ -137,21 +139,21 @@ export default function FavoritesScreen() {
             />
             {searchOpen && (
               <View style={styles.search}>
-                <SearchBar value={query} onChangeText={setQuery} placeholder="Cerca nei preferiti" />
+                <SearchBar value={query} onChangeText={setQuery} placeholder={t('favorites.searchPlaceholder')} />
               </View>
             )}
 
             {items.length > 0 && (
               <View style={styles.viewSwitch}>
                 <Segmented
-                  values={['Elenco', 'Griglia']}
+                  values={[t('favorites.viewList'), t('favorites.viewGrid')]}
                   selectedIndex={view === 'list' ? 0 : 1}
                   onChange={(index) => changeView(index === 0 ? 'list' : 'grid')}
                 />
               </View>
             )}
 
-            <Text style={styles.section}>{pinned ? `${items.length} preferiti` : ' '}</Text>
+            <Text style={styles.section}>{pinned ? t('favorites.count', { count: items.length }) : ' '}</Text>
             {view === 'grid' && items.length > 0 ? (
               <View style={styles.grid}>
                 {shown.length < items.length ? (
@@ -175,7 +177,7 @@ export default function FavoritesScreen() {
                     scrollableRef={scrollRef}
                   />
                 )}
-                {shown.length === 0 && <Text style={styles.empty}>Nessun preferito con “{query.trim()}”.</Text>}
+                {shown.length === 0 && <Text style={styles.empty}>{t('favorites.noMatch', { query: query.trim() })}</Text>}
               </View>
             ) : (
               <View style={styles.list}>
@@ -188,17 +190,19 @@ export default function FavoritesScreen() {
                     onLongPress={startReorder}
                   />
                 ))}
-                {pinned && items.length === 0 && <Text style={styles.empty}>Non hai ancora preferiti.</Text>}
+                {pinned && items.length === 0 && <Text style={styles.empty}>{t('favorites.empty')}</Text>}
                 {items.length > 0 && shown.length === 0 && (
-                  <Text style={styles.empty}>Nessun preferito con “{query.trim()}”.</Text>
+                  <Text style={styles.empty}>{t('favorites.noMatch', { query: query.trim() })}</Text>
                 )}
               </View>
             )}
 
             <Text style={styles.footer}>
               {items.length > 1
-                ? `Tocca il cuore su qualsiasi documento per aggiungerlo qui. Tieni premuto ${view === 'grid' ? 'un riquadro e trascinalo' : 'una riga'} per riordinarli.`
-                : 'Tocca il cuore su qualsiasi documento per aggiungerlo qui.'}
+                ? view === 'grid'
+                  ? t('favorites.footerGrid')
+                  : t('favorites.footerList')
+                : t('favorites.footer')}
             </Text>
           </>
         )}
@@ -217,6 +221,7 @@ type RowProps = {
 function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
   const db = useSQLiteContext();
   const { pressed, handlers } = usePressed();
   const subtitle = favoriteSubtitle(document);
@@ -232,7 +237,7 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
         delayLongPress={400}
         accessibilityRole="button"
         accessibilityLabel={`${document.title}, ${subtitle}`}
-        accessibilityHint="Tieni premuto per riordinare i preferiti"
+        accessibilityHint={t('favorites.rowHint')}
         accessibilityActions={accessibilityActionsOf(actions)}
         onAccessibilityAction={(event) => runAccessibilityAction(actions, event.nativeEvent.actionName)}
         style={[styles.rowMain, pressed && styles.rowPressed]}>
@@ -253,7 +258,7 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
       <Pressable
         onPress={onRemove}
         accessibilityRole="button"
-        accessibilityLabel="Togli dai preferiti"
+        accessibilityLabel={t('favorites.unpin')}
         accessibilityState={{ selected: true }}
         hitSlop={4}
         style={({ pressed }) => [styles.heart, pressed && styles.rowPressed]}>
@@ -264,11 +269,12 @@ function FavoriteRow({ document, onOpen, onRemove, onLongPress }: RowProps) {
 }
 
 // "Bollette · scade tra 3 giorni": the folder and the deadline, else the Tipo or the person
+// (called while rendering, so the current language applies)
 function favoriteSubtitle(document: DocumentListItem): string {
   let detail: string | null = null;
   if (document.expiresAt) {
     const days = daysUntil(document.expiresAt);
-    detail = days < 0 ? describeDistance(days) : `scade ${describeDistance(days)}`;
+    detail = days < 0 ? describeDistance(days) : translate('favorites.expires', { distance: describeDistance(days) });
   } else {
     detail = document.docType ?? document.personName;
   }

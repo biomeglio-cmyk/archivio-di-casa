@@ -11,6 +11,7 @@ import { FONTS } from '@/constants/typography';
 import { hexToWheel } from '@/utils/colors';
 import { wheelHex } from '@/utils/password-tools';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 export type ColorPreset = {
   key: string; // what onChange gives back for this swatch
@@ -37,8 +38,9 @@ const RAINBOW = ['#FF5A5A', '#FFC24A', '#5CD68A', '#4AB8FF', '#7A5CFF', '#FF5AC8
 // the preset swatches, then "Il tuo colore" (docs/design/NuovaPassword.dc.html). Tapping it opens
 // the panel below: the color wheel (touch or drag) and the hex code, which can also be typed.
 // The chosen swatch has a white ring and an outer ring in its color.
-export function ColorPicker({ presets, value, onChange, size = 32, columns, label = 'Colore', onDraggingChange }: Props) {
+export function ColorPicker({ presets, value, onChange, size = 32, columns, label, onDraggingChange }: Props) {
   const theme = useTheme();
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const presetChosen = presets.some((p) => p.key === value);
   const custom = !presetChosen && isHex(value) ? value.toUpperCase() : null;
@@ -75,7 +77,7 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
 
   return (
     <View>
-      <View style={styles.row} accessibilityRole="radiogroup" accessibilityLabel={label}>
+      <View style={styles.row} accessibilityRole="radiogroup" accessibilityLabel={label ?? t('colorPicker.color')}>
         {presets.map((preset) => {
           const on = preset.key === value;
           return (
@@ -101,7 +103,7 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
           <Pressable
             onPress={openCustom}
             accessibilityRole="radio"
-            accessibilityLabel="Il tuo colore"
+            accessibilityLabel={t('colorPicker.custom')}
             accessibilityState={{ checked: customOn || custom !== null }}
             hitSlop={4}
             style={[round, custom !== null && ring(custom)]}>
@@ -122,14 +124,14 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
           <View style={styles.hexRow}>
             <View style={[styles.hexSwatch, { backgroundColor: shown }]} />
             <View style={styles.hexField}>
-              <Text style={styles.hexLabel}>Codice</Text>
+              <Text style={styles.hexLabel}>{t('colorPicker.hex')}</Text>
               <TextInput
                 value={typed}
                 onChangeText={type}
                 autoCapitalize="characters"
                 autoCorrect={false}
                 maxLength={7}
-                accessibilityLabel="Codice colore"
+                accessibilityLabel={t('colorPicker.hexLabel')}
                 style={styles.hexInput}
               />
             </View>

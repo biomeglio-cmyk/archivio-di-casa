@@ -32,19 +32,22 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { usePreferences } from '@/settings/preferences';
 import { chooseAction } from '@/utils/action-sheet';
 import { categoryTint } from '@/utils/colors';
-import { formatDayMonth, parseISODate, toISODate } from '@/utils/dates';
+import { parseISODate, toISODate } from '@/utils/dates';
 import { centsToInput, parseEuro } from '@/utils/money';
-import { REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
+import { REPEAT_UNITS, unitCount, unitName, type RepeatUnit } from '@/utils/recurrence';
 import { PIN_TINT } from '@/constants/brand';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
+import { useFormat } from '@/i18n/use-format';
 
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
 const PIN_BACKGROUND = (p: Palette) => PIN_TINT(p);
 const PIN_COLOR = (p: Palette) => p.heart;
-const STATUSES: { label: string; value: PaymentStatus | null }[] = [
-  { label: 'Nessuno', value: null },
-  { label: 'Da pagare', value: 'due' },
-  { label: 'Pagata', value: 'paid' },
+// Translated at render time (labelKey)
+const STATUSES: { labelKey: string; value: PaymentStatus | null }[] = [
+  { labelKey: 'common.none', value: null },
+  { labelKey: 'documentForm.statusDue', value: 'due' },
+  { labelKey: 'documentForm.statusPaid', value: 'paid' },
 ];
 
 export type FormExtras = { pinned: boolean };
@@ -85,6 +88,8 @@ export function DocumentForm({
   hasPhoto = false,
   notice,
 }: Props) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
@@ -129,10 +134,10 @@ export function DocumentForm({
   const amountCents = parseEuro(amount);
   const amountInvalid = amount.trim().length > 0 && amountCents === null;
 
-  const missing = [title.trim().length === 0 && 'il nome', categoryId === null && 'la cartella'].filter(
-    (field): field is string => Boolean(field),
-  );
-  const canSave = missing.length === 0 && !amountInvalid && !saving;
+  const missingName = title.trim().length === 0;
+  const missingFolder = categoryId === null;
+  const missing = missingName || missingFolder;
+  const canSave = !missing && !amountInvalid && !saving;
   const tint = selectedCategory ? categoryTint(selectedCategory.colors, theme) : null;
 
   async function submit() {
@@ -161,14 +166,14 @@ export function DocumentForm({
       );
     } catch (error) {
       setSaving(false);
-      Alert.alert('Impossibile salvare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('documentForm.saveFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
   async function chooseCategory() {
     if (!categories) return;
     const index = await chooseAction(
-      'Cartella',
+      t('documentForm.folder'),
       categories.map((c) => c.name),
     );
     if (index === null) return;
@@ -179,7 +184,7 @@ export function DocumentForm({
 
   async function choosePerson() {
     if (!people) return;
-    const index = await chooseAction('Persona', ['Tutta la famiglia', ...people.map((p) => p.name)]);
+    const index = await chooseAction(t('documentForm.person'), [t('common.wholeFamily'), ...people.map((p) => p.name)]);
     if (index === null) return;
     setPersonTouched(true);
     setPersonId(index === 0 ? null : people[index - 1].id);
@@ -187,15 +192,15 @@ export function DocumentForm({
 
   async function chooseType() {
     const options = typeSuggestions(selectedCategory?.builtinKey ?? null, usedTypes ?? []);
-    const labels = [...options, 'Scrivi un altro tipo…', ...(docType ? ['Nessun tipo'] : [])];
-    const index = await chooseAction('Tipo', labels);
+    const labels = [...options, t('documentForm.otherType'), ...(docType ? [t('documentForm.noType')] : [])];
+    const index = await chooseAction(t('documentForm.type'), labels);
     if (index === null) return;
     if (index < options.length) setDocType(options[index]);
-    else if (labels[index] === 'Nessun tipo') setDocType(null);
+    else if (index === options.length + 1) setDocType(null); // "Nessun tipo"
     else {
       Alert.prompt(
-        'Tipo',
-        'Per esempio: Luce, Bollo, Dentista',
+        t('documentForm.type'),
+        t('documentForm.typeExample'),
         (value) => setDocType(value.trim() || null),
         'plain-text',
         docType ?? '',
@@ -209,8 +214,8 @@ export function DocumentForm({
   }
 
   const dueText = hasExpiry
-    ? `Il ${formatDayMonth(expiryDate)} ${expiryDate.getFullYear()}`
-    : 'Nessuna scadenza';
+    ? t('documentForm.dueOn', { date: `${fmt.dayMonth(expiryDate)} ${expiryDate.getFullYear()}` })
+    : t('documentForm.noDeadline');
 
   return (
     <ScrollView
@@ -220,7 +225,7 @@ export function DocumentForm({
       automaticallyAdjustKeyboardInsets
       contentContainerStyle={[styles.content, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 36 }]}>
       <View style={styles.header}>
-        <RoundIconButton symbol="chevron.left" accessibilityLabel="Indietro" onPress={() => router.back()} />
+        <RoundIconButton symbol="chevron.left" accessibilityLabel={t('common.back')} onPress={() => router.back()} />
         <Text style={styles.heading} accessibilityRole="header" numberOfLines={1}>
           {heading}
         </Text>
@@ -230,64 +235,64 @@ export function DocumentForm({
       <View style={styles.pages}>{files?.(selectedCategory)}</View>
       {notice}
 
-      <SectionTitle>Nome</SectionTitle>
+      <SectionTitle>{t('documentForm.nameSection')}</SectionTitle>
       <View style={styles.nameField}>
         <TextInput
           value={title}
           onChangeText={setTitle}
-          placeholder="Nome del documento"
+          placeholder={t('documentForm.namePlaceholder')}
           placeholderTextColor={theme.placeholder}
           autoFocus={autoFocusTitle}
           returnKeyType="done"
-          accessibilityLabel="Nome del documento"
+          accessibilityLabel={t('documentForm.namePlaceholder')}
           style={styles.nameInput}
         />
       </View>
 
       {categories && people && (
         <>
-          <SectionTitle>Dove salvarlo</SectionTitle>
+          <SectionTitle>{t('documentForm.whereSection')}</SectionTitle>
           <WhiteCard style={styles.card}>
             <FieldRow
               symbol="folder"
               tint={tint?.tint ?? theme.lilac}
               iconColor={tint?.onTint ?? theme.indigo}
-              label="Cartella">
+              label={t('documentForm.folder')}>
               <SelectBox
-                value={selectedCategory?.name ?? 'Scegli…'}
+                value={selectedCategory?.name ?? t('documentForm.choose')}
                 placeholder={!selectedCategory}
                 onPress={chooseCategory}
-                accessibilityLabel="Cartella"
+                accessibilityLabel={t('documentForm.folder')}
               />
             </FieldRow>
             <Separator />
-            <FieldRow symbol="person" tint={theme.lilac} iconColor={theme.indigo} label="Persona">
+            <FieldRow symbol="person" tint={theme.lilac} iconColor={theme.indigo} label={t('documentForm.person')}>
               <SelectBox
-                value={people.find((p) => p.id === personId)?.name ?? 'Tutta la famiglia'}
+                value={people.find((p) => p.id === personId)?.name ?? t('common.wholeFamily')}
                 onPress={choosePerson}
-                accessibilityLabel="Persona"
+                accessibilityLabel={t('documentForm.person')}
               />
             </FieldRow>
             <Separator />
-            <FieldRow symbol="tag" tint={theme.paleLilac} iconColor={theme.indigo} label="Tipo">
+            <FieldRow symbol="tag" tint={theme.paleLilac} iconColor={theme.indigo} label={t('documentForm.type')}>
               <SelectBox
-                value={docType ?? 'Nessuno'}
+                value={docType ?? t('common.none')}
                 placeholder={!docType}
                 onPress={chooseType}
-                accessibilityLabel="Tipo"
+                accessibilityLabel={t('documentForm.type')}
               />
             </FieldRow>
           </WhiteCard>
 
-          <SectionTitle>Scadenza</SectionTitle>
+          <SectionTitle>{t('documentForm.deadlineSection')}</SectionTitle>
           <WhiteCard style={styles.card}>
             <Pressable onPress={() => setHasExpiry(!hasExpiry)} accessible={false} style={styles.switchRow}>
               <IconBox symbol="calendar" tint={theme.lilac} color={theme.indigo} />
               <View style={styles.flex}>
-                <Text style={styles.rowTitle}>Aggiungi scadenza</Text>
+                <Text style={styles.rowTitle}>{t('documentForm.addDeadline')}</Text>
                 <Text style={styles.rowSubtitle}>{dueText}</Text>
               </View>
-              <Switch value={hasExpiry} onValueChange={setHasExpiry} accessibilityLabel="Aggiungi scadenza" />
+              <Switch value={hasExpiry} onValueChange={setHasExpiry} accessibilityLabel={t('documentForm.addDeadline')} />
             </Pressable>
             {hasExpiry && (
               <View style={styles.dueBox}>
@@ -295,15 +300,15 @@ export function DocumentForm({
                 <View style={styles.remind}>
                   <IconBox symbol="bell" tint={theme.surface} color={theme.indigo} />
                   <FitLine
-                    start={<Text style={styles.remindLabel}>Avvisami</Text>}
+                    start={<Text style={styles.remindLabel}>{t('documentForm.remindMe')}</Text>}
                     end={
                       <SelectBox
                         small
                         value={reminderLabel(reminderDays, defaultReminderDays)}
-                        accessibilityLabel="Quando avvisarti"
+                        accessibilityLabel={t('documentForm.whenToRemind')}
                         onPress={() =>
                           chooseFrom(
-                            'Avvisami',
+                            t('documentForm.remindMe'),
                             reminderChoices(reminderDays),
                             (d) => reminderChoiceLabel(d, defaultReminderDays),
                             setReminderDays,
@@ -317,17 +322,21 @@ export function DocumentForm({
                 <View style={styles.remind}>
                   <IconBox symbol="arrow.clockwise" tint={theme.surface} color={theme.indigo} />
                   <FitLine
-                    start={<Text style={styles.remindLabel}>Si ripete</Text>}
+                    start={<Text style={styles.remindLabel}>{t('documentForm.repeats')}</Text>}
                     end={
                       <SelectBox
                         small
-                        value={repeatUnit === 'never' ? 'Mai' : `Ogni ${repeatEvery} ${unitName(repeatUnit, repeatEvery)}`}
-                        accessibilityLabel="Si ripete"
+                        value={
+                          repeatUnit === 'never'
+                            ? t('documentForm.never')
+                            : t('documentForm.everySpan', { span: unitCount(repeatUnit, repeatEvery) })
+                        }
+                        accessibilityLabel={t('documentForm.repeats')}
                         onPress={() =>
                           chooseFrom<RepeatUnit | 'never'>(
-                            'Si ripete',
+                            t('documentForm.repeats'),
                             ['never', ...REPEAT_UNITS],
-                            (unit) => (unit === 'never' ? 'Mai' : capitalize(unitName(unit, 2))),
+                            (unit) => (unit === 'never' ? t('documentForm.never') : capitalize(unitName(unit, 2))),
                             setRepeatUnit,
                           )
                         }
@@ -339,17 +348,17 @@ export function DocumentForm({
                   <View style={styles.remind}>
                     <IconBox symbol="number" tint={theme.surface} color={theme.indigo} />
                     <FitLine
-                      start={<Text style={styles.remindLabel}>Ogni</Text>}
+                      start={<Text style={styles.remindLabel}>{t('documentForm.every')}</Text>}
                       end={
                         <SelectBox
                           small
-                          value={`${repeatEvery} ${unitName(repeatUnit, repeatEvery)}`}
-                          accessibilityLabel="Ogni"
+                          value={unitCount(repeatUnit, repeatEvery)}
+                          accessibilityLabel={t('documentForm.every')}
                           onPress={() =>
                             chooseFrom(
-                              'Ogni',
+                              t('documentForm.every'),
                               EVERY_OPTIONS.slice(0, 31),
-                              (n) => `${n} ${unitName(repeatUnit, n)}`,
+                              (n) => unitCount(repeatUnit, n),
                               setRepeatEvery,
                             )
                           }
@@ -362,15 +371,15 @@ export function DocumentForm({
             )}
           </WhiteCard>
 
-          <SectionTitle>Note</SectionTitle>
+          <SectionTitle>{t('documentForm.notesSection')}</SectionTitle>
           <WhiteCard style={styles.notesCard}>
             <TextInput
               value={notes}
               onChangeText={setNotes}
-              placeholder="Per esempio: pagata con domiciliazione, chiedere il rimborso…"
+              placeholder={t('documentForm.notesPlaceholder')}
               placeholderTextColor={theme.placeholder}
               multiline
-              accessibilityLabel="Note"
+              accessibilityLabel={t('documentForm.notesSection')}
               style={styles.notes}
             />
           </WhiteCard>
@@ -379,37 +388,37 @@ export function DocumentForm({
             <Pressable onPress={() => setPinned(!pinned)} accessible={false} style={styles.switchRow}>
               <IconBox symbol={pinned ? 'heart.fill' : 'heart'} tint={PIN_BACKGROUND(theme)} color={PIN_COLOR(theme)} />
               <View style={styles.flex}>
-                <Text style={styles.rowTitle}>Aggiungi ai preferiti</Text>
-                <Text style={styles.rowSubtitle}>Lo trovi subito in home</Text>
+                <Text style={styles.rowTitle}>{t('documentForm.pin')}</Text>
+                <Text style={styles.rowSubtitle}>{t('documentForm.pinSubtitle')}</Text>
               </View>
-              <Switch value={pinned} onValueChange={setPinned} accessibilityLabel="Aggiungi ai preferiti" />
+              <Switch value={pinned} onValueChange={setPinned} accessibilityLabel={t('documentForm.pin')} />
             </Pressable>
           </WhiteCard>
 
           {/* Ours: what it costs and whether it is paid */}
-          <SectionTitle>Importo e stato</SectionTitle>
+          <SectionTitle>{t('documentForm.amountSection')}</SectionTitle>
           <WhiteCard style={styles.card}>
             <FieldRow
               symbol="eurosign"
               tint={theme.successBackground}
               iconColor={theme.success}
-              label="Importo">
+              label={t('documentForm.amount')}>
               <View style={[styles.select, amountInvalid && styles.selectError]}>
                 <Text style={styles.euro}>€</Text>
                 <TextInput
                   value={amount}
                   onChangeText={setAmount}
-                  placeholder="0,00"
+                  placeholder={centsToInput(0)}
                   placeholderTextColor={theme.placeholder}
                   keyboardType="decimal-pad"
-                  accessibilityLabel="Importo in euro"
+                  accessibilityLabel={t('documentForm.amountInEuro')}
                   style={styles.amountInput}
                 />
               </View>
             </FieldRow>
             <View style={styles.statusRow}>
               <Segmented
-                values={STATUSES.map((s) => s.label)}
+                values={STATUSES.map((s) => t(s.labelKey))}
                 selectedIndex={STATUSES.findIndex((s) => s.value === status)}
                 onChange={(index) => setStatus(STATUSES[index].value)}
               />
@@ -432,59 +441,59 @@ export function DocumentForm({
           {/* Ours: user name and password of the "Password" category (the password only in the Keychain) */}
           {isPassword && (
             <>
-              <SectionTitle>Accesso</SectionTitle>
+              <SectionTitle>{t('documentForm.accessSection')}</SectionTitle>
               <WhiteCard style={styles.card}>
                 <FieldRow
                   symbol="person.crop.circle"
                   tint={theme.lilac}
                   iconColor={theme.indigo}
-                  label="Utente">
+                  label={t('documentForm.username')}>
                   <View style={styles.select}>
                     <TextInput
                       value={username}
                       onChangeText={setUsername}
-                      placeholder="nome@esempio.it"
+                      placeholder={t('documentForm.usernamePlaceholder')}
                       placeholderTextColor={theme.placeholder}
                       autoCapitalize="none"
                       autoCorrect={false}
                       textContentType="none"
-                      accessibilityLabel="Utente"
+                      accessibilityLabel={t('documentForm.username')}
                       style={styles.fieldInput}
                     />
                   </View>
                 </FieldRow>
                 <Separator />
-                <FieldRow symbol="key" tint={theme.lilac} iconColor={theme.indigo} label="Password">
+                <FieldRow symbol="key" tint={theme.lilac} iconColor={theme.indigo} label={t('documentForm.password')}>
                   <View style={styles.select}>
                     <TextInput
                       value={password}
                       onChangeText={setPassword}
-                      placeholder={hasSavedPassword ? '•••••••• (invariata)' : 'Password'}
+                      placeholder={hasSavedPassword ? t('documentForm.passwordUnchanged') : t('documentForm.password')}
                       placeholderTextColor={theme.placeholder}
                       secureTextEntry
                       autoCapitalize="none"
                       autoCorrect={false}
                       textContentType="none" // no iOS "save password" prompt: it is not this app's login
-                      accessibilityLabel="Password"
+                      accessibilityLabel={t('documentForm.password')}
                       style={styles.fieldInput}
                     />
                   </View>
                 </FieldRow>
               </WhiteCard>
-              <Text style={styles.note}>La password resta solo nel Portachiavi dell’iPhone.</Text>
+              <Text style={styles.note}>{t('documentForm.passwordNote')}</Text>
             </>
           )}
 
           {/* Ours: the number printed on the document */}
-          <SectionTitle>Numero del documento</SectionTitle>
+          <SectionTitle>{t('documentForm.numberSection')}</SectionTitle>
           <View style={styles.nameField}>
             <TextInput
               value={number ?? ''}
               onChangeText={setNumber}
-              placeholder="Es. CA12345AB"
+              placeholder={t('documentForm.numberPlaceholder')}
               placeholderTextColor={theme.placeholder}
               autoCapitalize="characters"
-              accessibilityLabel="Numero del documento"
+              accessibilityLabel={t('documentForm.numberSection')}
               style={styles.nameInput}
             />
           </View>
@@ -492,16 +501,22 @@ export function DocumentForm({
       )}
 
       <View style={styles.save}>
-        <PrimaryButton label={onDelete ? 'Salva modifiche' : 'Salva documento'} disabled={!canSave} onPress={submit} />
+        <PrimaryButton label={onDelete ? t('documentForm.saveChanges') : t('documentForm.saveDocument')} disabled={!canSave} onPress={submit} />
       </View>
-      {(missing.length > 0 || amountInvalid) && (
+      {(missing || amountInvalid) && (
         <Text style={styles.note}>
-          {amountInvalid ? 'Scrivi l’importo come 84,20.' : `Per salvare scrivi ${missing.join(' e scegli ')}.`}
+          {amountInvalid
+            ? t('documentForm.amountHint', { example: centsToInput(8420) })
+            : missingName && missingFolder
+              ? t('documentForm.missingNameAndFolder')
+              : missingName
+                ? t('documentForm.missingName')
+                : t('documentForm.missingFolder')}
         </Text>
       )}
       {onDelete && (
         <Pressable onPress={onDelete} accessibilityRole="button" style={styles.delete}>
-          <Text style={styles.deleteText}>Cancella documento</Text>
+          <Text style={styles.deleteText}>{t('documentForm.deleteDocument')}</Text>
         </Pressable>
       )}
     </ScrollView>

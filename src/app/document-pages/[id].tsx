@@ -10,11 +10,13 @@ import { getDocumentDetail, listDocumentFiles, saveDocumentPages } from '@/db/do
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 // Modal "Pagine", from "Aggiungi pagine" in the document detail: the same pages editor as
 // "Nuovo documento" (Scansiona, Dalle foto, ✕, ‹ ›), with no limit on the number of pages.
 // The new pages go at the end; nothing is saved until "Salva".
 export default function DocumentPagesScreen() {
+  const { t } = useI18n();
   const { id } = useLocalSearchParams<{ id: string }>();
   const documentId = Number(id);
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, documentId), [documentId]);
@@ -25,12 +27,13 @@ export default function DocumentPagesScreen() {
     <PagesContent document={document} savedFiles={files} />
   ) : (
     <Stack.Toolbar placement="left">
-      <Stack.Toolbar.Button onPress={() => router.back()}>Annulla</Stack.Toolbar.Button>
+      <Stack.Toolbar.Button onPress={() => router.back()}>{t('common.cancel')}</Stack.Toolbar.Button>
     </Stack.Toolbar>
   );
 }
 
 function PagesContent({ document, savedFiles }: { document: DocumentDetail; savedFiles: DocumentFile[] }) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const [files, setFiles] = useState<EditableFile[]>(() => savedFiles.map(fromExisting));
@@ -46,7 +49,7 @@ function PagesContent({ document, savedFiles }: { document: DocumentDetail; save
       router.back();
     } catch (error) {
       setSaving(false);
-      Alert.alert('Impossibile salvare le pagine', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('documentPages.saveFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -57,11 +60,11 @@ function PagesContent({ document, savedFiles }: { document: DocumentDetail; save
       </ScrollView>
 
       <Stack.Toolbar placement="left">
-        <Stack.Toolbar.Button onPress={() => router.back()}>Annulla</Stack.Toolbar.Button>
+        <Stack.Toolbar.Button onPress={() => router.back()}>{t('common.cancel')}</Stack.Toolbar.Button>
       </Stack.Toolbar>
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button variant="done" disabled={saving} onPress={save}>
-          Salva
+          {t('common.save')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
     </>

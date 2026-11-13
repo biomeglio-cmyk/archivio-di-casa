@@ -1,5 +1,7 @@
 import type { FileHandle } from 'expo-file-system';
 
+import { t } from '@/i18n';
+
 // Minimal reader for the zip archives WE write (fflate, every entry "stored", no compression):
 // it reads the central directory at the end, then copies each entry straight from the file,
 // a slice at a time, without loading the archive in memory. The data was already authenticated
@@ -30,7 +32,7 @@ export function listEntries(handle: FileHandle): ZipEntry[] {
       break;
     }
   }
-  if (eocd < 0) throw new Error('Archivio non valido');
+  if (eocd < 0) throw new Error(t('zipReader.invalid'));
 
   const count = tailView.getUint16(eocd + 10, true);
   const directorySize = tailView.getUint32(eocd + 12, true);
@@ -42,7 +44,7 @@ export function listEntries(handle: FileHandle): ZipEntry[] {
   const entries: ZipEntry[] = [];
   let p = 0;
   for (let i = 0; i < count; i++) {
-    if (view.getUint32(p, true) !== CENTRAL_SIGNATURE) throw new Error('Archivio non valido');
+    if (view.getUint32(p, true) !== CENTRAL_SIGNATURE) throw new Error(t('zipReader.invalid'));
     const method = view.getUint16(p + 10, true);
     const compressedSize = view.getUint32(p + 20, true);
     const nameLength = view.getUint16(p + 28, true);
@@ -50,12 +52,12 @@ export function listEntries(handle: FileHandle): ZipEntry[] {
     const commentLength = view.getUint16(p + 32, true);
     const localOffset = view.getUint32(p + 42, true);
     const name = decoder.decode(directory.subarray(p + 46, p + 46 + nameLength));
-    if (method !== STORED) throw new Error('Archivio non valido');
+    if (method !== STORED) throw new Error(t('zipReader.invalid'));
 
     // The data starts after the local header, whose name/extra lengths can differ
     const local = read(handle, localOffset, 30);
     const localView = new DataView(local.buffer, local.byteOffset, local.byteLength);
-    if (localView.getUint32(0, true) !== LOCAL_SIGNATURE) throw new Error('Archivio non valido');
+    if (localView.getUint32(0, true) !== LOCAL_SIGNATURE) throw new Error(t('zipReader.invalid'));
     const dataOffset = localOffset + 30 + localView.getUint16(26, true) + localView.getUint16(28, true);
 
     if (!name.endsWith('/')) entries.push({ name, offset: dataOffset, size: compressedSize });
@@ -76,7 +78,7 @@ export async function extractEntry(
   let left = entry.size;
   while (left > 0) {
     const bytes = await input.readBytes(Math.min(slice, left));
-    if (bytes.length === 0) throw new Error('Archivio incompleto');
+    if (bytes.length === 0) throw new Error(t('zipReader.incomplete'));
     await output.writeBytes(bytes);
     left -= bytes.length;
     onBytes(bytes.length);

@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/text';
 import type { QuickAction } from '@/actions/quick-actions';
 import { DANGER_COLOR } from '@/constants/brand';
+import { useI18n } from '@/i18n';
 import { type Palette, Radius, Shadows } from '@/constants/theme';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
@@ -29,6 +30,7 @@ const EDGE = 16;
 export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget | null; onClose: () => void }) {
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
+  const { t } = useI18n();
   const window = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const pending = useRef<(() => void) | null>(null);
@@ -70,7 +72,7 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
             style={[StyleSheet.absoluteFill, { backgroundColor: theme.scrim }]}
             onPress={onClose}
             accessibilityRole="button"
-            accessibilityLabel="Chiudi menu"
+            accessibilityLabel={t('quickActionMenu.close')}
           />
           <View
             pointerEvents="none"

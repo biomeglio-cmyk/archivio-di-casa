@@ -13,7 +13,9 @@ import { getDocumentDetail, renewDocument } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
-import { formatDate, parseISODate, toISODate } from '@/utils/dates';
+import { useI18n } from '@/i18n';
+import { useFormat } from '@/i18n/use-format';
+import { parseISODate, toISODate } from '@/utils/dates';
 import { describeRepeat, nextOccurrence } from '@/utils/recurrence';
 import { DateCalendar } from '@/components/date-calendar';
 
@@ -23,6 +25,7 @@ import { DateCalendar } from '@/components/date-calendar';
 // Optional "Aggiungi la nuova scansione": the current pages become a "Versione precedente" and
 // the new ones (scanner, photos, files: the "Aggiungi pagine" flow) become the current pages.
 export default function RenewScreen() {
+  const { t } = useI18n();
   const { id } = useLocalSearchParams<{ id: string }>();
   const documentId = Number(id);
   const { data: document } = useDbQuery((db) => getDocumentDetail(db, documentId), [documentId]);
@@ -31,12 +34,14 @@ export default function RenewScreen() {
     <RenewContent document={document} expiresAt={document.expiresAt} />
   ) : (
     <Stack.Toolbar placement="left">
-      <Stack.Toolbar.Button onPress={() => router.back()}>Annulla</Stack.Toolbar.Button>
+      <Stack.Toolbar.Button onPress={() => router.back()}>{t('common.cancel')}</Stack.Toolbar.Button>
     </Stack.Toolbar>
   );
 }
 
 function RenewContent({ document, expiresAt }: { document: DocumentDetail; expiresAt: string }) {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const styles = useThemedStyles(makeStyles);
   const db = useSQLiteContext();
   const theme = useTheme();
@@ -59,7 +64,7 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
       router.back();
     } catch (error) {
       setSaving(false);
-      Alert.alert('Impossibile salvare', error instanceof Error ? error.message : String(error));
+      Alert.alert(t('renew.saveFailed'), error instanceof Error ? error.message : String(error));
     }
   }
 
@@ -71,13 +76,15 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
         contentContainerStyle={styles.content}>
         <ThemedText style={styles.intro}>{document.title}</ThemedText>
 
-        <Group title="Scadenza" footer={repeat ? `${describeRepeat(repeat)}: la nuova data è calcolata da quella vecchia.` : undefined}>
-          <Row label="Era" symbol="calendar" value={formatDate(expiresAt)} first />
+        <Group
+          title={t('renew.deadline')}
+          footer={repeat ? t('renew.repeatFooter', { repeat: describeRepeat(repeat) }) : undefined}>
+          <Row label={t('renew.was')} symbol="calendar" value={fmt.date(expiresAt)} first />
           {repeat ? (
-            <Row label="Nuova scadenza" symbol="arrow.clockwise" value={formatDate(newExpiry)} />
+            <Row label={t('renew.newDeadline')} symbol="arrow.clockwise" value={fmt.date(newExpiry)} />
           ) : (
             <View style={[styles.pickerRow, { borderTopColor: theme.backgroundSelected }]}>
-              <ThemedText>Nuova scadenza</ThemedText>
+              <ThemedText>{t('renew.newDeadline')}</ThemedText>
               {/* Our calendar: Italian months, L M M G V S D, Monday first */}
               <View style={styles.calendar}>
                 <DateCalendar value={pickedDate} onChange={setPickedDate} />
@@ -87,14 +94,14 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
         </Group>
 
         <Group
-          title="Nuovo documento"
+          title={t('renew.newDocument')}
           footer={
             withScan
-              ? 'Le pagine di adesso diventano una «Versione precedente», che trovi nel dettaglio.'
-              : 'Accendilo se hai il documento nuovo da scansionare.'
+              ? t('renew.withScanFooter')
+              : t('renew.withoutScanFooter')
           }>
-          <Row label="Aggiungi la nuova scansione" symbol="doc.viewfinder" first>
-            <Switch value={withScan} onValueChange={setWithScan} accessibilityLabel="Aggiungi la nuova scansione" />
+          <Row label={t('renew.addNewScan')} symbol="doc.viewfinder" first>
+            <Switch value={withScan} onValueChange={setWithScan} accessibilityLabel={t('renew.addNewScan')} />
           </Row>
         </Group>
 
@@ -102,11 +109,11 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
       </ScrollView>
 
       <Stack.Toolbar placement="left">
-        <Stack.Toolbar.Button onPress={() => router.back()}>Annulla</Stack.Toolbar.Button>
+        <Stack.Toolbar.Button onPress={() => router.back()}>{t('common.cancel')}</Stack.Toolbar.Button>
       </Stack.Toolbar>
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button variant="done" disabled={!canSave} onPress={save}>
-          Salva
+          {t('common.save')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
     </>

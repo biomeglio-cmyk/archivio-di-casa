@@ -9,6 +9,7 @@ import { CARD_COLORS } from '@/constants/card-colors';
 import type { CategoryColors, CoverMode } from '@/db/types';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const MODES: CoverMode[] = ['photo', 'color'];
 
@@ -29,18 +30,19 @@ type Props = {
 // Colore = a background color with the title large; the category color, a preset, or "Il tuo colore"
 // (wheel and hex code).
 export function CoverField({ mode, onModeChange, color, onColorChange, categoryColors, hasPhoto, onDraggingChange }: Props) {
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
 
   return (
-    <FormField label="Copertina">
+    <FormField label={t('coverField.label')}>
       <Segmented
-        values={['Foto', 'Colore']}
+        values={[t('coverField.photo'), t('coverField.color')]}
         selectedIndex={MODES.indexOf(mode)}
         onChange={(index) => onModeChange(MODES[index])}
       />
       {mode === 'photo' && !hasPhoto && (
         <ThemedText type="small" themeColor="textSecondary">
-          Senza foto si vede il colore: aggiungi una pagina per avere la foto in copertina.
+          {t('coverField.noPhotoHint')}
         </ThemedText>
       )}
       {mode === 'color' && (
@@ -51,7 +53,7 @@ export function CoverField({ mode, onModeChange, color, onColorChange, categoryC
                 ? [
                     {
                       key: 'category',
-                      name: 'Colore della categoria',
+                      name: t('coverField.categoryColor'),
                       colors: [categoryColors.top, categoryColors.bottom] as const,
                       symbol: 'folder' as const,
                       symbolColor: categoryColors.text,
@@ -60,7 +62,7 @@ export function CoverField({ mode, onModeChange, color, onColorChange, categoryC
                 : []),
               ...CARD_COLORS.map((swatch, index) => ({
                 key: swatch,
-                name: `Colore ${index + 1}`,
+                name: t('coverField.colorNumber', { number: index + 1 }),
                 colors: [swatch, swatch] as const,
               })),
             ]}

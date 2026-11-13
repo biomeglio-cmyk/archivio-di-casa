@@ -12,6 +12,7 @@ import { BRAND_GRADIENT, BRAND_SHADOW, GRADIENT_END, GRADIENT_START } from '@/co
 import { cardSurface, type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
 
 const DRAG_DELAY_MS = 120; // in "Riordina" a short touch is enough to pick a row up
 const ROW_GAP = 10;
@@ -29,6 +30,7 @@ type Props<T> = {
 // and drag it: it lifts (a little bigger, with a shadow), the others make room, the order is saved
 // on release. VoiceOver: "Sposta prima" / "Sposta dopo".
 export function SortableList<T>({ items, keyFor, labelFor, renderRow, onReorder, scrollableRef }: Props<T>) {
+  const { t } = useI18n();
   function moveBy(item: T, delta: number) {
     const from = items.indexOf(item);
     const to = from + delta;
@@ -59,10 +61,10 @@ export function SortableList<T>({ items, keyFor, labelFor, renderRow, onReorder,
         <View
           accessible
           accessibilityLabel={labelFor(item)}
-          accessibilityHint="Trascina per spostarlo, oppure usa le azioni Sposta prima e Sposta dopo"
+          accessibilityHint={t('sortableList.dragHint')}
           accessibilityActions={[
-            { name: 'earlier', label: 'Sposta prima' },
-            { name: 'later', label: 'Sposta dopo' },
+            { name: 'earlier', label: t('sortableList.moveEarlier') },
+            { name: 'later', label: t('sortableList.moveLater') },
           ]}
           onAccessibilityAction={(event) => moveBy(item, event.nativeEvent.actionName === 'earlier' ? -1 : 1)}>
           {renderRow(item)}
@@ -110,6 +112,7 @@ type HeaderProps = {
 // Top of "Riordina": the title and "Fine" in the main gradient, then the hint on pale lilac
 export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
   const theme = useTheme();
+  const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   return (
     <View>
@@ -124,7 +127,7 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
             end={GRADIENT_END}
             style={[StyleSheet.absoluteFill, styles.doneFill]}
           />
-          <Text style={styles.doneText}>Fine</Text>
+          <Text style={styles.doneText}>{t('common.done')}</Text>
         </Pressable>
       </View>
       <View style={styles.hint}>
@@ -135,9 +138,13 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
   );
 }
 
-// Under the rows of every "Riordina"
-export const REORDER_FOOTER =
-  'Allo stesso modo riordini le tessere, le persone in Famiglia e i Preferiti: tieni premuto una riga e trascinala con la maniglia a destra.';
+// Under the rows of every "Riordina". A component (not a plain string) so the text follows the
+// language live; used as {REORDER_FOOTER} inside a <Text>.
+function ReorderFooterText() {
+  const { t } = useI18n();
+  return <>{t('sortableList.footer')}</>;
+}
+export const REORDER_FOOTER = <ReorderFooterText />;
 
 const makeStyles = (c: Palette) =>
   StyleSheet.create({

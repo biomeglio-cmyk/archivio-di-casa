@@ -7,12 +7,16 @@ import { ThemedText } from '@/components/themed-text';
 import { type Palette, Spacing } from '@/constants/theme';
 import { getDocumentDetail, getDocumentVersion, listVersionFiles } from '@/db/documents';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { formatDate, toISODate } from '@/utils/dates';
+import { toISODate } from '@/utils/dates';
 import { useThemedStyles } from '@/hooks/use-theme';
+import { useI18n } from '@/i18n';
+import { useFormat } from '@/i18n/use-format';
 
 // Modal "Versione precedente", from "Versioni precedenti" in the detail: the pages the document
 // had before a "Rinnovato" with a new scan, with the deadline it had then. Read only.
 export default function DocumentVersionScreen() {
+  const { t } = useI18n();
+  const fmt = useFormat();
   const styles = useThemedStyles(makeStyles);
   const { id } = useLocalSearchParams<{ id: string }>();
   const versionId = Number(id);
@@ -29,20 +33,20 @@ export default function DocumentVersionScreen() {
             <ThemedText style={styles.title}>{document.title}</ThemedText>
             <ThemedText themeColor="textSecondary">
               {[
-                `Sostituita il ${formatDate(toISODate(new Date(version.archivedAt)))}`,
-                version.expiresAt ? `scadeva il ${formatDate(version.expiresAt)}` : null,
+                t('documentVersion.replacedOn', { date: fmt.date(toISODate(new Date(version.archivedAt))) }),
+                version.expiresAt ? t('documentVersion.expiredOn', { date: fmt.date(version.expiresAt) }) : null,
               ]
                 .filter(Boolean)
                 .join(' · ')}
             </ThemedText>
-            <DocumentFilesView title={`${document.title} (versione precedente)`} category={document.category} files={files} />
+            <DocumentFilesView title={t('documentVersion.previewTitle', { title: document.title })} category={document.category} files={files} />
           </>
         )}
       </ScrollView>
 
       <Stack.Toolbar placement="right">
         <Stack.Toolbar.Button variant="done" onPress={() => router.back()}>
-          Fine
+          {t('common.done')}
         </Stack.Toolbar.Button>
       </Stack.Toolbar>
     </>

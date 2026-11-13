@@ -14,6 +14,7 @@ import { documentQuickActions } from '@/actions/quick-actions';
 import { pickPersonPhoto } from '@/capture/pick-files';
 import { ActionSheet, type SheetAction } from '@/components/action-sheet';
 import { DocumentTile, DocumentTileFace } from '@/components/document-tile';
+import { FAVORITE_TILE_HEIGHT } from '@/components/home-sections';
 import { PersonAvatar } from '@/components/person-avatar';
 import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
@@ -35,7 +36,7 @@ import { whenBelowLimit } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
-const TILE_HEIGHT = 132; // the document squares of the design
+const TILE_HEIGHT = FAVORITE_TILE_HEIGHT; // the shared document tile (196, as in Home)
 
 const documentHref = (id: number) => ({ pathname: '/(tabs)/(family)/document/[id]', params: { id: String(id) } }) as const;
 

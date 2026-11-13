@@ -7,6 +7,7 @@ import Animated, { useAnimatedRef } from 'react-native-reanimated';
 
 import { documentQuickActions } from '@/actions/quick-actions';
 import { DocumentTile, DocumentTileFace, documentTileLabel } from '@/components/document-tile';
+import { FAVORITE_TILE_HEIGHT } from '@/components/home-sections';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import type { DocumentListItem } from '@/db/types';
@@ -67,6 +68,7 @@ export function DocumentGrid({ documents, hrefFor, selection, onAdd, onReorder, 
               onReorder={onReorder}
               scrollableRef={scrollRef}
               add={{ label: t('documentGrid.addDocument'), onPress: onAdd }}
+              tileHeight={FAVORITE_TILE_HEIGHT}
             />
           )
         )}

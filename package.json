@@ -71,7 +71,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "lint": "expo lint",
-    "check:i18n": "node ./scripts/check-i18n.js"
+    "check:i18n": "node ./scripts/check-i18n.js",
+    "check:fit": "node ./scripts/check-text-fit.js"
   },
   "private": true
 }

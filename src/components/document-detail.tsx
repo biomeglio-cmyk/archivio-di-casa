@@ -22,6 +22,7 @@ import { RoundIconButton } from '@/components/round-icon-button';
 import { SecondaryButton } from '@/components/secondary-button';
 import { StatusBadge } from '@/components/status-badge';
 import { Switch } from '@/components/switch';
+import { NoBreakText } from '@/components/tile-title';
 import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
@@ -231,9 +232,9 @@ function DocumentScreen({
         onPress={hasFiles ? () => go({ pathname: '/view/[id]', params }) : undefined}
       />
 
-      <Text style={styles.title} accessibilityRole="header">
+      <NoBreakText style={styles.title} accessibilityRole="header">
         {document.title}
-      </Text>
+      </NoBreakText>
       <Text style={styles.subtitle}>{subtitle}</Text>
 
       <WhiteCard style={styles.actions}>

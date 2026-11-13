@@ -2,6 +2,7 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
+import { NoBreakText } from '@/components/tile-title';
 import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
@@ -55,14 +56,21 @@ export function SecondaryButton({
         disabled && styles.disabled,
       ]}>
       {symbol && <SymbolView name={symbol} tintColor={symbolColor ?? ink} size={18} />}
-      <Text
-        style={[styles.label, { color: ink }]}
-        numberOfLines={singleLine ? 1 : undefined}
-        adjustsFontSizeToFit={singleLine}
-        minimumFontScale={0.8}
-        maxFontSizeMultiplier={singleLine ? 1.2 : undefined}>
-        {label}
-      </Text>
+      {singleLine ? (
+        <Text
+          style={[styles.label, { color: ink }]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
+          minimumFontScale={0.8}
+          maxFontSizeMultiplier={1.2}>
+          {label}
+        </Text>
+      ) : (
+        // Wraps between words only: a long word (German, Finnish…) shrinks instead of breaking
+        <NoBreakText style={[styles.label, { color: ink }]} containerStyle={styles.labelBox}>
+          {label}
+        </NoBreakText>
+      )}
     </Pressable>
   );
 }
@@ -85,6 +93,9 @@ const makeStyles = (c: Palette) =>
   },
   disabled: {
     opacity: 0.4,
+  },
+  labelBox: {
+    flexShrink: 1,
   },
   label: {
     flexShrink: 1,

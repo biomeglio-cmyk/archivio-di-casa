@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { ProgressBar } from '@/components/progress-bar';
+import { NoBreakText } from '@/components/tile-title';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
@@ -62,9 +63,9 @@ export default function UnlockScreen() {
         <View style={styles.tag}>
           <Text style={styles.tagText}>{t('unlock.tag', { used, limit })}</Text>
         </View>
-        <Text style={styles.title} accessibilityRole="header">
+        <NoBreakText style={styles.title} accessibilityRole="header">
           {t('unlock.title')}
-        </Text>
+        </NoBreakText>
         <Text style={styles.intro}>{t('unlock.intro', { limit })}</Text>
       </View>
 

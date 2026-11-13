@@ -20,6 +20,7 @@ import { SearchBar } from '@/components/search-bar';
 import { Segmented } from '@/components/segmented';
 import { SectionHeader } from '@/components/section-header';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
+import { NoBreakText } from '@/components/tile-title';
 import { Text } from '@/components/text';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import { WhiteCard } from '@/components/white-card';
@@ -217,9 +218,9 @@ export function FolderScreen({ category, documents }: Props) {
           )}
         </View>
 
-        <Text style={styles.title} accessibilityRole="header">
+        <NoBreakText style={styles.title} accessibilityRole="header">
           {category.name}
-        </Text>
+        </NoBreakText>
         <Text style={styles.subtitle}>{subtitle}</Text>
 
         {isTaxFolder && !reordering && !selection.selecting && (

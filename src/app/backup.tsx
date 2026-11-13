@@ -31,6 +31,7 @@ import {
   type PreparedRestore,
 } from '@/backup/restore-backup';
 import { ActionSheet } from '@/components/action-sheet';
+import { NoBreakText } from '@/components/tile-title';
 import { TextField } from '@/components/form-field';
 import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
@@ -440,9 +441,9 @@ export default function BackupScreen() {
               onPress={() => (step.kind === 'idle' ? router.back() : reset())}
             />
           )}
-          <Text style={styles.title} accessibilityRole="header">
+          <NoBreakText style={styles.title} accessibilityRole="header">
             {t('backup.title')}
-          </Text>
+          </NoBreakText>
           <Text style={styles.subtitle}>{t('backup.subtitle')}</Text>
         </View>
         {body}

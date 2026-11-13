@@ -15,6 +15,7 @@ import { resyncCalendarAlarms } from '@/calendar/calendar-sync';
 import { FitLine } from '@/components/fit-line';
 import { FreeUsageCard } from '@/components/free-usage-card';
 import { Switch } from '@/components/switch';
+import { NoBreakText } from '@/components/tile-title';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
@@ -157,9 +158,9 @@ export default function SettingsScreen() {
         style={({ pressed }) => [styles.back, pressed && styles.pressed]}>
         <SymbolView name="chevron.left" tintColor={theme.text} size={20} weight="semibold" />
       </Pressable>
-      <Text style={styles.title} accessibilityRole="header">
+      <NoBreakText style={styles.title} accessibilityRole="header">
         {t('common.settings')}
-      </Text>
+      </NoBreakText>
 
       <View style={styles.card}>
         <FreeUsageCard variant="settings" />

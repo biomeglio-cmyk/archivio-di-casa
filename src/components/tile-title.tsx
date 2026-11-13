@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { StyleSheet, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
+import { StyleSheet, View, type AccessibilityRole, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
@@ -11,6 +11,7 @@ type Props = {
   numberOfLines?: number;
   maxFontSizeMultiplier?: number;
   containerStyle?: StyleProp<ViewStyle>; // position in the tile (e.g. pushed to the bottom)
+  accessibilityRole?: AccessibilityRole; // "header" for page titles
 };
 
 const MIN_SCALE = 0.7;
@@ -20,7 +21,14 @@ const SAFETY = 1; // a point of room, so rounding never pushes the word onto two
 // when its longest word is wider than the tile, the font shrinks for this tile until the word
 // fits (down to 70%); if it still does not fit, the name stays on one line and ends with "…".
 // The words are measured by an invisible copy with one word per line.
-export function TileTitle({ children, style, numberOfLines = 2, maxFontSizeMultiplier, containerStyle }: Props) {
+export function TileTitle({
+  children,
+  style,
+  numberOfLines = 2,
+  maxFontSizeMultiplier,
+  containerStyle,
+  accessibilityRole,
+}: Props) {
   const styles = useThemedStyles(makeStyles);
   const [width, setWidth] = useState(0); // room for the text
   const [wordWidth, setWordWidth] = useState(0); // the widest word at the full font size
@@ -42,6 +50,7 @@ export function TileTitle({ children, style, numberOfLines = 2, maxFontSizeMulti
       <Text
         style={[style, sized]}
         numberOfLines={tooLong ? 1 : numberOfLines}
+        accessibilityRole={accessibilityRole}
         ellipsizeMode="tail"
         maxFontSizeMultiplier={maxFontSizeMultiplier}>
         {children}
@@ -69,3 +78,10 @@ const makeStyles = (c: Palette) =>
     opacity: 0,
   },
 });
+
+// The same rule for any text that has little room (page titles, buttons): it wraps only between
+// words, any number of lines; a word too wide for the line makes the font smaller (down to 70%)
+// instead of breaking in the middle. Used by the check in scripts/check-text-fit.js.
+export function NoBreakText(props: Omit<Props, 'numberOfLines'>) {
+  return <TileTitle {...props} numberOfLines={0} />;
+}

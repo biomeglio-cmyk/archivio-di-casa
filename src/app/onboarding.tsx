@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
+import { NoBreakText } from '@/components/tile-title';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
@@ -113,9 +114,9 @@ function OnboardingPage({ page: p, index, width, scale }: { page: Page; index: n
           <Art />
         </View>
       </View>
-      <Text style={[styles.title, index === 0 && styles.titleFirst]} accessibilityRole="header">
+      <NoBreakText style={[styles.title, index === 0 && styles.titleFirst]} accessibilityRole="header">
         {t(`onboarding.pages.${p.id}.title`)}
-      </Text>
+      </NoBreakText>
       <Text style={styles.text}>{t(`onboarding.pages.${p.id}.text`)}</Text>
       {p.info && (
         <View style={styles.info}>

@@ -3,6 +3,7 @@ import type { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import { RoundIconButton } from '@/components/round-icon-button';
+import { NoBreakText } from '@/components/tile-title';
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -35,9 +36,9 @@ export function PageHeader({ title, subtitle, right, tint, onBack }: Props) {
         />
         <View style={styles.right}>{right}</View>
       </View>
-      <Text style={styles.title} accessibilityRole="header">
+      <NoBreakText style={styles.title} accessibilityRole="header">
         {title}
-      </Text>
+      </NoBreakText>
       {subtitle ? <Text style={styles.subtitle}>{subtitle}</Text> : null}
     </View>
   );

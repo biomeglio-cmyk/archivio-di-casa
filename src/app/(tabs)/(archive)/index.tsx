@@ -15,6 +15,7 @@ import { FavoriteTile, NextDeadlineCard } from '@/components/home-sections';
 import { SearchBar } from '@/components/search-bar';
 import { SectionHeader } from '@/components/section-header';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
+import { NoBreakText } from '@/components/tile-title';
 import { Text } from '@/components/text';
 import { TileScrollView } from '@/components/tile-grid';
 import { type Palette, Spacing } from '@/constants/theme';
@@ -78,9 +79,9 @@ export default function ArchiveScreen() {
         contentContainerStyle={styles.page}>
         <HomeHeader />
         {/* Home vuota greets the new user (it wraps between words, never inside one) */}
-        <Text style={styles.hello} accessibilityRole="header" lineBreakStrategyIOS="standard">
+        <NoBreakText style={styles.hello} accessibilityRole="header">
           {empty && categories ? t('home.welcome') : t('home.hello')}
-        </Text>
+        </NoBreakText>
         {empty && categories ? (
           <HomeEmpty categories={categories} />
         ) : (

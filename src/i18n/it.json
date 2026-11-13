@@ -35,16 +35,27 @@
     "today": "oggi",
     "tomorrow": "domani",
     "yesterday": "ieri",
-    "inSpan": "tra {{span}}",
-    "spanAgo": "{{span}} fa",
     "expiredYesterday": "scaduto ieri",
-    "expiredFor": "scaduto da {{span}}",
-    "days_one": "{{count}} giorno",
-    "days_other": "{{count}} giorni",
-    "months_one": "{{count}} mese",
-    "months_other": "{{count}} mesi",
     "years_one": "{{count}} anno",
-    "years_other": "{{count}} anni"
+    "years_other": "{{count}} anni",
+    "inDays_one": "tra {{count}} giorno",
+    "inDays_other": "tra {{count}} giorni",
+    "inMonths_one": "tra {{count}} mese",
+    "inMonths_other": "tra {{count}} mesi",
+    "inYears_one": "tra {{count}} anno",
+    "inYears_other": "tra {{count}} anni",
+    "daysAgo_one": "{{count}} giorno fa",
+    "daysAgo_other": "{{count}} giorni fa",
+    "monthsAgo_one": "{{count}} mese fa",
+    "monthsAgo_other": "{{count}} mesi fa",
+    "yearsAgo_one": "{{count}} anno fa",
+    "yearsAgo_other": "{{count}} anni fa",
+    "expiredDaysAgo_one": "scaduto da {{count}} giorno",
+    "expiredDaysAgo_other": "scaduto da {{count}} giorni",
+    "expiredMonthsAgo_one": "scaduto da {{count}} mese",
+    "expiredMonthsAgo_other": "scaduto da {{count}} mesi",
+    "expiredYearsAgo_one": "scaduto da {{count}} anno",
+    "expiredYearsAgo_other": "scaduto da {{count}} anni"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Quando avvisarti",
     "repeats": "Si ripete",
     "never": "Mai",
-    "everySpan": "Ogni {{span}}",
     "every": "Ogni",
     "notesSection": "Note",
     "notesPlaceholder": "Per esempio: pagata con domiciliazione, chiedere il rimborso…",
@@ -548,24 +558,36 @@
       "year_other": "{{count}} anni"
     },
     "every": {
-      "day_one": "Ogni giorno",
+      "day_one": "Ogni {{count}} giorno",
       "day_other": "Ogni {{count}} giorni",
-      "week_one": "Ogni settimana",
+      "week_one": "Ogni {{count}} settimana",
       "week_other": "Ogni {{count}} settimane",
-      "month_one": "Ogni mese",
+      "month_one": "Ogni {{count}} mese",
       "month_other": "Ogni {{count}} mesi",
-      "year_one": "Ogni anno",
+      "year_one": "Ogni {{count}} anno",
       "year_other": "Ogni {{count}} anni"
     },
     "repeats": {
-      "day_one": "Si ripete ogni giorno",
+      "day_one": "Si ripete ogni {{count}} giorno",
       "day_other": "Si ripete ogni {{count}} giorni",
-      "week_one": "Si ripete ogni settimana",
+      "week_one": "Si ripete ogni {{count}} settimana",
       "week_other": "Si ripete ogni {{count}} settimane",
-      "month_one": "Si ripete ogni mese",
+      "month_one": "Si ripete ogni {{count}} mese",
       "month_other": "Si ripete ogni {{count}} mesi",
-      "year_one": "Si ripete ogni anno",
+      "year_one": "Si ripete ogni {{count}} anno",
       "year_other": "Si ripete ogni {{count}} anni"
+    },
+    "everySingle": {
+      "day": "Ogni giorno",
+      "week": "Ogni settimana",
+      "month": "Ogni mese",
+      "year": "Ogni anno"
+    },
+    "repeatsSingle": {
+      "day": "Si ripete ogni giorno",
+      "week": "Si ripete ogni settimana",
+      "month": "Si ripete ogni mese",
+      "year": "Si ripete ogni anno"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Ne puoi aggiungere ancora {{count}}.",
     "tag": "Versione gratuita · {{used}} di {{limit}} usati",
     "title": "Tutti i tuoi documenti, senza limiti",
-    "intro": "Gratis fino a {{limit}} documenti e tessere. Per aggiungerne quanti vuoi, la sblocchi con un solo pagamento.",
+    "intro_one": "Gratis fino a {{count}} documento o tessera. Per aggiungerne quanti vuoi, la sblocchi con un solo pagamento.",
+    "intro_other": "Gratis fino a {{count}} documenti e tessere. Per aggiungerne quanti vuoi, la sblocchi con un solo pagamento.",
     "benefits": {
       "unlimited": {
         "title": "Documenti senza limiti",
@@ -1168,7 +1191,8 @@
       "failed": "Impossibile completare"
     },
     "meta": {
-      "pdfs": "{{number}} PDF",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF",
       "singlePdf": "PDF unico",
       "failed": "Non è stato possibile preparare il file",
       "preparing": "Preparazione…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Salvati in File",
       "sendFailed": "Impossibile inviare"
     },
-    "readyMany": "{{number}} PDF pronti",
+    "readyMany_one": "{{count}} PDF pronto",
+    "readyMany_other": "{{count}} PDF pronti",
     "choices": {
       "email": "Email: tutti i PDF in un messaggio",
       "save": "Salva in File: tutti nella stessa cartella",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "I {{count}} documenti verranno eliminati con foto e PDF. Non si può annullare.",
       "emptyConfirm": "Svuota"
     },
-    "intro": "I documenti eliminati restano qui per {{days}} giorni, poi vengono cancellati con foto e PDF.",
+    "intro_one": "I documenti eliminati restano qui per {{count}} giorno, poi vengono cancellati con foto e PDF.",
+    "intro_other": "I documenti eliminati restano qui per {{count}} giorni, poi vengono cancellati con foto e PDF.",
     "empty": "Il cestino è vuoto",
     "deletedSoon": "Verrà eliminato a breve",
-    "deletedIn": "Verrà eliminato tra {{days}} giorni",
+    "deletedIn_one": "Verrà eliminato tra {{count}} giorno",
+    "deletedIn_other": "Verrà eliminato tra {{count}} giorni",
     "restoreLabel": "Ripristina {{title}}",
     "deleteForeverLabel": "Elimina definitivamente {{title}}",
     "deleteForever": "Elimina definitivamente",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "I termini d’uso completi saranno pubblicati con la versione dell’App Store. In breve:",
-    "free": "Sottomano è gratis fino a {{limit}} documenti e tessere",
+    "free_one": "Sottomano è gratis fino a {{count}} documento o tessera",
+    "free_other": "Sottomano è gratis fino a {{count}} documenti e tessere",
     "oneTime": "Lo sblocco è un acquisto unico, senza abbonamento",
     "yours": "I tuoi documenti restano sul tuo telefono e sono tuoi",
     "backup": "Fai un backup per non perderli se cambi telefono"
   },
   "limit": {
     "later": "Più tardi",
-    "title": "Hai usato i {{limit}} spazi gratuiti",
+    "title_one": "Hai usato l’unico spazio gratuito",
+    "title_other": "Hai usato i {{count}} spazi gratuiti",
     "text": "Tutto quello che hai salvato resta qui e funziona come sempre. Per aggiungere altri documenti e tessere, sblocca Sottomano.",
     "stillWorks": {
       "view": "Consultare i tuoi documenti",
@@ -1510,7 +1539,8 @@
     "unlock": "Sblocca senza limiti a {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} di {{limit}} spazi gratuiti usati",
+    "title_one": "{{used}} di {{count}} spazio gratuito usato",
+    "title_other": "{{used}} di {{count}} spazi gratuiti usati",
     "accessibility": "{{title}}. Sblocca",
     "unlock": "Sblocca"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Sblocca senza limiti a {{price}}",
     "unlock": "Sblocca"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

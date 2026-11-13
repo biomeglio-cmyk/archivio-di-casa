@@ -19,12 +19,15 @@ export function unitCount(unit: RepeatUnit, every: number): string {
 }
 
 // "Ogni 6 mesi", "Ogni anno", "Ogni settimana"
+// Every 1 has its own text: in some languages the "one" plural form also covers 21, 31…
 export function describeEvery({ every, unit }: Repeat): string {
+  if (every === 1) return t(`recurrence.everySingle.${unit}`);
   return t(`recurrence.every.${unit}`, { count: every });
 }
 
 // "Si ripete ogni 6 mesi", "Si ripete ogni anno", "Si ripete ogni settimana"
 export function describeRepeat({ every, unit }: Repeat): string {
+  if (every === 1) return t(`recurrence.repeatsSingle.${unit}`);
   return t(`recurrence.repeats.${unit}`, { count: every });
 }
 

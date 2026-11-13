@@ -35,16 +35,27 @@
     "today": "heute",
     "tomorrow": "morgen",
     "yesterday": "gestern",
-    "inSpan": "in {{span}}",
-    "spanAgo": "vor {{span}}",
     "expiredYesterday": "gestern abgelaufen",
-    "expiredFor": "seit {{span}} abgelaufen",
-    "days_one": "{{count}} Tag",
-    "days_other": "{{count}} Tagen",
-    "months_one": "{{count}} Monat",
-    "months_other": "{{count}} Monaten",
     "years_one": "{{count}} Jahr",
-    "years_other": "{{count}} Jahre"
+    "years_other": "{{count}} Jahre",
+    "inDays_one": "in {{count}} Tag",
+    "inDays_other": "in {{count}} Tagen",
+    "inMonths_one": "in {{count}} Monat",
+    "inMonths_other": "in {{count}} Monaten",
+    "inYears_one": "in {{count}} Jahr",
+    "inYears_other": "in {{count}} Jahren",
+    "daysAgo_one": "vor {{count}} Tag",
+    "daysAgo_other": "vor {{count}} Tagen",
+    "monthsAgo_one": "vor {{count}} Monat",
+    "monthsAgo_other": "vor {{count}} Monaten",
+    "yearsAgo_one": "vor {{count}} Jahr",
+    "yearsAgo_other": "vor {{count}} Jahren",
+    "expiredDaysAgo_one": "vor {{count}} Tag abgelaufen",
+    "expiredDaysAgo_other": "vor {{count}} Tagen abgelaufen",
+    "expiredMonthsAgo_one": "vor {{count}} Monat abgelaufen",
+    "expiredMonthsAgo_other": "vor {{count}} Monaten abgelaufen",
+    "expiredYearsAgo_one": "vor {{count}} Jahr abgelaufen",
+    "expiredYearsAgo_other": "vor {{count}} Jahren abgelaufen"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Wann erinnern",
     "repeats": "Wiederholen",
     "never": "Nie",
-    "everySpan": "Alle {{span}}",
     "every": "Alle",
     "notesSection": "Notizen",
     "notesPlaceholder": "Zum Beispiel: per Lastschrift bezahlt, Erstattung beantragen …",
@@ -566,6 +576,18 @@
       "month_other": "Wiederholt sich alle {{count}} Monate",
       "year_one": "Wiederholt sich jährlich",
       "year_other": "Wiederholt sich alle {{count}} Jahre"
+    },
+    "everySingle": {
+      "day": "Jeden Tag",
+      "week": "Jede Woche",
+      "month": "Jeden Monat",
+      "year": "Jedes Jahr"
+    },
+    "repeatsSingle": {
+      "day": "Wiederholt sich täglich",
+      "week": "Wiederholt sich wöchentlich",
+      "month": "Wiederholt sich monatlich",
+      "year": "Wiederholt sich jährlich"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Du kannst noch {{count}} hinzufügen.",
     "tag": "Gratisversion · {{used}} von {{limit}} verwendet",
     "title": "Alle deine Dokumente, ohne Limit",
-    "intro": "Gratis für bis zu {{limit}} Dokumente und Karten. Um so viele hinzuzufügen, wie du willst, schalte es mit einer einmaligen Zahlung frei.",
+    "intro_one": "Gratis für bis zu {{count}} Dokument oder Karte. Um so viele hinzuzufügen, wie du willst, schalte es mit einer einmaligen Zahlung frei.",
+    "intro_other": "Gratis für bis zu {{count}} Dokumente und Karten. Um so viele hinzuzufügen, wie du willst, schalte es mit einer einmaligen Zahlung frei.",
     "benefits": {
       "unlimited": {
         "title": "Unbegrenzt Dokumente",
@@ -1168,7 +1191,8 @@
       "failed": "Vorgang fehlgeschlagen"
     },
     "meta": {
-      "pdfs": "{{number}} PDFs",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDFs",
       "singlePdf": "Ein PDF",
       "failed": "Die Datei konnte nicht vorbereitet werden",
       "preparing": "Wird vorbereitet …"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "In Dateien gesichert",
       "sendFailed": "Senden fehlgeschlagen"
     },
-    "readyMany": "{{number}} PDFs fertig",
+    "readyMany_one": "{{count}} PDF fertig",
+    "readyMany_other": "{{count}} PDFs fertig",
     "choices": {
       "email": "E-Mail: alle PDFs in einer Nachricht",
       "save": "In Dateien sichern: alle im selben Ordner",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "Die {{count}} Dokumente werden mit ihren Fotos und PDFs gelöscht. Dies kann nicht widerrufen werden.",
       "emptyConfirm": "Leeren"
     },
-    "intro": "Gelöschte Dokumente bleiben {{days}} Tage hier und werden dann mit ihren Fotos und PDFs entfernt.",
+    "intro_one": "Gelöschte Dokumente bleiben {{count}} Tag hier und werden dann mit ihren Fotos und PDFs entfernt.",
+    "intro_other": "Gelöschte Dokumente bleiben {{count}} Tage hier und werden dann mit ihren Fotos und PDFs entfernt.",
     "empty": "Der Papierkorb ist leer",
     "deletedSoon": "Wird bald gelöscht",
-    "deletedIn": "Wird in {{days}} Tagen gelöscht",
+    "deletedIn_one": "Wird in {{count}} Tag gelöscht",
+    "deletedIn_other": "Wird in {{count}} Tagen gelöscht",
     "restoreLabel": "{{title}} wiederherstellen",
     "deleteForeverLabel": "{{title}} endgültig löschen",
     "deleteForever": "Endgültig löschen",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "Die vollständigen Nutzungsbedingungen werden mit der App Store-Version veröffentlicht. Kurz gesagt:",
-    "free": "Sottomano ist gratis für bis zu {{limit}} Dokumente und Karten",
+    "free_one": "Sottomano ist gratis für bis zu {{count}} Dokument oder Karte",
+    "free_other": "Sottomano ist gratis für bis zu {{count}} Dokumente und Karten",
     "oneTime": "Die Freischaltung ist ein einmaliger Kauf, ohne Abo",
     "yours": "Deine Dokumente bleiben auf deinem iPhone und gehören dir",
     "backup": "Erstelle ein Backup, damit du sie beim iPhone-Wechsel nicht verlierst"
   },
   "limit": {
     "later": "Später",
-    "title": "Du hast deine {{limit}} freien Plätze verwendet",
+    "title_one": "Du hast deinen einzigen freien Platz verwendet",
+    "title_other": "Du hast deine {{count}} freien Plätze verwendet",
     "text": "Alles, was du gesichert hast, bleibt hier und funktioniert wie immer. Um weitere Dokumente und Karten hinzuzufügen, schalte Sottomano frei.",
     "stillWorks": {
       "view": "Deine Dokumente ansehen",
@@ -1510,7 +1539,8 @@
     "unlock": "Ohne Limit freischalten für {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} von {{limit}} freien Plätzen verwendet",
+    "title_one": "{{used}} von {{count}} freien Platz verwendet",
+    "title_other": "{{used}} von {{count}} freien Plätzen verwendet",
     "accessibility": "{{title}}. Freischalten",
     "unlock": "Freischalten"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Ohne Limit freischalten für {{price}}",
     "unlock": "Freischalten"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

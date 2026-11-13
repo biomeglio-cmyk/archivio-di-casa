@@ -21,7 +21,7 @@ export default function TermsScreen() {
           {t('terms.intro')}
         </ThemedText>
         <Group>
-          <Row label={t('terms.free', { limit: FREE_LIMIT })} symbol="gift" first />
+          <Row label={t('terms.free', { count: FREE_LIMIT })} symbol="gift" first />
           <Row label={t('terms.oneTime')} symbol="checkmark.seal" />
           <Row label={t('terms.yours')} symbol="lock.iphone" />
           <Row label={t('terms.backup')} symbol="icloud.and.arrow.up" />

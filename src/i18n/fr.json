@@ -35,16 +35,27 @@
     "today": "aujourd’hui",
     "tomorrow": "demain",
     "yesterday": "hier",
-    "inSpan": "dans {{span}}",
-    "spanAgo": "il y a {{span}}",
     "expiredYesterday": "expiré hier",
-    "expiredFor": "expiré depuis {{span}}",
-    "days_one": "{{count}} jour",
-    "days_other": "{{count}} jours",
-    "months_one": "{{count}} mois",
-    "months_other": "{{count}} mois",
     "years_one": "{{count}} an",
-    "years_other": "{{count}} ans"
+    "years_other": "{{count}} ans",
+    "inDays_one": "dans {{count}} jour",
+    "inDays_other": "dans {{count}} jours",
+    "inMonths_one": "dans {{count}} mois",
+    "inMonths_other": "dans {{count}} mois",
+    "inYears_one": "dans {{count}} an",
+    "inYears_other": "dans {{count}} ans",
+    "daysAgo_one": "il y a {{count}} jour",
+    "daysAgo_other": "il y a {{count}} jours",
+    "monthsAgo_one": "il y a {{count}} mois",
+    "monthsAgo_other": "il y a {{count}} mois",
+    "yearsAgo_one": "il y a {{count}} an",
+    "yearsAgo_other": "il y a {{count}} ans",
+    "expiredDaysAgo_one": "expiré il y a {{count}} jour",
+    "expiredDaysAgo_other": "expiré il y a {{count}} jours",
+    "expiredMonthsAgo_one": "expiré il y a {{count}} mois",
+    "expiredMonthsAgo_other": "expiré il y a {{count}} mois",
+    "expiredYearsAgo_one": "expiré il y a {{count}} an",
+    "expiredYearsAgo_other": "expiré il y a {{count}} ans"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Quand te le rappeler",
     "repeats": "Répétition",
     "never": "Jamais",
-    "everySpan": "Chaque {{span}}",
     "every": "Intervalle",
     "notesSection": "Notes",
     "notesPlaceholder": "Par exemple : payé par prélèvement, demander un remboursement…",
@@ -566,6 +576,18 @@
       "month_other": "Se répète tous les {{count}} mois",
       "year_one": "Se répète tous les ans",
       "year_other": "Se répète tous les {{count}} ans"
+    },
+    "everySingle": {
+      "day": "Tous les jours",
+      "week": "Toutes les semaines",
+      "month": "Tous les mois",
+      "year": "Tous les ans"
+    },
+    "repeatsSingle": {
+      "day": "Se répète tous les jours",
+      "week": "Se répète toutes les semaines",
+      "month": "Se répète tous les mois",
+      "year": "Se répète tous les ans"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Tu peux encore en ajouter {{count}}.",
     "tag": "Version gratuite · {{used}} sur {{limit}} utilisés",
     "title": "Tous tes documents, sans limites",
-    "intro": "Gratuit jusqu’à {{limit}} documents et cartes. Pour en ajouter autant que tu veux, débloque-le en un seul paiement.",
+    "intro_one": "Gratuit jusqu’à {{count}} document ou carte. Pour en ajouter autant que tu veux, débloque-le en un seul paiement.",
+    "intro_other": "Gratuit jusqu’à {{count}} documents et cartes. Pour en ajouter autant que tu veux, débloque-le en un seul paiement.",
     "benefits": {
       "unlimited": {
         "title": "Documents illimités",
@@ -1168,7 +1191,8 @@
       "failed": "Impossible de terminer"
     },
     "meta": {
-      "pdfs": "{{number}} PDF",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF",
       "singlePdf": "PDF unique",
       "failed": "Impossible de préparer le fichier",
       "preparing": "Préparation…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Enregistrés dans Fichiers",
       "sendFailed": "Impossible d’envoyer"
     },
-    "readyMany": "{{number}} PDF prêts",
+    "readyMany_one": "{{count}} PDF prêt",
+    "readyMany_other": "{{count}} PDF prêts",
     "choices": {
       "email": "E-mail : tous les PDF dans un seul message",
       "save": "Enregistrer dans Fichiers : tous dans le même dossier",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "Les {{count}} documents seront supprimés avec leurs photos et PDF. Cette action est irréversible.",
       "emptyConfirm": "Vider"
     },
-    "intro": "Les documents supprimés restent ici {{days}} jours, puis ils sont effacés avec leurs photos et PDF.",
+    "intro_one": "Les documents supprimés restent ici {{count}} jour, puis ils sont effacés avec leurs photos et PDF.",
+    "intro_other": "Les documents supprimés restent ici {{count}} jours, puis ils sont effacés avec leurs photos et PDF.",
     "empty": "La Corbeille est vide",
     "deletedSoon": "Bientôt supprimé",
-    "deletedIn": "Supprimé dans {{days}} jours",
+    "deletedIn_one": "Supprimé dans {{count}} jour",
+    "deletedIn_other": "Supprimé dans {{count}} jours",
     "restoreLabel": "Restaurer {{title}}",
     "deleteForeverLabel": "Supprimer {{title}} définitivement",
     "deleteForever": "Supprimer définitivement",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "Les conditions d’utilisation complètes seront publiées avec la version App Store. En bref :",
-    "free": "Sottomano est gratuit jusqu’à {{limit}} documents et cartes",
+    "free_one": "Sottomano est gratuit jusqu’à {{count}} document ou carte",
+    "free_other": "Sottomano est gratuit jusqu’à {{count}} documents et cartes",
     "oneTime": "Le déblocage est un achat unique, sans abonnement",
     "yours": "Tes documents restent sur ton téléphone et t’appartiennent",
     "backup": "Fais une sauvegarde pour ne pas les perdre si tu changes de téléphone"
   },
   "limit": {
     "later": "Plus tard",
-    "title": "Tu as utilisé tes {{limit}} emplacements gratuits",
+    "title_one": "Tu as utilisé ton unique emplacement gratuit",
+    "title_other": "Tu as utilisé tes {{count}} emplacements gratuits",
     "text": "Tout ce que tu as enregistré reste ici et fonctionne comme avant. Pour ajouter d’autres documents et cartes, débloque Sottomano.",
     "stillWorks": {
       "view": "Consulter tes documents",
@@ -1510,7 +1539,8 @@
     "unlock": "Débloquer sans limites pour {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} emplacements gratuits utilisés sur {{limit}}",
+    "title_one": "{{used}} sur {{count}} emplacement gratuit utilisé",
+    "title_other": "{{used}} sur {{count}} emplacements gratuits utilisés",
     "accessibility": "{{title}}. Débloquer",
     "unlock": "Débloquer"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Débloquer sans limites pour {{price}}",
     "unlock": "Débloquer"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

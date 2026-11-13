@@ -35,16 +35,27 @@
     "today": "hoje",
     "tomorrow": "amanhã",
     "yesterday": "ontem",
-    "inSpan": "em {{span}}",
-    "spanAgo": "há {{span}}",
     "expiredYesterday": "venceu ontem",
-    "expiredFor": "venceu há {{span}}",
-    "days_one": "{{count}} dia",
-    "days_other": "{{count}} dias",
-    "months_one": "{{count}} mês",
-    "months_other": "{{count}} meses",
     "years_one": "{{count}} ano",
-    "years_other": "{{count}} anos"
+    "years_other": "{{count}} anos",
+    "inDays_one": "em {{count}} dia",
+    "inDays_other": "em {{count}} dias",
+    "inMonths_one": "em {{count}} mês",
+    "inMonths_other": "em {{count}} meses",
+    "inYears_one": "em {{count}} ano",
+    "inYears_other": "em {{count}} anos",
+    "daysAgo_one": "há {{count}} dia",
+    "daysAgo_other": "há {{count}} dias",
+    "monthsAgo_one": "há {{count}} mês",
+    "monthsAgo_other": "há {{count}} meses",
+    "yearsAgo_one": "há {{count}} ano",
+    "yearsAgo_other": "há {{count}} anos",
+    "expiredDaysAgo_one": "venceu há {{count}} dia",
+    "expiredDaysAgo_other": "venceu há {{count}} dias",
+    "expiredMonthsAgo_one": "venceu há {{count}} mês",
+    "expiredMonthsAgo_other": "venceu há {{count}} meses",
+    "expiredYearsAgo_one": "venceu há {{count}} ano",
+    "expiredYearsAgo_other": "venceu há {{count}} anos"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Quando lembrar você",
     "repeats": "Repetir",
     "never": "Nunca",
-    "everySpan": "A cada {{span}}",
     "every": "A cada",
     "notesSection": "Notas",
     "notesPlaceholder": "Por exemplo: pago em débito automático, pedir reembolso…",
@@ -566,6 +576,18 @@
       "month_other": "Repete a cada {{count}} meses",
       "year_one": "Repete todo ano",
       "year_other": "Repete a cada {{count}} anos"
+    },
+    "everySingle": {
+      "day": "Todo dia",
+      "week": "Toda semana",
+      "month": "Todo mês",
+      "year": "Todo ano"
+    },
+    "repeatsSingle": {
+      "day": "Repete todo dia",
+      "week": "Repete toda semana",
+      "month": "Repete todo mês",
+      "year": "Repete todo ano"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Você ainda pode adicionar {{count}}.",
     "tag": "Versão gratuita · {{used}} de {{limit}} usados",
     "title": "Todos os seus documentos, sem limites",
-    "intro": "Grátis para até {{limit}} documentos e cartões. Para adicionar quantos quiser, desbloqueie com um único pagamento.",
+    "intro_one": "Grátis para até {{count}} documento ou cartão. Para adicionar quantos quiser, desbloqueie com um único pagamento.",
+    "intro_other": "Grátis para até {{count}} documentos e cartões. Para adicionar quantos quiser, desbloqueie com um único pagamento.",
     "benefits": {
       "unlimited": {
         "title": "Documentos ilimitados",
@@ -1168,7 +1191,8 @@
       "failed": "Não foi possível concluir"
     },
     "meta": {
-      "pdfs": "{{number}} PDFs",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDFs",
       "singlePdf": "PDF único",
       "failed": "Não foi possível preparar o arquivo",
       "preparing": "Preparando…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Salvos em Arquivos",
       "sendFailed": "Não foi possível enviar"
     },
-    "readyMany": "{{number}} PDFs prontos",
+    "readyMany_one": "{{count}} PDF pronto",
+    "readyMany_other": "{{count}} PDFs prontos",
     "choices": {
       "email": "Email: todos os PDFs em uma mensagem",
       "save": "Salvar em Arquivos: todos na mesma pasta",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "Os {{count}} documentos serão apagados com suas fotos e PDFs. Não é possível desfazer.",
       "emptyConfirm": "Esvaziar"
     },
-    "intro": "Os documentos apagados ficam aqui por {{days}} dias e depois são eliminados com suas fotos e PDFs.",
+    "intro_one": "Os documentos apagados ficam aqui por {{count}} dia e depois são eliminados com suas fotos e PDFs.",
+    "intro_other": "Os documentos apagados ficam aqui por {{count}} dias e depois são eliminados com suas fotos e PDFs.",
     "empty": "A Lixeira está vazia",
     "deletedSoon": "Será apagado em breve",
-    "deletedIn": "Será apagado em {{days}} dias",
+    "deletedIn_one": "Será apagado em {{count}} dia",
+    "deletedIn_other": "Será apagado em {{count}} dias",
     "restoreLabel": "Restaurar {{title}}",
     "deleteForeverLabel": "Apagar {{title}} definitivamente",
     "deleteForever": "Apagar definitivamente",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "Os termos de uso completos serão publicados com a versão da App Store. Em resumo:",
-    "free": "O Sottomano é grátis para até {{limit}} documentos e cartões",
+    "free_one": "O Sottomano é grátis para até {{count}} documento ou cartão",
+    "free_other": "O Sottomano é grátis para até {{count}} documentos e cartões",
     "oneTime": "O desbloqueio é uma compra única, sem assinatura",
     "yours": "Seus documentos ficam no seu celular e pertencem a você",
     "backup": "Faça um backup para não perdê-los se trocar de celular"
   },
   "limit": {
     "later": "Mais tarde",
-    "title": "Você usou seus {{limit}} espaços gratuitos",
+    "title_one": "Você usou seu único espaço gratuito",
+    "title_other": "Você usou seus {{count}} espaços gratuitos",
     "text": "Tudo o que você salvou continua aqui e funciona como sempre. Para adicionar mais documentos e cartões, desbloqueie o Sottomano.",
     "stillWorks": {
       "view": "Ver seus documentos",
@@ -1510,7 +1539,8 @@
     "unlock": "Desbloquear sem limites por {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} de {{limit}} espaços gratuitos usados",
+    "title_one": "{{used}} de {{count}} espaço gratuito usado",
+    "title_other": "{{used}} de {{count}} espaços gratuitos usados",
     "accessibility": "{{title}}. Desbloquear",
     "unlock": "Desbloquear"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Desbloquear sem limites por {{price}}",
     "unlock": "Desbloquear"
   },
-  "freeLimit": {
-    "unlockPrice": "€0,99"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

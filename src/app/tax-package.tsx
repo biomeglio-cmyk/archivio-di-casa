@@ -81,7 +81,7 @@ export default function TaxPackageScreen() {
       ]);
       return;
     }
-    const choice = await chooseAction(t('taxPackage.readyMany', { number: files.length }), [
+    const choice = await chooseAction(t('taxPackage.readyMany', { count: files.length }), [
       t('taxPackage.choices.email'),
       t('taxPackage.choices.save'),
       t('taxPackage.choices.oneByOne'),

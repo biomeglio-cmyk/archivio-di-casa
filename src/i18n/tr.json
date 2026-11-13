@@ -35,16 +35,27 @@
     "today": "bugün",
     "tomorrow": "yarın",
     "yesterday": "dün",
-    "inSpan": "{{span}} içinde",
-    "spanAgo": "{{span}} önce",
     "expiredYesterday": "dün süresi doldu",
-    "expiredFor": "{{span}} önce süresi doldu",
-    "days_one": "{{count}} gün",
-    "days_other": "{{count}} gün",
-    "months_one": "{{count}} ay",
-    "months_other": "{{count}} ay",
     "years_one": "{{count}} yıl",
-    "years_other": "{{count}} yıl"
+    "years_other": "{{count}} yıl",
+    "inDays_one": "{{count}} gün sonra",
+    "inDays_other": "{{count}} gün sonra",
+    "inMonths_one": "{{count}} ay sonra",
+    "inMonths_other": "{{count}} ay sonra",
+    "inYears_one": "{{count}} yıl sonra",
+    "inYears_other": "{{count}} yıl sonra",
+    "daysAgo_one": "{{count}} gün önce",
+    "daysAgo_other": "{{count}} gün önce",
+    "monthsAgo_one": "{{count}} ay önce",
+    "monthsAgo_other": "{{count}} ay önce",
+    "yearsAgo_one": "{{count}} yıl önce",
+    "yearsAgo_other": "{{count}} yıl önce",
+    "expiredDaysAgo_one": "{{count}} gün önce süresi doldu",
+    "expiredDaysAgo_other": "{{count}} gün önce süresi doldu",
+    "expiredMonthsAgo_one": "{{count}} ay önce süresi doldu",
+    "expiredMonthsAgo_other": "{{count}} ay önce süresi doldu",
+    "expiredYearsAgo_one": "{{count}} yıl önce süresi doldu",
+    "expiredYearsAgo_other": "{{count}} yıl önce süresi doldu"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Ne zaman hatırlatılsın",
     "repeats": "Tekrarla",
     "never": "Asla",
-    "everySpan": "Her {{span}}",
     "every": "Her",
     "notesSection": "Notlar",
     "notesPlaceholder": "Örneğin: otomatik ödemeyle ödendi, iade iste…",
@@ -566,6 +576,18 @@
       "month_other": "{{count}} ayda bir tekrarlanır",
       "year_one": "Her yıl tekrarlanır",
       "year_other": "{{count}} yılda bir tekrarlanır"
+    },
+    "everySingle": {
+      "day": "Her gün",
+      "week": "Her hafta",
+      "month": "Her ay",
+      "year": "Her yıl"
+    },
+    "repeatsSingle": {
+      "day": "Her gün tekrarlanır",
+      "week": "Her hafta tekrarlanır",
+      "month": "Her ay tekrarlanır",
+      "year": "Her yıl tekrarlanır"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "{{count}} tane daha ekleyebilirsin.",
     "tag": "Ücretsiz sürüm · {{used}}/{{limit}} kullanıldı",
     "title": "Tüm belgelerin, sınırsız",
-    "intro": "{{limit}} belge ve karta kadar ücretsiz. İstediğin kadar eklemek için tek seferlik ödemeyle kilidini aç.",
+    "intro_one": "{{count}} belge veya karta kadar ücretsiz. İstediğin kadar eklemek için tek seferlik ödemeyle kilidini aç.",
+    "intro_other": "{{count}} belge ve karta kadar ücretsiz. İstediğin kadar eklemek için tek seferlik ödemeyle kilidini aç.",
     "benefits": {
       "unlimited": {
         "title": "Sınırsız belge",
@@ -1168,7 +1191,8 @@
       "failed": "Tamamlanamadı"
     },
     "meta": {
-      "pdfs": "{{number}} PDF",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF",
       "singlePdf": "Tek PDF",
       "failed": "Dosya hazırlanamadı",
       "preparing": "Hazırlanıyor…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Dosyalar’a kaydedildi",
       "sendFailed": "Gönderilemedi"
     },
-    "readyMany": "{{number}} PDF hazır",
+    "readyMany_one": "{{count}} PDF hazır",
+    "readyMany_other": "{{count}} PDF hazır",
     "choices": {
       "email": "E-posta: tüm PDF’ler tek mesajda",
       "save": "Dosyalar’a kaydet: hepsi aynı klasörde",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "{{count}} belge, fotoğrafları ve PDF’leriyle birlikte silinecek. Bu işlem geri alınamaz.",
       "emptyConfirm": "Boşalt"
     },
-    "intro": "Silinen belgeler {{days}} gün burada kalır, sonra fotoğrafları ve PDF’leriyle birlikte silinir.",
+    "intro_one": "Silinen belgeler {{count}} gün burada kalır, sonra fotoğrafları ve PDF’leriyle birlikte silinir.",
+    "intro_other": "Silinen belgeler {{count}} gün burada kalır, sonra fotoğrafları ve PDF’leriyle birlikte silinir.",
     "empty": "Çöp Kutusu boş",
     "deletedSoon": "Yakında silinecek",
-    "deletedIn": "{{days}} gün içinde silinecek",
+    "deletedIn_one": "{{count}} gün içinde silinecek",
+    "deletedIn_other": "{{count}} gün içinde silinecek",
     "restoreLabel": "Geri yükle: {{title}}",
     "deleteForeverLabel": "Kalıcı olarak sil: {{title}}",
     "deleteForever": "Kalıcı olarak sil",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "Kullanım koşullarının tamamı App Store sürümüyle yayımlanacak. Kısaca:",
-    "free": "Sottomano {{limit}} belge ve karta kadar ücretsizdir",
+    "free_one": "Sottomano {{count}} belge veya karta kadar ücretsizdir",
+    "free_other": "Sottomano {{count}} belge ve karta kadar ücretsizdir",
     "oneTime": "Kilidi açmak abonelik olmadan tek seferlik bir satın alımdır",
     "yours": "Belgelerin telefonunda kalır ve sana aittir",
     "backup": "Telefon değiştirdiğinde kaybetmemek için yedek al"
   },
   "limit": {
     "later": "Daha sonra",
-    "title": "{{limit}} ücretsiz yerini kullandın",
+    "title_one": "Tek ücretsiz yerini kullandın",
+    "title_other": "{{count}} ücretsiz yerini kullandın",
     "text": "Kaydettiğin her şey burada kalır ve her zamanki gibi çalışır. Daha fazla belge ve kart eklemek için Sottomano’nun kilidini aç.",
     "stillWorks": {
       "view": "Belgelerini görüntüle",
@@ -1510,7 +1539,8 @@
     "unlock": "{{price}} karşılığında sınırsız kilidi aç"
   },
   "limitCard": {
-    "title": "{{used}}/{{limit}} ücretsiz yer kullanıldı",
+    "title_one": "{{used}}/{{count}} ücretsiz yer kullanıldı",
+    "title_other": "{{used}}/{{count}} ücretsiz yer kullanıldı",
     "accessibility": "{{title}}. Kilidi aç",
     "unlock": "Kilidi aç"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. {{price}} karşılığında sınırsız kilidi aç",
     "unlock": "Kilidi aç"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

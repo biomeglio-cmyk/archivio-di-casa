@@ -38,19 +38,37 @@
     "today": "сегодня",
     "tomorrow": "завтра",
     "yesterday": "вчера",
-    "inSpan": "через {{span}}",
-    "spanAgo": "{{span}} назад",
     "expiredYesterday": "истек вчера",
-    "expiredFor": "истек {{span}} назад",
-    "days_one": "{{count}} день",
-    "days_few": "{{count}} дня",
-    "days_many": "{{count}} дней",
-    "months_one": "{{count}} месяц",
-    "months_few": "{{count}} месяца",
-    "months_many": "{{count}} месяцев",
     "years_one": "{{count}} год",
     "years_few": "{{count}} года",
-    "years_many": "{{count}} лет"
+    "years_many": "{{count}} лет",
+    "inDays_one": "через {{count}} день",
+    "inDays_few": "через {{count}} дня",
+    "inDays_many": "через {{count}} дней",
+    "inMonths_one": "через {{count}} месяц",
+    "inMonths_few": "через {{count}} месяца",
+    "inMonths_many": "через {{count}} месяцев",
+    "inYears_one": "через {{count}} год",
+    "inYears_few": "через {{count}} года",
+    "inYears_many": "через {{count}} лет",
+    "daysAgo_one": "{{count}} день назад",
+    "daysAgo_few": "{{count}} дня назад",
+    "daysAgo_many": "{{count}} дней назад",
+    "monthsAgo_one": "{{count}} месяц назад",
+    "monthsAgo_few": "{{count}} месяца назад",
+    "monthsAgo_many": "{{count}} месяцев назад",
+    "yearsAgo_one": "{{count}} год назад",
+    "yearsAgo_few": "{{count}} года назад",
+    "yearsAgo_many": "{{count}} лет назад",
+    "expiredDaysAgo_one": "истек {{count}} день назад",
+    "expiredDaysAgo_few": "истек {{count}} дня назад",
+    "expiredDaysAgo_many": "истек {{count}} дней назад",
+    "expiredMonthsAgo_one": "истек {{count}} месяц назад",
+    "expiredMonthsAgo_few": "истек {{count}} месяца назад",
+    "expiredMonthsAgo_many": "истек {{count}} месяцев назад",
+    "expiredYearsAgo_one": "истек {{count}} год назад",
+    "expiredYearsAgo_few": "истек {{count}} года назад",
+    "expiredYearsAgo_many": "истек {{count}} лет назад"
   },
   "categories": {
     "builtin": {
@@ -441,7 +459,6 @@
     "whenToRemind": "Когда напомнить",
     "repeats": "Повтор",
     "never": "Никогда",
-    "everySpan": "Каждые {{span}}",
     "every": "Каждые",
     "notesSection": "Заметки",
     "notesPlaceholder": "Например: оплачено автоплатежом, запросить возврат…",
@@ -576,32 +593,44 @@
       "year_many": "{{count}} лет"
     },
     "every": {
-      "day_one": "Каждый день",
+      "day_one": "Каждый {{count}} день",
       "day_few": "Каждые {{count}} дня",
       "day_many": "Каждые {{count}} дней",
-      "week_one": "Каждую неделю",
+      "week_one": "Каждую {{count}} неделю",
       "week_few": "Каждые {{count}} недели",
       "week_many": "Каждые {{count}} недель",
-      "month_one": "Каждый месяц",
+      "month_one": "Каждый {{count}} месяц",
       "month_few": "Каждые {{count}} месяца",
       "month_many": "Каждые {{count}} месяцев",
-      "year_one": "Каждый год",
+      "year_one": "Каждый {{count}} год",
       "year_few": "Каждые {{count}} года",
       "year_many": "Каждые {{count}} лет"
     },
     "repeats": {
-      "day_one": "Повтор каждый день",
+      "day_one": "Повтор каждый {{count}} день",
       "day_few": "Повтор каждые {{count}} дня",
       "day_many": "Повтор каждые {{count}} дней",
-      "week_one": "Повтор каждую неделю",
+      "week_one": "Повтор каждую {{count}} неделю",
       "week_few": "Повтор каждые {{count}} недели",
       "week_many": "Повтор каждые {{count}} недель",
-      "month_one": "Повтор каждый месяц",
+      "month_one": "Повтор каждый {{count}} месяц",
       "month_few": "Повтор каждые {{count}} месяца",
       "month_many": "Повтор каждые {{count}} месяцев",
-      "year_one": "Повтор каждый год",
+      "year_one": "Повтор каждый {{count}} год",
       "year_few": "Повтор каждые {{count}} года",
       "year_many": "Повтор каждые {{count}} лет"
+    },
+    "everySingle": {
+      "day": "Каждый день",
+      "week": "Каждую неделю",
+      "month": "Каждый месяц",
+      "year": "Каждый год"
+    },
+    "repeatsSingle": {
+      "day": "Повтор каждый день",
+      "week": "Повтор каждую неделю",
+      "month": "Повтор каждый месяц",
+      "year": "Повтор каждый год"
     }
   },
   "deadlineUtils": {
@@ -1124,7 +1153,9 @@
     "remaining_many": "Можно добавить еще {{count}}.",
     "tag": "Бесплатная версия · использовано {{used}} из {{limit}}",
     "title": "Все твои документы без ограничений",
-    "intro": "Бесплатно до {{limit}} документов и карт. Чтобы добавлять сколько угодно, разблокируй приложение одним платежом.",
+    "intro_one": "Бесплатно до {{count}} документа или карты. Чтобы добавлять сколько угодно, разблокируй приложение одним платежом.",
+    "intro_few": "Бесплатно до {{count}} документов и карт. Чтобы добавлять сколько угодно, разблокируй приложение одним платежом.",
+    "intro_many": "Бесплатно до {{count}} документов и карт. Чтобы добавлять сколько угодно, разблокируй приложение одним платежом.",
     "benefits": {
       "unlimited": {
         "title": "Безлимит документов",
@@ -1216,7 +1247,9 @@
       "failed": "Не удалось выполнить"
     },
     "meta": {
-      "pdfs": "PDF-файлов: {{number}}",
+      "pdfs_one": "{{count}} PDF-файл",
+      "pdfs_few": "{{count}} PDF-файла",
+      "pdfs_many": "{{count}} PDF-файлов",
       "singlePdf": "Один PDF",
       "failed": "Не удалось подготовить файл",
       "preparing": "Подготовка…"
@@ -1271,7 +1304,9 @@
       "savedToFiles": "Сохранено в Файлы",
       "sendFailed": "Не удалось отправить"
     },
-    "readyMany": "PDF готовы: {{number}}",
+    "readyMany_one": "{{count}} PDF-файл готов",
+    "readyMany_few": "{{count}} PDF-файла готовы",
+    "readyMany_many": "{{count}} PDF-файлов готовы",
     "choices": {
       "email": "Почта: все PDF в одном письме",
       "save": "Сохранить в Файлы: все в одну папку",
@@ -1304,10 +1339,14 @@
       "emptyMessage_many": "{{count}} документов будут удалены вместе с фото и PDF. Это действие нельзя отменить.",
       "emptyConfirm": "Очистить"
     },
-    "intro": "Удаленные документы хранятся здесь {{days}} дн., затем стираются вместе с фото и PDF.",
+    "intro_one": "Удаленные документы хранятся здесь {{count}} день, затем стираются вместе с фото и PDF.",
+    "intro_few": "Удаленные документы хранятся здесь {{count}} дня, затем стираются вместе с фото и PDF.",
+    "intro_many": "Удаленные документы хранятся здесь {{count}} дней, затем стираются вместе с фото и PDF.",
     "empty": "Корзина пуста",
     "deletedSoon": "Скоро будет удален",
-    "deletedIn": "Будет удален через {{days}} дн.",
+    "deletedIn_one": "Будет удален через {{count}} день",
+    "deletedIn_few": "Будет удален через {{count}} дня",
+    "deletedIn_many": "Будет удален через {{count}} дней",
     "restoreLabel": "Восстановить «{{title}}»",
     "deleteForeverLabel": "Удалить «{{title}}» навсегда",
     "deleteForever": "Удалить навсегда",
@@ -1549,14 +1588,18 @@
   },
   "terms": {
     "intro": "Полные условия использования будут опубликованы с версией для App Store. Вкратце:",
-    "free": "Sottomano бесплатен для {{limit}} документов и карт",
+    "free_one": "Sottomano бесплатен для {{count}} документа или карты",
+    "free_few": "Sottomano бесплатен для {{count}} документов и карт",
+    "free_many": "Sottomano бесплатен для {{count}} документов и карт",
     "oneTime": "Разблокировка — разовая покупка, без подписки",
     "yours": "Твои документы остаются на телефоне и принадлежат тебе",
     "backup": "Создавай резервную копию, чтобы не потерять их при смене телефона"
   },
   "limit": {
     "later": "Позже",
-    "title": "Ты использовал {{limit}} бесплатных мест",
+    "title_one": "Ты использовал {{count}} бесплатное место",
+    "title_few": "Ты использовал {{count}} бесплатных места",
+    "title_many": "Ты использовал {{count}} бесплатных мест",
     "text": "Все сохраненное остается здесь и работает как всегда. Чтобы добавить больше документов и карт, разблокируй Sottomano.",
     "stillWorks": {
       "view": "Просматривать документы",
@@ -1568,7 +1611,9 @@
     "unlock": "Снять ограничения за {{price}}"
   },
   "limitCard": {
-    "title": "Использовано {{used}} из {{limit}} бесплатных мест",
+    "title_one": "Использовано {{used}} из {{count}} бесплатного места",
+    "title_few": "Использовано {{used}} из {{count}} бесплатных мест",
+    "title_many": "Использовано {{used}} из {{count}} бесплатных мест",
     "accessibility": "{{title}}. Разблокировать",
     "unlock": "Разблокировать"
   },
@@ -1579,9 +1624,7 @@
     "accessibility": "{{title}}. Снять ограничения за {{price}}",
     "unlock": "Разблокировать"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

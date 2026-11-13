@@ -4,7 +4,7 @@ import Storage from 'expo-sqlite/kv-store';
 import { useEffect, useSyncExternalStore } from 'react';
 
 import { useDbQuery } from '@/hooks/use-db-query';
-import { t } from '@/i18n';
+import { formatEuro } from '@/utils/money';
 
 // Free version (docs/design-guide.md, "Limite gratuito"): up to 7 elements in all, where an
 // element is a document or a card ("Tessere e card" items are documents too). Categories,
@@ -19,8 +19,11 @@ export const FREE_LIMIT = 7;
 // Informazioni (tap the version 5 times).
 export const FREE_LIMIT_ENFORCED = false;
 // The price as written in the active language ("0,99 €" / "€0.99"); call it at render time
+// The one-time purchase: 0,99 € (the App Store will give the local price once StoreKit is in)
+const UNLOCK_PRICE_CENTS = 99;
+
 export function unlockPrice(): string {
-  return t('freeLimit.unlockPrice');
+  return formatEuro(UNLOCK_PRICE_CENTS);
 }
 
 const UNLOCKED_KEY = 'app.unlocked';

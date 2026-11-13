@@ -48,11 +48,18 @@ export function formatShortDate(iso: string, today: Date = new Date()): string {
   return sameYear ? base : `${base} ${date.getFullYear()}`;
 }
 
-// "3 giorni", "2 mesi", "1 anno": days up to 45, then months, then years
-function span(amount: number): string {
-  if (amount <= 45) return t('dates.days', { count: amount });
-  if (amount < 365) return t('dates.months', { count: Math.round(amount / 30.44) });
-  return t('dates.years', { count: Math.round(amount / 365.25) });
+// Days up to 45, then months, then years: the unit and how many ("3 giorni", "2 mesi", "1 anno")
+function span(days: number): { unit: 'Days' | 'Months' | 'Years'; count: number } {
+  if (days <= 45) return { unit: 'Days', count: days };
+  if (days < 365) return { unit: 'Months', count: Math.round(days / 30.44) };
+  return { unit: 'Years', count: Math.round(days / 365.25) };
+}
+
+// Whole sentences per unit ("tra 3 giorni", "3 giorni fa"): the number and the noun take the case
+// the sentence needs (German "in 3 Tagen", Czech "před 3 dny"…), so no fragment is glued in
+function inSpan(days: number): string {
+  const { unit, count } = span(days);
+  return t(`dates.in${unit}`, { count });
 }
 
 // For a document's expiry: "oggi", "domani", "tra 3 giorni", "scaduto ieri", "scaduto da 2 giorni"
@@ -60,7 +67,9 @@ export function describeDistance(days: number): string {
   if (days === 0) return t('dates.today');
   if (days === 1) return t('dates.tomorrow');
   if (days === -1) return t('dates.expiredYesterday');
-  return days > 0 ? t('dates.inSpan', { span: span(days) }) : t('dates.expiredFor', { span: span(-days) });
+  if (days > 0) return inSpan(days);
+  const { unit, count } = span(-days);
+  return t(`dates.expired${unit}Ago`, { count });
 }
 
 // For a calendar day: "oggi", "domani", "ieri", "tra 2 giorni", "3 giorni fa"
@@ -68,7 +77,9 @@ export function describeDayDistance(days: number): string {
   if (days === 0) return t('dates.today');
   if (days === 1) return t('dates.tomorrow');
   if (days === -1) return t('dates.yesterday');
-  return days > 0 ? t('dates.inSpan', { span: span(days) }) : t('dates.spanAgo', { span: span(-days) });
+  if (days > 0) return inSpan(days);
+  const { unit, count } = span(-days);
+  return t(`dates.${unit.toLowerCase()}Ago`, { count });
 }
 
 export function capitalize(text: string): string {

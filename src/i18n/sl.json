@@ -41,22 +41,47 @@
     "today": "danes",
     "tomorrow": "jutri",
     "yesterday": "včeraj",
-    "inSpan": "čez {{span}}",
-    "spanAgo": "{{span}} nazaj",
     "expiredYesterday": "poteklo včeraj",
-    "expiredFor": "poteklo {{span}} nazaj",
-    "days_one": "{{count}} dan",
-    "days_two": "{{count}} dneva",
-    "days_few": "{{count}} dni",
-    "days_other": "{{count}} dni",
-    "months_one": "{{count}} mesec",
-    "months_two": "{{count}} meseca",
-    "months_few": "{{count}} mesece",
-    "months_other": "{{count}} mesecev",
     "years_one": "{{count}} leto",
     "years_two": "{{count}} leti",
     "years_few": "{{count}} leta",
-    "years_other": "{{count}} let"
+    "years_other": "{{count}} let",
+    "inDays_one": "čez {{count}} dan",
+    "inDays_two": "čez {{count}} dneva",
+    "inDays_few": "čez {{count}} dni",
+    "inDays_other": "čez {{count}} dni",
+    "inMonths_one": "čez {{count}} mesec",
+    "inMonths_two": "čez {{count}} meseca",
+    "inMonths_few": "čez {{count}} mesece",
+    "inMonths_other": "čez {{count}} mesecev",
+    "inYears_one": "čez {{count}} leto",
+    "inYears_two": "čez {{count}} leti",
+    "inYears_few": "čez {{count}} leta",
+    "inYears_other": "čez {{count}} let",
+    "daysAgo_one": "pred {{count}} dnevom",
+    "daysAgo_two": "pred {{count}} dnevoma",
+    "daysAgo_few": "pred {{count}} dnevi",
+    "daysAgo_other": "pred {{count}} dnevi",
+    "monthsAgo_one": "pred {{count}} mesecem",
+    "monthsAgo_two": "pred {{count}} mesecema",
+    "monthsAgo_few": "pred {{count}} meseci",
+    "monthsAgo_other": "pred {{count}} meseci",
+    "yearsAgo_one": "pred {{count}} letom",
+    "yearsAgo_two": "pred {{count}} letoma",
+    "yearsAgo_few": "pred {{count}} leti",
+    "yearsAgo_other": "pred {{count}} leti",
+    "expiredDaysAgo_one": "poteklo pred {{count}} dnevom",
+    "expiredDaysAgo_two": "poteklo pred {{count}} dnevoma",
+    "expiredDaysAgo_few": "poteklo pred {{count}} dnevi",
+    "expiredDaysAgo_other": "poteklo pred {{count}} dnevi",
+    "expiredMonthsAgo_one": "poteklo pred {{count}} mesecem",
+    "expiredMonthsAgo_two": "poteklo pred {{count}} mesecema",
+    "expiredMonthsAgo_few": "poteklo pred {{count}} meseci",
+    "expiredMonthsAgo_other": "poteklo pred {{count}} meseci",
+    "expiredYearsAgo_one": "poteklo pred {{count}} letom",
+    "expiredYearsAgo_two": "poteklo pred {{count}} letoma",
+    "expiredYearsAgo_few": "poteklo pred {{count}} leti",
+    "expiredYearsAgo_other": "poteklo pred {{count}} leti"
   },
   "categories": {
     "builtin": {
@@ -457,7 +482,6 @@
     "whenToRemind": "Kdaj te opomniti",
     "repeats": "Ponavljanje",
     "never": "Nikoli",
-    "everySpan": "Vsakih {{span}}",
     "every": "Vsakih",
     "notesSection": "Opombe",
     "notesPlaceholder": "Na primer: plačano s trajnikom, zahtevaj vračilo …",
@@ -604,40 +628,52 @@
       "year_other": "{{count}} let"
     },
     "every": {
-      "day_one": "Vsak dan",
+      "day_one": "Vsak {{count}}. dan",
       "day_two": "Vsaka {{count}} dneva",
       "day_few": "Vsake {{count}} dni",
       "day_other": "Vsakih {{count}} dni",
-      "week_one": "Vsak teden",
+      "week_one": "Vsak {{count}}. teden",
       "week_two": "Vsaka {{count}} tedna",
       "week_few": "Vsake {{count}} tedne",
       "week_other": "Vsakih {{count}} tednov",
-      "month_one": "Vsak mesec",
+      "month_one": "Vsak {{count}}. mesec",
       "month_two": "Vsaka {{count}} meseca",
       "month_few": "Vsake {{count}} mesece",
       "month_other": "Vsakih {{count}} mesecev",
-      "year_one": "Vsako leto",
+      "year_one": "Vsako {{count}}. leto",
       "year_two": "Vsaki {{count}} leti",
       "year_few": "Vsaka {{count}} leta",
       "year_other": "Vsakih {{count}} let"
     },
     "repeats": {
-      "day_one": "Ponovi se vsak dan",
+      "day_one": "Ponovi se vsak {{count}}. dan",
       "day_two": "Ponovi se vsaka {{count}} dneva",
       "day_few": "Ponovi se vsake {{count}} dni",
       "day_other": "Ponovi se vsakih {{count}} dni",
-      "week_one": "Ponovi se vsak teden",
+      "week_one": "Ponovi se vsak {{count}}. teden",
       "week_two": "Ponovi se vsaka {{count}} tedna",
       "week_few": "Ponovi se vsake {{count}} tedne",
       "week_other": "Ponovi se vsakih {{count}} tednov",
-      "month_one": "Ponovi se vsak mesec",
+      "month_one": "Ponovi se vsak {{count}}. mesec",
       "month_two": "Ponovi se vsaka {{count}} meseca",
       "month_few": "Ponovi se vsake {{count}} mesece",
       "month_other": "Ponovi se vsakih {{count}} mesecev",
-      "year_one": "Ponovi se vsako leto",
+      "year_one": "Ponovi se vsako {{count}}. leto",
       "year_two": "Ponovi se vsaki {{count}} leti",
       "year_few": "Ponovi se vsaka {{count}} leta",
       "year_other": "Ponovi se vsakih {{count}} let"
+    },
+    "everySingle": {
+      "day": "Vsak dan",
+      "week": "Vsak teden",
+      "month": "Vsak mesec",
+      "year": "Vsako leto"
+    },
+    "repeatsSingle": {
+      "day": "Ponovi se vsak dan",
+      "week": "Ponovi se vsak teden",
+      "month": "Ponovi se vsak mesec",
+      "year": "Ponovi se vsako leto"
     }
   },
   "deadlineUtils": {
@@ -1172,7 +1208,10 @@
     "remaining_other": "Dodaš lahko še {{count}}.",
     "tag": "Brezplačna različica · porabljeno {{used}} od {{limit}}",
     "title": "Vsi tvoji dokumenti, brez omejitev",
-    "intro": "Brezplačno do {{limit}} dokumentov in kartic. Če želiš dodati, kolikor hočeš, odkleni z enkratnim plačilom.",
+    "intro_one": "Brezplačno do {{count}} dokumenta ali kartice. Če želiš dodati, kolikor hočeš, odkleni z enkratnim plačilom.",
+    "intro_two": "Brezplačno do {{count}} dokumentov in kartic. Če želiš dodati, kolikor hočeš, odkleni z enkratnim plačilom.",
+    "intro_few": "Brezplačno do {{count}} dokumentov in kartic. Če želiš dodati, kolikor hočeš, odkleni z enkratnim plačilom.",
+    "intro_other": "Brezplačno do {{count}} dokumentov in kartic. Če želiš dodati, kolikor hočeš, odkleni z enkratnim plačilom.",
     "benefits": {
       "unlimited": {
         "title": "Neomejeno dokumentov",
@@ -1264,7 +1303,10 @@
       "failed": "Ni bilo mogoče dokončati"
     },
     "meta": {
-      "pdfs": "PDF-jev: {{number}}",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_two": "{{count}} PDF-ja",
+      "pdfs_few": "{{count}} PDF-ji",
+      "pdfs_other": "{{count}} PDF-jev",
       "singlePdf": "En PDF",
       "failed": "Datoteke ni bilo mogoče pripraviti",
       "preparing": "Pripravljam …"
@@ -1321,7 +1363,10 @@
       "savedToFiles": "Shranjeno v Datoteke",
       "sendFailed": "Pošiljanje ni uspelo"
     },
-    "readyMany": "Pripravljeni PDF-ji: {{number}}",
+    "readyMany_one": "Pripravljen {{count}} PDF",
+    "readyMany_two": "Pripravljena {{count}} PDF-ja",
+    "readyMany_few": "Pripravljeni {{count}} PDF-ji",
+    "readyMany_other": "Pripravljenih {{count}} PDF-jev",
     "choices": {
       "email": "E-pošta: vsi PDF-ji v enem sporočilu",
       "save": "Shrani v Datoteke: vsi v isto mapo",
@@ -1356,10 +1401,16 @@
       "emptyMessage_other": "{{count}} dokumentov bo izbrisanih skupaj s fotografijami in PDF-ji. Tega ni mogoče razveljaviti.",
       "emptyConfirm": "Izprazni"
     },
-    "intro": "Izbrisani dokumenti ostanejo tukaj {{days}} dni, nato se izbrišejo skupaj s fotografijami in PDF-ji.",
+    "intro_one": "Izbrisani dokumenti ostanejo tukaj {{count}} dan, nato se izbrišejo skupaj s fotografijami in PDF-ji.",
+    "intro_two": "Izbrisani dokumenti ostanejo tukaj {{count}} dneva, nato se izbrišejo skupaj s fotografijami in PDF-ji.",
+    "intro_few": "Izbrisani dokumenti ostanejo tukaj {{count}} dni, nato se izbrišejo skupaj s fotografijami in PDF-ji.",
+    "intro_other": "Izbrisani dokumenti ostanejo tukaj {{count}} dni, nato se izbrišejo skupaj s fotografijami in PDF-ji.",
     "empty": "Koš je prazen",
     "deletedSoon": "Kmalu bo izbrisano",
-    "deletedIn": "Izbrisano bo čez {{days}} dni",
+    "deletedIn_one": "Izbrisano bo čez {{count}} dan",
+    "deletedIn_two": "Izbrisano bo čez {{count}} dneva",
+    "deletedIn_few": "Izbrisano bo čez {{count}} dni",
+    "deletedIn_other": "Izbrisano bo čez {{count}} dni",
     "restoreLabel": "Obnovi {{title}}",
     "deleteForeverLabel": "Trajno izbriši {{title}}",
     "deleteForever": "Trajno izbriši",
@@ -1607,14 +1658,20 @@
   },
   "terms": {
     "intro": "Celotni pogoji uporabe bodo objavljeni z različico iz App Stora. Na kratko:",
-    "free": "Sottomano je brezplačen do {{limit}} dokumentov in kartic",
+    "free_one": "Sottomano je brezplačen do {{count}} dokumenta ali kartice",
+    "free_two": "Sottomano je brezplačen do {{count}} dokumentov in kartic",
+    "free_few": "Sottomano je brezplačen do {{count}} dokumentov in kartic",
+    "free_other": "Sottomano je brezplačen do {{count}} dokumentov in kartic",
     "oneTime": "Odklepanje je enkraten nakup, brez naročnine",
     "yours": "Tvoji dokumenti ostanejo v tvojem telefonu in so tvoji",
     "backup": "Ustvari varnostno kopijo, da jih ne izgubiš ob menjavi telefona"
   },
   "limit": {
     "later": "Pozneje",
-    "title": "Brezplačna mesta so porabljena ({{limit}})",
+    "title_one": "Porabljeno je {{count}} brezplačno mesto",
+    "title_two": "Porabljeni sta {{count}} brezplačni mesti",
+    "title_few": "Porabljena so {{count}} brezplačna mesta",
+    "title_other": "Porabljenih je {{count}} brezplačnih mest",
     "text": "Vse shranjeno ostane tukaj in deluje kot vedno. Za dodajanje novih dokumentov in kartic odkleni Sottomano.",
     "stillWorks": {
       "view": "Ogled tvojih dokumentov",
@@ -1626,7 +1683,10 @@
     "unlock": "Odkleni brez omejitev za {{price}}"
   },
   "limitCard": {
-    "title": "Porabljeno {{used}} od {{limit}} brezplačnih mest",
+    "title_one": "Porabljeno {{used}} od {{count}} brezplačnega mesta",
+    "title_two": "Porabljeno {{used}} od {{count}} brezplačnih mest",
+    "title_few": "Porabljeno {{used}} od {{count}} brezplačnih mest",
+    "title_other": "Porabljeno {{used}} od {{count}} brezplačnih mest",
     "accessibility": "{{title}}. Odkleni",
     "unlock": "Odkleni"
   },
@@ -1637,9 +1697,7 @@
     "accessibility": "{{title}}. Odkleni brez omejitev za {{price}}",
     "unlock": "Odkleni"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

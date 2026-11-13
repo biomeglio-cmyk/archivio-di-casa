@@ -35,16 +35,27 @@
     "today": "avui",
     "tomorrow": "demà",
     "yesterday": "ahir",
-    "inSpan": "d’aquí a {{span}}",
-    "spanAgo": "fa {{span}}",
     "expiredYesterday": "va vèncer ahir",
-    "expiredFor": "va vèncer fa {{span}}",
-    "days_one": "{{count}} dia",
-    "days_other": "{{count}} dies",
-    "months_one": "{{count}} mes",
-    "months_other": "{{count}} mesos",
     "years_one": "{{count}} any",
-    "years_other": "{{count}} anys"
+    "years_other": "{{count}} anys",
+    "inDays_one": "d’aquí a {{count}} dia",
+    "inDays_other": "d’aquí a {{count}} dies",
+    "inMonths_one": "d’aquí a {{count}} mes",
+    "inMonths_other": "d’aquí a {{count}} mesos",
+    "inYears_one": "d’aquí a {{count}} any",
+    "inYears_other": "d’aquí a {{count}} anys",
+    "daysAgo_one": "fa {{count}} dia",
+    "daysAgo_other": "fa {{count}} dies",
+    "monthsAgo_one": "fa {{count}} mes",
+    "monthsAgo_other": "fa {{count}} mesos",
+    "yearsAgo_one": "fa {{count}} any",
+    "yearsAgo_other": "fa {{count}} anys",
+    "expiredDaysAgo_one": "va vèncer fa {{count}} dia",
+    "expiredDaysAgo_other": "va vèncer fa {{count}} dies",
+    "expiredMonthsAgo_one": "va vèncer fa {{count}} mes",
+    "expiredMonthsAgo_other": "va vèncer fa {{count}} mesos",
+    "expiredYearsAgo_one": "va vèncer fa {{count}} any",
+    "expiredYearsAgo_other": "va vèncer fa {{count}} anys"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Quan avisar-te",
     "repeats": "Repetir",
     "never": "Mai",
-    "everySpan": "Cada {{span}}",
     "every": "Cada",
     "notesSection": "Notes",
     "notesPlaceholder": "Per exemple: domiciliat, demanar el reemborsament…",
@@ -566,6 +576,18 @@
       "month_other": "Es repeteix cada {{count}} mesos",
       "year_one": "Es repeteix cada any",
       "year_other": "Es repeteix cada {{count}} anys"
+    },
+    "everySingle": {
+      "day": "Cada dia",
+      "week": "Cada setmana",
+      "month": "Cada mes",
+      "year": "Cada any"
+    },
+    "repeatsSingle": {
+      "day": "Es repeteix cada dia",
+      "week": "Es repeteix cada setmana",
+      "month": "Es repeteix cada mes",
+      "year": "Es repeteix cada any"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Encara en pots afegir {{count}}.",
     "tag": "Versió gratuïta · {{used}} de {{limit}} utilitzats",
     "title": "Tots els teus documents, sense límits",
-    "intro": "Gratis fins a {{limit}} documents i targetes. Per afegir-ne tants com vulguis, desbloqueja-la amb un sol pagament.",
+    "intro_one": "Gratis fins a {{count}} document o targeta. Per afegir-ne tants com vulguis, desbloqueja-la amb un sol pagament.",
+    "intro_other": "Gratis fins a {{count}} documents i targetes. Per afegir-ne tants com vulguis, desbloqueja-la amb un sol pagament.",
     "benefits": {
       "unlimited": {
         "title": "Documents il·limitats",
@@ -1168,7 +1191,8 @@
       "failed": "No s’ha pogut completar"
     },
     "meta": {
-      "pdfs": "{{number}} PDF",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF",
       "singlePdf": "Un sol PDF",
       "failed": "No s’ha pogut preparar el fitxer",
       "preparing": "S’està preparant…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Desat a Fitxers",
       "sendFailed": "No s’ha pogut enviar"
     },
-    "readyMany": "{{number}} PDF a punt",
+    "readyMany_one": "{{count}} PDF a punt",
+    "readyMany_other": "{{count}} PDF a punt",
     "choices": {
       "email": "Correu: tots els PDF en un missatge",
       "save": "Desar a Fitxers: tots a la mateixa carpeta",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "Els {{count}} documents s’eliminaran amb les seves fotos i PDF. Aquesta acció no es pot desfer.",
       "emptyConfirm": "Buidar"
     },
-    "intro": "Els documents eliminats es queden aquí {{days}} dies i després s’esborren amb les seves fotos i PDF.",
+    "intro_one": "Els documents eliminats es queden aquí {{count}} dia i després s’esborren amb les seves fotos i PDF.",
+    "intro_other": "Els documents eliminats es queden aquí {{count}} dies i després s’esborren amb les seves fotos i PDF.",
     "empty": "La Paperera és buida",
     "deletedSoon": "S’eliminarà aviat",
-    "deletedIn": "S’eliminarà d’aquí a {{days}} dies",
+    "deletedIn_one": "S’eliminarà d’aquí a {{count}} dia",
+    "deletedIn_other": "S’eliminarà d’aquí a {{count}} dies",
     "restoreLabel": "Restaurar {{title}}",
     "deleteForeverLabel": "Eliminar {{title}} definitivament",
     "deleteForever": "Eliminar definitivament",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "Les condicions d’ús completes es publicaran amb la versió de l’App Store. En resum:",
-    "free": "Sottomano és gratis fins a {{limit}} documents i targetes",
+    "free_one": "Sottomano és gratis fins a {{count}} document o targeta",
+    "free_other": "Sottomano és gratis fins a {{count}} documents i targetes",
     "oneTime": "El desbloqueig és una compra única, sense subscripció",
     "yours": "Els teus documents es queden al teu telèfon i són teus",
     "backup": "Fes una còpia de seguretat per no perdre’ls si canvies de telèfon"
   },
   "limit": {
     "later": "Més tard",
-    "title": "Has fet servir els teus {{limit}} espais gratuïts",
+    "title_one": "Has fet servir el teu únic espai gratuït",
+    "title_other": "Has fet servir els teus {{count}} espais gratuïts",
     "text": "Tot el que has desat es queda aquí i funciona com sempre. Per afegir més documents i targetes, desbloqueja Sottomano.",
     "stillWorks": {
       "view": "Consultar els teus documents",
@@ -1510,7 +1539,8 @@
     "unlock": "Desbloquejar sense límits per {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} de {{limit}} espais gratuïts utilitzats",
+    "title_one": "{{used}} de {{count}} espai gratuït utilitzat",
+    "title_other": "{{used}} de {{count}} espais gratuïts utilitzats",
     "accessibility": "{{title}}. Desbloquejar",
     "unlock": "Desbloquejar"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Desbloquejar sense límits per {{price}}",
     "unlock": "Desbloquejar"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

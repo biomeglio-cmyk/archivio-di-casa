@@ -35,16 +35,27 @@
     "today": "ma",
     "tomorrow": "holnap",
     "yesterday": "tegnap",
-    "inSpan": "{{span}} múlva",
-    "spanAgo": "{{span}} ezelőtt",
     "expiredYesterday": "tegnap lejárt",
-    "expiredFor": "{{span}} ezelőtt lejárt",
-    "days_one": "{{count}} nap",
-    "days_other": "{{count}} nap",
-    "months_one": "{{count}} hónap",
-    "months_other": "{{count}} hónap",
     "years_one": "{{count}} év",
-    "years_other": "{{count}} év"
+    "years_other": "{{count}} év",
+    "inDays_one": "{{count}} nap múlva",
+    "inDays_other": "{{count}} nap múlva",
+    "inMonths_one": "{{count}} hónap múlva",
+    "inMonths_other": "{{count}} hónap múlva",
+    "inYears_one": "{{count}} év múlva",
+    "inYears_other": "{{count}} év múlva",
+    "daysAgo_one": "{{count}} nappal ezelőtt",
+    "daysAgo_other": "{{count}} nappal ezelőtt",
+    "monthsAgo_one": "{{count}} hónappal ezelőtt",
+    "monthsAgo_other": "{{count}} hónappal ezelőtt",
+    "yearsAgo_one": "{{count}} évvel ezelőtt",
+    "yearsAgo_other": "{{count}} évvel ezelőtt",
+    "expiredDaysAgo_one": "{{count}} napja lejárt",
+    "expiredDaysAgo_other": "{{count}} napja lejárt",
+    "expiredMonthsAgo_one": "{{count}} hónapja lejárt",
+    "expiredMonthsAgo_other": "{{count}} hónapja lejárt",
+    "expiredYearsAgo_one": "{{count}} éve lejárt",
+    "expiredYearsAgo_other": "{{count}} éve lejárt"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Mikor emlékeztesselek",
     "repeats": "Ismétlés",
     "never": "Soha",
-    "everySpan": "Ismétlés: {{span}}",
     "every": "Gyakoriság",
     "notesSection": "Jegyzetek",
     "notesPlaceholder": "Például: csoportos beszedéssel fizetve, visszatérítést kérni…",
@@ -566,6 +576,18 @@
       "month_other": "{{count}} havonta ismétlődik",
       "year_one": "Évente ismétlődik",
       "year_other": "{{count}} évente ismétlődik"
+    },
+    "everySingle": {
+      "day": "Naponta",
+      "week": "Hetente",
+      "month": "Havonta",
+      "year": "Évente"
+    },
+    "repeatsSingle": {
+      "day": "Naponta ismétlődik",
+      "week": "Hetente ismétlődik",
+      "month": "Havonta ismétlődik",
+      "year": "Évente ismétlődik"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Még {{count}} elemet adhatsz hozzá.",
     "tag": "Ingyenes verzió · {{used}} / {{limit}} felhasználva",
     "title": "Minden dokumentumod, korlátok nélkül",
-    "intro": "Ingyenes legfeljebb {{limit}} dokumentumig és kártyáig. Ha korlátlanul szeretnél hozzáadni, oldd fel egyetlen fizetéssel.",
+    "intro_one": "Ingyenes legfeljebb {{count}} dokumentumig vagy kártyáig. Ha korlátlanul szeretnél hozzáadni, oldd fel egyetlen fizetéssel.",
+    "intro_other": "Ingyenes legfeljebb {{count}} dokumentumig és kártyáig. Ha korlátlanul szeretnél hozzáadni, oldd fel egyetlen fizetéssel.",
     "benefits": {
       "unlimited": {
         "title": "Korlátlan dokumentum",
@@ -1168,7 +1191,8 @@
       "failed": "Nem sikerült befejezni"
     },
     "meta": {
-      "pdfs": "{{number}} PDF",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF",
       "singlePdf": "Egyetlen PDF",
       "failed": "Nem sikerült előkészíteni a fájlt",
       "preparing": "Előkészítés…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Elmentve a Fájlokba",
       "sendFailed": "Nem sikerült elküldeni"
     },
-    "readyMany": "{{number}} PDF kész",
+    "readyMany_one": "{{count}} PDF kész",
+    "readyMany_other": "{{count}} PDF kész",
     "choices": {
       "email": "E-mail: minden PDF egy üzenetben",
       "save": "Mentés a Fájlokba: mind ugyanabba a mappába",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "A(z) {{count}} dokumentum a fotóival és PDF-jeivel együtt törlődik. Ez nem vonható vissza.",
       "emptyConfirm": "Kiürítés"
     },
-    "intro": "A törölt dokumentumok {{days}} napig itt maradnak, utána a fotóikkal és PDF-jeikkel együtt törlődnek.",
+    "intro_one": "A törölt dokumentumok {{count}} napig itt maradnak, utána a fotóikkal és PDF-jeikkel együtt törlődnek.",
+    "intro_other": "A törölt dokumentumok {{count}} napig itt maradnak, utána a fotóikkal és PDF-jeikkel együtt törlődnek.",
     "empty": "A Kuka üres",
     "deletedSoon": "Hamarosan törlődik",
-    "deletedIn": "{{days}} nap múlva törlődik",
+    "deletedIn_one": "{{count}} nap múlva törlődik",
+    "deletedIn_other": "{{count}} nap múlva törlődik",
     "restoreLabel": "{{title}} visszaállítása",
     "deleteForeverLabel": "{{title}} végleges törlése",
     "deleteForever": "Végleges törlés",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "A teljes felhasználási feltételek az App Store-verzióval együtt jelennek meg. Röviden:",
-    "free": "A Sottomano ingyenes legfeljebb {{limit}} dokumentumig és kártyáig",
+    "free_one": "A Sottomano ingyenes legfeljebb {{count}} dokumentumig vagy kártyáig",
+    "free_other": "A Sottomano ingyenes legfeljebb {{count}} dokumentumig és kártyáig",
     "oneTime": "A feloldás egyszeri vásárlás, előfizetés nélkül",
     "yours": "A dokumentumaid a telefonodon maradnak, és a tieid",
     "backup": "Készíts biztonsági mentést, hogy telefoncserénél se veszítsd el őket"
   },
   "limit": {
     "later": "Később",
-    "title": "Elhasználtad a(z) {{limit}} ingyenes helyet",
+    "title_one": "Elhasználtad az egyetlen ingyenes helyet",
+    "title_other": "Elhasználtad a(z) {{count}} ingyenes helyet",
     "text": "Minden, amit elmentettél, itt marad és ugyanúgy működik. További dokumentumok és kártyák hozzáadásához oldd fel a Sottomanót.",
     "stillWorks": {
       "view": "Dokumentumaid megtekintése",
@@ -1510,7 +1539,8 @@
     "unlock": "Korlátlan feloldás: {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} / {{limit}} ingyenes hely felhasználva",
+    "title_one": "{{used}} / {{count}} ingyenes hely felhasználva",
+    "title_other": "{{used}} / {{count}} ingyenes hely felhasználva",
     "accessibility": "{{title}}. Feloldás",
     "unlock": "Feloldás"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Korlátlan feloldás: {{price}}",
     "unlock": "Feloldás"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

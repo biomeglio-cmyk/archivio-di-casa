@@ -35,16 +35,27 @@
     "today": "vandaag",
     "tomorrow": "morgen",
     "yesterday": "gisteren",
-    "inSpan": "over {{span}}",
-    "spanAgo": "{{span}} geleden",
     "expiredYesterday": "gisteren verlopen",
-    "expiredFor": "{{span}} geleden verlopen",
-    "days_one": "{{count}} dag",
-    "days_other": "{{count}} dagen",
-    "months_one": "{{count}} maand",
-    "months_other": "{{count}} maanden",
     "years_one": "{{count}} jaar",
-    "years_other": "{{count}} jaar"
+    "years_other": "{{count}} jaar",
+    "inDays_one": "over {{count}} dag",
+    "inDays_other": "over {{count}} dagen",
+    "inMonths_one": "over {{count}} maand",
+    "inMonths_other": "over {{count}} maanden",
+    "inYears_one": "over {{count}} jaar",
+    "inYears_other": "over {{count}} jaar",
+    "daysAgo_one": "{{count}} dag geleden",
+    "daysAgo_other": "{{count}} dagen geleden",
+    "monthsAgo_one": "{{count}} maand geleden",
+    "monthsAgo_other": "{{count}} maanden geleden",
+    "yearsAgo_one": "{{count}} jaar geleden",
+    "yearsAgo_other": "{{count}} jaar geleden",
+    "expiredDaysAgo_one": "{{count}} dag geleden verlopen",
+    "expiredDaysAgo_other": "{{count}} dagen geleden verlopen",
+    "expiredMonthsAgo_one": "{{count}} maand geleden verlopen",
+    "expiredMonthsAgo_other": "{{count}} maanden geleden verlopen",
+    "expiredYearsAgo_one": "{{count}} jaar geleden verlopen",
+    "expiredYearsAgo_other": "{{count}} jaar geleden verlopen"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Wanneer herinneren",
     "repeats": "Herhaal",
     "never": "Nooit",
-    "everySpan": "Elke {{span}}",
     "every": "Elke",
     "notesSection": "Notities",
     "notesPlaceholder": "Bijvoorbeeld: betaald via incasso, terugbetaling aanvragen…",
@@ -566,6 +576,18 @@
       "month_other": "Herhaalt elke {{count}} maanden",
       "year_one": "Herhaalt elk jaar",
       "year_other": "Herhaalt elke {{count}} jaar"
+    },
+    "everySingle": {
+      "day": "Elke dag",
+      "week": "Elke week",
+      "month": "Elke maand",
+      "year": "Elk jaar"
+    },
+    "repeatsSingle": {
+      "day": "Herhaalt elke dag",
+      "week": "Herhaalt elke week",
+      "month": "Herhaalt elke maand",
+      "year": "Herhaalt elk jaar"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Je kunt er nog {{count}} toevoegen.",
     "tag": "Gratis versie · {{used}} van {{limit}} gebruikt",
     "title": "Al je documenten, zonder limiet",
-    "intro": "Gratis voor maximaal {{limit}} documenten en pasjes. Om er zoveel toe te voegen als je wilt, ontgrendel je de app met één betaling.",
+    "intro_one": "Gratis voor maximaal {{count}} document of pasje. Om er zoveel toe te voegen als je wilt, ontgrendel je de app met één betaling.",
+    "intro_other": "Gratis voor maximaal {{count}} documenten en pasjes. Om er zoveel toe te voegen als je wilt, ontgrendel je de app met één betaling.",
     "benefits": {
       "unlimited": {
         "title": "Onbeperkt documenten",
@@ -1168,7 +1191,8 @@
       "failed": "Kan niet voltooien"
     },
     "meta": {
-      "pdfs": "{{number}} PDF’s",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF’s",
       "singlePdf": "Eén PDF",
       "failed": "Het bestand kon niet worden voorbereid",
       "preparing": "Voorbereiden…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Bewaard in Bestanden",
       "sendFailed": "Kan niet versturen"
     },
-    "readyMany": "{{number}} PDF’s klaar",
+    "readyMany_one": "{{count}} PDF klaar",
+    "readyMany_other": "{{count}} PDF’s klaar",
     "choices": {
       "email": "E-mail: alle PDF’s in één bericht",
       "save": "Bewaar in Bestanden: alles in dezelfde map",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "De {{count}} documenten worden verwijderd met hun foto’s en PDF’s. Dit kan niet ongedaan worden gemaakt.",
       "emptyConfirm": "Leeg"
     },
-    "intro": "Verwijderde documenten blijven hier {{days}} dagen en worden daarna gewist met hun foto’s en PDF’s.",
+    "intro_one": "Verwijderde documenten blijven hier {{count}} dag en worden daarna gewist met hun foto’s en PDF’s.",
+    "intro_other": "Verwijderde documenten blijven hier {{count}} dagen en worden daarna gewist met hun foto’s en PDF’s.",
     "empty": "De prullenmand is leeg",
     "deletedSoon": "Wordt binnenkort verwijderd",
-    "deletedIn": "Wordt over {{days}} dagen verwijderd",
+    "deletedIn_one": "Wordt over {{count}} dag verwijderd",
+    "deletedIn_other": "Wordt over {{count}} dagen verwijderd",
     "restoreLabel": "Zet {{title}} terug",
     "deleteForeverLabel": "Verwijder {{title}} definitief",
     "deleteForever": "Verwijder definitief",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "De volledige gebruiksvoorwaarden worden gepubliceerd met de App Store-versie. In het kort:",
-    "free": "Sottomano is gratis voor maximaal {{limit}} documenten en pasjes",
+    "free_one": "Sottomano is gratis voor maximaal {{count}} document of pasje",
+    "free_other": "Sottomano is gratis voor maximaal {{count}} documenten en pasjes",
     "oneTime": "Ontgrendelen is een eenmalige aankoop, zonder abonnement",
     "yours": "Je documenten blijven op je telefoon en zijn van jou",
     "backup": "Maak een reservekopie, zodat je ze niet kwijtraakt als je van telefoon wisselt"
   },
   "limit": {
     "later": "Later",
-    "title": "Je hebt je {{limit}} gratis plekken gebruikt",
+    "title_one": "Je hebt je enige gratis plek gebruikt",
+    "title_other": "Je hebt je {{count}} gratis plekken gebruikt",
     "text": "Alles wat je hebt bewaard, blijft hier en werkt zoals altijd. Ontgrendel Sottomano om meer documenten en pasjes toe te voegen.",
     "stillWorks": {
       "view": "Je documenten bekijken",
@@ -1510,7 +1539,8 @@
     "unlock": "Ontgrendel zonder limiet voor {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} van {{limit}} gratis plekken gebruikt",
+    "title_one": "{{used}} van {{count}} gratis plek gebruikt",
+    "title_other": "{{used}} van {{count}} gratis plekken gebruikt",
     "accessibility": "{{title}}. Ontgrendel",
     "unlock": "Ontgrendel"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Ontgrendel zonder limiet voor {{price}}",
     "unlock": "Ontgrendel"
   },
-  "freeLimit": {
-    "unlockPrice": "€ 0,99"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

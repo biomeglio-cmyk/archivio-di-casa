@@ -17,7 +17,7 @@ import { useI18n } from '@/i18n';
 export function LimitCard({ usage }: { usage: FreeUsage }) {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
-  const title = t('limitCard.title', { used: usage.used, limit: usage.limit });
+  const title = t('limitCard.title', { used: usage.used, count: usage.limit });
   return (
     <Pressable
       onPress={() => router.push('/unlock')}

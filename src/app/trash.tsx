@@ -74,7 +74,7 @@ export default function TrashScreen() {
     <>
       <ScrollView contentInsetAdjustmentBehavior="automatic" contentContainerStyle={styles.content}>
         <ThemedText type="small" themeColor="textSecondary" style={styles.intro}>
-          {t('trash.intro', { days: TRASH_DAYS })}
+          {t('trash.intro', { count: TRASH_DAYS })}
         </ThemedText>
 
         {documents?.length === 0 && (
@@ -105,7 +105,7 @@ export default function TrashScreen() {
                         {[document.category.name, document.personName].filter(Boolean).join(' · ')}
                       </ThemedText>
                       <ThemedText type="small" themeColor="textSecondary">
-                        {left <= 1 ? t('trash.deletedSoon') : t('trash.deletedIn', { days: left })}
+                        {left <= 1 ? t('trash.deletedSoon') : t('trash.deletedIn', { count: left })}
                       </ThemedText>
                     </View>
                   </View>

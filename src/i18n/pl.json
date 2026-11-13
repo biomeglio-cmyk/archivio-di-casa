@@ -41,22 +41,47 @@
     "today": "dziś",
     "tomorrow": "jutro",
     "yesterday": "wczoraj",
-    "inSpan": "za {{span}}",
-    "spanAgo": "{{span}} temu",
     "expiredYesterday": "termin minął wczoraj",
-    "expiredFor": "termin minął {{span}} temu",
-    "days_one": "{{count}} dzień",
-    "days_few": "{{count}} dni",
-    "days_many": "{{count}} dni",
-    "days_other": "{{count}} dnia",
-    "months_one": "{{count}} miesiąc",
-    "months_few": "{{count}} miesiące",
-    "months_many": "{{count}} miesięcy",
-    "months_other": "{{count}} miesiąca",
     "years_one": "{{count}} rok",
     "years_few": "{{count}} lata",
     "years_many": "{{count}} lat",
-    "years_other": "{{count}} roku"
+    "years_other": "{{count}} roku",
+    "inDays_one": "za {{count}} dzień",
+    "inDays_few": "za {{count}} dni",
+    "inDays_many": "za {{count}} dni",
+    "inDays_other": "za {{count}} dnia",
+    "inMonths_one": "za {{count}} miesiąc",
+    "inMonths_few": "za {{count}} miesiące",
+    "inMonths_many": "za {{count}} miesięcy",
+    "inMonths_other": "za {{count}} miesiąca",
+    "inYears_one": "za {{count}} rok",
+    "inYears_few": "za {{count}} lata",
+    "inYears_many": "za {{count}} lat",
+    "inYears_other": "za {{count}} roku",
+    "daysAgo_one": "{{count}} dzień temu",
+    "daysAgo_few": "{{count}} dni temu",
+    "daysAgo_many": "{{count}} dni temu",
+    "daysAgo_other": "{{count}} dnia temu",
+    "monthsAgo_one": "{{count}} miesiąc temu",
+    "monthsAgo_few": "{{count}} miesiące temu",
+    "monthsAgo_many": "{{count}} miesięcy temu",
+    "monthsAgo_other": "{{count}} miesiąca temu",
+    "yearsAgo_one": "{{count}} rok temu",
+    "yearsAgo_few": "{{count}} lata temu",
+    "yearsAgo_many": "{{count}} lat temu",
+    "yearsAgo_other": "{{count}} roku temu",
+    "expiredDaysAgo_one": "termin minął {{count}} dzień temu",
+    "expiredDaysAgo_few": "termin minął {{count}} dni temu",
+    "expiredDaysAgo_many": "termin minął {{count}} dni temu",
+    "expiredDaysAgo_other": "termin minął {{count}} dnia temu",
+    "expiredMonthsAgo_one": "termin minął {{count}} miesiąc temu",
+    "expiredMonthsAgo_few": "termin minął {{count}} miesiące temu",
+    "expiredMonthsAgo_many": "termin minął {{count}} miesięcy temu",
+    "expiredMonthsAgo_other": "termin minął {{count}} miesiąca temu",
+    "expiredYearsAgo_one": "termin minął {{count}} rok temu",
+    "expiredYearsAgo_few": "termin minął {{count}} lata temu",
+    "expiredYearsAgo_many": "termin minął {{count}} lat temu",
+    "expiredYearsAgo_other": "termin minął {{count}} roku temu"
   },
   "categories": {
     "builtin": {
@@ -457,7 +482,6 @@
     "whenToRemind": "Kiedy przypomnieć",
     "repeats": "Powtarzaj",
     "never": "Nigdy",
-    "everySpan": "Co {{span}}",
     "every": "Co",
     "notesSection": "Notatki",
     "notesPlaceholder": "Na przykład: płatne poleceniem zapłaty, poprosić o zwrot…",
@@ -638,6 +662,18 @@
       "year_few": "Powtarza się co {{count}} lata",
       "year_many": "Powtarza się co {{count}} lat",
       "year_other": "Powtarza się co {{count}} roku"
+    },
+    "everySingle": {
+      "day": "Codziennie",
+      "week": "Co tydzień",
+      "month": "Co miesiąc",
+      "year": "Co roku"
+    },
+    "repeatsSingle": {
+      "day": "Powtarza się codziennie",
+      "week": "Powtarza się co tydzień",
+      "month": "Powtarza się co miesiąc",
+      "year": "Powtarza się co roku"
     }
   },
   "deadlineUtils": {
@@ -1172,7 +1208,10 @@
     "remaining_other": "Możesz dodać jeszcze {{count}}.",
     "tag": "Wersja darmowa · wykorzystano {{used}} z {{limit}}",
     "title": "Wszystkie Twoje dokumenty, bez limitów",
-    "intro": "Za darmo do {{limit}} dokumentów i kart. Aby dodać ich, ile chcesz, odblokuj aplikację jedną płatnością.",
+    "intro_one": "Za darmo do {{count}} dokumentu lub karty. Aby dodać ich, ile chcesz, odblokuj aplikację jedną płatnością.",
+    "intro_few": "Za darmo do {{count}} dokumentów i kart. Aby dodać ich, ile chcesz, odblokuj aplikację jedną płatnością.",
+    "intro_many": "Za darmo do {{count}} dokumentów i kart. Aby dodać ich, ile chcesz, odblokuj aplikację jedną płatnością.",
+    "intro_other": "Za darmo do {{count}} dokumentów i kart. Aby dodać ich, ile chcesz, odblokuj aplikację jedną płatnością.",
     "benefits": {
       "unlimited": {
         "title": "Nieograniczone dokumenty",
@@ -1264,7 +1303,10 @@
       "failed": "Nie udało się dokończyć"
     },
     "meta": {
-      "pdfs": "Pliki PDF: {{number}}",
+      "pdfs_one": "{{count}} plik PDF",
+      "pdfs_few": "{{count}} pliki PDF",
+      "pdfs_many": "{{count}} plików PDF",
+      "pdfs_other": "{{count}} pliku PDF",
       "singlePdf": "Jeden PDF",
       "failed": "Nie udało się przygotować pliku",
       "preparing": "Przygotowywanie…"
@@ -1321,7 +1363,10 @@
       "savedToFiles": "Zachowano w Plikach",
       "sendFailed": "Nie udało się wysłać"
     },
-    "readyMany": "Gotowe pliki PDF: {{number}}",
+    "readyMany_one": "{{count}} plik PDF gotowy",
+    "readyMany_few": "{{count}} pliki PDF gotowe",
+    "readyMany_many": "{{count}} plików PDF gotowych",
+    "readyMany_other": "{{count}} pliku PDF gotowe",
     "choices": {
       "email": "E-mail: wszystkie pliki PDF w jednej wiadomości",
       "save": "Zachowaj w Plikach: wszystko w jednym folderze",
@@ -1356,10 +1401,16 @@
       "emptyMessage_other": "{{count}} dokumentu zostanie usunięte razem ze zdjęciami i plikami PDF. Tej czynności nie można cofnąć.",
       "emptyConfirm": "Opróżnij"
     },
-    "intro": "Usunięte dokumenty zostają tu przez {{days}} dni, a potem są kasowane razem ze zdjęciami i plikami PDF.",
+    "intro_one": "Usunięte dokumenty zostają tu przez {{count}} dzień, a potem są kasowane razem ze zdjęciami i plikami PDF.",
+    "intro_few": "Usunięte dokumenty zostają tu przez {{count}} dni, a potem są kasowane razem ze zdjęciami i plikami PDF.",
+    "intro_many": "Usunięte dokumenty zostają tu przez {{count}} dni, a potem są kasowane razem ze zdjęciami i plikami PDF.",
+    "intro_other": "Usunięte dokumenty zostają tu przez {{count}} dnia, a potem są kasowane razem ze zdjęciami i plikami PDF.",
     "empty": "Kosz jest pusty",
     "deletedSoon": "Wkrótce zostanie usunięty",
-    "deletedIn": "Zostanie usunięty za {{days}} dni",
+    "deletedIn_one": "Zostanie usunięty za {{count}} dzień",
+    "deletedIn_few": "Zostanie usunięty za {{count}} dni",
+    "deletedIn_many": "Zostanie usunięty za {{count}} dni",
+    "deletedIn_other": "Zostanie usunięty za {{count}} dnia",
     "restoreLabel": "Przywróć {{title}}",
     "deleteForeverLabel": "Usuń {{title}} na zawsze",
     "deleteForever": "Usuń na zawsze",
@@ -1607,14 +1658,20 @@
   },
   "terms": {
     "intro": "Pełne warunki korzystania zostaną opublikowane wraz z wersją z App Store. W skrócie:",
-    "free": "Sottomano jest darmowe do {{limit}} dokumentów i kart",
+    "free_one": "Sottomano jest darmowe do {{count}} dokumentu lub karty",
+    "free_few": "Sottomano jest darmowe do {{count}} dokumentów i kart",
+    "free_many": "Sottomano jest darmowe do {{count}} dokumentów i kart",
+    "free_other": "Sottomano jest darmowe do {{count}} dokumentów i kart",
     "oneTime": "Odblokowanie to jednorazowy zakup, bez subskrypcji",
     "yours": "Twoje dokumenty zostają na telefonie i należą do Ciebie",
     "backup": "Rób kopię zapasową, aby ich nie stracić przy zmianie telefonu"
   },
   "limit": {
     "later": "Później",
-    "title": "Wykorzystano {{limit}} darmowych miejsc",
+    "title_one": "Wykorzystano {{count}} darmowe miejsce",
+    "title_few": "Wykorzystano {{count}} darmowe miejsca",
+    "title_many": "Wykorzystano {{count}} darmowych miejsc",
+    "title_other": "Wykorzystano {{count}} darmowego miejsca",
     "text": "Wszystko, co zapisano, zostaje tutaj i działa jak zawsze. Aby dodać więcej dokumentów i kart, odblokuj Sottomano.",
     "stillWorks": {
       "view": "Przeglądaj swoje dokumenty",
@@ -1626,7 +1683,10 @@
     "unlock": "Odblokuj bez limitów za {{price}}"
   },
   "limitCard": {
-    "title": "Wykorzystano {{used}} z {{limit}} darmowych miejsc",
+    "title_one": "Wykorzystano {{used}} z {{count}} darmowego miejsca",
+    "title_few": "Wykorzystano {{used}} z {{count}} darmowych miejsc",
+    "title_many": "Wykorzystano {{used}} z {{count}} darmowych miejsc",
+    "title_other": "Wykorzystano {{used}} z {{count}} darmowego miejsca",
     "accessibility": "{{title}}. Odblokuj",
     "unlock": "Odblokuj"
   },
@@ -1637,9 +1697,7 @@
     "accessibility": "{{title}}. Odblokuj bez limitów za {{price}}",
     "unlock": "Odblokuj"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

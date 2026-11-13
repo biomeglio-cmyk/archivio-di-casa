@@ -41,22 +41,47 @@
     "today": "сьогодні",
     "tomorrow": "завтра",
     "yesterday": "учора",
-    "inSpan": "через {{span}}",
-    "spanAgo": "{{span}} тому",
     "expiredYesterday": "закінчився вчора",
-    "expiredFor": "закінчився {{span}} тому",
-    "days_one": "{{count}} день",
-    "days_few": "{{count}} дні",
-    "days_many": "{{count}} днів",
-    "days_other": "{{count}} дня",
-    "months_one": "{{count}} місяць",
-    "months_few": "{{count}} місяці",
-    "months_many": "{{count}} місяців",
-    "months_other": "{{count}} місяця",
     "years_one": "{{count}} рік",
     "years_few": "{{count}} роки",
     "years_many": "{{count}} років",
-    "years_other": "{{count}} року"
+    "years_other": "{{count}} року",
+    "inDays_one": "через {{count}} день",
+    "inDays_few": "через {{count}} дні",
+    "inDays_many": "через {{count}} днів",
+    "inDays_other": "через {{count}} дня",
+    "inMonths_one": "через {{count}} місяць",
+    "inMonths_few": "через {{count}} місяці",
+    "inMonths_many": "через {{count}} місяців",
+    "inMonths_other": "через {{count}} місяця",
+    "inYears_one": "через {{count}} рік",
+    "inYears_few": "через {{count}} роки",
+    "inYears_many": "через {{count}} років",
+    "inYears_other": "через {{count}} року",
+    "daysAgo_one": "{{count}} день тому",
+    "daysAgo_few": "{{count}} дні тому",
+    "daysAgo_many": "{{count}} днів тому",
+    "daysAgo_other": "{{count}} дня тому",
+    "monthsAgo_one": "{{count}} місяць тому",
+    "monthsAgo_few": "{{count}} місяці тому",
+    "monthsAgo_many": "{{count}} місяців тому",
+    "monthsAgo_other": "{{count}} місяця тому",
+    "yearsAgo_one": "{{count}} рік тому",
+    "yearsAgo_few": "{{count}} роки тому",
+    "yearsAgo_many": "{{count}} років тому",
+    "yearsAgo_other": "{{count}} року тому",
+    "expiredDaysAgo_one": "закінчився {{count}} день тому",
+    "expiredDaysAgo_few": "закінчився {{count}} дні тому",
+    "expiredDaysAgo_many": "закінчився {{count}} днів тому",
+    "expiredDaysAgo_other": "закінчився {{count}} дня тому",
+    "expiredMonthsAgo_one": "закінчився {{count}} місяць тому",
+    "expiredMonthsAgo_few": "закінчився {{count}} місяці тому",
+    "expiredMonthsAgo_many": "закінчився {{count}} місяців тому",
+    "expiredMonthsAgo_other": "закінчився {{count}} місяця тому",
+    "expiredYearsAgo_one": "закінчився {{count}} рік тому",
+    "expiredYearsAgo_few": "закінчився {{count}} роки тому",
+    "expiredYearsAgo_many": "закінчився {{count}} років тому",
+    "expiredYearsAgo_other": "закінчився {{count}} року тому"
   },
   "categories": {
     "builtin": {
@@ -457,7 +482,6 @@
     "whenToRemind": "Коли нагадати",
     "repeats": "Повтор",
     "never": "Ніколи",
-    "everySpan": "Кожні {{span}}",
     "every": "Кожні",
     "notesSection": "Нотатки",
     "notesPlaceholder": "Наприклад: сплачено автосписанням, попросити повернення…",
@@ -604,40 +628,52 @@
       "year_other": "{{count}} року"
     },
     "every": {
-      "day_one": "Щодня",
+      "day_one": "Кожен {{count}} день",
       "day_few": "Кожні {{count}} дні",
       "day_many": "Кожні {{count}} днів",
       "day_other": "Кожні {{count}} дня",
-      "week_one": "Щотижня",
+      "week_one": "Кожен {{count}} тиждень",
       "week_few": "Кожні {{count}} тижні",
       "week_many": "Кожні {{count}} тижнів",
       "week_other": "Кожні {{count}} тижня",
-      "month_one": "Щомісяця",
+      "month_one": "Кожен {{count}} місяць",
       "month_few": "Кожні {{count}} місяці",
       "month_many": "Кожні {{count}} місяців",
       "month_other": "Кожні {{count}} місяця",
-      "year_one": "Щороку",
+      "year_one": "Кожен {{count}} рік",
       "year_few": "Кожні {{count}} роки",
       "year_many": "Кожні {{count}} років",
       "year_other": "Кожні {{count}} року"
     },
     "repeats": {
-      "day_one": "Повторюється щодня",
+      "day_one": "Повторюється кожен {{count}} день",
       "day_few": "Повторюється кожні {{count}} дні",
       "day_many": "Повторюється кожні {{count}} днів",
       "day_other": "Повторюється кожні {{count}} дня",
-      "week_one": "Повторюється щотижня",
+      "week_one": "Повторюється кожен {{count}} тиждень",
       "week_few": "Повторюється кожні {{count}} тижні",
       "week_many": "Повторюється кожні {{count}} тижнів",
       "week_other": "Повторюється кожні {{count}} тижня",
-      "month_one": "Повторюється щомісяця",
+      "month_one": "Повторюється кожен {{count}} місяць",
       "month_few": "Повторюється кожні {{count}} місяці",
       "month_many": "Повторюється кожні {{count}} місяців",
       "month_other": "Повторюється кожні {{count}} місяця",
-      "year_one": "Повторюється щороку",
+      "year_one": "Повторюється кожен {{count}} рік",
       "year_few": "Повторюється кожні {{count}} роки",
       "year_many": "Повторюється кожні {{count}} років",
       "year_other": "Повторюється кожні {{count}} року"
+    },
+    "everySingle": {
+      "day": "Щодня",
+      "week": "Щотижня",
+      "month": "Щомісяця",
+      "year": "Щороку"
+    },
+    "repeatsSingle": {
+      "day": "Повторюється щодня",
+      "week": "Повторюється щотижня",
+      "month": "Повторюється щомісяця",
+      "year": "Повторюється щороку"
     }
   },
   "deadlineUtils": {
@@ -1172,7 +1208,10 @@
     "remaining_other": "Можна додати ще {{count}}.",
     "tag": "Безплатна версія · використано {{used}} з {{limit}}",
     "title": "Усі твої документи, без обмежень",
-    "intro": "Безплатно до {{limit}} документів і карток. Щоб додавати скільки завгодно, розблокуй одним платежем.",
+    "intro_one": "Безплатно до {{count}} документа або картки. Щоб додавати скільки завгодно, розблокуй одним платежем.",
+    "intro_few": "Безплатно до {{count}} документів і карток. Щоб додавати скільки завгодно, розблокуй одним платежем.",
+    "intro_many": "Безплатно до {{count}} документів і карток. Щоб додавати скільки завгодно, розблокуй одним платежем.",
+    "intro_other": "Безплатно до {{count}} документів і карток. Щоб додавати скільки завгодно, розблокуй одним платежем.",
     "benefits": {
       "unlimited": {
         "title": "Необмежено документів",
@@ -1264,7 +1303,10 @@
       "failed": "Не вдалося завершити"
     },
     "meta": {
-      "pdfs": "PDF: {{number}}",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_few": "{{count}} PDF",
+      "pdfs_many": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF",
       "singlePdf": "Один PDF",
       "failed": "Не вдалося підготувати файл",
       "preparing": "Підготовка…"
@@ -1321,7 +1363,10 @@
       "savedToFiles": "Збережено у Файли",
       "sendFailed": "Не вдалося надіслати"
     },
-    "readyMany": "PDF готові: {{number}}",
+    "readyMany_one": "{{count}} PDF готовий",
+    "readyMany_few": "{{count}} PDF готові",
+    "readyMany_many": "{{count}} PDF готові",
+    "readyMany_other": "{{count}} PDF готові",
     "choices": {
       "email": "Е-пошта: усі PDF в одному листі",
       "save": "Зберегти у Файли: усі в одній папці",
@@ -1356,10 +1401,16 @@
       "emptyMessage_other": "{{count}} документа буде видалено разом із фото й PDF. Цю дію не можна скасувати.",
       "emptyConfirm": "Очистити"
     },
-    "intro": "Видалені документи залишаються тут {{days}} дн., а потім стираються разом із фото й PDF.",
+    "intro_one": "Видалені документи залишаються тут {{count}} день, а потім стираються разом із фото й PDF.",
+    "intro_few": "Видалені документи залишаються тут {{count}} дні, а потім стираються разом із фото й PDF.",
+    "intro_many": "Видалені документи залишаються тут {{count}} днів, а потім стираються разом із фото й PDF.",
+    "intro_other": "Видалені документи залишаються тут {{count}} дня, а потім стираються разом із фото й PDF.",
     "empty": "Кошик порожній",
     "deletedSoon": "Незабаром буде видалено",
-    "deletedIn": "Буде видалено через {{days}} дн.",
+    "deletedIn_one": "Буде видалено через {{count}} день",
+    "deletedIn_few": "Буде видалено через {{count}} дні",
+    "deletedIn_many": "Буде видалено через {{count}} днів",
+    "deletedIn_other": "Буде видалено через {{count}} дня",
     "restoreLabel": "Відновити «{{title}}»",
     "deleteForeverLabel": "Видалити «{{title}}» назавжди",
     "deleteForever": "Видалити назавжди",
@@ -1607,14 +1658,20 @@
   },
   "terms": {
     "intro": "Повні умови використання буде опубліковано разом із версією для App Store. Коротко:",
-    "free": "Sottomano безплатний до {{limit}} документів і карток",
+    "free_one": "Sottomano безплатний до {{count}} документа або картки",
+    "free_few": "Sottomano безплатний до {{count}} документів і карток",
+    "free_many": "Sottomano безплатний до {{count}} документів і карток",
+    "free_other": "Sottomano безплатний до {{count}} документів і карток",
     "oneTime": "Розблокування — це одноразова покупка, без підписки",
     "yours": "Твої документи залишаються на телефоні й належать тобі",
     "backup": "Створюй резервну копію, щоб не втратити їх, якщо зміниш телефон"
   },
   "limit": {
     "later": "Пізніше",
-    "title": "Ти використав {{limit}} безплатних місць",
+    "title_one": "Ти використав {{count}} безплатне місце",
+    "title_few": "Ти використав {{count}} безплатні місця",
+    "title_many": "Ти використав {{count}} безплатних місць",
+    "title_other": "Ти використав {{count}} безплатного місця",
     "text": "Усе збережене залишається тут і працює як завжди. Щоб додати більше документів і карток, розблокуй Sottomano.",
     "stillWorks": {
       "view": "Переглядати документи",
@@ -1626,7 +1683,10 @@
     "unlock": "Розблокувати без обмежень за {{price}}"
   },
   "limitCard": {
-    "title": "Використано {{used}} з {{limit}} безплатних місць",
+    "title_one": "Використано {{used}} з {{count}} безплатного місця",
+    "title_few": "Використано {{used}} з {{count}} безплатних місць",
+    "title_many": "Використано {{used}} з {{count}} безплатних місць",
+    "title_other": "Використано {{used}} з {{count}} безплатного місця",
     "accessibility": "{{title}}. Розблокувати",
     "unlock": "Розблокувати"
   },
@@ -1637,9 +1697,7 @@
     "accessibility": "{{title}}. Розблокувати без обмежень за {{price}}",
     "unlock": "Розблокувати"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

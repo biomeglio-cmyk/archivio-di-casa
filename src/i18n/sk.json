@@ -38,19 +38,37 @@
     "today": "dnes",
     "tomorrow": "zajtra",
     "yesterday": "včera",
-    "inSpan": "o {{span}}",
-    "spanAgo": "{{span}} dozadu",
     "expiredYesterday": "termín bol včera",
-    "expiredFor": "{{span}} po termíne",
-    "days_one": "{{count}} deň",
-    "days_few": "{{count}} dni",
-    "days_other": "{{count}} dní",
-    "months_one": "{{count}} mesiac",
-    "months_few": "{{count}} mesiace",
-    "months_other": "{{count}} mesiacov",
     "years_one": "{{count}} rok",
     "years_few": "{{count}} roky",
-    "years_other": "{{count}} rokov"
+    "years_other": "{{count}} rokov",
+    "inDays_one": "o {{count}} deň",
+    "inDays_few": "o {{count}} dni",
+    "inDays_other": "o {{count}} dní",
+    "inMonths_one": "o {{count}} mesiac",
+    "inMonths_few": "o {{count}} mesiace",
+    "inMonths_other": "o {{count}} mesiacov",
+    "inYears_one": "o {{count}} rok",
+    "inYears_few": "o {{count}} roky",
+    "inYears_other": "o {{count}} rokov",
+    "daysAgo_one": "pred {{count}} dňom",
+    "daysAgo_few": "pred {{count}} dňami",
+    "daysAgo_other": "pred {{count}} dňami",
+    "monthsAgo_one": "pred {{count}} mesiacom",
+    "monthsAgo_few": "pred {{count}} mesiacmi",
+    "monthsAgo_other": "pred {{count}} mesiacmi",
+    "yearsAgo_one": "pred {{count}} rokom",
+    "yearsAgo_few": "pred {{count}} rokmi",
+    "yearsAgo_other": "pred {{count}} rokmi",
+    "expiredDaysAgo_one": "termín bol pred {{count}} dňom",
+    "expiredDaysAgo_few": "termín bol pred {{count}} dňami",
+    "expiredDaysAgo_other": "termín bol pred {{count}} dňami",
+    "expiredMonthsAgo_one": "termín bol pred {{count}} mesiacom",
+    "expiredMonthsAgo_few": "termín bol pred {{count}} mesiacmi",
+    "expiredMonthsAgo_other": "termín bol pred {{count}} mesiacmi",
+    "expiredYearsAgo_one": "termín bol pred {{count}} rokom",
+    "expiredYearsAgo_few": "termín bol pred {{count}} rokmi",
+    "expiredYearsAgo_other": "termín bol pred {{count}} rokmi"
   },
   "categories": {
     "builtin": {
@@ -441,7 +459,6 @@
     "whenToRemind": "Kedy pripomenúť",
     "repeats": "Opakovanie",
     "never": "Nikdy",
-    "everySpan": "Raz za {{span}}",
     "every": "Interval",
     "notesSection": "Poznámky",
     "notesPlaceholder": "Napríklad: platené inkasom, požiadať o vrátenie…",
@@ -602,6 +619,18 @@
       "year_one": "Opakuje sa každý rok",
       "year_few": "Opakuje sa každé {{count}} roky",
       "year_other": "Opakuje sa každých {{count}} rokov"
+    },
+    "everySingle": {
+      "day": "Každý deň",
+      "week": "Každý týždeň",
+      "month": "Každý mesiac",
+      "year": "Každý rok"
+    },
+    "repeatsSingle": {
+      "day": "Opakuje sa každý deň",
+      "week": "Opakuje sa každý týždeň",
+      "month": "Opakuje sa každý mesiac",
+      "year": "Opakuje sa každý rok"
     }
   },
   "deadlineUtils": {
@@ -1124,7 +1153,9 @@
     "remaining_other": "Môžeš pridať ešte {{count}}.",
     "tag": "Bezplatná verzia · využité {{used}} z {{limit}}",
     "title": "Všetky tvoje dokumenty bez obmedzení",
-    "intro": "Zadarmo až pre {{limit}} dokumentov a kariet. Ak ich chceš pridať, koľko chceš, odomkni aplikáciu jednorazovou platbou.",
+    "intro_one": "Zadarmo až pre {{count}} dokument alebo kartu. Ak ich chceš pridať, koľko chceš, odomkni aplikáciu jednorazovou platbou.",
+    "intro_few": "Zadarmo až pre {{count}} dokumenty a karty. Ak ich chceš pridať, koľko chceš, odomkni aplikáciu jednorazovou platbou.",
+    "intro_other": "Zadarmo až pre {{count}} dokumentov a kariet. Ak ich chceš pridať, koľko chceš, odomkni aplikáciu jednorazovou platbou.",
     "benefits": {
       "unlimited": {
         "title": "Neobmedzene dokumentov",
@@ -1216,7 +1247,9 @@
       "failed": "Nepodarilo sa dokončiť"
     },
     "meta": {
-      "pdfs": "PDF: {{number}}",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_few": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF",
       "singlePdf": "Jedno PDF",
       "failed": "Súbor sa nepodarilo pripraviť",
       "preparing": "Pripravujem…"
@@ -1271,7 +1304,9 @@
       "savedToFiles": "Uložené do Súborov",
       "sendFailed": "Poslanie sa nepodarilo"
     },
-    "readyMany": "Pripravené PDF: {{number}}",
+    "readyMany_one": "{{count}} PDF je pripravené",
+    "readyMany_few": "{{count}} PDF sú pripravené",
+    "readyMany_other": "{{count}} PDF je pripravených",
     "choices": {
       "email": "E-mail: všetky PDF v jednej správe",
       "save": "Uložiť do Súborov: všetko do rovnakého priečinka",
@@ -1304,10 +1339,14 @@
       "emptyMessage_other": "{{count}} dokumentov sa vymaže aj s fotkami a PDF. Túto akciu nemožno vrátiť.",
       "emptyConfirm": "Vyprázdniť"
     },
-    "intro": "Vymazané dokumenty tu zostanú {{days}} dní, potom sa vymažú aj s fotkami a PDF.",
+    "intro_one": "Vymazané dokumenty tu zostanú {{count}} deň, potom sa vymažú aj s fotkami a PDF.",
+    "intro_few": "Vymazané dokumenty tu zostanú {{count}} dni, potom sa vymažú aj s fotkami a PDF.",
+    "intro_other": "Vymazané dokumenty tu zostanú {{count}} dní, potom sa vymažú aj s fotkami a PDF.",
     "empty": "Kôš je prázdny",
     "deletedSoon": "Čoskoro sa vymaže",
-    "deletedIn": "Vymaže sa o {{days}} dní",
+    "deletedIn_one": "Vymaže sa o {{count}} deň",
+    "deletedIn_few": "Vymaže sa o {{count}} dni",
+    "deletedIn_other": "Vymaže sa o {{count}} dní",
     "restoreLabel": "Obnoviť {{title}}",
     "deleteForeverLabel": "Natrvalo vymazať {{title}}",
     "deleteForever": "Vymazať natrvalo",
@@ -1549,14 +1588,18 @@
   },
   "terms": {
     "intro": "Úplné podmienky používania budú zverejnené s verziou z App Storu. V skratke:",
-    "free": "Sottomano je zadarmo až pre {{limit}} dokumentov a kariet",
+    "free_one": "Sottomano je zadarmo až pre {{count}} dokument alebo kartu",
+    "free_few": "Sottomano je zadarmo až pre {{count}} dokumenty a karty",
+    "free_other": "Sottomano je zadarmo až pre {{count}} dokumentov a kariet",
     "oneTime": "Odomknutie je jednorazový nákup, bez predplatného",
     "yours": "Tvoje dokumenty zostávajú v telefóne a patria tebe",
     "backup": "Zálohuj, nech o ne pri výmene telefónu neprídeš"
   },
   "limit": {
     "later": "Neskôr",
-    "title": "Všetkých {{limit}} bezplatných miest je využitých",
+    "title_one": "{{count}} bezplatné miesto je využité",
+    "title_few": "Všetky {{count}} bezplatné miesta sú využité",
+    "title_other": "Všetkých {{count}} bezplatných miest je využitých",
     "text": "Všetko, čo máš uložené, tu zostane a funguje ako vždy. Ak chceš pridať ďalšie dokumenty a karty, odomkni Sottomano.",
     "stillWorks": {
       "view": "Prezerať svoje dokumenty",
@@ -1568,7 +1611,9 @@
     "unlock": "Odomknúť bez obmedzení za {{price}}"
   },
   "limitCard": {
-    "title": "Využité {{used}} z {{limit}} bezplatných miest",
+    "title_one": "Využité {{used}} z {{count}} bezplatného miesta",
+    "title_few": "Využité {{used}} z {{count}} bezplatných miest",
+    "title_other": "Využité {{used}} z {{count}} bezplatných miest",
     "accessibility": "{{title}}. Odomknúť",
     "unlock": "Odomknúť"
   },
@@ -1579,9 +1624,7 @@
     "accessibility": "{{title}}. Odomknúť bez obmedzení za {{price}}",
     "unlock": "Odomknúť"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

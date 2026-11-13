@@ -35,16 +35,27 @@
     "today": "σήμερα",
     "tomorrow": "αύριο",
     "yesterday": "χθες",
-    "inSpan": "σε {{span}}",
-    "spanAgo": "πριν από {{span}}",
     "expiredYesterday": "έληξε χθες",
-    "expiredFor": "έληξε πριν από {{span}}",
-    "days_one": "{{count}} ημέρα",
-    "days_other": "{{count}} ημέρες",
-    "months_one": "{{count}} μήνα",
-    "months_other": "{{count}} μήνες",
-    "years_one": "{{count}} χρόνο",
-    "years_other": "{{count}} χρόνια"
+    "years_one": "{{count}} χρόνος",
+    "years_other": "{{count}} χρόνια",
+    "inDays_one": "σε {{count}} ημέρα",
+    "inDays_other": "σε {{count}} ημέρες",
+    "inMonths_one": "σε {{count}} μήνα",
+    "inMonths_other": "σε {{count}} μήνες",
+    "inYears_one": "σε {{count}} χρόνο",
+    "inYears_other": "σε {{count}} χρόνια",
+    "daysAgo_one": "πριν από {{count}} ημέρα",
+    "daysAgo_other": "πριν από {{count}} ημέρες",
+    "monthsAgo_one": "πριν από {{count}} μήνα",
+    "monthsAgo_other": "πριν από {{count}} μήνες",
+    "yearsAgo_one": "πριν από {{count}} χρόνο",
+    "yearsAgo_other": "πριν από {{count}} χρόνια",
+    "expiredDaysAgo_one": "έληξε πριν από {{count}} ημέρα",
+    "expiredDaysAgo_other": "έληξε πριν από {{count}} ημέρες",
+    "expiredMonthsAgo_one": "έληξε πριν από {{count}} μήνα",
+    "expiredMonthsAgo_other": "έληξε πριν από {{count}} μήνες",
+    "expiredYearsAgo_one": "έληξε πριν από {{count}} χρόνο",
+    "expiredYearsAgo_other": "έληξε πριν από {{count}} χρόνια"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Πότε να σου το θυμίσει",
     "repeats": "Επανάληψη",
     "never": "Ποτέ",
-    "everySpan": "Κάθε {{span}}",
     "every": "Κάθε",
     "notesSection": "Σημειώσεις",
     "notesPlaceholder": "Για παράδειγμα: πληρωμή με πάγια εντολή, ζήτα επιστροφή χρημάτων…",
@@ -566,6 +576,18 @@
       "month_other": "Επανάληψη κάθε {{count}} μήνες",
       "year_one": "Επανάληψη κάθε χρόνο",
       "year_other": "Επανάληψη κάθε {{count}} χρόνια"
+    },
+    "everySingle": {
+      "day": "Κάθε ημέρα",
+      "week": "Κάθε εβδομάδα",
+      "month": "Κάθε μήνα",
+      "year": "Κάθε χρόνο"
+    },
+    "repeatsSingle": {
+      "day": "Επανάληψη κάθε ημέρα",
+      "week": "Επανάληψη κάθε εβδομάδα",
+      "month": "Επανάληψη κάθε μήνα",
+      "year": "Επανάληψη κάθε χρόνο"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Μπορείς να προσθέσεις ακόμη {{count}}.",
     "tag": "Δωρεάν έκδοση · {{used}} από {{limit}} σε χρήση",
     "title": "Όλα τα έγγραφά σου, χωρίς όρια",
-    "intro": "Δωρεάν για έως {{limit}} έγγραφα και κάρτες. Για να προσθέτεις όσα θέλεις, ξεκλείδωσέ το με μία μόνο πληρωμή.",
+    "intro_one": "Δωρεάν για έως {{count}} έγγραφο ή κάρτα. Για να προσθέτεις όσα θέλεις, ξεκλείδωσέ το με μία μόνο πληρωμή.",
+    "intro_other": "Δωρεάν για έως {{count}} έγγραφα και κάρτες. Για να προσθέτεις όσα θέλεις, ξεκλείδωσέ το με μία μόνο πληρωμή.",
     "benefits": {
       "unlimited": {
         "title": "Απεριόριστα έγγραφα",
@@ -1168,7 +1191,8 @@
       "failed": "Δεν ήταν δυνατή η ολοκλήρωση"
     },
     "meta": {
-      "pdfs": "{{number}} PDF",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF",
       "singlePdf": "Ένα PDF",
       "failed": "Δεν ήταν δυνατή η προετοιμασία του αρχείου",
       "preparing": "Προετοιμασία…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Αποθηκεύτηκε στα Αρχεία",
       "sendFailed": "Δεν ήταν δυνατή η αποστολή"
     },
-    "readyMany": "{{number}} PDF έτοιμα",
+    "readyMany_one": "{{count}} PDF έτοιμο",
+    "readyMany_other": "{{count}} PDF έτοιμα",
     "choices": {
       "email": "Email: όλα τα PDF σε ένα μήνυμα",
       "save": "Αποθήκευση στα Αρχεία: όλα στον ίδιο φάκελο",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "Τα {{count}} έγγραφα θα διαγραφούν μαζί με τις φωτογραφίες και τα PDF τους. Η ενέργεια δεν αναιρείται.",
       "emptyConfirm": "Άδειασμα"
     },
-    "intro": "Τα διαγραμμένα έγγραφα μένουν εδώ για {{days}} ημέρες και μετά σβήνονται μαζί με τις φωτογραφίες και τα PDF τους.",
+    "intro_one": "Τα διαγραμμένα έγγραφα μένουν εδώ για {{count}} ημέρα και μετά σβήνονται μαζί με τις φωτογραφίες και τα PDF τους.",
+    "intro_other": "Τα διαγραμμένα έγγραφα μένουν εδώ για {{count}} ημέρες και μετά σβήνονται μαζί με τις φωτογραφίες και τα PDF τους.",
     "empty": "Ο Κάδος είναι άδειος",
     "deletedSoon": "Θα διαγραφεί σύντομα",
-    "deletedIn": "Θα διαγραφεί σε {{days}} ημέρες",
+    "deletedIn_one": "Θα διαγραφεί σε {{count}} ημέρα",
+    "deletedIn_other": "Θα διαγραφεί σε {{count}} ημέρες",
     "restoreLabel": "Επαναφορά: {{title}}",
     "deleteForeverLabel": "Οριστική διαγραφή: {{title}}",
     "deleteForever": "Οριστική διαγραφή",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "Οι πλήρεις όροι χρήσης θα δημοσιευτούν με την έκδοση του App Store. Εν συντομία:",
-    "free": "Το Sottomano είναι δωρεάν για έως {{limit}} έγγραφα και κάρτες",
+    "free_one": "Το Sottomano είναι δωρεάν για έως {{count}} έγγραφο ή κάρτα",
+    "free_other": "Το Sottomano είναι δωρεάν για έως {{count}} έγγραφα και κάρτες",
     "oneTime": "Το ξεκλείδωμα είναι εφάπαξ αγορά, χωρίς συνδρομή",
     "yours": "Τα έγγραφά σου μένουν στο τηλέφωνό σου και ανήκουν σε σένα",
     "backup": "Κάνε αντίγραφο ασφαλείας για να μην τα χάσεις αν αλλάξεις τηλέφωνο"
   },
   "limit": {
     "later": "Αργότερα",
-    "title": "Χρησιμοποίησες τις {{limit}} δωρεάν θέσεις σου",
+    "title_one": "Χρησιμοποίησες τη μοναδική δωρεάν θέση σου",
+    "title_other": "Χρησιμοποίησες τις {{count}} δωρεάν θέσεις σου",
     "text": "Ό,τι έχεις αποθηκεύσει μένει εδώ και λειτουργεί όπως πάντα. Για να προσθέσεις κι άλλα έγγραφα και κάρτες, ξεκλείδωσε το Sottomano.",
     "stillWorks": {
       "view": "Προβολή των εγγράφων σου",
@@ -1510,7 +1539,8 @@
     "unlock": "Ξεκλείδωμα χωρίς όρια με {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} από {{limit}} δωρεάν θέσεις σε χρήση",
+    "title_one": "{{used}} από {{count}} δωρεάν θέση σε χρήση",
+    "title_other": "{{used}} από {{count}} δωρεάν θέσεις σε χρήση",
     "accessibility": "{{title}}. Ξεκλείδωμα",
     "unlock": "Ξεκλείδωμα"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Ξεκλείδωμα χωρίς όρια με {{price}}",
     "unlock": "Ξεκλείδωμα"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

@@ -35,16 +35,27 @@
     "today": "i dag",
     "tomorrow": "i morgon",
     "yesterday": "i går",
-    "inSpan": "om {{span}}",
-    "spanAgo": "för {{span}} sedan",
     "expiredYesterday": "gick ut i går",
-    "expiredFor": "gick ut för {{span}} sedan",
-    "days_one": "{{count}} dag",
-    "days_other": "{{count}} dagar",
-    "months_one": "{{count}} månad",
-    "months_other": "{{count}} månader",
     "years_one": "{{count}} år",
-    "years_other": "{{count}} år"
+    "years_other": "{{count}} år",
+    "inDays_one": "om {{count}} dag",
+    "inDays_other": "om {{count}} dagar",
+    "inMonths_one": "om {{count}} månad",
+    "inMonths_other": "om {{count}} månader",
+    "inYears_one": "om {{count}} år",
+    "inYears_other": "om {{count}} år",
+    "daysAgo_one": "för {{count}} dag sedan",
+    "daysAgo_other": "för {{count}} dagar sedan",
+    "monthsAgo_one": "för {{count}} månad sedan",
+    "monthsAgo_other": "för {{count}} månader sedan",
+    "yearsAgo_one": "för {{count}} år sedan",
+    "yearsAgo_other": "för {{count}} år sedan",
+    "expiredDaysAgo_one": "gick ut för {{count}} dag sedan",
+    "expiredDaysAgo_other": "gick ut för {{count}} dagar sedan",
+    "expiredMonthsAgo_one": "gick ut för {{count}} månad sedan",
+    "expiredMonthsAgo_other": "gick ut för {{count}} månader sedan",
+    "expiredYearsAgo_one": "gick ut för {{count}} år sedan",
+    "expiredYearsAgo_other": "gick ut för {{count}} år sedan"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "När du ska påminnas",
     "repeats": "Upprepa",
     "never": "Aldrig",
-    "everySpan": "Var {{span}}",
     "every": "Var",
     "notesSection": "Anteckningar",
     "notesPlaceholder": "Till exempel: betalas via autogiro, begär återbetalning …",
@@ -566,6 +576,18 @@
       "month_other": "Upprepas var {{count}}:e månad",
       "year_one": "Upprepas varje år",
       "year_other": "Upprepas vart {{count}}:e år"
+    },
+    "everySingle": {
+      "day": "Varje dag",
+      "week": "Varje vecka",
+      "month": "Varje månad",
+      "year": "Varje år"
+    },
+    "repeatsSingle": {
+      "day": "Upprepas varje dag",
+      "week": "Upprepas varje vecka",
+      "month": "Upprepas varje månad",
+      "year": "Upprepas varje år"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Du kan lägga till {{count}} till.",
     "tag": "Gratisversion · {{used}} av {{limit}} använda",
     "title": "Alla dina dokument, utan gränser",
-    "intro": "Gratis för upp till {{limit}} dokument och kort. Lås upp med en enda betalning för att lägga till hur många du vill.",
+    "intro_one": "Gratis för upp till {{count}} dokument eller kort. Lås upp med en enda betalning för att lägga till hur många du vill.",
+    "intro_other": "Gratis för upp till {{count}} dokument och kort. Lås upp med en enda betalning för att lägga till hur många du vill.",
     "benefits": {
       "unlimited": {
         "title": "Obegränsat med dokument",
@@ -1168,7 +1191,8 @@
       "failed": "Det gick inte att slutföra"
     },
     "meta": {
-      "pdfs": "{{number}} PDF:er",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF:er",
       "singlePdf": "En enda PDF",
       "failed": "Filen kunde inte förberedas",
       "preparing": "Förbereder …"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Sparat i Filer",
       "sendFailed": "Det gick inte att skicka"
     },
-    "readyMany": "{{number}} PDF:er klara",
+    "readyMany_one": "{{count}} PDF klar",
+    "readyMany_other": "{{count}} PDF:er klara",
     "choices": {
       "email": "E-post: alla PDF:er i ett meddelande",
       "save": "Spara i Filer: alla i samma mapp",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "De {{count}} dokumenten raderas med sina bilder och PDF:er. Det går inte att ångra.",
       "emptyConfirm": "Töm"
     },
-    "intro": "Raderade dokument ligger kvar här i {{days}} dagar och raderas sedan med sina bilder och PDF:er.",
+    "intro_one": "Raderade dokument ligger kvar här i {{count}} dag och raderas sedan med sina bilder och PDF:er.",
+    "intro_other": "Raderade dokument ligger kvar här i {{count}} dagar och raderas sedan med sina bilder och PDF:er.",
     "empty": "Papperskorgen är tom",
     "deletedSoon": "Raderas snart",
-    "deletedIn": "Raderas om {{days}} dagar",
+    "deletedIn_one": "Raderas om {{count}} dag",
+    "deletedIn_other": "Raderas om {{count}} dagar",
     "restoreLabel": "Återställ {{title}}",
     "deleteForeverLabel": "Radera {{title}} permanent",
     "deleteForever": "Radera permanent",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "De fullständiga användarvillkoren publiceras med App Store-versionen. Kort sagt:",
-    "free": "Sottomano är gratis för upp till {{limit}} dokument och kort",
+    "free_one": "Sottomano är gratis för upp till {{count}} dokument eller kort",
+    "free_other": "Sottomano är gratis för upp till {{count}} dokument och kort",
     "oneTime": "Upplåsningen är ett engångsköp, utan prenumeration",
     "yours": "Dina dokument stannar på telefonen och tillhör dig",
     "backup": "Gör en säkerhetskopia så att du inte förlorar dem om du byter telefon"
   },
   "limit": {
     "later": "Senare",
-    "title": "Du har använt dina {{limit}} gratisplatser",
+    "title_one": "Du har använt din enda gratisplats",
+    "title_other": "Du har använt dina {{count}} gratisplatser",
     "text": "Allt du har sparat finns kvar och fungerar som vanligt. Lås upp Sottomano för att lägga till fler dokument och kort.",
     "stillWorks": {
       "view": "Visa dina dokument",
@@ -1510,7 +1539,8 @@
     "unlock": "Lås upp utan gränser för {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} av {{limit}} gratisplatser använda",
+    "title_one": "{{used}} av {{count}} gratisplats använd",
+    "title_other": "{{used}} av {{count}} gratisplatser använda",
     "accessibility": "{{title}}. Lås upp",
     "unlock": "Lås upp"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Lås upp utan gränser för {{price}}",
     "unlock": "Lås upp"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

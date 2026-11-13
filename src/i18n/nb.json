@@ -35,16 +35,27 @@
     "today": "i dag",
     "tomorrow": "i morgen",
     "yesterday": "i går",
-    "inSpan": "om {{span}}",
-    "spanAgo": "for {{span}} siden",
     "expiredYesterday": "utløp i går",
-    "expiredFor": "utløp for {{span}} siden",
-    "days_one": "{{count}} dag",
-    "days_other": "{{count}} dager",
-    "months_one": "{{count}} måned",
-    "months_other": "{{count}} måneder",
     "years_one": "{{count}} år",
-    "years_other": "{{count}} år"
+    "years_other": "{{count}} år",
+    "inDays_one": "om {{count}} dag",
+    "inDays_other": "om {{count}} dager",
+    "inMonths_one": "om {{count}} måned",
+    "inMonths_other": "om {{count}} måneder",
+    "inYears_one": "om {{count}} år",
+    "inYears_other": "om {{count}} år",
+    "daysAgo_one": "for {{count}} dag siden",
+    "daysAgo_other": "for {{count}} dager siden",
+    "monthsAgo_one": "for {{count}} måned siden",
+    "monthsAgo_other": "for {{count}} måneder siden",
+    "yearsAgo_one": "for {{count}} år siden",
+    "yearsAgo_other": "for {{count}} år siden",
+    "expiredDaysAgo_one": "utløp for {{count}} dag siden",
+    "expiredDaysAgo_other": "utløp for {{count}} dager siden",
+    "expiredMonthsAgo_one": "utløp for {{count}} måned siden",
+    "expiredMonthsAgo_other": "utløp for {{count}} måneder siden",
+    "expiredYearsAgo_one": "utløp for {{count}} år siden",
+    "expiredYearsAgo_other": "utløp for {{count}} år siden"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Når du skal påminnes",
     "repeats": "Gjentas",
     "never": "Aldri",
-    "everySpan": "Hver {{span}}",
     "every": "Hver",
     "notesSection": "Notater",
     "notesPlaceholder": "For eksempel: betales med AvtaleGiro, be om refusjon …",
@@ -566,6 +576,18 @@
       "month_other": "Gjentas hver {{count}}. måned",
       "year_one": "Gjentas hvert år",
       "year_other": "Gjentas hvert {{count}}. år"
+    },
+    "everySingle": {
+      "day": "Hver dag",
+      "week": "Hver uke",
+      "month": "Hver måned",
+      "year": "Hvert år"
+    },
+    "repeatsSingle": {
+      "day": "Gjentas hver dag",
+      "week": "Gjentas hver uke",
+      "month": "Gjentas hver måned",
+      "year": "Gjentas hvert år"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Du kan legge til {{count}} til.",
     "tag": "Gratisversjon · {{used}} av {{limit}} brukt",
     "title": "Alle dokumentene dine, uten grenser",
-    "intro": "Gratis for opptil {{limit}} dokumenter og kort. Lås opp med én betaling for å legge til så mange du vil.",
+    "intro_one": "Gratis for opptil {{count}} dokument eller kort. Lås opp med én betaling for å legge til så mange du vil.",
+    "intro_other": "Gratis for opptil {{count}} dokumenter og kort. Lås opp med én betaling for å legge til så mange du vil.",
     "benefits": {
       "unlimited": {
         "title": "Ubegrenset med dokumenter",
@@ -1168,7 +1191,8 @@
       "failed": "Kunne ikke fullføre"
     },
     "meta": {
-      "pdfs": "{{number}} PDF-er",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF-er",
       "singlePdf": "Én samlet PDF",
       "failed": "Filen kunne ikke klargjøres",
       "preparing": "Klargjør …"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Arkivert i Filer",
       "sendFailed": "Kunne ikke sende"
     },
-    "readyMany": "{{number}} PDF-er klare",
+    "readyMany_one": "{{count}} PDF klar",
+    "readyMany_other": "{{count}} PDF-er klare",
     "choices": {
       "email": "E-post: alle PDF-ene i én melding",
       "save": "Arkiver i Filer: alle i samme mappe",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "De {{count}} dokumentene slettes sammen med bildene og PDF-ene. Dette kan ikke angres.",
       "emptyConfirm": "Tøm"
     },
-    "intro": "Slettede dokumenter blir liggende her i {{days}} dager, og slettes deretter sammen med bildene og PDF-ene.",
+    "intro_one": "Slettede dokumenter blir liggende her i {{count}} dag, og slettes deretter sammen med bildene og PDF-ene.",
+    "intro_other": "Slettede dokumenter blir liggende her i {{count}} dager, og slettes deretter sammen med bildene og PDF-ene.",
     "empty": "Papirkurven er tom",
     "deletedSoon": "Slettes snart",
-    "deletedIn": "Slettes om {{days}} dager",
+    "deletedIn_one": "Slettes om {{count}} dag",
+    "deletedIn_other": "Slettes om {{count}} dager",
     "restoreLabel": "Gjenopprett {{title}}",
     "deleteForeverLabel": "Slett {{title}} permanent",
     "deleteForever": "Slett permanent",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "De fullstendige vilkårene for bruk publiseres med App Store-versjonen. Kort fortalt:",
-    "free": "Sottomano er gratis for opptil {{limit}} dokumenter og kort",
+    "free_one": "Sottomano er gratis for opptil {{count}} dokument eller kort",
+    "free_other": "Sottomano er gratis for opptil {{count}} dokumenter og kort",
     "oneTime": "Opplåsingen er et engangskjøp, uten abonnement",
     "yours": "Dokumentene dine blir på telefonen og tilhører deg",
     "backup": "Ta en sikkerhetskopi så du ikke mister dem hvis du bytter telefon"
   },
   "limit": {
     "later": "Senere",
-    "title": "Du har brukt de {{limit}} gratisplassene dine",
+    "title_one": "Du har brukt den eneste gratisplassen din",
+    "title_other": "Du har brukt de {{count}} gratisplassene dine",
     "text": "Alt du har lagret, blir her og fungerer som før. Lås opp Sottomano for å legge til flere dokumenter og kort.",
     "stillWorks": {
       "view": "Se dokumentene dine",
@@ -1510,7 +1539,8 @@
     "unlock": "Lås opp uten grenser for {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} av {{limit}} gratisplasser brukt",
+    "title_one": "{{used}} av {{count}} gratisplass brukt",
+    "title_other": "{{used}} av {{count}} gratisplasser brukt",
     "accessibility": "{{title}}. Lås opp",
     "unlock": "Lås opp"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Lås opp uten grenser for {{price}}",
     "unlock": "Lås opp"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

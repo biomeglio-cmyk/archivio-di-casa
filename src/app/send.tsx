@@ -181,7 +181,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
     ? [
         format === 'pdf'
           ? prepared.files.length > 1
-            ? t('send.meta.pdfs', { number: prepared.files.length })
+            ? t('send.meta.pdfs', { count: prepared.files.length })
             : t('send.meta.singlePdf')
           : t('common.photos', { count: prepared.files.length }),
         prepared.pages !== null ? t('common.pages', { count: prepared.pages }) : null,

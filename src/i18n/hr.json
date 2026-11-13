@@ -38,19 +38,37 @@
     "today": "danas",
     "tomorrow": "sutra",
     "yesterday": "jučer",
-    "inSpan": "za {{span}}",
-    "spanAgo": "prije {{span}}",
     "expiredYesterday": "isteklo jučer",
-    "expiredFor": "isteklo prije {{span}}",
-    "days_one": "{{count}} dan",
-    "days_few": "{{count}} dana",
-    "days_other": "{{count}} dana",
-    "months_one": "{{count}} mjesec",
-    "months_few": "{{count}} mjeseca",
-    "months_other": "{{count}} mjeseci",
-    "years_one": "{{count}} god.",
+    "years_one": "{{count}} godina",
     "years_few": "{{count}} godine",
-    "years_other": "{{count}} godina"
+    "years_other": "{{count}} godina",
+    "inDays_one": "za {{count}} dan",
+    "inDays_few": "za {{count}} dana",
+    "inDays_other": "za {{count}} dana",
+    "inMonths_one": "za {{count}} mjesec",
+    "inMonths_few": "za {{count}} mjeseca",
+    "inMonths_other": "za {{count}} mjeseci",
+    "inYears_one": "za {{count}} godinu",
+    "inYears_few": "za {{count}} godine",
+    "inYears_other": "za {{count}} godina",
+    "daysAgo_one": "prije {{count}} dan",
+    "daysAgo_few": "prije {{count}} dana",
+    "daysAgo_other": "prije {{count}} dana",
+    "monthsAgo_one": "prije {{count}} mjesec",
+    "monthsAgo_few": "prije {{count}} mjeseca",
+    "monthsAgo_other": "prije {{count}} mjeseci",
+    "yearsAgo_one": "prije {{count}} godinu",
+    "yearsAgo_few": "prije {{count}} godine",
+    "yearsAgo_other": "prije {{count}} godina",
+    "expiredDaysAgo_one": "isteklo prije {{count}} dan",
+    "expiredDaysAgo_few": "isteklo prije {{count}} dana",
+    "expiredDaysAgo_other": "isteklo prije {{count}} dana",
+    "expiredMonthsAgo_one": "isteklo prije {{count}} mjesec",
+    "expiredMonthsAgo_few": "isteklo prije {{count}} mjeseca",
+    "expiredMonthsAgo_other": "isteklo prije {{count}} mjeseci",
+    "expiredYearsAgo_one": "isteklo prije {{count}} godinu",
+    "expiredYearsAgo_few": "isteklo prije {{count}} godine",
+    "expiredYearsAgo_other": "isteklo prije {{count}} godina"
   },
   "categories": {
     "builtin": {
@@ -441,7 +459,6 @@
     "whenToRemind": "Kada te podsjetiti",
     "repeats": "Ponavljanje",
     "never": "Nikad",
-    "everySpan": "Svakih {{span}}",
     "every": "Svakih",
     "notesSection": "Bilješke",
     "notesPlaceholder": "Npr. plaćeno trajnim nalogom, zatražiti povrat…",
@@ -576,32 +593,44 @@
       "year_other": "{{count}} godina"
     },
     "every": {
-      "day_one": "Svaki dan",
+      "day_one": "Svaki {{count}}. dan",
       "day_few": "Svaka {{count}} dana",
       "day_other": "Svakih {{count}} dana",
-      "week_one": "Svaki tjedan",
+      "week_one": "Svaki {{count}}. tjedan",
       "week_few": "Svaka {{count}} tjedna",
       "week_other": "Svakih {{count}} tjedana",
-      "month_one": "Svaki mjesec",
+      "month_one": "Svaki {{count}}. mjesec",
       "month_few": "Svaka {{count}} mjeseca",
       "month_other": "Svakih {{count}} mjeseci",
-      "year_one": "Svake godine",
+      "year_one": "Svake {{count}}. godine",
       "year_few": "Svake {{count}} godine",
       "year_other": "Svakih {{count}} godina"
     },
     "repeats": {
-      "day_one": "Ponavlja se svaki dan",
+      "day_one": "Ponavlja se svaki {{count}}. dan",
       "day_few": "Ponavlja se svaka {{count}} dana",
       "day_other": "Ponavlja se svakih {{count}} dana",
-      "week_one": "Ponavlja se svaki tjedan",
+      "week_one": "Ponavlja se svaki {{count}}. tjedan",
       "week_few": "Ponavlja se svaka {{count}} tjedna",
       "week_other": "Ponavlja se svakih {{count}} tjedana",
-      "month_one": "Ponavlja se svaki mjesec",
+      "month_one": "Ponavlja se svaki {{count}}. mjesec",
       "month_few": "Ponavlja se svaka {{count}} mjeseca",
       "month_other": "Ponavlja se svakih {{count}} mjeseci",
-      "year_one": "Ponavlja se svake godine",
+      "year_one": "Ponavlja se svake {{count}}. godine",
       "year_few": "Ponavlja se svake {{count}} godine",
       "year_other": "Ponavlja se svakih {{count}} godina"
+    },
+    "everySingle": {
+      "day": "Svaki dan",
+      "week": "Svaki tjedan",
+      "month": "Svaki mjesec",
+      "year": "Svake godine"
+    },
+    "repeatsSingle": {
+      "day": "Ponavlja se svaki dan",
+      "week": "Ponavlja se svaki tjedan",
+      "month": "Ponavlja se svaki mjesec",
+      "year": "Ponavlja se svake godine"
     }
   },
   "deadlineUtils": {
@@ -1124,7 +1153,9 @@
     "remaining_other": "Možeš dodati još {{count}}.",
     "tag": "Besplatna verzija · iskorišteno {{used}} od {{limit}}",
     "title": "Svi tvoji dokumenti, bez ograničenja",
-    "intro": "Besplatno do {{limit}} dokumenata i kartica. Da dodaš koliko god želiš, otključaj jednom uplatom.",
+    "intro_one": "Besplatno do {{count}} dokumenta ili kartice. Da dodaš koliko god želiš, otključaj jednom uplatom.",
+    "intro_few": "Besplatno do {{count}} dokumenta i kartice. Da dodaš koliko god želiš, otključaj jednom uplatom.",
+    "intro_other": "Besplatno do {{count}} dokumenata i kartica. Da dodaš koliko god želiš, otključaj jednom uplatom.",
     "benefits": {
       "unlimited": {
         "title": "Neograničeno dokumenata",
@@ -1216,7 +1247,9 @@
       "failed": "Nije moguće dovršiti"
     },
     "meta": {
-      "pdfs": "PDF-ova: {{number}}",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_few": "{{count}} PDF-a",
+      "pdfs_other": "{{count}} PDF-ova",
       "singlePdf": "Jedan PDF",
       "failed": "Datoteku nije moguće pripremiti",
       "preparing": "Priprema…"
@@ -1271,7 +1304,9 @@
       "savedToFiles": "Spremljeno u Datoteke",
       "sendFailed": "Slanje nije uspjelo"
     },
-    "readyMany": "Spremno PDF-ova: {{number}}",
+    "readyMany_one": "Spreman {{count}} PDF",
+    "readyMany_few": "Spremna {{count}} PDF-a",
+    "readyMany_other": "Spremno {{count}} PDF-ova",
     "choices": {
       "email": "E-pošta: svi PDF-ovi u jednoj poruci",
       "save": "Spremi u Datoteke: svi u istu mapu",
@@ -1304,10 +1339,14 @@
       "emptyMessage_other": "{{count}} dokumenata bit će obrisano sa svojim fotografijama i PDF-ovima. Ovo se ne može poništiti.",
       "emptyConfirm": "Isprazni"
     },
-    "intro": "Obrisani dokumenti ostaju ovdje {{days}} dana, a zatim se brišu zajedno s fotografijama i PDF-ovima.",
+    "intro_one": "Obrisani dokumenti ostaju ovdje {{count}} dan, a zatim se brišu zajedno s fotografijama i PDF-ovima.",
+    "intro_few": "Obrisani dokumenti ostaju ovdje {{count}} dana, a zatim se brišu zajedno s fotografijama i PDF-ovima.",
+    "intro_other": "Obrisani dokumenti ostaju ovdje {{count}} dana, a zatim se brišu zajedno s fotografijama i PDF-ovima.",
     "empty": "Smeće je prazno",
     "deletedSoon": "Uskoro će biti obrisano",
-    "deletedIn": "Bit će obrisano za {{days}} dana",
+    "deletedIn_one": "Bit će obrisano za {{count}} dan",
+    "deletedIn_few": "Bit će obrisano za {{count}} dana",
+    "deletedIn_other": "Bit će obrisano za {{count}} dana",
     "restoreLabel": "Vrati {{title}}",
     "deleteForeverLabel": "Trajno obriši {{title}}",
     "deleteForever": "Trajno obriši",
@@ -1549,14 +1588,18 @@
   },
   "terms": {
     "intro": "Potpuni uvjeti korištenja bit će objavljeni s verzijom iz App Storea. Ukratko:",
-    "free": "Sottomano je besplatan do {{limit}} dokumenata i kartica",
+    "free_one": "Sottomano je besplatan do {{count}} dokumenta ili kartice",
+    "free_few": "Sottomano je besplatan do {{count}} dokumenta i kartice",
+    "free_other": "Sottomano je besplatan do {{count}} dokumenata i kartica",
     "oneTime": "Otključavanje je jednokratna kupnja, bez pretplate",
     "yours": "Tvoji dokumenti ostaju na tvom telefonu i pripadaju tebi",
     "backup": "Izradi sigurnosnu kopiju da ih ne izgubiš ako promijeniš telefon"
   },
   "limit": {
     "later": "Kasnije",
-    "title": "Besplatna mjesta su iskorištena ({{limit}})",
+    "title_one": "Iskorišteno je {{count}} besplatno mjesto",
+    "title_few": "Iskorištena su {{count}} besplatna mjesta",
+    "title_other": "Iskorišteno je {{count}} besplatnih mjesta",
     "text": "Sve spremljeno ostaje ovdje i radi kao i uvijek. Za dodavanje novih dokumenata i kartica otključaj Sottomano.",
     "stillWorks": {
       "view": "Pregledavaj svoje dokumente",
@@ -1568,7 +1611,9 @@
     "unlock": "Otključaj bez ograničenja za {{price}}"
   },
   "limitCard": {
-    "title": "Iskorišteno {{used}} od {{limit}} besplatnih mjesta",
+    "title_one": "Iskorišteno {{used}} od {{count}} besplatnog mjesta",
+    "title_few": "Iskorišteno {{used}} od {{count}} besplatna mjesta",
+    "title_other": "Iskorišteno {{used}} od {{count}} besplatnih mjesta",
     "accessibility": "{{title}}. Otključaj",
     "unlock": "Otključaj"
   },
@@ -1579,9 +1624,7 @@
     "accessibility": "{{title}}. Otključaj bez ograničenja za {{price}}",
     "unlock": "Otključaj"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

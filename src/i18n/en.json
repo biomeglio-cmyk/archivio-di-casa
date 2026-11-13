@@ -35,16 +35,27 @@
     "today": "today",
     "tomorrow": "tomorrow",
     "yesterday": "yesterday",
-    "inSpan": "in {{span}}",
-    "spanAgo": "{{span}} ago",
     "expiredYesterday": "expired yesterday",
-    "expiredFor": "expired {{span}} ago",
-    "days_one": "{{count}} day",
-    "days_other": "{{count}} days",
-    "months_one": "{{count}} month",
-    "months_other": "{{count}} months",
     "years_one": "{{count}} year",
-    "years_other": "{{count}} years"
+    "years_other": "{{count}} years",
+    "inDays_one": "in {{count}} day",
+    "inDays_other": "in {{count}} days",
+    "inMonths_one": "in {{count}} month",
+    "inMonths_other": "in {{count}} months",
+    "inYears_one": "in {{count}} year",
+    "inYears_other": "in {{count}} years",
+    "daysAgo_one": "{{count}} day ago",
+    "daysAgo_other": "{{count}} days ago",
+    "monthsAgo_one": "{{count}} month ago",
+    "monthsAgo_other": "{{count}} months ago",
+    "yearsAgo_one": "{{count}} year ago",
+    "yearsAgo_other": "{{count}} years ago",
+    "expiredDaysAgo_one": "expired {{count}} day ago",
+    "expiredDaysAgo_other": "expired {{count}} days ago",
+    "expiredMonthsAgo_one": "expired {{count}} month ago",
+    "expiredMonthsAgo_other": "expired {{count}} months ago",
+    "expiredYearsAgo_one": "expired {{count}} year ago",
+    "expiredYearsAgo_other": "expired {{count}} years ago"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "When to remind you",
     "repeats": "Repeats",
     "never": "Never",
-    "everySpan": "Every {{span}}",
     "every": "Every",
     "notesSection": "Notes",
     "notesPlaceholder": "For example: paid by direct debit, ask for a refund…",
@@ -548,24 +558,36 @@
       "year_other": "{{count}} years"
     },
     "every": {
-      "day_one": "Every day",
+      "day_one": "Every {{count}} day",
       "day_other": "Every {{count}} days",
-      "week_one": "Every week",
+      "week_one": "Every {{count}} week",
       "week_other": "Every {{count}} weeks",
-      "month_one": "Every month",
+      "month_one": "Every {{count}} month",
       "month_other": "Every {{count}} months",
-      "year_one": "Every year",
+      "year_one": "Every {{count}} year",
       "year_other": "Every {{count}} years"
     },
     "repeats": {
-      "day_one": "Repeats every day",
+      "day_one": "Repeats every {{count}} day",
       "day_other": "Repeats every {{count}} days",
-      "week_one": "Repeats every week",
+      "week_one": "Repeats every {{count}} week",
       "week_other": "Repeats every {{count}} weeks",
-      "month_one": "Repeats every month",
+      "month_one": "Repeats every {{count}} month",
       "month_other": "Repeats every {{count}} months",
-      "year_one": "Repeats every year",
+      "year_one": "Repeats every {{count}} year",
       "year_other": "Repeats every {{count}} years"
+    },
+    "everySingle": {
+      "day": "Every day",
+      "week": "Every week",
+      "month": "Every month",
+      "year": "Every year"
+    },
+    "repeatsSingle": {
+      "day": "Repeats every day",
+      "week": "Repeats every week",
+      "month": "Repeats every month",
+      "year": "Repeats every year"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "You can add {{count}} more.",
     "tag": "Free version · {{used}} of {{limit}} used",
     "title": "All your documents, no limits",
-    "intro": "Free for up to {{limit}} documents and cards. To add as many as you like, unlock it with a single payment.",
+    "intro_one": "Free for up to {{count}} document or card. To add as many as you like, unlock it with a single payment.",
+    "intro_other": "Free for up to {{count}} documents and cards. To add as many as you like, unlock it with a single payment.",
     "benefits": {
       "unlimited": {
         "title": "Unlimited documents",
@@ -1168,7 +1191,8 @@
       "failed": "Couldn’t complete"
     },
     "meta": {
-      "pdfs": "{{number}} PDFs",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDFs",
       "singlePdf": "Single PDF",
       "failed": "The file couldn’t be prepared",
       "preparing": "Preparing…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Saved to Files",
       "sendFailed": "Couldn’t send"
     },
-    "readyMany": "{{number}} PDFs ready",
+    "readyMany_one": "{{count}} PDF ready",
+    "readyMany_other": "{{count}} PDFs ready",
     "choices": {
       "email": "Email: all the PDFs in one message",
       "save": "Save to Files: all in the same folder",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "The {{count}} documents will be deleted with their photos and PDFs. This can’t be undone.",
       "emptyConfirm": "Empty"
     },
-    "intro": "Deleted documents stay here for {{days}} days, then they are erased with their photos and PDFs.",
+    "intro_one": "Deleted documents stay here for {{count}} day, then they are erased with their photos and PDFs.",
+    "intro_other": "Deleted documents stay here for {{count}} days, then they are erased with their photos and PDFs.",
     "empty": "The Trash is empty",
     "deletedSoon": "Will be deleted soon",
-    "deletedIn": "Will be deleted in {{days}} days",
+    "deletedIn_one": "Will be deleted in {{count}} day",
+    "deletedIn_other": "Will be deleted in {{count}} days",
     "restoreLabel": "Restore {{title}}",
     "deleteForeverLabel": "Delete {{title}} permanently",
     "deleteForever": "Delete permanently",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "The full terms of use will be published with the App Store version. In short:",
-    "free": "Sottomano is free for up to {{limit}} documents and cards",
+    "free_one": "Sottomano is free for up to {{count}} document or card",
+    "free_other": "Sottomano is free for up to {{count}} documents and cards",
     "oneTime": "Unlocking is a one-time purchase, with no subscription",
     "yours": "Your documents stay on your phone and belong to you",
     "backup": "Make a backup so you don’t lose them if you change phone"
   },
   "limit": {
     "later": "Later",
-    "title": "You’ve used your {{limit}} free spaces",
+    "title_one": "You’ve used your {{count}} free space",
+    "title_other": "You’ve used your {{count}} free spaces",
     "text": "Everything you’ve saved stays here and works as always. To add more documents and cards, unlock Sottomano.",
     "stillWorks": {
       "view": "View your documents",
@@ -1510,7 +1539,8 @@
     "unlock": "Unlock without limits for {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} of {{limit}} free spaces used",
+    "title_one": "{{used}} of {{count}} free space used",
+    "title_other": "{{used}} of {{count}} free spaces used",
     "accessibility": "{{title}}. Unlock",
     "unlock": "Unlock"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Unlock without limits for {{price}}",
     "unlock": "Unlock"
   },
-  "freeLimit": {
-    "unlockPrice": "€0.99"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

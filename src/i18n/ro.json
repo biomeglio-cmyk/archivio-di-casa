@@ -38,19 +38,37 @@
     "today": "azi",
     "tomorrow": "mâine",
     "yesterday": "ieri",
-    "inSpan": "peste {{span}}",
-    "spanAgo": "acum {{span}}",
     "expiredYesterday": "expirat ieri",
-    "expiredFor": "expirat acum {{span}}",
-    "days_one": "{{count}} zi",
-    "days_few": "{{count}} zile",
-    "days_other": "{{count}} de zile",
-    "months_one": "{{count}} lună",
-    "months_few": "{{count}} luni",
-    "months_other": "{{count}} de luni",
     "years_one": "{{count}} an",
     "years_few": "{{count}} ani",
-    "years_other": "{{count}} de ani"
+    "years_other": "{{count}} de ani",
+    "inDays_one": "peste {{count}} zi",
+    "inDays_few": "peste {{count}} zile",
+    "inDays_other": "peste {{count}} de zile",
+    "inMonths_one": "peste {{count}} lună",
+    "inMonths_few": "peste {{count}} luni",
+    "inMonths_other": "peste {{count}} de luni",
+    "inYears_one": "peste {{count}} an",
+    "inYears_few": "peste {{count}} ani",
+    "inYears_other": "peste {{count}} de ani",
+    "daysAgo_one": "acum {{count}} zi",
+    "daysAgo_few": "acum {{count}} zile",
+    "daysAgo_other": "acum {{count}} de zile",
+    "monthsAgo_one": "acum {{count}} lună",
+    "monthsAgo_few": "acum {{count}} luni",
+    "monthsAgo_other": "acum {{count}} de luni",
+    "yearsAgo_one": "acum {{count}} an",
+    "yearsAgo_few": "acum {{count}} ani",
+    "yearsAgo_other": "acum {{count}} de ani",
+    "expiredDaysAgo_one": "expirat acum {{count}} zi",
+    "expiredDaysAgo_few": "expirat acum {{count}} zile",
+    "expiredDaysAgo_other": "expirat acum {{count}} de zile",
+    "expiredMonthsAgo_one": "expirat acum {{count}} lună",
+    "expiredMonthsAgo_few": "expirat acum {{count}} luni",
+    "expiredMonthsAgo_other": "expirat acum {{count}} de luni",
+    "expiredYearsAgo_one": "expirat acum {{count}} an",
+    "expiredYearsAgo_few": "expirat acum {{count}} ani",
+    "expiredYearsAgo_other": "expirat acum {{count}} de ani"
   },
   "categories": {
     "builtin": {
@@ -441,7 +459,6 @@
     "whenToRemind": "Când să-ți amintesc",
     "repeats": "Se repetă",
     "never": "Niciodată",
-    "everySpan": "La fiecare {{span}}",
     "every": "La fiecare",
     "notesSection": "Note",
     "notesPlaceholder": "De exemplu: plătit prin debit direct, cere rambursarea…",
@@ -602,6 +619,18 @@
       "year_one": "Se repetă în fiecare an",
       "year_few": "Se repetă la fiecare {{count}} ani",
       "year_other": "Se repetă la fiecare {{count}} de ani"
+    },
+    "everySingle": {
+      "day": "În fiecare zi",
+      "week": "În fiecare săptămână",
+      "month": "În fiecare lună",
+      "year": "În fiecare an"
+    },
+    "repeatsSingle": {
+      "day": "Se repetă în fiecare zi",
+      "week": "Se repetă în fiecare săptămână",
+      "month": "Se repetă în fiecare lună",
+      "year": "Se repetă în fiecare an"
     }
   },
   "deadlineUtils": {
@@ -1124,7 +1153,9 @@
     "remaining_other": "Mai poți adăuga {{count}}.",
     "tag": "Versiune gratuită · {{used}} din {{limit}} folosite",
     "title": "Toate documentele tale, fără limite",
-    "intro": "Gratuit pentru până la {{limit}} documente și carduri. Ca să adaugi câte vrei, deblochează aplicația cu o singură plată.",
+    "intro_one": "Gratuit pentru până la {{count}} document sau card. Ca să adaugi câte vrei, deblochează aplicația cu o singură plată.",
+    "intro_few": "Gratuit pentru până la {{count}} documente și carduri. Ca să adaugi câte vrei, deblochează aplicația cu o singură plată.",
+    "intro_other": "Gratuit pentru până la {{count}} de documente și carduri. Ca să adaugi câte vrei, deblochează aplicația cu o singură plată.",
     "benefits": {
       "unlimited": {
         "title": "Documente nelimitate",
@@ -1216,7 +1247,9 @@
       "failed": "Nu s-a putut finaliza"
     },
     "meta": {
-      "pdfs": "{{number}} PDF-uri",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_few": "{{count}} PDF-uri",
+      "pdfs_other": "{{count}} de PDF-uri",
       "singlePdf": "Un singur PDF",
       "failed": "Fișierul nu a putut fi pregătit",
       "preparing": "Se pregătește…"
@@ -1271,7 +1304,9 @@
       "savedToFiles": "Salvat în Fișiere",
       "sendFailed": "Nu s-a putut trimite"
     },
-    "readyMany": "{{number}} PDF-uri gata",
+    "readyMany_one": "{{count}} PDF gata",
+    "readyMany_few": "{{count}} PDF-uri gata",
+    "readyMany_other": "{{count}} de PDF-uri gata",
     "choices": {
       "email": "Email: toate PDF-urile într-un singur mesaj",
       "save": "Salvează în Fișiere: toate în același dosar",
@@ -1304,10 +1339,14 @@
       "emptyMessage_other": "Cele {{count}} de documente vor fi șterse împreună cu pozele și PDF-urile lor. Acțiunea nu poate fi anulată.",
       "emptyConfirm": "Golește"
     },
-    "intro": "Documentele șterse rămân aici {{days}} de zile, apoi sunt eliminate împreună cu pozele și PDF-urile lor.",
+    "intro_one": "Documentele șterse rămân aici {{count}} zi, apoi sunt eliminate împreună cu pozele și PDF-urile lor.",
+    "intro_few": "Documentele șterse rămân aici {{count}} zile, apoi sunt eliminate împreună cu pozele și PDF-urile lor.",
+    "intro_other": "Documentele șterse rămân aici {{count}} de zile, apoi sunt eliminate împreună cu pozele și PDF-urile lor.",
     "empty": "Coșul este gol",
     "deletedSoon": "Va fi șters în curând",
-    "deletedIn": "Zile până la ștergere: {{days}}",
+    "deletedIn_one": "Va fi șters peste {{count}} zi",
+    "deletedIn_few": "Va fi șters peste {{count}} zile",
+    "deletedIn_other": "Va fi șters peste {{count}} de zile",
     "restoreLabel": "Restaurează {{title}}",
     "deleteForeverLabel": "Șterge definitiv {{title}}",
     "deleteForever": "Șterge definitiv",
@@ -1549,14 +1588,18 @@
   },
   "terms": {
     "intro": "Condițiile complete de utilizare vor fi publicate odată cu versiunea din App Store. Pe scurt:",
-    "free": "Sottomano este gratuit pentru până la {{limit}} documente și carduri",
+    "free_one": "Sottomano este gratuit pentru până la {{count}} document sau card",
+    "free_few": "Sottomano este gratuit pentru până la {{count}} documente și carduri",
+    "free_other": "Sottomano este gratuit pentru până la {{count}} de documente și carduri",
     "oneTime": "Deblocarea este o achiziție unică, fără abonament",
     "yours": "Documentele tale rămân pe telefon și îți aparțin",
     "backup": "Fă un backup ca să nu le pierzi dacă schimbi telefonul"
   },
   "limit": {
     "later": "Mai târziu",
-    "title": "Ai folosit cele {{limit}} locuri gratuite",
+    "title_one": "Ai folosit singurul loc gratuit",
+    "title_few": "Ai folosit cele {{count}} locuri gratuite",
+    "title_other": "Ai folosit cele {{count}} de locuri gratuite",
     "text": "Tot ce ai salvat rămâne aici și funcționează ca întotdeauna. Ca să adaugi alte documente și carduri, deblochează Sottomano.",
     "stillWorks": {
       "view": "Vezi documentele",
@@ -1568,7 +1611,9 @@
     "unlock": "Deblochează fără limite pentru {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} din {{limit}} locuri gratuite folosite",
+    "title_one": "{{used}} din {{count}} loc gratuit folosit",
+    "title_few": "{{used}} din {{count}} locuri gratuite folosite",
+    "title_other": "{{used}} din {{count}} de locuri gratuite folosite",
     "accessibility": "{{title}}. Deblochează",
     "unlock": "Deblochează"
   },
@@ -1579,9 +1624,7 @@
     "accessibility": "{{title}}. Deblochează fără limite pentru {{price}}",
     "unlock": "Deblochează"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

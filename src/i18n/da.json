@@ -35,16 +35,27 @@
     "today": "i dag",
     "tomorrow": "i morgen",
     "yesterday": "i går",
-    "inSpan": "om {{span}}",
-    "spanAgo": "for {{span}} siden",
     "expiredYesterday": "udløb i går",
-    "expiredFor": "udløb for {{span}} siden",
-    "days_one": "{{count}} dag",
-    "days_other": "{{count}} dage",
-    "months_one": "{{count}} måned",
-    "months_other": "{{count}} måneder",
     "years_one": "{{count}} år",
-    "years_other": "{{count}} år"
+    "years_other": "{{count}} år",
+    "inDays_one": "om {{count}} dag",
+    "inDays_other": "om {{count}} dage",
+    "inMonths_one": "om {{count}} måned",
+    "inMonths_other": "om {{count}} måneder",
+    "inYears_one": "om {{count}} år",
+    "inYears_other": "om {{count}} år",
+    "daysAgo_one": "for {{count}} dag siden",
+    "daysAgo_other": "for {{count}} dage siden",
+    "monthsAgo_one": "for {{count}} måned siden",
+    "monthsAgo_other": "for {{count}} måneder siden",
+    "yearsAgo_one": "for {{count}} år siden",
+    "yearsAgo_other": "for {{count}} år siden",
+    "expiredDaysAgo_one": "udløb for {{count}} dag siden",
+    "expiredDaysAgo_other": "udløb for {{count}} dage siden",
+    "expiredMonthsAgo_one": "udløb for {{count}} måned siden",
+    "expiredMonthsAgo_other": "udløb for {{count}} måneder siden",
+    "expiredYearsAgo_one": "udløb for {{count}} år siden",
+    "expiredYearsAgo_other": "udløb for {{count}} år siden"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Hvornår du skal påmindes",
     "repeats": "Gentag",
     "never": "Aldrig",
-    "everySpan": "Hver {{span}}",
     "every": "Hver",
     "notesSection": "Noter",
     "notesPlaceholder": "For eksempel: betalt via Betalingsservice, bed om refusion …",
@@ -566,6 +576,18 @@
       "month_other": "Gentages hver {{count}}. måned",
       "year_one": "Gentages hvert år",
       "year_other": "Gentages hvert {{count}}. år"
+    },
+    "everySingle": {
+      "day": "Hver dag",
+      "week": "Hver uge",
+      "month": "Hver måned",
+      "year": "Hvert år"
+    },
+    "repeatsSingle": {
+      "day": "Gentages hver dag",
+      "week": "Gentages hver uge",
+      "month": "Gentages hver måned",
+      "year": "Gentages hvert år"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Du kan tilføje {{count}} mere.",
     "tag": "Gratisversion · {{used}} af {{limit}} brugt",
     "title": "Alle dine dokumenter, uden grænser",
-    "intro": "Gratis til op til {{limit}} dokumenter og kort. Lås op med én betaling for at tilføje så mange, du vil.",
+    "intro_one": "Gratis til op til {{count}} dokument eller kort. Lås op med én betaling for at tilføje så mange, du vil.",
+    "intro_other": "Gratis til op til {{count}} dokumenter og kort. Lås op med én betaling for at tilføje så mange, du vil.",
     "benefits": {
       "unlimited": {
         "title": "Ubegrænset antal dokumenter",
@@ -1168,7 +1191,8 @@
       "failed": "Kunne ikke fuldføres"
     },
     "meta": {
-      "pdfs": "{{number}} PDF’er",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF’er",
       "singlePdf": "Én PDF",
       "failed": "Filen kunne ikke klargøres",
       "preparing": "Klargør …"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Gemt i Arkiver",
       "sendFailed": "Kunne ikke sende"
     },
-    "readyMany": "{{number}} PDF’er klar",
+    "readyMany_one": "{{count}} PDF klar",
+    "readyMany_other": "{{count}} PDF’er klar",
     "choices": {
       "email": "E-mail: alle PDF’er i én besked",
       "save": "Gem i Arkiver: alle i samme mappe",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "De {{count}} dokumenter slettes med deres fotos og PDF’er. Det kan ikke fortrydes.",
       "emptyConfirm": "Tøm"
     },
-    "intro": "Slettede dokumenter ligger her i {{days}} dage og slettes derefter med deres fotos og PDF’er.",
+    "intro_one": "Slettede dokumenter ligger her i {{count}} dag og slettes derefter med deres fotos og PDF’er.",
+    "intro_other": "Slettede dokumenter ligger her i {{count}} dage og slettes derefter med deres fotos og PDF’er.",
     "empty": "Papirkurven er tom",
     "deletedSoon": "Slettes snart",
-    "deletedIn": "Slettes om {{days}} dage",
+    "deletedIn_one": "Slettes om {{count}} dag",
+    "deletedIn_other": "Slettes om {{count}} dage",
     "restoreLabel": "Gendan {{title}}",
     "deleteForeverLabel": "Slet {{title}} permanent",
     "deleteForever": "Slet permanent",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "De fulde vilkår for brug offentliggøres med App Store-versionen. Kort fortalt:",
-    "free": "Sottomano er gratis til op til {{limit}} dokumenter og kort",
+    "free_one": "Sottomano er gratis til op til {{count}} dokument eller kort",
+    "free_other": "Sottomano er gratis til op til {{count}} dokumenter og kort",
     "oneTime": "Oplåsning er et engangskøb uden abonnement",
     "yours": "Dine dokumenter bliver på din telefon og tilhører dig",
     "backup": "Lav en sikkerhedskopi, så du ikke mister dem, når du skifter telefon"
   },
   "limit": {
     "later": "Senere",
-    "title": "Du har brugt dine {{limit}} gratis pladser",
+    "title_one": "Du har brugt din eneste gratis plads",
+    "title_other": "Du har brugt dine {{count}} gratis pladser",
     "text": "Alt, hvad du har gemt, bliver her og virker som altid. Lås Sottomano op for at tilføje flere dokumenter og kort.",
     "stillWorks": {
       "view": "Se dine dokumenter",
@@ -1510,7 +1539,8 @@
     "unlock": "Lås op uden grænser for {{price}}"
   },
   "limitCard": {
-    "title": "{{used}} af {{limit}} gratis pladser brugt",
+    "title_one": "{{used}} af {{count}} gratis plads brugt",
+    "title_other": "{{used}} af {{count}} gratis pladser brugt",
     "accessibility": "{{title}}. Lås op",
     "unlock": "Lås op"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Lås op uden grænser for {{price}}",
     "unlock": "Lås op"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

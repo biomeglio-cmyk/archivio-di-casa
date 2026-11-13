@@ -106,6 +106,13 @@ function compareLocale(lang, map, reference) {
     const mine = own.plurals.get(base);
     if (!mine) {
       if (!own.plain.has(base)) errors.push(`${file}: missing plural key "${base}_…"`);
+      else {
+        // a plain text where English has plural forms: allowed (some languages don't inflect),
+        // but only with the same variables
+        const refAll = variables([...forms.values()].join(' ')).split(',').filter((v, i, all) => v && all.indexOf(v) === i);
+        const plainVars = variables(own.plain.get(base)).split(',').filter(Boolean);
+        if (plainVars.some((v) => !refAll.includes(v))) errors.push(`${file}: "${base}" uses {{variables}} the code doesn't pass`);
+      }
       continue;
     }
     const refVars = variables([...forms.values()].join(' '));

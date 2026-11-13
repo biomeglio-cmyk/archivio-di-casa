@@ -34,7 +34,7 @@ import { chooseAction } from '@/utils/action-sheet';
 import { categoryTint } from '@/utils/colors';
 import { parseISODate, toISODate } from '@/utils/dates';
 import { centsToInput, parseEuro } from '@/utils/money';
-import { REPEAT_UNITS, unitCount, unitName, type RepeatUnit } from '@/utils/recurrence';
+import { describeEvery, REPEAT_UNITS, unitCount, unitName, type RepeatUnit } from '@/utils/recurrence';
 import { PIN_TINT } from '@/constants/brand';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
@@ -329,7 +329,7 @@ export function DocumentForm({
                         value={
                           repeatUnit === 'never'
                             ? t('documentForm.never')
-                            : t('documentForm.everySpan', { span: unitCount(repeatUnit, repeatEvery) })
+                            : describeEvery({ every: repeatEvery, unit: repeatUnit })
                         }
                         accessibilityLabel={t('documentForm.repeats')}
                         onPress={() =>

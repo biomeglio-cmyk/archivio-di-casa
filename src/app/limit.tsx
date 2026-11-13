@@ -39,7 +39,7 @@ export default function LimitPanel() {
           <LogoMark size={60} radius={14} />
         </View>
         <Text style={styles.title} accessibilityRole="header">
-          {t('limit.title', { limit: FREE_LIMIT })}
+          {t('limit.title', { count: FREE_LIMIT })}
         </Text>
         <Text style={styles.text}>{t('limit.text')}</Text>
         <View style={styles.list}>

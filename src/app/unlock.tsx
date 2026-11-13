@@ -66,7 +66,7 @@ export default function UnlockScreen() {
         <NoBreakText style={styles.title} accessibilityRole="header">
           {t('unlock.title')}
         </NoBreakText>
-        <Text style={styles.intro}>{t('unlock.intro', { limit })}</Text>
+        <Text style={styles.intro}>{t('unlock.intro', { count: limit })}</Text>
       </View>
 
       <WhiteCard style={styles.benefits}>

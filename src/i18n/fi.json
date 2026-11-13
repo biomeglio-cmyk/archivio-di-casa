@@ -35,16 +35,27 @@
     "today": "tänään",
     "tomorrow": "huomenna",
     "yesterday": "eilen",
-    "inSpan": "{{span}} päästä",
-    "spanAgo": "{{span}} sitten",
     "expiredYesterday": "vanheni eilen",
-    "expiredFor": "vanheni {{span}} sitten",
-    "days_one": "{{count}} päivä",
-    "days_other": "{{count}} päivää",
-    "months_one": "{{count}} kuukausi",
-    "months_other": "{{count}} kuukautta",
     "years_one": "{{count}} vuosi",
-    "years_other": "{{count}} vuotta"
+    "years_other": "{{count}} vuotta",
+    "inDays_one": "{{count}} päivän päästä",
+    "inDays_other": "{{count}} päivän päästä",
+    "inMonths_one": "{{count}} kuukauden päästä",
+    "inMonths_other": "{{count}} kuukauden päästä",
+    "inYears_one": "{{count}} vuoden päästä",
+    "inYears_other": "{{count}} vuoden päästä",
+    "daysAgo_one": "{{count}} päivä sitten",
+    "daysAgo_other": "{{count}} päivää sitten",
+    "monthsAgo_one": "{{count}} kuukausi sitten",
+    "monthsAgo_other": "{{count}} kuukautta sitten",
+    "yearsAgo_one": "{{count}} vuosi sitten",
+    "yearsAgo_other": "{{count}} vuotta sitten",
+    "expiredDaysAgo_one": "vanheni {{count}} päivä sitten",
+    "expiredDaysAgo_other": "vanheni {{count}} päivää sitten",
+    "expiredMonthsAgo_one": "vanheni {{count}} kuukausi sitten",
+    "expiredMonthsAgo_other": "vanheni {{count}} kuukautta sitten",
+    "expiredYearsAgo_one": "vanheni {{count}} vuosi sitten",
+    "expiredYearsAgo_other": "vanheni {{count}} vuotta sitten"
   },
   "categories": {
     "builtin": {
@@ -425,7 +436,6 @@
     "whenToRemind": "Milloin muistutetaan",
     "repeats": "Toistuu",
     "never": "Ei koskaan",
-    "everySpan": "Toistoväli: {{span}}",
     "every": "Toistoväli",
     "notesSection": "Muistiinpanot",
     "notesPlaceholder": "Esimerkiksi: maksettu suoramaksulla, pyydä hyvitys…",
@@ -566,6 +576,18 @@
       "month_other": "Toistuu {{count}} kuukauden välein",
       "year_one": "Toistuu joka vuosi",
       "year_other": "Toistuu {{count}} vuoden välein"
+    },
+    "everySingle": {
+      "day": "Joka päivä",
+      "week": "Joka viikko",
+      "month": "Joka kuukausi",
+      "year": "Joka vuosi"
+    },
+    "repeatsSingle": {
+      "day": "Toistuu joka päivä",
+      "week": "Toistuu joka viikko",
+      "month": "Toistuu joka kuukausi",
+      "year": "Toistuu joka vuosi"
     }
   },
   "deadlineUtils": {
@@ -1076,7 +1098,8 @@
     "remaining_other": "Voit lisätä vielä {{count}}.",
     "tag": "Ilmaisversio · {{used}}/{{limit}} käytetty",
     "title": "Kaikki asiakirjasi ilman rajoja",
-    "intro": "Ilmainen enintään {{limit}} asiakirjalle ja kortille. Lisää niin monta kuin haluat avaamalla rajoitukset yhdellä maksulla.",
+    "intro_one": "Ilmainen enintään {{count}} asiakirjalle tai kortille. Lisää niin monta kuin haluat avaamalla rajoitukset yhdellä maksulla.",
+    "intro_other": "Ilmainen enintään {{count}} asiakirjalle ja kortille. Lisää niin monta kuin haluat avaamalla rajoitukset yhdellä maksulla.",
     "benefits": {
       "unlimited": {
         "title": "Rajattomasti asiakirjoja",
@@ -1168,7 +1191,8 @@
       "failed": "Toimintoa ei voitu suorittaa"
     },
     "meta": {
-      "pdfs": "{{number}} PDF:ää",
+      "pdfs_one": "{{count}} PDF",
+      "pdfs_other": "{{count}} PDF:ää",
       "singlePdf": "Yksi PDF",
       "failed": "Tiedostoa ei voitu valmistella",
       "preparing": "Valmistellaan…"
@@ -1221,7 +1245,8 @@
       "savedToFiles": "Tallennettu Tiedostoihin",
       "sendFailed": "Lähetys epäonnistui"
     },
-    "readyMany": "{{number}} PDF:ää valmiina",
+    "readyMany_one": "{{count}} PDF valmiina",
+    "readyMany_other": "{{count}} PDF:ää valmiina",
     "choices": {
       "email": "Sähköposti: kaikki PDF:t yhdessä viestissä",
       "save": "Tallenna Tiedostoihin: kaikki samaan kansioon",
@@ -1252,10 +1277,12 @@
       "emptyMessage_other": "{{count}} asiakirjaa poistetaan kuvineen ja PDF:ineen. Tätä ei voi kumota.",
       "emptyConfirm": "Tyhjennä"
     },
-    "intro": "Poistetut asiakirjat säilyvät täällä {{days}} päivää, minkä jälkeen ne poistetaan kuvineen ja PDF:ineen.",
+    "intro_one": "Poistetut asiakirjat säilyvät täällä {{count}} päivän, minkä jälkeen ne poistetaan kuvineen ja PDF:ineen.",
+    "intro_other": "Poistetut asiakirjat säilyvät täällä {{count}} päivää, minkä jälkeen ne poistetaan kuvineen ja PDF:ineen.",
     "empty": "Roskakori on tyhjä",
     "deletedSoon": "Poistetaan pian",
-    "deletedIn": "Poistetaan {{days}} päivän päästä",
+    "deletedIn_one": "Poistetaan {{count}} päivän päästä",
+    "deletedIn_other": "Poistetaan {{count}} päivän päästä",
     "restoreLabel": "Palauta {{title}}",
     "deleteForeverLabel": "Poista {{title}} pysyvästi",
     "deleteForever": "Poista pysyvästi",
@@ -1491,14 +1518,16 @@
   },
   "terms": {
     "intro": "Täydelliset käyttöehdot julkaistaan App Store ‑version yhteydessä. Lyhyesti:",
-    "free": "Sottomano on ilmainen enintään {{limit}} asiakirjalle ja kortille",
+    "free_one": "Sottomano on ilmainen enintään {{count}} asiakirjalle tai kortille",
+    "free_other": "Sottomano on ilmainen enintään {{count}} asiakirjalle ja kortille",
     "oneTime": "Avaaminen on kertaostos ilman tilausta",
     "yours": "Asiakirjasi pysyvät puhelimessasi ja kuuluvat sinulle",
     "backup": "Tee varmuuskopio, jotta et menetä niitä puhelinta vaihtaessasi"
   },
   "limit": {
     "later": "Myöhemmin",
-    "title": "Olet käyttänyt {{limit}} ilmaista paikkaasi",
+    "title_one": "Olet käyttänyt ainoan ilmaisen paikkasi",
+    "title_other": "Olet käyttänyt {{count}} ilmaista paikkaasi",
     "text": "Kaikki tallentamasi pysyy täällä ja toimii kuten ennenkin. Lisää asiakirjoja ja kortteja avaamalla Sottomanon rajoitukset.",
     "stillWorks": {
       "view": "Asiakirjojen katselu",
@@ -1510,7 +1539,8 @@
     "unlock": "Poista rajat hintaan {{price}}"
   },
   "limitCard": {
-    "title": "{{used}}/{{limit}} ilmaista paikkaa käytetty",
+    "title_one": "{{used}}/{{count}} ilmainen paikka käytetty",
+    "title_other": "{{used}}/{{count}} ilmaista paikkaa käytetty",
     "accessibility": "{{title}}. Avaa",
     "unlock": "Avaa"
   },
@@ -1521,9 +1551,7 @@
     "accessibility": "{{title}}. Poista rajat hintaan {{price}}",
     "unlock": "Avaa"
   },
-  "freeLimit": {
-    "unlockPrice": "0,99 €"
-  },
+  "freeLimit": {},
   "onboarding": {
     "pages": {
       "welcome": {

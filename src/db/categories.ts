@@ -3,7 +3,17 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 
 import type { Category, CategoryColors, CategoryRecord, CategoryWithCount } from '@/db/types';
 import { BUILTIN_DEFAULTS } from '@/db/builtin-categories';
+import { builtinCategoryName } from '@/i18n/category-names';
 import { builtinColorsFor } from '@/settings/palette';
+
+// The name to save from the category form: the translated default name typed back (or left
+// untouched) keeps the built-in default, so the category goes on following the language
+export function nameToStore(builtinKey: string | null, typed: string): string {
+  const trimmed = typed.trim();
+  if (builtinKey === null) return trimmed;
+  const defaultName = BUILTIN_DEFAULTS.find((d) => d.key === builtinKey)?.name;
+  return defaultName !== undefined && trimmed === builtinCategoryName(builtinKey) ? defaultName : trimmed;
+}
 
 // Converts a SQL row (snake_case) into the app shape (camelCase).
 // `prefix` lets document queries reuse it for JOINed columns named like c_name, c_symbol…
@@ -14,9 +24,14 @@ export function mapCategory(row: Record<string, unknown>, prefix = ''): Category
   const isBuiltin = r('is_builtin') === 1;
   const builtinKey = isBuiltin ? ((r('builtin_key') as string | null) ?? null) : null;
   const followsPalette = builtinKey !== null && r('custom_colors') !== 1;
+  // A built-in category with its default (Italian) name shows it in the active language;
+  // a name the user typed stays as it is
+  const storedName = r('name') as string;
+  const defaultName = builtinKey !== null ? BUILTIN_DEFAULTS.find((d) => d.key === builtinKey)?.name : undefined;
+  const name = (storedName === defaultName && builtinKey !== null && builtinCategoryName(builtinKey)) || storedName;
   return {
     id: r('id') as number,
-    name: r('name') as string,
+    name,
     symbol: r('symbol') as SFSymbol,
     examples: (r('examples') as string | null) ?? null,
     colors: (followsPalette ? builtinColorsFor(builtinKey) : null) ?? {

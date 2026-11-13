@@ -32,7 +32,7 @@ import { useDbQuery } from '@/hooks/use-db-query';
 import { usePreferences } from '@/settings/preferences';
 import { chooseAction } from '@/utils/action-sheet';
 import { categoryTint } from '@/utils/colors';
-import { MONTHS, parseISODate, toISODate } from '@/utils/dates';
+import { formatDayMonth, parseISODate, toISODate } from '@/utils/dates';
 import { centsToInput, parseEuro } from '@/utils/money';
 import { REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
 import { PIN_TINT } from '@/constants/brand';
@@ -209,7 +209,7 @@ export function DocumentForm({
   }
 
   const dueText = hasExpiry
-    ? `Il ${expiryDate.getDate()} ${MONTHS[expiryDate.getMonth()]} ${expiryDate.getFullYear()}`
+    ? `Il ${formatDayMonth(expiryDate)} ${expiryDate.getFullYear()}`
     : 'Nessuna scadenza';
 
   return (

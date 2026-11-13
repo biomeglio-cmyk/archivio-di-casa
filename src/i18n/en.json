@@ -1,0 +1,73 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "ok": "OK",
+    "done": "Done",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "confirm": "Confirm",
+    "back": "Back",
+    "next": "Next",
+    "share": "Share",
+    "send": "Send",
+    "search": "Search",
+    "add": "Add",
+    "remove": "Remove",
+    "retry": "Try again",
+    "continue": "Continue",
+    "yes": "Yes",
+    "no": "No",
+    "restore": "Restore",
+    "settings": "Settings",
+    "more": "More",
+    "none": "None",
+    "documents_one": "{{count}} document",
+    "documents_other": "{{count}} documents",
+    "pages_one": "{{count}} page",
+    "pages_other": "{{count}} pages",
+    "photos_one": "{{count}} photo",
+    "photos_other": "{{count}} photos",
+    "wholeFamily": "Whole family"
+  },
+  "dates": {
+    "today": "today",
+    "tomorrow": "tomorrow",
+    "yesterday": "yesterday",
+    "inSpan": "in {{span}}",
+    "spanAgo": "{{span}} ago",
+    "expiredYesterday": "expired yesterday",
+    "expiredFor": "expired {{span}} ago",
+    "days_one": "{{count}} day",
+    "days_other": "{{count}} days",
+    "months_one": "{{count}} month",
+    "months_other": "{{count}} months",
+    "years_one": "{{count}} year",
+    "years_other": "{{count}} years"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "ID documents",
+      "cards": "Cards",
+      "utilities": "Utilities",
+      "home": "Home",
+      "insurance": "Insurance",
+      "warranties": "Warranties & receipts",
+      "car": "Car",
+      "tax": "Tax receipts (730)",
+      "householdStaff": "Household staff",
+      "school": "School",
+      "pet": "Pets",
+      "password": "Passwords",
+      "other": "Other"
+    }
+  },
+  "language": {
+    "title": "Language",
+    "auto": "Automatic",
+    "autoSubtitle": "Follows the phone language",
+    "italian": "Italiano",
+    "english": "English"
+  }
+}

@@ -1,11 +1,10 @@
+import { decimalSeparator, formatMoney } from '@/i18n/format';
+
 // Amounts in euro, kept as integer cents (84,20 € = 8420) so sums are exact
 
-// "€ 84,20", "€ 1.250,00" (as in the design)
+// "€ 84,20", "€ 1.250,00" (as in the design) / "€84.20", "€1,250.00"
 export function formatEuro(cents: number): string {
-  const euros = Math.floor(cents / 100);
-  const rest = String(cents % 100).padStart(2, '0');
-  const grouped = String(euros).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
-  return `€ ${grouped},${rest}`;
+  return formatMoney(cents);
 }
 
 // What the user typed ("84,2", "84.20", "€ 1.250", "1250,5") → cents; null when empty or not a number
@@ -21,8 +20,8 @@ export function parseEuro(text: string): number | null {
   return Number.isFinite(cents) ? cents : null;
 }
 
-// For the "Importo" field: "84,20" (no symbol)
+// For the "Importo" field: "84,20" / "84.20" (no symbol)
 export function centsToInput(cents: number | null): string {
   if (cents === null) return '';
-  return `${Math.floor(cents / 100)},${String(cents % 100).padStart(2, '0')}`;
+  return `${Math.floor(cents / 100)}${decimalSeparator()}${String(cents % 100).padStart(2, '0')}`;
 }

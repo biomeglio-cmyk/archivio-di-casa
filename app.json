@@ -68,7 +68,8 @@
       "expo-secure-store",
       "expo-mail-composer",
       "expo-status-bar",
-      "expo-web-browser"
+      "expo-web-browser",
+      "expo-localization"
     ],
     "experiments": {
       "typedRoutes": true,

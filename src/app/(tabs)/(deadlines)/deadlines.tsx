@@ -18,7 +18,7 @@ import { FONTS } from '@/constants/typography';
 import { listDocumentsWithExpiry, saveDocumentDeadline, setPaymentStatus } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
-import { addDaysIso, formatShortDate, MONTHS, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
+import { addDaysIso, formatDayMonth, formatShortDate, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 import { groupDeadlines, upcomingSummary } from '@/utils/deadlines';
 import { formatEuro } from '@/utils/money';
 import { whenBelowLimit } from '@/settings/free-limit';
@@ -225,7 +225,7 @@ function DayDeadlines({ iso, items, onOpen }: { iso: string; items: Dated[]; onO
   const date = parseISODate(iso);
   return (
     <View style={styles.dayBox}>
-      <Text style={styles.dayTitle}>{`${date.getDate()} ${MONTHS[date.getMonth()]}`}</Text>
+      <Text style={styles.dayTitle}>{formatDayMonth(date)}</Text>
       {items.map((item) => (
         <Pressable
           key={item.id}

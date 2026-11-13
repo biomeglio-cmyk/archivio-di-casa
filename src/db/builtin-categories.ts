@@ -1,3 +1,4 @@
+// i18n-ignore-file: Italian data saved in the database (names are translated when shown)
 import type { SFSymbol } from 'expo-symbols';
 
 import type { CategoryColors } from '@/db/types';

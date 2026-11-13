@@ -1,4 +1,5 @@
-import { addDaysIso, MONTHS, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
+import { monthName } from '@/i18n/format';
+import { addDaysIso, capitalize, mondayOfIso, parseISODate, toISODate } from '@/utils/dates';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
@@ -17,12 +18,10 @@ export type DeadlineSection<T> = {
 
 type WithExpiry = { expiresAt: string | null };
 
-const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
-
 // "Dicembre" in the current year, "Gennaio 2027" otherwise
 export function monthSectionTitle(monthKey: string, now: Date = new Date()): string {
   const [year, month] = monthKey.split('-').map(Number);
-  const name = capitalize(MONTHS[month - 1]);
+  const name = capitalize(monthName(month - 1));
   return year === now.getFullYear() ? name : `${name} ${year}`;
 }
 

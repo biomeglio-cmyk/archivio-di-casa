@@ -1,6 +1,7 @@
 import { addDatabaseChangeListener, useSQLiteContext, type SQLiteDatabase } from 'expo-sqlite';
 import { useEffect, useState, type DependencyList } from 'react';
 
+import { useI18n } from '@/i18n';
 import { usePaletteId } from '@/settings/palette';
 
 type QueryState<T> = { data: T | undefined; error: Error | undefined };
@@ -17,6 +18,8 @@ export function useDbQuery<T>(query: (db: SQLiteDatabase) => Promise<T>, deps: D
   const db = useSQLiteContext();
   // A new palette in "Aspetto" changes the colors of the categories: reload like after a change
   const palette = usePaletteId();
+  // A new language changes the names of the built-in categories (and dates in the results)
+  const { language } = useI18n();
   const [state, setState] = useState<QueryState<T>>({ data: undefined, error: undefined });
 
   // Like Angular's ngOnInit + ngOnDestroy in one place:
@@ -42,7 +45,7 @@ export function useDbQuery<T>(query: (db: SQLiteDatabase) => Promise<T>, deps: D
     };
     // `query` is a new function on every render: the caller's `deps` decide when to re-run
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, palette, ...deps]);
+  }, [db, palette, language, ...deps]);
 
   return state;
 }

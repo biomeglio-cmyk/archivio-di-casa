@@ -1,5 +1,5 @@
 import type { DocumentListItem } from '@/db/types';
-import { formatMonthTitle, MONTHS, parseISODate } from '@/utils/dates';
+import { formatDayMonth, formatMonthTitle, parseISODate } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
 // The day a document belongs to in its folder (docs/design/Archivio.dc.html, grouped by month):
@@ -30,7 +30,7 @@ export function groupByMonth(documents: DocumentListItem[]): MonthGroup[] {
 // "14 novembre" (with the year only when it is not this one)
 export function dayAndMonth(iso: string, today: Date = new Date()): string {
   const date = parseISODate(iso);
-  const base = `${date.getDate()} ${MONTHS[date.getMonth()]}`;
+  const base = formatDayMonth(date);
   return date.getFullYear() === today.getFullYear() ? base : `${base} ${date.getFullYear()}`;
 }
 

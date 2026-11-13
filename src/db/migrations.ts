@@ -1,3 +1,4 @@
+// i18n-ignore-file: Italian data saved in the database (names are translated when shown)
 import type { SQLiteDatabase } from 'expo-sqlite';
 
 import { BUILTIN_CATEGORIES, V7_NEW_CATEGORIES, V7_RENAMES } from '@/db/builtin-categories';

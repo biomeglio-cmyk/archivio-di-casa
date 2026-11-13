@@ -1,0 +1,73 @@
+{
+  "common": {
+    "cancel": "Annulla",
+    "ok": "OK",
+    "done": "Fine",
+    "save": "Salva",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "close": "Chiudi",
+    "confirm": "Conferma",
+    "back": "Indietro",
+    "next": "Avanti",
+    "share": "Condividi",
+    "send": "Invia",
+    "search": "Cerca",
+    "add": "Aggiungi",
+    "remove": "Rimuovi",
+    "retry": "Riprova",
+    "continue": "Continua",
+    "yes": "Sì",
+    "no": "No",
+    "restore": "Ripristina",
+    "settings": "Impostazioni",
+    "more": "Altro",
+    "none": "Nessuno",
+    "documents_one": "{{count}} documento",
+    "documents_other": "{{count}} documenti",
+    "pages_one": "{{count}} pagina",
+    "pages_other": "{{count}} pagine",
+    "photos_one": "{{count}} foto",
+    "photos_other": "{{count}} foto",
+    "wholeFamily": "Tutta la famiglia"
+  },
+  "dates": {
+    "today": "oggi",
+    "tomorrow": "domani",
+    "yesterday": "ieri",
+    "inSpan": "tra {{span}}",
+    "spanAgo": "{{span}} fa",
+    "expiredYesterday": "scaduto ieri",
+    "expiredFor": "scaduto da {{span}}",
+    "days_one": "{{count}} giorno",
+    "days_other": "{{count}} giorni",
+    "months_one": "{{count}} mese",
+    "months_other": "{{count}} mesi",
+    "years_one": "{{count}} anno",
+    "years_other": "{{count}} anni"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Documenti",
+      "cards": "Tessere e card",
+      "utilities": "Utenze",
+      "home": "Casa",
+      "insurance": "Assicurazioni",
+      "warranties": "Garanzie e scontrini",
+      "car": "Auto",
+      "tax": "Spese 730",
+      "householdStaff": "Colf",
+      "school": "Scuola",
+      "pet": "Pet",
+      "password": "Password",
+      "other": "Altro"
+    }
+  },
+  "language": {
+    "title": "Lingua",
+    "auto": "Automatica",
+    "autoSubtitle": "Segue la lingua del telefono",
+    "italian": "Italiano",
+    "english": "English"
+  }
+}

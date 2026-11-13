@@ -1,3 +1,4 @@
+import '@/i18n'; // first: the language is ready before any screen
 import {
   Onest_400Regular,
   Onest_500Medium,

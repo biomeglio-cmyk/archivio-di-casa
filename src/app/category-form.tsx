@@ -22,6 +22,7 @@ import {
   getCategory,
   insertCategory,
   listHiddenBuiltinCategories,
+  nameToStore,
   restoreBuiltinCategory,
   updateCategory,
 } from '@/db/categories';
@@ -120,7 +121,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
     setSaving(true);
     try {
       if (category) {
-        await updateCategory(db, category.id, { name, symbol, colors: shown, followPalette, personId });
+        await updateCategory(db, category.id, { name: nameToStore(category.builtinKey, name), symbol, colors: shown, followPalette, personId });
       } else {
         await insertCategory(db, { name, symbol, colors, personId });
       }

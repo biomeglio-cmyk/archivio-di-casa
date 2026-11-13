@@ -5,7 +5,8 @@ import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
-import { formatDate, MONTHS_SHORT, parseISODate } from '@/utils/dates';
+import { monthName } from '@/i18n/format';
+import { formatDate, parseISODate } from '@/utils/dates';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
@@ -25,7 +26,7 @@ export function DateSquare({ iso, highlighted = false }: Props) {
         {date.getDate()}
       </Text>
       <Text style={[styles.month, { color }]} maxFontSizeMultiplier={1.2}>
-        {MONTHS_SHORT[date.getMonth()]}
+        {monthName(date.getMonth(), 'short')}
       </Text>
     </>
   );

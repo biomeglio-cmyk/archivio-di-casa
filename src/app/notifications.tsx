@@ -5,6 +5,7 @@ import { Pressable, ScrollView, StyleSheet, useWindowDimensions, View } from 're
 import Animated, { FadeIn } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { weekdayName } from '@/i18n/format';
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
@@ -13,7 +14,6 @@ import { isUnread, markAllRead, markRead, useNotificationFeed, type FeedItem } f
 import { categoryShadowRgb } from '@/utils/colors';
 import { useThemedStyles } from '@/hooks/use-theme';
 
-const WEEKDAYS = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
 const UNREAD_DOT = '#4A5CF0';
 const BELL_FROM_RIGHT = 100; // center of the bell in Home: margin 22 + logo 44 + gap 12 + half bell 22
 
@@ -90,7 +90,7 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
           const date = new Date(item.at);
           const when = withTime
             ? `${date.getHours()}:${String(date.getMinutes()).padStart(2, '0')}`
-            : WEEKDAYS[date.getDay()];
+            : weekdayName(date.getDay(), 'short');
           return (
             <Pressable
               key={item.id}

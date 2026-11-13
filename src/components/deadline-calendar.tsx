@@ -8,11 +8,10 @@ import { WhiteCard } from '@/components/white-card';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
-import { addDaysIso, formatMonthTitle, MONTHS, parseISODate, toISODate } from '@/utils/dates';
+import { weekdayLetters, weekdayNamesFromMonday } from '@/i18n/format';
+import { addDaysIso, formatDayMonth, formatMonthTitle, parseISODate, toISODate } from '@/utils/dates';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
-const WEEKDAYS = ['L', 'M', 'M', 'G', 'V', 'S', 'D'];
-const WEEKDAY_NAMES = ['lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato', 'domenica'];
 
 export type DayMarkers = Map<string, { color: string; count: number }>; // 'YYYY-MM-DD' → first dot
 
@@ -40,7 +39,7 @@ export function WeekCalendar({ weekStartIso, todayIso, selectedIso, markers, onS
         { name: 'decrement', label: 'Settimana precedente' },
       ]}
       onAccessibilityAction={(event) => (event.nativeEvent.actionName === 'increment' ? onNext() : onPrevious())}>
-      {WEEKDAYS.map((letter, index) => {
+      {weekdayLetters().map((letter, index) => {
         const iso = addDaysIso(weekStartIso, index);
         const today = iso === todayIso;
         const selected = iso === selectedIso && !today;
@@ -52,7 +51,7 @@ export function WeekCalendar({ weekStartIso, todayIso, selectedIso, markers, onS
             onPress={() => onSelect(iso)}
             accessibilityRole="button"
             accessibilityState={{ selected: iso === selectedIso }}
-            accessibilityLabel={dayLabel(iso, marker?.count ?? 0, WEEKDAY_NAMES[index])}
+            accessibilityLabel={dayLabel(iso, marker?.count ?? 0, weekdayNamesFromMonday()[index])}
             style={styles.weekDay}>
             <Text style={styles.weekLetter} maxFontSizeMultiplier={1.3}>
               {letter}
@@ -106,7 +105,7 @@ export function MonthCalendar({ year, month, todayIso, selectedIso, markers, onS
           <MonthArrow symbol="chevron.right" label="Mese successivo" onPress={onNext} />
         </View>
         <View style={styles.letters} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
-          {WEEKDAYS.map((letter, index) => (
+          {weekdayLetters().map((letter, index) => (
             <Text key={index} style={styles.letter} maxFontSizeMultiplier={1.3}>
               {letter}
             </Text>
@@ -157,7 +156,7 @@ export function MonthCalendar({ year, month, todayIso, selectedIso, markers, onS
 // "14 novembre, 2 scadenze"
 function dayLabel(iso: string, count: number, weekday?: string): string {
   const date = parseISODate(iso);
-  const base = `${weekday ? `${weekday} ` : ''}${date.getDate()} ${MONTHS[date.getMonth()]}`;
+  const base = `${weekday ? `${weekday} ` : ''}${formatDayMonth(date)}`;
   if (count === 0) return base;
   return `${base}, ${count === 1 ? '1 scadenza' : `${count} scadenze`}`;
 }

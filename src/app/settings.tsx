@@ -30,6 +30,9 @@ import { FREE_LIMIT_ENFORCED, setLimitPreview, useLimitPreview } from '@/setting
 import { chooseAction } from '@/utils/action-sheet';
 import { daysBefore } from '@/constants/deadline-options';
 import type { ThemeMode } from '@/settings/theme-mode';
+import type { LanguageSetting } from '@/settings/language';
+import { useI18n } from '@/i18n';
+import { useLanguageSetting } from '@/i18n/use-language';
 import { Segmented } from '@/components/segmented';
 import { useTheme, useThemeMode, useThemedStyles } from '@/hooks/use-theme';
 
@@ -162,6 +165,7 @@ export default function SettingsScreen() {
 
       <Section title="Aspetto">
         <ThemeRow />
+        <LanguageRow />
         <SettingsRow
           symbol="paintpalette"
           tint={TINTS(theme).grey}
@@ -353,6 +357,35 @@ function ThemeRow() {
         symbols={[undefined, 'sun.max', 'moon']}
         selectedIndex={THEME_MODES.indexOf(mode)}
         onChange={(index) => setMode(THEME_MODES[index])}
+      />
+    </View>
+  );
+}
+
+// "Lingua": globe in a lilac square; Automatica (the iPhone language when the app has it,
+// otherwise English) / Italiano / English. Switching is live, like the theme.
+const LANGUAGE_SETTINGS: LanguageSetting[] = ['auto', 'it', 'en'];
+
+function LanguageRow() {
+  const theme = useTheme();
+  const styles = useThemedStyles(makeStyles);
+  const { t } = useI18n();
+  const { setting, setSetting } = useLanguageSetting();
+  return (
+    <View style={styles.themeRow}>
+      <View style={styles.themeHead}>
+        <View style={[styles.icon, { backgroundColor: theme.lilac }]}>
+          <SymbolView name="globe" tintColor={theme.indigo} size={19} />
+        </View>
+        <View style={styles.rowTexts}>
+          <Text style={styles.rowLabel}>{t('language.title')}</Text>
+          {setting === 'auto' && <Text style={styles.rowSubtitle}>{t('language.autoSubtitle')}</Text>}
+        </View>
+      </View>
+      <Segmented
+        values={[t('language.auto'), t('language.italian'), t('language.english')]}
+        selectedIndex={LANGUAGE_SETTINGS.indexOf(setting)}
+        onChange={(index) => void setSetting(LANGUAGE_SETTINGS[index])}
       />
     </View>
   );

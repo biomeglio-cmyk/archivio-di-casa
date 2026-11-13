@@ -1,3 +1,6 @@
+import { t } from '@/i18n';
+import { intlLocale, monthName, weekdayName } from '@/i18n/format';
+
 // Turns an ISO date string (YYYY-MM-DD) into a local Date at midnight.
 // new Date('2026-11-09') would be read as UTC and could shift by one day.
 export function parseISODate(iso: string): Date {
@@ -5,9 +8,9 @@ export function parseISODate(iso: string): Date {
   return new Date(year, month - 1, day);
 }
 
-// "12 nov 2026"
+// "12 nov 2026" / "12 Nov 2026"
 export function formatDate(iso: string): string {
-  return parseISODate(iso).toLocaleDateString('it-IT', {
+  return parseISODate(iso).toLocaleDateString(intlLocale(), {
     day: 'numeric',
     month: 'short',
     year: 'numeric',
@@ -21,75 +24,57 @@ export function toISODate(date: Date): string {
   return `${date.getFullYear()}-${month}-${day}`;
 }
 
-// ---- Italian names (written out, so the format is identical on every device) ----
+// ---- Names in the active language (Intl): see i18n/format.ts ----
 
-const WEEKDAYS_SHORT = ['dom', 'lun', 'mar', 'mer', 'gio', 'ven', 'sab'];
-export const MONTHS_SHORT = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
-export const MONTHS = [
-  'gennaio',
-  'febbraio',
-  'marzo',
-  'aprile',
-  'maggio',
-  'giugno',
-  'luglio',
-  'agosto',
-  'settembre',
-  'ottobre',
-  'novembre',
-  'dicembre',
-];
-
-// "lun 9 nov"; the year is added only when it isn't the current one: "mer 14 lug 2027"
-export function formatShortDate(iso: string, today: Date = new Date()): string {
-  const date = parseISODate(iso);
-  const base = `${WEEKDAYS_SHORT[date.getDay()]} ${date.getDate()} ${MONTHS_SHORT[date.getMonth()]}`;
-  return date.getFullYear() === today.getFullYear() ? base : `${base} ${date.getFullYear()}`;
+// "9 novembre" / "9 November"
+export function formatDayMonth(date: Date, width: 'long' | 'short' = 'long'): string {
+  return `${date.getDate()} ${monthName(date.getMonth(), width)}`;
 }
 
-function plural(count: number, one: string, many: string): string {
-  return count === 1 ? `1 ${one}` : `${count} ${many}`;
+// "lun 9 nov" / "Mon 9 Nov"; the year is added only when it isn't the current one: "mer 14 lug 2027"
+export function formatShortDate(iso: string, today: Date = new Date()): string {
+  const date = parseISODate(iso);
+  const base = `${weekdayName(date.getDay(), 'short')} ${formatDayMonth(date, 'short')}`;
+  return date.getFullYear() === today.getFullYear() ? base : `${base} ${date.getFullYear()}`;
 }
 
 // "3 giorni", "2 mesi", "1 anno": days up to 45, then months, then years
 function span(amount: number): string {
-  if (amount <= 45) return plural(amount, 'giorno', 'giorni');
-  if (amount < 365) return plural(Math.round(amount / 30.44), 'mese', 'mesi');
-  return plural(Math.round(amount / 365.25), 'anno', 'anni');
+  if (amount <= 45) return t('dates.days', { count: amount });
+  if (amount < 365) return t('dates.months', { count: Math.round(amount / 30.44) });
+  return t('dates.years', { count: Math.round(amount / 365.25) });
 }
 
 // For a document's expiry: "oggi", "domani", "tra 3 giorni", "scaduto ieri", "scaduto da 2 giorni"
 export function describeDistance(days: number): string {
-  if (days === 0) return 'oggi';
-  if (days === 1) return 'domani';
-  if (days === -1) return 'scaduto ieri';
-  return days > 0 ? `tra ${span(days)}` : `scaduto da ${span(-days)}`;
+  if (days === 0) return t('dates.today');
+  if (days === 1) return t('dates.tomorrow');
+  if (days === -1) return t('dates.expiredYesterday');
+  return days > 0 ? t('dates.inSpan', { span: span(days) }) : t('dates.expiredFor', { span: span(-days) });
 }
 
 // For a calendar day: "oggi", "domani", "ieri", "tra 2 giorni", "3 giorni fa"
 export function describeDayDistance(days: number): string {
-  if (days === 0) return 'oggi';
-  if (days === 1) return 'domani';
-  if (days === -1) return 'ieri';
-  return days > 0 ? `tra ${span(days)}` : `${span(-days)} fa`;
+  if (days === 0) return t('dates.today');
+  if (days === 1) return t('dates.tomorrow');
+  if (days === -1) return t('dates.yesterday');
+  return days > 0 ? t('dates.inSpan', { span: span(days) }) : t('dates.spanAgo', { span: span(-days) });
 }
 
-const WEEKDAYS = ['domenica', 'lunedì', 'martedì', 'mercoledì', 'giovedì', 'venerdì', 'sabato'];
-
-function capitalize(text: string): string {
+export function capitalize(text: string): string {
   return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
-// "Giovedì 12 novembre" (+ year if it isn't the current one)
+// "Giovedì 12 novembre" / "Thursday 12 November" (+ year if it isn't the current one)
 export function formatLongDay(iso: string, today: Date = new Date()): string {
   const date = parseISODate(iso);
-  const base = `${capitalize(WEEKDAYS[date.getDay()])} ${date.getDate()} ${MONTHS[date.getMonth()]}`;
+  const base = `${capitalize(weekdayName(date.getDay()))} ${formatDayMonth(date)}`;
   return date.getFullYear() === today.getFullYear() ? base : `${base} ${date.getFullYear()}`;
 }
 
-// "Novembre 2026"
+// "Novembre 2026" / "November 2026"
 export function formatMonthTitle(year: number, month: number): string {
-  return `${capitalize(MONTHS[month])} ${year}`;
+  return `${capitalize(monthName(month))} ${year}`;
 }
 
 // 'YYYY-MM-DD' moved by n days (local calendar, so daylight saving changes don't matter)

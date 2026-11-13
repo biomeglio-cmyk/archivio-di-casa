@@ -17,7 +17,7 @@ import type { TileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { t } from '@/i18n';
 import { daysUntil } from '@/utils/deadlines';
-import { textOn } from '@/utils/colors';
+import { textOn, tileFrame } from '@/utils/colors';
 import { type Palette } from '@/constants/theme';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
@@ -100,7 +100,7 @@ export function DocumentTileFace({ document, selected }: FaceProps) {
   return solid ? (
     <View style={[styles.tile, { backgroundColor: solid }]}>{content}</View>
   ) : (
-    <LinearGradient colors={[category.colors.top, category.colors.bottom]} style={styles.tile}>
+    <LinearGradient colors={[category.colors.top, category.colors.bottom]} style={[styles.tile, tileFrame(category.colors)]}>
       {content}
     </LinearGradient>
   );

@@ -9,11 +9,10 @@ import { announce } from '@/a11y/accessibility';
 import { useI18n } from '@/i18n';
 import { useFormat } from '@/i18n/use-format';
 import { Text } from '@/components/text';
-import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { isUnread, markAllRead, markRead, useNotificationFeed, type FeedItem } from '@/notifications/feed';
-import { categoryShadowRgb } from '@/utils/colors';
+import { categoryShadowRgb, tileFrame, tileGradientPoints } from '@/utils/colors';
 import { useThemedStyles } from '@/hooks/use-theme';
 
 const UNREAD_DOT = '#4A5CF0'; // 4.8:1 on pale lilac, 3:1 on the dark one
@@ -132,9 +131,8 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
               style={({ pressed }) => [styles.item, unread && styles.itemUnread, pressed && styles.pressed]}>
               <LinearGradient
                 colors={[item.colors.top, item.colors.bottom]}
-                start={GRADIENT_START}
-                end={GRADIENT_END}
-                style={[styles.icon, { boxShadow: `0 5px 10px rgba(${categoryShadowRgb(item.colors)}, 0.22)` }]}>
+                {...tileGradientPoints(item.colors)}
+                style={[styles.icon, { boxShadow: `0 5px 10px rgba(${categoryShadowRgb(item.colors)}, 0.22)` }, tileFrame(item.colors)]}>
                 <SymbolView name={item.symbol} tintColor={item.colors.text} size={19} />
               </LinearGradient>
               <View style={styles.texts}>

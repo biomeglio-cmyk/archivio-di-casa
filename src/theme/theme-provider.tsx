@@ -3,6 +3,7 @@ import { createContext, useState, type ReactNode } from 'react';
 import { Appearance, useColorScheme } from 'react-native';
 
 import { useAccessibilitySettings } from '@/a11y/accessibility';
+import { setActiveDark } from '@/theme/active-theme';
 import {
   DARK,
   DARK_HIGH_CONTRAST,
@@ -37,6 +38,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
   const dark = mode === 'auto' ? system === 'dark' : mode === 'dark';
   // iOS "Aumenta contrasto": the stronger version of the same palette
   const { increaseContrast } = useAccessibilitySettings();
+  setActiveDark(dark); // for mapCategory (night tiles of Pastello), before the screens render
   const palette = increaseContrast ? (dark ? DARK_HIGH_CONTRAST : LIGHT_HIGH_CONTRAST) : dark ? DARK : LIGHT;
 
   function setMode(next: ThemeMode) {

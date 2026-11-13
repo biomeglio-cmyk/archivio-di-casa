@@ -6,7 +6,8 @@ import { BUILTIN_DEFAULTS } from '@/db/builtin-categories';
 import { t } from '@/i18n';
 import { builtinCategoryName } from '@/i18n/category-names';
 import { builtinColorsFor } from '@/settings/palette';
-import { readableColors } from '@/utils/colors';
+import { isActiveDark } from '@/theme/active-theme';
+import { forTheme, readableColors } from '@/utils/colors';
 
 // The name to save from the category form: the translated default name typed back (or left
 // untouched) keeps the built-in default, so the category goes on following the language
@@ -37,12 +38,13 @@ export function mapCategory(row: Record<string, unknown>, prefix = ''): Category
     symbol: r('symbol') as SFSymbol,
     examples: (r('examples') as string | null) ?? null,
     // Readable at WCAG AA on the whole tile (dark ink on the pastel ones): see utils/colors.ts
+    // In Tema notte "Pastello" uses its night tiles (forTheme)
     colors: readableColors(
-      (followsPalette ? builtinColorsFor(builtinKey) : null) ?? {
+      forTheme((followsPalette ? builtinColorsFor(builtinKey) : null) ?? {
         top: r('color_top') as string,
         bottom: r('color_bottom') as string,
         text: r('color_text') as string,
-      },
+      }, isActiveDark()),
     ),
     isBuiltin,
     builtinKey,

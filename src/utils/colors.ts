@@ -23,6 +23,7 @@ export function hexToRgb(hex: string): string {
 
 // "r, g, b" of the colored shadow under a category tile: from the palette, or its gradient end
 export function categoryShadowRgb(colors: CategoryColors): string {
+  if (colors.isNight) return '0, 0, 0'; // night tiles: no colored glow, the border sets them apart
   return colors.shadow ?? hexToRgb(colors.bottom);
 }
 
@@ -189,4 +190,59 @@ export function readableGradient([top, bottom]: readonly [string, string]): [str
 // Text on a solid color (cover, card): dark ink or white, whichever reads better
 export function textOn(background: string): string {
   return contrastRatio(INK, background) >= contrastRatio('#FFFFFF', background) ? INK : '#FFFFFF';
+}
+
+// ---- Night tiles ("Pastello" in Tema notte) ----
+
+// A hex color with its HSL lightness raised by `points` (0–100)
+export function lighten(hex: string, points: number): string {
+  const match = /^#?([0-9a-f]{6})$/i.exec(hex.trim());
+  if (!match) return hex;
+  const value = parseInt(match[1], 16);
+  const [r, g, b] = [(value >> 16) & 255, (value >> 8) & 255, value & 255].map((c) => c / 255);
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h = 0;
+  let s = 0;
+  let l = (max + min) / 2;
+  if (max !== min) {
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+    h = max === r ? (g - b) / d + (g < b ? 6 : 0) : max === g ? (b - r) / d + 2 : (r - g) / d + 4;
+    h /= 6;
+  }
+  l = Math.min(1, l + points / 100);
+  const hue = (p: number, q: number, t: number) => {
+    const u = t < 0 ? t + 1 : t > 1 ? t - 1 : t;
+    if (u < 1 / 6) return p + (q - p) * 6 * u;
+    if (u < 1 / 2) return q;
+    if (u < 2 / 3) return p + (q - p) * (2 / 3 - u) * 6;
+    return p;
+  };
+  const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+  const p = 2 * l - q;
+  const out = s === 0 ? [l, l, l] : [hue(p, q, h + 1 / 3), hue(p, q, h), hue(p, q, h - 1 / 3)];
+  return `#${out.map((c) => Math.round(c * 255).toString(16).padStart(2, '0')).join('').toUpperCase()}`;
+}
+
+// The night tile of a category from its Tema notte pair: dark tint (+6 % lightness at the top) and
+// the light text on it
+export function nightTileOf(darkTint: string, darkOnTint: string): { top: string; bottom: string; text: string } {
+  return { top: lighten(darkTint, 6), bottom: darkTint, text: darkOnTint };
+}
+
+// The colors to draw in the active theme: a palette with a night variant uses it in Tema notte
+export function forTheme(colors: CategoryColors, dark: boolean): CategoryColors {
+  if (!dark || !colors.night) return colors;
+  return { ...colors, ...colors.night, shadow: undefined, isNight: true };
+}
+
+// Border of a tile: night tiles get the 1 px white 7 % of the other night cards
+export function tileFrame(colors: CategoryColors): { borderWidth: number; borderColor: string } | null {
+  return colors.isNight ? { borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.07)' } : null;
+}
+
+// Direction of a tile gradient: 135° by day, a soft vertical one for the night tiles
+export function tileGradientPoints(colors: CategoryColors): { start: { x: number; y: number }; end: { x: number; y: number } } {
+  return colors.isNight ? { start: { x: 0, y: 0 }, end: { x: 0, y: 1 } } : { start: { x: 0, y: 0 }, end: { x: 1, y: 1 } };
 }

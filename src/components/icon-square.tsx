@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { iconShadow, type Palette, Radius } from '@/constants/theme';
 import type { CategoryColors } from '@/db/types';
-import { categoryShadowRgb } from '@/utils/colors';
+import { categoryShadowRgb, tileFrame, tileGradientPoints } from '@/utils/colors';
 import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
@@ -25,14 +25,14 @@ export function IconSquare({ symbol, colors, size = 44, shadow = false, radius: 
   return (
     <LinearGradient
       colors={gradient}
-      start={GRADIENT_START}
-      end={GRADIENT_END}
+      {...(colors ? tileGradientPoints(colors) : { start: GRADIENT_START, end: GRADIENT_END })}
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants"
       style={[
         styles.square,
         { width: size, height: size, borderRadius: radius },
         shadow && { boxShadow: iconShadow(colors ? categoryShadowRgb(colors) : '100, 90, 235') },
+        colors && tileFrame(colors),
       ]}>
       <SymbolView name={symbol} tintColor={colors?.text ?? '#FFFFFF'} size={Math.round(size * 0.5)} />
     </LinearGradient>

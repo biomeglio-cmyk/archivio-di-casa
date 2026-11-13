@@ -304,3 +304,26 @@ Palette ufficiale del tema scuro (Impostazioni › Aspetto › Tema: Automatico 
 | Scuola | #36183A | #F2A6E6 |
 | Pet | #253015 | #C2E58F |
 | Altro | #24263F | #C3C7D9 |
+
+### Pastello in Tema notte (riquadri notte, 13 novembre 2026)
+
+In Tema notte la palette Pastello non usa le sfumature chiare: ogni riquadro è una sfumatura verticale della tinta
+scura della categoria (in alto +6 % di luminosità, in basso la tinta), testo e icona nel colore chiaro della
+categoria, bordo 1 px bianco 7 % come le altre schede notte, nessuna ombra colorata. Chip e tinte della cartella
+usano la stessa coppia tinta/testo. Contrasto testo/riquadro ≥ 5,7:1 (WCAG AA). Il Pastello chiaro non cambia.
+
+| Categoria | In alto | In basso (tinta) | Testo e icona | Contrasto minimo |
+|---|---|---|---|---|
+| Documenti | #272E5B | #1E2346 | #A9B3FF | 6,5 |
+| Tessere e card | #1E493C | #15332A | #7FE0BC | 6,4 |
+| Utenze | #503121 | #3A2418 | #FFB48A | 6,7 |
+| Casa | #30335D | #262849 | #B3A8FF | 5,7 |
+| Assicurazioni | #19444F | #123038 | #8ADCE8 | 6,8 |
+| Garanzie e scontrini | #4C3C1A | #352A12 | #F5CB6B | 6,9 |
+| Auto | #1E3456 | #16263F | #8DB6FF | 6,1 |
+| Spese 730 | #4F2337 | #3A1A28 | #FF9CC0 | 6,6 |
+| Colf | #4F2C25 | #3A201B | #FFB09B | 6,9 |
+| Scuola | #4A2150 | #36183A | #F2A6E6 | 7,0 |
+| Pet | #35451E | #253015 | #C2E58F | 7,4 |
+| Password | #194551 | #12313A | #7FD6E4 | 6,3 |
+| Altro | #2F3252 | #24263F | #C3C7D9 | 7,4 |

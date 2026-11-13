@@ -16,7 +16,7 @@ import { usePressed } from '@/hooks/use-pressed';
 import { t, useI18n } from '@/i18n';
 import { useFormat } from '@/i18n/use-format';
 import { resolveDocumentFile } from '@/storage/document-files';
-import { categoryShadowRgb, hexToRgb, textOn } from '@/utils/colors';
+import { categoryShadowRgb, hexToRgb, textOn, tileFrame } from '@/utils/colors';
 import { describeDistance, formatShortDate, parseISODate } from '@/utils/dates';
 import { formatEuro } from '@/utils/money';
 import { daysUntil } from '@/utils/deadlines';
@@ -90,14 +90,14 @@ export function FavoriteTile({ document }: { document: DocumentListItem }) {
       onPress={() => openDocument(document)}
       accessibilityRole="button"
       accessibilityLabel={subtitle ? `${document.title}, ${subtitle}` : document.title}
-      style={[styles.favorite, { boxShadow: shadow }, pressed && styles.pressed]}>
+      style={[styles.favorite, { boxShadow: shadow }, !solid && tileFrame(category.colors), pressed && styles.pressed]}>
       {solid ? (
         <View style={[styles.fill, { backgroundColor: solid }]}>{content}</View>
       ) : (
         <LinearGradient
           colors={[category.colors.top, category.colors.bottom]}
-          start={FAVORITE_START}
-          end={FAVORITE_END}
+          start={category.colors.isNight ? { x: 0, y: 0 } : FAVORITE_START}
+          end={category.colors.isNight ? { x: 0, y: 1 } : FAVORITE_END}
           style={styles.fill}>
           {content}
         </LinearGradient>

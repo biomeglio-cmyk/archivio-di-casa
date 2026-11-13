@@ -4,12 +4,11 @@ import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { TileTitle } from '@/components/tile-title';
-import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette, Radius, tintedShadow } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { Category } from '@/db/types';
 import { t } from '@/i18n';
-import { categoryShadowRgb } from '@/utils/colors';
+import { categoryShadowRgb, tileFrame, tileGradientPoints } from '@/utils/colors';
 import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
@@ -37,9 +36,8 @@ export function CategoryTile({ category, documentCount }: Props) {
   return (
     <LinearGradient
       colors={[colors.top, colors.bottom]}
-      start={GRADIENT_START}
-      end={GRADIENT_END}
-      style={[styles.tile, { boxShadow: tintedShadow(categoryShadowRgb(colors)) }]}>
+      {...tileGradientPoints(colors)}
+      style={[styles.tile, { boxShadow: tintedShadow(categoryShadowRgb(colors)) }, tileFrame(colors)]}>
       <View style={styles.top}>
         <SymbolView name={category.symbol} tintColor={colors.text} size={28} />
         {/* The number only when there is something; VoiceOver reads "N documenti" from the grid label */}

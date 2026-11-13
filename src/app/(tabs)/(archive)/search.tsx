@@ -8,7 +8,6 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { announce } from '@/a11y/accessibility';
 import { Chip, ChipGroup } from '@/components/chip';
 import { Text, TextInput } from '@/components/text';
-import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { cardSurface, onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategoriesWithCounts } from '@/db/categories';
@@ -18,7 +17,7 @@ import { usePressed } from '@/hooks/use-pressed';
 import { useI18n } from '@/i18n';
 import { SEARCH_FILTERS, searchEverything, type SearchFilterKey, type SearchResult } from '@/search/search-all';
 import { highlight, type MatchRange } from '@/search/text-match';
-import { categoryShadowRgb } from '@/utils/colors';
+import { categoryShadowRgb, tileFrame, tileGradientPoints } from '@/utils/colors';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const DEBOUNCE_MS = 150;
@@ -131,9 +130,8 @@ function ResultRow({ result }: { result: SearchResult }) {
       style={[styles.row, pressed && styles.pressed]}>
       <LinearGradient
         colors={[result.colors.top, result.colors.bottom]}
-        start={GRADIENT_START}
-        end={GRADIENT_END}
-        style={[styles.square, { boxShadow: `0 6px 12px rgba(${categoryShadowRgb(result.colors)}, 0.22)` }]}>
+        {...tileGradientPoints(result.colors)}
+        style={[styles.square, { boxShadow: `0 6px 12px rgba(${categoryShadowRgb(result.colors)}, 0.22)` }, tileFrame(result.colors)]}>
         <SymbolView name={result.symbol} tintColor={result.colors.text} size={22} />
       </LinearGradient>
       <View style={styles.texts}>

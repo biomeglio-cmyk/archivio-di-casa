@@ -3,7 +3,7 @@
 /*
  * Contrast check (npm run check:contrast): every text/background and icon/control pair of the app palettes
  * (light, "Tema notte" and their "Aumenta contrasto" versions) and the tiles of the 7 category palettes, as
- * shown (utils/colors readableColors). WCAG AA: 4.5:1 for text, 3:1 for icons and controls. Exit 1 if any fails.
+ * shown in each theme (utils/colors forTheme + readableColors: the night tiles of Pastello in Tema notte). WCAG AA: 4.5:1 for text, 3:1 for icons and controls. Exit 1 if any fails.
  */
 const path = require('path'), fs = require('fs'), Module = require('module');
 const ROOT = path.join(__dirname, '..');
@@ -64,7 +64,7 @@ for (const [name, p] of [['light', LIGHT], ['dark', DARK], ['lightHC', LIGHT_HIG
   check(name, 'accent on lilac', p.accent, p.lilac, 4.5);
   // Category tiles (gradient + text) and tints, every palette
   for (const pal of PALETTES) {
-    pal.colors.map(colors.readableColors).forEach((c, i) => {
+    pal.colors.map((c) => colors.readableColors(colors.forTheme(c, p.isDark))).forEach((c, i) => {
       const label = `${pal.id} #${i + 1}`;
       check(name, `tile text on gradient top (${label})`, c.text, c.top, 4.5);
       check(name, `tile text on gradient bottom (${label})`, c.text, c.bottom, 4.5);

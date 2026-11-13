@@ -30,7 +30,7 @@ import { listPeople } from '@/db/people';
 import type { Category, CategoryColors } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { builtinColorsFor, getPalette } from '@/settings/palette';
-import { categoryShadowRgb, categoryTint, colorsFromHex, readableColors, readableGradient } from '@/utils/colors';
+import { categoryShadowRgb, categoryTint, colorsFromHex, forTheme, readableColors, readableGradient, tileFrame, tileGradientPoints } from '@/utils/colors';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
@@ -120,10 +120,10 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   const shown = followPalette && paletteColors ? paletteColors : colors; // what the tile will look like
   const { tint, onTint } = categoryTint(shown, theme);
   // As Home shows it: readable at WCAG AA (dark ink on the pastel ones, see utils/colors.ts)
-  const look = readableColors(shown);
+  const look = readableColors(forTheme(shown, theme.isDark)); // and the night tile of Pastello in Tema notte
   const gradient = [look.top, look.bottom] as const;
   const { fontScale } = useWindowDimensions();
-  const shadow = tintedShadow(categoryShadowRgb(shown));
+  const shadow = tintedShadow(categoryShadowRgb(look));
   // Our 13 colors (the palette of Aspetto), without repeats
   const swatches = palette.colors.filter((c, index, all) => all.findIndex((other) => other.bottom === c.bottom) === index);
   // The icons: this category's own first (a built-in's original icon included), the design's, then ours
@@ -211,9 +211,8 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
         <View style={styles.previewRow}>
           <LinearGradient
             colors={gradient}
-            start={GRADIENT_START}
-            end={GRADIENT_END}
-            style={[styles.preview, { boxShadow: shadow }]}
+            {...tileGradientPoints(look)}
+            style={[styles.preview, { boxShadow: shadow }, tileFrame(look)]}
             accessible
             accessibilityRole="image"
             accessibilityLabel={[t('categoryForm.previewA11y'), name.trim(), t('common.documents', { count })].filter(Boolean).join(', ')}>
@@ -346,7 +345,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
           disabled={!canSave}
           onPress={save}
           gradient={readableGradient(gradient)}
-          shadow={`0 10px 22px rgba(${categoryShadowRgb(shown)}, 0.28)`}
+          shadow={`0 10px 22px rgba(${categoryShadowRgb(look)}, 0.28)`}
           style={styles.save}
         />
       </ScrollView>

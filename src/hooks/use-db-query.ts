@@ -3,6 +3,7 @@ import { useEffect, useState, type DependencyList } from 'react';
 
 import { useI18n } from '@/i18n';
 import { usePaletteId } from '@/settings/palette';
+import { useTheme } from '@/hooks/use-theme';
 
 type QueryState<T> = { data: T | undefined; error: Error | undefined };
 
@@ -20,6 +21,8 @@ export function useDbQuery<T>(query: (db: SQLiteDatabase) => Promise<T>, deps: D
   const palette = usePaletteId();
   // A new language changes the names of the built-in categories (and dates in the results)
   const { language } = useI18n();
+  // Tema notte changes the tiles of "Pastello" (night variant): reload like after a change
+  const { isDark } = useTheme();
   const [state, setState] = useState<QueryState<T>>({ data: undefined, error: undefined });
 
   // Like Angular's ngOnInit + ngOnDestroy in one place:
@@ -45,7 +48,7 @@ export function useDbQuery<T>(query: (db: SQLiteDatabase) => Promise<T>, deps: D
     };
     // `query` is a new function on every render: the caller's `deps` decide when to re-run
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [db, palette, language, ...deps]);
+  }, [db, palette, language, isDark, ...deps]);
 
   return state;
 }

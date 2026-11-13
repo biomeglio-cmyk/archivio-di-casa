@@ -48,10 +48,10 @@ const TINTS = (p: Palette): Record<'security' | 'grey' | 'reminders' | 'backup' 
     p.isDark ? { background: darkBackground, icon: darkIcon } : { background, icon };
   return {
     security: { background: p.lilac, icon: p.indigo },
-    grey: tint('#F0F1F5', '#4B5068', '#24263F', '#B4B7CC'),
-    reminders: tint('#FFF0E7', '#C2530F', '#3A2418', '#FFB48A'),
-    backup: tint('#EAF2FE', '#2F62C8', '#16263F', '#8DB6FF'),
-    info: tint('#E6F7F0', '#1F7A5A', '#15332A', '#7FE0BC'),
+    grey: tint('#F0F1F5', '#4B5068', '#212339', '#B4B7CC'),
+    reminders: tint('#FFF0E7', '#C2530F', '#2A1E24', '#FFB089'),
+    backup: tint('#EAF2FE', '#2F62C8', '#18233D', '#9EC2FF'),
+    info: tint('#E6F7F0', '#1F7A5A', '#14282A', '#7FE0BC'),
   };
 };
 

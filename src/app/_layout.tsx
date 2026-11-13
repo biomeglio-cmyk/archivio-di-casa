@@ -7,11 +7,13 @@ import {
   useFonts,
 } from '@expo-google-fonts/onest';
 import { DarkTheme, DefaultTheme, ThemeProvider } from 'expo-router';
+import { LinearGradient } from 'expo-linear-gradient';
 import { Stack } from 'expo-router/stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { SQLiteProvider } from 'expo-sqlite';
 import { Fragment } from 'react';
+import { StyleSheet } from 'react-native';
 
 import { useAppGeneration } from '@/backup/app-reload';
 import { AccessibilityProvider, useReduceMotion } from '@/a11y/accessibility';
@@ -289,6 +291,16 @@ function RootContent() {
           />
         </Stack>
         </Fragment>
+        {/* Tema notte (v2): a soft indigo light at the top of every screen (decorative, no touches) */}
+        {theme.glow && (
+          <LinearGradient
+            colors={[theme.glow, 'rgba(98, 104, 255, 0)']}
+            style={styles.glow}
+            pointerEvents="none"
+            accessibilityElementsHidden
+            importantForAccessibility="no-hide-descendants"
+          />
+        )}
         {/* After the Stack, so it is drawn on top of the first screen while it fades */}
         <SplashOverlay />
         {/* "Blocca con Face ID": above everything, even the open sheets and modals */}
@@ -297,3 +309,13 @@ function RootContent() {
     </SQLiteProvider>
   );
 }
+
+const styles = StyleSheet.create({
+  glow: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 260,
+  },
+});

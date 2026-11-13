@@ -45,39 +45,52 @@ export const LIGHT = {
   heart: '#E8457A', // the favorites heart
   dashed: '#8E91A8', // border of the dashed "add" tiles (3:1 on white, WCAG non-text)
   scrim: 'rgba(28, 30, 70, 0.38)', // dimmed page behind sheets and menus
+  menuIcon: '#1C1E2E', // icons of the side menu rows
+  menuActive: '#F1EFFD', // the current screen in the side menu
+  gradient: ['#4A5CF0', '#7558E6'] as readonly [string, string], // main gradient (white text 4.9:1)
+  brandShadow: '0 10px 22px rgba(100, 90, 235, 0.28)', // glow under anything in the main gradient
+  glass: null as null | { top: string; bottom: string; border: string }, // menus and sheets: plain surface
+  glow: null as null | string, // indigo light at the top of the screen (Tema notte only)
 };
 
-// "Tema notte" of docs/design-guide.md: the official dark palette
+// "Tema notte (v2)" of docs/design-guide.md: the night palette of the design
 export const DARK: Palette = {
   isDark: true,
-  text: '#F2F3FA',
-  background: '#0F1020',
-  surface: '#1B1D33',
-  backgroundSelected: '#24263F',
-  elevated: '#24263F',
-  cardBorder: 'rgba(255, 255, 255, 0.07)',
-  textSecondary: '#A3A6BD',
-  textOnLilac: '#C3C5D9',
-  placeholder: '#9396B4', // 4.5:1 on lilac
+  text: '#EEEFF8', // primary text and icons
+  background: '#0D0E1C', // every page (with the indigo glow at the top)
+  surface: '#17182C', // cards ("Scheda")
+  backgroundSelected: '#212339',
+  elevated: '#212339', // inactive choices
+  cardBorder: 'rgba(255, 255, 255, 0.07)', // the card shadow becomes a 1 px light line
+  textSecondary: '#9C9FBA',
+  textOnLilac: '#C7C9DD', // text on the soft boxes
+  placeholder: '#898BA4',
   iconGrey: '#B4B7CC',
-  accent: '#8E9BFF',
-  indigo: '#B3A8FF',
-  lilac: '#262849',
-  paleLilac: '#1F2140',
-  separator: '#2C2F4D',
-  switchOff: '#6E7193', // 3:1 on the cards
-  segmentedActive: '#1B1D33',
-  segmentedActiveText: '#F2F3FA',
-  error: '#FF8A80',
-  errorBackground: '#3A1A1E',
+  accent: '#A99CFF', // links, active item
+  indigo: '#B8ADFF', // indigo text and icons
+  lilac: '#212339', // round buttons, fields, inactive choices
+  paleLilac: '#1C1D34', // soft boxes
+  separator: '#25273F',
+  switchOff: '#5E62A2',
+  segmentedActive: '#17182C',
+  segmentedActiveText: '#EEEFF8',
+  error: '#FF8F8F', // "Da pagare" (on errorBackground)
+  errorBackground: '#3A1A24',
   destructive: '#D92D20',
-  success: '#7FE0BC',
-  successBackground: '#15332A',
-  badge: '#D81F35', // white number 5:1
+  success: '#6FDCB2', // "Pagata" (on successBackground)
+  successBackground: '#123228',
+  badge: '#E0263B', // notification dot
   heart: '#FF6F9B',
-  dashed: '#6E7193', // 3:1 on the cards
-  scrim: 'rgba(0, 0, 0, 0.55)',
+  dashed: '#5D6199', // design #595D92, raised a touch for 3:1 on the cards
+  scrim: 'rgba(0, 0, 0, 0.55)', // behind sheets
+  menuIcon: '#C7C9DD',
+  menuActive: 'rgba(169, 156, 255, 0.16)', // lilac #A99CFF at 16 %
+  gradient: ['#4F5CF2', '#7A55F0'],
+  brandShadow: '0 14px 32px rgba(100, 90, 235, 0.45)', // 45 %, wider
+  glass: { top: 'rgba(36, 38, 68, 0.78)', bottom: 'rgba(22, 23, 44, 0.62)', border: 'rgba(255, 255, 255, 0.1)' },
+  glow: 'rgba(98, 104, 255, 0.16)',
 };
+
 
 // "Tema" of Impostazioni: kept on the phone
 export type ThemeMode = 'auto' | 'light' | 'dark';
@@ -140,7 +153,8 @@ export function onSoftTint(p: Palette, light: string, dark: string): string {
   return p.isDark ? dark : light;
 }
 
-export type ThemeColor = Exclude<keyof Palette, 'isDark'>;
+// The color tokens (strings), for themeColor props
+export type ThemeColor = { [K in keyof Palette]: Palette[K] extends string ? K : never }[keyof Palette];
 
 export const Fonts = Platform.select({
   ios: {

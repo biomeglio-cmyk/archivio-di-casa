@@ -2,11 +2,11 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { StyleSheet } from 'react-native';
 
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { iconShadow, type Palette, Radius } from '@/constants/theme';
 import type { CategoryColors } from '@/db/types';
 import { categoryShadowRgb, tileFrame, tileGradientPoints } from '@/utils/colors';
-import { useThemedStyles } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   symbol: SFSymbol;
@@ -19,8 +19,9 @@ type Props = {
 // Icon in a small gradient square (135°), corners 12–14. Decorative: hidden from VoiceOver (the
 // text next to it says what it is; SF Symbol names like "cross.case" are never read)
 export function IconSquare({ symbol, colors, size = 44, shadow = false, radius: cornerRadius }: Props) {
+  const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
-  const gradient = colors ? ([colors.top, colors.bottom] as const) : BRAND_GRADIENT;
+  const gradient = colors ? ([colors.top, colors.bottom] as const) : theme.gradient;
   const radius = cornerRadius ?? (size >= 40 ? Radius.iconSquare : Math.round(size * 0.3));
   return (
     <LinearGradient

@@ -157,7 +157,7 @@ const makeStyles = (c: Palette) =>
   StyleSheet.create({
   dim: {
     flex: 1,
-    backgroundColor: 'rgba(28, 30, 70, 0.28)',
+    backgroundColor: c.isDark ? c.scrim : 'rgba(28, 30, 70, 0.28)', // night: black 55 %
   },
   panel: {
     position: 'absolute',

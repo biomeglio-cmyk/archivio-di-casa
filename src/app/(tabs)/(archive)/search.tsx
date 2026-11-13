@@ -22,8 +22,8 @@ import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const DEBOUNCE_MS = 150;
 const LENS = (p: Palette) => (p.isDark ? p.indigo : '#6D5CE6');
-const MARK_BACKGROUND = (p: Palette) => softTint(p, '#E8E5FD', '#262849');
-const MARK_TEXT = (p: Palette) => onSoftTint(p, '#3A2BC8', '#B3A8FF');
+const MARK_BACKGROUND = (p: Palette) => softTint(p, '#E8E5FD', '#212339');
+const MARK_TEXT = (p: Palette) => onSoftTint(p, '#3A2BC8', '#C3B8FF');
 
 // "Ricerca" (docs/design/Ricerca.dc.html), opened by the field in Home: the field (lilac, ringed)
 // with "Annulla", the filters Tutto / Documenti / Tessere / Scadenze, "N RISULTATI" and the results

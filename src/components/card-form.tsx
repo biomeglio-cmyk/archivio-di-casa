@@ -17,7 +17,7 @@ import { Segmented } from '@/components/segmented';
 import { Text, TextInput } from '@/components/text';
 import { spacedNumber, WalletCardFace } from '@/components/wallet-card';
 import { WhiteCard } from '@/components/white-card';
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { onSoftTint, type Palette, softTint, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
@@ -29,7 +29,7 @@ import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const NONE = 0; // no person (ids start at 1)
 const DARK = '#12142A';
-const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#15332A');
+const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#14282A');
 const MINT_TEXT = (p: Palette) => onSoftTint(p, '#1F7A5A', '#7FE0BC');
 
 export type CardFormValues = {
@@ -308,7 +308,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
 
           <View style={styles.readBox}>
             <LinearGradient
-              colors={BRAND_GRADIENT}
+              colors={theme.gradient}
               start={GRADIENT_START}
               end={GRADIENT_END}
               style={styles.readIcon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">

@@ -2,6 +2,7 @@ import type { SQLiteDatabase } from 'expo-sqlite';
 import Storage from 'expo-sqlite/kv-store';
 import { useSyncExternalStore } from 'react';
 
+import { NIGHT_FOLDERS } from '@/constants/night-folders';
 import { DEFAULT_PALETTE, PALETTES, type Palette, type PaletteId } from '@/constants/palettes';
 import { BUILTIN_DEFAULTS, BUILTIN_ORDER } from '@/db/builtin-categories';
 import type { CategoryColors } from '@/db/types';
@@ -86,7 +87,9 @@ export async function adoptDefaultPaletteOnce(db: SQLiteDatabase): Promise<void>
 const BUILTIN_INDEX = new Map<string, number>(BUILTIN_ORDER.map((c, i) => [c.symbol, i]));
 
 // Colors of a built-in category in a palette (the chosen one by default); null for custom ones
-export function builtinColorsFor(builtinKey: string, palette: Palette = getPalette()): CategoryColors | null {
+// In Tema notte every palette shows the night folders of the design (constants/night-folders.ts)
+export function builtinColorsFor(builtinKey: string, palette: Palette = getPalette(), dark = false): CategoryColors | null {
   const index = BUILTIN_INDEX.get(builtinKey);
-  return index === undefined ? null : palette.colors[index];
+  if (index === undefined) return null;
+  return dark ? NIGHT_FOLDERS[index] : palette.colors[index];
 }

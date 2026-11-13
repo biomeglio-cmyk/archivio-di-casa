@@ -1,5 +1,4 @@
 import { t } from '@/i18n';
-import { nightTileOf } from '@/utils/colors';
 import { BUILTIN_ORDER } from '@/db/builtin-categories';
 import type { CategoryColors } from '@/db/types';
 
@@ -153,15 +152,8 @@ export const DEFAULT_PALETTE: PaletteId = 'pastel';
 export const PALETTES: Palette[] = [
   { id: 'sottomano', name: 'Sottomano', colors: SOTTOMANO.map(fromGuide) }, // i18n-ignore (shown through paletteName)
   // Pastello: the original colors, the same the database was created with
-  // Pastello: the original light gradients; in Tema notte the night tiles of the guide's pairs
-  {
-    id: 'pastel',
-    name: 'Pastello', // i18n-ignore (shown through paletteName)
-    colors: BUILTIN_ORDER.map((c, i) => {
-      const [, , , , , darkTint, darkOnTint] = SOTTOMANO[i];
-      return { ...c.colors, darkTint, darkOnTint, night: nightTileOf(darkTint, darkOnTint) };
-    }),
-  },
+  { id: 'pastel', name: 'Pastello', colors: BUILTIN_ORDER.map((c) => c.colors) }, // i18n-ignore (shown through paletteName)
+
   ...OTHER_PALETTES.map((p) => ({ id: p.id, name: p.name, colors: p.colors.map(toColors) })),
 ];
 

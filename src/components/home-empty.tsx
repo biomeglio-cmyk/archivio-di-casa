@@ -6,7 +6,7 @@ import { Alert, Pressable, StyleSheet, useWindowDimensions, View } from 'react-n
 import { pickPdf } from '@/capture/pick-files';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette, Spacing } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { CategoryWithCount } from '@/db/types';
@@ -47,7 +47,7 @@ export function HomeEmpty({ categories }: { categories: CategoryWithCount[] }) {
           {/* Shadow outside, the round gradient clipped inside (rounded on iOS too) */}
           <View style={styles.camera}>
             <View style={[StyleSheet.absoluteFill, styles.cameraClip]}>
-              <LinearGradient colors={BRAND_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={StyleSheet.absoluteFill} />
+              <LinearGradient colors={theme.gradient} start={GRADIENT_START} end={GRADIENT_END} style={StyleSheet.absoluteFill} />
             </View>
             <SymbolView name="camera" tintColor="#FFFFFF" size={24} />
           </View>

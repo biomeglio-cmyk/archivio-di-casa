@@ -192,7 +192,7 @@ export function textOn(background: string): string {
   return contrastRatio(INK, background) >= contrastRatio('#FFFFFF', background) ? INK : '#FFFFFF';
 }
 
-// ---- Night tiles ("Pastello" in Tema notte) ----
+// ---- Night folders ("Tema notte (v2)") ----
 
 // A hex color with its HSL lightness raised by `points` (0–100)
 export function lighten(hex: string, points: number): string {
@@ -225,24 +225,12 @@ export function lighten(hex: string, points: number): string {
   return `#${out.map((c) => Math.round(c * 255).toString(16).padStart(2, '0')).join('').toUpperCase()}`;
 }
 
-// The night tile of a category from its Tema notte pair: dark tint (+6 % lightness at the top) and
-// the light text on it
-export function nightTileOf(darkTint: string, darkOnTint: string): { top: string; bottom: string; text: string } {
-  return { top: lighten(darkTint, 6), bottom: darkTint, text: darkOnTint };
-}
-
-// The colors to draw in the active theme: a palette with a night variant uses it in Tema notte
-export function forTheme(colors: CategoryColors, dark: boolean): CategoryColors {
-  if (!dark || !colors.night) return colors;
-  return { ...colors, ...colors.night, shadow: undefined, isNight: true };
-}
-
-// Border of a tile: night tiles get the 1 px white 7 % of the other night cards
+// Border of a tile: the night folders get the 1 px white 7 % line of the other night cards
 export function tileFrame(colors: CategoryColors): { borderWidth: number; borderColor: string } | null {
   return colors.isNight ? { borderWidth: 1, borderColor: 'rgba(255, 255, 255, 0.07)' } : null;
 }
 
-// Direction of a tile gradient: 135° by day, a soft vertical one for the night tiles
-export function tileGradientPoints(colors: CategoryColors): { start: { x: number; y: number }; end: { x: number; y: number } } {
-  return colors.isNight ? { start: { x: 0, y: 0 }, end: { x: 0, y: 1 } } : { start: { x: 0, y: 0 }, end: { x: 1, y: 1 } };
+// Direction of a tile gradient: 135° (top-left → bottom-right), by day and at night
+export function tileGradientPoints(_colors: CategoryColors): { start: { x: number; y: number }; end: { x: number; y: number } } {
+  return { start: { x: 0, y: 0 }, end: { x: 1, y: 1 } };
 }

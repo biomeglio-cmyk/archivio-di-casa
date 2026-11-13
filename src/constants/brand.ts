@@ -20,5 +20,5 @@ export const DANGER_COLOR = (p: Palette) => p.error;
 // "Preferiti" heart
 export const PIN_COLOR = (p: Palette) => p.accent;
 
-// Light tint behind the heart (Aggiungi ai preferiti): the Salute tint of the guide, light / notte
-export const PIN_TINT = (p: Palette) => (p.isDark ? '#3A1A28' : '#FDEBF1');
+// Light tint behind the heart (Aggiungi ai preferiti): the Salute tint of the guide, light / notte (v2)
+export const PIN_TINT = (p: Palette) => (p.isDark ? '#2A1B2C' : '#FDEBF1');

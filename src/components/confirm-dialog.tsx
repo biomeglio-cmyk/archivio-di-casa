@@ -123,7 +123,7 @@ const makeStyles = (c: Palette) =>
     flex: 1,
     justifyContent: 'center',
     paddingHorizontal: 24,
-    backgroundColor: 'rgba(28, 30, 70, 0.42)',
+    backgroundColor: c.isDark ? c.scrim : 'rgba(28, 30, 70, 0.42)', // night: black 55 %
   },
   dialog: {
     alignItems: 'center',

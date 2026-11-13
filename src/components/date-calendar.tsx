@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { announce } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useI18n } from '@/i18n';
@@ -23,6 +23,7 @@ type Props = {
 // Month calendar of the Modifica design: ‹ month › on pale lilac, L M M G V S D, 38pt days;
 // the chosen day in the main gradient, today on lilac with indigo text
 export function DateCalendar({ value, onChange }: Props) {
+  const theme = useTheme();
   const { t } = useI18n();
   const fmt = useFormat();
   const styles = useThemedStyles(makeStyles);
@@ -76,7 +77,7 @@ export function DateCalendar({ value, onChange }: Props) {
                 style={[styles.day, today && !selected && styles.today]}>
                 {selected && (
                   <LinearGradient
-                    colors={BRAND_GRADIENT}
+                    colors={theme.gradient}
                     start={GRADIENT_START}
                     end={GRADIENT_END}
                     style={[StyleSheet.absoluteFill, styles.selected]}

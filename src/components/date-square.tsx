@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useFormat } from '@/i18n/use-format';
@@ -33,7 +33,7 @@ export function DateSquare({ iso, highlighted = false }: Props) {
   );
   return highlighted ? (
     <LinearGradient
-      colors={BRAND_GRADIENT}
+      colors={theme.gradient}
       start={GRADIENT_START}
       end={GRADIENT_END}
       style={[styles.square, styles.highlighted]}

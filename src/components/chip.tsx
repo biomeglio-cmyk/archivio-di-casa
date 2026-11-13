@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -28,12 +28,13 @@ export function Chip({
   selected,
   onPress,
   accessibilityLabel,
-  gradient = BRAND_GRADIENT,
+  gradient: gradientProp,
   tint,
   tintText,
 }: Props) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const gradient = gradientProp ?? theme.gradient;
   const fill = tint ?? theme.lilac; // inactive background: a section tint, lilac by default
   const ink = tintText ?? theme.text;
   return (

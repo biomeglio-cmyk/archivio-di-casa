@@ -58,7 +58,7 @@ type Step =
   | { kind: 'restore'; uri: string; name: string } // asking the password of the chosen file
   | { kind: 'working'; label: string; fraction: number | null }; // null = no percentage yet
 
-const APRICOT_TINT = (p: Palette) => softTint(p, '#FFF0E7', '#3A2418');
+const APRICOT_TINT = (p: Palette) => softTint(p, '#FFF0E7', '#2A1E24');
 const APRICOT = '#F5824A';
 const BACKUP_FOLDER = 'Backup'; // in the app's own folder on the phone
 

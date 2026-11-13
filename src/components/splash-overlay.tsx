@@ -6,10 +6,9 @@ import { StyleSheet } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
 
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import { type Palette } from '@/constants/theme';
-import { useThemedStyles } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
 const HOLD_MS = 700; // logo on screen…
@@ -20,6 +19,7 @@ const GLYPH_ASPECT = 712 / 657; // logo-glyph.png is 712 × 657 px
 // In-app opening screen, shown right after the native splash: logo gradient, white hand with
 // document, "sottomano" and the tagline. It fades out on top of the first screen (Home).
 export function SplashOverlay() {
+  const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const [visible, setVisible] = useState(true);
@@ -42,7 +42,7 @@ export function SplashOverlay() {
       accessibilityElementsHidden
       importantForAccessibility="no-hide-descendants">
       <LinearGradient
-        colors={BRAND_GRADIENT}
+        colors={theme.gradient}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
         style={styles.background}

@@ -4,6 +4,7 @@ import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { modalAnimation, useReduceMotion } from '@/a11y/accessibility';
+import { GlassFill } from '@/components/glass-fill';
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -63,6 +64,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
           importantForAccessibility="no-hide-descendants"
         />
         <View style={[styles.sheet, { paddingBottom: Math.max(insets.bottom, 20) + 14 }]} accessibilityRole="menu">
+          <GlassFill />
           <View style={styles.grabber} accessibilityElementsHidden importantForAccessibility="no-hide-descendants" />
           <Text style={styles.title} accessibilityRole="header">
             {title}
@@ -104,10 +106,12 @@ const makeStyles = (c: Palette) =>
   fill: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(28, 30, 70, 0.35)',
+    backgroundColor: c.isDark ? c.scrim : 'rgba(28, 30, 70, 0.35)', // night: black 55 %
   },
   sheet: {
-    backgroundColor: c.surface,
+    backgroundColor: c.glass ? 'transparent' : c.surface,
+    ...(c.glass && { borderWidth: 1, borderBottomWidth: 0, borderColor: c.glass.border }),
+    overflow: 'hidden',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     borderCurve: 'continuous',

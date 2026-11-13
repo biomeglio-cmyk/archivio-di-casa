@@ -12,7 +12,7 @@ import { cardSurface, Spacing, type Palette as ThemePalette } from '@/constants/
 import { FONTS } from '@/constants/typography';
 import { PALETTES, paletteName, type Palette } from '@/constants/palettes';
 import { BUILTIN_ORDER } from '@/db/builtin-categories';
-import { forTheme, readableColors, tileFrame } from '@/utils/colors';
+import { readableColors, tileFrame } from '@/utils/colors';
 import { restoreBuiltinCategories } from '@/db/categories';
 import { setPaletteId, usePaletteId } from '@/settings/palette';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -113,7 +113,7 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
           <View key={start} style={styles.row}>
             {Array.from({ length: MINI_COLUMNS }, (_, column) => {
               const index = start + column;
-              const colors = palette.colors[index] && readableColors(forTheme(palette.colors[index], theme.isDark));
+              const colors = palette.colors[index] && readableColors(palette.colors[index]);
               // The last cell is empty, so the tiles of the second row keep the same width
               if (!colors) return <View key="empty" style={styles.mini} />;
               const { symbol } = BUILTIN_ORDER[index];

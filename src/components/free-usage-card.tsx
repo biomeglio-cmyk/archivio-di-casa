@@ -5,12 +5,12 @@ import { Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { getFreeUsage, unlockPrice } from '@/settings/free-limit';
 import { type Palette } from '@/constants/theme';
-import { useThemedStyles } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
 type Props = {
@@ -20,6 +20,7 @@ type Props = {
 
 // Purple card "Gratis: 5 di 7 usati" / "Versione gratuita: 5 di 7 usati" with its bar; opens Sblocca
 export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }: Props) {
+  const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const large = useWindowDimensions().fontScale > 1.3; // larger text: the texts get the whole width
@@ -37,7 +38,7 @@ export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }
       accessibilityLabel={t('freeUsageCard.accessibility', { title, price })}
       style={({ pressed }) => [settings ? styles.cardSettings : styles.cardMenu, pressed && styles.pressed]}>
       <LinearGradient
-        colors={BRAND_GRADIENT}
+        colors={theme.gradient}
         start={GRADIENT_START}
         end={GRADIENT_END}
         style={[styles.fill, settings ? styles.fillSettings : styles.fillMenu, large && styles.fillLarge]}>

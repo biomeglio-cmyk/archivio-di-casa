@@ -16,7 +16,7 @@ import { t as translate, useI18n } from '@/i18n';
 import { getFreeUsage, unlockPrice } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
-const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#15332A');
+const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#14282A');
 const MINT_INK = (p: Palette) => onSoftTint(p, '#1F7A5A', '#7FE0BC');
 // Keys of unlock.benefits.<key>.title / .text
 const BENEFITS = ['unlimited', 'reminders', 'offline', 'family'] as const;

@@ -35,7 +35,7 @@ import {
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 // Warnings: soft orange box, dark orange text
-const WARNING_COLORS = (p: Palette) => ({ text: onSoftTint(p, '#B35400', '#FFB48A'), background: softTint(p, '#FFF1E0', '#3A2418') });
+const WARNING_COLORS = (p: Palette) => ({ text: onSoftTint(p, '#B35400', '#FFB089'), background: softTint(p, '#FFF1E0', '#2A1E24') });
 
 // Sheet "Invia" (docs/design/Invia.dc.html): /send?ids=12 for one document, /send?ids=3,7,9&label=…
 // for several. The document with "PDF unico · 2 pagine · 1,2 MB", PDF / Foto, then Email, WhatsApp,
@@ -255,7 +255,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
             style={({ pressed }) => [styles.action, large && styles.actionLarge, (pressed || !ready) && styles.dimmed]}>
             {action.gradient ? (
               <LinearGradient
-                colors={action.gradient}
+                colors={action.key === 'email' ? theme.gradient : action.gradient}
                 start={GRADIENT_START}
                 end={GRADIENT_END}
                 style={[styles.actionIcon, { boxShadow: `0 8px 16px rgba(${action.shadow}, 0.30)` }]}>

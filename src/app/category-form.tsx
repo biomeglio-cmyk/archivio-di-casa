@@ -30,7 +30,7 @@ import { listPeople } from '@/db/people';
 import type { Category, CategoryColors } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { builtinColorsFor, getPalette } from '@/settings/palette';
-import { categoryShadowRgb, categoryTint, colorsFromHex, forTheme, readableColors, readableGradient, tileFrame, tileGradientPoints } from '@/utils/colors';
+import { categoryShadowRgb, categoryTint, colorsFromHex, readableColors, readableGradient, tileFrame, tileGradientPoints } from '@/utils/colors';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
@@ -116,11 +116,12 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   const [wheelDragging, setWheelDragging] = useState(false); // a finger on the color wheel: no scroll
 
   const builtinKey = category?.builtinKey ?? null;
-  const paletteColors = builtinKey ? builtinColorsFor(builtinKey) : null;
+  // The palette colors (light theme, what Aspetto chooses); in Tema notte the night folder
+  const paletteColors = builtinKey ? builtinColorsFor(builtinKey, undefined, theme.isDark) : null;
   const shown = followPalette && paletteColors ? paletteColors : colors; // what the tile will look like
   const { tint, onTint } = categoryTint(shown, theme);
   // As Home shows it: readable at WCAG AA (dark ink on the pastel ones, see utils/colors.ts)
-  const look = readableColors(forTheme(shown, theme.isDark)); // and the night tile of Pastello in Tema notte
+  const look = readableColors(shown);
   const gradient = [look.top, look.bottom] as const;
   const { fontScale } = useWindowDimensions();
   const shadow = tintedShadow(categoryShadowRgb(look));

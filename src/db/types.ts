@@ -24,10 +24,7 @@ export type CategoryColors = {
   onTint?: string; // text and icons on the light tint
   darkTint?: string; // "Tema notte": the tint and the text on it (design guide)
   darkOnTint?: string;
-  // "Pastello" in Tema notte: the tile drawn with the dark tint (top a little lighter) and the light
-  // text of the section, a thin white border instead of the colored shadow
-  night?: { top: string; bottom: string; text: string };
-  isNight?: boolean; // these display colors are the night variant (set by forTheme)
+  isNight?: boolean; // a night folder of "Tema notte (v2)": thin light border, no colored shadow
 };
 
 export type Category = {

@@ -6,7 +6,7 @@ import { announce } from '@/a11y/accessibility';
 import { useHorizontalSwipe } from '@/components/calendar-parts';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useI18n } from '@/i18n';
@@ -199,7 +199,8 @@ function dayLabel(
 }
 
 function Gradient({ style }: { style: object }) {
-  return <LinearGradient colors={BRAND_GRADIENT} start={GRADIENT_START} end={GRADIENT_END} style={style} />;
+  const theme = useTheme();
+  return <LinearGradient colors={theme.gradient} start={GRADIENT_START} end={GRADIENT_END} style={style} />;
 }
 
 function MonthArrow({

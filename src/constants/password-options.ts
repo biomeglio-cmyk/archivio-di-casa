@@ -99,7 +99,7 @@ export function previewSymbol(preview: PasswordPreview, type: PasswordType): SFS
 }
 
 // The section colors (aqua) of the Password screens
-export const PASSWORD_TINT = (p: Palette) => softTint(p, '#E3F6F9', '#12313A');
+export const PASSWORD_TINT = (p: Palette) => softTint(p, '#E3F6F9', '#13283A');
 export const PASSWORD_INK = (p: Palette) => onSoftTint(p, '#1A6F7E', '#7FD6E4');
 export const PASSWORD_NOTE = (p: Palette) => onSoftTint(p, '#1A5E6B', '#7FD6E4');
 // The aqua of the design, darkened just enough for white text at WCAG AA (selected type, image button)

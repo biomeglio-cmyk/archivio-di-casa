@@ -4,11 +4,11 @@ import { Pressable, StyleSheet, useWindowDimensions, type StyleProp, type ViewSt
 
 import { Text } from '@/components/text';
 import { NoBreakText } from '@/components/tile-title';
-import { BRAND_GRADIENT, BRAND_SHADOW, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
-import { useThemedStyles } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { readableGradient } from '@/utils/colors';
 
 type Props = {
@@ -32,14 +32,18 @@ export function PrimaryButton({
   symbol,
   disabled = false,
   onPress,
-  gradient = BRAND_GRADIENT,
-  shadow = BRAND_SHADOW,
+  gradient: gradientProp,
+  shadow: shadowProp,
   singleLine = false,
   style,
   accessibilityLabel,
   accessibilityHint,
 }: Props) {
   const styles = useThemedStyles(makeStyles);
+  const theme = useTheme();
+  // The main gradient and its glow of the active theme (Tema notte: brighter, glow 45 %)
+  const gradient = gradientProp ?? theme.gradient;
+  const shadow = shadowProp ?? theme.brandShadow;
   const { pressed, handlers } = usePressed();
   const { fontScale } = useWindowDimensions();
   const oneLine = singleLine && fontScale <= 1.3; // larger text: the label wraps, never cut or tiny

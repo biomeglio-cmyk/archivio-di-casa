@@ -357,7 +357,7 @@ const makeStyles = (c: Palette) =>
     paddingBottom: 14,
     alignItems: 'center',
     gap: 8,
-    backgroundColor: c.surface,
+    backgroundColor: '#FFFFFF', // codes always on a white card (scanners at the checkout), day and night
   },
   codeTouch: {
     alignSelf: 'stretch',
@@ -371,14 +371,14 @@ const makeStyles = (c: Palette) =>
     fontSize: 14,
     lineHeight: 20,
     fontFamily: FONTS.regular,
-    color: c.textSecondary,
+    color: '#6A6D80', // on the white code card
     textAlign: 'center',
   },
   codeNumber: {
     fontSize: 15,
     fontFamily: FONTS.semiBold,
     letterSpacing: 2,
-    color: c.text,
+    color: '#1C1E2E', // on the white code card
     fontVariant: ['tabular-nums'],
   },
   codeButtons: {

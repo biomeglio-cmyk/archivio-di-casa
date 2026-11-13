@@ -3,6 +3,7 @@ import { useRef, type ReactNode } from 'react';
 import { Modal, Pressable, StyleSheet, useWindowDimensions, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
+import { GlassFill } from '@/components/glass-fill';
 import { Text } from '@/components/text';
 import type { QuickAction } from '@/actions/quick-actions';
 import { DANGER_COLOR } from '@/constants/brand';
@@ -90,8 +91,13 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
             {target.tile}
           </View>
           <View
-            style={[styles.menu, { left: menu.left, top: menu.top, width: menuWidth, backgroundColor: theme.surface }]}
+            style={[
+              styles.menu,
+              { left: menu.left, top: menu.top, width: menuWidth, backgroundColor: theme.glass ? 'transparent' : theme.surface },
+              theme.glass && { borderWidth: 1, borderColor: theme.glass.border },
+            ]}
             accessibilityRole="menu">
+            <GlassFill />
             {target.actions.map((action, index) => {
               const color = action.destructive ? DANGER_COLOR(theme) : theme.text;
               return (

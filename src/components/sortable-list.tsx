@@ -9,7 +9,7 @@ import Sortable from 'react-native-sortables';
 
 import { announce } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT, BRAND_SHADOW, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { cardSurface, type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -129,7 +129,7 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
         </Text>
         <Pressable onPress={onDone} accessibilityRole="button" hitSlop={4} style={({ pressed }) => [styles.done, pressed && styles.pressed]}>
           <LinearGradient
-            colors={BRAND_GRADIENT}
+            colors={theme.gradient}
             start={GRADIENT_START}
             end={GRADIENT_END}
             style={[StyleSheet.absoluteFill, styles.doneFill]}
@@ -200,7 +200,7 @@ const makeStyles = (c: Palette) =>
     paddingHorizontal: 20,
     borderRadius: 20,
     justifyContent: 'center',
-    boxShadow: BRAND_SHADOW,
+    boxShadow: c.brandShadow,
   },
   doneFill: {
     borderRadius: 20,

@@ -13,7 +13,7 @@ import { FREE_LIMIT, unlockPrice } from '@/settings/free-limit';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
-const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#15332A');
+const MINT_TINT = (p: Palette) => softTint(p, '#E6F7F0', '#14282A');
 const MINT_INK = (p: Palette) => onSoftTint(p, '#1F7A5A', '#7FE0BC');
 // What keeps working at the limit: keys of limit.stillWorks
 const STILL_WORKS = ['view', 'send', 'cards', 'reminders'] as const;
@@ -95,7 +95,7 @@ const makeStyles = (c: Palette) =>
   dim: {
     flex: 1,
     justifyContent: 'flex-end',
-    backgroundColor: 'rgba(28, 30, 70, 0.42)',
+    backgroundColor: c.isDark ? c.scrim : 'rgba(28, 30, 70, 0.42)', // night: black 55 %
   },
   sheet: {
     paddingTop: 12,

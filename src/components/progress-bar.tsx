@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
@@ -36,7 +36,7 @@ export function ProgressBar({ share, height = 6, onGradient = false, accessibili
         <View style={[styles.fill, { width, borderRadius: height / 2, backgroundColor: '#FFFFFF' }]} />
       ) : (
         <LinearGradient
-          colors={BRAND_GRADIENT}
+          colors={theme.gradient}
           start={GRADIENT_START}
           end={GRADIENT_END}
           style={[styles.fill, { width, borderRadius: height / 2 }]}

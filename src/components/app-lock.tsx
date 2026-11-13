@@ -4,7 +4,7 @@ import { AppState, Pressable, StyleSheet, View } from 'react-native';
 import { FullWindowOverlay } from 'react-native-screens';
 
 import { Text } from '@/components/text';
-import { BRAND_COLOR, BRAND_GRADIENT } from '@/constants/brand';
+import { BRAND_COLOR } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import { t as translate, useI18n } from '@/i18n';
 import { LOCK_AFTER_MS, authenticate, isAppLockEnabled, unlockMethod, useAppLockEnabled, type UnlockMethod } from '@/security/app-lock';
@@ -106,8 +106,8 @@ export function AppLock() {
   );
 }
 
-// White text needs a deep blue: the dark-mode accent (#8E9BFF) is too light under it
-const LOCK_COLOR = (c: Palette) => (c.isDark ? BRAND_GRADIENT[0] : BRAND_COLOR(c));
+// White text needs a deep blue: the night accent (#A99CFF) is too light under it
+const LOCK_COLOR = (c: Palette) => (c.isDark ? c.gradient[0] : BRAND_COLOR(c));
 
 const makeStyles = (c: Palette) =>
   StyleSheet.create({

@@ -3,9 +3,9 @@ import { useEffect } from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
-import { useThemedStyles } from '@/hooks/use-theme';
+import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   value: boolean;
@@ -28,10 +28,12 @@ export function Switch({
   onValueChange,
   disabled = false,
   accessibilityLabel,
-  gradient = BRAND_GRADIENT,
+  gradient: gradientProp,
   hiddenFromAccessibility = false,
 }: Props) {
   const styles = useThemedStyles(makeStyles);
+  const theme = useTheme();
+  const gradient = gradientProp ?? theme.gradient;
   const progress = useSharedValue(value ? 1 : 0);
 
   useEffect(() => {

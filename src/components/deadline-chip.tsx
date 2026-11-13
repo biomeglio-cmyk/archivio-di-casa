@@ -10,8 +10,8 @@ import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 const RED = (p: Palette) => p.error;
 const RED_SOFT = (p: Palette) => p.errorBackground;
-const AMBER = (p: Palette) => onSoftTint(p, '#8A5A00', '#F5CB6B');
-const AMBER_SOFT = (p: Palette) => softTint(p, '#FFF1D6', '#352A12');
+const AMBER = (p: Palette) => onSoftTint(p, '#8A5A00', '#F5CF7A');
+const AMBER_SOFT = (p: Palette) => softTint(p, '#FFF1D6', '#2A2420');
 // Behind the tile's own text color: translucent white under dark text (pastel tiles),
 // translucent black under light text (palette "Notte", dark cover colors)
 const NEUTRAL_ON_LIGHT = 'rgba(255, 255, 255, 0.55)';

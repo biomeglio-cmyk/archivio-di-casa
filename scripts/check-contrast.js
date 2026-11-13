@@ -3,7 +3,7 @@
 /*
  * Contrast check (npm run check:contrast): every text/background and icon/control pair of the app palettes
  * (light, "Tema notte" and their "Aumenta contrasto" versions) and the tiles of the 7 category palettes, as
- * shown in each theme (utils/colors forTheme + readableColors: the night tiles of Pastello in Tema notte). WCAG AA: 4.5:1 for text, 3:1 for icons and controls. Exit 1 if any fails.
+ * shown in each theme (by night every palette shows the night folders of "Tema notte (v2)"). WCAG AA: 4.5:1 for text, 3:1 for icons and controls. Exit 1 if any fails.
  */
 const path = require('path'), fs = require('fs'), Module = require('module');
 const ROOT = path.join(__dirname, '..');
@@ -21,7 +21,7 @@ require.extensions['.ts'] = (m, f) => m._compile(ts.transpileModule(fs.readFileS
 const { LIGHT, DARK, LIGHT_HIGH_CONTRAST, DARK_HIGH_CONTRAST } = require(ROOT + '/src/constants/theme.ts');
 const { PALETTES } = require(ROOT + '/src/constants/palettes.ts');
 const colors = require(ROOT + '/src/utils/colors.ts');
-const { BRAND_GRADIENT: BRAND } = require(ROOT + '/src/constants/brand.ts');
+const { NIGHT_FOLDERS } = require(ROOT + '/src/constants/night-folders.ts');
 
 function lum(hex) {
   const v = parseInt(hex.replace('#', '').slice(0, 6), 16);
@@ -59,12 +59,12 @@ for (const [name, p] of [['light', LIGHT], ['dark', DARK], ['lightHC', LIGHT_HIG
   check(name, 'success on successBackground (Pagata)', p.success, p.successBackground, 4.5);
   check(name, 'white on badge', '#FFFFFF', p.badge, 4.5);
   check(name, 'white on destructive button', '#FFFFFF', p.destructive, 4.5);
-  check(name, 'white on brand gradient start', '#FFFFFF', BRAND[0], 4.5);
-  check(name, 'white on brand gradient end', '#FFFFFF', BRAND[1], 4.5);
+  check(name, 'white on main gradient start', '#FFFFFF', p.gradient[0], 4.5);
+  check(name, 'white on main gradient end', '#FFFFFF', p.gradient[1], 4.5);
   check(name, 'accent on lilac', p.accent, p.lilac, 4.5);
   // Category tiles (gradient + text) and tints, every palette
   for (const pal of PALETTES) {
-    pal.colors.map((c) => colors.readableColors(colors.forTheme(c, p.isDark))).forEach((c, i) => {
+    pal.colors.map((c, i) => colors.readableColors(p.isDark ? NIGHT_FOLDERS[i] : c)).forEach((c, i) => {
       const label = `${pal.id} #${i + 1}`;
       check(name, `tile text on gradient top (${label})`, c.text, c.top, 4.5);
       check(name, `tile text on gradient bottom (${label})`, c.text, c.bottom, 4.5);

@@ -260,6 +260,8 @@ Questa sezione ha la precedenza sulla guida dove le due non coincidono.
 
 ## Tema notte
 
+> **Sostituita da "Tema notte (v2)"** (sotto): i valori di questa sezione restano solo come storia.
+
 Palette ufficiale del tema scuro (Impostazioni › Aspetto › Tema: Automatico / Chiaro / Scuro). Ogni colore è una variabile del tema con lo stesso nome e due valori.
 
 | Ruolo | Chiaro | Notte |
@@ -305,25 +307,79 @@ Palette ufficiale del tema scuro (Impostazioni › Aspetto › Tema: Automatico 
 | Pet | #253015 | #C2E58F |
 | Altro | #24263F | #C3C7D9 |
 
-### Pastello in Tema notte (riquadri notte, 13 novembre 2026)
 
-In Tema notte la palette Pastello non usa le sfumature chiare: ogni riquadro è una sfumatura verticale della tinta
-scura della categoria (in alto +6 % di luminosità, in basso la tinta), testo e icona nel colore chiaro della
-categoria, bordo 1 px bianco 7 % come le altre schede notte, nessuna ombra colorata. Chip e tinte della cartella
-usano la stessa coppia tinta/testo. Contrasto testo/riquadro ≥ 5,7:1 (WCAG AA). Il Pastello chiaro non cambia.
+## Tema notte (v2)
 
-| Categoria | In alto | In basso (tinta) | Testo e icona | Contrasto minimo |
-|---|---|---|---|---|
-| Documenti | #272E5B | #1E2346 | #A9B3FF | 6,5 |
-| Tessere e card | #1E493C | #15332A | #7FE0BC | 6,4 |
-| Utenze | #503121 | #3A2418 | #FFB48A | 6,7 |
-| Casa | #30335D | #262849 | #B3A8FF | 5,7 |
-| Assicurazioni | #19444F | #123038 | #8ADCE8 | 6,8 |
-| Garanzie e scontrini | #4C3C1A | #352A12 | #F5CB6B | 6,9 |
-| Auto | #1E3456 | #16263F | #8DB6FF | 6,1 |
-| Spese 730 | #4F2337 | #3A1A28 | #FF9CC0 | 6,6 |
-| Colf | #4F2C25 | #3A201B | #FFB09B | 6,9 |
-| Scuola | #4A2150 | #36183A | #F2A6E6 | 7,0 |
-| Pet | #35451E | #253015 | #C2E58F | 7,4 |
-| Password | #194551 | #12313A | #7FD6E4 | 6,3 |
-| Altro | #2F3252 | #24263F | #C3C7D9 | 7,4 |
+Tavolozza notte del design (13 novembre 2026). Sostituisce tutti i valori notte precedenti e la variante notte di
+Pastello. Il tema chiaro non cambia. I codici a barre e QR delle tessere restano sempre su una scheda bianca; i colori
+scelti dall'utente per una categoria non cambiano; Aumenta contrasto rinforza grigi e bordi anche di notte.
+
+### Fondo e superfici
+
+| Elemento | Valore |
+|---|---|
+| Sfondo | #0D0E1C, con una luce indaco tenue in alto nello schermo |
+| Scheda | #17182C |
+| Pulsanti tondi, campi, scelte non attive | #212339 |
+| Riquadri morbidi | #1C1D34 |
+| Separatore | #25273F |
+| Ombra delle schede | diventa una linea chiara di 1 px, bianco 7 % |
+
+### Testo e icone
+
+| Elemento | Valore |
+|---|---|
+| Testo principale | #EEEFF8 |
+| Testo secondario | #9C9FBA |
+| Testo sui riquadri | #C7C9DD |
+| Icone del menu | #C7C9DD |
+| Icone grigie | #B4B7CC |
+| Segnaposto | #898BA4 |
+| Accento / link | #A99CFF |
+| Testo e icone indaco | #B8ADFF |
+
+### Sfumatura principale
+
+#4F5CF2 → #7A55F0 (testo bianco ≥ 4,5:1); bagliore sotto i pulsanti al 45 %, più ampio.
+
+### Cartelle
+
+Di notte valgono per **ogni palette** (la palette scelta in Aspetto vale per il tema chiaro, predefinita Pastello).
+Sfumatura a 135° con testo e icone bianchi (≥ 4,5:1 su entrambi i capi), bordo 1 px bianco 7 %, nessuna ombra colorata.
+Le categorie con un colore scelto dall'utente lo mantengono.
+
+| Categoria | Da | A | Tinta di sezione | Testo su tinta | Origine |
+|---|---|---|---|---|---|
+| Documenti | #4C5EE6 | #3246E2 | #1B1F3A | #A9B3FF | ricavata |
+| Tessere e card | #228468 | #1A6E55 | #14282A | #7FE0BC | design |
+| Utenze (Bollette) | #C2531D | #AD4423 | #2A1E24 | #FFB089 | design |
+| Casa | #725FEE | #5A47D6 | #212339 | #C3B8FF | design |
+| Assicurazioni | #2E7E8A | #266973 | #13282D | #8ADCE8 | ricavata |
+| Garanzie e scontrini | #996D1A | #80590F | #2A2420 | #F5CF7A | design |
+| Auto | #3470E5 | #2F5FCB | #18233D | #9EC2FF | design |
+| Spese 730 (Salute) | #D03C74 | #B03564 | #2A1B2C | #FFA3C2 | design |
+| Colf | #CB4A27 | #B14022 | #2A1D1E | #FFAE98 | ricavata |
+| Scuola | #C13EAA | #AA3796 | #291A2E | #F2A6E6 | ricavata |
+| Pet | #5E7E32 | #4E6829 | #1C2617 | #C2E58F | ricavata |
+| Password | #23808F | #1A6A77 | #13283A | #7FD6E4 | design |
+| Altro | #6C7493 | #5F6682 | #1F2131 | #C3C7D9 | ricavata |
+
+Ricavate: la tonalità della cartella Sottomano, più profonda (luminosità abbassata finché il testo bianco arriva a
+≥ 4,6:1 in alto, il fondo 6 punti più scuro); la tinta è la stessa tonalità molto scura, il testo una sua versione chiara
+(≥ 8:1 sulla tinta).
+
+### Stati
+
+| Elemento | Valore |
+|---|---|
+| Da pagare | #3A1A24 / #FF8F8F |
+| Pagata | #123228 / #6FDCB2 |
+| Pallino notifiche | #E0263B |
+| Cuore | #FF6F9B |
+| Interruttore spento | #5E62A2 |
+| Bordo tratteggiato | #5D6199 (design #595D92, alzato di poco per 3:1 sulle schede) |
+
+### Menu a vetro e fogli
+
+Vetro #242644 al 78 % → #16172C al 62 %, bordo bianco 10 %; voce attiva lilla #A99CFF al 16 %; velo dietro i fogli
+nero 55 %.

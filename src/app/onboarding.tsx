@@ -10,7 +10,7 @@ import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { NoBreakText } from '@/components/tile-title';
 import { Text } from '@/components/text';
-import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { markOnboardingSeen } from '@/onboarding/onboarding-flag';
@@ -258,7 +258,7 @@ function ScanArt() {
       <Paper left={92} top={70} rotate="-8deg" accent="#6FD3AE" shadow="0 12px 26px rgba(28, 30, 70, 0.12)" />
       <Paper left={124} top={86} rotate="4deg" accent="#FFA36E" shadow="0 14px 30px rgba(28, 30, 70, 0.16)" highlight />
       <View style={styles.scanFrame} />
-      <Gradient colors={BRAND_GRADIENT} style={styles.cameraBadge}>
+      <Gradient colors={theme.gradient} style={styles.cameraBadge}>
         <SymbolView name="camera" tintColor="#FFFFFF" size={26} />
       </Gradient>
       <View style={styles.pdfPill}>
@@ -281,7 +281,7 @@ function DeadlineArt() {
   const days = [9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22];
   return (
     <>
-      <Circle color={theme.isDark ? '#3A2418' : '#FFF0E7'} />
+      <Circle color={theme.isDark ? '#2A1E24' : '#FFF0E7'} />
       <View style={styles.miniCalendar}>
         <View style={styles.calendarHead}>
           <Text style={styles.calendarMonth} allowFontScaling={false}>{capitalize(monthName(10))}</Text>
@@ -290,7 +290,7 @@ function DeadlineArt() {
         <View style={styles.calendarGrid}>
           {days.map((day) =>
             day === 14 ? (
-              <Gradient key={day} colors={BRAND_GRADIENT} style={styles.calendarDay}>
+              <Gradient key={day} colors={theme.gradient} style={styles.calendarDay}>
                 <Text style={[styles.calendarNumber, styles.calendarChosen]} allowFontScaling={false}>{day}</Text>
               </Gradient>
             ) : (
@@ -310,7 +310,7 @@ function DeadlineArt() {
           <Text style={styles.reminderText} allowFontScaling={false}>{t('onboarding.art.billExpires')}</Text>
         </View>
       </View>
-      <Gradient colors={BRAND_GRADIENT} style={styles.bellBadge}>
+      <Gradient colors={theme.gradient} style={styles.bellBadge}>
         <SymbolView name="bell" tintColor="#FFFFFF" size={24} />
         <View style={styles.redDot} />
       </Gradient>
@@ -351,11 +351,11 @@ function CardsArt() {
   const { t } = useI18n();
   return (
     <>
-      <Circle color={theme.isDark ? '#15332A' : '#E6F7F0'} />
+      <Circle color={theme.isDark ? '#14282A' : '#E6F7F0'} />
       <WalletCard name={t('onboarding.art.gym')} colors={['#FF6F9B', '#E8457A']} accent="#FFD27A" left={40} top={60} rotate="-10deg" />
-      <WalletCard name={t('onboarding.art.library')} colors={BRAND_GRADIENT} accent="#FF9A70" left={70} top={120} rotate="-2deg" />
+      <WalletCard name={t('onboarding.art.library')} colors={theme.gradient} accent="#FF9A70" left={70} top={120} rotate="-2deg" />
       <WalletCard name={t('onboarding.art.supermarket')} colors={['#2ECC9A', '#13A37B']} accent="#F5CB6B" left={96} top={186} rotate="7deg" />
-      <Gradient colors={BRAND_GRADIENT} style={styles.scanBadge}>
+      <Gradient colors={theme.gradient} style={styles.scanBadge}>
         <SymbolView name="barcode.viewfinder" tintColor="#FFFFFF" size={26} />
       </Gradient>
     </>

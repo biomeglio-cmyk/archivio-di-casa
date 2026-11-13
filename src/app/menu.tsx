@@ -17,6 +17,7 @@ import { rateApp, recommendApp } from '@/actions/app-actions';
 import { isBackupDue } from '@/backup/backup-layout';
 import { addByScan, addFromFiles, addFromPhotos } from '@/capture/add-actions';
 import { FreeUsageCard } from '@/components/free-usage-card';
+import { GlassFill } from '@/components/glass-fill';
 import { LogoMark } from '@/components/logo-mark';
 import { Text } from '@/components/text';
 import type { MenuSection } from '@/constants/navigation';
@@ -131,6 +132,8 @@ export default function MenuScreen() {
           { width, paddingTop: insets.top + 12, paddingBottom: insets.bottom + 16 },
           panelStyle,
         ]}>
+        {/* Tema notte: the glass of the design (#242644 78 % → #16172C 62 %) over the dimmed page */}
+        <GlassFill />
         <View style={styles.header}>
           <View style={styles.logo} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
             <LogoMark size={42} radius={9} />
@@ -233,6 +236,7 @@ function MenuItem({ label, symbol, onPress, active = false, trailing, accessibil
   const styles = useThemedStyles(makeStyles);
   const { pressed, handlers } = usePressed();
   const color = active ? theme.indigo : theme.text;
+  const iconColor = active ? theme.indigo : theme.menuIcon;
   return (
     <Pressable
       {...handlers}
@@ -242,7 +246,7 @@ function MenuItem({ label, symbol, onPress, active = false, trailing, accessibil
       accessibilityHint={accessibilityHint}
       accessibilityState={active ? { selected: true } : undefined}
       style={[styles.item, active && styles.itemActive, pressed && !active && styles.itemPressed]}>
-      <SymbolView name={symbol} tintColor={color} size={22} />
+      <SymbolView name={symbol} tintColor={iconColor} size={22} />
       <Text style={[styles.itemLabel, { color }, active && styles.itemLabelActive]}>{label}</Text>
       {trailing}
     </Pressable>
@@ -288,7 +292,8 @@ const makeStyles = (c: Palette) =>
     top: 0,
     bottom: 0,
     paddingHorizontal: 16,
-    backgroundColor: c.surface,
+    backgroundColor: c.glass ? 'transparent' : c.surface,
+    ...(c.glass && { borderRightWidth: 1, borderRightColor: c.glass.border }),
     borderTopRightRadius: 32,
     borderBottomRightRadius: 32,
     borderCurve: 'continuous',
@@ -343,7 +348,7 @@ const makeStyles = (c: Palette) =>
     borderCurve: 'continuous',
   },
   itemActive: {
-    backgroundColor: c.lilac,
+    backgroundColor: c.menuActive,
   },
   itemPressed: {
     backgroundColor: c.paleLilac,

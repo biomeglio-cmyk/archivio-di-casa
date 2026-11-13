@@ -17,6 +17,7 @@ import { deleteDocumentForever, listTrashedDocuments } from '@/db/documents';
 import { daysLeftInTrash, emptyTrash, restoreFromTrash, TRASH_DAYS } from '@/db/trash';
 import type { DocumentListItem } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 import { resolveDocumentFile } from '@/storage/document-files';
@@ -29,6 +30,7 @@ export default function TrashScreen() {
   const theme = useTheme();
   const { t } = useI18n();
   const large = useWindowDimensions().fontScale > 1.3; // larger text: names are not cut
+  const largeText = useLargeText(); // the thumbnail on its own line, above the texts
   const { data: documents } = useDbQuery(listTrashedDocuments, []);
 
   function showError(error: unknown) {
@@ -113,11 +115,11 @@ export default function TrashScreen() {
                   ]}>
                   {/* One element for VoiceOver: "Bolletta luce, Utenze · Marco, Verrà eliminato tra 12 giorni" */}
                   <View
-                    style={styles.info}
+                    style={[styles.info, largeText && styles.infoLarge]}
                     accessible
                     accessibilityLabel={[document.title, subtitle, when].filter(Boolean).join(', ')}>
                     <Thumbnail document={document} />
-                    <View style={styles.texts}>
+                    <View style={[styles.texts, largeText && styles.textsLarge]}>
                       <ThemedText style={styles.title} numberOfLines={large ? undefined : 2}>
                         {document.title}
                       </ThemedText>
@@ -214,6 +216,16 @@ const makeStyles = (c: Palette) =>
   texts: {
     flex: 1,
     gap: 2,
+  },
+  // Large text: the thumbnail on its own line, the texts on the whole width under it
+  infoLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 8,
+  },
+  textsLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
   },
   title: {
     fontFamily: FONTS.semiBold,

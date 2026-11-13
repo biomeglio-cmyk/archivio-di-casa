@@ -10,12 +10,14 @@
  *    Apple's "Larger Text"), so beyond it the size stays at 200 %.
  *
  * What each place does when a word is too wide (the rules of the app):
- *  - tiles (TileTitle): shrink to 85 %, then the grid goes to one column — fail if it still doesn't fit
+ *  - tiles (TileTitle): one column with large text (XXL+); otherwise shrink to 85 %, then one
+ *    column when a word does not fit or a name needs more than 2 lines — fail if it still does not fit
  *  - page titles, buttons, chips (NoBreakText): shrink to 85 % — fail below
  *  - one-line buttons: shrink to 85 % (wrap between words above 130 % text) — fail below
  *  - segmented controls: one line per option; if any option doesn't fit, a vertical list of options
  *    where every word must fit at full size — fail otherwise
- *  - rows (icon + title + switch/value): the control moves below, the title has the row width;
+ *  - rows (icon + title + switch/value): the control moves below; with large text the icon goes
+ *    above the title, which then has the whole row;
  *    every word must fit at full size
  *  - any other text (paragraphs, notes) in a card: every word must fit at full size
  *  - navigation titles: one line at the design size (iOS ends them with "…" otherwise)
@@ -125,12 +127,20 @@ function measure(text, size, weight) {
 // ---- Places with little room, as functions of the screen width W (Spacing.side 22, TILE_GAP 14) ----
 
 const SIDE = 22;
+// hooks/use-large-text.ts: from XXL (2 steps above the default) grids have one column and a row's
+// leading icon sits above its title
+const LARGE_TEXT_SCALE = 21 / 17 - 0.01;
 const CARD_PAD = 16; // inside a white card
 // mode "words": wraps between words, every word must fit (minScale: how far it may shrink)
 // mode "line": one line (minScale: how far it may shrink)
 const PLACES = {
-  categoryTile: (W) => ({ label: 'category tile', size: 17, weight: 600, mode: 'words', minScale: 0.85,
-    width: Math.floor((W - SIDE * 2 - 14) / 2) - 32, fallback: W - SIDE * 2 - 32 }),
+  // 2 columns; 1 column with large text, or when a word doesn't fit or the name needs more than 2 lines
+  categoryTile: (W, scale) => {
+    const one = W - SIDE * 2 - 32;
+    const two = Math.floor((W - SIDE * 2 - 14) / 2) - 32;
+    return { label: 'category tile', size: 17, weight: 600, mode: 'words', minScale: 0.85, lines: 2,
+      width: scale >= LARGE_TEXT_SCALE ? one : two, fallback: one };
+  },
   folderTitle: (W) => ({ label: 'folder title', size: 30, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
   pageTitle: (W) => ({ label: 'page title', size: 30, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
   bigTitle: (W) => ({ label: 'big title', size: 28, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
@@ -146,8 +156,9 @@ const PLACES = {
   chip: (W) => ({ label: 'chip', size: 15, weight: 600, mode: 'words', minScale: 0.85, width: W - SIDE * 2 - 32 }),
   // rows and plain texts: the app Text makes a too-long word smaller instead of breaking it
   // (counted as "fitted"); fail only if it would need less than 50 %
-  row: (W) => ({ label: 'row title', size: 16, weight: 500, mode: 'words', minScale: 0.5, autoFit: true,
-    width: W - SIDE * 2 - CARD_PAD * 2 - 36 - 12 }),
+  // with large text the icon goes above the title: the title has the whole row
+  row: (W, scale) => ({ label: 'row title', size: 16, weight: 500, mode: 'words', minScale: 0.5, autoFit: true,
+    width: W - SIDE * 2 - CARD_PAD * 2 - (scale >= LARGE_TEXT_SCALE ? 0 : 36 + 12) }),
   text: (W) => ({ label: 'text', size: 16, weight: 400, mode: 'words', minScale: 0.5, autoFit: true, width: W - SIDE * 2 - CARD_PAD * 2 }),
   navTitle: (W) => ({ label: 'navigation title', size: 17, weight: 600, mode: 'line', minScale: 1, width: W - 2 * 88, fixed: true }),
 };
@@ -309,6 +320,10 @@ function checkLanguage(lang, W, scaleName, scale) {
       if (NOT_ON_SCREEN.test(key)) continue;
       const text = sample(texts.get(key));
       const widest = place.mode === 'words' ? widestWord(text, size, place.weight) : { word: text, width: measure(text, size, place.weight) };
+      // more lines than allowed (estimate: the whole text over the line width) → the 1-column layout
+      if (place.lines && place.fallback && measure(text, size, place.weight) > place.width * place.lines) {
+        if (widest.width <= place.fallback) continue;
+      }
       if (widest.width <= place.width) continue;
       const needed = place.width / widest.width;
       if (place.autoFit && needed >= place.minScale) {

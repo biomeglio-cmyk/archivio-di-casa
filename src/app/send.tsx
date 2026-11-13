@@ -32,6 +32,7 @@ import {
   sizeLimitLabel,
   type SendPreferences,
 } from '@/send/send-preferences';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 // Warnings: soft orange box, dark orange text
@@ -76,6 +77,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
   const large = useWindowDimensions().fontScale > 1.3; // larger text: names and labels wrap
+  const largeText = useLargeText(); // leading pictures and icons on their own line, above the texts
   const composerRef = useRef<FrontBackComposerHandle>(null);
   const [preferences, setPreferences] = useState<SendPreferences>(loadSendPreferences);
   const [result, setResult] = useState<Result | null>(null);
@@ -206,7 +208,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
 
   return (
     <ScrollView contentContainerStyle={[styles.container, { paddingBottom: insets.bottom + 24 }]}>
-      <View style={styles.head}>
+      <View style={[styles.head, largeText && styles.stackLarge]}>
         <View
           style={[styles.thumb, { backgroundColor: tint }]}
           accessibilityElementsHidden
@@ -221,7 +223,7 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
             </View>
           )}
         </View>
-        <View style={styles.flex}>
+        <View style={[styles.flex, largeText && styles.fillLarge]}>
           <Text style={styles.title} numberOfLines={large ? undefined : 2} accessibilityRole="header">
             {t('send.title', { title })}
           </Text>
@@ -315,11 +317,11 @@ function SendForm({ items, label }: { items: SendItem[]; label: string | null })
             // One element for VoiceOver: "Bolletta.pdf, 1,2 MB"
             <View
               key={file.name}
-              style={styles.fileRow}
+              style={[styles.fileRow, largeText && styles.fileRowLarge]}
               accessible
               accessibilityLabel={`${file.name}, ${formatBytes(file.bytes)}`}>
               <SymbolView name={format === 'pdf' ? 'doc.richtext' : 'photo'} tintColor={theme.indigo} size={20} />
-              <Text style={styles.fileName} numberOfLines={large ? undefined : 1}>
+              <Text style={[styles.fileName, largeText && styles.fillLarge]} numberOfLines={large ? undefined : 1}>
                 {file.name}
               </Text>
               <Text style={styles.small}>{formatBytes(file.bytes)}</Text>
@@ -382,10 +384,11 @@ function SwitchRow({ label, value, onValueChange, disabled = false }: {
 function Warning({ text }: { text: string }) {
   const theme = useTheme();
   const styles = useThemedStyles(makeStyles);
+  const largeText = useLargeText(); // the sign above the text
   return (
-    <View style={styles.warning} accessible accessibilityLabel={text}>
+    <View style={[styles.warning, largeText && styles.stackLarge]} accessible accessibilityLabel={text}>
       <SymbolView name="exclamationmark.triangle.fill" tintColor={WARNING_COLORS(theme).text} size={16} />
-      <Text style={styles.warningText}>{text}</Text>
+      <Text style={[styles.warningText, largeText && styles.fillLarge]}>{text}</Text>
     </View>
   );
 }
@@ -403,6 +406,15 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
     alignItems: 'center',
     gap: 14,
+  },
+  // Large text: the leading picture or icon on its own line, the texts on the whole width under it
+  stackLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  fillLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
   },
   thumb: {
     width: 52,
@@ -530,6 +542,12 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
     alignItems: 'center',
     gap: 10,
+  },
+  fileRowLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 2,
+    marginBottom: 6,
   },
   fileName: {
     flex: 1,

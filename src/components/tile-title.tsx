@@ -40,6 +40,8 @@ export function TileTitle({
 
   // Larger text: twice the lines, so a name is not cut after a word or two
   const lines = numberOfLines > 0 && fontScale > 1.3 ? numberOfLines * 2 : numberOfLines;
+  // In a 2-column grid the title is laid out in full: more than 2 lines → the grid goes to 1 column
+  const watchLines = inGrid && columns === 2;
   const [width, setWidth] = useState(0); // room for the text
   const [wordWidth, setWordWidth] = useState(0); // the widest word at the full font size
 
@@ -67,7 +69,8 @@ export function TileTitle({
     <View style={containerStyle} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
       <Text
         style={[style, sized]}
-        numberOfLines={lines}
+        numberOfLines={watchLines ? undefined : lines}
+        onTextLayout={watchLines ? (e) => e.nativeEvent.lines.length > 2 && reportTooLong() : undefined}
         accessibilityRole={accessibilityRole}
         ellipsizeMode="tail"
         maxFontSizeMultiplier={cap}>

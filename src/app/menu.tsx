@@ -25,6 +25,7 @@ import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getMenuCounts } from '@/db/menu-counts';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useLargeText } from '@/hooks/use-large-text';
 import { usePressed } from '@/hooks/use-pressed';
 import { useI18n } from '@/i18n';
 import { whenBelowLimit } from '@/settings/free-limit';
@@ -237,6 +238,7 @@ function MenuItem({ label, symbol, onPress, active = false, trailing, accessibil
   const { pressed, handlers } = usePressed();
   const color = active ? theme.indigo : theme.text;
   const iconColor = active ? theme.indigo : theme.menuIcon;
+  const large = useLargeText(); // the icon above the label
   return (
     <Pressable
       {...handlers}
@@ -245,9 +247,9 @@ function MenuItem({ label, symbol, onPress, active = false, trailing, accessibil
       accessibilityLabel={accessibilityLabel ?? label}
       accessibilityHint={accessibilityHint}
       accessibilityState={active ? { selected: true } : undefined}
-      style={[styles.item, active && styles.itemActive, pressed && !active && styles.itemPressed]}>
+      style={[styles.item, large && styles.itemLarge, active && styles.itemActive, pressed && !active && styles.itemPressed]}>
       <SymbolView name={symbol} tintColor={iconColor} size={22} />
-      <Text style={[styles.itemLabel, { color }, active && styles.itemLabelActive]}>{label}</Text>
+      <Text style={[styles.itemLabel, large && styles.itemLabelLarge, { color }, active && styles.itemLabelActive]}>{label}</Text>
       {trailing}
     </Pressable>
   );
@@ -352,6 +354,16 @@ const makeStyles = (c: Palette) =>
   },
   itemPressed: {
     backgroundColor: c.paleLilac,
+  },
+  itemLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 6,
+    paddingVertical: 10,
+  },
+  itemLabelLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
   },
   itemLabel: {
     flex: 1,

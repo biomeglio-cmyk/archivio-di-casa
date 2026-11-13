@@ -10,6 +10,7 @@ import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { hexToWheel } from '@/utils/colors';
 import { wheelHex } from '@/utils/password-tools';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
@@ -49,7 +50,10 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
   const [typed, setTyped] = useState(custom ?? wheelHex(wheel.hue, wheel.radius));
   const customOn = custom !== null && open;
   const shown = custom ?? wheelHex(wheel.hue, wheel.radius);
-  const cell = columns ? { width: `${100 / columns}%` as const } : styles.cellAuto;
+  // Large text: fewer swatches per row (bigger targets, more air around the labels)
+  const large = useLargeText();
+  const perRow = columns && large ? Math.max(3, Math.round(columns * 0.75)) : columns;
+  const cell = perRow ? { width: `${100 / perRow}%` as const } : styles.cellAuto;
 
   function pickWheel(hue: number, radius: number) {
     const hex = wheelHex(hue, radius);

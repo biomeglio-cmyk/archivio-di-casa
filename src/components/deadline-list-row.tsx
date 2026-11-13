@@ -13,6 +13,7 @@ import { useI18n } from '@/i18n';
 import { useFormat } from '@/i18n/use-format';
 import { daysUntil } from '@/utils/deadlines';
 import { describeEvery } from '@/utils/recurrence';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 export const DEADLINE_ROW_INSET = 74; // separators start after the date square (16 + 46 + 14 - 2)
@@ -35,6 +36,7 @@ export function DeadlineListRow({ document, near, onPress, onLongPress }: Props)
   const { pressed, handlers } = usePressed();
   const { fontScale } = useWindowDimensions();
   const large = fontScale > 1.3; // larger text: full title and line, the badge under them
+  const largeText = useLargeText(); // the date square on its own line above the title
   const days = daysUntil(document.expiresAt);
   const overdue = days < 0;
   const subtitle = rowSubtitle(document, days, near, fmt);
@@ -59,8 +61,9 @@ export function DeadlineListRow({ document, near, onPress, onLongPress }: Props)
       onAccessibilityAction={(event) => {
         if (event.nativeEvent.actionName === 'deadlineActions') onLongPress();
       }}
-      style={[styles.row, pressed && styles.pressed]}>
+      style={[styles.row, largeText && styles.rowLarge, pressed && styles.pressed]}>
       <DateSquare iso={document.expiresAt} highlighted={near && !overdue} />
+      <View style={[styles.main, largeText && styles.mainLarge]}>
       <View style={styles.texts}>
         <Text style={styles.title} numberOfLines={large ? undefined : 2}>
           {document.title}
@@ -80,6 +83,7 @@ export function DeadlineListRow({ document, near, onPress, onLongPress }: Props)
       </View>
       {!large && document.paymentStatus && <StatusBadge status={document.paymentStatus} />}
       <SymbolView name="chevron.right" tintColor={theme.textSecondary} size={15} weight="semibold" />
+      </View>
     </Pressable>
   );
 }
@@ -112,6 +116,22 @@ const makeStyles = (c: Palette) =>
   },
   pressed: {
     backgroundColor: c.backgroundSelected,
+  },
+  // Large text: the date square above, then title, line and chevron across the whole row
+  rowLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start', // the date square keeps its size
+    gap: 8,
+  },
+  main: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  mainLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
   },
   texts: {
     flex: 1,

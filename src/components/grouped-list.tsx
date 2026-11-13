@@ -10,6 +10,7 @@ import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
 import { type Palette, Spacing } from '@/constants/theme';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
@@ -70,14 +71,15 @@ export function Row({
   const theme = useTheme();
   const { t } = useI18n();
   const alerting = alert && count !== undefined && count > 0;
+  const large = useLargeText(); // the icon above the title, the texts across the whole row
+  const separator = !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator };
   const content = (
     <>
-      <View style={styles.icon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
+      <View style={[styles.icon, large && styles.iconLarge]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <SymbolView name={symbol} tintColor={disabled ? theme.textSecondary : BRAND_COLOR(theme)} size={20} />
       </View>
       {/* The separator is the top line of this part, so it starts after the icon */}
-      <View
-        style={[styles.body, !first && { borderTopWidth: StyleSheet.hairlineWidth, borderTopColor: theme.separator }]}>
+      <View style={[styles.body, large ? styles.bodyLarge : separator]}>
         {/* Label and value on one line when they fit, else the value under the label (measured) */}
         <FitLine
           endAlign={toggle && value === undefined ? 'end' : 'start'}
@@ -114,7 +116,8 @@ export function Row({
       </View>
     </>
   );
-  const style = styles.row;
+  // Large text: the separator above the whole row (icon included), the icon on its own line
+  const style = [styles.row, large && [styles.rowLarge, separator]];
   // "Scadenze, 3 in scadenza", "Documenti, 12", "Promemoria, 3 giorni prima"
   const spokenCount =
     count === undefined ? undefined : alerting ? t('a11y.groupedList.alertCount', { count }) : String(count);
@@ -181,6 +184,20 @@ const makeStyles = (c: Palette) =>
     marginRight: GAP,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  rowLarge: {
+    flexDirection: 'column',
+  },
+  iconLarge: {
+    width: undefined,
+    alignItems: 'flex-start',
+    marginRight: 0,
+    paddingTop: 12,
+  },
+  bodyLarge: {
+    flex: 0,
+    minHeight: 0,
+    paddingTop: 6,
   },
   body: {
     flex: 1,

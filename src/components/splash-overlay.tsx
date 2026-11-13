@@ -14,7 +14,7 @@ import Animated, {
   withTiming,
   type SharedValue,
 } from 'react-native-reanimated';
-import Svg, { G, Path, Rect } from 'react-native-svg';
+import Svg, { Circle, Defs, G, Path, RadialGradient, Rect, Stop } from 'react-native-svg';
 
 import { useReduceMotion } from '@/a11y/accessibility';
 import { Text } from '@/components/text';
@@ -23,7 +23,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { useI18n } from '@/i18n';
 
 // The opening animation, right after the native splash (same color), on top of Home. 4.5 s:
-//   0.00–0.35  the gradient fades in; a soft light sweeps slowly across it the whole time
+//   0.00–0.35  the gradient fades in; an aurora of 3 soft color blobs drifts over it the whole time
 //   0.75       the hand springs in from the left (overshoot)
 //   1.00–1.32  the document falls from above, tilted, and lands in the hand with a bounce;
 //              the hand dips on the impact and recovers; small sparkles burst out (~400 ms)
@@ -76,7 +76,6 @@ export function SplashOverlay() {
 
   const background = useSharedValue(0);
   const content = useSharedValue(reduceMotion ? 0 : 1);
-  const sweep = useSharedValue(0);
   const handIn = useSharedValue(0);
   const drop = useSharedValue(-1.1); // document offset, in mark heights (0 = in the hand)
   const tilt = useSharedValue(-16); // degrees
@@ -104,7 +103,6 @@ export function SplashOverlay() {
       tilt.set(0);
       tagline.set(1);
     } else {
-      sweep.set(withTiming(1, { duration: TOTAL_MS, easing: Easing.inOut(Easing.sin) }));
       handIn.set(withDelay(HAND_AT, withSpring(1, { damping: 11, stiffness: 120, mass: 1 })));
       drop.set(
         withDelay(
@@ -143,7 +141,7 @@ export function SplashOverlay() {
     }
     const timer = setTimeout(() => setVisible(false), TOTAL_MS);
     return () => clearTimeout(timer);
-  }, [shown, reduceMotion, background, content, sweep, handIn, drop, tilt, dip, burst, shine, tagline, float, exit]);
+  }, [shown, reduceMotion, background, content, handIn, drop, tilt, dip, burst, shine, tagline, float, exit]);
 
   // A tap: a quick fade, then Home
   useEffect(() => {
@@ -158,9 +156,6 @@ export function SplashOverlay() {
     transform: [{ scale: reduceMotion ? 1 : 1 + 0.06 * exit.get() }],
   }));
   const backgroundStyle = useAnimatedStyle(() => ({ opacity: background.get() }));
-  const sweepStyle = useAnimatedStyle(() => ({
-    transform: [{ translateX: -screenWidth + sweep.get() * screenWidth * 2.2 }, { rotate: '18deg' }],
-  }));
   const contentStyle = useAnimatedStyle(() => ({ opacity: content.get() }));
   const floatStyle = useAnimatedStyle(() => ({ transform: [{ translateY: -2.5 * float.get() }] }));
   const handStyle = useAnimatedStyle(() => ({
@@ -212,22 +207,18 @@ export function SplashOverlay() {
             SplashScreen.hideAsync().finally(() => setShown(true));
           }}
         />
-        {/* A soft band of light that crosses the gradient slowly */}
-        {!reduceMotion && (
-          <Animated.View
-            style={[
-              styles.sweep,
-              { top: -screenHeight * 0.25, height: screenHeight * 1.5, width: screenWidth * 0.7 },
-              sweepStyle,
-            ]}>
-            <LinearGradient
-              colors={['rgba(255,255,255,0)', 'rgba(255,255,255,0.16)', 'rgba(255,255,255,0)']}
-              start={{ x: 0, y: 0.5 }}
-              end={{ x: 1, y: 0.5 }}
-              style={StyleSheet.absoluteFill}
-            />
-          </Animated.View>
-        )}
+        {/* The aurora: soft color blobs that drift and breathe, blending together */}
+        {AURORA.map((blob, index) => (
+          <Blob
+            key={index}
+            blob={blob}
+            color={theme.isDark ? blob.night : blob.light}
+            opacity={theme.isDark ? 0.45 : blob.opacity}
+            screenWidth={screenWidth}
+            screenHeight={screenHeight}
+            still={reduceMotion}
+          />
+        ))}
       </Animated.View>
 
       <Pressable style={styles.center} onPress={() => setSkipped(true)}>
@@ -365,6 +356,124 @@ function Sparkle({
   );
 }
 
+// The aurora blobs: where they sit (share of the screen), their size (share of the width), how far
+// they drift (pt), their loop (ms per leg, ease-in-out, back and forth) and where in the loop they
+// start, so the background is already moving on the first frame
+type AuroraBlob = {
+  light: string;
+  night: string;
+  opacity: number;
+  x: number;
+  y: number;
+  size: number;
+  drift: { x: number; y: number };
+  legMs: number;
+  phase: number;
+};
+
+const AURORA: AuroraBlob[] = [
+  {
+    light: '#F79BBA',
+    night: '#D03C74',
+    opacity: 0.7,
+    x: 0.12,
+    y: 0.2,
+    size: 1.15,
+    drift: { x: 55, y: 40 },
+    legMs: 5600,
+    phase: 0.3,
+  },
+  {
+    light: '#6FA8FF',
+    night: '#3470E5',
+    opacity: 0.65,
+    x: 0.9,
+    y: 0.48,
+    size: 1.2,
+    drift: { x: -45, y: 55 },
+    legMs: 6400,
+    phase: 0.65,
+  },
+  {
+    light: '#B39BFF',
+    night: '#725FEE',
+    opacity: 0.75,
+    x: 0.3,
+    y: 0.86,
+    size: 1.25,
+    drift: { x: 60, y: -40 },
+    legMs: 7000,
+    phase: 0.1,
+  },
+];
+
+// One blob: a circle filled with a radial gradient that fades to transparent (react-native-svg,
+// drawn once); only its position and scale change, on the UI thread. A sine of a steady clock
+// gives the ease-in-out back and forth, with no jump when the loop restarts.
+function Blob({
+  blob,
+  color,
+  opacity,
+  screenWidth,
+  screenHeight,
+  still,
+}: {
+  blob: AuroraBlob;
+  color: string;
+  opacity: number;
+  screenWidth: number;
+  screenHeight: number;
+  still: boolean;
+}) {
+  const clock = useSharedValue(0);
+
+  useEffect(() => {
+    if (still) return;
+    clock.set(withRepeat(withTiming(1, { duration: blob.legMs * 2, easing: Easing.linear }), -1, false));
+  }, [still, blob.legMs, clock]);
+
+  const size = screenWidth * blob.size;
+  const style = useAnimatedStyle(() => {
+    const turn = 2 * Math.PI * (clock.get() + blob.phase);
+    const move = Math.sin(turn); // -1 … 1
+    const breathe = Math.sin(turn * 0.8 + 1.3); // its own rhythm for the size
+    return {
+      transform: [
+        { translateX: blob.drift.x * move },
+        { translateY: blob.drift.y * move },
+        { scale: 1.05 + 0.15 * breathe }, // 0.9 … 1.2
+      ],
+    };
+  });
+  const id = `blob-${blob.light.slice(1)}`;
+
+  return (
+    <Animated.View
+      style={[
+        styles.blob,
+        {
+          left: screenWidth * blob.x - size / 2,
+          top: screenHeight * blob.y - size / 2,
+          width: size,
+          height: size,
+          opacity,
+        },
+        style,
+      ]}>
+      <Svg width={size} height={size}>
+        <Defs>
+          <RadialGradient id={id} cx="50%" cy="50%" r="50%">
+            <Stop offset="0" stopColor={color} stopOpacity={1} />
+            <Stop offset="0.45" stopColor={color} stopOpacity={0.6} />
+            <Stop offset="1" stopColor={color} stopOpacity={0} />
+          </RadialGradient>
+        </Defs>
+        <Circle cx={size / 2} cy={size / 2} r={size / 2} fill={`url(#${id})`} />
+      </Svg>
+    </Animated.View>
+  );
+}
+
 const viewBox = `${VIEW_BOX.x} ${VIEW_BOX.y} ${VIEW_BOX.width} ${VIEW_BOX.height}`;
 
 // The open hand of the logo (white)
@@ -405,9 +514,8 @@ const styles = StyleSheet.create({
   clip: {
     overflow: 'hidden',
   },
-  sweep: {
+  blob: {
     position: 'absolute',
-    left: 0,
   },
   center: {
     flex: 1,

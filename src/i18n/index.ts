@@ -29,7 +29,15 @@ void i18n.use(initReactI18next).init({
   interpolation: { escapeValue: false }, // React already escapes
   returnNull: false,
   initAsync: false, // resources are bundled: ready before the first screen
+  // Never suspend: useTranslation would otherwise throw a promise in the middle of a render
+  // (after its hooks) when i18next isn't ready, and there is no <Suspense> above RootContent.
+  // Not ready → t() returns the key for one render, and the hook order never changes.
+  react: { useSuspense: false },
 });
+
+if (!i18n.isInitialized) {
+  console.warn('i18n: not initialized before the first render');
+}
 
 export default i18n;
 

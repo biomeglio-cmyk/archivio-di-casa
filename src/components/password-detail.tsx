@@ -11,6 +11,7 @@ import { confirmDeleteDocument } from '@/actions/delete-actions';
 import { ActionSheet } from '@/components/action-sheet';
 import { GeneratedCode } from '@/components/barcode-view';
 import { PasswordPreviewTile } from '@/components/password-preview';
+import { showToast } from '@/components/toast';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
@@ -101,9 +102,10 @@ export function PasswordDetail({ document }: { document: DocumentDetail }) {
     Alert.alert(t('passwordDetail.copiedTitle'), t('passwordDetail.copiedMessage'));
   }
 
+  // Not a password (user name, site): a plain copy and a short toast; no 60 s expiry
   async function copyText(value: string) {
     await Clipboard.setStringAsync(value);
-    Alert.alert(t('passwordDetail.copiedTextTitle'), value);
+    showToast(t('passwordDetail.copiedTextTitle'));
   }
 
   async function toggleQr() {

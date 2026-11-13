@@ -4,6 +4,7 @@ import * as Device from 'expo-device';
 import * as MailComposer from 'expo-mail-composer';
 import { Alert, Linking, Platform } from 'react-native';
 
+import { showToast } from '@/components/toast';
 import { currentLanguage, t } from '@/i18n';
 import { languageInfo } from '@/settings/language';
 
@@ -47,8 +48,10 @@ export function showSupportAddress(): void {
     { text: t('common.close'), style: 'cancel' },
     {
       text: t('contact.copyAddress'),
+      // A plain copy (no 60 s expiry: that is only for passwords), then a short "Copiato" that
+      // blocks nothing — a second Alert opened while this one closes could hang the screen
       onPress: () => {
-        void Clipboard.setStringAsync(SUPPORT_EMAIL).then(() => Alert.alert(t('contact.copied'), SUPPORT_EMAIL));
+        void Clipboard.setStringAsync(SUPPORT_EMAIL).then(() => showToast(t('contact.copied')));
       },
     },
   ]);

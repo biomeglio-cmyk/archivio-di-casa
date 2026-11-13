@@ -19,6 +19,7 @@ import { useAppGeneration } from '@/backup/app-reload';
 import { AccessibilityProvider, useReduceMotion } from '@/a11y/accessibility';
 import { ThemeProvider as AppThemeProvider } from '@/theme/theme-provider';
 import { AppLock } from '@/components/app-lock';
+import { ToastHost } from '@/components/toast';
 import { onAppCommit } from '@/dev/render-warning';
 import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/typography';
@@ -309,6 +310,8 @@ function RootContent() {
         <SplashOverlay />
         {/* "Blocca con Face ID": above everything, even the open sheets and modals */}
         <AppLock />
+        {/* Short confirmations ("Copiato") over every screen, sheet and modal */}
+        <ToastHost />
       </ThemeProvider>
     </SQLiteProvider>
   );

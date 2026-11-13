@@ -50,6 +50,9 @@ const BACKUP_DUE = (p: Palette) => (p.isDark ? '#F5824A' : '#D9622B');
 // Rows: a tab → close, then go there; another screen → the menu is REPLACED by it (closing that
 // screen brings back to where you were); "Aggiungi" rows keep the menu open while the scanner or
 // the picker is up (a cancel leaves you in the menu).
+// After router.back(): the transparent menu screen is gone before Mail or an Alert appears
+const AFTER_CLOSE_MS = 350;
+
 export default function MenuScreen() {
   const theme = useTheme();
   const { t } = useI18n();
@@ -196,7 +199,14 @@ export default function MenuScreen() {
             label={t('contact.writeUs')}
             symbol="envelope"
             accessibilityHint={SUPPORT_EMAIL}
-            onPress={() => close(() => void writeToSupport())}
+            // close(after) replaces the default router.back(): go back first, or the invisible menu
+            // screen stays on top and the app looks frozen; the mail opens once the menu is gone
+            onPress={() =>
+              close(() => {
+                router.back();
+                setTimeout(() => void writeToSupport(), AFTER_CLOSE_MS);
+              })
+            }
           />
           <MenuItem label={t('menu.rate')} symbol="star" onPress={rateApp} />
           <MenuItem label={t('menu.recommend')} symbol="square.and.arrow.up" onPress={recommendApp} />

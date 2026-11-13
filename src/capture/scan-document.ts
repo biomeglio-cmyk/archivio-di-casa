@@ -12,7 +12,6 @@ import { Alert } from 'react-native';
 export type ScanResult = { pages: string[] } | 'cancelled' | 'unavailable';
 
 const PAGE_QUALITY = 0.85; // documents: same as the photos chosen from the library
-export const CARD_QUALITY = 1; // cards: small on the page, so every detail counts (logo, number)
 
 export function isScannerAvailable(): boolean {
   // Read defensively: on a native side without the scanner the property is simply missing

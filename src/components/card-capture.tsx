@@ -38,6 +38,9 @@ const STEP_TITLE: Record<CardStep, string> = {
 };
 
 // Full-screen camera for a card: 1) the front, 2) the barcode, read live while framing it.
+// The front is a photo, not a scan: no color "enhancement", full sensor size, cropped to the card
+// frame without resizing and saved as JPEG 0.92 (crop-photo.ts); macro by itself when close; tap
+// to focus again. "Dalle foto" takes a macro shot made with the iPhone Camera app.
 // Every shot gets a "Rifai / Usa" preview; both steps can use the photo library or be skipped.
 export function CardCapture({ steps, onDone, onCancel }: Props) {
   const [permission, requestPermission] = useCameraPermissions();
@@ -54,6 +57,19 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
   const [previewUri, setPreviewUri] = useState<string | null>(null); // photo waiting for Rifai/Usa
   const [ready, setReady] = useState(false);
   const [busy, setBusy] = useState(false);
+  // Tap to focus: expo-camera has no "focus here", so a tap asks a new autofocus ('on' focuses
+  // once, then back to continuous 'off') and shows a ring where the finger was
+  const [focusMode, setFocusMode] = useState<'on' | 'off'>('off');
+  const [focusRing, setFocusRing] = useState<{ x: number; y: number } | null>(null);
+
+  function refocus(x: number, y: number) {
+    setFocusRing({ x, y });
+    setFocusMode('on');
+    setTimeout(() => {
+      setFocusMode('off');
+      setFocusRing(null);
+    }, 900);
+  }
 
   // The scanner fires many times per second: update the state only when the code changes
   function onBarcodeScanned(scan: BarcodeScanningResult) {
@@ -163,6 +179,9 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
         ref={cameraRef}
         style={StyleSheet.absoluteFill}
         facing="back"
+        // No selectedLens: on iPhones with macro, expo-camera picks the virtual back camera
+        // (triple / dual wide), which switches to macro by itself when the card is close
+        autofocus={focusMode}
         pictureSize={picture.pictureSize}
         onCameraReady={() => {
           setReady(true);
@@ -172,6 +191,14 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
         onBarcodeScanned={step === 'barcode' ? onBarcodeScanned : undefined}
       />
       <GuideFrameOverlay frame={frame} />
+      {/* Tap anywhere on the picture to focus again */}
+      <Pressable
+        style={StyleSheet.absoluteFill}
+        onPress={(e) => refocus(e.nativeEvent.locationX, e.nativeEvent.locationY)}
+        accessibilityRole="button"
+        accessibilityLabel="Metti a fuoco"
+      />
+      {focusRing && <View pointerEvents="none" style={[styles.focusRing, { left: focusRing.x - 36, top: focusRing.y - 36 }]} />}
 
       <View style={[styles.topBar, styles.topBarRow, { paddingTop: insets.top + 8 }]}>
         <Pressable onPress={onCancel} hitSlop={12} accessibilityRole="button" accessibilityLabel="Chiudi">
@@ -223,6 +250,14 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
 }
 
 const styles = StyleSheet.create({
+  focusRing: {
+    position: 'absolute',
+    width: 72,
+    height: 72,
+    borderRadius: 12,
+    borderWidth: 2,
+    borderColor: '#FFD60A',
+  },
   screen: {
     flex: 1,
     backgroundColor: '#000000',

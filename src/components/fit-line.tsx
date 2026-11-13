@@ -5,16 +5,19 @@ import { useThemedStyles } from '@/hooks/use-theme';
 
 type Props = {
   start: ReactNode; // the label
-  end: ReactNode; // the value (with its chevrons), never truncated
+  end: ReactNode; // the value (with its chevrons) or a control, never truncated
   gap?: number;
   style?: StyleProp<ViewStyle>;
+  // What to measure instead of `start` (e.g. only the title, not a subtitle that may wrap anyway)
+  startMeasure?: ReactNode;
+  endAlign?: 'start' | 'end'; // where the end goes when it moves below (a switch stays on the right)
 };
 
 // A label and a value on one line when both fit at their natural width; otherwise the value goes
 // on its own line under the label, left-aligned and complete (it may wrap). The widths are
 // measured (onLayout of an invisible copy at natural size), never estimated, so it follows the
 // screen size and Dynamic Type.
-export function FitLine({ start, end, gap = 12, style }: Props) {
+export function FitLine({ start, end, gap = 12, style, startMeasure, endAlign = 'start' }: Props) {
   const styles = useThemedStyles(makeStyles);
   const [available, setAvailable] = useState(0);
   const [startWidth, setStartWidth] = useState(0);
@@ -27,7 +30,7 @@ export function FitLine({ start, end, gap = 12, style }: Props) {
       {/* Invisible copies at their natural width, only to measure */}
       <View style={styles.measure} pointerEvents="none" accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
         <View style={styles.natural} onLayout={(e) => setStartWidth(Math.ceil(e.nativeEvent.layout.width))}>
-          {start}
+          {startMeasure ?? start}
         </View>
         <View style={styles.natural} onLayout={(e) => setEndWidth(Math.ceil(e.nativeEvent.layout.width))}>
           {end}
@@ -41,7 +44,7 @@ export function FitLine({ start, end, gap = 12, style }: Props) {
       ) : (
         <View style={styles.stack}>
           {start}
-          <View style={styles.below}>{end}</View>
+          <View style={[styles.below, endAlign === 'end' && styles.belowEnd]}>{end}</View>
         </View>
       )}
     </View>
@@ -80,5 +83,8 @@ const makeStyles = (c: Palette) =>
   below: {
     alignSelf: 'flex-start',
     maxWidth: '100%',
+  },
+  belowEnd: {
+    alignSelf: 'flex-end',
   },
 });

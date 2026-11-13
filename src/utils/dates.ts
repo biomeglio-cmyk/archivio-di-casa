@@ -10,11 +10,18 @@ export function parseISODate(iso: string): Date {
 
 // "12 nov 2026" / "12 Nov 2026"
 export function formatDate(iso: string, month: 'short' | 'long' = 'short'): string {
-  return parseISODate(iso).toLocaleDateString(intlLocale(), {
-    day: 'numeric',
-    month,
-    year: 'numeric',
-  });
+  return keepTogether(
+    parseISODate(iso).toLocaleDateString(intlLocale(), {
+      day: 'numeric',
+      month,
+      year: 'numeric',
+    }),
+  );
+}
+
+// Short dates and amounts stay on one line: their spaces become non-breaking ("23 nov", "lun 9 nov")
+export function keepTogether(text: string): string {
+  return text.replace(/ /g, '\u00A0');
 }
 
 // Local Date → 'YYYY-MM-DD' (toISOString would use UTC and could shift the day)
@@ -28,8 +35,8 @@ export function toISODate(date: Date): string {
 
 // "9 novembre" / "9 November"
 export function formatDayMonth(date: Date, width: 'long' | 'short' = 'long'): string {
-  if (!composesDates()) return date.toLocaleDateString(intlLocale(), { day: 'numeric', month: width });
-  return `${date.getDate()} ${monthName(date.getMonth(), width)}`;
+  if (!composesDates()) return keepTogether(date.toLocaleDateString(intlLocale(), { day: 'numeric', month: width }));
+  return keepTogether(`${date.getDate()} ${monthName(date.getMonth(), width)}`);
 }
 
 // "lun 9 nov" / "Mon 9 Nov"; the year is added only when it isn't the current one: "mer 14 lug 2027"
@@ -37,15 +44,17 @@ export function formatShortDate(iso: string, today: Date = new Date()): string {
   const date = parseISODate(iso);
   const sameYear = date.getFullYear() === today.getFullYear();
   if (!composesDates()) {
-    return date.toLocaleDateString(intlLocale(), {
-      weekday: 'short',
-      day: 'numeric',
-      month: 'short',
-      ...(sameYear ? {} : { year: 'numeric' }),
-    });
+    return keepTogether(
+      date.toLocaleDateString(intlLocale(), {
+        weekday: 'short',
+        day: 'numeric',
+        month: 'short',
+        ...(sameYear ? {} : { year: 'numeric' }),
+      }),
+    );
   }
   const base = `${weekdayName(date.getDay(), 'short')} ${formatDayMonth(date, 'short')}`;
-  return sameYear ? base : `${base} ${date.getFullYear()}`;
+  return keepTogether(sameYear ? base : `${base} ${date.getFullYear()}`);
 }
 
 // Days up to 45, then months, then years: the unit and how many ("3 giorni", "2 mesi", "1 anno")

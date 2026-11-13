@@ -391,7 +391,7 @@
     "scannerUnavailableTitle": "Сканер недоступен",
     "scannerUnavailableMessage": "Удали страницы с помощью ✕ и добавь новые.",
     "replacePdf": "Заменить PDF",
-    "importPdf": "Импортировать PDF",
+    "importPdf": "Импорт PDF",
     "rescanAll": "Пересканировать все",
     "openFileFailed": "Не удалось открыть файл",
     "page": "Страница",
@@ -903,8 +903,8 @@
     "prompt": "Разблокировать Sottomano",
     "unlock": "Разблокировать",
     "unlockWith": {
-      "faceId": "Разблокировать с Face ID",
-      "touchId": "Разблокировать с Touch ID",
+      "faceId": "Разблокировать с Face ID",
+      "touchId": "Разблокировать с Touch ID",
       "passcode": "Разблокировать код-паролем"
     },
     "message": "Твои документы защищены"
@@ -919,7 +919,7 @@
     "saveFailed": "Не удалось сохранить",
     "editTitle": "Изменить пароль",
     "newTitle": "Новый пароль",
-    "privacy": "Хранятся только на этом телефоне и открываются через Face ID.",
+    "privacy": "Хранятся только на этом телефоне и открываются через Face ID.",
     "sections": {
       "what": "Что сохраняешь",
       "name": "Название",
@@ -1001,10 +1001,10 @@
     "show": "Показать",
     "hide": "Скрыть",
     "copy": "Скопировать",
-    "locked": "Виден после Face ID или код-пароля iPhone",
+    "locked": "Виден после Face ID или код-пароля iPhone",
     "wifiQrLabel": "QR-код сети Wi‑Fi",
     "qrHint": "Отсканируют его камерой и подключатся.",
-    "qrLocked": "QR-код содержит пароль: он виден после Face ID или код-пароля iPhone.",
+    "qrLocked": "QR-код содержит пароль: он виден после Face ID или код-пароля iPhone.",
     "qrNoNetwork": "Добавь имя сети через «Изменить», чтобы получить QR-код.",
     "showQr": "Показать QR-код",
     "hideQr": "Скрыть QR-код",
@@ -1180,7 +1180,7 @@
     "keptNote": "Уже сохраненное останется твоим навсегда, даже без разблокировки.",
     "priceTitle": "Навсегда",
     "priceText": "Без ограничений · один платеж",
-    "buy": "Разблокировать за {{price}}",
+    "buy": "Открыть всё за {{price}}",
     "continueFree": "Продолжить бесплатно",
     "restore": "Восстановить покупку",
     "terms": "Условия",
@@ -1419,7 +1419,7 @@
       "daysAgo_many": "{{count}} дней назад"
     },
     "categoryColors": "Цвета категорий",
-    "faceId": "Блокировка Face ID",
+    "faceId": "Блокировка Face ID",
     "faceIdSubtitle": "Запрашивает лицо при каждом открытии приложения",
     "hidePreviews": "Скрывать содержимое",
     "hidePreviewsSubtitle": "Уведомления не показывают документ",
@@ -1680,7 +1680,7 @@
     "rateTitle": "Оценить Sottomano",
     "rateMessage": "Оценку можно будет оставить, когда Sottomano появится в App Store.",
     "lockUnavailableTitle": "Блокировка недоступна",
-    "lockUnavailableMessage": "Чтобы заблокировать Sottomano, на iPhone нужен код-пароль. Задай его в Настройках › Face ID и код-пароль, затем попробуй снова."
+    "lockUnavailableMessage": "Чтобы заблокировать Sottomano, на iPhone нужен код-пароль. Задай его в Настройках › Face ID и код-пароль, затем попробуй снова."
   },
   "a11y": {
     "browse": {

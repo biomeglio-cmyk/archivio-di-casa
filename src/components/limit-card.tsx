@@ -19,7 +19,7 @@ export function LimitCard({ usage }: { usage: FreeUsage }) {
   const styles = useThemedStyles(makeStyles);
   const { t } = useI18n();
   const large = useWindowDimensions().fontScale > 1.3; // larger text: "Sblocca" goes under the title
-  const title = t('limitCard.title', { used: usage.used, count: usage.limit });
+  const title = t('limitCard.title', { used: usage.shown, count: usage.limit });
   return (
     <Pressable
       onPress={() => router.push('/unlock')}

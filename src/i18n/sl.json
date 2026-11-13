@@ -956,8 +956,8 @@
     "prompt": "Odkleni Sottomano",
     "unlock": "Odkleni",
     "unlockWith": {
-      "faceId": "Odkleni s Face ID",
-      "touchId": "Odkleni s Touch ID",
+      "faceId": "Odkleni s Face ID",
+      "touchId": "Odkleni s Touch ID",
       "passcode": "Odkleni s kodo"
     },
     "message": "Tvoji dokumenti so zaščiteni"
@@ -972,7 +972,7 @@
     "saveFailed": "Shranjevanje ni uspelo",
     "editTitle": "Uredi geslo",
     "newTitle": "Novo geslo",
-    "privacy": "Ostanejo samo v tem telefonu in se odprejo s Face ID.",
+    "privacy": "Ostanejo samo v tem telefonu in se odprejo s Face ID.",
     "sections": {
       "what": "Kaj shranjuješ",
       "name": "Ime",
@@ -1054,10 +1054,10 @@
     "show": "Pokaži",
     "hide": "Skrij",
     "copy": "Kopiraj",
-    "locked": "Vidno po Face ID ali kodi iPhona",
+    "locked": "Vidno po Face ID ali kodi iPhona",
     "wifiQrLabel": "Koda QR omrežja Wi‑Fi",
     "qrHint": "Optično jo preberejo s kamero in se povežejo.",
-    "qrLocked": "Koda QR vsebuje geslo: vidna je po Face ID ali kodi iPhona.",
+    "qrLocked": "Koda QR vsebuje geslo: vidna je po Face ID ali kodi iPhona.",
     "qrNoNetwork": "Z Uredi dodaj ime omrežja, da dobiš kodo QR.",
     "showQr": "Pokaži kodo QR",
     "hideQr": "Skrij kodo QR",
@@ -1484,7 +1484,7 @@
       "daysAgo_other": "Pred {{count}} dnevi"
     },
     "categoryColors": "Barve kategorij",
-    "faceId": "Zakleni s Face ID",
+    "faceId": "Zakleni s Face ID",
     "faceIdSubtitle": "Ob vsakem odprtju aplikacije zahteva tvoj obraz",
     "hidePreviews": "Skrij predoglede",
     "hidePreviewsSubtitle": "Obvestila ne prikažejo dokumenta",
@@ -1753,7 +1753,7 @@
     "rateTitle": "Oceni Sottomano",
     "rateMessage": "Oceno bo mogoče oddati, ko bo Sottomano v App Storu.",
     "lockUnavailableTitle": "Zaklepanje ni na voljo",
-    "lockUnavailableMessage": "Za zaklepanje Sottomana potrebuješ kodo v iPhonu. Nastavi jo v Nastavitve › Face ID in koda, nato poskusi znova."
+    "lockUnavailableMessage": "Za zaklepanje Sottomana potrebuješ kodo v iPhonu. Nastavi jo v Nastavitve › Face ID in koda, nato poskusi znova."
   },
   "a11y": {
     "browse": {

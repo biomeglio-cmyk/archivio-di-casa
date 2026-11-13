@@ -850,8 +850,8 @@
     "prompt": "Unlock Sottomano",
     "unlock": "Unlock",
     "unlockWith": {
-      "faceId": "Unlock with Face ID",
-      "touchId": "Unlock with Touch ID",
+      "faceId": "Unlock with Face ID",
+      "touchId": "Unlock with Touch ID",
       "passcode": "Unlock with passcode"
     },
     "message": "Your documents are protected"
@@ -866,7 +866,7 @@
     "saveFailed": "Couldn’t save",
     "editTitle": "Edit password",
     "newTitle": "New password",
-    "privacy": "They stay only on this phone and open with Face ID.",
+    "privacy": "They stay only on this phone and open with Face ID.",
     "sections": {
       "what": "What you’re saving",
       "name": "Name",
@@ -948,10 +948,10 @@
     "show": "Show",
     "hide": "Hide",
     "copy": "Copy",
-    "locked": "Visible after Face ID or the iPhone passcode",
+    "locked": "Visible after Face ID or the iPhone passcode",
     "wifiQrLabel": "Wi-Fi network QR code",
     "qrHint": "They scan it with the camera and connect.",
-    "qrLocked": "The QR code contains the password: it’s visible after Face ID or the iPhone passcode.",
+    "qrLocked": "The QR code contains the password: it’s visible after Face ID or the iPhone passcode.",
     "qrNoNetwork": "Add the network name with Edit to get the QR code.",
     "showQr": "Show QR code",
     "hideQr": "Hide QR code",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "{{count}} days ago"
     },
     "categoryColors": "Category colors",
-    "faceId": "Lock with Face ID",
+    "faceId": "Lock with Face ID",
     "faceIdSubtitle": "Asks for your face every time you open the app",
     "hidePreviews": "Hide previews",
     "hidePreviewsSubtitle": "Notifications don’t show the document",
@@ -1607,7 +1607,7 @@
     "rateTitle": "Rate Sottomano",
     "rateMessage": "You’ll be able to leave a rating once Sottomano is on the App Store.",
     "lockUnavailableTitle": "Lock not available",
-    "lockUnavailableMessage": "To lock Sottomano you need a passcode on your iPhone. Set one in Settings › Face ID & Passcode, then try again."
+    "lockUnavailableMessage": "To lock Sottomano you need a passcode on your iPhone. Set one in Settings › Face ID & Passcode, then try again."
   },
   "a11y": {
     "browse": {

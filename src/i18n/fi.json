@@ -409,8 +409,8 @@
     "previousVersions": "Aiemmat versiot",
     "versionUntil": "{{date}} asti",
     "versionExpired": "vanheni {{date}}",
-    "paidOnMarkDue": "Maksettu {{date}} · merkitse maksamattomaksi",
-    "markDue": "Merkitse maksamattomaksi",
+    "paidOnMarkDue": "Maksettu {{date}} · merkitse avoimeksi",
+    "markDue": "Merkitse avoimeksi",
     "markPaid": "Merkitse maksetuksi",
     "firstOf": "1/{{total}}"
   },
@@ -850,8 +850,8 @@
     "prompt": "Avaa Sottomanon lukitus",
     "unlock": "Avaa",
     "unlockWith": {
-      "faceId": "Avaa Face ID:llä",
-      "touchId": "Avaa Touch ID:llä",
+      "faceId": "Avaa Face ID:llä",
+      "touchId": "Avaa Touch ID:llä",
       "passcode": "Avaa pääsykoodilla"
     },
     "message": "Asiakirjasi ovat suojassa"
@@ -866,7 +866,7 @@
     "saveFailed": "Tallennus epäonnistui",
     "editTitle": "Muokkaa salasanaa",
     "newTitle": "Uusi salasana",
-    "privacy": "Ne pysyvät vain tässä puhelimessa ja avautuvat Face ID:llä.",
+    "privacy": "Ne pysyvät vain tässä puhelimessa ja avautuvat Face ID:llä.",
     "sections": {
       "what": "Mitä tallennat",
       "name": "Nimi",
@@ -948,10 +948,10 @@
     "show": "Näytä",
     "hide": "Piilota",
     "copy": "Kopioi",
-    "locked": "Näkyy Face ID:n tai iPhonen pääsykoodin jälkeen",
+    "locked": "Näkyy Face ID:n tai iPhonen pääsykoodin jälkeen",
     "wifiQrLabel": "Wi-Fi-verkon QR-koodi",
     "qrHint": "He skannaavat sen kameralla ja yhdistävät.",
-    "qrLocked": "QR-koodi sisältää salasanan: se näkyy Face ID:n tai iPhonen pääsykoodin jälkeen.",
+    "qrLocked": "QR-koodi sisältää salasanan: se näkyy Face ID:n tai iPhonen pääsykoodin jälkeen.",
     "qrNoNetwork": "Lisää verkon nimi Muokkaa-kohdasta saadaksesi QR-koodin.",
     "showQr": "Näytä QR-koodi",
     "hideQr": "Piilota QR-koodi",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "{{count}} päivää sitten"
     },
     "categoryColors": "Kategorioiden värit",
-    "faceId": "Lukitse Face ID:llä",
+    "faceId": "Lukitse Face ID:llä",
     "faceIdSubtitle": "Kysyy kasvojasi aina, kun avaat apin",
     "hidePreviews": "Piilota esikatselut",
     "hidePreviewsSubtitle": "Ilmoitukset eivät näytä asiakirjaa",
@@ -1493,7 +1493,7 @@
   },
   "appearance": {
     "intro": "Oletuskategorioiden värit. Itse luomasi kategoriat säilyttävät oman värinsä.",
-    "restoreButton": "Palauta oletuskategoriat",
+    "restoreButton": "Palauta kategoriat",
     "restoreHint": "Tuo takaisin poistamasi oletuskategoriat.",
     "paletteLabel": "Paletti {{name}}",
     "alerts": {
@@ -1607,7 +1607,7 @@
     "rateTitle": "Arvioi Sottomano",
     "rateMessage": "Voit antaa arvion, kun Sottomano on App Storessa.",
     "lockUnavailableTitle": "Lukitus ei ole käytettävissä",
-    "lockUnavailableMessage": "Sottomanon lukitseminen vaatii iPhoneen pääsykoodin. Aseta se kohdassa Asetukset › Face ID ja pääsykoodi ja yritä uudelleen."
+    "lockUnavailableMessage": "Sottomanon lukitseminen vaatii iPhoneen pääsykoodin. Aseta se kohdassa Asetukset › Face ID ja pääsykoodi ja yritä uudelleen."
   },
   "a11y": {
     "browse": {

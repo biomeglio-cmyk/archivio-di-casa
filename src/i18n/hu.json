@@ -850,8 +850,8 @@
     "prompt": "Sottomano feloldása",
     "unlock": "Feloldás",
     "unlockWith": {
-      "faceId": "Feloldás Face ID-val",
-      "touchId": "Feloldás Touch ID-val",
+      "faceId": "Feloldás Face ID-val",
+      "touchId": "Feloldás Touch ID-val",
       "passcode": "Feloldás jelkóddal"
     },
     "message": "A dokumentumaid védve vannak"
@@ -866,7 +866,7 @@
     "saveFailed": "Nem sikerült menteni",
     "editTitle": "Jelszó szerkesztése",
     "newTitle": "Új jelszó",
-    "privacy": "Csak ezen a telefonon maradnak, és Face ID-val nyílnak meg.",
+    "privacy": "Csak ezen a telefonon maradnak, és Face ID-val nyílnak meg.",
     "sections": {
       "what": "Mit mentesz",
       "name": "Név",
@@ -948,10 +948,10 @@
     "show": "Mutasd",
     "hide": "Elrejtés",
     "copy": "Másolás",
-    "locked": "Face ID vagy az iPhone jelkódja után látható",
+    "locked": "Face ID vagy az iPhone jelkódja után látható",
     "wifiQrLabel": "Wi‑Fi-hálózat QR-kódja",
     "qrHint": "Beolvassák a kamerával, és csatlakoznak.",
-    "qrLocked": "A QR-kód tartalmazza a jelszót: Face ID vagy az iPhone jelkódja után látható.",
+    "qrLocked": "A QR-kód tartalmazza a jelszót: Face ID vagy az iPhone jelkódja után látható.",
     "qrNoNetwork": "Add meg a hálózat nevét a Szerkesztéssel, hogy QR-kódot kapj.",
     "showQr": "QR-kód megjelenítése",
     "hideQr": "QR-kód elrejtése",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "{{count}} napja"
     },
     "categoryColors": "Kategóriák színei",
-    "faceId": "Zárolás Face ID-val",
+    "faceId": "Zárolás Face ID-val",
     "faceIdSubtitle": "Az app minden megnyitásakor kéri az arcodat",
     "hidePreviews": "Előnézetek elrejtése",
     "hidePreviewsSubtitle": "Az értesítések nem mutatják a dokumentumot",
@@ -1607,7 +1607,7 @@
     "rateTitle": "Sottomano értékelése",
     "rateMessage": "Értékelést akkor hagyhatsz, amikor a Sottomano megjelenik az App Store-ban.",
     "lockUnavailableTitle": "A zár nem érhető el",
-    "lockUnavailableMessage": "A Sottomano zárolásához jelkód kell az iPhone-odon. Állíts be egyet a Beállítások › Face ID és jelkód menüben, majd próbáld újra."
+    "lockUnavailableMessage": "A Sottomano zárolásához jelkód kell az iPhone-odon. Állíts be egyet a Beállítások › Face ID és jelkód menüben, majd próbáld újra."
   },
   "a11y": {
     "browse": {

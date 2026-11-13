@@ -69,7 +69,7 @@ export function SecondaryButton({
           style={[styles.label, { color: ink }]}
           numberOfLines={1}
           adjustsFontSizeToFit
-          minimumFontScale={0.8}
+          minimumFontScale={0.85}
           maxFontSizeMultiplier={1.3}>
           {label}
         </Text>

@@ -850,8 +850,8 @@
     "prompt": "Lås opp Sottomano",
     "unlock": "Lås opp",
     "unlockWith": {
-      "faceId": "Lås opp med Face ID",
-      "touchId": "Lås opp med Touch ID",
+      "faceId": "Lås opp med Face ID",
+      "touchId": "Lås opp med Touch ID",
       "passcode": "Lås opp med kode"
     },
     "message": "Dokumentene dine er beskyttet"
@@ -866,7 +866,7 @@
     "saveFailed": "Kunne ikke lagre",
     "editTitle": "Rediger passord",
     "newTitle": "Nytt passord",
-    "privacy": "De blir bare på denne telefonen og åpnes med Face ID.",
+    "privacy": "De blir bare på denne telefonen og åpnes med Face ID.",
     "sections": {
       "what": "Hva du lagrer",
       "name": "Navn",
@@ -948,10 +948,10 @@
     "show": "Vis",
     "hide": "Skjul",
     "copy": "Kopier",
-    "locked": "Synlig etter Face ID eller iPhone-koden",
+    "locked": "Synlig etter Face ID eller iPhone-koden",
     "wifiQrLabel": "QR-kode for Wi-Fi-nettverket",
     "qrHint": "De skanner den med kameraet og kobler til.",
-    "qrLocked": "QR-koden inneholder passordet: den vises etter Face ID eller iPhone-koden.",
+    "qrLocked": "QR-koden inneholder passordet: den vises etter Face ID eller iPhone-koden.",
     "qrNoNetwork": "Legg til nettverksnavnet med Rediger for å få QR-koden.",
     "showQr": "Vis QR-kode",
     "hideQr": "Skjul QR-kode",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "For {{count}} dager siden"
     },
     "categoryColors": "Kategorifarger",
-    "faceId": "Lås med Face ID",
+    "faceId": "Lås med Face ID",
     "faceIdSubtitle": "Ber om ansiktet ditt hver gang du åpner appen",
     "hidePreviews": "Skjul forhåndsvisninger",
     "hidePreviewsSubtitle": "Varslene viser ikke dokumentet",
@@ -1417,7 +1417,7 @@
     "createNew": "Lag en ny sikkerhetskopi",
     "noneTitle": "Du har ikke tatt sikkerhetskopi ennå",
     "noneText": "Hvis du mister eller bytter telefon, får du alt tilbake med sikkerhetskopien.",
-    "createNow": "Sikkerhetskopier nå",
+    "createNow": "Ta backup nå",
     "restoreSection": "Gjenopprett",
     "restoreTitle": "Har du fått ny telefon?",
     "restoreText": "Velg sikkerhetskopien for å få tilbake dokumentene, kortene og påminnelsene dine.",
@@ -1493,7 +1493,7 @@
   },
   "appearance": {
     "intro": "Fargene på standardkategoriene. Kategorier du har opprettet, beholder sin egen farge.",
-    "restoreButton": "Gjenopprett standardkategorier",
+    "restoreButton": "Gjenopprett kategoriene",
     "restoreHint": "Henter tilbake standardkategorier du har slettet.",
     "paletteLabel": "Paletten {{name}}",
     "alerts": {
@@ -1607,7 +1607,7 @@
     "rateTitle": "Vurder Sottomano",
     "rateMessage": "Du kan gi en vurdering når Sottomano er i App Store.",
     "lockUnavailableTitle": "Låsen er ikke tilgjengelig",
-    "lockUnavailableMessage": "For å låse Sottomano trenger du en kode på iPhonen. Angi en i Innstillinger › Face ID og kode, og prøv igjen."
+    "lockUnavailableMessage": "For å låse Sottomano trenger du en kode på iPhonen. Angi en i Innstillinger › Face ID og kode, og prøv igjen."
   },
   "a11y": {
     "browse": {

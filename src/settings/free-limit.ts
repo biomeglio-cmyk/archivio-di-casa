@@ -39,6 +39,7 @@ export function isUnlocked(): boolean {
 
 export type FreeUsage = {
   used: number; // documents + cards
+  shown: number; // used, capped at the limit (cards and bars)
   limit: number;
   remaining: number; // never below 0
   share: number; // 0…1, for the progress bars
@@ -50,6 +51,9 @@ export async function getFreeUsage(db: SQLiteDatabase): Promise<FreeUsage> {
   const used = row?.count ?? 0;
   return {
     used,
+    // What the cards show: never more than the limit ("7 di 7", full bar), also when the limit
+    // isn't enforced (development) and there are more documents
+    shown: Math.min(used, FREE_LIMIT),
     limit: FREE_LIMIT,
     remaining: Math.max(0, FREE_LIMIT - used),
     share: Math.min(1, used / FREE_LIMIT),

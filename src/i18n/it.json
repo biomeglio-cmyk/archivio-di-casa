@@ -850,8 +850,8 @@
     "prompt": "Sblocca Sottomano",
     "unlock": "Sblocca",
     "unlockWith": {
-      "faceId": "Sblocca con Face ID",
-      "touchId": "Sblocca con Touch ID",
+      "faceId": "Sblocca con Face ID",
+      "touchId": "Sblocca con Touch ID",
       "passcode": "Sblocca con il codice"
     },
     "message": "I tuoi documenti sono protetti"
@@ -866,7 +866,7 @@
     "saveFailed": "Impossibile salvare",
     "editTitle": "Modifica password",
     "newTitle": "Nuova password",
-    "privacy": "Restano solo su questo telefono e si aprono con Face ID.",
+    "privacy": "Restano solo su questo telefono e si aprono con Face ID.",
     "sections": {
       "what": "Che cosa salvi",
       "name": "Nome",
@@ -948,10 +948,10 @@
     "show": "Mostra",
     "hide": "Nascondi",
     "copy": "Copia",
-    "locked": "Si vede dopo Face ID o il codice dell’iPhone",
+    "locked": "Si vede dopo Face ID o il codice dell’iPhone",
     "wifiQrLabel": "QR della rete Wi-Fi",
     "qrHint": "Lo inquadrano con la fotocamera e si collegano.",
-    "qrLocked": "Il QR contiene la password: si vede dopo Face ID o il codice dell’iPhone.",
+    "qrLocked": "Il QR contiene la password: si vede dopo Face ID o il codice dell’iPhone.",
     "qrNoNetwork": "Aggiungi il nome della rete con Modifica per avere il QR.",
     "showQr": "Mostra il QR",
     "hideQr": "Nascondi il QR",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "{{count}} giorni fa"
     },
     "categoryColors": "Colori delle categorie",
-    "faceId": "Blocca con Face ID",
+    "faceId": "Blocca con Face ID",
     "faceIdSubtitle": "Chiede il volto ogni volta che apri l’app",
     "hidePreviews": "Nascondi anteprime",
     "hidePreviewsSubtitle": "Nelle notifiche non si vede il documento",
@@ -1607,7 +1607,7 @@
     "rateTitle": "Valuta Sottomano",
     "rateMessage": "Potrai lasciare una valutazione quando Sottomano sarà sull'App Store.",
     "lockUnavailableTitle": "Blocco non disponibile",
-    "lockUnavailableMessage": "Per bloccare Sottomano serve un codice sull'iPhone. Impostalo in Impostazioni › Face ID e codice, poi riprova."
+    "lockUnavailableMessage": "Per bloccare Sottomano serve un codice sull'iPhone. Impostalo in Impostazioni › Face ID e codice, poi riprova."
   },
   "a11y": {
     "browse": {

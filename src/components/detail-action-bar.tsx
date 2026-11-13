@@ -27,7 +27,10 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
   const styles = useThemedStyles(makeStyles);
   const theme = useTheme();
   // Larger text: labels wrap at full size instead of shrinking, Modifica and Cancella one under the other
-  const large = useWindowDimensions().fontScale > 1.3;
+  const { width, fontScale } = useWindowDimensions();
+  // One under the other on a narrow phone (iPhone SE) or with larger text: a half-width button has
+  // no room for "Bearbeiten" or "Muokkaa" without breaking or shrinking the word
+  const large = fontScale > 1.3 || width < 360;
   const singleLine = !large;
 
   if (!onAdd && !onEdit && !onDelete && !pin) return null;

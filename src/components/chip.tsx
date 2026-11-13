@@ -3,7 +3,7 @@ import { SymbolView } from 'expo-symbols';
 import type { ReactNode } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { Text } from '@/components/text';
+import { NoBreakText } from '@/components/tile-title';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -50,9 +50,9 @@ export function Chip({
       {/* Not only the fill: the active chip also has a checkmark (Differenzia senza colore) */}
       <View style={styles.content}>
         {selected && <SymbolView name="checkmark" tintColor="#FFFFFF" size={12} weight="bold" />}
-        <Text style={[styles.label, selected ? styles.labelSelected : { color: ink }]} maxFontSizeMultiplier={2}>
+        <NoBreakText style={[styles.label, selected ? styles.labelSelected : { color: ink }]} containerStyle={styles.labelBox}>
           {label}
-        </Text>
+        </NoBreakText>
       </View>
     </Pressable>
   );
@@ -89,8 +89,12 @@ const makeStyles = (c: Palette) =>
     gap: 5,
     paddingVertical: 6,
   },
+  labelBox: {
+    flexShrink: 1,
+  },
   label: {
     flexShrink: 1,
+    textAlign: 'center',
     fontSize: 15,
     fontFamily: FONTS.medium,
   },

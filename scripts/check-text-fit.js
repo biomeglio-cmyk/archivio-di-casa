@@ -1,17 +1,27 @@
 #!/usr/bin/env node
 /*
- * Text fit check (npm run check:fit): the "no mid-word break" rule of TileTitle, for every language.
- * A text may wrap only between words. For each place where a translated text has little room
- * (category tiles, big page titles, buttons, segmented controls, chips, navigation titles) the
- * longest word is measured with the real Onest font (advance widths + the guide letter spacing) on
- * the narrowest iPhone (375 pt):
- *   - fits at 100%                        → ok
- *   - fits only smaller, where the place shrinks (TileTitle / NoBreakText 70%, one-line buttons 80%,
- *     Segmented 75%) → ok, counted as "shrinks"
- *   - doesn't fit                          → FAIL (the word would break in the middle, or end with "…")
+ * Text fit check (npm run check:fit): no word is ever broken in the middle or cut, in any language,
+ * on any iPhone width and at any Dynamic Type size. Words are measured with the real fonts (Onest;
+ * San Francisco for the letters Onest doesn't have) and the guide letter spacing.
  *
- *   node scripts/check-text-fit.js           → all languages
- *   node scripts/check-text-fit.js de fi hu  → only those
+ * 1. Every language at the design size (375 pt, default text).
+ * 2. A matrix for Italian, English, German and Finnish: widths 320 (iPhone SE), 375, 393, 430 ×
+ *    text sizes from xSmall to AX5. Texts grow up to 200 % (components/text.tsx MAX_FONT_SCALE,
+ *    Apple's "Larger Text"), so beyond it the size stays at 200 %.
+ *
+ * What each place does when a word is too wide (the rules of the app):
+ *  - tiles (TileTitle): shrink to 85 %, then the grid goes to one column — fail if it still doesn't fit
+ *  - page titles, buttons, chips (NoBreakText): shrink to 85 % — fail below
+ *  - one-line buttons: shrink to 85 % (wrap between words above 130 % text) — fail below
+ *  - segmented controls: one line per option; if any option doesn't fit, a vertical list of options
+ *    where every word must fit at full size — fail otherwise
+ *  - rows (icon + title + switch/value): the control moves below, the title has the row width;
+ *    every word must fit at full size
+ *  - any other text (paragraphs, notes) in a card: every word must fit at full size
+ *  - navigation titles: one line at the design size (iOS ends them with "…" otherwise)
+ *
+ *   node scripts/check-text-fit.js           → everything
+ *   node scripts/check-text-fit.js de fi     → only those languages
  *   node scripts/check-text-fit.js --verbose → also the texts that shrink
  */
 const fs = require('fs');
@@ -112,29 +122,44 @@ function measure(text, size, weight) {
   return width;
 }
 
-// ---- Places with little room, on a 375 pt iPhone (Spacing.side 22, TILE_GAP 14) ----
+// ---- Places with little room, as functions of the screen width W (Spacing.side 22, TILE_GAP 14) ----
 
-const SCREEN = 375;
-const CONTENT = SCREEN - 22 * 2; // 331
-const TILE = Math.floor((SCREEN - 44 - 14) / 2); // 158
-
-// mode "words": wraps between words, every word must fit; "line": one line (with minScale if it shrinks)
+const SIDE = 22;
+const CARD_PAD = 16; // inside a white card
+// mode "words": wraps between words, every word must fit (minScale: how far it may shrink)
+// mode "line": one line (minScale: how far it may shrink)
 const PLACES = {
-  categoryTile: { label: 'category tile', size: 17, weight: 600, width: TILE - 32, mode: 'words', minScale: 0.7 },
-  folderTitle: { label: 'folder title', size: 30, weight: 700, width: CONTENT, mode: 'words', minScale: 0.7 },
-  pageTitle: { label: 'page title', size: 30, weight: 700, width: CONTENT, mode: 'words', minScale: 0.7 },
-  bigTitle: { label: 'big title', size: 28, weight: 700, width: CONTENT, mode: 'words', minScale: 0.7 },
-  primaryButton: { label: 'button', size: 16, weight: 600, width: CONTENT - 40 - 26, mode: 'words', minScale: 0.7 },
-  lineButton: { label: 'button', size: 16, weight: 600, width: CONTENT - 40 - 26, mode: 'line', minScale: 0.8 },
-  rowButton: { label: 'button in a row', size: 16, weight: 600, width: (CONTENT - 10) / 2 - 40 - 26, mode: 'line', minScale: 0.8 },
-  chip: { label: 'chip', size: 15, weight: 600, width: CONTENT - 32, mode: 'words', minScale: 1 },
-  navTitle: { label: 'navigation title', size: 17, weight: 600, width: SCREEN - 2 * 88, mode: 'line', minScale: 1 },
+  categoryTile: (W) => ({ label: 'category tile', size: 17, weight: 600, mode: 'words', minScale: 0.85,
+    width: Math.floor((W - SIDE * 2 - 14) / 2) - 32, fallback: W - SIDE * 2 - 32 }),
+  folderTitle: (W) => ({ label: 'folder title', size: 30, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
+  pageTitle: (W) => ({ label: 'page title', size: 30, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
+  bigTitle: (W) => ({ label: 'big title', size: 28, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
+  primaryButton: (W) => ({ label: 'button', size: 16, weight: 600, mode: 'words', minScale: 0.85, width: W - SIDE * 2 - 40 - 26 }),
+  lineButton: (W, scale) => ({ label: 'button', size: 16, weight: 600, mode: scale > 1.3 ? 'words' : 'line', minScale: 0.85,
+    width: W - SIDE * 2 - 40 - 26 }),
+  rowButton: (W, scale) => {
+    // above 130 % or under 360 pt the two buttons stack (DetailActionBar), each with the full width
+    const stacked = scale > 1.3 || W < 360;
+    return { label: 'button in a row', size: 16, weight: 600, mode: stacked ? 'words' : 'line', minScale: 0.85,
+      width: stacked ? W - SIDE * 2 - 40 - 26 : (W - SIDE * 2 - 10) / 2 - 40 - 26 };
+  },
+  chip: (W) => ({ label: 'chip', size: 15, weight: 600, mode: 'words', minScale: 0.85, width: W - SIDE * 2 - 32 }),
+  // rows and plain texts: the app Text makes a too-long word smaller instead of breaking it
+  // (counted as "fitted"); fail only if it would need less than 50 %
+  row: (W) => ({ label: 'row title', size: 16, weight: 500, mode: 'words', minScale: 0.5, autoFit: true,
+    width: W - SIDE * 2 - CARD_PAD * 2 - 36 - 12 }),
+  text: (W) => ({ label: 'text', size: 16, weight: 400, mode: 'words', minScale: 0.5, autoFit: true, width: W - SIDE * 2 - CARD_PAD * 2 }),
+  navTitle: (W) => ({ label: 'navigation title', size: 17, weight: 600, mode: 'line', minScale: 1, width: W - 2 * 88, fixed: true }),
 };
-const segment = (n) => ({ label: `segmented (${n})`, size: 15, weight: 600, width: (CONTENT - 8 - 5 * (n - 1)) / n - 20, mode: 'line', minScale: 0.75 });
+// A segmented control in a card: one line per segment, or the vertical list (option row padding
+// 14 + the check mark 23)
+const segmentRoom = (W, n, symbols) => (W - SIDE * 2 - CARD_PAD * 2 - 8) / n - 20 - (symbols ? 19 : 0);
+const segmentListRoom = (W) => W - SIDE * 2 - CARD_PAD * 2 - 8 - 28 - 23;
 
 // ---- Which keys go where: read from the source ----
 
 const slots = []; // { key, place }
+const segmentGroups = []; // { keys, count, symbols, where }
 const addKeys = (node, place, sf) => {
   const visit = (n) => {
     if (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && n.expression.text === 't') {
@@ -171,11 +196,20 @@ for (const file of sourceFiles(path.join(ROOT, 'src'))) {
       if (tag === 'PageHeader' && props.title) addKeys(props.title, 'pageTitle', sf);
       if (tag === 'Chip' && props.label) addKeys(props.label, 'chip', sf);
       if (tag === 'Segmented' && props.values) {
+        // the options of one control together: whether they fit depends on all of them
+        const keys = [];
+        const visitKeys = (n) => {
+          if (ts.isCallExpression(n) && ts.isIdentifier(n.expression) && n.expression.text === 't' && n.arguments[0] && ts.isStringLiteral(n.arguments[0])) {
+            keys.push(n.arguments[0].text);
+          }
+          ts.forEachChild(n, visitKeys);
+        };
+        visitKeys(props.values);
         const values = props.values.expression;
-        const n = values && ts.isArrayLiteralExpression(values) ? values.elements.length : 2;
-        PLACES[`segmented${n}`] = segment(n);
-        addKeys(props.values, `segmented${n}`, sf);
+        const count = values && ts.isArrayLiteralExpression(values) ? values.elements.length : keys.length;
+        if (keys.length) segmentGroups.push({ keys, count: Math.max(count, keys.length), symbols: 'symbols' in props, where: where(sf, node) });
       }
+      if ((tag === 'SettingsRow' || tag === 'Row') && props.label) addKeys(props.label, 'row', sf);
       // Text buttons of the native toolbar: the text between the tags (not the accessibility label)
       if (tag === 'Stack.Toolbar.Button' && ts.isJsxOpeningElement(node)) {
         for (const child of node.parent.children) addKeys(child, 'navTitle', sf);
@@ -198,7 +232,7 @@ for (const file of sourceFiles(path.join(ROOT, 'src'))) {
 }
 // Category names: tiles of Home and the big title of the folder
 for (const place of ['categoryTile', 'folderTitle']) slots.push({ prefix: 'categories.builtin.', place, where: 'category name' });
-// Palette names in Aspetto cards: one line at 17
+// Palette names in Aspetto cards
 slots.push({ prefix: 'palettes.', place: 'chip', where: 'appearance' });
 
 // ---- Check every language ----
@@ -222,44 +256,112 @@ const languages = fs
   .filter((l) => wanted.length === 0 || wanted.includes(l));
 
 const PLURAL = /_(zero|one|two|few|many|other)$/;
+const MATRIX_LANGUAGES = ['it', 'en', 'de', 'fi'];
+const WIDTHS = [320, 375, 393, 430];
+// iOS Dynamic Type (body 17 pt): xS 14, S 15, M 16, L 17 (default), XL 19, XXL 21, XXXL 23, AX1 28,
+// AX2 33, AX3 40, AX4 47, AX5 53 → React Native fontScale
+const SCALES = [
+  ['xS', 14 / 17], ['L', 1], ['XL', 19 / 17], ['XXXL', 23 / 17], ['AX1', 28 / 17], ['AX2', 33 / 17], ['AX3', 40 / 17], ['AX5', 53 / 17],
+];
+const MAX_SCALE = 2; // components/text.tsx
+
+const NUMERIC = /\{\{\s*(count|number|page|total|position|used|limit|days|min|size|percent|intensity|current|year|years|pages)\s*\}\}/g;
+const sample = (text) => text.replace(NUMERIC, '12').replace(/\{\{[^}]+\}\}/g, 'Xxxxxxx');
+const widestWord = (text, size, weight) =>
+  text.split(/\s+/).filter(Boolean).reduce((best, w) => {
+    const width = measure(w, size, weight);
+    return width > best.width ? { word: w, width } : best;
+  }, { word: '', width: 0 });
+
 let failures = 0;
 let shrinks = 0;
-for (const lang of languages) {
+let fitted = 0; // plain texts made smaller by the app Text so a long word stays whole
+// Keys never drawn by our Text on screen: spoken by VoiceOver, system alerts, notifications, the
+// iPhone calendar, the accountant PDF, file names, share messages, demo content
+const NOT_ON_SCREEN = /^(a11y\.|deadlineReminders\.|calendarSync\.|taxPackageBuilder\.|sendFileName\.|sendPrepare\.|createBackup\.|restoreBackup\.|backupCrypto\.|zipReader\.|appActions\.|demoData\.|documentTypes\.|shareCopies\.)|\.alerts\.|[Aa]ccessibility|Hint$|Label$/;
+const reported = new Set();
+function fail(message) {
+  if (reported.has(message)) return;
+  reported.add(message);
+  failures++;
+  console.log(`✖ ${message}`);
+}
+
+function checkLanguage(lang, W, scaleName, scale) {
   const texts = flatten(JSON.parse(fs.readFileSync(path.join(I18N, `${lang}.json`), 'utf8')));
-  if (texts.size === 0) continue;
-  const seen = new Set();
-  for (const slot of slots) {
-    const place = PLACES[slot.place];
-    const keys = [...texts.keys()].filter((k) => {
+  if (texts.size === 0) return;
+  const at = `${lang} ${W}pt ${scaleName}`;
+  const eff = Math.min(scale, MAX_SCALE);
+  const keysFor = (slot) =>
+    [...texts.keys()].filter((k) => {
       const base = k.replace(PLURAL, '');
       return slot.key ? base === slot.key : base.startsWith(slot.prefix);
     });
-    for (const key of keys) {
-      const id = `${key}|${slot.place}`;
-      if (seen.has(id)) continue;
-      seen.add(id);
-      // {{variables}} → a typical value
-      const text = texts.get(key).replace(/\{\{\s*count\s*\}\}/g, '12').replace(/\{\{[^}]+\}\}/g, 'Xxxxxxx');
-      const parts = place.mode === 'words' ? text.split(/\s+/).filter(Boolean) : [text];
-      const widest = parts.reduce((best, w) => {
-        const width = measure(w, place.size, place.weight);
-        return width > best.width ? { word: w, width } : best;
-      }, { word: '', width: 0 });
+  const covered = new Set();
+
+  for (const slot of slots) {
+    const place = PLACES[slot.place](W, scale);
+    if (place.fixed && (W !== 375 || scale !== 1)) continue; // native titles: design size only
+    // big titles grow up to 125 % (TileTitle) and get smaller instead of breaking a word
+    const size = place.fixed ? place.size : place.size * Math.min(eff, place.cap ?? MAX_SCALE);
+    for (const key of keysFor(slot)) {
+      covered.add(key);
+      if (NOT_ON_SCREEN.test(key)) continue;
+      const text = sample(texts.get(key));
+      const widest = place.mode === 'words' ? widestWord(text, size, place.weight) : { word: text, width: measure(text, size, place.weight) };
       if (widest.width <= place.width) continue;
-      const scale = place.width / widest.width;
-      if (scale >= place.minScale) {
-        shrinks++;
-        if (verbose) console.log(`  ${lang}: ${place.label} shrinks to ${Math.round(scale * 100)}%: "${widest.word}" (${key})`);
-      } else {
-        failures++;
-        console.log(
-          `✖ ${lang}: ${place.label}: "${widest.word}" is ${Math.round(widest.width)} pt, room ${Math.round(place.width)} pt` +
-            (place.minScale < 1 ? ` (even at ${Math.round(place.minScale * 100)}%)` : '') +
-            ` — ${key} (${slot.where})`,
-        );
+      const needed = place.width / widest.width;
+      if (place.autoFit && needed >= place.minScale) {
+        fitted++;
+        if (verbose) console.log(`  ${at}: ${place.label} made smaller to ${Math.round(needed * 100)}%: "${widest.word}" (${key})`);
+        continue;
       }
+      if (needed >= place.minScale) {
+        shrinks++;
+        if (verbose) console.log(`  ${at}: ${place.label} shrinks to ${Math.round(needed * 100)}%: "${widest.word}" (${key})`);
+        continue;
+      }
+      // a tile grid goes to one column
+      if (place.fallback && widest.width * place.minScale <= place.fallback) continue;
+      fail(`${at}: ${place.label}: "${widest.word}" ${Math.round(widest.width)} pt, room ${Math.round(place.fallback ?? place.width)} pt` +
+        (place.minScale < 1 ? ` (even at ${Math.round(place.minScale * 100)} %)` : '') + ` — ${key} (${slot.where})`);
     }
   }
+
+  // Segmented controls: one line each, or the vertical list
+  for (const group of segmentGroups) {
+    const labels = group.keys.filter((k) => texts.has(k)).map((k) => [k, sample(texts.get(k))]);
+    labels.forEach(([k]) => covered.add(k));
+    const size = 15 * eff;
+    const room = segmentRoom(W, group.count, group.symbols);
+    const oneLine = labels.every(([, text]) => measure(text, size, 600) <= room);
+    if (oneLine) continue;
+    const listRoom = segmentListRoom(W);
+    for (const [key, text] of labels) {
+      const widest = widestWord(text, size, 600);
+      if (widest.width <= listRoom) continue;
+      if (listRoom / widest.width >= 0.85) shrinks++;
+      else fail(`${at}: segmented (list): "${widest.word}" ${Math.round(widest.width)} pt, room ${Math.round(listRoom)} pt (even at 85 %) — ${key} (${group.where})`);
+    }
+  }
+
+  // Every other text: its words fit a card at full size
+  const place = PLACES.text(W);
+  for (const [key, value] of texts) {
+    if (covered.has(key) || NOT_ON_SCREEN.test(key)) continue;
+    const widest = widestWord(sample(value), place.size * eff, place.weight);
+    if (widest.width <= place.width) continue;
+    if (place.width / widest.width >= place.minScale) fitted++;
+    else fail(`${at}: text: "${widest.word}" ${Math.round(widest.width)} pt, room ${Math.round(place.width)} pt — ${key}`);
+  }
+}
+
+for (const lang of languages) {
+  checkLanguage(lang, 375, 'L', 1);
+  checkLanguage(lang, 320, 'AX1+ (200 %)', MAX_SCALE); // the narrowest phone at the largest size used
+}
+for (const lang of MATRIX_LANGUAGES.filter((l) => languages.includes(l))) {
+  for (const W of WIDTHS) for (const [name, scale] of SCALES) checkLanguage(lang, W, name, scale);
 }
 
 if (missingGlyphs.size) console.log(`(in no font here, estimated: ${[...missingGlyphs].slice(0, 30).join('')}…)`);
@@ -267,4 +369,7 @@ if (failures) {
   console.error(`\n✖ text fit: ${failures} text${failures === 1 ? '' : 's'} would break inside a word or be cut`);
   process.exit(1);
 }
-console.log(`✓ text fit: ${languages.length} languages, no word breaks${shrinks ? ` (${shrinks} texts shrink to fit)` : ''}`);
+console.log(
+  `✓ text fit: ${languages.length} languages at 375 pt and at 320 pt × 200 %, it/en/de/fi at ${WIDTHS.join('/')} pt × xS–AX5: ` +
+    `no word broken or cut (${shrinks} shrink at most to 85 %, ${fitted} long words made smaller by Text)`,
+);

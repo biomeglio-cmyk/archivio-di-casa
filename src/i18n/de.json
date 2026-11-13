@@ -850,8 +850,8 @@
     "prompt": "Sottomano entsperren",
     "unlock": "Entsperren",
     "unlockWith": {
-      "faceId": "Mit Face ID entsperren",
-      "touchId": "Mit Touch ID entsperren",
+      "faceId": "Mit Face ID entsperren",
+      "touchId": "Mit Touch ID entsperren",
       "passcode": "Mit Code entsperren"
     },
     "message": "Deine Dokumente sind geschützt"
@@ -866,7 +866,7 @@
     "saveFailed": "Sichern fehlgeschlagen",
     "editTitle": "Passwort bearbeiten",
     "newTitle": "Neues Passwort",
-    "privacy": "Sie bleiben nur auf diesem iPhone und öffnen sich mit Face ID.",
+    "privacy": "Sie bleiben nur auf diesem iPhone und öffnen sich mit Face ID.",
     "sections": {
       "what": "Was du sicherst",
       "name": "Name",
@@ -948,10 +948,10 @@
     "show": "Einblenden",
     "hide": "Ausblenden",
     "copy": "Kopieren",
-    "locked": "Sichtbar nach Face ID oder iPhone-Code",
+    "locked": "Sichtbar nach Face ID oder iPhone-Code",
     "wifiQrLabel": "QR-Code des WLAN-Netzwerks",
     "qrHint": "Mit der Kamera scannen und verbinden.",
-    "qrLocked": "Der QR-Code enthält das Passwort: Er ist nach Face ID oder iPhone-Code sichtbar.",
+    "qrLocked": "Der QR-Code enthält das Passwort: Er ist nach Face ID oder iPhone-Code sichtbar.",
     "qrNoNetwork": "Füge den Netzwerknamen über „Bearbeiten“ hinzu, um den QR-Code zu erhalten.",
     "showQr": "QR-Code anzeigen",
     "hideQr": "QR-Code ausblenden",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "Vor {{count}} Tagen"
     },
     "categoryColors": "Kategoriefarben",
-    "faceId": "Mit Face ID sperren",
+    "faceId": "Mit Face ID sperren",
     "faceIdSubtitle": "Fragt bei jedem Öffnen der App nach deinem Gesicht",
     "hidePreviews": "Vorschauen ausblenden",
     "hidePreviewsSubtitle": "Mitteilungen zeigen das Dokument nicht an",
@@ -1493,7 +1493,7 @@
   },
   "appearance": {
     "intro": "Die Farben der Standardkategorien. Von dir erstellte Kategorien behalten ihre eigene Farbe.",
-    "restoreButton": "Standardkategorien wiederherstellen",
+    "restoreButton": "Kategorien zurückholen",
     "restoreHint": "Holt die gelöschten Standardkategorien zurück.",
     "paletteLabel": "Palette {{name}}",
     "alerts": {
@@ -1607,7 +1607,7 @@
     "rateTitle": "Sottomano bewerten",
     "rateMessage": "Du kannst eine Bewertung abgeben, sobald Sottomano im App Store ist.",
     "lockUnavailableTitle": "Sperre nicht verfügbar",
-    "lockUnavailableMessage": "Um Sottomano zu sperren, brauchst du einen Code auf deinem iPhone. Lege ihn unter Einstellungen › Face ID & Code fest und versuch es erneut."
+    "lockUnavailableMessage": "Um Sottomano zu sperren, brauchst du einen Code auf deinem iPhone. Lege ihn unter Einstellungen › Face ID & Code fest und versuch es erneut."
   },
   "a11y": {
     "browse": {

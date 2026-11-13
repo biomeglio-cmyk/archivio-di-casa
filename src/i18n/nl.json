@@ -850,8 +850,8 @@
     "prompt": "Ontgrendel Sottomano",
     "unlock": "Ontgrendel",
     "unlockWith": {
-      "faceId": "Ontgrendel met Face ID",
-      "touchId": "Ontgrendel met Touch ID",
+      "faceId": "Ontgrendel met Face ID",
+      "touchId": "Ontgrendel met Touch ID",
       "passcode": "Ontgrendel met toegangscode"
     },
     "message": "Je documenten zijn beschermd"
@@ -866,7 +866,7 @@
     "saveFailed": "Kan niet bewaren",
     "editTitle": "Wijzig wachtwoord",
     "newTitle": "Nieuw wachtwoord",
-    "privacy": "Ze blijven alleen op deze telefoon en openen met Face ID.",
+    "privacy": "Ze blijven alleen op deze telefoon en openen met Face ID.",
     "sections": {
       "what": "Wat je bewaart",
       "name": "Naam",
@@ -948,10 +948,10 @@
     "show": "Toon",
     "hide": "Verberg",
     "copy": "Kopieer",
-    "locked": "Zichtbaar na Face ID of de iPhone-toegangscode",
+    "locked": "Zichtbaar na Face ID of de iPhone-toegangscode",
     "wifiQrLabel": "QR-code van het wifinetwerk",
     "qrHint": "Ze scannen hem met de camera en zijn verbonden.",
-    "qrLocked": "De QR-code bevat het wachtwoord: hij is zichtbaar na Face ID of de iPhone-toegangscode.",
+    "qrLocked": "De QR-code bevat het wachtwoord: hij is zichtbaar na Face ID of de iPhone-toegangscode.",
     "qrNoNetwork": "Voeg de netwerknaam toe met Wijzig om de QR-code te krijgen.",
     "showQr": "Toon QR-code",
     "hideQr": "Verberg QR-code",
@@ -1354,7 +1354,7 @@
       "daysAgo_other": "{{count}} dagen geleden"
     },
     "categoryColors": "Kleuren van categorieën",
-    "faceId": "Vergrendel met Face ID",
+    "faceId": "Vergrendel met Face ID",
     "faceIdSubtitle": "Vraagt elke keer om je gezicht als je de app opent",
     "hidePreviews": "Verberg voorvertoningen",
     "hidePreviewsSubtitle": "Meldingen tonen het document niet",
@@ -1493,7 +1493,7 @@
   },
   "appearance": {
     "intro": "De kleuren van de standaardcategorieën. Categorieën die je zelf hebt gemaakt, houden hun eigen kleur.",
-    "restoreButton": "Zet standaardcategorieën terug",
+    "restoreButton": "Categorieën terugzetten",
     "restoreHint": "Brengt de standaardcategorieën terug die je hebt verwijderd.",
     "paletteLabel": "Palet {{name}}",
     "alerts": {
@@ -1607,7 +1607,7 @@
     "rateTitle": "Beoordeel Sottomano",
     "rateMessage": "Je kunt een beoordeling geven zodra Sottomano in de App Store staat.",
     "lockUnavailableTitle": "Vergrendeling niet beschikbaar",
-    "lockUnavailableMessage": "Om Sottomano te vergrendelen heb je een toegangscode op je iPhone nodig. Stel er een in via Instellingen › Face ID en toegangscode en probeer het opnieuw."
+    "lockUnavailableMessage": "Om Sottomano te vergrendelen heb je een toegangscode op je iPhone nodig. Stel er een in via Instellingen › Face ID en toegangscode en probeer het opnieuw."
   },
   "a11y": {
     "browse": {

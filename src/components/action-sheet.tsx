@@ -9,6 +9,7 @@ import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useI18n } from '@/i18n';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
 
 export type SheetAction = {
@@ -33,6 +34,7 @@ type Props = {
 // runs after the sheet is gone, so its alerts and screens are never hidden behind it.
 export function ActionSheet({ visible, title, subtitle, actions, onClose }: Props) {
   const theme = useTheme();
+  const large = useLargeText();
   const { t } = useI18n();
   const styles = useThemedStyles(makeStyles);
   const insets = useSafeAreaInsets();
@@ -72,6 +74,7 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
           {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
           <View style={styles.actions}>
             {actions.map((action) => {
+              // Large text: the icon above the label, the label across the row (check under it, right)
               const color = action.destructive ? theme.error : theme.text;
               return (
                 <Pressable
@@ -82,12 +85,17 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
                   accessibilityState={action.selected === undefined ? undefined : { selected: action.selected }}
                   style={({ pressed }) => [
                     styles.action,
+                    large && styles.actionLarge,
                     { backgroundColor: action.destructive ? theme.errorBackground : theme.paleLilac },
                     pressed && styles.pressed,
                   ]}>
                   <SymbolView name={action.symbol} tintColor={color} size={20} />
-                  <Text style={[styles.actionLabel, { color }]}>{action.label}</Text>
-                  {action.selected && <SymbolView name="checkmark" tintColor={theme.indigo} size={17} weight="semibold" />}
+                  <Text style={[styles.actionLabel, large && styles.actionLabelLarge, { color }]}>{action.label}</Text>
+                  {action.selected && (
+                    <View style={large && styles.checkLarge}>
+                      <SymbolView name="checkmark" tintColor={theme.indigo} size={17} weight="semibold" />
+                    </View>
+                  )}
                 </Pressable>
               );
             })}
@@ -158,6 +166,18 @@ const makeStyles = (c: Palette) =>
     flex: 1,
     fontSize: 16,
     fontFamily: FONTS.medium,
+  },
+  actionLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 6,
+  },
+  actionLabelLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
+  },
+  checkLarge: {
+    alignSelf: 'flex-end',
   },
   pressed: {
     opacity: 0.7,

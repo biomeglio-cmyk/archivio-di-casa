@@ -19,6 +19,8 @@
  *  - rows (icon + title + switch/value): the control moves below; with large text the icon goes
  *    above the title, which then has the whole row;
  *    every word must fit at full size
+ *  - form rows (documento, tessera, password, categoria, persona): beside the icon, or with large
+ *    text under it with the whole card width
  *  - any other text (paragraphs, notes) in a card: every word must fit at full size
  *  - navigation titles: one line at the design size (iOS ends them with "…" otherwise)
  *
@@ -160,6 +162,10 @@ const PLACES = {
   row: (W, scale) => ({ label: 'row title', size: 16, weight: 500, mode: 'words', minScale: 0.5, autoFit: true,
     width: W - SIDE * 2 - CARD_PAD * 2 - (scale >= LARGE_TEXT_SCALE ? 0 : 36 + 12) }),
   text: (W) => ({ label: 'text', size: 16, weight: 400, mode: 'words', minScale: 0.5, autoFit: true, width: W - SIDE * 2 - CARD_PAD * 2 }),
+  // The rows of the forms (Nuovo/Modifica documento, Nuova tessera, Nuova password, Nuova categoria,
+  // Nuova persona): icon + label in a card; from XXL the icon above, the label across the card
+  formRow: (W, scale) => ({ label: 'form row', size: 15, weight: 500, mode: 'words', minScale: 0.5, autoFit: true,
+    width: W - SIDE * 2 - CARD_PAD * 2 - (scale >= LARGE_TEXT_SCALE ? 0 : 36 + 12) }),
   // Scadenze, the selected day panel (dayBox: page − 2×14 padding, dot 8 + gap 10): by default
   // the amount / "promemoria" on the name's line (at least 90 pt left for the name); with large
   // text under the name, left-aligned, with the whole width (FitLine)
@@ -257,6 +263,10 @@ for (const file of sourceFiles(path.join(ROOT, 'src'))) {
 }
 // Category names: tiles of Home and the big title of the folder
 for (const place of ['categoryTile', 'folderTitle']) slots.push({ prefix: 'categories.builtin.', place, where: 'category name' });
+// The forms: every text of their namespaces is laid out as a form row
+for (const prefix of ['documentForm.', 'cardForm.', 'passwordForm.', 'categoryForm.', 'personForm.', 'coverField.']) {
+  slots.push({ prefix, place: 'formRow', where: 'form rows' });
+}
 // Scadenze: the trailing label of the selected day's rows, and the section titles of the list
 for (const key of ['deadlines.dayRepeats', 'deadlines.dayReminder']) slots.push({ key, place: 'daySide', where: 'Scadenze day panel' });
 slots.push({ prefix: 'deadlineUtils.', place: 'sectionTitle', where: 'Scadenze sections' });

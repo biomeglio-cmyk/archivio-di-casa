@@ -23,6 +23,7 @@ import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
 import type { CoverMode } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useI18n } from '@/i18n';
 import { barcodeTypeName, codeKindOf, generateBarcode, typeForKind, type CodeKind } from '@/utils/barcode';
 import { useTheme, useThemedStyles } from '@/hooks/use-theme';
@@ -66,6 +67,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
   const insets = useSafeAreaInsets();
   const reduceMotion = useReduceMotion();
   const largeText = useWindowDimensions().fontScale > 1.3; // fields under their labels (FieldRow)
+  const iconAbove = useLargeText(); // large text: a leading icon on its own line, above its text
   const { data: people } = useDbQuery(listPeople, []);
 
   const [title, setTitle] = useState(initial.title);
@@ -306,7 +308,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
             <Text style={styles.explain}>{t('cardForm.explain')}</Text>
           </WhiteCard>
 
-          <View style={styles.readBox}>
+          <View style={[styles.readBox, iconAbove && styles.stackLarge]}>
             <LinearGradient
               colors={theme.gradient}
               start={GRADIENT_START}
@@ -314,7 +316,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
               style={styles.readIcon} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
               <SymbolView name="sparkles" tintColor="#FFFFFF" size={17} />
             </LinearGradient>
-            <Text style={styles.readText}>
+            <Text style={[styles.readText, iconAbove && styles.fillLarge]}>
               <Text style={styles.readTitle}>{`${t('cardForm.readTitle')}\n`}</Text>
               {t('cardForm.readText')}
             </Text>
@@ -650,6 +652,16 @@ const makeStyles = (c: Palette) =>
     flexDirection: 'row',
     alignItems: 'flex-start',
     gap: 12,
+  },
+  // Large text: the leading icon on its own line, the text on the whole width under it
+  stackLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  fillLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
   },
   readIcon: {
     width: 34,

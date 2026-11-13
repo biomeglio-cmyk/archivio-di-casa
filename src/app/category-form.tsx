@@ -9,6 +9,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ActionSheet } from '@/components/action-sheet';
 import { ColorPicker } from '@/components/color-picker';
+import { FitLine } from '@/components/fit-line';
 import { IconSquare } from '@/components/icon-square';
 import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
@@ -125,7 +126,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   const look = readableColors(shown);
   const gradient = [look.top, look.bottom] as const;
   const { fontScale } = useWindowDimensions();
-  const largeText = useLargeText(); // icons: 4 per row instead of 5
+  const largeText = useLargeText(); // icons: 4 per row instead of 5; row icons above their text
   const shadow = tintedShadow(categoryShadowRgb(look));
   // Our 13 colors (the palette of Aspetto), without repeats
   const swatches = palette.colors.filter((c, index, all) => all.findIndex((other) => other.bottom === c.bottom) === index);
@@ -197,12 +198,28 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
                   onPress={() => restore(builtin)}
                   accessibilityRole="button"
                   accessibilityLabel={t('categoryForm.restoreA11y', { name: builtin.name })}
-                  style={({ pressed }) => [styles.restoreRow, index > 0 && styles.restoreDivider, pressed && styles.pressed]}>
+                  style={({ pressed }) => [
+                    styles.restoreRow,
+                    largeText && styles.stackLarge,
+                    index > 0 && styles.restoreDivider,
+                    pressed && styles.pressed,
+                  ]}>
                   <IconSquare symbol={builtin.symbol} colors={builtin.colors} size={40} />
-                  <Text style={styles.restoreName} numberOfLines={fontScale > 1.3 ? undefined : 1}>
-                    {builtin.name}
-                  </Text>
-                  <Text style={styles.restoreAction}>{t('common.restore')}</Text>
+                  {largeText ? (
+                    // Large text: the name on the whole width, "Ripristina" next to it when it fits, else under it
+                    <FitLine
+                      style={styles.fillLarge}
+                      start={<Text style={[styles.restoreName, styles.nameLarge]}>{builtin.name}</Text>}
+                      end={<Text style={styles.restoreAction}>{t('common.restore')}</Text>}
+                    />
+                  ) : (
+                    <>
+                      <Text style={styles.restoreName} numberOfLines={fontScale > 1.3 ? undefined : 1}>
+                        {builtin.name}
+                      </Text>
+                      <Text style={styles.restoreAction}>{t('common.restore')}</Text>
+                    </>
+                  )}
                 </Pressable>
               ))}
             </View>
@@ -511,6 +528,19 @@ const makeStyles = (c: Palette) =>
     gap: 14,
     paddingVertical: 10,
     paddingHorizontal: 16,
+  },
+  // Large text: the leading icon on its own line, the texts on the whole width under it
+  stackLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  fillLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
+  },
+  nameLarge: {
+    flex: 0,
   },
   restoreDivider: {
     borderTopWidth: 1,

@@ -46,6 +46,7 @@ import {
 import { listPeople } from '@/db/people';
 import type { DocumentDetail, PasswordPreview, PasswordType } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useLargeText } from '@/hooks/use-large-text';
 import { useI18n } from '@/i18n';
 import { authenticate } from '@/security/app-lock';
 import { readPassword, savePassword } from '@/security/password-vault';
@@ -79,6 +80,8 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
   const db = useSQLiteContext();
   const insets = useSafeAreaInsets();
   const large = useWindowDimensions().fontScale > 1.3; // larger text: 2 types per row, names on 2 lines
+  // Large text: every leading icon on its own line, the texts and controls on the whole width under it
+  const iconAbove = useLargeText();
   const { data: people } = useDbQuery(listPeople, []);
   const { data: customTypes } = useDbQuery(listCustomPasswordTypes, []);
   const info = existing?.password ?? null;
@@ -283,7 +286,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
         <View style={styles.barSpace} />
       </View>
 
-      <View style={styles.privacy}>
+      <View style={[styles.privacy, iconAbove && styles.stackLarge]}>
         <LinearGradient
           colors={PASSWORD_GRADIENT}
           start={GRADIENT_START}
@@ -292,7 +295,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
           <SymbolView name="faceid" tintColor="#FFFFFF" size={26} />
         </LinearGradient>
-        <Text style={styles.privacyText}>{t('passwordForm.privacy')}</Text>
+        <Text style={[styles.privacyText, iconAbove && styles.fillLarge]}>{t('passwordForm.privacy')}</Text>
       </View>
 
       <Section>{t('passwordForm.sections.what')}</Section>
@@ -325,7 +328,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       </View>
       {type === 'other' && (
         <>
-          <View style={[styles.field, styles.whatField]}>
+          <View style={[styles.field, styles.whatField, iconAbove && styles.fieldLarge]}>
             <SymbolView name="questionmark.circle" tintColor={PASSWORD_INK(theme)} size={20} accessibilityElementsHidden />
             <TextInput
               value={customType}
@@ -333,7 +336,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
               placeholder={t('passwordForm.customTypePlaceholder')}
               placeholderTextColor={theme.placeholder}
               accessibilityLabel={t('passwordForm.customTypeLabel')}
-              style={styles.input}
+              style={[styles.input, iconAbove && styles.fillLarge]}
             />
           </View>
           <Text style={styles.hint}>{t('passwordForm.customTypeHint')}</Text>
@@ -437,9 +440,9 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       <WhiteCard style={styles.card}>
         {meta.userLabel !== null && (
           <>
-            <View style={styles.accessRow}>
+            <View style={[styles.accessRow, iconAbove && styles.stackLarge]}>
               <IconBox symbol={meta.userSymbol} />
-              <View style={styles.flex}>
+              <View style={[styles.flex, iconAbove && styles.fillLarge]}>
                 <Text style={styles.fieldLabel} accessibilityElementsHidden importantForAccessibility="no">
                   {meta.userLabel}
                 </Text>
@@ -456,40 +459,43 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
                 />
               </View>
             </View>
-            <View style={styles.separator} />
+            <View style={[styles.separator, iconAbove && styles.insetLarge]} />
           </>
         )}
-        <View style={[styles.accessRow, styles.passwordRow]}>
+        <View style={[styles.accessRow, styles.passwordRow, iconAbove && styles.stackLarge]}>
           <IconBox symbol={isPin ? 'circle.grid.3x3' : 'key'} />
-          <View style={styles.flex}>
-            <Text style={styles.fieldLabel} accessibilityElementsHidden importantForAccessibility="no">
-              {meta.passwordLabel}
-            </Text>
-            <TextInput
-              value={password}
-              onChangeText={(text) => {
-                setPassword(text);
-                setLoadedSaved(false);
-              }}
-              placeholder={masked || (isPin ? '••••' : t('passwordForm.passwordPlaceholder'))}
-              placeholderTextColor={masked ? theme.text : theme.textSecondary}
-              secureTextEntry={!show}
-              keyboardType={isPin ? 'number-pad' : 'default'}
-              autoCapitalize="none"
-              autoCorrect={false}
-              textContentType="none" // no iOS "save password" prompt: it is not this app's login
-              accessibilityLabel={meta.passwordLabel}
-              style={[styles.accessInput, styles.passwordInput]}
-            />
+          {/* Label, field, show and copy: the rest of the row, or the whole width under the icon */}
+          <View style={[styles.passwordMain, iconAbove && styles.fillLarge]}>
+            <View style={styles.flex}>
+              <Text style={styles.fieldLabel} accessibilityElementsHidden importantForAccessibility="no">
+                {meta.passwordLabel}
+              </Text>
+              <TextInput
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  setLoadedSaved(false);
+                }}
+                placeholder={masked || (isPin ? '••••' : t('passwordForm.passwordPlaceholder'))}
+                placeholderTextColor={masked ? theme.text : theme.textSecondary}
+                secureTextEntry={!show}
+                keyboardType={isPin ? 'number-pad' : 'default'}
+                autoCapitalize="none"
+                autoCorrect={false}
+                textContentType="none" // no iOS "save password" prompt: it is not this app's login
+                accessibilityLabel={meta.passwordLabel}
+                style={[styles.accessInput, styles.passwordInput]}
+              />
+            </View>
+            <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={show ? t('passwordForm.hide') : t('passwordForm.show')} style={styles.eye}>
+              <SymbolView name={show ? 'eye.slash' : 'eye'} tintColor={theme.iconGrey} size={20} />
+            </Pressable>
+            <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel={t('passwordForm.copy')} style={styles.eye}>
+              <SymbolView name="doc.on.doc" tintColor={theme.iconGrey} size={19} />
+            </Pressable>
           </View>
-          <Pressable onPress={toggleShow} accessibilityRole="button" accessibilityLabel={show ? t('passwordForm.hide') : t('passwordForm.show')} style={styles.eye}>
-            <SymbolView name={show ? 'eye.slash' : 'eye'} tintColor={theme.iconGrey} size={20} />
-          </Pressable>
-          <Pressable onPress={copy} accessibilityRole="button" accessibilityLabel={t('passwordForm.copy')} style={styles.eye}>
-            <SymbolView name="doc.on.doc" tintColor={theme.iconGrey} size={19} />
-          </Pressable>
         </View>
-        <View style={styles.strength}>
+        <View style={[styles.strength, iconAbove && styles.insetLarge]}>
           <View style={styles.bars} accessibilityElementsHidden>
             {[0, 1, 2, 3].map((i) => (
               <View key={i} style={[styles.barPiece, { backgroundColor: !isPin && i < strength.level ? strength.color : theme.separator }]} />
@@ -516,7 +522,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
       {type === 'site' && (
         <>
           <Section>{t('passwordForm.sections.site')}</Section>
-          <View style={[styles.field, styles.whiteField]}>
+          <View style={[styles.field, styles.whiteField, iconAbove && styles.fieldLarge]}>
             <SymbolView name="link" tintColor={theme.textSecondary} size={18} accessibilityElementsHidden />
             <TextInput
               value={url}
@@ -527,7 +533,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
               autoCapitalize="none"
               autoCorrect={false}
               accessibilityLabel={t('passwordForm.urlLabel')}
-              style={styles.input}
+              style={[styles.input, iconAbove && styles.fillLarge]}
             />
           </View>
         </>
@@ -542,27 +548,30 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             accessibilityLabel={t('passwordForm.wifiQrTitle')}
             accessibilityHint={t('passwordForm.wifiQrSubtitle')}
             accessibilityState={{ checked: wifiQr }}
-            style={styles.switchRow}>
+            style={[styles.switchRow, iconAbove && styles.stackLarge]}>
             <IconBox symbol="qrcode" />
-            <View style={styles.flex}>
+            <View style={[styles.flex, iconAbove && styles.fillLarge]}>
               <Text style={styles.rowTitle}>{t('passwordForm.wifiQrTitle')}</Text>
               <Text style={styles.rowSubtitle}>{t('passwordForm.wifiQrSubtitle')}</Text>
             </View>
-            <Switch value={wifiQr} onValueChange={setWifiQr} accessibilityLabel={t('passwordForm.wifiQrTitle')} />
+            {/* Large text: under the texts, still on the right */}
+            <View style={iconAbove && styles.switchLarge}>
+              <Switch value={wifiQr} onValueChange={setWifiQr} accessibilityLabel={t('passwordForm.wifiQrTitle')} />
+            </View>
           </Pressable>
         </WhiteCard>
       )}
 
       <Section>{t('passwordForm.sections.whose')}</Section>
       <WhiteCard style={styles.card}>
-        <View style={styles.personRow}>
+        <View style={[styles.personRow, iconAbove && styles.personLarge]}>
           <View style={[styles.iconBox, { backgroundColor: theme.lilac }]} accessibilityElementsHidden importantForAccessibility="no-hide-descendants">
             <SymbolView name="person" tintColor={theme.indigo} size={19} />
           </View>
           <Text style={styles.personLabel} accessibilityElementsHidden importantForAccessibility="no">
             {t('passwordForm.person')}
           </Text>
-          <Pressable onPress={choosePerson} accessibilityRole="button" accessibilityLabel={t('passwordForm.personA11y', { name: personName })} style={styles.select}>
+          <Pressable onPress={choosePerson} accessibilityRole="button" accessibilityLabel={t('passwordForm.personA11y', { name: personName })} style={[styles.select, iconAbove && styles.selectLarge]}>
             <Text style={styles.selectText}>{personName}</Text>
             <SymbolView name="chevron.down" tintColor={theme.textSecondary} size={13} weight="semibold" />
           </Pressable>
@@ -589,15 +598,17 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
           accessibilityLabel={t('passwordForm.favoriteTitle')}
           accessibilityHint={t('passwordForm.favoriteSubtitle')}
           accessibilityState={{ checked: pinned }}
-          style={styles.switchRow}>
+          style={[styles.switchRow, iconAbove && styles.stackLarge]}>
           <View style={[styles.iconBox, { backgroundColor: PIN_TINT(theme) }]}>
             <SymbolView name={pinned ? 'heart.fill' : 'heart'} tintColor={theme.heart} size={19} />
           </View>
-          <View style={styles.flex}>
+          <View style={[styles.flex, iconAbove && styles.fillLarge]}>
             <Text style={styles.rowTitle}>{t('passwordForm.favoriteTitle')}</Text>
             <Text style={styles.rowSubtitle}>{t('passwordForm.favoriteSubtitle')}</Text>
           </View>
-          <Switch value={pinned} onValueChange={setPinnedState} accessibilityLabel={t('passwordForm.favoriteTitle')} />
+          <View style={iconAbove && styles.switchLarge}>
+            <Switch value={pinned} onValueChange={setPinnedState} accessibilityLabel={t('passwordForm.favoriteTitle')} />
+          </View>
         </Pressable>
       </WhiteCard>
 
@@ -895,6 +906,42 @@ const makeStyles = (c: Palette) =>
   },
   passwordRow: {
     paddingRight: 8,
+  },
+  passwordMain: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 14,
+  },
+  // Large text: the leading icon on its own line, the texts on the whole width under it
+  stackLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  fillLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
+  },
+  switchLarge: {
+    alignSelf: 'flex-end', // under the texts, still on the right
+  },
+  insetLarge: {
+    marginLeft: 16, // no icon column to start after
+  },
+  fieldLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 6,
+    paddingVertical: 12,
+  },
+  personLarge: {
+    flexDirection: 'column',
+    alignItems: 'stretch',
+    gap: 8,
+  },
+  selectLarge: {
+    flex: 0, // under its label, on the whole width
   },
   iconBox: {
     width: 40,

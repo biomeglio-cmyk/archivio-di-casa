@@ -29,6 +29,7 @@ import { listDocumentTypes, type DocumentInput } from '@/db/documents';
 import { listPeople } from '@/db/people';
 import type { Category, CoverMode, PaymentStatus } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { useLargeText } from '@/hooks/use-large-text';
 import { usePreferences } from '@/settings/preferences';
 import { chooseAction } from '@/utils/action-sheet';
 import { categoryTint } from '@/utils/colors';
@@ -97,6 +98,8 @@ export function DocumentForm({
   const { data: people } = useDbQuery(listPeople, []);
   const { defaultReminderDays } = usePreferences();
   const { fontScale } = useWindowDimensions();
+  // Large text: every leading icon on its own line, the texts and controls on the whole width under it
+  const large = useLargeText();
 
   const [title, setTitle] = useState(initial?.title ?? '');
   const [categoryId, setCategoryId] = useState<number | null>(initial?.categoryId ?? null);
@@ -294,20 +297,24 @@ export function DocumentForm({
               accessibilityLabel={t('documentForm.addDeadline')}
               accessibilityHint={dueText}
               accessibilityState={{ checked: hasExpiry }}
-              style={styles.switchRow}>
+              style={[styles.switchRow, large && styles.stackLarge]}>
               <IconBox symbol="calendar" tint={theme.lilac} color={theme.indigo} />
-              <View style={styles.flex}>
+              <View style={[styles.flex, large && styles.fillLarge]}>
                 <Text style={styles.rowTitle}>{t('documentForm.addDeadline')}</Text>
                 <Text style={styles.rowSubtitle}>{dueText}</Text>
               </View>
-              <Switch value={hasExpiry} onValueChange={setHasExpiry} accessibilityLabel={t('documentForm.addDeadline')} />
+              {/* Large text: under the texts, still on the right */}
+              <View style={large && styles.switchLarge}>
+                <Switch value={hasExpiry} onValueChange={setHasExpiry} accessibilityLabel={t('documentForm.addDeadline')} />
+              </View>
             </Pressable>
             {hasExpiry && (
               <View style={styles.dueBox}>
                 <DateCalendar value={expiryDate} onChange={setExpiryDate} />
-                <View style={styles.remind}>
+                <View style={[styles.remind, large && styles.stackLarge]}>
                   <IconBox symbol="bell" tint={theme.surface} color={theme.indigo} />
                   <FitLine
+                    style={large ? styles.fillLarge : undefined}
                     start={
                       <Text style={styles.remindLabel} accessibilityElementsHidden importantForAccessibility="no">
                         {t('documentForm.remindMe')}
@@ -331,9 +338,10 @@ export function DocumentForm({
                   />
                 </View>
                 {/* Ours: a deadline that comes back */}
-                <View style={styles.remind}>
+                <View style={[styles.remind, large && styles.stackLarge]}>
                   <IconBox symbol="arrow.clockwise" tint={theme.surface} color={theme.indigo} />
                   <FitLine
+                    style={large ? styles.fillLarge : undefined}
                     start={
                       <Text style={styles.remindLabel} accessibilityElementsHidden importantForAccessibility="no">
                         {t('documentForm.repeats')}
@@ -361,9 +369,10 @@ export function DocumentForm({
                   />
                 </View>
                 {repeatUnit !== 'never' && (
-                  <View style={styles.remind}>
+                  <View style={[styles.remind, large && styles.stackLarge]}>
                     <IconBox symbol="number" tint={theme.surface} color={theme.indigo} />
                     <FitLine
+                      style={large ? styles.fillLarge : undefined}
                       start={
                         <Text style={styles.remindLabel} accessibilityElementsHidden importantForAccessibility="no">
                           {t('documentForm.every')}
@@ -411,13 +420,15 @@ export function DocumentForm({
               accessibilityLabel={t('documentForm.pin')}
               accessibilityHint={t('documentForm.pinSubtitle')}
               accessibilityState={{ checked: pinned }}
-              style={styles.switchRow}>
+              style={[styles.switchRow, large && styles.stackLarge]}>
               <IconBox symbol={pinned ? 'heart.fill' : 'heart'} tint={PIN_BACKGROUND(theme)} color={PIN_COLOR(theme)} />
-              <View style={styles.flex}>
+              <View style={[styles.flex, large && styles.fillLarge]}>
                 <Text style={styles.rowTitle}>{t('documentForm.pin')}</Text>
                 <Text style={styles.rowSubtitle}>{t('documentForm.pinSubtitle')}</Text>
               </View>
-              <Switch value={pinned} onValueChange={setPinned} accessibilityLabel={t('documentForm.pin')} />
+              <View style={large && styles.switchLarge}>
+                <Switch value={pinned} onValueChange={setPinned} accessibilityLabel={t('documentForm.pin')} />
+              </View>
             </Pressable>
           </WhiteCard>
 
@@ -568,7 +579,8 @@ function SectionTitle({ children }: { children: string }) {
 
 function Separator() {
   const styles = useThemedStyles(makeStyles);
-  return <View style={styles.separator} />;
+  const large = useLargeText(); // no icon column to start after
+  return <View style={[styles.separator, large && styles.separatorLarge]} />;
 }
 
 // Decoration: hidden from VoiceOver (the control next to it has the label)
@@ -584,8 +596,8 @@ function IconBox({ symbol, tint, color }: { symbol: SFSymbol; tint: string; colo
   );
 }
 
-// "Cartella   [Bollette ⌄]": icon square, a 72pt grey label, then the control (under the label
-// with larger text). The control says the label itself: the grey label is hidden from VoiceOver.
+// "Cartella   [Bollette ⌄]": icon square, a 72pt grey label, then the control (with large text:
+// the icon on its own line, the label under it, the control under the label). The control says the label itself: the grey label is hidden from VoiceOver.
 function FieldRow({
   symbol,
   tint,
@@ -600,19 +612,18 @@ function FieldRow({
   children: ReactNode;
 }) {
   const styles = useThemedStyles(makeStyles);
-  const large = useWindowDimensions().fontScale > 1.3;
+  const large = useLargeText();
   const labelText = (
     <Text style={[styles.fieldLabel, large && styles.fieldLabelLarge]} accessibilityElementsHidden importantForAccessibility="no">
       {label}
     </Text>
   );
   if (large) {
+    // The icon on its own line, then the label and the control on the whole width
     return (
       <View style={[styles.fieldRow, styles.fieldRowStacked]}>
-        <View style={styles.fieldRowTop}>
-          <IconBox symbol={symbol} tint={tint} color={iconColor} />
-          {labelText}
-        </View>
+        <IconBox symbol={symbol} tint={tint} color={iconColor} />
+        {labelText}
         {children}
       </View>
     );
@@ -725,6 +736,9 @@ const makeStyles = (c: Palette) =>
     marginRight: 16,
     backgroundColor: c.separator,
   },
+  separatorLarge: {
+    marginLeft: 16,
+  },
   fieldRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -737,14 +751,21 @@ const makeStyles = (c: Palette) =>
     alignItems: 'stretch',
     gap: 8,
   },
-  fieldRowTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 14,
+  // Large text: the leading icon on its own line, the texts on the whole width under it
+  stackLarge: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    gap: 10,
+  },
+  fillLarge: {
+    flex: 0,
+    alignSelf: 'stretch',
+  },
+  switchLarge: {
+    alignSelf: 'flex-end', // under the texts, still on the right
   },
   fieldLabelLarge: {
     width: 'auto',
-    flexShrink: 1,
   },
   fieldLabel: {
     width: 72,

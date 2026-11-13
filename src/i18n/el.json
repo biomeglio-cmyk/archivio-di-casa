@@ -1,1 +1,1585 @@
-{}
+{
+  "common": {
+    "cancel": "Ακύρωση",
+    "ok": "OK",
+    "done": "Τέλος",
+    "save": "Αποθήκευση",
+    "delete": "Διαγραφή",
+    "edit": "Επεξεργασία",
+    "close": "Κλείσιμο",
+    "confirm": "Επιβεβαίωση",
+    "back": "Πίσω",
+    "next": "Επόμενο",
+    "share": "Κοινοποίηση",
+    "send": "Αποστολή",
+    "search": "Αναζήτηση",
+    "add": "Προσθήκη",
+    "remove": "Αφαίρεση",
+    "retry": "Δοκίμασε ξανά",
+    "continue": "Συνέχεια",
+    "yes": "Ναι",
+    "no": "Όχι",
+    "restore": "Επαναφορά",
+    "settings": "Ρυθμίσεις",
+    "more": "Περισσότερα",
+    "none": "Κανένα",
+    "documents_one": "{{count}} έγγραφο",
+    "documents_other": "{{count}} έγγραφα",
+    "pages_one": "{{count}} σελίδα",
+    "pages_other": "{{count}} σελίδες",
+    "photos_one": "{{count}} φωτογραφία",
+    "photos_other": "{{count}} φωτογραφίες",
+    "wholeFamily": "Όλη η οικογένεια"
+  },
+  "dates": {
+    "today": "σήμερα",
+    "tomorrow": "αύριο",
+    "yesterday": "χθες",
+    "inSpan": "σε {{span}}",
+    "spanAgo": "πριν από {{span}}",
+    "expiredYesterday": "έληξε χθες",
+    "expiredFor": "έληξε πριν από {{span}}",
+    "days_one": "{{count}} ημέρα",
+    "days_other": "{{count}} ημέρες",
+    "months_one": "{{count}} μήνα",
+    "months_other": "{{count}} μήνες",
+    "years_one": "{{count}} χρόνο",
+    "years_other": "{{count}} χρόνια"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Έγγραφα",
+      "cards": "Κάρτες",
+      "utilities": "Λογαριασμοί",
+      "home": "Σπίτι",
+      "insurance": "Ασφάλειες",
+      "warranties": "Εγγυήσεις & αποδείξεις",
+      "car": "Αυτοκίνητο",
+      "tax": "Εκπιπτόμενα έξοδα",
+      "householdStaff": "Οικιακό προσωπικό",
+      "school": "Σχολείο",
+      "pet": "Κατοικίδια",
+      "password": "Συνθηματικά",
+      "other": "Άλλα"
+    }
+  },
+  "language": {
+    "title": "Γλώσσα",
+    "auto": "Αυτόματα",
+    "autoSubtitle": "Ακολουθεί τη γλώσσα του τηλεφώνου",
+    "search": "Αναζήτηση γλωσσών",
+    "autoDetail": "Γλώσσα iPhone: {{language}}",
+    "noResults": "Καμία γλώσσα για «{{query}}»"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Παστέλ",
+    "vivid": "Ζωηρή",
+    "earth": "Γη",
+    "sea": "Θάλασσα",
+    "sunset": "Ηλιοβασίλεμα",
+    "night": "Νύχτα"
+  },
+  "home": {
+    "welcome": "Καλώς ήρθες στο Sottomano",
+    "hello": "Γεια!",
+    "searchPlaceholder": "Αναζήτηση εγγράφου",
+    "favorites": "Αγαπημένα",
+    "seeAll": "Όλα",
+    "seeAllFavorites": "Όλα τα αγαπημένα",
+    "deadlines": "Προθεσμίες",
+    "seeAllDeadlines": "Όλες οι προθεσμίες",
+    "archive": "Αρχείο",
+    "reorderDone": "Τέλος ταξινόμησης",
+    "reorder": "Ταξινόμηση",
+    "reorderCategories": "Ταξινόμηση κατηγοριών",
+    "reorderHint": "Σύρε τις κατηγορίες με τη σειρά που θέλεις.",
+    "alerts": {
+      "orderNotSaved": "Δεν ήταν δυνατή η αποθήκευση της σειράς"
+    },
+    "newCategory": "Νέα κατηγορία"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} κάρτα",
+    "cards_other": "{{count}} κάρτες"
+  },
+  "folder": {
+    "paidOn": "Πληρώθηκε στις {{date}}",
+    "expiredOn": "Έληξε στις {{date}}",
+    "expiresOn": "Λήγει στις {{date}}",
+    "addedOn": "Προστέθηκε στις {{date}}",
+    "newItem": {
+      "bill": "Νέος λογαριασμός",
+      "card": "Νέα κάρτα",
+      "warranty": "Νέα εγγύηση",
+      "password": "Νέο συνθηματικό",
+      "document": "Νέο έγγραφο"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Όλα",
+      "documents": "Έγγραφα",
+      "cards": "Κάρτες",
+      "deadlines": "Προθεσμίες"
+    },
+    "paid": "πληρωμένο",
+    "expiresOn": "λήγει στις {{date}}",
+    "folderSubtitle_one": "Φάκελος · {{count}} έγγραφο",
+    "folderSubtitle_other": "Φάκελος · {{count}} έγγραφα",
+    "card": "Κάρτα",
+    "deadlineSubtitle": "Προθεσμία · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Αναζήτηση εγγράφου",
+    "fieldLabel": "Αναζήτηση στα έγγραφά σου",
+    "filter": "Φίλτρο",
+    "results_one": "{{count}} αποτέλεσμα",
+    "results_other": "{{count}} αποτελέσματα",
+    "noResults": "Κανένα αποτέλεσμα",
+    "noResultsHint": "Δοκίμασε άλλη λέξη, για παράδειγμα το όνομα ενός καταστήματος.",
+    "hint": "Αναζήτηση σε ονόματα, φακέλους, τύπους, σημειώσεις, κάρτες και προθεσμίες."
+  },
+  "navigation": {
+    "home": "Αρχική",
+    "favorites": "Αγαπημένα",
+    "family": "Οικογένεια",
+    "deadlines": "Προθεσμίες",
+    "deadlinesToCheck_one": "Προθεσμίες, {{count}} για έλεγχο",
+    "deadlinesToCheck_other": "Προθεσμίες, {{count}} για έλεγχο",
+    "addLocked": "Προσθήκη εγγράφου, κλειδωμένη: έφτασες το δωρεάν όριο",
+    "addDocument": "Προσθήκη εγγράφου",
+    "titles": {
+      "editDocument": "Επεξεργασία εγγράφου",
+      "pages": "Σελίδες",
+      "deadline": "Προθεσμία",
+      "renewed": "Ανανεώθηκε",
+      "previousVersion": "Προηγούμενη έκδοση",
+      "newDocument": "Νέο έγγραφο",
+      "appearance": "Εμφάνιση",
+      "backup": "Αντίγραφο ασφαλείας",
+      "taxPackage": "Αποστολή σε λογιστή",
+      "trash": "Κάδος",
+      "terms": "Όροι χρήσης",
+      "about": "Σχετικά και απόρρητο",
+      "newCard": "Νέα κάρτα",
+      "editCard": "Επεξεργασία κάρτας"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Σύρε για μετακίνηση ή χρησιμοποίησε τις ενέργειες Μετακίνηση πιο πάνω και Μετακίνηση πιο κάτω",
+    "moveEarlier": "Μετακίνηση πιο πάνω",
+    "moveLater": "Μετακίνηση πιο κάτω",
+    "footer": "Με τον ίδιο τρόπο ταξινομείς τις κάρτες, τα άτομα στην Οικογένεια και τα Αγαπημένα: πάτησε παρατεταμένα μια γραμμή και σύρε την από τη λαβή στα δεξιά."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Πάτησε παρατεταμένα: σύρε για μετακίνηση ή άφησε για ενέργειες"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Δεν ήταν δυνατή η αποθήκευση της σειράς"
+    },
+    "reorderTitle": "Ταξινόμηση αγαπημένων",
+    "reorderHint": "Πάτησε παρατεταμένα ένα αγαπημένο και σύρε το όπου θέλεις.",
+    "yourFavorites": "Τα αγαπημένα σου",
+    "title": "Αγαπημένα",
+    "subtitle": "Ό,τι επέλεξες να έχεις πρόχειρο",
+    "searchPlaceholder": "Αναζήτηση στα αγαπημένα",
+    "viewList": "Λίστα",
+    "viewGrid": "Πλέγμα",
+    "count_one": "{{count}} αγαπημένο",
+    "count_other": "{{count}} αγαπημένα",
+    "noMatch": "Κανένα αγαπημένο για «{{query}}».",
+    "empty": "Δεν έχεις ακόμη αγαπημένα.",
+    "footer": "Πάτησε την καρδιά σε οποιοδήποτε έγγραφο για να το προσθέσεις εδώ.",
+    "footerGrid": "Πάτησε την καρδιά σε οποιοδήποτε έγγραφο για να το προσθέσεις εδώ. Πάτησε παρατεταμένα ένα πλακίδιο και σύρε το για να αλλάξεις τη σειρά.",
+    "footerList": "Πάτησε την καρδιά σε οποιοδήποτε έγγραφο για να το προσθέσεις εδώ. Πάτησε παρατεταμένα μια γραμμή για να αλλάξεις τη σειρά.",
+    "rowHint": "Πάτησε παρατεταμένα για ταξινόμηση των αγαπημένων",
+    "unpin": "Αφαίρεση από τα αγαπημένα",
+    "expires": "λήγει {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} προς πληρωμή",
+    "alerts": {
+      "orderNotSaved": "Δεν ήταν δυνατή η αποθήκευση της σειράς"
+    },
+    "actions": {
+      "editCategory": "Επεξεργασία κατηγορίας",
+      "sendToAccountant": "Αποστολή σε λογιστή",
+      "selectAndSend": "Επιλογή και αποστολή",
+      "reorder": "Ταξινόμηση",
+      "deleteCategory": "Διαγραφή κατηγορίας"
+    },
+    "moreLabel": "Επεξεργασία ή διαγραφή της κατηγορίας {{name}}",
+    "searchIn": "Αναζήτηση σε {{name}}",
+    "viewList": "Λίστα",
+    "viewGrid": "Πλέγμα",
+    "reorderHint": "Πάτησε παρατεταμένα και σύρε τα έγγραφα με τη σειρά που θέλεις.",
+    "allTypes": "Όλα",
+    "noDocumentsFound": "Δεν βρέθηκαν έγγραφα.",
+    "sendTogether": "Αποστολή μαζί ({{count}})",
+    "sheetTitle": "Κατηγορία {{name}}"
+  },
+  "folderRow": {
+    "due": "προς πληρωμή",
+    "paid": "πληρωμένο"
+  },
+  "homeSections": {
+    "expired": "Έληξαν",
+    "expiresToday": "Λήγει σήμερα",
+    "expiresTomorrow": "Λήγει αύριο",
+    "expiresInDays_one": "Λήγει σε {{count}} ημέρα",
+    "expiresInDays_other": "Λήγει σε {{count}} ημέρες",
+    "expiresOn": "Λήγει {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Αφαίρεση από τα αγαπημένα",
+    "pin": "Προσθήκη στα αγαπημένα"
+  },
+  "searchBar": {
+    "clear": "Διαγραφή κειμένου"
+  },
+  "documentGrid": {
+    "addDocument": "Προσθήκη εγγράφου"
+  },
+  "homeHeader": {
+    "menu": "Μενού",
+    "notifications": "Ειδοποιήσεις",
+    "notificationsUnread_one": "Ειδοποιήσεις, {{count}} μη αναγνωσμένη",
+    "notificationsUnread_other": "Ειδοποιήσεις, {{count}} μη αναγνωσμένες"
+  },
+  "demoData": {
+    "people": {
+      "step": "Step",
+      "mom": "Μαμά",
+      "dad": "Μπαμπάς"
+    },
+    "documents": {
+      "idCard": "Ταυτότητα",
+      "drivingLicence": "Δίπλωμα οδήγησης",
+      "passport": "Διαβατήριο",
+      "electricityBill": "Λογαριασμός ρεύματος",
+      "carInsurance": "Ασφάλεια αυτοκινήτου",
+      "carTax": "Τέλη κυκλοφορίας",
+      "washingMachineWarranty": "Εγγύηση πλυντηρίου",
+      "gymCard": "Κάρτα γυμναστηρίου",
+      "rentalContract": "Μισθωτήριο",
+      "pharmacyReceipt": "Απόδειξη φαρμακείου",
+      "reportCard": "Έλεγχος προόδου"
+    },
+    "notes": {
+      "electricityBill": "Πάγια εντολή στην τράπεζα"
+    }
+  },
+  "documentTypes": {
+    "documents": "Ταυτότητα|Δίπλωμα οδήγησης|Διαβατήριο|ΑΜΚΑ|ΑΦΜ",
+    "cards": "Πόντων|Γυμναστήριο|Βιβλιοθήκη|Συγκοινωνίες|Μέλους",
+    "utilities": "Ρεύμα|Φυσικό αέριο|Νερό|Internet|Τηλέφωνο|Δημοτικά τέλη",
+    "home": "Ενοίκιο|Δάνειο|Κοινόχρηστα|Συντήρηση|Συμβόλαιο",
+    "insurance": "Αυτοκίνητο|Σπίτι|Υγεία|Ζωή|Ταξίδι",
+    "warranties": "Συσκευή|Ηλεκτρονικά|Έπιπλα|Απόδειξη",
+    "car": "Τέλη κυκλοφορίας|Ασφάλεια|ΚΤΕΟ|Σέρβις|Άδεια κυκλοφορίας",
+    "tax": "Φαρμακείο|Ιατρική επίσκεψη|Οδοντίατρος|Εξετάσεις|Αθλητισμός|Σχολείο",
+    "householdStaff": "Μισθοδοσία|Εισφορές|Σύμβαση",
+    "school": "Εγγραφή|Έλεγχος προόδου|Βεβαίωση|Κυλικείο|Εκδρομή",
+    "pet": "Βιβλιάριο υγείας|Εμβόλιο|Κτηνίατρος|Microchip",
+    "password": "Email|Τράπεζα|Social|Wi-Fi|Εργασία"
+  },
+  "pageLabels": {
+    "front": "Εμπρός",
+    "back": "Πίσω",
+    "page": "Σελίδα {{number}}"
+  },
+  "statusBadge": {
+    "due": "Προς πληρωμή",
+    "paid": "Πληρωμένο"
+  },
+  "addActions": {
+    "openFileFailed": "Δεν ήταν δυνατό το άνοιγμα του αρχείου"
+  },
+  "pickFiles": {
+    "takePhoto": "Λήψη φωτογραφίας",
+    "choosePhoto": "Επιλογή από τις φωτογραφίες",
+    "removePhoto": "Αφαίρεση φωτογραφίας"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Πολλές σελίδες",
+      "text": "Μπορείς να σαρώσεις πολλές σελίδες στη σειρά: κάδραρε την επόμενη σελίδα πριν πατήσεις Αποθήκευση."
+    },
+    "cardTip": {
+      "title": "Πραγματικά χρώματα",
+      "text": "Για τα πραγματικά χρώματα της κάρτας, πάτησε το κουμπί φίλτρων στον σαρωτή και επίλεξε «Φωτογραφία»."
+    },
+    "gotIt": "Εντάξει"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Απαιτείται πρόσβαση στην κάμερα",
+    "permissionText": "Το Sottomano χρησιμοποιεί την κάμερα μόνο για να φωτογραφίζει τα έγγραφά σου.",
+    "allow": "Να επιτρέπεται",
+    "openSettings": "Άνοιγμα Ρυθμίσεων",
+    "readable": "Διαβάζεται καλά;",
+    "pageReadable": "Σελίδα {{number}}: διαβάζεται καλά;",
+    "retake": "Ξανά",
+    "addPage": "Προσθήκη σελίδας",
+    "frameDocument": "Κάδραρε το έγγραφο",
+    "framePage": "Κάδραρε τη σελίδα {{number}}",
+    "shoot": "Λήψη φωτογραφίας",
+    "finishWithPages_one": "Τέλος, {{count}} σελίδα",
+    "finishWithPages_other": "Τέλος, {{count}} σελίδες"
+  },
+  "coverField": {
+    "label": "Εξώφυλλο",
+    "photo": "Φωτογραφία",
+    "color": "Χρώμα",
+    "noPhotoHint": "Χωρίς φωτογραφία εμφανίζεται το χρώμα: πρόσθεσε μια σελίδα για να χρησιμοποιήσεις τη φωτογραφία της ως εξώφυλλο.",
+    "categoryColor": "Χρώμα φακέλου",
+    "colorNumber": "Χρώμα {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Προσθήκη σελίδων",
+    "pinned": "Στα αγαπημένα",
+    "pin": "Προσθήκη στα αγαπημένα",
+    "renewed": "Ανανεώθηκε",
+    "delete": "Διαγραφή"
+  },
+  "documentFilesView": {
+    "document": "Έγγραφο",
+    "openFailed": "Δεν ήταν δυνατό το άνοιγμα του εγγράφου",
+    "pageOfSwipe": "Σελίδα {{number}} από {{total}} · σάρωσε για περιήγηση",
+    "openFullScreen": "{{label}}, άνοιγμα σε πλήρη οθόνη",
+    "missingFile": "Το αρχείο δεν βρέθηκε σε αυτό το τηλέφωνο."
+  },
+  "filesEditor": {
+    "addBack": "Προσθήκη πίσω όψης",
+    "addPage": "Προσθήκη σελίδας",
+    "scan": "Σάρωση",
+    "photograph": "Λήψη φωτογραφίας",
+    "fromPhotos": "Από τις φωτογραφίες",
+    "scannerUnavailableTitle": "Ο σαρωτής δεν είναι διαθέσιμος",
+    "scannerUnavailableMessage": "Αφαίρεσε τις σελίδες με το ✕ και πρόσθεσε νέες.",
+    "replacePdf": "Αντικατάσταση PDF",
+    "importPdf": "Εισαγωγή PDF",
+    "rescanAll": "Νέα σάρωση όλων",
+    "openFileFailed": "Δεν ήταν δυνατό το άνοιγμα του αρχείου",
+    "page": "Σελίδα",
+    "newTag": "νέα",
+    "moveBefore": "Μετακίνηση {{name}} πιο πάνω",
+    "moveAfter": "Μετακίνηση {{name}} πιο κάτω",
+    "removePage": "Αφαίρεση {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Το έγγραφο δεν βρέθηκε.",
+    "noPages": "Χωρίς σελίδες",
+    "photoPages_one": "Φωτογραφία, {{count}} σελίδα",
+    "photoPages_other": "Φωτογραφίες, {{count}} σελίδες",
+    "amount": "Ποσό",
+    "expired": "έληξε",
+    "inDays_one": "σε {{count}} ημέρα",
+    "inDays_other": "σε {{count}} ημέρες",
+    "deadline": "Προθεσμία",
+    "folder": "Φάκελος",
+    "status": "Κατάσταση",
+    "person": "Άτομο",
+    "number": "Αριθμός",
+    "notes": "Σημειώσεις",
+    "inCalendar": "Στο ημερολόγιο",
+    "view": "Προβολή εγγράφου",
+    "unpin": "Αφαίρεση από τα αγαπημένα",
+    "pin": "Προσθήκη στα αγαπημένα",
+    "addPages": "Προσθήκη σελίδων",
+    "renewed": "Ανανεώθηκε",
+    "delete": "Διαγραφή",
+    "details": "Λεπτομέρειες",
+    "remindMe": "Υπενθύμιση",
+    "reminderNeedsDeadline": "Πρόσθεσε προθεσμία για να λάβεις υπενθύμιση",
+    "reminderWhen": "Υπενθύμιση: {{when}}",
+    "noReminder": "Χωρίς υπενθύμιση",
+    "previousVersions": "Προηγούμενες εκδόσεις",
+    "versionUntil": "Έως {{date}}",
+    "versionExpired": "έληξε {{date}}",
+    "paidOnMarkDue": "Πληρώθηκε στις {{date}} · σήμανση ως προς πληρωμή",
+    "markDue": "Σήμανση ως προς πληρωμή",
+    "markPaid": "Σήμανση ως πληρωμένο",
+    "firstOf": "1 από {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Προς πληρωμή",
+    "statusPaid": "Πληρωμένο",
+    "saveFailed": "Δεν ήταν δυνατή η αποθήκευση",
+    "folder": "Φάκελος",
+    "person": "Άτομο",
+    "type": "Τύπος",
+    "otherType": "Γράψε άλλον…",
+    "noType": "Χωρίς τύπο",
+    "typeExample": "Για παράδειγμα: Ρεύμα, Τέλη κυκλοφορίας, Οδοντίατρος",
+    "dueOn": "Στις {{date}}",
+    "noDeadline": "Χωρίς προθεσμία",
+    "nameSection": "Όνομα",
+    "namePlaceholder": "Όνομα εγγράφου",
+    "whereSection": "Πού να αποθηκευτεί",
+    "choose": "Επιλογή…",
+    "deadlineSection": "Προθεσμία",
+    "addDeadline": "Προσθήκη προθεσμίας",
+    "remindMe": "Υπενθύμιση",
+    "whenToRemind": "Πότε να σου το θυμίσει",
+    "repeats": "Επανάληψη",
+    "never": "Ποτέ",
+    "everySpan": "Κάθε {{span}}",
+    "every": "Κάθε",
+    "notesSection": "Σημειώσεις",
+    "notesPlaceholder": "Για παράδειγμα: πληρωμή με πάγια εντολή, ζήτα επιστροφή χρημάτων…",
+    "pin": "Προσθήκη στα αγαπημένα",
+    "pinSubtitle": "Θα το βρίσκεις αμέσως στην αρχική οθόνη",
+    "amountSection": "Ποσό και κατάσταση",
+    "amount": "Ποσό",
+    "amountInEuro": "Ποσό σε ευρώ",
+    "accessSection": "Σύνδεση",
+    "username": "Όνομα χρήστη",
+    "usernamePlaceholder": "onoma@example.com",
+    "password": "Συνθηματικό",
+    "passwordUnchanged": "•••••••• (αμετάβλητο)",
+    "passwordNote": "Το συνθηματικό μένει μόνο στην Κλειδοθήκη του iPhone.",
+    "numberSection": "Αριθμός εγγράφου",
+    "numberPlaceholder": "Π.χ. ΑΚ123456",
+    "saveChanges": "Αποθήκευση αλλαγών",
+    "saveDocument": "Αποθήκευση εγγράφου",
+    "amountHint": "Γράψε το ποσό όπως {{example}}.",
+    "missingNameAndFolder": "Για αποθήκευση, γράψε το όνομα και επίλεξε φάκελο.",
+    "missingName": "Για αποθήκευση, γράψε το όνομα.",
+    "missingFolder": "Για αποθήκευση, επίλεξε φάκελο.",
+    "deleteDocument": "Διαγραφή εγγράφου"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Σάρωση",
+      "photos": "Από φωτογραφίες",
+      "pdf": "Από αρχείο PDF",
+      "card": "Κάρτα",
+      "manual": "Χειροκίνητα"
+    },
+    "hintFirst": "Κάδραρε το έγγραφο · κράτα σταθερό το τηλέφωνο",
+    "hintNext": "Η σελίδα {{number}} τραβήχτηκε · κάδραρε την επόμενη",
+    "title": "Νέο έγγραφο",
+    "flashOff": "Απενεργοποίηση φλας",
+    "flashOn": "Ενεργοποίηση φλας",
+    "scanWithIos": "Σάρωση με τον σαρωτή του iOS",
+    "tapToScan": "Πάτησε για σάρωση: βρίσκει μόνο του τις άκρες",
+    "permissionTitle": "Απαιτείται πρόσβαση στην κάμερα",
+    "permissionText": "Το Sottomano τη χρησιμοποιεί μόνο για να φωτογραφίζει τα έγγραφά σου.",
+    "allow": "Να επιτρέπεται",
+    "openSettings": "Άνοιγμα Ρυθμίσεων",
+    "howToAdd": "Τρόπος προσθήκης",
+    "chooseFromGallery": "Επιλογή από τη βιβλιοθήκη",
+    "shoot": "Λήψη φωτογραφίας",
+    "goOnWith_one": "Συνέχεια με {{count}} σελίδα",
+    "goOnWith_other": "Συνέχεια με {{count}} σελίδες",
+    "noPages": "Χωρίς σελίδες",
+    "countNext": "επόμενη ›",
+    "countPages": "σελίδες"
+  },
+  "newDocument": {
+    "readTitle": "Ανάγνωση από το έγγραφο",
+    "readText": "Όνομα από το αρχείο: {{name}}. Έλεγξέ το και διόρθωσέ το αν χρειάζεται.",
+    "checkTitle": "Έλεγξε τα στοιχεία",
+    "checkText_one": "Καταγράφηκε {{count}} σελίδα. Γράψε το όνομα και, αν υπάρχει, την προθεσμία: θα τη βρεις στις Προθεσμίες.",
+    "checkText_other": "Καταγράφηκαν {{count}} σελίδες. Γράψε το όνομα και, αν υπάρχει, την προθεσμία: θα τη βρεις στις Προθεσμίες.",
+    "heading": "Νέο έγγραφο"
+  },
+  "editDocument": {
+    "heading": "Επεξεργασία εγγράφου"
+  },
+  "documentVersion": {
+    "replacedOn": "Αντικαταστάθηκε στις {{date}}",
+    "expiredOn": "έληξε στις {{date}}",
+    "previewTitle": "{{title}} (προηγούμενη έκδοση)"
+  },
+  "documentPages": {
+    "saveFailed": "Δεν ήταν δυνατή η αποθήκευση των σελίδων"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Δεν ήταν δυνατή η διαγραφή",
+    "title": "Διαγραφή του {{title}};",
+    "message_one": "Το έγγραφο και η υπενθύμισή του μεταφέρονται στον Κάδο. Μπορείς να το ανακτήσεις από Μενού › Κάδος για {{count}} ημέρα.",
+    "message_other": "Το έγγραφο και η υπενθύμισή του μεταφέρονται στον Κάδο. Μπορείς να το ανακτήσεις από Μενού › Κάδος για {{count}} ημέρες.",
+    "confirm": "Διαγραφή εγγράφου"
+  },
+  "renew": {
+    "saveFailed": "Δεν ήταν δυνατή η αποθήκευση",
+    "deadline": "Προθεσμία",
+    "repeatFooter": "{{repeat}}: η νέα ημερομηνία υπολογίζεται από την παλιά.",
+    "was": "Ήταν",
+    "newDeadline": "Νέα προθεσμία",
+    "newDocument": "Νέο έγγραφο",
+    "withScanFooter": "Οι τρέχουσες σελίδες γίνονται «Προηγούμενη έκδοση», που θα βρεις στις λεπτομέρειες.",
+    "withoutScanFooter": "Ενεργοποίησέ το αν έχεις το νέο έγγραφο για σάρωση.",
+    "addNewScan": "Προσθήκη νέας σάρωσης"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · κύλισε προς τα κάτω",
+    "pagesSubtitle_one": "{{count}} σελίδα",
+    "pagesSubtitle_other": "{{count}} σελίδες · κύλισε προς τα κάτω",
+    "pageOf": "Σελίδα {{number}} από {{total}}",
+    "noPages": "Αυτό το έγγραφο δεν έχει σελίδες.",
+    "zoom": "Ζουμ",
+    "zoomOut": "Σμίκρυνση",
+    "zoomIn": "Μεγέθυνση",
+    "pageShort": "Σελ. {{number}} από {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "ημέρα",
+      "day_other": "ημέρες",
+      "week_one": "εβδομάδα",
+      "week_other": "εβδομάδες",
+      "month_one": "μήνας",
+      "month_other": "μήνες",
+      "year_one": "χρόνος",
+      "year_other": "χρόνια"
+    },
+    "count": {
+      "day_one": "{{count}} ημέρα",
+      "day_other": "{{count}} ημέρες",
+      "week_one": "{{count}} εβδομάδα",
+      "week_other": "{{count}} εβδομάδες",
+      "month_one": "{{count}} μήνας",
+      "month_other": "{{count}} μήνες",
+      "year_one": "{{count}} χρόνος",
+      "year_other": "{{count}} χρόνια"
+    },
+    "every": {
+      "day_one": "Κάθε ημέρα",
+      "day_other": "Κάθε {{count}} ημέρες",
+      "week_one": "Κάθε εβδομάδα",
+      "week_other": "Κάθε {{count}} εβδομάδες",
+      "month_one": "Κάθε μήνα",
+      "month_other": "Κάθε {{count}} μήνες",
+      "year_one": "Κάθε χρόνο",
+      "year_other": "Κάθε {{count}} χρόνια"
+    },
+    "repeats": {
+      "day_one": "Επανάληψη κάθε ημέρα",
+      "day_other": "Επανάληψη κάθε {{count}} ημέρες",
+      "week_one": "Επανάληψη κάθε εβδομάδα",
+      "week_other": "Επανάληψη κάθε {{count}} εβδομάδες",
+      "month_one": "Επανάληψη κάθε μήνα",
+      "month_other": "Επανάληψη κάθε {{count}} μήνες",
+      "year_one": "Επανάληψη κάθε χρόνο",
+      "year_other": "Επανάληψη κάθε {{count}} χρόνια"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Θέλει προσοχή",
+    "thisWeek": "Αυτή την εβδομάδα",
+    "upcomingNone": "Τίποτα για τους επόμενους μήνες",
+    "upcoming_one": "{{count}} εκκρεμότητα τους επόμενους μήνες",
+    "upcoming_other": "{{count}} εκκρεμότητες τους επόμενους μήνες"
+  },
+  "deadlineOptions": {
+    "sameDay": "Την ίδια μέρα",
+    "daysBefore_one": "{{count}} ημέρα πριν",
+    "daysBefore_other": "{{count}} ημέρες πριν",
+    "defaultChoice": "{{label}} (προεπιλογή)"
+  },
+  "personRoles": {
+    "you": "Εσύ",
+    "choice": {
+      "me": "Είμαι εγώ",
+      "partner": "Σύντροφος",
+      "child": "Γιος ή κόρη",
+      "parent": "Γονιός",
+      "sibling": "Αδελφός ή αδελφή",
+      "other": "Άλλο"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Η κατηγορία «Άλλα» δεν υπάρχει.",
+    "otherNotDeletable": "Η κατηγορία «Άλλα» δεν μπορεί να διαγραφεί."
+  },
+  "deadlineChip": {
+    "overdue": "Έληξε",
+    "today": "Σήμερα",
+    "dueToday": "Λήγει σήμερα",
+    "dueIn_one": "Λήγει σε {{count}} ημέρα",
+    "dueIn_other": "Λήγει σε {{count}} ημέρες"
+  },
+  "deadlineListRow": {
+    "hint": "Άγγιξε παρατεταμένα για επεξεργασία ή αφαίρεση της προθεσμίας",
+    "statusDue": "προς πληρωμή",
+    "statusPaid": "πληρωμένο"
+  },
+  "deadlineSection": {
+    "title": "Προθεσμία",
+    "emptyFooter": "Με υπενθύμιση στο τηλέφωνο και, αν είναι ενεργό, στο ημερολόγιο «Sottomano».",
+    "add": "Προσθήκη προθεσμίας",
+    "expiresOn": "Λήγει στις",
+    "repeats": "Επανάληψη",
+    "never": "Ποτέ",
+    "reminder": "Υπενθύμιση"
+  },
+  "dateCalendar": {
+    "previousMonth": "Προηγούμενος μήνας",
+    "nextMonth": "Επόμενος μήνας"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Επόμενη εβδομάδα",
+    "previousWeek": "Προηγούμενη εβδομάδα",
+    "weekdayDate": "{{weekday}} {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} προθεσμία",
+    "dayWithDeadlines_other": "{{day}}, {{count}} προθεσμίες"
+  },
+  "deadlines": {
+    "title": "Προθεσμίες",
+    "newReminder": "Νέα υπενθύμιση",
+    "week": "Εβδομάδα",
+    "month": "Μήνας",
+    "openDocument": "Άνοιγμα εγγράφου",
+    "editDeadline": "Επεξεργασία προθεσμίας",
+    "markDue": "Σήμανση ως προς πληρωμή",
+    "markPaid": "Σήμανση ως πληρωμένο",
+    "removeDeadline": "Αφαίρεση προθεσμίας",
+    "removeAlert": {
+      "title": "Αφαίρεση της προθεσμίας;",
+      "message": "Το έγγραφο παραμένει· η υπενθύμιση και το συμβάν στο ημερολόγιο αφαιρούνται.",
+      "confirm": "Αφαίρεση"
+    },
+    "emptyTitle": "Καμία προθεσμία στο μέλλον",
+    "emptyText": "Πάτησε + για να προσθέσεις ένα έγγραφο με προθεσμία: θα εμφανιστεί εδώ και στο ημερολόγιο.",
+    "sheetSubtitle": "Λήγει {{date}}",
+    "dayRepeats": "επανάληψη",
+    "dayReminder": "υπενθύμιση",
+    "dayEmpty": "Καμία προθεσμία αυτή τη μέρα"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Δεν ήταν δυνατή η αποθήκευση",
+    "date": "Ημερομηνία",
+    "footer": "Η υπενθύμιση έρχεται στο τηλέφωνο· με ενεργό το ημερολόγιο, η προθεσμία είναι και στο «Sottomano».",
+    "every": "Κάθε"
+  },
+  "family": {
+    "title": "Οικογένεια",
+    "subtitle": "Ένα προφίλ για καθέναν στο σπίτι",
+    "addPerson": "Προσθήκη ατόμου",
+    "members": "Μέλη",
+    "orderSaveFailed": "Δεν ήταν δυνατή η αποθήκευση της σειράς",
+    "reorderTitle": "Ταξινόμηση οικογένειας",
+    "reorderHint": "Άγγιξε παρατεταμένα ένα άτομο και σύρε το όπου θέλεις.",
+    "privacyNote": "Όλα μένουν σε αυτό το τηλέφωνο. Για να στείλεις ένα έγγραφο σε κάποιον, άνοιξέ το και πάτησε Αποστολή.",
+    "youSpoken": "εσύ",
+    "reorderA11yHint": "Άγγιξε παρατεταμένα για ταξινόμηση της οικογένειας",
+    "expiring_one": "{{count}} λήγει",
+    "expiring_other": "{{count}} λήγουν"
+  },
+  "personScreen": {
+    "photoFailed": "Δεν ήταν δυνατή η χρήση της φωτογραφίας",
+    "editPerson": "Επεξεργασία ατόμου",
+    "selectAndSend": "Επιλογή και αποστολή",
+    "deletePerson": "Διαγραφή ατόμου",
+    "moreA11y": "Επεξεργασία ή διαγραφή: {{name}}",
+    "changePhoto": "Αλλαγή φωτογραφίας",
+    "editProfile": "Επεξεργασία προφίλ",
+    "documentsSection": "Τα έγγραφά του/της · {{count}}",
+    "addDocument": "Προσθήκη εγγράφου",
+    "sendTogether": "Αποστολή μαζί ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Δεν ήταν δυνατή η αποθήκευση",
+    "newPerson": "Νέο άτομο",
+    "addPhoto": "Προσθήκη φωτογραφίας",
+    "name": "Όνομα",
+    "namePlaceholder": "Πώς λέγεται;",
+    "role": "Ποιος είναι",
+    "roleA11y": "Τι είναι για σένα: {{role}}",
+    "note": "Το προφίλ μένει σε αυτό το τηλέφωνο. Σε βοηθά να κρατάς τακτοποιημένα τα έγγραφα όλων.",
+    "addToFamily": "Προσθήκη στην οικογένεια",
+    "roleSheetTitle": "Τι είναι για σένα"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Δεν ήταν δυνατή η διαγραφή",
+    "title": "Διαγραφή της κατηγορίας {{name}};",
+    "messageWithDocuments_one": "Περιέχει {{count}} έγγραφο. Τι θέλεις να κάνεις με αυτό;",
+    "messageWithDocuments_other": "Περιέχει {{count}} έγγραφα. Τι θέλεις να κάνεις με αυτά;",
+    "messageWithDocumentsRestorable_one": "Περιέχει {{count}} έγγραφο. Τι θέλεις να κάνεις με αυτό; Μπορείς να επαναφέρεις την κατηγορία από τη Νέα κατηγορία.",
+    "messageWithDocumentsRestorable_other": "Περιέχει {{count}} έγγραφα. Τι θέλεις να κάνεις με αυτά; Μπορείς να επαναφέρεις την κατηγορία από τη Νέα κατηγορία.",
+    "messageEmpty": "Η κατηγορία είναι κενή.",
+    "messageEmptyRestorable": "Η κατηγορία είναι κενή. Μπορείς να την επαναφέρεις από τη Νέα κατηγορία.",
+    "deleteAll": "Διαγραφή όλων",
+    "confirm": "Διαγραφή κατηγορίας",
+    "choicesA11y": "Τι να γίνει με τα έγγραφα",
+    "moveLabel": "Μετακίνηση στα Άλλα",
+    "moveDetailPassword": "Μένουν στην εφαρμογή, στα Άλλα, χωρίς όνομα χρήστη και συνθηματικό",
+    "moveDetail": "Μένουν στην εφαρμογή, σε έναν γενικό φάκελο",
+    "trashLabel": "Διαγραφή τους",
+    "trashDetail_one": "Μεταφέρονται στον Κάδο: μπορείς να τα ανακτήσεις για {{count}} ημέρα",
+    "trashDetail_other": "Μεταφέρονται στον Κάδο: μπορείς να τα ανακτήσεις για {{count}} ημέρες"
+  },
+  "deletePerson": {
+    "title": "Αφαίρεση του/της {{name}} από την οικογένεια;",
+    "messageWithDocuments_one": "{{name}}: {{count}} έγγραφο. Τι θέλεις να κάνεις με αυτό;",
+    "messageWithDocuments_other": "{{name}}: {{count}} έγγραφα. Τι θέλεις να κάνεις με αυτά;",
+    "messageEmpty": "Το προφίλ αφαιρείται από αυτό το τηλέφωνο.",
+    "familyLabel": "Μετακίνηση στο «Όλη η οικογένεια»",
+    "familyDetail": "Μένουν στην εφαρμογή, ορατά σε όλους",
+    "trashDetail_one": "Φεύγουν μαζί με το προφίλ: μένουν στον Κάδο για {{count}} ημέρα",
+    "trashDetail_other": "Φεύγουν μαζί με το προφίλ: μένουν στον Κάδο για {{count}} ημέρες"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Κατοικίδια",
+      "document": "Έγγραφο",
+      "home": "Σπίτι",
+      "car": "Αυτοκίνητο",
+      "health": "Υγεία",
+      "school": "Σχολείο",
+      "work": "Εργασία",
+      "keys": "Κλειδιά",
+      "travel": "Ταξίδι",
+      "expenses": "Έξοδα"
+    },
+    "restoreFailed": "Δεν ήταν δυνατή η επαναφορά",
+    "editTitle": "Επεξεργασία κατηγορίας",
+    "newTitle": "Νέα κατηγορία",
+    "restoreSection": "Επαναφορά προεπιλεγμένης κατηγορίας",
+    "restoreA11y": "Επαναφορά: {{name}}",
+    "restoreHint": "Επιστρέφει όπως ήταν, με τα χρώματα, το εικονίδιο και τα πεδία της. Ή δημιούργησε μια νέα παρακάτω.",
+    "previewA11y": "Προεπισκόπηση κατηγορίας",
+    "namePlaceholder": "Π.χ. Κατοικίδια",
+    "nameA11y": "Όνομα κατηγορίας",
+    "color": "Χρώμα",
+    "paletteColor": "Χρώμα Εμφάνισης",
+    "colorNumber": "Χρώμα {{number}}",
+    "followsPaletteHint": "Το χρώμα ακολουθεί την παλέτα που επέλεξες στην Εμφάνιση.",
+    "ownColorHint": "Δικό σου χρώμα: δεν αλλάζει με την Εμφάνιση.",
+    "icon": "Εικονίδιο",
+    "forWhom": "Για ποιον",
+    "forWhomA11y": "Για ποιον είναι η κατηγορία: {{name}}",
+    "forWhomHint": "Τα νέα έγγραφα αυτής της κατηγορίας ξεκινούν με αυτό το άτομο.",
+    "create": "Δημιουργία κατηγορίας"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Ιστότοπος ή εφαρμογή",
+        "namePlaceholder": "Για παράδειγμα: e-banking",
+        "userLabel": "Όνομα χρήστη ή email",
+        "userPlaceholder": "onoma@email.com",
+        "passwordLabel": "Συνθηματικό",
+        "notePlaceholder": "Για παράδειγμα: ερώτηση ασφαλείας, κωδικός ανάκτησης…"
+      },
+      "wifi": {
+        "name": "Wi-Fi",
+        "namePlaceholder": "Για παράδειγμα: Wi-Fi σπιτιού",
+        "userLabel": "Όνομα δικτύου",
+        "userPlaceholder": "Papadopoulos_5G",
+        "passwordLabel": "Συνθηματικό δικτύου",
+        "notePlaceholder": "Για παράδειγμα: ο router είναι στο σαλόνι, πίσω από την τηλεόραση…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Για παράδειγμα: Χρεωστική κάρτα",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Για παράδειγμα: η κάρτα της Μαρίας…"
+      },
+      "other": {
+        "name": "Άλλο",
+        "namePlaceholder": "Για παράδειγμα: Συναγερμός σπιτιού",
+        "userLabel": "Όνομα χρήστη",
+        "userPlaceholder": "Προαιρετικό",
+        "passwordLabel": "Κωδικός ή συνθηματικό",
+        "notePlaceholder": "Για τι είναι, πού χρησιμοποιείται…"
+      }
+    },
+    "colors": {
+      "aqua": "Κυανό",
+      "indigo": "Λουλακί",
+      "apricot": "Βερικοκί",
+      "pink": "Ροζ",
+      "mint": "Μέντα",
+      "sky": "Ουρανός",
+      "graphite": "Γραφίτης"
+    },
+    "icons": {
+      "key": "Κλειδί",
+      "lock": "Λουκέτο",
+      "globe": "Υδρόγειος",
+      "wifi": "Wi-Fi",
+      "bank": "Τράπεζα",
+      "card": "Κάρτα",
+      "mail": "Email",
+      "home": "Σπίτι",
+      "car": "Αυτοκίνητο",
+      "shield": "Ασπίδα",
+      "cart": "Καλάθι",
+      "star": "Αστέρι"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Μόνο ψηφία",
+    "strength": {
+      "weak": "Αδύναμο",
+      "fair": "Μέτριο",
+      "good": "Καλό",
+      "strong": "Ισχυρό"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Επιβεβαίωσε για να ενεργοποιήσεις το κλείδωμα"
+  },
+  "appLock": {
+    "prompt": "Ξεκλείδωμα του Sottomano",
+    "unlock": "Ξεκλείδωμα",
+    "unlockWith": {
+      "faceId": "Ξεκλείδωμα με Face ID",
+      "touchId": "Ξεκλείδωμα με Touch ID",
+      "passcode": "Ξεκλείδωμα με κωδικό"
+    },
+    "message": "Τα έγγραφά σου είναι προστατευμένα"
+  },
+  "passwordForm": {
+    "showPrompt": "Εμφάνιση του συνθηματικού",
+    "copyPrompt": "Αντιγραφή του συνθηματικού",
+    "copiedTitle": "Αντιγράφηκε",
+    "copiedMessage": "Θα διαγραφεί από το πρόχειρο σε 1 λεπτό.",
+    "scannerUnavailableTitle": "Ο σαρωτής δεν είναι διαθέσιμος",
+    "scannerUnavailableMessage": "Επίλεξε την εικόνα από τη βιβλιοθήκη φωτογραφιών.",
+    "saveFailed": "Δεν ήταν δυνατή η αποθήκευση",
+    "editTitle": "Επεξεργασία συνθηματικού",
+    "newTitle": "Νέο συνθηματικό",
+    "privacy": "Μένουν μόνο σε αυτό το τηλέφωνο και ανοίγουν με Face ID.",
+    "sections": {
+      "what": "Τι αποθηκεύεις",
+      "name": "Όνομα",
+      "preview": "Προεπισκόπηση",
+      "access": "Σύνδεση",
+      "site": "Ιστότοπος ή εφαρμογή",
+      "whose": "Σε ποιον ανήκει",
+      "notes": "Σημειώσεις"
+    },
+    "typesLabel": "Τύπος συνθηματικού",
+    "customTypePlaceholder": "Τι είναι; Συναγερμός, χρηματοκιβώτιο, λουκέτο…",
+    "customTypeLabel": "Τι είναι",
+    "customTypeHint": "Γίνεται νέος τύπος και την επόμενη φορά θα τον βρεις στις επιλογές.",
+    "previewTitle": "Πώς φαίνεται στη λίστα",
+    "previewText": "Ένα χρώμα και ένα εικονίδιο ή μια εικόνα.",
+    "color": "Χρώμα",
+    "colorLabel": "Χρώμα προεπισκόπησης",
+    "icon": "Εικονίδιο",
+    "iconLabel": "Εικονίδιο προεπισκόπησης",
+    "image": "Εικόνα",
+    "scan": "Σάρωση",
+    "gallery": "Από τις Φωτογραφίες",
+    "removeImage": "Αφαίρεση εικόνας και χρήση χρώματος και εικονιδίου",
+    "passwordPlaceholder": "Γράψε ή δημιούργησε",
+    "show": "Εμφάνιση",
+    "hide": "Απόκρυψη",
+    "copy": "Αντιγραφή",
+    "saved": "Αποθηκεύτηκε",
+    "generate": "Δημιουργία ισχυρού συνθηματικού",
+    "urlPlaceholder": "www.example.com",
+    "urlLabel": "Διεύθυνση ιστότοπου",
+    "wifiQrTitle": "Κωδικός QR για επισκέπτες",
+    "wifiQrSubtitle": "Τον σαρώνουν και συνδέονται",
+    "person": "Άτομο",
+    "personA11y": "Άτομο, {{name}}",
+    "favoriteTitle": "Προσθήκη στα αγαπημένα",
+    "favoriteSubtitle": "Θα το βρίσκεις αμέσως στην αρχική οθόνη",
+    "saveButton": "Αποθήκευση συνθηματικού",
+    "saveHint": "Γράψε ένα όνομα για αποθήκευση."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Χωρίς συνθηματικό",
+    "noPasswordMessage": "Πρόσθεσέ το με την Επεξεργασία.",
+    "showPrompt": {
+      "site": "Εμφάνιση συνθηματικού",
+      "wifi": "Εμφάνιση συνθηματικού δικτύου",
+      "pin": "Εμφάνιση PIN",
+      "other": "Εμφάνιση κωδικού ή συνθηματικού"
+    },
+    "copyPrompt": {
+      "site": "Αντιγραφή συνθηματικού",
+      "wifi": "Αντιγραφή συνθηματικού δικτύου",
+      "pin": "Αντιγραφή PIN",
+      "other": "Αντιγραφή κωδικού ή συνθηματικού"
+    },
+    "copyUser": {
+      "site": "Αντιγραφή ονόματος χρήστη ή email",
+      "wifi": "Αντιγραφή ονόματος δικτύου",
+      "pin": "Αντιγραφή ονόματος χρήστη",
+      "other": "Αντιγραφή ονόματος χρήστη"
+    },
+    "copiedTitle": "Αντιγράφηκε",
+    "copiedMessage": "Θα διαγραφεί από το πρόχειρο σε 1 λεπτό.",
+    "copiedTextTitle": "Αντιγράφηκε",
+    "qrPrompt": "Εμφάνιση του κωδικού QR για επισκέπτες",
+    "invalidAddress": "Μη έγκυρη διεύθυνση",
+    "removeFavorite": "Αφαίρεση από τα αγαπημένα",
+    "favoriteTitle": "Προσθήκη στα αγαπημένα",
+    "favoriteSubtitle": "Θα το βρίσκεις αμέσως στην αρχική οθόνη",
+    "moreActions": "Περισσότερες ενέργειες",
+    "sections": {
+      "access": "Σύνδεση",
+      "site": "Ιστότοπος ή εφαρμογή",
+      "wifiQr": "Κωδικός QR για επισκέπτες",
+      "whose": "Σε ποιον ανήκει",
+      "notes": "Σημειώσεις"
+    },
+    "hidden": "Κρυφό",
+    "show": "Εμφάνιση",
+    "hide": "Απόκρυψη",
+    "copy": "Αντιγραφή",
+    "locked": "Ορατό μετά από Face ID ή τον κωδικό του iPhone",
+    "wifiQrLabel": "Κωδικός QR δικτύου Wi-Fi",
+    "qrHint": "Τον σαρώνουν με την κάμερα και συνδέονται.",
+    "qrLocked": "Ο κωδικός QR περιέχει το συνθηματικό: είναι ορατός μετά από Face ID ή τον κωδικό του iPhone.",
+    "qrNoNetwork": "Πρόσθεσε το όνομα δικτύου με την Επεξεργασία για να πάρεις τον κωδικό QR.",
+    "showQr": "Εμφάνιση κωδικού QR",
+    "hideQr": "Απόκρυψη κωδικού QR",
+    "person": "Άτομο",
+    "moveToTrash": "Μεταφορά στον Κάδο"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Χωρίς συνθηματικό",
+    "noPasswordMessage": "Πρόσθεσέ το με την Επεξεργασία.",
+    "showPrompt": "Εμφάνιση του συνθηματικού",
+    "copyPrompt": "Αντιγραφή του συνθηματικού",
+    "copiedTitle": "Το συνθηματικό αντιγράφηκε",
+    "copiedMessage": "Θα διαγραφεί από το πρόχειρο σε 1 λεπτό.",
+    "user": "Όνομα χρήστη",
+    "password": "Συνθηματικό",
+    "hidden": "Κρυφό συνθηματικό",
+    "show": "Εμφάνιση",
+    "hide": "Απόκρυψη",
+    "copy": "Αντιγραφή"
+  },
+  "cardForm": {
+    "found": "Βρέθηκε: {{name}}",
+    "foundBarcode": "Βρέθηκε: barcode {{name}}",
+    "handwritten": "Κωδικός πληκτρολογημένος",
+    "noCode": "Δεν διαβάστηκε κωδικός",
+    "photoOpenFailed": "Δεν ήταν δυνατό το άνοιγμα της φωτογραφίας",
+    "saveFailed": "Δεν ήταν δυνατή η αποθήκευση",
+    "retakeFront": "Λήψη ξανά",
+    "retakePhoto": "Νέα φωτογραφία",
+    "recognized": "Η κάρτα αναγνωρίστηκε",
+    "tapRetake": "Πάτησε Λήψη ξανά για να τη φωτογραφίσεις",
+    "fromPhotos": "Από τις Φωτογραφίες",
+    "cover": "Εξώφυλλο",
+    "coverPhotoCaption": "Περικομμένη και ισιωμένη από τη φωτογραφία της κάρτας",
+    "coverColorCaption": "Το χρώμα της κάρτας, με το όνομα και τον αριθμό της",
+    "codeSection": "Κωδικός για το ταμείο",
+    "photographCode": "Φωτογράφισε τον κωδικό",
+    "barcode": "Barcode",
+    "qrCode": "Κωδικός QR",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Κάρτα",
+    "typeNumber": "Γράψε τον αριθμό παρακάτω",
+    "explain": "Το Sottomano αναγνωρίζει μόνο του αν η κάρτα έχει barcode ή κωδικό QR. Στο ταμείο τον δείχνει μεγάλο, με την οθόνη στη μέγιστη φωτεινότητα.",
+    "readTitle": "Στοιχεία από την κάρτα",
+    "readText": "Έλεγξέ τα και διόρθωσέ τα αν χρειάζεται.",
+    "name": "Όνομα",
+    "namePlaceholder": "Π.χ. Σούπερ μάρκετ",
+    "type": "Τύπος",
+    "typePlaceholder": "Π.χ. Κάρτα πόντων",
+    "number": "Αριθμός",
+    "numberPlaceholder": "Π.χ. 0400 2219 8876",
+    "holder": "Κάτοχος",
+    "saveButton": "Αποθήκευση κάρτας",
+    "saveHint": "Γράψε το όνομα της κάρτας για αποθήκευση."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Φωτογραφία της πρόσοψης",
+      "barcode": "Φωτογράφισε το barcode"
+    },
+    "photoOpenFailed": "Δεν ήταν δυνατό το άνοιγμα της φωτογραφίας",
+    "permissionTitle": "Απαιτείται πρόσβαση στην κάμερα",
+    "permissionText": "Το Sottomano χρησιμοποιεί την κάμερα για να φωτογραφίζει τις κάρτες σου και να διαβάζει το barcode τους.",
+    "allow": "Να επιτρέπεται",
+    "openSettings": "Άνοιγμα Ρυθμίσεων",
+    "frontCheck": "Πρόσοψη: είναι καθαρή;",
+    "read": "Διαβάστηκε: {{value}}",
+    "notRead": "Ο κωδικός δεν διαβάστηκε",
+    "notReadHint": "Κράτα τη φωτογραφία: θα γράψεις τον αριθμό στο επόμενο βήμα.",
+    "retake": "Ξανά",
+    "use": "Χρήση",
+    "focus": "Εστίαση",
+    "stepCount": "{{current}} από {{total}}",
+    "frameHint": "Κάδραρε την κάρτα μέσα στο πλαίσιο",
+    "searching": "Αναζήτηση κωδικού…",
+    "chooseFromPhotos": "Επιλογή από τις Φωτογραφίες",
+    "shoot": "Λήψη φωτογραφίας",
+    "skip": "Παράλειψη"
+  },
+  "cardDetail": {
+    "code": "Κωδικός",
+    "photo": "Φωτογραφία",
+    "barcodeLabel": "Barcode",
+    "barcodePhotoLabel": "Φωτογραφία του barcode",
+    "fullScreenHint": "Ανοίγει τον κωδικό σε πλήρη οθόνη",
+    "noCode": "Χωρίς κωδικό. Πάτησε «Επεξεργασία» για να τον φωτογραφίσεις ή να τον γράψεις.",
+    "tapHint": "Πάτησε τον κωδικό για μεγέθυνση",
+    "person": "Άτομο"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Δεν ήταν δυνατή η αποθήκευση της σειράς",
+    "editCategory": "Επεξεργασία κατηγορίας",
+    "deleteCategory": "Διαγραφή κατηγορίας",
+    "reorderTitle": "Ταξινόμηση καρτών",
+    "reorderHint": "Άγγιξε παρατεταμένα μια κάρτα και σύρε την όπου θέλεις.",
+    "yourCards": "Οι κάρτες σου",
+    "title": "Κάρτες",
+    "subtitle": "Πάτησε μια κάρτα για να δείξεις τον κωδικό της στο ταμείο",
+    "categoryMenuLabel": "Επεξεργασία ή διαγραφή της κατηγορίας {{name}}",
+    "addCard": "Προσθήκη κάρτας",
+    "reorder": "Ταξινόμηση",
+    "newCard": "Νέα κάρτα",
+    "cardDetails": "Λεπτομέρειες κάρτας",
+    "categoryMenuTitle": "Κατηγορία {{name}}",
+    "cardCount_one": "{{count}} κάρτα",
+    "cardCount_other": "{{count}} κάρτες",
+    "cardOpenLabel": "{{label}}, κλείσιμο",
+    "cardClosedLabel": "{{label}}, εμφάνιση κωδικού",
+    "qrLabel": "Κωδικός QR κάρτας",
+    "barcodeLabel": "Barcode κάρτας",
+    "fullScreenHint": "Ανοίγει τον κωδικό σε πλήρη οθόνη",
+    "noCode": "Χωρίς κωδικό: πάτησε Λεπτομέρειες › Επεξεργασία για να τον φωτογραφίσεις ή να τον γράψεις.",
+    "details": "Λεπτομέρειες"
+  },
+  "walletCard": {
+    "untitled": "Νέα κάρτα"
+  },
+  "barcodeView": {
+    "close": "Κλείσιμο κωδικού"
+  },
+  "colorPicker": {
+    "color": "Χρώμα",
+    "custom": "Δικό σου χρώμα",
+    "hex": "Κωδικός",
+    "hexLabel": "Κωδικός χρώματος"
+  },
+  "colorWheel": {
+    "label": "Τροχός χρωμάτων: πάτησε ή σύρε για επιλογή",
+    "nextHue": "Επόμενη απόχρωση",
+    "previousHue": "Προηγούμενη απόχρωση"
+  },
+  "newCard": {
+    "title": "Νέα κάρτα",
+    "missingCategory": "Η κατηγορία «Κάρτες» δεν υπάρχει πια."
+  },
+  "editCard": {
+    "title": "Επεξεργασία κάρτας"
+  },
+  "unlock": {
+    "storeOnly": "Διαθέσιμο στην έκδοση του App Store",
+    "remainingNone": "Χρησιμοποίησες όλες τις δωρεάν θέσεις.",
+    "remaining_one": "Μπορείς να προσθέσεις ακόμη {{count}}.",
+    "remaining_other": "Μπορείς να προσθέσεις ακόμη {{count}}.",
+    "tag": "Δωρεάν έκδοση · {{used}} από {{limit}} σε χρήση",
+    "title": "Όλα τα έγγραφά σου, χωρίς όρια",
+    "intro": "Δωρεάν για έως {{limit}} έγγραφα και κάρτες. Για να προσθέτεις όσα θέλεις, ξεκλείδωσέ το με μία μόνο πληρωμή.",
+    "benefits": {
+      "unlimited": {
+        "title": "Απεριόριστα έγγραφα",
+        "text": "Λογαριασμοί, κάρτες, εγγυήσεις και όλα τα υπόλοιπα"
+      },
+      "reminders": {
+        "title": "Υπενθυμίσεις προθεσμιών",
+        "text": "Σου το θυμίζουμε πριν να είναι αργά"
+      },
+      "offline": {
+        "title": "Λειτουργεί χωρίς internet",
+        "text": "Όλα μένουν στο τηλέφωνό σου, μαζί και το αντίγραφο ασφαλείας"
+      },
+      "family": {
+        "title": "Όλη η οικογένεια",
+        "text": "Ένα προφίλ για καθέναν στο σπίτι"
+      }
+    },
+    "sectionTitle": "Η δωρεάν έκδοσή σου",
+    "usageLabel": "Έγγραφα και κάρτες",
+    "usageValue": "{{used}} από {{limit}}",
+    "usageA11y": "Δωρεάν θέσεις σε χρήση",
+    "keptNote": "Όσα έχεις ήδη αποθηκεύσει μένουν πάντα δικά σου, ακόμη και χωρίς ξεκλείδωμα.",
+    "priceTitle": "Για πάντα",
+    "priceText": "Χωρίς όρια · μία πληρωμή",
+    "buy": "Ξεκλείδωμα με {{price}}",
+    "continueFree": "Συνέχεια δωρεάν",
+    "restore": "Επαναφορά αγοράς",
+    "terms": "Όροι",
+    "privacy": "Απόρρητο"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Η κατηγορία «Άλλα»",
+    "otherCategoryMessage": "Δεν μπορεί να διαγραφεί: περιέχει τα έγγραφα των διαγραμμένων κατηγοριών."
+  },
+  "quickActionMenu": {
+    "close": "Κλείσιμο μενού"
+  },
+  "quickActions": {
+    "open": "Άνοιγμα",
+    "unpin": "Αφαίρεση από τα αγαπημένα",
+    "pin": "Προσθήκη στα αγαπημένα",
+    "moveToTrash": "Μεταφορά στον Κάδο",
+    "editCategory": "Επεξεργασία κατηγορίας",
+    "deleteCategory": "Διαγραφή κατηγορίας",
+    "editPerson": "Επεξεργασία ατόμου",
+    "deletePerson": "Διαγραφή ατόμου"
+  },
+  "shareCopies": {
+    "defaultName": "Έγγραφο",
+    "fileNotFound": "Το αρχείο δεν βρέθηκε στο τηλέφωνο."
+  },
+  "sendCompression": {
+    "tooBig": "Ακόμη και με μέγιστη συμπίεση ξεπερνά το όριο: σκέψου να το χωρίσεις σε περισσότερα αρχεία.",
+    "lowPpi": "Τα μικρά γράμματα ίσως δεν διαβάζονται."
+  },
+  "sendPreferences": {
+    "original": "Πρωτότυπο"
+  },
+  "sendFileName": {
+    "fallback": "έγγραφο"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Η πρόσοψη και η πίσω όψη δεν μπορούν να συνδυαστούν αυτή τη στιγμή.",
+    "noPhotos": "Δεν υπάρχουν φωτογραφίες για αποστολή.",
+    "fileFront": "εμπρός",
+    "fileBack": "πίσω",
+    "filePage": "σελίδα-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "έγγραφα",
+    "title": "Αποστολή: {{title}}",
+    "formatPhotos": "Φωτογραφίες",
+    "actions": {
+      "email": "Email",
+      "whatsapp": "WhatsApp",
+      "print": "Εκτύπωση",
+      "save": "Αποθήκευση στα Αρχεία",
+      "copy": "Αντιγραφή",
+      "other": "Άλλα"
+    },
+    "alerts": {
+      "savedToFiles": "Αποθηκεύτηκε στα Αρχεία",
+      "imageCopied": "Η εικόνα αντιγράφηκε",
+      "textCopied": "Το κείμενο αντιγράφηκε",
+      "firstPageCopied": "Αντιγράφηκε η πρώτη σελίδα: επικόλλησέ τη σε ένα μήνυμα.",
+      "pasteImage": "Επικόλλησέ τη σε ένα μήνυμα ή μια σημείωση.",
+      "pdfNotCopied": "Ένα PDF δεν μπορεί να αντιγραφεί: αντιγράφηκαν το όνομα και η σημείωση. Για το αρχείο, χρησιμοποίησε το Άλλα.",
+      "failed": "Δεν ήταν δυνατή η ολοκλήρωση"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDF",
+      "singlePdf": "Ένα PDF",
+      "failed": "Δεν ήταν δυνατή η προετοιμασία του αρχείου",
+      "preparing": "Προετοιμασία…"
+    },
+    "includeNote": "Συμπερίληψη της σημείωσης του εγγράφου",
+    "noNote": "Αυτό το έγγραφο δεν έχει σημείωση.",
+    "frontBackPage": "Πρόσοψη και πίσω όψη σε μία σελίδα",
+    "frontBackImage": "Πρόσοψη και πίσω όψη σε μία εικόνα",
+    "maxSize": "Μέγιστο μέγεθος",
+    "pdfAsIs": "Το PDF αποστέλλεται όπως είναι.",
+    "severalInfo": "Ένα μόνο PDF: τα έγγραφα το ένα μετά το άλλο, με την πρόσοψη και την πίσω όψη ταυτοτήτων και καρτών στην ίδια σελίδα.",
+    "quality": {
+      "high": "Υψηλή ποιότητα",
+      "good": "Καλή ποιότητα",
+      "low": "Χαμηλή ποιότητα",
+      "minimum": "Ελάχιστη ποιότητα",
+      "original": "Αρχική ποιότητα"
+    },
+    "skipped_one": "{{count}} έγγραφο χωρίς φωτογραφίες δεν περιλαμβάνεται (τα εισαγόμενα PDF δεν μπορούν ακόμη να συγχωνευτούν).",
+    "skipped_other": "{{count}} έγγραφα χωρίς φωτογραφίες δεν περιλαμβάνονται (τα εισαγόμενα PDF δεν μπορούν ακόμη να συγχωνευτούν)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Προετοιμασία του PDF…",
+    "progressRetry": "Σμίκρυνση των φωτογραφιών (προσπάθεια {{attempt}})…",
+    "subtitle": "Δημιουργήθηκε στις {{date}} με το Sottomano · {{documents}}",
+    "subtitleWithTotal": "Δημιουργήθηκε στις {{date}} με το Sottomano · {{documents}} · σύνολο {{total}}",
+    "columns": {
+      "number": "Α/Α",
+      "document": "Έγγραφο",
+      "date": "Ημερομηνία",
+      "person": "Άτομο",
+      "amount": "Ποσό",
+      "page": "Σελίδα"
+    },
+    "sentApart": "στάλθηκε χωριστά",
+    "noPages": "χωρίς σελίδες",
+    "paid": "πληρωμένο",
+    "due": "προς πληρωμή",
+    "invalidIndex": "Μη έγκυρο ευρετήριο"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Ένα PDF δεν μπορεί να συγχωνευτεί (με συνθηματικό ή κατεστραμμένο): {{titles}}. Το ευρετήριο το σημειώνει «στάλθηκε χωριστά» και αποστέλλεται μαζί με τα υπόλοιπα.",
+    "sentApart_other": "{{count}} PDF δεν μπορούν να συγχωνευτούν (με συνθηματικό ή κατεστραμμένα): {{titles}}. Το ευρετήριο τα σημειώνει «στάλθηκε χωριστά» και αποστέλλονται μαζί με τα υπόλοιπα.",
+    "alerts": {
+      "prepareFailed": "Δεν ήταν δυνατή η προετοιμασία του PDF",
+      "ready": "Το PDF είναι έτοιμο",
+      "noMailTitle": "Το Mail δεν έχει ρυθμιστεί",
+      "noMailMessage": "Πρόσθεσε έναν λογαριασμό στο Mail ή αποθήκευσε τα PDF στα Αρχεία.",
+      "savedToFiles": "Αποθηκεύτηκε στα Αρχεία",
+      "sendFailed": "Δεν ήταν δυνατή η αποστολή"
+    },
+    "readyMany": "{{number}} PDF έτοιμα",
+    "choices": {
+      "email": "Email: όλα τα PDF σε ένα μήνυμα",
+      "save": "Αποθήκευση στα Αρχεία: όλα στον ίδιο φάκελο",
+      "oneByOne": "Κοινοποίηση ενός-ενός"
+    },
+    "intro": "Όλα τα έγγραφα της κατηγορίας {{category}}, χωρισμένα ανά έτος: ένα PDF για κάθε έτος, με ευρετήριο (έγγραφο, ημερομηνία, άτομο, ποσό, σελίδα) και σύνολο. Το έτος είναι αυτό της προθεσμίας ή της πληρωμής· αν δεν υπάρχει καμία, το έτος που τα πρόσθεσες.",
+    "noDocuments": "Κανένα έγγραφο σε αυτό το έτος.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF",
+    "year": "Έτος",
+    "allYears": "Όλα τα έτη",
+    "maxPhotoSize": "Μέγιστο μέγεθος φωτογραφιών",
+    "limitInfo": "Οι φωτογραφίες σμικρύνονται για να μείνουν εντός ορίου· τα εισαγόμενα PDF μένουν όπως είναι.",
+    "prepare": "Προετοιμασία και αποστολή"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Κάτι πήγε στραβά",
+      "restoredToOther": "Επαναφέρθηκε στα Άλλα",
+      "restoredPassword": "Η κατηγορία του δεν υπάρχει πια: το έγγραφο είναι στα Άλλα, χωρίς όνομα χρήστη και συνθηματικό.",
+      "restoredMessage": "Η κατηγορία του δεν υπάρχει πια: το έγγραφο είναι στα Άλλα.",
+      "deleteTitle": "Οριστική διαγραφή του «{{title}}»;",
+      "deleteMessage": "Θα διαγραφούν και οι φωτογραφίες και τα PDF του. Η ενέργεια δεν αναιρείται.",
+      "emptyTitle": "Άδειασμα του Κάδου;",
+      "emptyMessage_one": "Το έγγραφο θα διαγραφεί μαζί με τις φωτογραφίες και τα PDF του. Η ενέργεια δεν αναιρείται.",
+      "emptyMessage_other": "Τα {{count}} έγγραφα θα διαγραφούν μαζί με τις φωτογραφίες και τα PDF τους. Η ενέργεια δεν αναιρείται.",
+      "emptyConfirm": "Άδειασμα"
+    },
+    "intro": "Τα διαγραμμένα έγγραφα μένουν εδώ για {{days}} ημέρες και μετά σβήνονται μαζί με τις φωτογραφίες και τα PDF τους.",
+    "empty": "Ο Κάδος είναι άδειος",
+    "deletedSoon": "Θα διαγραφεί σύντομα",
+    "deletedIn": "Θα διαγραφεί σε {{days}} ημέρες",
+    "restoreLabel": "Επαναφορά: {{title}}",
+    "deleteForeverLabel": "Οριστική διαγραφή: {{title}}",
+    "deleteForever": "Οριστική διαγραφή",
+    "emptyTrash": "Άδειασμα Κάδου"
+  },
+  "menu": {
+    "close": "Κλείσιμο του μενού",
+    "home": "Αρχική",
+    "favorites": "Αγαπημένα",
+    "deadlines": "Προθεσμίες",
+    "deadlinesUrgent": "Προθεσμίες, {{number}} για έλεγχο",
+    "family": "Οικογένεια",
+    "cards": "Κάρτες",
+    "backup": "Αντίγραφο ασφαλείας",
+    "backupDue": "Αντίγραφο ασφαλείας, εκκρεμεί",
+    "help": "Βοήθεια και επικοινωνία",
+    "rate": "Αξιολόγησε το Sottomano",
+    "recommend": "Πρότεινέ το σε έναν φίλο",
+    "trash": "Κάδος",
+    "trashCount": "Κάδος, {{number}}",
+    "password": "Συνθηματικά",
+    "scan": "Σάρωση",
+    "fromPhotos": "Από φωτογραφίες",
+    "importFiles": "Εισαγωγή αρχείων",
+    "version": "Έκδοση {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Κλείσιμο ειδοποιήσεων",
+    "title": "Ειδοποιήσεις",
+    "markAllRead": "Σήμανση ως αναγνωσμένα",
+    "empty": "Καμία ειδοποίηση τις τελευταίες 7 ημέρες.",
+    "today": "Σήμερα",
+    "thisWeek": "Αυτή την εβδομάδα",
+    "settings": "Ρυθμίσεις ειδοποιήσεων",
+    "unreadItem": "Μη αναγνωσμένη. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Έληξε στις {{date}}.",
+    "expiresToday": "Λήγει σήμερα.",
+    "expiresOn": "Λήγει {{distance}}, στις {{date}}.",
+    "amount": "Ποσό {{amount}}.",
+    "backupTitle": "Αντίγραφο ασφαλείας",
+    "backupLate": "Έχει περάσει καιρός από το τελευταίο αντίγραφο ασφαλείας των εγγράφων σου.",
+    "backupNever": "Δεν έχεις κάνει ακόμη αντίγραφο ασφαλείας των εγγράφων σου."
+  },
+  "deadlineReminders": {
+    "title": "Προθεσμία που πλησιάζει",
+    "hiddenBody": "Ένα έγγραφο λήγει {{date}} ({{distance}}). Άνοιξε το Sottomano για να το δεις.",
+    "body": "{{name}}: λήγει {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Εμφάνιση",
+      "security": "Ασφάλεια",
+      "reminders": "Υπενθυμίσεις",
+      "backup": "Αντίγραφο ασφαλείας",
+      "info": "Πληροφορίες"
+    },
+    "calendarOff": "Ανενεργό",
+    "alerts": {
+      "notificationsOffTitle": "Οι ειδοποιήσεις είναι απενεργοποιημένες",
+      "notificationsOffMessage": "Για να λαμβάνεις υπενθυμίσεις, επίτρεψε τις ειδοποιήσεις για το Sottomano στις Ρυθμίσεις του iPhone.",
+      "openSettings": "Άνοιγμα Ρυθμίσεων"
+    },
+    "lastBackup": {
+      "never": "Ποτέ",
+      "today": "Σήμερα",
+      "yesterday": "Χθες",
+      "daysAgo_one": "Πριν από {{count}} ημέρα",
+      "daysAgo_other": "Πριν από {{count}} ημέρες"
+    },
+    "categoryColors": "Χρώματα κατηγοριών",
+    "faceId": "Κλείδωμα με Face ID",
+    "faceIdSubtitle": "Ζητά το πρόσωπό σου κάθε φορά που ανοίγεις την εφαρμογή",
+    "hidePreviews": "Απόκρυψη προεπισκοπήσεων",
+    "hidePreviewsSubtitle": "Οι ειδοποιήσεις δεν δείχνουν το έγγραφο",
+    "notifications": "Ειδοποιήσεις",
+    "reminderTime": "Ώρα υπενθύμισης",
+    "defaultReminder": "Προεπιλεγμένη υπενθύμιση",
+    "iconBadge": "Σήμα στο εικονίδιο",
+    "iconBadgeSubtitle": "Προθεσμίες που έληξαν ή λήγουν σε 7 ημέρες",
+    "calendar": "Ημερολόγιο «Sottomano»",
+    "notificationsBlocked": "Οι ειδοποιήσεις είναι αποκλεισμένες",
+    "notificationsBlockedSubtitle": "Επίτρεψέ τες στις Ρυθμίσεις του iPhone",
+    "backupNote": "Το αντίγραφο ασφαλείας είναι ένα αρχείο αποθηκευμένο στο τηλέφωνό σου, στην εφαρμογή Αρχεία. Μπορείς να το αντιγράψεις όπου θέλεις. Το Sottomano λειτουργεί και χωρίς internet.",
+    "createBackup": "Αντίγραφο ασφαλείας τώρα",
+    "restoreBackup": "Επαναφορά από αντίγραφο ασφαλείας",
+    "help": "Βοήθεια και επικοινωνία",
+    "privacy": "Απόρρητο",
+    "terms": "Όροι χρήσης",
+    "rate": "Αξιολόγησε το Sottomano",
+    "debug": {
+      "limitPreview": "Προεπισκόπηση δωρεάν ορίου",
+      "limitPreviewSubtitle": "Μόνο για δοκιμές: δείχνει το κλειδωμένο +, τον πίνακα ορίου και την κάρτα στην Αρχική",
+      "emptyHome": "Προεπισκόπηση κενής Αρχικής",
+      "emptyHomeSubtitle": "Μόνο για δοκιμές: η Αρχική σαν να μην υπήρχαν έγγραφα (τα δεδομένα σου μένουν)",
+      "onboarding": "Επανάληψη καλωσορίσματος",
+      "onboardingSubtitle": "Μόνο για δοκιμές: οι σελίδες καλωσορίσματος 1–4"
+    },
+    "version": "Sottomano · έκδοση {{version}}",
+    "theme": {
+      "title": "Θέμα",
+      "autoSubtitle": "Ακολουθεί τη ρύθμιση του τηλεφώνου",
+      "auto": "Αυτόματα",
+      "light": "Ανοιχτό",
+      "dark": "Σκούρο"
+    }
+  },
+  "backup": {
+    "title": "Αντίγραφο ασφαλείας",
+    "subtitle": "Ένα αντίγραφο όλων των εγγράφων σου, αποθηκευμένο στο τηλέφωνο.",
+    "keyProgress": "Προστασία με το συνθηματικό σου… μπορεί να διαρκέσει έως ένα λεπτό",
+    "whenToday": "σήμερα στις {{time}}",
+    "whenDate": "{{date}} στις {{time}}",
+    "minLength": "Τουλάχιστον {{min}} χαρακτήρες.",
+    "mismatch": "Τα δύο συνθηματικά δεν ταιριάζουν.",
+    "creating": "Δημιουργία αντιγράφου ασφαλείας…",
+    "copyDialogTitle": "Αντιγραφή του αντιγράφου ασφαλείας",
+    "opening": "Άνοιγμα αντιγράφου ασφαλείας…",
+    "checking": "Έλεγχος των εγγράφων…",
+    "restoring": "Επαναφορά…",
+    "keepOpen": "Κράτα την εφαρμογή ανοιχτή μέχρι να τελειώσει.",
+    "forgotWarning": "Αν ξεχάσεις το συνθηματικό, το αντίγραφο ασφαλείας δεν θα μπορεί να ανοίξει.",
+    "passwordPlaceholder": "Συνθηματικό (τουλάχιστον {{min}} χαρακτήρες)",
+    "repeatPlaceholder": "Επανάληψη συνθηματικού",
+    "createAndSave": "Δημιουργία και αποθήκευση",
+    "backupPassword": "Συνθηματικό αντιγράφου",
+    "openBackup": "Άνοιγμα αντιγράφου",
+    "completed": "Το αντίγραφο ασφαλείας ολοκληρώθηκε",
+    "lastBackup": "Τελευταίο αντίγραφο ασφαλείας",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Αντιγραφή του αρχείου αλλού",
+    "createNew": "Νέο αντίγραφο ασφαλείας",
+    "noneTitle": "Δεν έχεις κάνει ακόμη αντίγραφο ασφαλείας",
+    "noneText": "Αν χάσεις ή αλλάξεις τηλέφωνο, το αντίγραφο ασφαλείας τα φέρνει όλα πίσω.",
+    "createNow": "Αντίγραφο ασφαλείας τώρα",
+    "restoreSection": "Επαναφορά",
+    "restoreTitle": "Νέο τηλέφωνο;",
+    "restoreText": "Επίλεξε το αρχείο αντιγράφου ασφαλείας για να πάρεις πίσω τα έγγραφα, τις κάρτες και τις υπενθυμίσεις σου.",
+    "chooseFile": "Επιλογή αρχείου αντιγράφου",
+    "remindersSection": "Υπενθυμίσεις",
+    "remindMe": "Υπενθύμιση για αντίγραφο ασφαλείας",
+    "remindMeValue": "Υπενθύμιση για αντίγραφο ασφαλείας: {{value}}",
+    "footnote": "Το αντίγραφο ασφαλείας είναι ένα μόνο αρχείο, προστατευμένο με το συνθηματικό που επιλέγεις: έγγραφα, φωτογραφίες, κάρτες, άτομα και υπενθυμίσεις. Αντίγραψέ το και αλλού (Αρχεία, iCloud Drive, υπολογιστής) για να το έχεις ακόμη κι αν χάσεις το τηλέφωνο.",
+    "alerts": {
+      "createFailed": "Το αντίγραφο ασφαλείας απέτυχε",
+      "copyFailed": "Δεν ήταν δυνατή η αντιγραφή",
+      "restoreTitle": "Επαναφορά του αντιγράφου ασφαλείας της {{date}};",
+      "restoreMessage_one": "Περιέχει {{count}} έγγραφο. Ό,τι υπάρχει τώρα στην εφαρμογή θα αντικατασταθεί.",
+      "restoreMessage_other": "Περιέχει {{count}} έγγραφα. Ό,τι υπάρχει τώρα στην εφαρμογή θα αντικατασταθεί.",
+      "restoreFailed": "Η επαναφορά απέτυχε",
+      "restoreFailedMessage": "Τίποτα δεν άλλαξε στην εφαρμογή.\n\n{{reason}}",
+      "restored": "Το αντίγραφο ασφαλείας επαναφέρθηκε",
+      "restoredMessage": "Τα έγγραφά σου επέστρεψαν."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Κάθε εβδομάδα",
+      "month": "Κάθε μήνα",
+      "never": "Ποτέ"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Αυτό το αρχείο δεν είναι αντίγραφο ασφαλείας του Sottomano.",
+    "newerVersion": "Αυτό το αντίγραφο ασφαλείας δημιουργήθηκε από νεότερη έκδοση του Sottomano. Ενημέρωσε την εφαρμογή και δοκίμασε ξανά.",
+    "empty": "Το αρχείο αντιγράφου ασφαλείας είναι κενό ή ελλιπές.",
+    "incomplete": "Το αρχείο αντιγράφου ασφαλείας είναι ελλιπές.",
+    "wrongPassword": "Λάθος συνθηματικό. Έλεγξε τα κεφαλαία και τα πεζά και δοκίμασε ξανά.",
+    "damaged": "Το αρχείο αντιγράφου ασφαλείας είναι κατεστραμμένο ή ελλιπές."
+  },
+  "createBackup": {
+    "incompleteFile": "Ελλιπές αρχείο: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Το περιεχόμενο του αντιγράφου ασφαλείας δεν είναι έγκυρο.",
+    "newerApp": "Αυτό το αντίγραφο ασφαλείας προέρχεται από νεότερη έκδοση του Sottomano. Ενημέρωσε την εφαρμογή και δοκίμασε ξανά."
+  },
+  "zipReader": {
+    "invalid": "Μη έγκυρο αρχείο συμπίεσης",
+    "incomplete": "Ελλιπές αρχείο συμπίεσης"
+  },
+  "backupReminder": {
+    "none": "Δεν έχεις κάνει ακόμη αντίγραφο ασφαλείας",
+    "old_one": "Το τελευταίο σου αντίγραφο ασφαλείας ήταν πριν από {{count}} ημέρα",
+    "old_other": "Το τελευταίο σου αντίγραφο ασφαλείας ήταν πριν από {{count}} ημέρες",
+    "link": "Αντίγραφο ασφαλείας τώρα",
+    "close": "Κλείσιμο ειδοποίησης",
+    "snooze_one": "Απόκρυψη για {{count}} ημέρα",
+    "snooze_other": "Απόκρυψη για {{count}} ημέρες"
+  },
+  "calendarSettings": {
+    "title": "Ημερολόγιο",
+    "intro": "Οι προθεσμίες μπαίνουν σε ξεχωριστό ημερολόγιο, το «Sottomano». Μπορείς να το αποκρύψεις στην εφαρμογή Ημερολόγιο· αν το απενεργοποιήσεις εδώ, διαγράφεται.",
+    "details": "Κάθε προθεσμία είναι ένα ολοήμερο συμβάν «Λήγει: τίτλος», χωρίς άλλα στοιχεία από το έγγραφο. Αν οι υπενθυμίσεις του Sottomano είναι ανενεργές, το συμβάν σε ειδοποιεί στις 9:00 την ημέρα της υπενθύμισης· αν είναι ενεργές, σε ειδοποιεί μόνο η εφαρμογή, ώστε να μη λαμβάνεις δύο ειδοποιήσεις.",
+    "allowAccess": "Να επιτρέπεται η πρόσβαση στο Ημερολόγιο",
+    "denied": "Η πρόσβαση στο Ημερολόγιο απορρίφθηκε. Μπορείς να την ενεργοποιήσεις στις Ρυθμίσεις του iPhone.",
+    "openSettings": "Άνοιγμα Ρυθμίσεων",
+    "switchLabel": "Προθεσμίες στο ημερολόγιο «Sottomano»",
+    "enabled_one": "{{count}} προθεσμία στο ημερολόγιο «Sottomano»",
+    "enabled_other": "{{count}} προθεσμίες στο ημερολόγιο «Sottomano»",
+    "removeConfirm": "Αφαίρεση του ημερολογίου Sottomano και όλων των προθεσμιών του από το Ημερολόγιο;",
+    "remove": "Αφαίρεση",
+    "removed": "Το ημερολόγιο «Sottomano» διαγράφηκε"
+  },
+  "calendarSync": {
+    "eventTitle": "Λήγει: {{title}}",
+    "cannotCreate": "Δεν ήταν δυνατή η δημιουργία του ημερολογίου «Sottomano» σε αυτό το iPhone."
+  },
+  "appearance": {
+    "intro": "Τα χρώματα των προεπιλεγμένων κατηγοριών. Οι κατηγορίες που δημιούργησες κρατούν το δικό τους χρώμα.",
+    "restoreButton": "Επαναφορά προεπιλεγμένων κατηγοριών",
+    "restoreHint": "Φέρνει πίσω τις προεπιλεγμένες κατηγορίες που διέγραψες.",
+    "paletteLabel": "Παλέτα {{name}}",
+    "alerts": {
+      "restoreTitle": "Επαναφορά των προεπιλεγμένων κατηγοριών;",
+      "restoreMessage": "Όσες διέγραψες επιστρέφουν με το αρχικό τους όνομα, εικονίδιο και χρώμα. Τα έγγραφά σου και οι κατηγορίες που δημιούργησες δεν αλλάζουν.",
+      "nothingTitle": "Τίποτα για επαναφορά",
+      "nothingMessage": "Όλες οι προεπιλεγμένες κατηγορίες είναι ήδη στην Αρχική.",
+      "restoredTitle": "Οι κατηγορίες επαναφέρθηκαν",
+      "restoredMessage_one": "{{count}} κατηγορία επέστρεψε στην Αρχική, πριν από τα «Άλλα».",
+      "restoredMessage_other": "{{count}} κατηγορίες επέστρεψαν στην Αρχική, πριν από τα «Άλλα».",
+      "restoreFailed": "Δεν ήταν δυνατή η επαναφορά"
+    }
+  },
+  "about": {
+    "version": "Έκδοση {{version}}",
+    "privacy": "Απόρρητο",
+    "privacyFooter": "Αν ενεργοποιήσεις το Ημερολόγιο, οι προθεσμίες γράφονται στο ημερολόγιο του iPhone που επιλέγεις. Όταν στέλνεις ένα έγγραφο, εσύ αποφασίζεις με ποιον θα το μοιραστείς.",
+    "onPhone": "Τα έγγραφά σου μένουν στο τηλέφωνό σου",
+    "offline": "Χωρίς λογαριασμό και χωρίς διακομιστή: λειτουργεί και εκτός σύνδεσης",
+    "noTracking": "Χωρίς παρακολούθηση και χωρίς διαφημίσεις"
+  },
+  "terms": {
+    "intro": "Οι πλήρεις όροι χρήσης θα δημοσιευτούν με την έκδοση του App Store. Εν συντομία:",
+    "free": "Το Sottomano είναι δωρεάν για έως {{limit}} έγγραφα και κάρτες",
+    "oneTime": "Το ξεκλείδωμα είναι εφάπαξ αγορά, χωρίς συνδρομή",
+    "yours": "Τα έγγραφά σου μένουν στο τηλέφωνό σου και ανήκουν σε σένα",
+    "backup": "Κάνε αντίγραφο ασφαλείας για να μην τα χάσεις αν αλλάξεις τηλέφωνο"
+  },
+  "limit": {
+    "later": "Αργότερα",
+    "title": "Χρησιμοποίησες τις {{limit}} δωρεάν θέσεις σου",
+    "text": "Ό,τι έχεις αποθηκεύσει μένει εδώ και λειτουργεί όπως πάντα. Για να προσθέσεις κι άλλα έγγραφα και κάρτες, ξεκλείδωσε το Sottomano.",
+    "stillWorks": {
+      "view": "Προβολή των εγγράφων σου",
+      "send": "Αποστολή και κοινοποίησή τους",
+      "cards": "Εμφάνιση των καρτών σου στο ταμείο",
+      "reminders": "Λήψη υπενθυμίσεων"
+    },
+    "blocked": "Προσθήκη κι άλλων εγγράφων ή καρτών",
+    "unlock": "Ξεκλείδωμα χωρίς όρια με {{price}}"
+  },
+  "limitCard": {
+    "title": "{{used}} από {{limit}} δωρεάν θέσεις σε χρήση",
+    "accessibility": "{{title}}. Ξεκλείδωμα",
+    "unlock": "Ξεκλείδωμα"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Δωρεάν έκδοση: {{used}} από {{limit}} σε χρήση",
+    "titleMenu": "Δωρεάν: {{used}} από {{limit}} σε χρήση",
+    "subtitle": "Ξεκλείδωμα χωρίς όρια με {{price}}",
+    "accessibility": "{{title}}. Ξεκλείδωμα χωρίς όρια με {{price}}",
+    "unlock": "Ξεκλείδωμα"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Καλώς ήρθες στο Sottomano",
+        "text": "Ταυτότητες, κάρτες πόντων, λογαριασμοί, εγγυήσεις: όλα τα έγγραφα του σπιτιού σε ένα σημείο, πάντα πρόχειρα.",
+        "info": "Μένουν στο τηλέφωνό σου και λειτουργούν και χωρίς internet"
+      },
+      "scan": {
+        "title": "Μία φωτογραφία, μία φορά",
+        "text": "Σάρωσε και πολλές σελίδες ή εισήγαγε φωτογραφίες και PDF. Θα τα βρίσκεις τακτοποιημένα και θα τα στέλνεις όσο ελαφριά χρειάζεται."
+      },
+      "deadlines": {
+        "title": "Προσέχουμε τις προθεσμίες",
+        "text": "Σου θυμίζουμε πριν λήξει ένας λογαριασμός ή ένα έγγραφο. Και στο Ημερολόγιό σου, αν θέλεις."
+      },
+      "cards": {
+        "title": "Οι κάρτες σου πάντα στην τσέπη",
+        "text": "Φωτογράφισε τις κάρτες πόντων: στο ταμείο, δείξε το barcode ή τον κωδικό QR με ένα πάτημα."
+      }
+    },
+    "skip": "Παράλειψη",
+    "pageOf": "Σελίδα {{page}} από {{total}}",
+    "start": "Ας ξεκινήσουμε",
+    "restore": "Επαναφορά από αντίγραφο ασφαλείας",
+    "art": {
+      "bills": "Λογαριασμοί",
+      "cards": "Κάρτες",
+      "health": "Υγεία",
+      "car": "Αυτοκίνητο",
+      "pdfReady": "PDF έτοιμο",
+      "billTitle": "Λογαριασμός ρεύματος",
+      "billExpires": "Λήγει σε 2 ημέρες",
+      "gym": "Γυμναστήριο",
+      "library": "Βιβλιοθήκη",
+      "supermarket": "Σούπερ μάρκετ"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Δεν ήταν δυνατό το άνοιγμα του αρχείου",
+    "title": "Φωτογράφισε το πρώτο σου έγγραφο",
+    "text": "Ένας λογαριασμός, η ταυτότητά σου ή η εγγύηση του πλυντηρίου: σε λίγα δευτερόλεπτα είναι ασφαλές και πάντα πρόχειρο.",
+    "snap": "Φωτογράφισε ένα έγγραφο",
+    "pdf": "Μεταφόρτωση PDF",
+    "folders": "Οι φάκελοί σου",
+    "emptyAccessibility": "{{name}}, κενό",
+    "empty": "Κενό",
+    "newCategory": "Νέα κατηγορία"
+  },
+  "splashOverlay": {
+    "tagline": "Τα έγγραφα του σπιτιού σου, έτοιμα για αποστολή"
+  },
+  "appActions": {
+    "shareText": "Σου προτείνω το Sottomano: τα έγγραφα του σπιτιού, οι κάρτες και οι προθεσμίες σου πάντα πρόχειρα, στο τηλέφωνο και χωρίς internet.",
+    "rateTitle": "Αξιολόγησε το Sottomano",
+    "rateMessage": "Θα μπορείς να αφήσεις αξιολόγηση μόλις το Sottomano είναι στο App Store.",
+    "lockUnavailableTitle": "Το κλείδωμα δεν είναι διαθέσιμο",
+    "lockUnavailableMessage": "Για να κλειδώσεις το Sottomano χρειάζεσαι κωδικό στο iPhone. Όρισέ τον στις Ρυθμίσεις › Face ID και κωδικός και δοκίμασε ξανά."
+  }
+}

@@ -84,6 +84,11 @@ const FONTS = {
   700: loadFont(path.join(FONT_DIR, '700Bold', 'Onest_700Bold.ttf')),
 };
 const missingGlyphs = new Set();
+// Letters Onest doesn't have (Greek) are drawn by iOS with San Francisco: measured with the Mac's
+// SF (regular, a little wider for heavier weights) when it's there, otherwise estimated
+const SF_PATH = '/System/Library/Fonts/SFNS.ttf';
+const SF = fs.existsSync(SF_PATH) ? loadFont(SF_PATH) : null;
+const SF_WEIGHT = { 400: 1, 500: 1.02, 600: 1.04, 700: 1.06 };
 
 // Width in points of a text at a size and weight, with the guide letter spacing (+0.02em, titles +0.005em)
 function measure(text, size, weight) {
@@ -93,8 +98,12 @@ function measure(text, size, weight) {
   for (const ch of text) {
     const glyph = font.map.get(ch.codePointAt(0));
     if (glyph === undefined) {
-      missingGlyphs.add(ch); // drawn by the iOS fallback font: estimated
-      width += size * (ch.codePointAt(0) >= 0x370 ? 0.62 : 0.6);
+      const fallback = SF?.map.get(ch.codePointAt(0));
+      if (fallback !== undefined) width += (SF.advance(fallback) / SF.unitsPerEm) * size * SF_WEIGHT[weight];
+      else {
+        missingGlyphs.add(ch);
+        width += size * 0.62;
+      }
     } else {
       width += (font.advance(glyph) / font.unitsPerEm) * size;
     }
@@ -167,9 +176,9 @@ for (const file of sourceFiles(path.join(ROOT, 'src'))) {
         PLACES[`segmented${n}`] = segment(n);
         addKeys(props.values, `segmented${n}`, sf);
       }
-      if (tag === 'Stack.Toolbar.Button') {
-        const parent = node.parent;
-        if (ts.isJsxElement(parent)) addKeys(parent, 'navTitle', sf);
+      // Text buttons of the native toolbar: the text between the tags (not the accessibility label)
+      if (tag === 'Stack.Toolbar.Button' && ts.isJsxOpeningElement(node)) {
+        for (const child of node.parent.children) addKeys(child, 'navTitle', sf);
       }
     }
     // Native header titles: options={{ title: t('…') }}
@@ -253,7 +262,7 @@ for (const lang of languages) {
   }
 }
 
-if (missingGlyphs.size) console.log(`(not in Onest, estimated with the iOS fallback font: ${[...missingGlyphs].slice(0, 30).join('')}…)`);
+if (missingGlyphs.size) console.log(`(in no font here, estimated: ${[...missingGlyphs].slice(0, 30).join('')}…)`);
 if (failures) {
   console.error(`\n✖ text fit: ${failures} text${failures === 1 ? '' : 's'} would break inside a word or be cut`);
   process.exit(1);

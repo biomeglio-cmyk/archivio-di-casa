@@ -1,1 +1,1585 @@
-{}
+{
+  "common": {
+    "cancel": "Vazgeç",
+    "ok": "Tamam",
+    "done": "Bitti",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle",
+    "close": "Kapat",
+    "confirm": "Onayla",
+    "back": "Geri",
+    "next": "İleri",
+    "share": "Paylaş",
+    "send": "Gönder",
+    "search": "Ara",
+    "add": "Ekle",
+    "remove": "Kaldır",
+    "retry": "Yeniden dene",
+    "continue": "Devam",
+    "yes": "Evet",
+    "no": "Hayır",
+    "restore": "Geri yükle",
+    "settings": "Ayarlar",
+    "more": "Diğer",
+    "none": "Yok",
+    "documents_one": "{{count}} belge",
+    "documents_other": "{{count}} belge",
+    "pages_one": "{{count}} sayfa",
+    "pages_other": "{{count}} sayfa",
+    "photos_one": "{{count}} fotoğraf",
+    "photos_other": "{{count}} fotoğraf",
+    "wholeFamily": "Tüm aile"
+  },
+  "dates": {
+    "today": "bugün",
+    "tomorrow": "yarın",
+    "yesterday": "dün",
+    "inSpan": "{{span}} içinde",
+    "spanAgo": "{{span}} önce",
+    "expiredYesterday": "dün süresi doldu",
+    "expiredFor": "{{span}} önce süresi doldu",
+    "days_one": "{{count}} gün",
+    "days_other": "{{count}} gün",
+    "months_one": "{{count}} ay",
+    "months_other": "{{count}} ay",
+    "years_one": "{{count}} yıl",
+    "years_other": "{{count}} yıl"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Belgeler",
+      "cards": "Kartlar",
+      "utilities": "Faturalar",
+      "home": "Ev",
+      "insurance": "Sigorta",
+      "warranties": "Garanti ve fişler",
+      "car": "Araba",
+      "tax": "Vergi giderleri",
+      "householdStaff": "Ev çalışanı",
+      "school": "Okul",
+      "pet": "Evcil hayvan",
+      "password": "Parolalar",
+      "other": "Diğer"
+    }
+  },
+  "language": {
+    "title": "Dil",
+    "auto": "Otomatik",
+    "autoSubtitle": "Telefonun dilini kullanır",
+    "search": "Dil ara",
+    "autoDetail": "iPhone dili: {{language}}",
+    "noResults": "“{{query}}” için dil yok"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Pastel",
+    "vivid": "Canlı",
+    "earth": "Toprak",
+    "sea": "Deniz",
+    "sunset": "Gün batımı",
+    "night": "Gece"
+  },
+  "home": {
+    "welcome": "Sottomano’ya hoş geldin",
+    "hello": "Merhaba!",
+    "searchPlaceholder": "Belge ara",
+    "favorites": "Favoriler",
+    "seeAll": "Tümünü gör",
+    "seeAllFavorites": "Tüm favorileri gör",
+    "deadlines": "Son tarihler",
+    "seeAllDeadlines": "Tüm son tarihleri gör",
+    "archive": "Arşiv",
+    "reorderDone": "Sıralama bitti",
+    "reorder": "Yeniden sırala",
+    "reorderCategories": "Kategorileri sırala",
+    "reorderHint": "Kategorileri istediğin sıraya sürükle.",
+    "alerts": {
+      "orderNotSaved": "Sıralama kaydedilemedi"
+    },
+    "newCategory": "Yeni kategori"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} kart",
+    "cards_other": "{{count}} kart"
+  },
+  "folder": {
+    "paidOn": "Ödeme: {{date}}",
+    "expiredOn": "Süresi doldu: {{date}}",
+    "expiresOn": "Son tarih: {{date}}",
+    "addedOn": "Eklenme: {{date}}",
+    "newItem": {
+      "bill": "Yeni fatura",
+      "card": "Yeni kart",
+      "warranty": "Yeni garanti",
+      "password": "Yeni parola",
+      "document": "Yeni belge"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Tümü",
+      "documents": "Belgeler",
+      "cards": "Kartlar",
+      "deadlines": "Son tarihler"
+    },
+    "paid": "ödendi",
+    "expiresOn": "son tarih: {{date}}",
+    "folderSubtitle_one": "Klasör · {{count}} belge",
+    "folderSubtitle_other": "Klasör · {{count}} belge",
+    "card": "Kart",
+    "deadlineSubtitle": "Son tarih · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Belge ara",
+    "fieldLabel": "Belgelerinde ara",
+    "filter": "Filtre",
+    "results_one": "{{count}} sonuç",
+    "results_other": "{{count}} sonuç",
+    "noResults": "Sonuç yok",
+    "noResultsHint": "Başka bir kelime dene, örneğin bir mağazanın adı.",
+    "hint": "Adlarda, klasörlerde, türlerde, notlarda, kartlarda ve son tarihlerde ara."
+  },
+  "navigation": {
+    "home": "Ana sayfa",
+    "favorites": "Favoriler",
+    "family": "Aile",
+    "deadlines": "Son tarihler",
+    "deadlinesToCheck_one": "Son tarihler, {{count}} kontrol edilecek",
+    "deadlinesToCheck_other": "Son tarihler, {{count}} kontrol edilecek",
+    "addLocked": "Belge ekle, kilitli: ücretsiz sınıra ulaşıldı",
+    "addDocument": "Belge ekle",
+    "titles": {
+      "editDocument": "Belgeyi düzenle",
+      "pages": "Sayfalar",
+      "deadline": "Son tarih",
+      "renewed": "Yenilendi",
+      "previousVersion": "Önceki sürüm",
+      "newDocument": "Yeni belge",
+      "appearance": "Görünüm",
+      "backup": "Yedekleme",
+      "taxPackage": "Muhasebeciye gönder",
+      "trash": "Çöp Kutusu",
+      "terms": "Kullanım koşulları",
+      "about": "Hakkında ve gizlilik",
+      "newCard": "Yeni kart",
+      "editCard": "Kartı düzenle"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Taşımak için sürükle veya Öne taşı ve Geriye taşı eylemlerini kullan",
+    "moveEarlier": "Öne taşı",
+    "moveLater": "Geriye taşı",
+    "footer": "Kartları, Aile’deki kişileri ve Favorileri aynı şekilde sıralarsın: bir satıra basılı tut ve sağdaki tutamaktan sürükle."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Basılı tut: taşımak için sürükle veya eylemler için bırak"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Sıralama kaydedilemedi"
+    },
+    "reorderTitle": "Favorileri sırala",
+    "reorderHint": "Bir favoriye basılı tut ve istediğin yere sürükle.",
+    "yourFavorites": "Favorilerin",
+    "title": "Favoriler",
+    "subtitle": "Elinin altında tutmayı seçtiklerin",
+    "searchPlaceholder": "Favorilerde ara",
+    "viewList": "Liste",
+    "viewGrid": "Izgara",
+    "count_one": "{{count}} favori",
+    "count_other": "{{count}} favori",
+    "noMatch": "“{{query}}” ile eşleşen favori yok.",
+    "empty": "Henüz hiç favorin yok.",
+    "footer": "Buraya eklemek için herhangi bir belgedeki kalbe dokun.",
+    "footerGrid": "Buraya eklemek için herhangi bir belgedeki kalbe dokun. Sıralamak için bir kutucuğa basılı tutup sürükle.",
+    "footerList": "Buraya eklemek için herhangi bir belgedeki kalbe dokun. Sıralamak için bir satıra basılı tut.",
+    "rowHint": "Favorileri sıralamak için basılı tut",
+    "unpin": "Favorilerden kaldır",
+    "expires": "son tarih {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} ödenecek",
+    "alerts": {
+      "orderNotSaved": "Sıralama kaydedilemedi"
+    },
+    "actions": {
+      "editCategory": "Kategoriyi düzenle",
+      "sendToAccountant": "Muhasebeciye gönder",
+      "selectAndSend": "Seç ve gönder",
+      "reorder": "Yeniden sırala",
+      "deleteCategory": "Kategoriyi sil"
+    },
+    "moreLabel": "{{name}} kategorisini düzenle veya sil",
+    "searchIn": "Ara: {{name}}",
+    "viewList": "Liste",
+    "viewGrid": "Izgara",
+    "reorderHint": "Belgelere basılı tutup istediğin sıraya sürükle.",
+    "allTypes": "Tümü",
+    "noDocumentsFound": "Belge bulunamadı.",
+    "sendTogether": "Birlikte gönder ({{count}})",
+    "sheetTitle": "{{name}} kategorisi"
+  },
+  "folderRow": {
+    "due": "ödenecek",
+    "paid": "ödendi"
+  },
+  "homeSections": {
+    "expired": "Süresi doldu",
+    "expiresToday": "Bugün sona eriyor",
+    "expiresTomorrow": "Yarın sona eriyor",
+    "expiresInDays_one": "{{count}} gün içinde sona eriyor",
+    "expiresInDays_other": "{{count}} gün içinde sona eriyor",
+    "expiresOn": "Son tarih: {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Favorilerden kaldır",
+    "pin": "Favorilere ekle"
+  },
+  "searchBar": {
+    "clear": "Metni temizle"
+  },
+  "documentGrid": {
+    "addDocument": "Belge ekle"
+  },
+  "homeHeader": {
+    "menu": "Menü",
+    "notifications": "Bildirimler",
+    "notificationsUnread_one": "Bildirimler, {{count}} okunmamış",
+    "notificationsUnread_other": "Bildirimler, {{count}} okunmamış"
+  },
+  "demoData": {
+    "people": {
+      "step": "Step",
+      "mom": "Annem",
+      "dad": "Babam"
+    },
+    "documents": {
+      "idCard": "Kimlik kartı",
+      "drivingLicence": "Ehliyet",
+      "passport": "Pasaport",
+      "electricityBill": "Elektrik faturası",
+      "carInsurance": "Trafik sigortası",
+      "carTax": "Motorlu Taşıtlar Vergisi",
+      "washingMachineWarranty": "Çamaşır makinesi garantisi",
+      "gymCard": "Spor salonu kartı",
+      "rentalContract": "Kira sözleşmesi",
+      "pharmacyReceipt": "Eczane fişi",
+      "reportCard": "Karne"
+    },
+    "notes": {
+      "electricityBill": "Bankadan otomatik ödeme"
+    }
+  },
+  "documentTypes": {
+    "documents": "Kimlik kartı|Ehliyet|Pasaport|Sağlık kartı|Vergi kimlik no",
+    "cards": "Sadakat|Spor salonu|Kütüphane|Ulaşım|Üyelik",
+    "utilities": "Elektrik|Doğalgaz|Su|İnternet|Telefon|Çöp",
+    "home": "Kira|Konut kredisi|Aidat|Bakım|Sözleşme",
+    "insurance": "Araç|Konut|Sağlık|Hayat|Seyahat",
+    "warranties": "Beyaz eşya|Elektronik|Mobilya|Fiş",
+    "car": "MTV|Sigorta|Muayene|Servis|Ruhsat",
+    "tax": "Eczane|Doktor muayenesi|Diş hekimi|Tahlil|Spor|Okul",
+    "householdStaff": "Bordro|SGK primleri|Sözleşme",
+    "school": "Kayıt|Karne|Belge|Yemekhane|Okul gezisi",
+    "pet": "Sağlık karnesi|Aşı|Veteriner|Mikroçip",
+    "password": "E-posta|Banka|Sosyal medya|Wi-Fi|İş"
+  },
+  "pageLabels": {
+    "front": "Ön yüz",
+    "back": "Arka yüz",
+    "page": "Sayfa {{number}}"
+  },
+  "statusBadge": {
+    "due": "Ödenecek",
+    "paid": "Ödendi"
+  },
+  "addActions": {
+    "openFileFailed": "Dosya açılamadı"
+  },
+  "pickFiles": {
+    "takePhoto": "Fotoğraf çek",
+    "choosePhoto": "Fotoğraflardan seç",
+    "removePhoto": "Fotoğrafı kaldır"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Birden çok sayfa",
+      "text": "Art arda birden çok sayfa tarayabilirsin: Kaydet’e dokunmadan önce sonraki sayfayı çerçevele."
+    },
+    "cardTip": {
+      "title": "Gerçek renkler",
+      "text": "Kartın gerçek renkleri için tarayıcıdaki filtreler düğmesine dokun ve “Fotoğraf”ı seç."
+    },
+    "gotIt": "Anladım"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Kamera erişimi gerekli",
+    "permissionText": "Sottomano kamerayı yalnızca belgelerini fotoğraflamak için kullanır.",
+    "allow": "İzin ver",
+    "openSettings": "Ayarlar’ı aç",
+    "readable": "Okunaklı mı?",
+    "pageReadable": "Sayfa {{number}}: okunaklı mı?",
+    "retake": "Yeniden çek",
+    "addPage": "Sayfa ekle",
+    "frameDocument": "Belgeyi çerçevele",
+    "framePage": "Sayfa {{number}} çerçevele",
+    "shoot": "Fotoğraf çek",
+    "finishWithPages_one": "Bitti, {{count}} sayfa",
+    "finishWithPages_other": "Bitti, {{count}} sayfa"
+  },
+  "coverField": {
+    "label": "Kapak",
+    "photo": "Fotoğraf",
+    "color": "Renk",
+    "noPhotoHint": "Fotoğraf yoksa renk gösterilir: fotoğrafını kapak yapmak için bir sayfa ekle.",
+    "categoryColor": "Klasör rengi",
+    "colorNumber": "Renk {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Sayfa ekle",
+    "pinned": "Favorilerde",
+    "pin": "Favorilere ekle",
+    "renewed": "Yenilendi",
+    "delete": "Sil"
+  },
+  "documentFilesView": {
+    "document": "Belge",
+    "openFailed": "Belge açılamadı",
+    "pageOfSwipe": "Sayfa {{number}}/{{total}} · gezinmek için kaydır",
+    "openFullScreen": "{{label}}, tam ekran aç",
+    "missingFile": "Dosya bu telefonda bulunamadı."
+  },
+  "filesEditor": {
+    "addBack": "Arka yüzü ekle",
+    "addPage": "Sayfa ekle",
+    "scan": "Tara",
+    "photograph": "Fotoğraf çek",
+    "fromPhotos": "Fotoğraflardan",
+    "scannerUnavailableTitle": "Tarayıcı kullanılamıyor",
+    "scannerUnavailableMessage": "Sayfaları ✕ ile kaldır ve yenilerini ekle.",
+    "replacePdf": "PDF’yi değiştir",
+    "importPdf": "PDF içe aktar",
+    "rescanAll": "Tümünü yeniden tara",
+    "openFileFailed": "Dosya açılamadı",
+    "page": "Sayfa",
+    "newTag": "yeni",
+    "moveBefore": "Öne taşı: {{name}}",
+    "moveAfter": "Geriye taşı: {{name}}",
+    "removePage": "Kaldır: {{name}}"
+  },
+  "documentDetail": {
+    "notFound": "Belge bulunamadı.",
+    "noPages": "Sayfa yok",
+    "photoPages_one": "Fotoğraf, {{count}} sayfa",
+    "photoPages_other": "Fotoğraflar, {{count}} sayfa",
+    "amount": "Tutar",
+    "expired": "süresi doldu",
+    "inDays_one": "{{count}} gün içinde",
+    "inDays_other": "{{count}} gün içinde",
+    "deadline": "Son tarih",
+    "folder": "Klasör",
+    "status": "Durum",
+    "person": "Kişi",
+    "number": "Numara",
+    "notes": "Notlar",
+    "inCalendar": "Takvimde",
+    "view": "Belgeyi görüntüle",
+    "unpin": "Favorilerden kaldır",
+    "pin": "Favorilere ekle",
+    "addPages": "Sayfa ekle",
+    "renewed": "Yenilendi",
+    "delete": "Sil",
+    "details": "Ayrıntılar",
+    "remindMe": "Bana hatırlat",
+    "reminderNeedsDeadline": "Hatırlatma almak için bir son tarih ekle",
+    "reminderWhen": "Hatırlatma: {{when}}",
+    "noReminder": "Hatırlatma yok",
+    "previousVersions": "Önceki sürümler",
+    "versionUntil": "{{date}} tarihine kadar",
+    "versionExpired": "süresi doldu: {{date}}",
+    "paidOnMarkDue": "Ödeme: {{date}} · ödenecek olarak işaretle",
+    "markDue": "Ödenecek olarak işaretle",
+    "markPaid": "Ödendi olarak işaretle",
+    "firstOf": "1/{{total}}"
+  },
+  "documentForm": {
+    "statusDue": "Ödenecek",
+    "statusPaid": "Ödendi",
+    "saveFailed": "Kaydedilemedi",
+    "folder": "Klasör",
+    "person": "Kişi",
+    "type": "Tür",
+    "otherType": "Başka bir tür yaz…",
+    "noType": "Tür yok",
+    "typeExample": "Örneğin: Elektrik, MTV, Diş hekimi",
+    "dueOn": "{{date}}",
+    "noDeadline": "Son tarih yok",
+    "nameSection": "Ad",
+    "namePlaceholder": "Belge adı",
+    "whereSection": "Nereye kaydedilecek",
+    "choose": "Seç…",
+    "deadlineSection": "Son tarih",
+    "addDeadline": "Son tarih ekle",
+    "remindMe": "Bana hatırlat",
+    "whenToRemind": "Ne zaman hatırlatılsın",
+    "repeats": "Tekrarla",
+    "never": "Asla",
+    "everySpan": "Her {{span}}",
+    "every": "Her",
+    "notesSection": "Notlar",
+    "notesPlaceholder": "Örneğin: otomatik ödemeyle ödendi, iade iste…",
+    "pin": "Favorilere ekle",
+    "pinSubtitle": "Ana sayfada hemen bul",
+    "amountSection": "Tutar ve durum",
+    "amount": "Tutar",
+    "amountInEuro": "Avro cinsinden tutar",
+    "accessSection": "Giriş",
+    "username": "Kullanıcı adı",
+    "usernamePlaceholder": "ad@ornek.com",
+    "password": "Parola",
+    "passwordUnchanged": "•••••••• (değişmedi)",
+    "passwordNote": "Parola yalnızca iPhone Anahtar Zinciri’nde kalır.",
+    "numberSection": "Belge numarası",
+    "numberPlaceholder": "Örn. A12B34567",
+    "saveChanges": "Değişiklikleri kaydet",
+    "saveDocument": "Belgeyi kaydet",
+    "amountHint": "Tutarı {{example}} biçiminde gir.",
+    "missingNameAndFolder": "Kaydetmek için adı gir ve klasörü seç.",
+    "missingName": "Kaydetmek için adı gir.",
+    "missingFolder": "Kaydetmek için klasörü seç.",
+    "deleteDocument": "Belgeyi sil"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Tara",
+      "photos": "Fotoğraflardan",
+      "pdf": "PDF dosyasından",
+      "card": "Kart",
+      "manual": "Elle"
+    },
+    "hintFirst": "Belgeyi çerçevele · telefonu sabit tut",
+    "hintNext": "Sayfa {{number}} çekildi · sonrakini çerçevele",
+    "title": "Yeni belge",
+    "flashOff": "Flaşı kapat",
+    "flashOn": "Flaşı aç",
+    "scanWithIos": "iOS tarayıcısıyla tara",
+    "tapToScan": "Taramak için dokun: kenarları kendisi bulur",
+    "permissionTitle": "Kamera erişimi gerekli",
+    "permissionText": "Sottomano kamerayı yalnızca belgelerini fotoğraflamak için kullanır.",
+    "allow": "İzin ver",
+    "openSettings": "Ayarlar’ı aç",
+    "howToAdd": "Nasıl eklenecek",
+    "chooseFromGallery": "Arşivden seç",
+    "shoot": "Fotoğraf çek",
+    "goOnWith_one": "{{count}} sayfayla devam et",
+    "goOnWith_other": "{{count}} sayfayla devam et",
+    "noPages": "Sayfa yok",
+    "countNext": "sonraki ›",
+    "countPages": "sayfa"
+  },
+  "newDocument": {
+    "readTitle": "Belgeden okundu",
+    "readText": "Ad dosyadan alındı: {{name}}. Kontrol et ve gerekirse düzelt.",
+    "checkTitle": "Ayrıntıları kontrol et",
+    "checkText_one": "{{count}} sayfa alındı. Adı ve varsa son tarihi gir: Son tarihler’de bulacaksın.",
+    "checkText_other": "{{count}} sayfa alındı. Adı ve varsa son tarihi gir: Son tarihler’de bulacaksın.",
+    "heading": "Yeni belge"
+  },
+  "editDocument": {
+    "heading": "Belgeyi düzenle"
+  },
+  "documentVersion": {
+    "replacedOn": "Değiştirilme: {{date}}",
+    "expiredOn": "süresi doldu: {{date}}",
+    "previewTitle": "{{title}} (önceki sürüm)"
+  },
+  "documentPages": {
+    "saveFailed": "Sayfalar kaydedilemedi"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Silinemedi",
+    "title": "{{title}} silinsin mi?",
+    "message_one": "Belge ve hatırlatması Çöp Kutusu’na taşınır. {{count}} gün boyunca Menü › Çöp Kutusu’ndan geri alabilirsin.",
+    "message_other": "Belge ve hatırlatması Çöp Kutusu’na taşınır. {{count}} gün boyunca Menü › Çöp Kutusu’ndan geri alabilirsin.",
+    "confirm": "Belgeyi sil"
+  },
+  "renew": {
+    "saveFailed": "Kaydedilemedi",
+    "deadline": "Son tarih",
+    "repeatFooter": "{{repeat}}: yeni tarih eskisinden hesaplanır.",
+    "was": "Önceki",
+    "newDeadline": "Yeni son tarih",
+    "newDocument": "Yeni belge",
+    "withScanFooter": "Mevcut sayfalar “Önceki sürüm” olur; ayrıntılarda bulursun.",
+    "withoutScanFooter": "Taranacak yeni belge varsa bunu aç.",
+    "addNewScan": "Yeni taramayı ekle"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · aşağı kaydır",
+    "pagesSubtitle_one": "{{count}} sayfa",
+    "pagesSubtitle_other": "{{count}} sayfa · aşağı kaydır",
+    "pageOf": "Sayfa {{number}}/{{total}}",
+    "noPages": "Bu belgenin sayfası yok.",
+    "zoom": "Yakınlaştır",
+    "zoomOut": "Uzaklaştır",
+    "zoomIn": "Yakınlaştır",
+    "pageShort": "Sayfa {{number}}/{{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "gün",
+      "day_other": "gün",
+      "week_one": "hafta",
+      "week_other": "hafta",
+      "month_one": "ay",
+      "month_other": "ay",
+      "year_one": "yıl",
+      "year_other": "yıl"
+    },
+    "count": {
+      "day_one": "{{count}} gün",
+      "day_other": "{{count}} gün",
+      "week_one": "{{count}} hafta",
+      "week_other": "{{count}} hafta",
+      "month_one": "{{count}} ay",
+      "month_other": "{{count}} ay",
+      "year_one": "{{count}} yıl",
+      "year_other": "{{count}} yıl"
+    },
+    "every": {
+      "day_one": "Her gün",
+      "day_other": "{{count}} günde bir",
+      "week_one": "Her hafta",
+      "week_other": "{{count}} haftada bir",
+      "month_one": "Her ay",
+      "month_other": "{{count}} ayda bir",
+      "year_one": "Her yıl",
+      "year_other": "{{count}} yılda bir"
+    },
+    "repeats": {
+      "day_one": "Her gün tekrarlanır",
+      "day_other": "{{count}} günde bir tekrarlanır",
+      "week_one": "Her hafta tekrarlanır",
+      "week_other": "{{count}} haftada bir tekrarlanır",
+      "month_one": "Her ay tekrarlanır",
+      "month_other": "{{count}} ayda bir tekrarlanır",
+      "year_one": "Her yıl tekrarlanır",
+      "year_other": "{{count}} yılda bir tekrarlanır"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "İlgilenmen gerekenler",
+    "thisWeek": "Bu hafta",
+    "upcomingNone": "Önümüzdeki aylarda yapılacak bir şey yok",
+    "upcoming_one": "Önümüzdeki aylarda {{count}} yapılacak iş",
+    "upcoming_other": "Önümüzdeki aylarda {{count}} yapılacak iş"
+  },
+  "deadlineOptions": {
+    "sameDay": "Aynı gün",
+    "daysBefore_one": "{{count}} gün önce",
+    "daysBefore_other": "{{count}} gün önce",
+    "defaultChoice": "{{label}} (varsayılan)"
+  },
+  "personRoles": {
+    "you": "Sen",
+    "choice": {
+      "me": "Benim",
+      "partner": "Eş",
+      "child": "Oğul veya kız",
+      "parent": "Ebeveyn",
+      "sibling": "Kardeş",
+      "other": "Diğer"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "“Diğer” kategorisi yok.",
+    "otherNotDeletable": "“Diğer” kategorisi silinemez."
+  },
+  "deadlineChip": {
+    "overdue": "Süresi doldu",
+    "today": "Bugün",
+    "dueToday": "Son gün bugün",
+    "dueIn_one": "{{count}} gün kaldı",
+    "dueIn_other": "{{count}} gün kaldı"
+  },
+  "deadlineListRow": {
+    "hint": "Son tarihi düzenlemek veya kaldırmak için basılı tut",
+    "statusDue": "ödenecek",
+    "statusPaid": "ödendi"
+  },
+  "deadlineSection": {
+    "title": "Son tarih",
+    "emptyFooter": "Telefonunda bir hatırlatmayla ve açıksa “Sottomano” takviminde.",
+    "add": "Son tarih ekle",
+    "expiresOn": "Son tarih",
+    "repeats": "Tekrarla",
+    "never": "Asla",
+    "reminder": "Hatırlatma"
+  },
+  "dateCalendar": {
+    "previousMonth": "Önceki ay",
+    "nextMonth": "Sonraki ay"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Sonraki hafta",
+    "previousWeek": "Önceki hafta",
+    "weekdayDate": "{{date}} {{weekday}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} son tarih",
+    "dayWithDeadlines_other": "{{day}}, {{count}} son tarih"
+  },
+  "deadlines": {
+    "title": "Son tarihler",
+    "newReminder": "Yeni hatırlatma",
+    "week": "Hafta",
+    "month": "Ay",
+    "openDocument": "Belgeyi aç",
+    "editDeadline": "Son tarihi düzenle",
+    "markDue": "Ödenecek olarak işaretle",
+    "markPaid": "Ödendi olarak işaretle",
+    "removeDeadline": "Son tarihi kaldır",
+    "removeAlert": {
+      "title": "Son tarih kaldırılsın mı?",
+      "message": "Belge kalır; hatırlatması ve takvim etkinliği kaldırılır.",
+      "confirm": "Kaldır"
+    },
+    "emptyTitle": "Yaklaşan son tarih yok",
+    "emptyText": "Son tarihli bir belge eklemek için + simgesine dokun: burada ve takvimde görünür.",
+    "sheetSubtitle": "Son tarih: {{date}}",
+    "dayRepeats": "tekrarlanır",
+    "dayReminder": "hatırlatma",
+    "dayEmpty": "Bu gün son tarih yok"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Kaydedilemedi",
+    "date": "Tarih",
+    "footer": "Hatırlatma telefonuna gelir; takvim açıksa son tarih “Sottomano” takviminde de olur.",
+    "every": "Her"
+  },
+  "family": {
+    "title": "Aile",
+    "subtitle": "Evdeki herkes için bir profil",
+    "addPerson": "Kişi ekle",
+    "members": "Üyeler",
+    "orderSaveFailed": "Sıralama kaydedilemedi",
+    "reorderTitle": "Aileyi sırala",
+    "reorderHint": "Bir kişiye basılı tut ve istediğin yere sürükle.",
+    "privacyNote": "Her şey bu telefonda kalır. Birine belge göndermek için belgeyi aç ve Gönder’e dokun.",
+    "youSpoken": "sen",
+    "reorderA11yHint": "Aileyi sıralamak için basılı tut",
+    "expiring_one": "{{count}} süresi doluyor",
+    "expiring_other": "{{count}} süresi doluyor"
+  },
+  "personScreen": {
+    "photoFailed": "Fotoğraf kullanılamadı",
+    "editPerson": "Kişiyi düzenle",
+    "selectAndSend": "Seç ve gönder",
+    "deletePerson": "Kişiyi sil",
+    "moreA11y": "{{name}}: düzenle veya sil",
+    "changePhoto": "Fotoğrafı değiştir",
+    "editProfile": "Profili düzenle",
+    "documentsSection": "Belgeleri · {{count}}",
+    "addDocument": "Belge ekle",
+    "sendTogether": "Birlikte gönder ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Kaydedilemedi",
+    "newPerson": "Yeni kişi",
+    "addPhoto": "Fotoğraf ekle",
+    "name": "Ad",
+    "namePlaceholder": "Adı ne?",
+    "role": "Kim",
+    "roleA11y": "Senin için kim: {{role}}",
+    "note": "Profil bu telefonda kalır. Herkesin belgelerini düzenli tutmana yardımcı olur.",
+    "addToFamily": "Aileye ekle",
+    "roleSheetTitle": "Senin için kim"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Silinemedi",
+    "title": "{{name}} kategorisi silinsin mi?",
+    "messageWithDocuments_one": "İçinde {{count}} belge var. Ne yapmak istersin?",
+    "messageWithDocuments_other": "İçinde {{count}} belge var. Bunlarla ne yapmak istersin?",
+    "messageWithDocumentsRestorable_one": "İçinde {{count}} belge var. Ne yapmak istersin? Kategoriyi Yeni kategori’den geri yükleyebilirsin.",
+    "messageWithDocumentsRestorable_other": "İçinde {{count}} belge var. Bunlarla ne yapmak istersin? Kategoriyi Yeni kategori’den geri yükleyebilirsin.",
+    "messageEmpty": "Kategori boş.",
+    "messageEmptyRestorable": "Kategori boş. Yeni kategori’den geri yükleyebilirsin.",
+    "deleteAll": "Tümünü sil",
+    "confirm": "Kategoriyi sil",
+    "choicesA11y": "Belgelerle ne yapılacak",
+    "moveLabel": "Diğer’e taşı",
+    "moveDetailPassword": "Uygulamada, Diğer’de kalırlar; kullanıcı adı ve parola olmadan",
+    "moveDetail": "Uygulamada, genel bir klasörde kalırlar",
+    "trashLabel": "Sil",
+    "trashDetail_one": "Çöp Kutusu’na giderler: {{count}} gün boyunca geri alabilirsin",
+    "trashDetail_other": "Çöp Kutusu’na giderler: {{count}} gün boyunca geri alabilirsin"
+  },
+  "deletePerson": {
+    "title": "{{name}} aileden kaldırılsın mı?",
+    "messageWithDocuments_one": "{{name}} için {{count}} belge var. Ne yapmak istersin?",
+    "messageWithDocuments_other": "{{name}} için {{count}} belge var. Bunlarla ne yapmak istersin?",
+    "messageEmpty": "Profil bu telefondan kaldırılır.",
+    "familyLabel": "Tüm aile’ye taşı",
+    "familyDetail": "Uygulamada kalırlar, herkes görebilir",
+    "trashDetail_one": "Profille birlikte giderler: {{count}} gün Çöp Kutusu’nda kalırlar",
+    "trashDetail_other": "Profille birlikte giderler: {{count}} gün Çöp Kutusu’nda kalırlar"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Evcil hayvan",
+      "document": "Belge",
+      "home": "Ev",
+      "car": "Araba",
+      "health": "Sağlık",
+      "school": "Okul",
+      "work": "İş",
+      "keys": "Anahtarlar",
+      "travel": "Seyahat",
+      "expenses": "Giderler"
+    },
+    "restoreFailed": "Geri yüklenemedi",
+    "editTitle": "Kategoriyi düzenle",
+    "newTitle": "Yeni kategori",
+    "restoreSection": "Varsayılan kategoriyi geri yükle",
+    "restoreA11y": "Geri yükle: {{name}}",
+    "restoreHint": "Renkleri, simgesi ve alanlarıyla eskisi gibi geri gelir. Ya da aşağıda yeni bir tane oluştur.",
+    "previewA11y": "Kategori önizlemesi",
+    "namePlaceholder": "Örn. Evcil hayvan",
+    "nameA11y": "Kategori adı",
+    "color": "Renk",
+    "paletteColor": "Görünüm rengi",
+    "colorNumber": "Renk {{number}}",
+    "followsPaletteHint": "Renk, Görünüm’de seçilen paleti izler.",
+    "ownColorHint": "Kendi rengin: Görünüm’le değişmez.",
+    "icon": "Simge",
+    "forWhom": "Kimin için",
+    "forWhomA11y": "Bu kategori kimin için: {{name}}",
+    "forWhomHint": "Bu kategorideki yeni belgeler bu kişiyle başlar.",
+    "create": "Kategori oluştur"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Web sitesi veya uygulama",
+        "namePlaceholder": "Örneğin: İnternet bankacılığı",
+        "userLabel": "Kullanıcı adı veya e-posta",
+        "userPlaceholder": "ad@eposta.com",
+        "passwordLabel": "Parola",
+        "notePlaceholder": "Örneğin: güvenlik sorusu, kurtarma kodu…"
+      },
+      "wifi": {
+        "name": "Wi-Fi",
+        "namePlaceholder": "Örneğin: Ev Wi-Fi’ı",
+        "userLabel": "Ağ adı",
+        "userPlaceholder": "YilmazEv_5G",
+        "passwordLabel": "Ağ parolası",
+        "notePlaceholder": "Örneğin: modem salonda, televizyonun arkasında…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Örneğin: Banka kartı",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Örneğin: Ayşe’nin kartı…"
+      },
+      "other": {
+        "name": "Diğer",
+        "namePlaceholder": "Örneğin: Ev alarmı",
+        "userLabel": "Kullanıcı adı",
+        "userPlaceholder": "İsteğe bağlı",
+        "passwordLabel": "Kod veya parola",
+        "notePlaceholder": "Ne için, nerede kullanılıyor…"
+      }
+    },
+    "colors": {
+      "aqua": "Su mavisi",
+      "indigo": "Çivit",
+      "apricot": "Kayısı",
+      "pink": "Pembe",
+      "mint": "Nane",
+      "sky": "Gök",
+      "graphite": "Grafit"
+    },
+    "icons": {
+      "key": "Anahtar",
+      "lock": "Asma kilit",
+      "globe": "Küre",
+      "wifi": "Wi-Fi",
+      "bank": "Banka",
+      "card": "Kart",
+      "mail": "E-posta",
+      "home": "Ev",
+      "car": "Araba",
+      "shield": "Kalkan",
+      "cart": "Sepet",
+      "star": "Yıldız"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Yalnızca rakam",
+    "strength": {
+      "weak": "Zayıf",
+      "fair": "Orta",
+      "good": "İyi",
+      "strong": "Güçlü"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Kilidi etkinleştirmek için onayla"
+  },
+  "appLock": {
+    "prompt": "Sottomano’nun kilidini aç",
+    "unlock": "Kilidi aç",
+    "unlockWith": {
+      "faceId": "Face ID ile kilidi aç",
+      "touchId": "Touch ID ile kilidi aç",
+      "passcode": "Parola ile kilidi aç"
+    },
+    "message": "Belgelerin koruma altında"
+  },
+  "passwordForm": {
+    "showPrompt": "Parolayı göster",
+    "copyPrompt": "Parolayı kopyala",
+    "copiedTitle": "Kopyalandı",
+    "copiedMessage": "1 dakika içinde panodan silinecek.",
+    "scannerUnavailableTitle": "Tarayıcı kullanılamıyor",
+    "scannerUnavailableMessage": "Görüntüyü fotoğraf arşivinden seç.",
+    "saveFailed": "Kaydedilemedi",
+    "editTitle": "Parolayı düzenle",
+    "newTitle": "Yeni parola",
+    "privacy": "Yalnızca bu telefonda kalırlar ve Face ID ile açılırlar.",
+    "sections": {
+      "what": "Ne kaydediyorsun",
+      "name": "Ad",
+      "preview": "Önizleme",
+      "access": "Giriş",
+      "site": "Web sitesi veya uygulama",
+      "whose": "Kimin",
+      "notes": "Notlar"
+    },
+    "typesLabel": "Parola türü",
+    "customTypePlaceholder": "Nedir? Alarm, kasa, asma kilit…",
+    "customTypeLabel": "Nedir",
+    "customTypeHint": "Yeni bir tür olur ve bir dahaki sefere seçenekler arasında bulursun.",
+    "previewTitle": "Listede nasıl görünür",
+    "previewText": "Bir renk ve simge ya da bir görüntü.",
+    "color": "Renk",
+    "colorLabel": "Önizleme rengi",
+    "icon": "Simge",
+    "iconLabel": "Önizleme simgesi",
+    "image": "Görüntü",
+    "scan": "Tara",
+    "gallery": "Fotoğraflar’dan",
+    "removeImage": "Görüntüyü kaldır, renk ve simge kullan",
+    "passwordPlaceholder": "Yaz veya oluştur",
+    "show": "Göster",
+    "hide": "Gizle",
+    "copy": "Kopyala",
+    "saved": "Kaydedildi",
+    "generate": "Güçlü bir parola oluştur",
+    "urlPlaceholder": "www.ornek.com",
+    "urlLabel": "Web sitesi adresi",
+    "wifiQrTitle": "Misafirler için QR kodu",
+    "wifiQrSubtitle": "Tarayıp bağlanırlar",
+    "person": "Kişi",
+    "personA11y": "Kişi, {{name}}",
+    "favoriteTitle": "Favorilere ekle",
+    "favoriteSubtitle": "Hemen ana sayfada bulursun",
+    "saveButton": "Parolayı kaydet",
+    "saveHint": "Kaydetmek için bir ad gir."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Parola yok",
+    "noPasswordMessage": "Düzenle ile ekle.",
+    "showPrompt": {
+      "site": "Parolayı göster",
+      "wifi": "Ağ parolasını göster",
+      "pin": "PIN’i göster",
+      "other": "Kodu veya parolayı göster"
+    },
+    "copyPrompt": {
+      "site": "Parolayı kopyala",
+      "wifi": "Ağ parolasını kopyala",
+      "pin": "PIN’i kopyala",
+      "other": "Kodu veya parolayı kopyala"
+    },
+    "copyUser": {
+      "site": "Kullanıcı adını veya e-postayı kopyala",
+      "wifi": "Ağ adını kopyala",
+      "pin": "Kullanıcı adını kopyala",
+      "other": "Kullanıcı adını kopyala"
+    },
+    "copiedTitle": "Kopyalandı",
+    "copiedMessage": "1 dakika içinde panodan silinecek.",
+    "copiedTextTitle": "Kopyalandı",
+    "qrPrompt": "Misafirler için QR kodunu göster",
+    "invalidAddress": "Geçersiz adres",
+    "removeFavorite": "Favorilerden kaldır",
+    "favoriteTitle": "Favorilere ekle",
+    "favoriteSubtitle": "Hemen ana sayfada bulursun",
+    "moreActions": "Diğer eylemler",
+    "sections": {
+      "access": "Giriş",
+      "site": "Web sitesi veya uygulama",
+      "wifiQr": "Misafirler için QR kodu",
+      "whose": "Kimin",
+      "notes": "Notlar"
+    },
+    "hidden": "Gizli",
+    "show": "Göster",
+    "hide": "Gizle",
+    "copy": "Kopyala",
+    "locked": "Face ID veya iPhone parolasından sonra görünür",
+    "wifiQrLabel": "Wi-Fi ağı QR kodu",
+    "qrHint": "Kamerayla tarayıp bağlanırlar.",
+    "qrLocked": "QR kodu parolayı içerir: Face ID veya iPhone parolasından sonra görünür.",
+    "qrNoNetwork": "QR kodunu almak için Düzenle ile ağ adını ekle.",
+    "showQr": "QR kodunu göster",
+    "hideQr": "QR kodunu gizle",
+    "person": "Kişi",
+    "moveToTrash": "Çöp Kutusu’na taşı"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Parola yok",
+    "noPasswordMessage": "Düzenle ile ekle.",
+    "showPrompt": "Parolayı göster",
+    "copyPrompt": "Parolayı kopyala",
+    "copiedTitle": "Parola kopyalandı",
+    "copiedMessage": "1 dakika içinde panodan silinecek.",
+    "user": "Kullanıcı adı",
+    "password": "Parola",
+    "hidden": "Parola gizli",
+    "show": "Göster",
+    "hide": "Gizle",
+    "copy": "Kopyala"
+  },
+  "cardForm": {
+    "found": "Bulundu: {{name}}",
+    "foundBarcode": "Bulundu: barkod {{name}}",
+    "handwritten": "Kod elle yazıldı",
+    "noCode": "Kod okunmadı",
+    "photoOpenFailed": "Fotoğraf açılamadı",
+    "saveFailed": "Kaydedilemedi",
+    "retakeFront": "Yeniden çek",
+    "retakePhoto": "Fotoğrafı yeniden çek",
+    "recognized": "Kart tanındı",
+    "tapRetake": "Fotoğraflamak için Yeniden çek’e dokun",
+    "fromPhotos": "Fotoğraflar’dan",
+    "cover": "Kapak",
+    "coverPhotoCaption": "Kartın fotoğrafından kırpıldı ve düzeltildi",
+    "coverColorCaption": "Kartın rengi, adı ve numarasıyla",
+    "codeSection": "Kasada gösterilecek kod",
+    "photographCode": "Kodu fotoğrafla",
+    "barcode": "Barkod",
+    "qrCode": "QR kodu",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Kart",
+    "typeNumber": "Numarayı aşağıya yaz",
+    "explain": "Sottomano kartta barkod mu QR kodu mu olduğunu kendisi tanır. Kasada kodu büyük ve ekran tam parlaklıktayken gösterir.",
+    "readTitle": "Karttan okunan bilgiler",
+    "readText": "Kontrol et ve gerekirse düzelt.",
+    "name": "Ad",
+    "namePlaceholder": "Örn. Süpermarket",
+    "type": "Tür",
+    "typePlaceholder": "Örn. Sadakat kartı",
+    "number": "Numara",
+    "numberPlaceholder": "Örn. 0400 2219 8876",
+    "holder": "Kart sahibi",
+    "saveButton": "Kartı kaydet",
+    "saveHint": "Kaydetmek için kartın adını gir."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Ön yüzün fotoğrafı",
+      "barcode": "Barkodu fotoğrafla"
+    },
+    "photoOpenFailed": "Fotoğraf açılamadı",
+    "permissionTitle": "Kamera erişimi gerekli",
+    "permissionText": "Sottomano kamerayı kartlarını fotoğraflamak ve barkodlarını okumak için kullanır.",
+    "allow": "İzin ver",
+    "openSettings": "Ayarlar’ı aç",
+    "frontCheck": "Ön yüz: net mi?",
+    "read": "Okundu: {{value}}",
+    "notRead": "Kod okunmadı",
+    "notReadHint": "Fotoğrafı sakla: numarayı sonraki adımda yazacaksın.",
+    "retake": "Yeniden çek",
+    "use": "Kullan",
+    "focus": "Odakla",
+    "stepCount": "{{current}}/{{total}}",
+    "frameHint": "Kartı çerçevenin içine yerleştir",
+    "searching": "Kod aranıyor…",
+    "chooseFromPhotos": "Fotoğraflar’dan seç",
+    "shoot": "Fotoğraf çek",
+    "skip": "Atla"
+  },
+  "cardDetail": {
+    "code": "Kod",
+    "photo": "Fotoğraf",
+    "barcodeLabel": "Barkod",
+    "barcodePhotoLabel": "Barkodun fotoğrafı",
+    "fullScreenHint": "Kodu tam ekran açar",
+    "noCode": "Kod yok. Fotoğraflamak veya yazmak için “Düzenle”ye dokun.",
+    "tapHint": "Büyütmek için koda dokun",
+    "person": "Kişi"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Sıralama kaydedilemedi",
+    "editCategory": "Kategoriyi düzenle",
+    "deleteCategory": "Kategoriyi sil",
+    "reorderTitle": "Kartları sırala",
+    "reorderHint": "Bir karta basılı tut, sonra istediğin yere sürükle.",
+    "yourCards": "Kartların",
+    "title": "Kartlar",
+    "subtitle": "Kasada kodunu göstermek için bir karta dokun",
+    "categoryMenuLabel": "{{name}} kategorisini düzenle veya sil",
+    "addCard": "Kart ekle",
+    "reorder": "Yeniden sırala",
+    "newCard": "Yeni kart",
+    "cardDetails": "Kart ayrıntıları",
+    "categoryMenuTitle": "{{name}} kategorisi",
+    "cardCount_one": "{{count}} kart",
+    "cardCount_other": "{{count}} kart",
+    "cardOpenLabel": "{{label}}, kapat",
+    "cardClosedLabel": "{{label}}, kodu göster",
+    "qrLabel": "Kartın QR kodu",
+    "barcodeLabel": "Kartın barkodu",
+    "fullScreenHint": "Kodu tam ekran açar",
+    "noCode": "Kod yok: fotoğraflamak veya yazmak için Ayrıntılar › Düzenle’ye dokun.",
+    "details": "Ayrıntılar"
+  },
+  "walletCard": {
+    "untitled": "Yeni kart"
+  },
+  "barcodeView": {
+    "close": "Kodu kapat"
+  },
+  "colorPicker": {
+    "color": "Renk",
+    "custom": "Senin rengin",
+    "hex": "Kod",
+    "hexLabel": "Renk kodu"
+  },
+  "colorWheel": {
+    "label": "Renk tekerleği: seçmek için dokun veya sürükle",
+    "nextHue": "Sonraki ton",
+    "previousHue": "Önceki ton"
+  },
+  "newCard": {
+    "title": "Yeni kart",
+    "missingCategory": "“Kartlar” kategorisi artık yok."
+  },
+  "editCard": {
+    "title": "Kartı düzenle"
+  },
+  "unlock": {
+    "storeOnly": "App Store sürümünde kullanılabilir",
+    "remainingNone": "Tüm ücretsiz yerleri kullandın.",
+    "remaining_one": "{{count}} tane daha ekleyebilirsin.",
+    "remaining_other": "{{count}} tane daha ekleyebilirsin.",
+    "tag": "Ücretsiz sürüm · {{used}}/{{limit}} kullanıldı",
+    "title": "Tüm belgelerin, sınırsız",
+    "intro": "{{limit}} belge ve karta kadar ücretsiz. İstediğin kadar eklemek için tek seferlik ödemeyle kilidini aç.",
+    "benefits": {
+      "unlimited": {
+        "title": "Sınırsız belge",
+        "text": "Faturalar, kartlar, garantiler ve diğer her şey"
+      },
+      "reminders": {
+        "title": "Son tarih hatırlatmaları",
+        "text": "Çok geç olmadan sana hatırlatırız"
+      },
+      "offline": {
+        "title": "İnternetsiz çalışır",
+        "text": "Her şey telefonunda kalır, yedekleme de"
+      },
+      "family": {
+        "title": "Tüm aile",
+        "text": "Evdeki herkes için bir profil"
+      }
+    },
+    "sectionTitle": "Ücretsiz sürümün",
+    "usageLabel": "Belgeler ve kartlar",
+    "usageValue": "{{used}}/{{limit}}",
+    "usageA11y": "Kullanılan ücretsiz yerler",
+    "keptNote": "Önceden kaydedilenler, kilidi açmasan bile her zaman senindir.",
+    "priceTitle": "Ömür boyu",
+    "priceText": "Sınırsız · tek ödeme",
+    "buy": "{{price}} karşılığında kilidi aç",
+    "continueFree": "Ücretsiz devam et",
+    "restore": "Satın alımı geri yükle",
+    "terms": "Koşullar",
+    "privacy": "Gizlilik"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "“Diğer” kategorisi",
+    "otherCategoryMessage": "Silinemez: silinen kategorilerin belgelerini barındırır."
+  },
+  "quickActionMenu": {
+    "close": "Menüyü kapat"
+  },
+  "quickActions": {
+    "open": "Aç",
+    "unpin": "Favorilerden kaldır",
+    "pin": "Favorilere ekle",
+    "moveToTrash": "Çöp Kutusu’na taşı",
+    "editCategory": "Kategoriyi düzenle",
+    "deleteCategory": "Kategoriyi sil",
+    "editPerson": "Kişiyi düzenle",
+    "deletePerson": "Kişiyi sil"
+  },
+  "shareCopies": {
+    "defaultName": "Belge",
+    "fileNotFound": "Dosya telefonda bulunamadı."
+  },
+  "sendCompression": {
+    "tooBig": "En yüksek sıkıştırmada bile sınırı aşıyor: birkaç dosyaya bölmeyi düşün.",
+    "lowPpi": "Küçük yazılar okunamayabilir."
+  },
+  "sendPreferences": {
+    "original": "Orijinal"
+  },
+  "sendFileName": {
+    "fallback": "belge"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Ön ve arka yüz şu anda birleştirilemiyor.",
+    "noPhotos": "Gönderilecek fotoğraf yok.",
+    "fileFront": "on-yuz",
+    "fileBack": "arka-yuz",
+    "filePage": "sayfa-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "belgeler",
+    "title": "Gönder: {{title}}",
+    "formatPhotos": "Fotoğraflar",
+    "actions": {
+      "email": "E-posta",
+      "whatsapp": "WhatsApp",
+      "print": "Yazdır",
+      "save": "Dosyalar’a kaydet",
+      "copy": "Kopyala",
+      "other": "Diğer"
+    },
+    "alerts": {
+      "savedToFiles": "Dosyalar’a kaydedildi",
+      "imageCopied": "Görüntü kopyalandı",
+      "textCopied": "Metin kopyalandı",
+      "firstPageCopied": "İlk sayfa kopyalandı: bir mesaja yapıştır.",
+      "pasteImage": "Bir mesaja veya nota yapıştır.",
+      "pdfNotCopied": "PDF kopyalanamaz: ad ve not kopyalandı. Dosya için Diğer’i kullan.",
+      "failed": "Tamamlanamadı"
+    },
+    "meta": {
+      "pdfs": "{{number}} PDF",
+      "singlePdf": "Tek PDF",
+      "failed": "Dosya hazırlanamadı",
+      "preparing": "Hazırlanıyor…"
+    },
+    "includeNote": "Belgenin notunu ekle",
+    "noNote": "Bu belgenin notu yok.",
+    "frontBackPage": "Ön ve arka yüz tek sayfada",
+    "frontBackImage": "Ön ve arka yüz tek görüntüde",
+    "maxSize": "En büyük boyut",
+    "pdfAsIs": "PDF olduğu gibi gönderilir.",
+    "severalInfo": "Tek bir PDF: belgeler art arda, kimliklerin ve kartların ön ve arka yüzü aynı sayfada.",
+    "quality": {
+      "high": "Yüksek kalite",
+      "good": "İyi kalite",
+      "low": "Düşük kalite",
+      "minimum": "En düşük kalite",
+      "original": "Orijinal kalite"
+    },
+    "skipped_one": "Fotoğrafı olmayan {{count}} belge dahil edilmedi (içe aktarılan PDF’ler henüz birleştirilemiyor).",
+    "skipped_other": "Fotoğrafı olmayan {{count}} belge dahil edilmedi (içe aktarılan PDF’ler henüz birleştirilemiyor)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "PDF hazırlanıyor…",
+    "progressRetry": "Fotoğraflar küçültülüyor ({{attempt}}. deneme)…",
+    "subtitle": "{{date}} tarihinde Sottomano ile hazırlandı · {{documents}}",
+    "subtitleWithTotal": "{{date}} tarihinde Sottomano ile hazırlandı · {{documents}} · toplam {{total}}",
+    "columns": {
+      "number": "No.",
+      "document": "Belge",
+      "date": "Tarih",
+      "person": "Kişi",
+      "amount": "Tutar",
+      "page": "Sayfa"
+    },
+    "sentApart": "ayrı gönderildi",
+    "noPages": "sayfa yok",
+    "paid": "ödendi",
+    "due": "ödenecek",
+    "invalidIndex": "Geçersiz dizin"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "Bir PDF birleştirilemiyor (parola korumalı veya bozuk): {{titles}}. Dizinde “ayrı gönderildi” olarak işaretlenir ve diğerleriyle birlikte gider.",
+    "sentApart_other": "{{count}} PDF birleştirilemiyor (parola korumalı veya bozuk): {{titles}}. Dizinde “ayrı gönderildi” olarak işaretlenir ve diğerleriyle birlikte giderler.",
+    "alerts": {
+      "prepareFailed": "PDF hazırlanamadı",
+      "ready": "PDF hazır",
+      "noMailTitle": "Mail ayarlanmamış",
+      "noMailMessage": "Mail’e bir hesap ekle veya PDF’leri Dosyalar’a kaydet.",
+      "savedToFiles": "Dosyalar’a kaydedildi",
+      "sendFailed": "Gönderilemedi"
+    },
+    "readyMany": "{{number}} PDF hazır",
+    "choices": {
+      "email": "E-posta: tüm PDF’ler tek mesajda",
+      "save": "Dosyalar’a kaydet: hepsi aynı klasörde",
+      "oneByOne": "Tek tek paylaş"
+    },
+    "intro": "{{category}} içindeki tüm belgeler, yıllara ayrılmış: her yıl için dizini (belge, tarih, kişi, tutar, sayfa) ve toplamıyla bir PDF. Yıl, son tarihin veya ödemenin yılıdır; ikisi de yoksa eklediğin yıl.",
+    "noDocuments": "Bu yılda belge yok.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF",
+    "year": "Yıl",
+    "allYears": "Tüm yıllar",
+    "maxPhotoSize": "En büyük fotoğraf boyutu",
+    "limitInfo": "Fotoğraflar sınır içinde kalmak için küçültülür; içe aktarılan PDF’ler olduğu gibi kalır.",
+    "prepare": "Hazırla ve gönder"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Bir sorun oluştu",
+      "restoredToOther": "Diğer’e geri yüklendi",
+      "restoredPassword": "Kategorisi artık yok: belge Diğer’de, kullanıcı adı ve parola olmadan.",
+      "restoredMessage": "Kategorisi artık yok: belge Diğer’de.",
+      "deleteTitle": "“{{title}}” kalıcı olarak silinsin mi?",
+      "deleteMessage": "Fotoğrafları ve PDF’leri de silinecek. Bu işlem geri alınamaz.",
+      "emptyTitle": "Çöp Kutusu boşaltılsın mı?",
+      "emptyMessage_one": "Belge, fotoğrafları ve PDF’leriyle birlikte silinecek. Bu işlem geri alınamaz.",
+      "emptyMessage_other": "{{count}} belge, fotoğrafları ve PDF’leriyle birlikte silinecek. Bu işlem geri alınamaz.",
+      "emptyConfirm": "Boşalt"
+    },
+    "intro": "Silinen belgeler {{days}} gün burada kalır, sonra fotoğrafları ve PDF’leriyle birlikte silinir.",
+    "empty": "Çöp Kutusu boş",
+    "deletedSoon": "Yakında silinecek",
+    "deletedIn": "{{days}} gün içinde silinecek",
+    "restoreLabel": "Geri yükle: {{title}}",
+    "deleteForeverLabel": "Kalıcı olarak sil: {{title}}",
+    "deleteForever": "Kalıcı olarak sil",
+    "emptyTrash": "Çöp Kutusu’nu boşalt"
+  },
+  "menu": {
+    "close": "Menüyü kapat",
+    "home": "Ana sayfa",
+    "favorites": "Favoriler",
+    "deadlines": "Son tarihler",
+    "deadlinesUrgent": "Son tarihler, {{number}} kontrol edilecek",
+    "family": "Aile",
+    "cards": "Kartlar",
+    "backup": "Yedekleme",
+    "backupDue": "Yedekleme, zamanı geldi",
+    "help": "Yardım ve iletişim",
+    "rate": "Sottomano’yu puanla",
+    "recommend": "Bir arkadaşına öner",
+    "trash": "Çöp Kutusu",
+    "trashCount": "Çöp Kutusu, {{number}}",
+    "password": "Parolalar",
+    "scan": "Tara",
+    "fromPhotos": "Fotoğraflardan",
+    "importFiles": "Dosya içe aktar",
+    "version": "Sürüm {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Bildirimleri kapat",
+    "title": "Bildirimler",
+    "markAllRead": "Okundu olarak işaretle",
+    "empty": "Son 7 günde bildirim yok.",
+    "today": "Bugün",
+    "thisWeek": "Bu hafta",
+    "settings": "Bildirim ayarları",
+    "unreadItem": "Okunmadı. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Süresi {{date}} tarihinde doldu.",
+    "expiresToday": "Süresi bugün doluyor.",
+    "expiresOn": "Süresi {{distance}} doluyor: {{date}}.",
+    "amount": "Tutar: {{amount}}.",
+    "backupTitle": "Yedekleme",
+    "backupLate": "Belgelerinin son yedeğinin üzerinden epey zaman geçti.",
+    "backupNever": "Belgelerini henüz yedeklemedin."
+  },
+  "deadlineReminders": {
+    "title": "Yaklaşan son tarih",
+    "hiddenBody": "Bir belgenin son tarihi {{date}} ({{distance}}). Görmek için Sottomano’yu aç.",
+    "body": "{{name}}: son tarih {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Görünüm",
+      "security": "Güvenlik",
+      "reminders": "Hatırlatmalar",
+      "backup": "Yedekleme",
+      "info": "Hakkında"
+    },
+    "calendarOff": "Kapalı",
+    "alerts": {
+      "notificationsOffTitle": "Bildirimler kapalı",
+      "notificationsOffMessage": "Hatırlatma almak için iPhone Ayarlar’ında Sottomano bildirimlerine izin ver.",
+      "openSettings": "Ayarlar’ı aç"
+    },
+    "lastBackup": {
+      "never": "Hiç",
+      "today": "Bugün",
+      "yesterday": "Dün",
+      "daysAgo_one": "{{count}} gün önce",
+      "daysAgo_other": "{{count}} gün önce"
+    },
+    "categoryColors": "Kategori renkleri",
+    "faceId": "Face ID ile kilitle",
+    "faceIdSubtitle": "Uygulamayı her açtığında yüzünü ister",
+    "hidePreviews": "Önizlemeleri gizle",
+    "hidePreviewsSubtitle": "Bildirimler belgeyi göstermez",
+    "notifications": "Bildirimler",
+    "reminderTime": "Hatırlatma saati",
+    "defaultReminder": "Varsayılan hatırlatma",
+    "iconBadge": "Uygulama simgesinde işaret",
+    "iconBadgeSubtitle": "Geçmiş veya 7 gün içindeki son tarihler",
+    "calendar": "“Sottomano” takvimi",
+    "notificationsBlocked": "Bildirimler engellendi",
+    "notificationsBlockedSubtitle": "iPhone Ayarlar’ında izin ver",
+    "backupNote": "Yedek, telefonunda Dosyalar uygulamasına kaydedilen bir dosyadır. İstediğin yere kopyalayabilirsin. Sottomano internetsiz de çalışır.",
+    "createBackup": "Şimdi yedekle",
+    "restoreBackup": "Yedekten geri yükle",
+    "help": "Yardım ve iletişim",
+    "privacy": "Gizlilik",
+    "terms": "Kullanım koşulları",
+    "rate": "Sottomano’yu puanla",
+    "debug": {
+      "limitPreview": "Ücretsiz sınır önizlemesi",
+      "limitPreviewSubtitle": "Yalnızca test için: kilitli +, sınır paneli ve Ana sayfa’daki kartı gösterir",
+      "emptyHome": "Boş Ana sayfa önizlemesi",
+      "emptyHomeSubtitle": "Yalnızca test için: hiç belge yokmuş gibi Ana sayfa (verilerin kalır)",
+      "onboarding": "Karşılamayı yeniden oynat",
+      "onboardingSubtitle": "Yalnızca test için: Karşılama sayfaları 1–4"
+    },
+    "version": "Sottomano · sürüm {{version}}",
+    "theme": {
+      "title": "Tema",
+      "autoSubtitle": "Telefonun ayarını izler",
+      "auto": "Otomatik",
+      "light": "Açık",
+      "dark": "Koyu"
+    }
+  },
+  "backup": {
+    "title": "Yedekleme",
+    "subtitle": "Tüm belgelerinin telefonuna kaydedilen bir kopyası.",
+    "keyProgress": "Parolanla koruma altına alınıyor… bu bir dakikayı bulabilir",
+    "whenToday": "bugün {{time}}",
+    "whenDate": "{{date}} {{time}}",
+    "minLength": "En az {{min}} karakter.",
+    "mismatch": "İki parola eşleşmiyor.",
+    "creating": "Yedek oluşturuluyor…",
+    "copyDialogTitle": "Yedeği kopyala",
+    "opening": "Yedek açılıyor…",
+    "checking": "Belgeler kontrol ediliyor…",
+    "restoring": "Geri yükleniyor…",
+    "keepOpen": "Bitene kadar uygulamayı açık tut.",
+    "forgotWarning": "Parolayı unutursan yedek açılamaz.",
+    "passwordPlaceholder": "Parola (en az {{min}} karakter)",
+    "repeatPlaceholder": "Parolayı tekrarla",
+    "createAndSave": "Oluştur ve kaydet",
+    "backupPassword": "Yedek parolası",
+    "openBackup": "Yedeği aç",
+    "completed": "Yedekleme tamamlandı",
+    "lastBackup": "Son yedekleme",
+    "path": "Sottomano › Yedekleme › {{name}}",
+    "copyElsewhere": "Dosyayı başka yere kopyala",
+    "createNew": "Yeni yedek oluştur",
+    "noneTitle": "Henüz yedek almadın",
+    "noneText": "Telefonunu kaybeder veya değiştirirsen yedek her şeyi geri getirir.",
+    "createNow": "Şimdi yedekle",
+    "restoreSection": "Geri yükle",
+    "restoreTitle": "Yeni telefon mu aldın?",
+    "restoreText": "Belgelerini, kartlarını ve hatırlatmalarını geri almak için yedek dosyasını seç.",
+    "chooseFile": "Yedek dosyası seç",
+    "remindersSection": "Hatırlatmalar",
+    "remindMe": "Yedeklemeyi hatırlat",
+    "remindMeValue": "Yedeklemeyi hatırlat: {{value}}",
+    "footnote": "Yedek, seçtiğin parolayla korunan tek bir dosyadır: belgeler, fotoğraflar, kartlar, kişiler ve hatırlatmalar. Telefonunu kaybetsen de elinde olması için başka bir yere kopyala (Dosyalar, iCloud Drive, bir bilgisayar).",
+    "alerts": {
+      "createFailed": "Yedekleme başarısız oldu",
+      "copyFailed": "Kopyalanamadı",
+      "restoreTitle": "{{date}} tarihli yedek geri yüklensin mi?",
+      "restoreMessage_one": "İçinde {{count}} belge var. Şu anda uygulamada olanlar değiştirilecek.",
+      "restoreMessage_other": "İçinde {{count}} belge var. Şu anda uygulamada olanlar değiştirilecek.",
+      "restoreFailed": "Geri yükleme başarısız oldu",
+      "restoreFailedMessage": "Uygulamada hiçbir şey değişmedi.\n\n{{reason}}",
+      "restored": "Yedek geri yüklendi",
+      "restoredMessage": "Belgelerin geri geldi."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Her hafta",
+      "month": "Her ay",
+      "never": "Asla"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Bu dosya bir Sottomano yedeği değil.",
+    "newerVersion": "Bu yedek Sottomano’nun daha yeni bir sürümüyle oluşturulmuş. Uygulamayı güncelle ve yeniden dene.",
+    "empty": "Yedek dosyası boş veya eksik.",
+    "incomplete": "Yedek dosyası eksik.",
+    "wrongPassword": "Yanlış parola. Büyük ve küçük harfleri kontrol et ve yeniden dene.",
+    "damaged": "Yedek dosyası bozuk veya eksik."
+  },
+  "createBackup": {
+    "incompleteFile": "Eksik dosya: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Yedeğin içeriği geçerli değil.",
+    "newerApp": "Bu yedek Sottomano’nun daha yeni bir sürümünden geliyor. Uygulamayı güncelle ve yeniden dene."
+  },
+  "zipReader": {
+    "invalid": "Geçersiz arşiv",
+    "incomplete": "Eksik arşiv"
+  },
+  "backupReminder": {
+    "none": "Henüz yedek almadın",
+    "old_one": "Son yedeğin {{count}} gün önceydi",
+    "old_other": "Son yedeğin {{count}} gün önceydi",
+    "link": "Şimdi yedekle",
+    "close": "Bildirimi kapat",
+    "snooze_one": "{{count}} gün gizle",
+    "snooze_other": "{{count}} gün gizle"
+  },
+  "calendarSettings": {
+    "title": "Takvim",
+    "intro": "Son tarihler ayrı bir takvime, “Sottomano”ya eklenir. Takvim uygulamasında gizleyebilirsin; burada kapatırsan silinir.",
+    "details": "Her son tarih, belgeden başka ayrıntı içermeyen tüm gün süren bir “Son tarih: başlık” etkinliğidir. Sottomano hatırlatmaları kapalıysa etkinlik seni hatırlatma günü saat 9:00’da uyarır; açıksa yalnızca uygulama uyarır, böylece iki uyarı almazsın.",
+    "allowAccess": "Takvim’e erişime izin ver",
+    "denied": "Takvim’e erişim reddedildi. iPhone Ayarlar’ından açabilirsin.",
+    "openSettings": "Ayarlar’ı aç",
+    "switchLabel": "Son tarihler “Sottomano” takviminde",
+    "enabled_one": "“Sottomano” takviminde {{count}} son tarih",
+    "enabled_other": "“Sottomano” takviminde {{count}} son tarih",
+    "removeConfirm": "Sottomano takvimi ve tüm son tarihleri Takvim’den kaldırılsın mı?",
+    "remove": "Kaldır",
+    "removed": "“Sottomano” takvimi silindi"
+  },
+  "calendarSync": {
+    "eventTitle": "Son tarih: {{title}}",
+    "cannotCreate": "Bu iPhone’da “Sottomano” takvimi oluşturulamadı."
+  },
+  "appearance": {
+    "intro": "Varsayılan kategorilerin renkleri. Senin oluşturduğun kategoriler kendi renklerini korur.",
+    "restoreButton": "Varsayılan kategorileri geri yükle",
+    "restoreHint": "Sildiğin varsayılan kategorileri geri getirir.",
+    "paletteLabel": "{{name}} paleti",
+    "alerts": {
+      "restoreTitle": "Varsayılan kategoriler geri yüklensin mi?",
+      "restoreMessage": "Sildiklerin orijinal ad, simge ve renkleriyle geri gelir. Belgelerin ve oluşturduğun kategoriler değişmez.",
+      "nothingTitle": "Geri yüklenecek bir şey yok",
+      "nothingMessage": "Tüm varsayılan kategoriler zaten Ana sayfa’da.",
+      "restoredTitle": "Kategoriler geri yüklendi",
+      "restoredMessage_one": "{{count}} kategori Ana sayfa’ya, “Diğer”den önceye geri geldi.",
+      "restoredMessage_other": "{{count}} kategori Ana sayfa’ya, “Diğer”den önceye geri geldi.",
+      "restoreFailed": "Geri yüklenemedi"
+    }
+  },
+  "about": {
+    "version": "Sürüm {{version}}",
+    "privacy": "Gizlilik",
+    "privacyFooter": "Takvim’i açarsan son tarihler seçtiğin iPhone takvimine yazılır. Bir belge gönderdiğinde kiminle paylaşacağına sen karar verirsin.",
+    "onPhone": "Belgelerin telefonunda kalır",
+    "offline": "Hesap yok, sunucu yok: çevrimdışı da çalışır",
+    "noTracking": "İzleme yok, reklam yok"
+  },
+  "terms": {
+    "intro": "Kullanım koşullarının tamamı App Store sürümüyle yayımlanacak. Kısaca:",
+    "free": "Sottomano {{limit}} belge ve karta kadar ücretsizdir",
+    "oneTime": "Kilidi açmak abonelik olmadan tek seferlik bir satın alımdır",
+    "yours": "Belgelerin telefonunda kalır ve sana aittir",
+    "backup": "Telefon değiştirdiğinde kaybetmemek için yedek al"
+  },
+  "limit": {
+    "later": "Daha sonra",
+    "title": "{{limit}} ücretsiz yerini kullandın",
+    "text": "Kaydettiğin her şey burada kalır ve her zamanki gibi çalışır. Daha fazla belge ve kart eklemek için Sottomano’nun kilidini aç.",
+    "stillWorks": {
+      "view": "Belgelerini görüntüle",
+      "send": "Gönder ve paylaş",
+      "cards": "Kasada kartlarını göster",
+      "reminders": "Hatırlatma al"
+    },
+    "blocked": "Daha fazla belge veya kart ekle",
+    "unlock": "{{price}} karşılığında sınırsız kilidi aç"
+  },
+  "limitCard": {
+    "title": "{{used}}/{{limit}} ücretsiz yer kullanıldı",
+    "accessibility": "{{title}}. Kilidi aç",
+    "unlock": "Kilidi aç"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Ücretsiz sürüm: {{used}}/{{limit}} kullanıldı",
+    "titleMenu": "Ücretsiz: {{used}}/{{limit}} kullanıldı",
+    "subtitle": "{{price}} karşılığında sınırsız kilidi aç",
+    "accessibility": "{{title}}. {{price}} karşılığında sınırsız kilidi aç",
+    "unlock": "Kilidi aç"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Sottomano’ya hoş geldin",
+        "text": "Kimlikler, sadakat kartları, faturalar, garantiler: evinin tüm belgeleri tek yerde, her zaman elinin altında.",
+        "info": "Telefonunda kalırlar ve internetsiz de çalışırlar"
+      },
+      "scan": {
+        "title": "Bir kez çek, yeter",
+        "text": "Birden çok sayfa tara ya da fotoğraf ve PDF içe aktar. Hepsini düzenli bulur, gerektiği kadar hafif gönderirsin."
+      },
+      "deadlines": {
+        "title": "Son tarihleri biz takip ederiz",
+        "text": "Bir faturanın veya belgenin süresi dolmadan sana hatırlatırız. İstersen Takvim’inde de."
+      },
+      "cards": {
+        "title": "Kartların hep cebinde",
+        "text": "Sadakat kartlarının fotoğrafını çek: kasada barkodu veya QR kodunu tek dokunuşla göster."
+      }
+    },
+    "skip": "Atla",
+    "pageOf": "Sayfa {{page}}/{{total}}",
+    "start": "Başla",
+    "restore": "Yedekten geri yükle",
+    "art": {
+      "bills": "Faturalar",
+      "cards": "Kartlar",
+      "health": "Sağlık",
+      "car": "Araba",
+      "pdfReady": "PDF hazır",
+      "billTitle": "Elektrik faturası",
+      "billExpires": "2 gün kaldı",
+      "gym": "Spor salonu",
+      "library": "Kütüphane",
+      "supermarket": "Süpermarket"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Dosya açılamadı",
+    "title": "İlk belgeni çek",
+    "text": "Bir fatura, kimlik kartın veya çamaşır makinesinin garantisi: birkaç saniyede güvende ve her zaman elinin altında.",
+    "snap": "Belge çek",
+    "pdf": "PDF yükle",
+    "folders": "Klasörlerin",
+    "emptyAccessibility": "{{name}}, boş",
+    "empty": "Boş",
+    "newCategory": "Yeni kategori"
+  },
+  "splashOverlay": {
+    "tagline": "Evinin belgeleri, göndermeye hazır"
+  },
+  "appActions": {
+    "shareText": "Sottomano’yu öneririm: evinin belgeleri, kartları ve son tarihleri her zaman elinin altında, telefonunda ve internetsiz bile.",
+    "rateTitle": "Sottomano’yu puanla",
+    "rateMessage": "Sottomano App Store’a geldiğinde puan verebileceksin.",
+    "lockUnavailableTitle": "Kilit kullanılamıyor",
+    "lockUnavailableMessage": "Sottomano’yu kilitlemek için iPhone’unda bir parola olmalı. Ayarlar › Face ID ve Parola’dan bir tane ayarla, sonra yeniden dene."
+  }
+}

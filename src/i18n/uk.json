@@ -1,1 +1,1701 @@
-{}
+{
+  "common": {
+    "cancel": "Скасувати",
+    "ok": "OK",
+    "done": "Готово",
+    "save": "Зберегти",
+    "delete": "Видалити",
+    "edit": "Змінити",
+    "close": "Закрити",
+    "confirm": "Підтвердити",
+    "back": "Назад",
+    "next": "Далі",
+    "share": "Поширити",
+    "send": "Надіслати",
+    "search": "Пошук",
+    "add": "Додати",
+    "remove": "Вилучити",
+    "retry": "Спробувати ще",
+    "continue": "Продовжити",
+    "yes": "Так",
+    "no": "Ні",
+    "restore": "Відновити",
+    "settings": "Параметри",
+    "more": "Більше",
+    "none": "Немає",
+    "documents_one": "{{count}} документ",
+    "documents_few": "{{count}} документи",
+    "documents_many": "{{count}} документів",
+    "documents_other": "{{count}} документа",
+    "pages_one": "{{count}} сторінка",
+    "pages_few": "{{count}} сторінки",
+    "pages_many": "{{count}} сторінок",
+    "pages_other": "{{count}} сторінки",
+    "photos_one": "{{count}} фото",
+    "photos_few": "{{count}} фото",
+    "photos_many": "{{count}} фото",
+    "photos_other": "{{count}} фото",
+    "wholeFamily": "Уся родина"
+  },
+  "dates": {
+    "today": "сьогодні",
+    "tomorrow": "завтра",
+    "yesterday": "учора",
+    "inSpan": "через {{span}}",
+    "spanAgo": "{{span}} тому",
+    "expiredYesterday": "закінчився вчора",
+    "expiredFor": "закінчився {{span}} тому",
+    "days_one": "{{count}} день",
+    "days_few": "{{count}} дні",
+    "days_many": "{{count}} днів",
+    "days_other": "{{count}} дня",
+    "months_one": "{{count}} місяць",
+    "months_few": "{{count}} місяці",
+    "months_many": "{{count}} місяців",
+    "months_other": "{{count}} місяця",
+    "years_one": "{{count}} рік",
+    "years_few": "{{count}} роки",
+    "years_many": "{{count}} років",
+    "years_other": "{{count}} року"
+  },
+  "categories": {
+    "builtin": {
+      "documents": "Документи",
+      "cards": "Картки",
+      "utilities": "Комуналка",
+      "home": "Дім",
+      "insurance": "Страховки",
+      "warranties": "Гарантії й чеки",
+      "car": "Авто",
+      "tax": "Податкові чеки",
+      "householdStaff": "Помічники",
+      "school": "Школа",
+      "pet": "Тварини",
+      "password": "Паролі",
+      "other": "Інше"
+    }
+  },
+  "language": {
+    "title": "Мова",
+    "auto": "Автоматично",
+    "autoSubtitle": "Як мова телефона",
+    "search": "Пошук мов",
+    "autoDetail": "Мова iPhone: {{language}}",
+    "noResults": "Немає мов за запитом «{{query}}»"
+  },
+  "palettes": {
+    "sottomano": "Sottomano",
+    "pastel": "Пастель",
+    "vivid": "Яскрава",
+    "earth": "Земля",
+    "sea": "Море",
+    "sunset": "Захід",
+    "night": "Ніч"
+  },
+  "home": {
+    "welcome": "Вітаємо в Sottomano",
+    "hello": "Привіт!",
+    "searchPlaceholder": "Шукати документ",
+    "favorites": "Обране",
+    "seeAll": "Усі",
+    "seeAllFavorites": "Усе обране",
+    "deadlines": "Терміни",
+    "seeAllDeadlines": "Усі терміни",
+    "archive": "Архів",
+    "reorderDone": "Порядок готовий",
+    "reorder": "Упорядкувати",
+    "reorderCategories": "Порядок категорій",
+    "reorderHint": "Перетягни категорії в потрібному порядку.",
+    "alerts": {
+      "orderNotSaved": "Не вдалося зберегти порядок"
+    },
+    "newCategory": "Нова категорія"
+  },
+  "categoryTile": {
+    "cards_one": "{{count}} картка",
+    "cards_few": "{{count}} картки",
+    "cards_many": "{{count}} карток",
+    "cards_other": "{{count}} картки"
+  },
+  "folder": {
+    "paidOn": "Сплачено {{date}}",
+    "expiredOn": "Закінчився {{date}}",
+    "expiresOn": "Діє до {{date}}",
+    "addedOn": "Додано {{date}}",
+    "newItem": {
+      "bill": "Новий рахунок",
+      "card": "Нова картка",
+      "warranty": "Нова гарантія",
+      "password": "Новий пароль",
+      "document": "Новий документ"
+    }
+  },
+  "searchAll": {
+    "filters": {
+      "all": "Усе",
+      "documents": "Документи",
+      "cards": "Картки",
+      "deadlines": "Терміни"
+    },
+    "paid": "сплачено",
+    "expiresOn": "діє до {{date}}",
+    "folderSubtitle_one": "Папка · {{count}} документ",
+    "folderSubtitle_few": "Папка · {{count}} документи",
+    "folderSubtitle_many": "Папка · {{count}} документів",
+    "folderSubtitle_other": "Папка · {{count}} документа",
+    "card": "Картка",
+    "deadlineSubtitle": "Термін · {{distance}}"
+  },
+  "search": {
+    "placeholder": "Шукати документ",
+    "fieldLabel": "Пошук у документах",
+    "filter": "Фільтр",
+    "results_one": "{{count}} результат",
+    "results_few": "{{count}} результати",
+    "results_many": "{{count}} результатів",
+    "results_other": "{{count}} результату",
+    "noResults": "Немає результатів",
+    "noResultsHint": "Спробуй інше слово, наприклад назву магазину.",
+    "hint": "Шукай за назвами, папками, типами, нотатками, картками й термінами."
+  },
+  "navigation": {
+    "home": "Головна",
+    "favorites": "Обране",
+    "family": "Родина",
+    "deadlines": "Терміни",
+    "deadlinesToCheck_one": "Терміни, {{count}} перевірити",
+    "deadlinesToCheck_few": "Терміни, {{count}} перевірити",
+    "deadlinesToCheck_many": "Терміни, {{count}} перевірити",
+    "deadlinesToCheck_other": "Терміни, {{count}} перевірити",
+    "addLocked": "Додати документ, заблоковано: безплатний ліміт вичерпано",
+    "addDocument": "Додати документ",
+    "titles": {
+      "editDocument": "Змінити документ",
+      "pages": "Сторінки",
+      "deadline": "Термін",
+      "renewed": "Поновлено",
+      "previousVersion": "Попередня версія",
+      "newDocument": "Новий документ",
+      "appearance": "Вигляд",
+      "backup": "Резервна копія",
+      "taxPackage": "Бухгалтеру",
+      "trash": "Кошик",
+      "terms": "Умови використання",
+      "about": "Про програму",
+      "newCard": "Нова картка",
+      "editCard": "Змінити картку"
+    }
+  },
+  "sortableList": {
+    "dragHint": "Перетягни, щоб перемістити, або скористайся діями «Вище» і «Нижче»",
+    "moveEarlier": "Вище",
+    "moveLater": "Нижче",
+    "footer": "Картки, людей у Родині й Обране впорядковують так само: торкнися й утримуй рядок, потім тягни за ручку праворуч."
+  },
+  "sortableTileGrid": {
+    "holdHint": "Торкнися й утримуй: тягни, щоб перемістити, або відпусти для дій"
+  },
+  "favorites": {
+    "alerts": {
+      "orderNotSaved": "Не вдалося зберегти порядок"
+    },
+    "reorderTitle": "Порядок обраного",
+    "reorderHint": "Торкнися й утримуй елемент обраного, а потім перетягни його куди хочеш.",
+    "yourFavorites": "Твоє обране",
+    "title": "Обране",
+    "subtitle": "Те, що ти хочеш мати під рукою",
+    "searchPlaceholder": "Пошук в обраному",
+    "viewList": "Список",
+    "viewGrid": "Сітка",
+    "count_one": "{{count}} обраний",
+    "count_few": "{{count}} обрані",
+    "count_many": "{{count}} обраних",
+    "count_other": "{{count}} обраного",
+    "noMatch": "Немає обраного за запитом «{{query}}».",
+    "empty": "У тебе ще немає обраного.",
+    "footer": "Торкнися сердечка на будь-якому документі, щоб додати його сюди.",
+    "footerGrid": "Торкнися сердечка на будь-якому документі, щоб додати його сюди. Щоб змінити порядок, торкнися й утримуй плитку та перетягни її.",
+    "footerList": "Торкнися сердечка на будь-якому документі, щоб додати його сюди. Щоб змінити порядок, торкнися й утримуй рядок.",
+    "rowHint": "Торкнися й утримуй, щоб змінити порядок обраного",
+    "unpin": "Вилучити з обраного",
+    "expires": "закінчується {{distance}}"
+  },
+  "folderScreen": {
+    "toPay": "{{count}} до сплати",
+    "alerts": {
+      "orderNotSaved": "Не вдалося зберегти порядок"
+    },
+    "actions": {
+      "editCategory": "Змінити категорію",
+      "sendToAccountant": "Надіслати бухгалтеру",
+      "selectAndSend": "Вибрати й надіслати",
+      "reorder": "Упорядкувати",
+      "deleteCategory": "Видалити категорію"
+    },
+    "moreLabel": "Змінити або видалити категорію «{{name}}»",
+    "searchIn": "Пошук у «{{name}}»",
+    "viewList": "Список",
+    "viewGrid": "Сітка",
+    "reorderHint": "Торкнися й утримуй документи та перетягни їх у потрібному порядку.",
+    "allTypes": "Усі",
+    "noDocumentsFound": "Документів не знайдено.",
+    "sendTogether": "Надіслати разом ({{count}})",
+    "sheetTitle": "Категорія «{{name}}»"
+  },
+  "folderRow": {
+    "due": "до сплати",
+    "paid": "сплачено"
+  },
+  "homeSections": {
+    "expired": "Прострочено",
+    "expiresToday": "Закінчується сьогодні",
+    "expiresTomorrow": "Закінчується завтра",
+    "expiresInDays_one": "Закінчується через {{count}} день",
+    "expiresInDays_few": "Закінчується через {{count}} дні",
+    "expiresInDays_many": "Закінчується через {{count}} днів",
+    "expiresInDays_other": "Закінчується через {{count}} дня",
+    "expiresOn": "Закінчується {{date}}"
+  },
+  "pinHeart": {
+    "unpin": "Вилучити з обраного",
+    "pin": "Додати до обраного"
+  },
+  "searchBar": {
+    "clear": "Очистити текст"
+  },
+  "documentGrid": {
+    "addDocument": "Додати документ"
+  },
+  "homeHeader": {
+    "menu": "Меню",
+    "notifications": "Сповіщення",
+    "notificationsUnread_one": "Сповіщення, {{count}} непрочитане",
+    "notificationsUnread_few": "Сповіщення, {{count}} непрочитані",
+    "notificationsUnread_many": "Сповіщення, {{count}} непрочитаних",
+    "notificationsUnread_other": "Сповіщення, {{count}} непрочитаного"
+  },
+  "demoData": {
+    "people": {
+      "step": "Step",
+      "mom": "Мама",
+      "dad": "Тато"
+    },
+    "documents": {
+      "idCard": "ID-картка",
+      "drivingLicence": "Посвідчення водія",
+      "passport": "Паспорт",
+      "electricityBill": "Рахунок за світло",
+      "carInsurance": "Автоцивілка",
+      "carTax": "Транспортний податок",
+      "washingMachineWarranty": "Гарантія на пральну машину",
+      "gymCard": "Абонемент у спортзал",
+      "rentalContract": "Договір оренди",
+      "pharmacyReceipt": "Чек з аптеки",
+      "reportCard": "Табель"
+    },
+    "notes": {
+      "electricityBill": "Автосписання з банку"
+    }
+  },
+  "documentTypes": {
+    "documents": "ID-картка|Посвідчення водія|Закордонний паспорт|Медична картка|ІПН",
+    "cards": "Знижкова|Спортзал|Бібліотека|Проїзний|Членська",
+    "utilities": "Світло|Газ|Вода|Інтернет|Телефон|Сміття",
+    "home": "Оренда|Іпотека|Внески ОСББ|Ремонт|Договір",
+    "insurance": "Авто|Житло|Здоров’я|Життя|Подорожі",
+    "warranties": "Побутова техніка|Електроніка|Меблі|Чек",
+    "car": "Транспортний податок|Страховка|Техогляд|Сервіс|Техпаспорт",
+    "tax": "Аптека|Лікар|Стоматолог|Аналізи|Спорт|Навчання",
+    "householdStaff": "Розрахунковий лист|Внески|Договір",
+    "school": "Зарахування|Табель|Довідка|Їдальня|Екскурсія",
+    "pet": "Ветпаспорт|Щеплення|Ветеринар|Мікрочип",
+    "password": "Пошта|Банк|Соцмережі|Wi-Fi|Робота"
+  },
+  "pageLabels": {
+    "front": "Лицьовий бік",
+    "back": "Зворот",
+    "page": "Сторінка {{number}}"
+  },
+  "statusBadge": {
+    "due": "До сплати",
+    "paid": "Сплачено"
+  },
+  "addActions": {
+    "openFileFailed": "Не вдалося відкрити файл"
+  },
+  "pickFiles": {
+    "takePhoto": "Зробити фото",
+    "choosePhoto": "Вибрати з фото",
+    "removePhoto": "Вилучити фото"
+  },
+  "scanDocument": {
+    "documentTip": {
+      "title": "Кілька сторінок",
+      "text": "Можна сканувати кілька сторінок поспіль: наведи камеру на наступну сторінку, перш ніж торкнутися «Зберегти»."
+    },
+    "cardTip": {
+      "title": "Справжні кольори",
+      "text": "Щоб зберегти справжні кольори картки, торкнися кнопки фільтрів у сканері й вибери «Фото»."
+    },
+    "gotIt": "Зрозуміло"
+  },
+  "cameraCapture": {
+    "permissionTitle": "Потрібен доступ до камери",
+    "permissionText": "Sottomano використовує камеру лише для фотографування документів.",
+    "allow": "Дозволити",
+    "openSettings": "Відкрити Параметри",
+    "readable": "Чи все читається?",
+    "pageReadable": "Сторінка {{number}}: чи все читається?",
+    "retake": "Перезняти",
+    "addPage": "Додати сторінку",
+    "frameDocument": "Наведи камеру на документ",
+    "framePage": "Наведи камеру на сторінку {{number}}",
+    "shoot": "Зробити фото",
+    "finishWithPages_one": "Готово, {{count}} сторінка",
+    "finishWithPages_few": "Готово, {{count}} сторінки",
+    "finishWithPages_many": "Готово, {{count}} сторінок",
+    "finishWithPages_other": "Готово, {{count}} сторінки"
+  },
+  "coverField": {
+    "label": "Обкладинка",
+    "photo": "Фото",
+    "color": "Колір",
+    "noPhotoHint": "Без фото показується колір: додай сторінку, щоб її фото стало обкладинкою.",
+    "categoryColor": "Колір папки",
+    "colorNumber": "Колір {{number}}"
+  },
+  "detailActionBar": {
+    "addPages": "Додати сторінки",
+    "pinned": "В обраному",
+    "pin": "Додати до обраного",
+    "renewed": "Поновлено",
+    "delete": "Видалити"
+  },
+  "documentFilesView": {
+    "document": "Документ",
+    "openFailed": "Не вдалося відкрити документ",
+    "pageOfSwipe": "Сторінка {{number}} з {{total}} · гортай",
+    "openFullScreen": "{{label}}, відкрити на весь екран",
+    "missingFile": "Файл не знайдено на цьому телефоні."
+  },
+  "filesEditor": {
+    "addBack": "Додати зворот",
+    "addPage": "Додати сторінку",
+    "scan": "Сканувати",
+    "photograph": "Зробити фото",
+    "fromPhotos": "З фото",
+    "scannerUnavailableTitle": "Сканер недоступний",
+    "scannerUnavailableMessage": "Вилучи сторінки кнопкою ✕ і додай нові.",
+    "replacePdf": "Замінити PDF",
+    "importPdf": "Імпортувати PDF",
+    "rescanAll": "Пересканувати все",
+    "openFileFailed": "Не вдалося відкрити файл",
+    "page": "Сторінка",
+    "newTag": "нова",
+    "moveBefore": "Перемістити «{{name}}» вище",
+    "moveAfter": "Перемістити «{{name}}» нижче",
+    "removePage": "Вилучити «{{name}}»"
+  },
+  "documentDetail": {
+    "notFound": "Документ не знайдено.",
+    "noPages": "Немає сторінок",
+    "photoPages_one": "Фото, {{count}} сторінка",
+    "photoPages_few": "Фото, {{count}} сторінки",
+    "photoPages_many": "Фото, {{count}} сторінок",
+    "photoPages_other": "Фото, {{count}} сторінки",
+    "amount": "Сума",
+    "expired": "прострочено",
+    "inDays_one": "через {{count}} день",
+    "inDays_few": "через {{count}} дні",
+    "inDays_many": "через {{count}} днів",
+    "inDays_other": "через {{count}} дня",
+    "deadline": "Термін",
+    "folder": "Папка",
+    "status": "Статус",
+    "person": "Людина",
+    "number": "Номер",
+    "notes": "Нотатки",
+    "inCalendar": "У календарі",
+    "view": "Переглянути документ",
+    "unpin": "Вилучити з обраного",
+    "pin": "Додати до обраного",
+    "addPages": "Додати сторінки",
+    "renewed": "Поновлено",
+    "delete": "Видалити",
+    "details": "Подробиці",
+    "remindMe": "Нагадати",
+    "reminderNeedsDeadline": "Додай термін, щоб отримати нагадування",
+    "reminderWhen": "Нагадування: {{when}}",
+    "noReminder": "Без нагадування",
+    "previousVersions": "Попередні версії",
+    "versionUntil": "До {{date}}",
+    "versionExpired": "закінчився {{date}}",
+    "paidOnMarkDue": "Сплачено {{date}} · позначити до сплати",
+    "markDue": "Позначити до сплати",
+    "markPaid": "Позначити сплаченим",
+    "firstOf": "1 з {{total}}"
+  },
+  "documentForm": {
+    "statusDue": "До сплати",
+    "statusPaid": "Сплачено",
+    "saveFailed": "Не вдалося зберегти",
+    "folder": "Папка",
+    "person": "Людина",
+    "type": "Тип",
+    "otherType": "Ввести інший…",
+    "noType": "Без типу",
+    "typeExample": "Наприклад: Світло, Транспортний податок, Стоматолог",
+    "dueOn": "{{date}}",
+    "noDeadline": "Без терміну",
+    "nameSection": "Назва",
+    "namePlaceholder": "Назва документа",
+    "whereSection": "Куди зберегти",
+    "choose": "Вибрати…",
+    "deadlineSection": "Термін",
+    "addDeadline": "Додати термін",
+    "remindMe": "Нагадати",
+    "whenToRemind": "Коли нагадати",
+    "repeats": "Повтор",
+    "never": "Ніколи",
+    "everySpan": "Кожні {{span}}",
+    "every": "Кожні",
+    "notesSection": "Нотатки",
+    "notesPlaceholder": "Наприклад: сплачено автосписанням, попросити повернення…",
+    "pin": "Додати до обраного",
+    "pinSubtitle": "Одразу знайдеш його на головному екрані",
+    "amountSection": "Сума й статус",
+    "amount": "Сума",
+    "amountInEuro": "Сума в євро",
+    "accessSection": "Вхід",
+    "username": "Ім’я користувача",
+    "usernamePlaceholder": "name@example.com",
+    "password": "Пароль",
+    "passwordUnchanged": "•••••••• (без змін)",
+    "passwordNote": "Пароль зберігається лише у Зв’язці ключів iPhone.",
+    "numberSection": "Номер документа",
+    "numberPlaceholder": "Напр. АА123456",
+    "saveChanges": "Зберегти зміни",
+    "saveDocument": "Зберегти документ",
+    "amountHint": "Введи суму у форматі {{example}}.",
+    "missingNameAndFolder": "Щоб зберегти, введи назву й вибери папку.",
+    "missingName": "Щоб зберегти, введи назву.",
+    "missingFolder": "Щоб зберегти, вибери папку.",
+    "deleteDocument": "Видалити документ"
+  },
+  "addDocument": {
+    "modes": {
+      "scan": "Сканувати",
+      "photos": "З фото",
+      "pdf": "З PDF",
+      "card": "Картка",
+      "manual": "Вручну"
+    },
+    "hintFirst": "Наведи камеру на документ · тримай телефон нерухомо",
+    "hintNext": "Сторінку {{number}} знято · наведи на наступну",
+    "title": "Новий документ",
+    "flashOff": "Вимкнути спалах",
+    "flashOn": "Увімкнути спалах",
+    "scanWithIos": "Сканувати сканером iOS",
+    "tapToScan": "Торкнися, щоб сканувати: краї знайдуться самі",
+    "permissionTitle": "Потрібен доступ до камери",
+    "permissionText": "Sottomano використовує її лише для фотографування документів.",
+    "allow": "Дозволити",
+    "openSettings": "Відкрити Параметри",
+    "howToAdd": "Як додати",
+    "chooseFromGallery": "Вибрати з медіатеки",
+    "shoot": "Зробити фото",
+    "goOnWith_one": "Продовжити з {{count}} сторінкою",
+    "goOnWith_few": "Продовжити з {{count}} сторінками",
+    "goOnWith_many": "Продовжити з {{count}} сторінками",
+    "goOnWith_other": "Продовжити з {{count}} сторінки",
+    "noPages": "Немає сторінок",
+    "countNext": "далі ›",
+    "countPages": "стор."
+  },
+  "newDocument": {
+    "readTitle": "Прочитано з документа",
+    "readText": "Назву взято з файлу: {{name}}. Перевір і виправ, якщо треба.",
+    "checkTitle": "Перевір дані",
+    "checkText_one": "Знято {{count}} сторінку. Введи назву й, якщо є, термін: його буде видно в Термінах.",
+    "checkText_few": "Знято {{count}} сторінки. Введи назву й, якщо є, термін: його буде видно в Термінах.",
+    "checkText_many": "Знято {{count}} сторінок. Введи назву й, якщо є, термін: його буде видно в Термінах.",
+    "checkText_other": "Знято {{count}} сторінки. Введи назву й, якщо є, термін: його буде видно в Термінах.",
+    "heading": "Новий документ"
+  },
+  "editDocument": {
+    "heading": "Змінити документ"
+  },
+  "documentVersion": {
+    "replacedOn": "Замінено {{date}}",
+    "expiredOn": "закінчився {{date}}",
+    "previewTitle": "{{title}} (попередня версія)"
+  },
+  "documentPages": {
+    "saveFailed": "Не вдалося зберегти сторінки"
+  },
+  "deleteDocument": {
+    "deleteFailed": "Не вдалося видалити",
+    "title": "Видалити «{{title}}»?",
+    "message_one": "Документ і його нагадування потраплять у Кошик. Його можна відновити в Меню › Кошик протягом {{count}} дня.",
+    "message_few": "Документ і його нагадування потраплять у Кошик. Його можна відновити в Меню › Кошик протягом {{count}} днів.",
+    "message_many": "Документ і його нагадування потраплять у Кошик. Його можна відновити в Меню › Кошик протягом {{count}} днів.",
+    "message_other": "Документ і його нагадування потраплять у Кошик. Його можна відновити в Меню › Кошик протягом {{count}} дня.",
+    "confirm": "Видалити документ"
+  },
+  "renew": {
+    "saveFailed": "Не вдалося зберегти",
+    "deadline": "Термін",
+    "repeatFooter": "{{repeat}}: нову дату обчислено від старої.",
+    "was": "Було",
+    "newDeadline": "Новий термін",
+    "newDocument": "Новий документ",
+    "withScanFooter": "Поточні сторінки стануть «Попередньою версією», яку знайдеш у подробицях.",
+    "withoutScanFooter": "Увімкни, якщо маєш новий документ для сканування.",
+    "addNewScan": "Додати новий скан"
+  },
+  "viewDocument": {
+    "pdfSubtitle": "PDF · гортай униз",
+    "pagesSubtitle_one": "{{count}} сторінка",
+    "pagesSubtitle_few": "{{count}} сторінки · гортай униз",
+    "pagesSubtitle_many": "{{count}} сторінок · гортай униз",
+    "pagesSubtitle_other": "{{count}} сторінки · гортай униз",
+    "pageOf": "Сторінка {{number}} з {{total}}",
+    "noPages": "У цьому документі немає сторінок.",
+    "zoom": "Масштаб",
+    "zoomOut": "Зменшити",
+    "zoomIn": "Збільшити",
+    "pageShort": "Стор. {{number}} з {{total}}"
+  },
+  "recurrence": {
+    "unit": {
+      "day_one": "день",
+      "day_few": "дні",
+      "day_many": "днів",
+      "day_other": "дня",
+      "week_one": "тиждень",
+      "week_few": "тижні",
+      "week_many": "тижнів",
+      "week_other": "тижня",
+      "month_one": "місяць",
+      "month_few": "місяці",
+      "month_many": "місяців",
+      "month_other": "місяця",
+      "year_one": "рік",
+      "year_few": "роки",
+      "year_many": "років",
+      "year_other": "року"
+    },
+    "count": {
+      "day_one": "{{count}} день",
+      "day_few": "{{count}} дні",
+      "day_many": "{{count}} днів",
+      "day_other": "{{count}} дня",
+      "week_one": "{{count}} тиждень",
+      "week_few": "{{count}} тижні",
+      "week_many": "{{count}} тижнів",
+      "week_other": "{{count}} тижня",
+      "month_one": "{{count}} місяць",
+      "month_few": "{{count}} місяці",
+      "month_many": "{{count}} місяців",
+      "month_other": "{{count}} місяця",
+      "year_one": "{{count}} рік",
+      "year_few": "{{count}} роки",
+      "year_many": "{{count}} років",
+      "year_other": "{{count}} року"
+    },
+    "every": {
+      "day_one": "Щодня",
+      "day_few": "Кожні {{count}} дні",
+      "day_many": "Кожні {{count}} днів",
+      "day_other": "Кожні {{count}} дня",
+      "week_one": "Щотижня",
+      "week_few": "Кожні {{count}} тижні",
+      "week_many": "Кожні {{count}} тижнів",
+      "week_other": "Кожні {{count}} тижня",
+      "month_one": "Щомісяця",
+      "month_few": "Кожні {{count}} місяці",
+      "month_many": "Кожні {{count}} місяців",
+      "month_other": "Кожні {{count}} місяця",
+      "year_one": "Щороку",
+      "year_few": "Кожні {{count}} роки",
+      "year_many": "Кожні {{count}} років",
+      "year_other": "Кожні {{count}} року"
+    },
+    "repeats": {
+      "day_one": "Повторюється щодня",
+      "day_few": "Повторюється кожні {{count}} дні",
+      "day_many": "Повторюється кожні {{count}} днів",
+      "day_other": "Повторюється кожні {{count}} дня",
+      "week_one": "Повторюється щотижня",
+      "week_few": "Повторюється кожні {{count}} тижні",
+      "week_many": "Повторюється кожні {{count}} тижнів",
+      "week_other": "Повторюється кожні {{count}} тижня",
+      "month_one": "Повторюється щомісяця",
+      "month_few": "Повторюється кожні {{count}} місяці",
+      "month_many": "Повторюється кожні {{count}} місяців",
+      "month_other": "Повторюється кожні {{count}} місяця",
+      "year_one": "Повторюється щороку",
+      "year_few": "Повторюється кожні {{count}} роки",
+      "year_many": "Повторюється кожні {{count}} років",
+      "year_other": "Повторюється кожні {{count}} року"
+    }
+  },
+  "deadlineUtils": {
+    "overdue": "Потребує уваги",
+    "thisWeek": "Цього тижня",
+    "upcomingNone": "Найближчими місяцями нічого",
+    "upcoming_one": "{{count}} справа найближчими місяцями",
+    "upcoming_few": "{{count}} справи найближчими місяцями",
+    "upcoming_many": "{{count}} справ найближчими місяцями",
+    "upcoming_other": "{{count}} справи найближчими місяцями"
+  },
+  "deadlineOptions": {
+    "sameDay": "У день терміну",
+    "daysBefore_one": "За {{count}} день",
+    "daysBefore_few": "За {{count}} дні",
+    "daysBefore_many": "За {{count}} днів",
+    "daysBefore_other": "За {{count}} дня",
+    "defaultChoice": "{{label}} (типово)"
+  },
+  "personRoles": {
+    "you": "Ти",
+    "choice": {
+      "me": "Це я",
+      "partner": "Партнер",
+      "child": "Син або донька",
+      "parent": "Батько або мати",
+      "sibling": "Брат або сестра",
+      "other": "Інше"
+    }
+  },
+  "categoriesDb": {
+    "otherMissing": "Категорії «Інше» не існує.",
+    "otherNotDeletable": "Категорію «Інше» не можна видалити."
+  },
+  "deadlineChip": {
+    "overdue": "Прострочено",
+    "today": "Сьогодні",
+    "dueToday": "Сьогодні",
+    "dueIn_one": "Через {{count}} день",
+    "dueIn_few": "Через {{count}} дні",
+    "dueIn_many": "Через {{count}} днів",
+    "dueIn_other": "Через {{count}} дня"
+  },
+  "deadlineListRow": {
+    "hint": "Торкнися й утримуй, щоб змінити або вилучити термін",
+    "statusDue": "до сплати",
+    "statusPaid": "сплачено"
+  },
+  "deadlineSection": {
+    "title": "Термін",
+    "emptyFooter": "З нагадуванням на телефоні та, якщо ввімкнено, у календарі «Sottomano».",
+    "add": "Додати термін",
+    "expiresOn": "Дата",
+    "repeats": "Повтор",
+    "never": "Ніколи",
+    "reminder": "Нагадування"
+  },
+  "dateCalendar": {
+    "previousMonth": "Попередній місяць",
+    "nextMonth": "Наступний місяць"
+  },
+  "deadlineCalendar": {
+    "nextWeek": "Наступний тиждень",
+    "previousWeek": "Попередній тиждень",
+    "weekdayDate": "{{weekday}}, {{date}}",
+    "dayWithDeadlines_one": "{{day}}, {{count}} термін",
+    "dayWithDeadlines_few": "{{day}}, {{count}} терміни",
+    "dayWithDeadlines_many": "{{day}}, {{count}} термінів",
+    "dayWithDeadlines_other": "{{day}}, {{count}} терміну"
+  },
+  "deadlines": {
+    "title": "Терміни",
+    "newReminder": "Нове нагадування",
+    "week": "Тиждень",
+    "month": "Місяць",
+    "openDocument": "Відкрити документ",
+    "editDeadline": "Змінити термін",
+    "markDue": "Позначити до сплати",
+    "markPaid": "Позначити сплаченим",
+    "removeDeadline": "Вилучити термін",
+    "removeAlert": {
+      "title": "Вилучити термін?",
+      "message": "Документ залишиться; його нагадування й подію в календарі буде вилучено.",
+      "confirm": "Вилучити"
+    },
+    "emptyTitle": "Попереду немає термінів",
+    "emptyText": "Торкнися +, щоб додати документ із терміном: він з’явиться тут і в календарі.",
+    "sheetSubtitle": "Термін: {{date}}",
+    "dayRepeats": "повтор",
+    "dayReminder": "нагадування",
+    "dayEmpty": "Цього дня термінів немає"
+  },
+  "deadlineScreen": {
+    "saveFailed": "Не вдалося зберегти",
+    "date": "Дата",
+    "footer": "Нагадування прийде на телефон; якщо календар увімкнено, термін буде також у «Sottomano».",
+    "every": "Кожні"
+  },
+  "family": {
+    "title": "Родина",
+    "subtitle": "Профіль для кожного вдома",
+    "addPerson": "Додати людину",
+    "members": "Члени родини",
+    "orderSaveFailed": "Не вдалося зберегти порядок",
+    "reorderTitle": "Порядок родини",
+    "reorderHint": "Торкнися й утримуй людину та перетягни її куди хочеш.",
+    "privacyNote": "Усе залишається на цьому телефоні. Щоб надіслати документ комусь, відкрий його й торкнися «Надіслати».",
+    "youSpoken": "ти",
+    "reorderA11yHint": "Торкнися й утримуй, щоб змінити порядок родини",
+    "expiring_one": "{{count}} закінчується",
+    "expiring_few": "{{count}} закінчуються",
+    "expiring_many": "{{count}} закінчуються",
+    "expiring_other": "{{count}} закінчуються"
+  },
+  "personScreen": {
+    "photoFailed": "Не вдалося використати фото",
+    "editPerson": "Змінити людину",
+    "selectAndSend": "Вибрати й надіслати",
+    "deletePerson": "Видалити людину",
+    "moreA11y": "Змінити або видалити {{name}}",
+    "changePhoto": "Змінити фото",
+    "editProfile": "Змінити профіль",
+    "documentsSection": "Документи · {{count}}",
+    "addDocument": "Додати документ",
+    "sendTogether": "Надіслати разом ({{count}})"
+  },
+  "personForm": {
+    "saveFailed": "Не вдалося зберегти",
+    "newPerson": "Нова людина",
+    "addPhoto": "Додати фото",
+    "name": "Ім’я",
+    "namePlaceholder": "Як звати?",
+    "role": "Хто це",
+    "roleA11y": "Хто це для тебе: {{role}}",
+    "note": "Профіль залишається на цьому телефоні. Він допомагає тримати документи кожного в порядку.",
+    "addToFamily": "Додати до родини",
+    "roleSheetTitle": "Хто це для тебе"
+  },
+  "deleteCategory": {
+    "deleteFailed": "Не вдалося видалити",
+    "title": "Видалити категорію «{{name}}»?",
+    "messageWithDocuments_one": "У ній {{count}} документ. Що з ним зробити?",
+    "messageWithDocuments_few": "У ній {{count}} документи. Що з ними зробити?",
+    "messageWithDocuments_many": "У ній {{count}} документів. Що з ними зробити?",
+    "messageWithDocuments_other": "У ній {{count}} документа. Що з ними зробити?",
+    "messageWithDocumentsRestorable_one": "У ній {{count}} документ. Що з ним зробити? Категорію можна відновити в «Нова категорія».",
+    "messageWithDocumentsRestorable_few": "У ній {{count}} документи. Що з ними зробити? Категорію можна відновити в «Нова категорія».",
+    "messageWithDocumentsRestorable_many": "У ній {{count}} документів. Що з ними зробити? Категорію можна відновити в «Нова категорія».",
+    "messageWithDocumentsRestorable_other": "У ній {{count}} документа. Що з ними зробити? Категорію можна відновити в «Нова категорія».",
+    "messageEmpty": "Категорія порожня.",
+    "messageEmptyRestorable": "Категорія порожня. Її можна відновити в «Нова категорія».",
+    "deleteAll": "Видалити все",
+    "confirm": "Видалити категорію",
+    "choicesA11y": "Що зробити з документами",
+    "moveLabel": "Перемістити в «Інше»",
+    "moveDetailPassword": "Вони залишаться в програмі, в «Інше», без імені користувача й пароля",
+    "moveDetail": "Вони залишаться в програмі, у загальній папці",
+    "trashLabel": "Видалити їх",
+    "trashDetail_one": "Вони потраплять у Кошик: їх можна відновити протягом {{count}} дня",
+    "trashDetail_few": "Вони потраплять у Кошик: їх можна відновити протягом {{count}} днів",
+    "trashDetail_many": "Вони потраплять у Кошик: їх можна відновити протягом {{count}} днів",
+    "trashDetail_other": "Вони потраплять у Кошик: їх можна відновити протягом {{count}} дня"
+  },
+  "deletePerson": {
+    "title": "Вилучити {{name}} з родини?",
+    "messageWithDocuments_one": "{{name}}: {{count}} документ. Що з ним зробити?",
+    "messageWithDocuments_few": "{{name}}: {{count}} документи. Що з ними зробити?",
+    "messageWithDocuments_many": "{{name}}: {{count}} документів. Що з ними зробити?",
+    "messageWithDocuments_other": "{{name}}: {{count}} документа. Що з ними зробити?",
+    "messageEmpty": "Профіль буде вилучено з цього телефона.",
+    "familyLabel": "Перемістити в «Уся родина»",
+    "familyDetail": "Вони залишаться в програмі, видимі всім",
+    "trashDetail_one": "Вони підуть разом із профілем: залишаться в Кошику {{count}} день",
+    "trashDetail_few": "Вони підуть разом із профілем: залишаться в Кошику {{count}} дні",
+    "trashDetail_many": "Вони підуть разом із профілем: залишаться в Кошику {{count}} днів",
+    "trashDetail_other": "Вони підуть разом із профілем: залишаться в Кошику {{count}} дня"
+  },
+  "categoryForm": {
+    "icons": {
+      "pets": "Тварини",
+      "document": "Документ",
+      "home": "Дім",
+      "car": "Авто",
+      "health": "Здоров’я",
+      "school": "Школа",
+      "work": "Робота",
+      "keys": "Ключі",
+      "travel": "Подорожі",
+      "expenses": "Витрати"
+    },
+    "restoreFailed": "Не вдалося відновити",
+    "editTitle": "Змінити категорію",
+    "newTitle": "Нова категорія",
+    "restoreSection": "Відновити стандартну категорію",
+    "restoreA11y": "Відновити «{{name}}»",
+    "restoreHint": "Вона повернеться такою, як була, з кольорами, іконкою та полями. Або створи нову нижче.",
+    "previewA11y": "Попередній перегляд категорії",
+    "namePlaceholder": "Напр. Тварини",
+    "nameA11y": "Назва категорії",
+    "color": "Колір",
+    "paletteColor": "Колір з «Вигляду»",
+    "colorNumber": "Колір {{number}}",
+    "followsPaletteHint": "Колір відповідає палітрі, вибраній у «Вигляді».",
+    "ownColorHint": "Твій власний колір: він не змінюється разом із «Виглядом».",
+    "icon": "Іконка",
+    "forWhom": "Для кого",
+    "forWhomA11y": "Для кого ця категорія: {{name}}",
+    "forWhomHint": "Нові документи в цій категорії одразу належать цій людині.",
+    "create": "Створити категорію"
+  },
+  "passwordOptions": {
+    "types": {
+      "site": {
+        "name": "Вебсайт або програма",
+        "namePlaceholder": "Наприклад: Інтернет-банк",
+        "userLabel": "Ім’я користувача або email",
+        "userPlaceholder": "name@email.com",
+        "passwordLabel": "Пароль",
+        "notePlaceholder": "Наприклад: контрольне питання, код відновлення…"
+      },
+      "wifi": {
+        "name": "Wi-Fi",
+        "namePlaceholder": "Наприклад: Домашній Wi-Fi",
+        "userLabel": "Назва мережі",
+        "userPlaceholder": "Kovalenko_5G",
+        "passwordLabel": "Пароль мережі",
+        "notePlaceholder": "Наприклад: роутер у вітальні, за телевізором…"
+      },
+      "pin": {
+        "name": "PIN",
+        "namePlaceholder": "Наприклад: Дебетова картка",
+        "passwordLabel": "PIN",
+        "notePlaceholder": "Наприклад: картка Юлі…"
+      },
+      "other": {
+        "name": "Інше",
+        "namePlaceholder": "Наприклад: Домашня сигналізація",
+        "userLabel": "Ім’я користувача",
+        "userPlaceholder": "Необов’язково",
+        "passwordLabel": "Код або пароль",
+        "notePlaceholder": "Для чого, де використовується…"
+      }
+    },
+    "colors": {
+      "aqua": "Аква",
+      "indigo": "Індиго",
+      "apricot": "Абрикос",
+      "pink": "Рожевий",
+      "mint": "М’ятний",
+      "sky": "Небесний",
+      "graphite": "Графіт"
+    },
+    "icons": {
+      "key": "Ключ",
+      "lock": "Замок",
+      "globe": "Глобус",
+      "wifi": "Wi-Fi",
+      "bank": "Банк",
+      "card": "Картка",
+      "mail": "Пошта",
+      "home": "Дім",
+      "car": "Авто",
+      "shield": "Щит",
+      "cart": "Кошик покупок",
+      "star": "Зірка"
+    }
+  },
+  "passwordTools": {
+    "digitsOnly": "Лише цифри",
+    "strength": {
+      "weak": "Слабкий",
+      "fair": "Середній",
+      "good": "Добрий",
+      "strong": "Надійний"
+    }
+  },
+  "appLockAuth": {
+    "enablePrompt": "Підтверди, щоб увімкнути блокування"
+  },
+  "appLock": {
+    "prompt": "Розблокувати Sottomano",
+    "unlock": "Розблокувати",
+    "unlockWith": {
+      "faceId": "Розблокувати з Face ID",
+      "touchId": "Розблокувати з Touch ID",
+      "passcode": "Розблокувати кодом допуску"
+    },
+    "message": "Твої документи захищено"
+  },
+  "passwordForm": {
+    "showPrompt": "Показати пароль",
+    "copyPrompt": "Скопіювати пароль",
+    "copiedTitle": "Скопійовано",
+    "copiedMessage": "Його буде стерто з буфера обміну через 1 хвилину.",
+    "scannerUnavailableTitle": "Сканер недоступний",
+    "scannerUnavailableMessage": "Вибери зображення з медіатеки.",
+    "saveFailed": "Не вдалося зберегти",
+    "editTitle": "Змінити пароль",
+    "newTitle": "Новий пароль",
+    "privacy": "Вони зберігаються лише на цьому телефоні й відкриваються з Face ID.",
+    "sections": {
+      "what": "Що ти зберігаєш",
+      "name": "Назва",
+      "preview": "Попередній перегляд",
+      "access": "Вхід",
+      "site": "Вебсайт або програма",
+      "whose": "Чий це",
+      "notes": "Нотатки"
+    },
+    "typesLabel": "Тип пароля",
+    "customTypePlaceholder": "Що це? Сигналізація, сейф, замок…",
+    "customTypeLabel": "Що це",
+    "customTypeHint": "Це стане новим типом, і наступного разу ти знайдеш його серед варіантів.",
+    "previewTitle": "Як це виглядає в списку",
+    "previewText": "Колір та іконка або зображення.",
+    "color": "Колір",
+    "colorLabel": "Колір попереднього перегляду",
+    "icon": "Іконка",
+    "iconLabel": "Іконка попереднього перегляду",
+    "image": "Зображення",
+    "scan": "Сканувати",
+    "gallery": "З Фото",
+    "removeImage": "Вилучити зображення й використати колір та іконку",
+    "passwordPlaceholder": "Введи або згенеруй",
+    "show": "Показати",
+    "hide": "Сховати",
+    "copy": "Скопіювати",
+    "saved": "Збережено",
+    "generate": "Згенерувати надійний пароль",
+    "urlPlaceholder": "www.example.com",
+    "urlLabel": "Адреса вебсайту",
+    "wifiQrTitle": "QR-код для гостей",
+    "wifiQrSubtitle": "Вони сканують його й підключаються",
+    "person": "Людина",
+    "personA11y": "Людина, {{name}}",
+    "favoriteTitle": "Додати до обраного",
+    "favoriteSubtitle": "Знайдеш його одразу на головному екрані",
+    "saveButton": "Зберегти пароль",
+    "saveHint": "Введи назву, щоб зберегти."
+  },
+  "passwordDetail": {
+    "noPasswordTitle": "Немає пароля",
+    "noPasswordMessage": "Додай його через «Змінити».",
+    "showPrompt": {
+      "site": "Показати пароль",
+      "wifi": "Показати пароль мережі",
+      "pin": "Показати PIN",
+      "other": "Показати код або пароль"
+    },
+    "copyPrompt": {
+      "site": "Скопіювати пароль",
+      "wifi": "Скопіювати пароль мережі",
+      "pin": "Скопіювати PIN",
+      "other": "Скопіювати код або пароль"
+    },
+    "copyUser": {
+      "site": "Скопіювати ім’я користувача або email",
+      "wifi": "Скопіювати назву мережі",
+      "pin": "Скопіювати ім’я користувача",
+      "other": "Скопіювати ім’я користувача"
+    },
+    "copiedTitle": "Скопійовано",
+    "copiedMessage": "Його буде стерто з буфера обміну через 1 хвилину.",
+    "copiedTextTitle": "Скопійовано",
+    "qrPrompt": "Показати QR-код для гостей",
+    "invalidAddress": "Недійсна адреса",
+    "removeFavorite": "Вилучити з обраного",
+    "favoriteTitle": "Додати до обраного",
+    "favoriteSubtitle": "Знайдеш його одразу на головному екрані",
+    "moreActions": "Інші дії",
+    "sections": {
+      "access": "Вхід",
+      "site": "Вебсайт або програма",
+      "wifiQr": "QR-код для гостей",
+      "whose": "Чий це",
+      "notes": "Нотатки"
+    },
+    "hidden": "Приховано",
+    "show": "Показати",
+    "hide": "Сховати",
+    "copy": "Скопіювати",
+    "locked": "Видно після Face ID або коду допуску iPhone",
+    "wifiQrLabel": "QR-код мережі Wi-Fi",
+    "qrHint": "Вони сканують його камерою й підключаються.",
+    "qrLocked": "QR-код містить пароль: його видно після Face ID або коду допуску iPhone.",
+    "qrNoNetwork": "Додай назву мережі через «Змінити», щоб отримати QR-код.",
+    "showQr": "Показати QR-код",
+    "hideQr": "Сховати QR-код",
+    "person": "Людина",
+    "moveToTrash": "Перемістити в Кошик"
+  },
+  "passwordCard": {
+    "noPasswordTitle": "Немає пароля",
+    "noPasswordMessage": "Додай його через «Змінити».",
+    "showPrompt": "Показати пароль",
+    "copyPrompt": "Скопіювати пароль",
+    "copiedTitle": "Пароль скопійовано",
+    "copiedMessage": "Його буде стерто з буфера обміну через 1 хвилину.",
+    "user": "Ім’я користувача",
+    "password": "Пароль",
+    "hidden": "Пароль приховано",
+    "show": "Показати",
+    "hide": "Сховати",
+    "copy": "Скопіювати"
+  },
+  "cardForm": {
+    "found": "Знайдено: {{name}}",
+    "foundBarcode": "Знайдено: штрихкод {{name}}",
+    "handwritten": "Код введено вручну",
+    "noCode": "Код не прочитано",
+    "photoOpenFailed": "Не вдалося відкрити фото",
+    "saveFailed": "Не вдалося зберегти",
+    "retakeFront": "Зняти знову",
+    "retakePhoto": "Перезняти фото",
+    "recognized": "Картку розпізнано",
+    "tapRetake": "Торкнися «Зняти знову», щоб сфотографувати її",
+    "fromPhotos": "З Фото",
+    "cover": "Обкладинка",
+    "coverPhotoCaption": "Обрізано й вирівняно з фото картки",
+    "coverColorCaption": "Колір картки з її назвою та номером",
+    "codeSection": "Код для каси",
+    "photographCode": "Сфотографувати код",
+    "barcode": "Штрихкод",
+    "qrCode": "QR-код",
+    "qrCaption": "{{name}} · {{number}}",
+    "defaultName": "Картка",
+    "typeNumber": "Введи номер нижче",
+    "explain": "Sottomano сам розпізнає, чи має картка штрихкод або QR-код. На касі він показує його великим, з максимальною яскравістю екрана.",
+    "readTitle": "Дані, прочитані з картки",
+    "readText": "Перевір їх і виправ, якщо треба.",
+    "name": "Назва",
+    "namePlaceholder": "Напр. Супермаркет",
+    "type": "Тип",
+    "typePlaceholder": "Напр. Картка лояльності",
+    "number": "Номер",
+    "numberPlaceholder": "Напр. 0400 2219 8876",
+    "holder": "Власник",
+    "saveButton": "Зберегти картку",
+    "saveHint": "Введи назву картки, щоб зберегти."
+  },
+  "cardCapture": {
+    "steps": {
+      "front": "Фото лицьового боку",
+      "barcode": "Сфотографуй штрихкод"
+    },
+    "photoOpenFailed": "Не вдалося відкрити фото",
+    "permissionTitle": "Потрібен доступ до камери",
+    "permissionText": "Sottomano використовує камеру, щоб фотографувати картки й зчитувати їхній штрихкод.",
+    "allow": "Дозволити",
+    "openSettings": "Відкрити Параметри",
+    "frontCheck": "Лицьовий бік: чітко видно?",
+    "read": "Прочитано: {{value}}",
+    "notRead": "Код не прочитано",
+    "notReadHint": "Залиш фото: номер введеш на наступному кроці.",
+    "retake": "Перезняти",
+    "use": "Використати",
+    "focus": "Фокус",
+    "stepCount": "{{current}} з {{total}}",
+    "frameHint": "Наведи картку в рамку",
+    "searching": "Шукаю код…",
+    "chooseFromPhotos": "Вибрати з Фото",
+    "shoot": "Зробити фото",
+    "skip": "Пропустити"
+  },
+  "cardDetail": {
+    "code": "Код",
+    "photo": "Фото",
+    "barcodeLabel": "Штрихкод",
+    "barcodePhotoLabel": "Фото штрихкоду",
+    "fullScreenHint": "Відкриває код на весь екран",
+    "noCode": "Немає коду. Торкнися «Змінити», щоб сфотографувати або ввести його.",
+    "tapHint": "Торкнися коду, щоб збільшити",
+    "person": "Людина"
+  },
+  "cardsScreen": {
+    "orderSaveFailed": "Не вдалося зберегти порядок",
+    "editCategory": "Змінити категорію",
+    "deleteCategory": "Видалити категорію",
+    "reorderTitle": "Порядок карток",
+    "reorderHint": "Торкнися й утримуй картку, потім перетягни її куди хочеш.",
+    "yourCards": "Твої картки",
+    "title": "Картки",
+    "subtitle": "Торкнися картки, щоб показати її код на касі",
+    "categoryMenuLabel": "Змінити або видалити категорію «{{name}}»",
+    "addCard": "Додати картку",
+    "reorder": "Упорядкувати",
+    "newCard": "Нова картка",
+    "cardDetails": "Подробиці картки",
+    "categoryMenuTitle": "Категорія «{{name}}»",
+    "cardCount_one": "{{count}} картка",
+    "cardCount_few": "{{count}} картки",
+    "cardCount_many": "{{count}} карток",
+    "cardCount_other": "{{count}} картки",
+    "cardOpenLabel": "{{label}}, закрити",
+    "cardClosedLabel": "{{label}}, показати код",
+    "qrLabel": "QR-код картки",
+    "barcodeLabel": "Штрихкод картки",
+    "fullScreenHint": "Відкриває код на весь екран",
+    "noCode": "Немає коду: торкнися Подробиці › Змінити, щоб сфотографувати або ввести його.",
+    "details": "Подробиці"
+  },
+  "walletCard": {
+    "untitled": "Нова картка"
+  },
+  "barcodeView": {
+    "close": "Закрити код"
+  },
+  "colorPicker": {
+    "color": "Колір",
+    "custom": "Свій колір",
+    "hex": "Код",
+    "hexLabel": "Код кольору"
+  },
+  "colorWheel": {
+    "label": "Колірне коло: торкнися або перетягни, щоб вибрати",
+    "nextHue": "Наступний відтінок",
+    "previousHue": "Попередній відтінок"
+  },
+  "newCard": {
+    "title": "Нова картка",
+    "missingCategory": "Категорії «Картки» більше не існує."
+  },
+  "editCard": {
+    "title": "Змінити картку"
+  },
+  "unlock": {
+    "storeOnly": "Доступно у версії з App Store",
+    "remainingNone": "Ти використав усі безплатні місця.",
+    "remaining_one": "Можна додати ще {{count}}.",
+    "remaining_few": "Можна додати ще {{count}}.",
+    "remaining_many": "Можна додати ще {{count}}.",
+    "remaining_other": "Можна додати ще {{count}}.",
+    "tag": "Безплатна версія · використано {{used}} з {{limit}}",
+    "title": "Усі твої документи, без обмежень",
+    "intro": "Безплатно до {{limit}} документів і карток. Щоб додавати скільки завгодно, розблокуй одним платежем.",
+    "benefits": {
+      "unlimited": {
+        "title": "Необмежено документів",
+        "text": "Рахунки, картки, гарантії та все інше"
+      },
+      "reminders": {
+        "title": "Нагадування про терміни",
+        "text": "Нагадаємо, поки не пізно"
+      },
+      "offline": {
+        "title": "Працює без інтернету",
+        "text": "Усе залишається на телефоні, і резервна копія теж"
+      },
+      "family": {
+        "title": "Уся родина",
+        "text": "Профіль для кожного вдома"
+      }
+    },
+    "sectionTitle": "Твоя безплатна версія",
+    "usageLabel": "Документи й картки",
+    "usageValue": "{{used}} з {{limit}}",
+    "usageA11y": "Використано безплатних місць",
+    "keptNote": "Уже збережене завжди залишається твоїм, навіть без розблокування.",
+    "priceTitle": "Назавжди",
+    "priceText": "Без обмежень · один платіж",
+    "buy": "Розблокувати за {{price}}",
+    "continueFree": "Продовжити безплатно",
+    "restore": "Відновити покупку",
+    "terms": "Умови",
+    "privacy": "Конфіденційність"
+  },
+  "deleteActions": {
+    "otherCategoryTitle": "Категорія «Інше»",
+    "otherCategoryMessage": "Її не можна видалити: у ній зберігаються документи з видалених категорій."
+  },
+  "quickActionMenu": {
+    "close": "Закрити меню"
+  },
+  "quickActions": {
+    "open": "Відкрити",
+    "unpin": "Вилучити з обраного",
+    "pin": "Додати до обраного",
+    "moveToTrash": "Перемістити в Кошик",
+    "editCategory": "Змінити категорію",
+    "deleteCategory": "Видалити категорію",
+    "editPerson": "Змінити людину",
+    "deletePerson": "Видалити людину"
+  },
+  "shareCopies": {
+    "defaultName": "Документ",
+    "fileNotFound": "Файл не знайдено на телефоні."
+  },
+  "sendCompression": {
+    "tooBig": "Навіть за максимального стиснення розмір перевищує ліміт: спробуй розділити на кілька файлів.",
+    "lowPpi": "Дрібний текст може бути нечитабельним."
+  },
+  "sendPreferences": {
+    "original": "Оригінал"
+  },
+  "sendFileName": {
+    "fallback": "документ"
+  },
+  "sendPrepare": {
+    "cannotCombine": "Зараз не вдається поєднати лицьовий бік і зворот.",
+    "noPhotos": "Немає фото для надсилання.",
+    "fileFront": "лицьовий",
+    "fileBack": "зворот",
+    "filePage": "сторінка-{{number}}"
+  },
+  "send": {
+    "fileNameSeveral": "документи",
+    "title": "Надіслати «{{title}}»",
+    "formatPhotos": "Фото",
+    "actions": {
+      "email": "Е-пошта",
+      "whatsapp": "WhatsApp",
+      "print": "Друк",
+      "save": "Зберегти у Файли",
+      "copy": "Скопіювати",
+      "other": "Більше"
+    },
+    "alerts": {
+      "savedToFiles": "Збережено у Файли",
+      "imageCopied": "Зображення скопійовано",
+      "textCopied": "Текст скопійовано",
+      "firstPageCopied": "Скопійовано першу сторінку: встав її в повідомлення.",
+      "pasteImage": "Встав його в повідомлення або нотатку.",
+      "pdfNotCopied": "PDF не можна скопіювати: скопійовано назву й нотатку. Для файлу скористайся «Більше».",
+      "failed": "Не вдалося завершити"
+    },
+    "meta": {
+      "pdfs": "PDF: {{number}}",
+      "singlePdf": "Один PDF",
+      "failed": "Не вдалося підготувати файл",
+      "preparing": "Підготовка…"
+    },
+    "includeNote": "Додати нотатку документа",
+    "noNote": "У цього документа немає нотатки.",
+    "frontBackPage": "Лицьовий бік і зворот на одній сторінці",
+    "frontBackImage": "Лицьовий бік і зворот на одному зображенні",
+    "maxSize": "Максимальний розмір",
+    "pdfAsIs": "PDF надсилається як є.",
+    "severalInfo": "Один PDF: документи один за одним, лицьовий бік і зворот посвідчень і карток на одній сторінці.",
+    "quality": {
+      "high": "Висока якість",
+      "good": "Добра якість",
+      "low": "Низька якість",
+      "minimum": "Мінімальна якість",
+      "original": "Оригінальна якість"
+    },
+    "skipped_one": "{{count}} документ без фото не включено (імпортовані PDF поки не можна об’єднувати).",
+    "skipped_few": "{{count}} документи без фото не включено (імпортовані PDF поки не можна об’єднувати).",
+    "skipped_many": "{{count}} документів без фото не включено (імпортовані PDF поки не можна об’єднувати).",
+    "skipped_other": "{{count}} документа без фото не включено (імпортовані PDF поки не можна об’єднувати)."
+  },
+  "taxPackageBuilder": {
+    "progressFirst": "Готуємо PDF…",
+    "progressRetry": "Зменшуємо фото (спроба {{attempt}})…",
+    "subtitle": "Підготовлено {{date}} у Sottomano · {{documents}}",
+    "subtitleWithTotal": "Підготовлено {{date}} у Sottomano · {{documents}} · разом {{total}}",
+    "columns": {
+      "number": "№",
+      "document": "Документ",
+      "date": "Дата",
+      "person": "Людина",
+      "amount": "Сума",
+      "page": "Стор."
+    },
+    "sentApart": "надіслано окремо",
+    "noPages": "без сторінок",
+    "paid": "сплачено",
+    "due": "до сплати",
+    "invalidIndex": "Недійсний зміст"
+  },
+  "taxPackage": {
+    "yearLine": "{{title}}: {{pages}}, {{size}}",
+    "sentApart_one": "{{count}} PDF не вдається об’єднати (захищений паролем або пошкоджений): {{titles}}. У змісті він позначений «надіслано окремо» й іде разом з іншими.",
+    "sentApart_few": "{{count}} PDF не вдається об’єднати (захищені паролем або пошкоджені): {{titles}}. У змісті вони позначені «надіслано окремо» й ідуть разом з іншими.",
+    "sentApart_many": "{{count}} PDF не вдається об’єднати (захищені паролем або пошкоджені): {{titles}}. У змісті вони позначені «надіслано окремо» й ідуть разом з іншими.",
+    "sentApart_other": "{{count}} PDF не вдається об’єднати (захищені паролем або пошкоджені): {{titles}}. У змісті вони позначені «надіслано окремо» й ідуть разом з іншими.",
+    "alerts": {
+      "prepareFailed": "Не вдалося підготувати PDF",
+      "ready": "PDF готовий",
+      "noMailTitle": "Пошту не налаштовано",
+      "noMailMessage": "Додай обліковий запис у Пошті або збережи PDF у Файли.",
+      "savedToFiles": "Збережено у Файли",
+      "sendFailed": "Не вдалося надіслати"
+    },
+    "readyMany": "PDF готові: {{number}}",
+    "choices": {
+      "email": "Е-пошта: усі PDF в одному листі",
+      "save": "Зберегти у Файли: усі в одній папці",
+      "oneByOne": "Поширити по одному"
+    },
+    "intro": "Усі документи з «{{category}}», розподілені за роками: один PDF на кожен рік зі змістом (документ, дата, людина, сума, сторінка) і загальною сумою. Рік — це рік терміну або оплати; якщо їх не вказано — рік, коли документ додано.",
+    "noDocuments": "Цього року документів немає.",
+    "summary": "{{documents}}: {{photos}}, {{pdfs}}.",
+    "summaryWithYears": "{{documents}}: {{photos}}, {{pdfs}} · {{years}}.",
+    "pdfs_one": "{{count}} PDF",
+    "pdfs_few": "{{count}} PDF",
+    "pdfs_many": "{{count}} PDF",
+    "pdfs_other": "{{count}} PDF",
+    "year": "Рік",
+    "allYears": "Усі роки",
+    "maxPhotoSize": "Максимальний розмір фото",
+    "limitInfo": "Фото зменшуються, щоб не перевищити ліміт; імпортовані PDF залишаються як є.",
+    "prepare": "Підготувати й надіслати"
+  },
+  "trash": {
+    "alerts": {
+      "failed": "Щось пішло не так",
+      "restoredToOther": "Відновлено в «Інше»",
+      "restoredPassword": "Його категорії більше немає: документ в «Інше», без імені користувача й пароля.",
+      "restoredMessage": "Його категорії більше немає: документ в «Інше».",
+      "deleteTitle": "Видалити «{{title}}» назавжди?",
+      "deleteMessage": "Його фото й PDF теж буде видалено. Цю дію не можна скасувати.",
+      "emptyTitle": "Очистити Кошик?",
+      "emptyMessage_one": "{{count}} документ буде видалено разом із фото й PDF. Цю дію не можна скасувати.",
+      "emptyMessage_few": "{{count}} документи буде видалено разом із фото й PDF. Цю дію не можна скасувати.",
+      "emptyMessage_many": "{{count}} документів буде видалено разом із фото й PDF. Цю дію не можна скасувати.",
+      "emptyMessage_other": "{{count}} документа буде видалено разом із фото й PDF. Цю дію не можна скасувати.",
+      "emptyConfirm": "Очистити"
+    },
+    "intro": "Видалені документи залишаються тут {{days}} дн., а потім стираються разом із фото й PDF.",
+    "empty": "Кошик порожній",
+    "deletedSoon": "Незабаром буде видалено",
+    "deletedIn": "Буде видалено через {{days}} дн.",
+    "restoreLabel": "Відновити «{{title}}»",
+    "deleteForeverLabel": "Видалити «{{title}}» назавжди",
+    "deleteForever": "Видалити назавжди",
+    "emptyTrash": "Очистити Кошик"
+  },
+  "menu": {
+    "close": "Закрити меню",
+    "home": "Головна",
+    "favorites": "Обране",
+    "deadlines": "Терміни",
+    "deadlinesUrgent": "Терміни, {{number}} перевірити",
+    "family": "Родина",
+    "cards": "Картки",
+    "backup": "Резервна копія",
+    "backupDue": "Резервна копія, час створити",
+    "help": "Довідка й контакти",
+    "rate": "Оцінити Sottomano",
+    "recommend": "Порадити другові",
+    "trash": "Кошик",
+    "trashCount": "Кошик, {{number}}",
+    "password": "Паролі",
+    "scan": "Сканувати",
+    "fromPhotos": "З фото",
+    "importFiles": "Імпортувати файли",
+    "version": "Версія {{version}}"
+  },
+  "notificationsPanel": {
+    "close": "Закрити сповіщення",
+    "title": "Сповіщення",
+    "markAllRead": "Позначити прочитаними",
+    "empty": "За останні 7 днів сповіщень немає.",
+    "today": "Сьогодні",
+    "thisWeek": "Цього тижня",
+    "settings": "Параметри сповіщень",
+    "unreadItem": "Непрочитане. {{title}}, {{body}}"
+  },
+  "notificationFeed": {
+    "expiredOn": "Термін закінчився {{date}}.",
+    "expiresToday": "Термін закінчується сьогодні.",
+    "expiresOn": "Термін закінчується {{distance}}, {{date}}.",
+    "amount": "Сума {{amount}}.",
+    "backupTitle": "Резервна копія",
+    "backupLate": "Ти давно не робив резервну копію документів.",
+    "backupNever": "Ти ще не зробив резервну копію документів."
+  },
+  "deadlineReminders": {
+    "title": "Наближається термін",
+    "hiddenBody": "Термін документа закінчується {{date}} ({{distance}}). Відкрий Sottomano, щоб переглянути.",
+    "body": "{{name}}: термін закінчується {{date}} ({{distance}})"
+  },
+  "settings": {
+    "sections": {
+      "appearance": "Вигляд",
+      "security": "Безпека",
+      "reminders": "Нагадування",
+      "backup": "Резервна копія",
+      "info": "Інформація"
+    },
+    "calendarOff": "Вимк.",
+    "alerts": {
+      "notificationsOffTitle": "Сповіщення вимкнено",
+      "notificationsOffMessage": "Щоб отримувати нагадування, дозволь сповіщення для Sottomano в Параметрах iPhone.",
+      "openSettings": "Відкрити Параметри"
+    },
+    "lastBackup": {
+      "never": "Ніколи",
+      "today": "Сьогодні",
+      "yesterday": "Учора",
+      "daysAgo_one": "{{count}} день тому",
+      "daysAgo_few": "{{count}} дні тому",
+      "daysAgo_many": "{{count}} днів тому",
+      "daysAgo_other": "{{count}} дня тому"
+    },
+    "categoryColors": "Кольори категорій",
+    "faceId": "Блокування з Face ID",
+    "faceIdSubtitle": "Запитує обличчя щоразу, коли відкриваєш програму",
+    "hidePreviews": "Ховати прев’ю",
+    "hidePreviewsSubtitle": "Сповіщення не показують документ",
+    "notifications": "Сповіщення",
+    "reminderTime": "Час нагадування",
+    "defaultReminder": "Стандартне нагадування",
+    "iconBadge": "Наліпка на іконці",
+    "iconBadgeSubtitle": "Прострочені терміни або ті, що за 7 днів",
+    "calendar": "Календар «Sottomano»",
+    "notificationsBlocked": "Сповіщення заблоковано",
+    "notificationsBlockedSubtitle": "Дозволь їх у Параметрах iPhone",
+    "backupNote": "Резервна копія — це файл, збережений на телефоні в програмі «Файли». Його можна скопіювати куди завгодно. Sottomano працює й без інтернету.",
+    "createBackup": "Створити копію зараз",
+    "restoreBackup": "Відновити з копії",
+    "help": "Довідка й контакти",
+    "privacy": "Конфіденційність",
+    "terms": "Умови використання",
+    "rate": "Оцінити Sottomano",
+    "debug": {
+      "limitPreview": "Перегляд безплатного ліміту",
+      "limitPreviewSubtitle": "Лише для тестування: показує заблокований +, панель ліміту й картку на Головній",
+      "emptyHome": "Перегляд порожньої Головної",
+      "emptyHomeSubtitle": "Лише для тестування: Головна так, ніби документів немає (дані залишаються)",
+      "onboarding": "Показати привітання знову",
+      "onboardingSubtitle": "Лише для тестування: сторінки привітання 1–4"
+    },
+    "version": "Sottomano · версія {{version}}",
+    "theme": {
+      "title": "Тема",
+      "autoSubtitle": "Як налаштування телефона",
+      "auto": "Автоматично",
+      "light": "Світла",
+      "dark": "Темна"
+    }
+  },
+  "backup": {
+    "title": "Резервна копія",
+    "subtitle": "Копія всіх твоїх документів, збережена на телефоні.",
+    "keyProgress": "Захищаємо твоїм паролем… це може тривати до хвилини",
+    "whenToday": "сьогодні о {{time}}",
+    "whenDate": "{{date}} о {{time}}",
+    "minLength": "Щонайменше {{min}} символів.",
+    "mismatch": "Паролі не збігаються.",
+    "creating": "Створюємо резервну копію…",
+    "copyDialogTitle": "Скопіювати резервну копію",
+    "opening": "Відкриваємо резервну копію…",
+    "checking": "Перевіряємо документи…",
+    "restoring": "Відновлюємо…",
+    "keepOpen": "Не закривай програму до завершення.",
+    "forgotWarning": "Якщо забудеш пароль, резервну копію не вдасться відкрити.",
+    "passwordPlaceholder": "Пароль (щонайменше {{min}} символів)",
+    "repeatPlaceholder": "Повтори пароль",
+    "createAndSave": "Створити й зберегти",
+    "backupPassword": "Пароль резервної копії",
+    "openBackup": "Відкрити копію",
+    "completed": "Резервну копію створено",
+    "lastBackup": "Остання копія",
+    "path": "Sottomano › Backup › {{name}}",
+    "copyElsewhere": "Скопіювати файл деінде",
+    "createNew": "Створити нову копію",
+    "noneTitle": "Ти ще не робив резервну копію",
+    "noneText": "Якщо загубиш або зміниш телефон, резервна копія поверне все.",
+    "createNow": "Створити копію зараз",
+    "restoreSection": "Відновлення",
+    "restoreTitle": "Новий телефон?",
+    "restoreText": "Вибери файл резервної копії, щоб повернути документи, картки й нагадування.",
+    "chooseFile": "Вибрати файл копії",
+    "remindersSection": "Нагадування",
+    "remindMe": "Нагадувати про копію",
+    "remindMeValue": "Нагадувати про копію: {{value}}",
+    "footnote": "Резервна копія — це один файл, захищений паролем, який ти вибираєш: документи, фото, картки, люди й нагадування. Скопіюй її деінде (Файли, iCloud Drive, комп’ютер), щоб вона залишилася, навіть якщо загубиш телефон.",
+    "alerts": {
+      "createFailed": "Не вдалося створити копію",
+      "copyFailed": "Не вдалося скопіювати",
+      "restoreTitle": "Відновити копію від {{date}}?",
+      "restoreMessage_one": "У ній {{count}} документ. Те, що зараз є в програмі, буде замінено.",
+      "restoreMessage_few": "У ній {{count}} документи. Те, що зараз є в програмі, буде замінено.",
+      "restoreMessage_many": "У ній {{count}} документів. Те, що зараз є в програмі, буде замінено.",
+      "restoreMessage_other": "У ній {{count}} документа. Те, що зараз є в програмі, буде замінено.",
+      "restoreFailed": "Не вдалося відновити",
+      "restoreFailedMessage": "У програмі нічого не змінилося.\n\n{{reason}}",
+      "restored": "Копію відновлено",
+      "restoredMessage": "Твої документи повернулися."
+    }
+  },
+  "backupLayout": {
+    "frequency": {
+      "week": "Щотижня",
+      "month": "Щомісяця",
+      "never": "Ніколи"
+    }
+  },
+  "backupCrypto": {
+    "notABackup": "Цей файл не є резервною копією Sottomano.",
+    "newerVersion": "Цю копію створено новішою версією Sottomano. Онови програму й спробуй ще раз.",
+    "empty": "Файл резервної копії порожній або неповний.",
+    "incomplete": "Файл резервної копії неповний.",
+    "wrongPassword": "Неправильний пароль. Перевір великі й малі літери та спробуй ще раз.",
+    "damaged": "Файл резервної копії пошкоджений або неповний."
+  },
+  "createBackup": {
+    "incompleteFile": "Неповний файл: {{name}}"
+  },
+  "restoreBackup": {
+    "invalidContent": "Вміст резервної копії недійсний.",
+    "newerApp": "Ця копія з новішої версії Sottomano. Онови програму й спробуй ще раз."
+  },
+  "zipReader": {
+    "invalid": "Недійсний архів",
+    "incomplete": "Неповний архів"
+  },
+  "backupReminder": {
+    "none": "Ти ще не робив резервну копію",
+    "old_one": "Остання копія була {{count}} день тому",
+    "old_few": "Остання копія була {{count}} дні тому",
+    "old_many": "Остання копія була {{count}} днів тому",
+    "old_other": "Остання копія була {{count}} дня тому",
+    "link": "Створити копію зараз",
+    "close": "Закрити повідомлення",
+    "snooze_one": "Сховати на {{count}} день",
+    "snooze_few": "Сховати на {{count}} дні",
+    "snooze_many": "Сховати на {{count}} днів",
+    "snooze_other": "Сховати на {{count}} дня"
+  },
+  "calendarSettings": {
+    "title": "Календар",
+    "intro": "Терміни потрапляють в окремий календар «Sottomano». Його можна сховати в програмі «Календар»; якщо вимкнути його тут, його буде видалено.",
+    "details": "Кожен термін — це подія на весь день «Закінчується: назва» без інших даних документа. Якщо нагадування Sottomano вимкнено, подія сповістить тебе о 9:00 у день нагадування; якщо ввімкнено, сповіщає лише програма, щоб не було двох сповіщень.",
+    "allowAccess": "Дозволити доступ до Календаря",
+    "denied": "Доступ до Календаря заборонено. Його можна ввімкнути в Параметрах iPhone.",
+    "openSettings": "Відкрити Параметри",
+    "switchLabel": "Терміни в календарі «Sottomano»",
+    "enabled_one": "{{count}} термін у календарі «Sottomano»",
+    "enabled_few": "{{count}} терміни в календарі «Sottomano»",
+    "enabled_many": "{{count}} термінів у календарі «Sottomano»",
+    "enabled_other": "{{count}} терміну в календарі «Sottomano»",
+    "removeConfirm": "Вилучити календар Sottomano і всі його терміни з Календаря?",
+    "remove": "Вилучити",
+    "removed": "Календар «Sottomano» видалено"
+  },
+  "calendarSync": {
+    "eventTitle": "Закінчується: {{title}}",
+    "cannotCreate": "Не вдалося створити календар «Sottomano» на цьому iPhone."
+  },
+  "appearance": {
+    "intro": "Кольори стандартних категорій. Категорії, які ти створив, зберігають свій колір.",
+    "restoreButton": "Відновити стандартні категорії",
+    "restoreHint": "Повертає стандартні категорії, які ти видалив.",
+    "paletteLabel": "Палітра «{{name}}»",
+    "alerts": {
+      "restoreTitle": "Відновити стандартні категорії?",
+      "restoreMessage": "Видалені категорії повернуться з початковою назвою, іконкою й кольором. Твої документи й створені тобою категорії не зміняться.",
+      "nothingTitle": "Нічого відновлювати",
+      "nothingMessage": "Усі стандартні категорії вже є на Головній.",
+      "restoredTitle": "Категорії відновлено",
+      "restoredMessage_one": "{{count}} категорія повернулася на Головну, перед «Інше».",
+      "restoredMessage_few": "{{count}} категорії повернулися на Головну, перед «Інше».",
+      "restoredMessage_many": "{{count}} категорій повернулися на Головну, перед «Інше».",
+      "restoredMessage_other": "{{count}} категорії повернулися на Головну, перед «Інше».",
+      "restoreFailed": "Не вдалося відновити"
+    }
+  },
+  "about": {
+    "version": "Версія {{version}}",
+    "privacy": "Конфіденційність",
+    "privacyFooter": "Якщо ввімкнеш Календар, терміни записуються у вибраний календар iPhone. Коли надсилаєш документ, ти вирішуєш, із ким ним поділитися.",
+    "onPhone": "Твої документи залишаються на телефоні",
+    "offline": "Без облікового запису й сервера: працює й офлайн",
+    "noTracking": "Без стеження й реклами"
+  },
+  "terms": {
+    "intro": "Повні умови використання буде опубліковано разом із версією для App Store. Коротко:",
+    "free": "Sottomano безплатний до {{limit}} документів і карток",
+    "oneTime": "Розблокування — це одноразова покупка, без підписки",
+    "yours": "Твої документи залишаються на телефоні й належать тобі",
+    "backup": "Створюй резервну копію, щоб не втратити їх, якщо зміниш телефон"
+  },
+  "limit": {
+    "later": "Пізніше",
+    "title": "Ти використав {{limit}} безплатних місць",
+    "text": "Усе збережене залишається тут і працює як завжди. Щоб додати більше документів і карток, розблокуй Sottomano.",
+    "stillWorks": {
+      "view": "Переглядати документи",
+      "send": "Надсилати й поширювати їх",
+      "cards": "Показувати картки на касі",
+      "reminders": "Отримувати нагадування"
+    },
+    "blocked": "Додавати нові документи чи картки",
+    "unlock": "Розблокувати без обмежень за {{price}}"
+  },
+  "limitCard": {
+    "title": "Використано {{used}} з {{limit}} безплатних місць",
+    "accessibility": "{{title}}. Розблокувати",
+    "unlock": "Розблокувати"
+  },
+  "freeUsageCard": {
+    "titleSettings": "Безплатна версія: використано {{used}} з {{limit}}",
+    "titleMenu": "Безплатно: {{used}} з {{limit}}",
+    "subtitle": "Розблокувати без обмежень за {{price}}",
+    "accessibility": "{{title}}. Розблокувати без обмежень за {{price}}",
+    "unlock": "Розблокувати"
+  },
+  "freeLimit": {
+    "unlockPrice": "0,99 €"
+  },
+  "onboarding": {
+    "pages": {
+      "welcome": {
+        "title": "Вітаємо в Sottomano",
+        "text": "Посвідчення, картки лояльності, рахунки, гарантії: усі домашні документи в одному місці, завжди під рукою.",
+        "info": "Вони зберігаються на телефоні й працюють навіть без інтернету"
+      },
+      "scan": {
+        "title": "Сфотографуй один раз",
+        "text": "Скануй навіть кілька сторінок або імпортуй фото й PDF. Усе буде впорядковано, а надсилати можна такого розміру, як треба."
+      },
+      "deadlines": {
+        "title": "Ми стежимо за термінами",
+        "text": "Нагадаємо, перш ніж закінчиться термін рахунку чи документа. І в Календарі теж, якщо хочеш."
+      },
+      "cards": {
+        "title": "Картки завжди в кишені",
+        "text": "Сфотографуй картки лояльності: на касі покажи штрихкод або QR-код одним дотиком."
+      }
+    },
+    "skip": "Пропустити",
+    "pageOf": "Сторінка {{page}} з {{total}}",
+    "start": "Почати",
+    "restore": "Відновити з копії",
+    "art": {
+      "bills": "Рахунки",
+      "cards": "Картки",
+      "health": "Здоров’я",
+      "car": "Авто",
+      "pdfReady": "PDF готовий",
+      "billTitle": "Рахунок за світло",
+      "billExpires": "Через 2 дні",
+      "gym": "Спортзал",
+      "library": "Бібліотека",
+      "supermarket": "Супермаркет"
+    }
+  },
+  "homeEmpty": {
+    "openFailed": "Не вдалося відкрити файл",
+    "title": "Сфотографуй перший документ",
+    "text": "Рахунок, посвідчення чи гарантія на пральну машину: за кілька секунд усе в безпеці й завжди під рукою.",
+    "snap": "Сфотографувати документ",
+    "pdf": "Завантажити PDF",
+    "folders": "Твої папки",
+    "emptyAccessibility": "{{name}}, порожньо",
+    "empty": "Порожньо",
+    "newCategory": "Нова категорія"
+  },
+  "splashOverlay": {
+    "tagline": "Домашні документи, готові до надсилання"
+  },
+  "appActions": {
+    "shareText": "Раджу Sottomano: домашні документи, картки й терміни завжди під рукою, на телефоні й навіть без інтернету.",
+    "rateTitle": "Оцінити Sottomano",
+    "rateMessage": "Залишити оцінку можна буде, коли Sottomano з’явиться в App Store.",
+    "lockUnavailableTitle": "Блокування недоступне",
+    "lockUnavailableMessage": "Щоб заблокувати Sottomano, на iPhone потрібен код допуску. Встанови його в Параметри › Face ID і код допуску, а потім спробуй ще раз."
+  }
+}

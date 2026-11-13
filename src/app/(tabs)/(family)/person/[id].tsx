@@ -307,7 +307,7 @@ const makeStyles = (c: Palette) =>
     backgroundColor: c.lilac,
   },
   editText: {
-    fontSize: 14,
+    fontSize: 16, // text buttons: one size everywhere (never under 15)
     fontFamily: FONTS.semiBold,
     color: c.indigo,
   },

@@ -219,7 +219,7 @@ const makeStyles = (c: Palette) =>
   },
   doneText: {
     color: '#FFFFFF',
-    fontSize: 15,
+    fontSize: 16, // text buttons: one size everywhere (never under 15)
     fontFamily: FONTS.semiBold,
   },
   pressed: {

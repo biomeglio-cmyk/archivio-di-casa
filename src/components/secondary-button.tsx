@@ -47,7 +47,9 @@ export function SecondaryButton({
   // Larger text: the icon above the label, both centered (full-width buttons, as in the design)
   const iconRow = useIconRow();
   const { fontScale } = useWindowDimensions();
-  const oneLine = singleLine && fontScale <= 1.3; // larger text: the label wraps, never cut or tiny
+  // One line that may shrink (85 % at most) only between the default size and 130 %: at the default
+  // size the label never shrinks (it wraps between words if it must), with larger text it wraps too
+  const oneLine = singleLine && fontScale > 1.01 && fontScale <= 1.3;
   const ink = color ?? theme.indigo;
   const fill = background ?? theme.lilac;
   return (

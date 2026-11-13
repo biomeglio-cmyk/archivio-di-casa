@@ -57,7 +57,7 @@ const makeStyles = (c: Palette) =>
     paddingVertical: 2,
   },
   actionLabel: {
-    fontSize: 12,
+    fontSize: 15, // Riordina / Vedi tutto: 15 like every text button
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
     color: c.accent,

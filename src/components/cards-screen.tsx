@@ -337,7 +337,7 @@ const makeStyles = (c: Palette) =>
     alignItems: 'flex-end',
   },
   reorderText: {
-    fontSize: 12,
+    fontSize: 15, // Riordina: 15 like every text button
     fontFamily: FONTS.semiBold,
     textTransform: 'uppercase',
     color: c.accent,

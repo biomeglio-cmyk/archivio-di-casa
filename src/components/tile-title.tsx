@@ -20,6 +20,22 @@ const TITLE_MAX_FONT_SCALE = 1.25;
 const LAST_RESORT = 0.5; // a word that doesn't fit even in one column (never cut)
 const SAFETY = 1; // a point of room, so rounding never pushes the word onto two lines
 
+type Box = { width: number; wordWidth: number; needed: number };
+
+// How much the text must shrink so its widest word fits its box. Decided only when the word really
+// overflows the box at the current size: a box as wide as its own text (a button label) never
+// overflows, so it never starts shrinking itself (that loop made "Salva" tiny). It grows back when
+// the box gets wider.
+function decide(box: Box): Box {
+  const { width, wordWidth, needed } = box;
+  if (width <= 0 || wordWidth <= 0) return box;
+  const current = Math.max(LAST_RESORT, needed);
+  const fits = (width - SAFETY) / wordWidth;
+  if (width + SAFETY < wordWidth * current) return { ...box, needed: fits }; // the word overflows
+  if (needed < 1 && fits > needed + 0.01) return { ...box, needed: Math.min(1, fits) }; // more room
+  return box;
+}
+
 // The name on a tile (category, document, card). It wraps only between words, never inside one:
 // when its longest word is wider than the tile, the font shrinks for this tile until the word
 // fits (down to 85 %, a last resort). In a grid tile it then ends with "…" (the grid's columns depend
@@ -39,8 +55,9 @@ export function TileTitle({
 
   // Larger text: twice the lines, so a name is not cut after a word or two
   const lines = numberOfLines > 0 && fontScale > 1.3 ? numberOfLines * 2 : numberOfLines;
-  const [width, setWidth] = useState(0); // room for the text
-  const [wordWidth, setWordWidth] = useState(0); // the widest word at the full font size
+  // width: the box of the text; wordWidth: its widest word at full size; needed: the scale it needs
+  const [box, setBox] = useState<Box>({ width: 0, wordWidth: 0, needed: 1 });
+  const update = (patch: Partial<Box>) => setBox((prev) => decide({ ...prev, ...patch }));
 
   const flat = StyleSheet.flatten(style) ?? {};
   const fontSize = flat.fontSize ?? 17;
@@ -48,7 +65,7 @@ export function TileTitle({
   const cap = maxFontSizeMultiplier ?? (fontSize >= 28 ? TITLE_MAX_FONT_SCALE : 2);
   const words = children.trim().split(/\s+/).join('\n'); // one word per line, to measure them all
 
-  const needed = width > 0 && wordWidth > width - SAFETY ? (width - SAFETY) / wordWidth : 1;
+  const { needed } = box;
   const tooLong = needed < MIN_SCALE; // the word does not fit even at 85 %
   // In a tile of a grid: 85 % at most, then the name ends with "…" (one line, so a word is never
   // broken across two). Outside a grid (page titles, buttons) a word is never cut: the text gets as
@@ -61,7 +78,7 @@ export function TileTitle({
       : {};
 
   return (
-    <View style={containerStyle} onLayout={(event) => setWidth(event.nativeEvent.layout.width)}>
+    <View style={containerStyle} onLayout={(event) => update({ width: event.nativeEvent.layout.width })}>
       <Text
         style={[style, sized]}
         numberOfLines={truncates ? 1 : lines}
@@ -76,7 +93,7 @@ export function TileTitle({
         maxFontSizeMultiplier={cap}
         accessibilityElementsHidden
         importantForAccessibility="no-hide-descendants"
-        onTextLayout={(event) => setWordWidth(Math.max(0, ...event.nativeEvent.lines.map((line) => line.width)))}>
+        onTextLayout={(event) => update({ wordWidth: Math.max(0, ...event.nativeEvent.lines.map((line) => line.width)) })}>
         {words}
       </Text>
     </View>

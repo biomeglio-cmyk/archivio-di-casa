@@ -610,7 +610,7 @@ const makeStyles = (c: Palette) =>
     color: MINT_TEXT(c),
   },
   link: {
-    fontSize: 13,
+    fontSize: 15, // text buttons: one size everywhere (never under 15)
     fontFamily: FONTS.semiBold,
     color: c.accent,
   },

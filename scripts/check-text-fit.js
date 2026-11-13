@@ -148,12 +148,14 @@ const PLACES = {
   pageTitle: (W) => ({ label: 'page title', size: 30, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
   bigTitle: (W) => ({ label: 'big title', size: 28, weight: 700, mode: 'words', minScale: 0.5, autoFit: true, cap: 1.25, width: W - SIDE * 2 }),
   primaryButton: (W) => ({ label: 'button', size: 16, weight: 600, mode: 'words', minScale: 0.85, width: W - SIDE * 2 - 40 - 26 }),
-  lineButton: (W, scale) => ({ label: 'button', size: 16, weight: 600, mode: scale > 1.3 ? 'words' : 'line', minScale: 0.85,
+  // one-line buttons: shrink (85 % at most) only between the default size and 130 %; at the default
+  // size and with larger text they wrap between words instead
+  lineButton: (W, scale) => ({ label: 'button', size: 16, weight: 600, mode: scale > 1.01 && scale <= 1.3 ? 'line' : 'words', minScale: 0.85,
     width: W - SIDE * 2 - 40 - 26 }),
   rowButton: (W, scale) => {
     // above 130 % or under 360 pt the two buttons stack (DetailActionBar), each with the full width
     const stacked = scale > 1.3 || W < 360;
-    return { label: 'button in a row', size: 16, weight: 600, mode: stacked ? 'words' : 'line', minScale: 0.85,
+    return { label: 'button in a row', size: 16, weight: 600, mode: stacked || scale <= 1.01 ? 'words' : 'line', minScale: 0.85,
       width: stacked ? W - SIDE * 2 - 40 - 26 : (W - SIDE * 2 - 10) / 2 - 40 - 26 };
   },
   chip: (W) => ({ label: 'chip', size: 15, weight: 600, mode: 'words', minScale: 0.85, width: W - SIDE * 2 - 32 }),

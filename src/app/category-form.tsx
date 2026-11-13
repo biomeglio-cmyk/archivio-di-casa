@@ -583,7 +583,7 @@ const makeStyles = (c: Palette) =>
     color: c.text,
   },
   restoreAction: {
-    fontSize: 14,
+    fontSize: 16, // text buttons: one size everywhere (never under 15)
     fontFamily: FONTS.semiBold,
     color: c.accent,
   },

@@ -7,6 +7,7 @@ import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { CARD_COLORS } from '@/constants/card-colors';
 import type { CategoryColors, CoverMode } from '@/db/types';
+import { themedStyles } from '@/constants/theme';
 
 const MODES: CoverMode[] = ['photo', 'color'];
 
@@ -72,10 +73,11 @@ export function CoverField({ mode, onModeChange, color, onColorChange, categoryC
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   colors: {
     padding: 12,
     borderRadius: 12,
     borderCurve: 'continuous',
   },
-});
+}));

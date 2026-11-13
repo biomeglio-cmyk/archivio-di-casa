@@ -1,7 +1,7 @@
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 type Props = {
@@ -33,7 +33,8 @@ export function SectionHeader({ title, action }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -55,4 +56,4 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: Colors.current.accent,
   },
-});
+}));

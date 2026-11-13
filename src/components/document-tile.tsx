@@ -16,6 +16,7 @@ import { usePressed } from '@/hooks/use-pressed';
 import type { TileSize } from '@/hooks/use-tile-size';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { isLightColor } from '@/utils/colors';
+import { themedStyles } from '@/constants/theme';
 
 const UNSELECTED_TINT = '#8E8E93';
 
@@ -112,7 +113,8 @@ export function DocumentTile({ document, size, href, selection }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   pressed: {
     opacity: 0.8,
   },
@@ -151,7 +153,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     backgroundColor: 'rgba(255, 255, 255, 0.85)', // readable over the photo or a color
   },
-});
+}));
 
 // The tile of a Password entry: its image full-bleed, or its preview color with its icon; the name
 function PasswordTileFace({ document, info, selected }: FaceProps & { info: NonNullable<DocumentListItem['password']> }) {

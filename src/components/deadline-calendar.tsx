@@ -6,7 +6,7 @@ import { useHorizontalSwipe } from '@/components/calendar-parts';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { addDaysIso, formatMonthTitle, MONTHS, parseISODate, toISODate } from '@/utils/dates';
 
@@ -179,7 +179,8 @@ function MonthArrow({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   weekCard: {
     marginTop: 12,
     flexDirection: 'row',
@@ -307,4 +308,4 @@ const styles = StyleSheet.create({
     height: 5,
     borderRadius: 3,
   },
-});
+}));

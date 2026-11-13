@@ -25,7 +25,7 @@ import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { reminderLabel, reminderPickerValue } from '@/constants/deadline-options';
-import { Colors, Spacing, tintedShadow } from '@/constants/theme';
+import { Colors, Spacing, tintedShadow, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import {
   getDocumentDetail,
@@ -48,8 +48,12 @@ import { dayAndMonth, folderDate } from '@/utils/folder';
 import { formatEuro } from '@/utils/money';
 import { PIN_TINT } from '@/constants/brand';
 
-const PIN_BACKGROUND = PIN_TINT;
-const PIN_COLOR = Colors.current.heart;
+let PIN_BACKGROUND = '';
+let PIN_COLOR = '';
+onTheme(() => {
+  PIN_BACKGROUND = PIN_TINT;
+  PIN_COLOR = Colors.current.heart;
+});
 
 // Detail of one document (or of a card). Used by the document/[id] screen of every tab.
 export default function DocumentDetail() {
@@ -484,7 +488,8 @@ function ActionRow({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -672,4 +677,4 @@ const styles = StyleSheet.create({
   pay: {
     marginTop: 18,
   },
-});
+}));

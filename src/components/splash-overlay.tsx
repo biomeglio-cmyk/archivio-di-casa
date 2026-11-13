@@ -8,6 +8,7 @@ import Animated, { FadeOut } from 'react-native-reanimated';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
+import { themedStyles } from '@/constants/theme';
 
 const HOLD_MS = 700; // logo on screen…
 const FADE_MS = 300; // …then a fade into the app: about one second in total
@@ -48,7 +49,8 @@ export function SplashOverlay() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   overlay: {
     zIndex: 1000,
   },
@@ -76,4 +78,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: FONTS.medium,
   },
-});
+}));

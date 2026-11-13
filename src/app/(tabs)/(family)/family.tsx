@@ -16,7 +16,7 @@ import { REORDER_FOOTER, ReorderHeader, ReorderRow, SortableList } from '@/compo
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { roleLabel } from '@/constants/person-roles';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPeopleWithCounts, savePeopleOrder } from '@/db/people';
 import type { PersonWithCount } from '@/db/types';
@@ -171,7 +171,8 @@ function PersonRow({ person, onLongPress }: { person: PersonWithCount; onLongPre
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -295,4 +296,4 @@ const styles = StyleSheet.create({
     color: Colors.current.textSecondary,
     textAlign: 'center',
   },
-});
+}));

@@ -9,6 +9,7 @@ import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { isLightColor } from '@/utils/colors';
+import { themedStyles } from '@/constants/theme';
 
 type Props = {
   card: Pick<DocumentListItem, 'title' | 'firstImagePath' | 'cardColor' | 'personName'>;
@@ -53,7 +54,8 @@ export function CardFace({ card, width, showPerson = false, large = false, showP
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   card: {
     borderRadius: 12,
     borderCurve: 'continuous',
@@ -90,4 +92,4 @@ const styles = StyleSheet.create({
     lineHeight: 16,
     fontWeight: 600,
   },
-});
+}));

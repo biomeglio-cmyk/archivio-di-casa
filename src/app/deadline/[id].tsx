@@ -16,7 +16,7 @@ import {
   reminderPickerValue,
   reminderToSave,
 } from '@/constants/deadline-options';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles } from '@/constants/theme';
 import { getDocumentDetail, saveDocumentDeadline } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -156,7 +156,8 @@ function DeadlineContent({ document }: { document: DocumentDetail }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   content: {
     paddingVertical: 16,
     paddingHorizontal: Spacing.side,
@@ -175,4 +176,4 @@ const styles = StyleSheet.create({
     paddingHorizontal: 14,
     paddingVertical: 12,
   },
-});
+}));

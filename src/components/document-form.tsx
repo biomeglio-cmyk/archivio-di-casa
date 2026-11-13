@@ -22,7 +22,7 @@ import {
   reminderToSave,
 } from '@/constants/deadline-options';
 import { typeSuggestions } from '@/constants/document-types';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategories } from '@/db/categories';
 import { listDocumentTypes, type DocumentInput } from '@/db/documents';
@@ -38,8 +38,12 @@ import { REPEAT_UNITS, unitName, type RepeatUnit } from '@/utils/recurrence';
 import { PIN_TINT } from '@/constants/brand';
 
 const capitalize = (text: string) => text.charAt(0).toUpperCase() + text.slice(1);
-const PIN_BACKGROUND = PIN_TINT;
-const PIN_COLOR = Colors.current.heart;
+let PIN_BACKGROUND = '';
+let PIN_COLOR = '';
+onTheme(() => {
+  PIN_BACKGROUND = PIN_TINT;
+  PIN_COLOR = Colors.current.heart;
+});
 const STATUSES: { label: string; value: PaymentStatus | null }[] = [
   { label: 'Nessuno', value: null },
   { label: 'Da pagare', value: 'due' },
@@ -578,7 +582,8 @@ function SelectBox({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -809,4 +814,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     color: Colors.current.error,
   },
-});
+}));

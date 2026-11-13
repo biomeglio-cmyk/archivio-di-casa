@@ -1,7 +1,7 @@
 import { Platform, StyleSheet, type TextProps } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors, Fonts, ThemeColor } from '@/constants/theme';
+import { Colors, Fonts, ThemeColor, themedStyles } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 export type ThemedTextProps = TextProps & {
@@ -15,7 +15,8 @@ export function ThemedText({ style, type = 'default', themeColor, ...rest }: The
   return <Text style={[{ color: theme[themeColor ?? 'text'] }, styles[type], style]} {...rest} />;
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   small: {
     fontSize: 14,
     lineHeight: 20,
@@ -55,4 +56,4 @@ const styles = StyleSheet.create({
     fontWeight: Platform.select({ android: 700 }) ?? 500,
     fontSize: 12,
   },
-});
+}));

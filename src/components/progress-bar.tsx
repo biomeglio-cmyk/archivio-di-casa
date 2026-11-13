@@ -2,7 +2,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet, View } from 'react-native';
 
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 
 type Props = {
   share: number; // 0…1
@@ -41,11 +41,12 @@ export function ProgressBar({ share, height = 6, onGradient = false, accessibili
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   track: {
     overflow: 'hidden',
   },
   fill: {
     height: '100%',
   },
-});
+}));

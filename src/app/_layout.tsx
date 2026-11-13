@@ -21,18 +21,21 @@ import { DATABASE_NAME, initDatabase } from '@/db/init';
 import { AppNotifications } from '@/notifications/app-notifications';
 import { followSystemTheme } from '@/settings/theme-mode';
 
-// Navigation theme with the app page color behind every screen (light or dark, chosen at start)
-const APP_THEME = {
-  ...(Colors.current.isDark ? DarkTheme : DefaultTheme),
-  colors: {
-    ...(Colors.current.isDark ? DarkTheme : DefaultTheme).colors,
-    background: Colors.current.background,
-    card: Colors.current.surface,
-    text: Colors.current.text,
-    border: Colors.current.separator,
-    primary: Colors.current.accent,
-  },
-};
+// Navigation theme with the app page color behind every screen (the active light or dark set)
+function appTheme() {
+  const base = Colors.current.isDark ? DarkTheme : DefaultTheme;
+  return {
+    ...base,
+    colors: {
+      ...base.colors,
+      background: Colors.current.background,
+      card: Colors.current.surface,
+      text: Colors.current.text,
+      border: Colors.current.separator,
+      primary: Colors.current.accent,
+    },
+  };
+}
 
 // The root Stack starts on the tabs; sheets and modals are pushed on top of them
 export const unstable_settings = { anchor: '(tabs)' };
@@ -70,7 +73,7 @@ export default function RootLayout() {
       databaseName={DATABASE_NAME}
       onInit={initDatabase}
       options={{ enableChangeListener: true }}>
-      <ThemeProvider value={APP_THEME}>
+      <ThemeProvider value={appTheme()}>
         <Fragment key={generation}>
         {/* Clock and battery: dark on the light theme, light on the dark one */}
         <StatusBar style={Colors.current.isDark ? 'light' : 'dark'} />

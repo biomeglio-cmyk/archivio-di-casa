@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { DateSquare } from '@/components/date-square';
 import { StatusBadge } from '@/components/status-badge';
 import { Text } from '@/components/text';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
@@ -83,7 +83,8 @@ function statusLabel(document: DocumentListItem): string | null {
   return null;
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -115,4 +116,4 @@ const styles = StyleSheet.create({
   subtitleOverdue: {
     color: Colors.current.error,
   },
-});
+}));

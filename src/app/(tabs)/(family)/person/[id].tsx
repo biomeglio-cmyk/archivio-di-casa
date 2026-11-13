@@ -20,7 +20,7 @@ import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { Text } from '@/components/text';
 import { TileGrid } from '@/components/tile-grid';
 import { roleLabel } from '@/constants/person-roles';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listDocumentsByPerson, saveDocumentOrder } from '@/db/documents';
 import { getPerson, setPersonPhoto } from '@/db/people';
@@ -205,7 +205,8 @@ function PersonContent({ person, documents }: { person: Person; documents: Docum
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -307,4 +308,4 @@ const styles = StyleSheet.create({
     left: Spacing.side,
     right: Spacing.side,
   },
-});
+}));

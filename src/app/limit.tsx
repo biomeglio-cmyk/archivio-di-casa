@@ -7,12 +7,16 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
-import { Colors, softTint, onSoftTint } from '@/constants/theme';
+import { Colors, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { FREE_LIMIT, UNLOCK_PRICE } from '@/settings/free-limit';
 
-const MINT_TINT = softTint('#E6F7F0', '#15332A');
-const MINT_INK = onSoftTint('#1F7A5A', '#7FE0BC');
+let MINT_TINT = '';
+let MINT_INK = '';
+onTheme(() => {
+  MINT_TINT = softTint('#E6F7F0', '#15332A');
+  MINT_INK = onSoftTint('#1F7A5A', '#7FE0BC');
+});
 const STILL_WORKS = ['Consultare i tuoi documenti', 'Inviarli e condividerli', 'Mostrare le tessere alla cassa', 'Ricevere i promemoria'];
 
 // The limit panel (docs/design/ProvaFinita.dc.html), a sheet over the screen that tried to add:
@@ -68,7 +72,8 @@ export default function LimitPanel() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   dim: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -158,4 +163,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     color: Colors.current.accent,
   },
-});
+}));

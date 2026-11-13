@@ -15,7 +15,7 @@ import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { PASSWORD_INK, PASSWORD_TINT, typeMeta, typeName } from '@/constants/password-options';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { setPinned } from '@/db/documents';
 import type { DocumentDetail, PasswordInfo } from '@/db/types';
@@ -322,7 +322,8 @@ function IconBox({ symbol }: { symbol: SFSymbol }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -530,4 +531,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     color: PASSWORD_INK,
   },
-});
+}));

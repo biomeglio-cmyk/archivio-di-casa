@@ -12,6 +12,7 @@ import { useTheme } from '@/hooks/use-theme';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
 import { previewDocumentFiles } from '@/storage/preview-files';
 import { pageLabel, usesFrontBack } from '@/utils/page-labels';
+import { themedStyles } from '@/constants/theme';
 
 type Props = {
   title: string;
@@ -140,7 +141,8 @@ function MissingFile() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   container: {
     gap: 12,
   },
@@ -171,4 +173,4 @@ const styles = StyleSheet.create({
     borderRadius: 16,
     borderCurve: 'continuous',
   },
-});
+}));

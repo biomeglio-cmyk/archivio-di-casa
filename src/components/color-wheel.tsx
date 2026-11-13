@@ -4,6 +4,7 @@ import { GestureDetector, GestureHandlerRootView, usePanGesture } from 'react-na
 import Svg, { Circle, Defs, Path, RadialGradient, Stop } from 'react-native-svg';
 
 import { wheelHex } from '@/utils/password-tools';
+import { themedStyles } from '@/constants/theme';
 
 const SIZE = 200;
 const R = SIZE / 2;
@@ -94,7 +95,8 @@ export function ColorWheel({ hue, radius, onChange, onDraggingChange }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   root: {
     width: SIZE,
     height: SIZE,
@@ -115,4 +117,4 @@ const styles = StyleSheet.create({
     borderColor: '#FFFFFF',
     boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
   },
-});
+}));

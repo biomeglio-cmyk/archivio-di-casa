@@ -4,9 +4,10 @@
  * (constants/brand.ts) for the main actions; and the dark theme of the Impostazioni design (cards
  * with a thin border instead of shadows). Both sets have the same keys.
  *
- * The theme is chosen ONCE, when the app starts (Impostazioni › Aspetto › Tema: Automatico follows
- * the phone): every StyleSheet of the app is built from `Colors.current` when its file loads.
- * Changing it restarts the JavaScript (settings/theme-mode.ts).
+ * `Colors.current` is ONE object, updated in place when the theme changes (Impostazioni › Aspetto ›
+ * Tema; Automatico follows the phone). Styles are built from it lazily, once per theme
+ * (`themedStyles`), and module values that depend on it are refreshed with `onTheme`; then the
+ * screens are mounted again (settings/theme-mode.ts). Nothing is reloaded: fonts and assets stay.
  */
 
 import '@/global.css';
@@ -90,17 +91,52 @@ export function readThemeMode(): ThemeMode {
   }
 }
 
+// Whether a mode is dark now: Automatico asks the phone
+export function isDarkMode(mode: ThemeMode): boolean {
+  return (mode === 'auto' ? Appearance.getColorScheme() : mode) === 'dark';
+}
+
 // At start: tell iOS (tab bar, system sheets, alerts follow it), then pick the set
-function startTheme() {
+function startTheme(): typeof LIGHT {
   const mode = readThemeMode();
   Appearance.setColorScheme(mode === 'auto' ? 'unspecified' : mode);
-  const scheme = mode === 'auto' ? Appearance.getColorScheme() : mode;
-  return scheme === 'dark' ? DARK : LIGHT;
+  return { ...(isDarkMode(mode) ? DARK : LIGHT) };
 }
 
 export const Colors = {
-  current: startTheme(),
+  current: startTheme(), // mutable: always the active set
 } as const;
+
+const listeners = new Set<() => void>();
+
+// A module value that depends on the theme: computed now and again at every change
+export function onTheme(refresh: () => void): void {
+  refresh();
+  listeners.add(refresh);
+}
+
+// Switches the colors in place and refreshes the module values (the caller mounts the screens again)
+export function setDarkColors(dark: boolean): void {
+  if (Colors.current.isDark === dark) return;
+  Object.assign(Colors.current, dark ? DARK : LIGHT);
+  listeners.forEach((refresh) => refresh());
+}
+
+// A StyleSheet built lazily from the active colors, once per theme; used exactly like the object
+// StyleSheet.create returns (styles.row), the values follow the theme
+export function themedStyles<T extends object>(factory: () => T): T {
+  const cache: { light?: T; dark?: T } = {};
+  const current = () => {
+    const key = Colors.current.isDark ? 'dark' : 'light';
+    return (cache[key] ??= factory());
+  };
+  return new Proxy({} as T, {
+    get: (_, property) => current()[property as keyof T],
+    has: (_, property) => property in current(),
+    ownKeys: () => Reflect.ownKeys(current()),
+    getOwnPropertyDescriptor: (_, property) => Reflect.getOwnPropertyDescriptor(current(), property),
+  });
+}
 
 // A section tint and the text on it, light and "Tema notte" values (design guide)
 export function softTint(light: string, dark: string): string {
@@ -168,7 +204,9 @@ export const Radius = {
 
 // Shadows of the guide (CSS boxShadow strings, React Native 0.76+)
 export const Shadows = {
-  card: Colors.current.isDark ? 'none' : '0 6px 22px rgba(28, 30, 70, 0.08)', // dark: a border instead
+  get card() {
+    return Colors.current.isDark ? 'none' : '0 6px 22px rgba(28, 30, 70, 0.08)'; // dark: a border instead
+  },
   sheet: '0 -10px 30px rgba(28, 30, 70, 0.15)',
   dialog: '0 20px 50px rgba(28, 30, 70, 0.25)',
 } as const;
@@ -184,14 +222,23 @@ export function iconShadow(rgb: string): string {
 }
 
 // A white card: white, rounded 22, soft shadow. Spread it into a style array.
+// (getters: spread inside a themed style, it takes the active colors)
 export const CardSurface = {
-  backgroundColor: Colors.current.surface,
+  get backgroundColor() {
+    return Colors.current.surface;
+  },
   borderRadius: Radius.card,
-  borderCurve: 'continuous',
-  boxShadow: Shadows.card,
-  borderWidth: Colors.current.isDark ? 1 : 0, // dark: a 1px border, white 7%, instead of the shadow
-  borderColor: Colors.current.cardBorder,
-} as const;
+  borderCurve: 'continuous' as const,
+  get boxShadow() {
+    return Shadows.card;
+  },
+  get borderWidth() {
+    return Colors.current.isDark ? 1 : 0; // dark: a 1px border, white 7%, instead of the shadow
+  },
+  get borderColor() {
+    return Colors.current.cardBorder;
+  },
+};
 
 // A row of a white card drawn row by row (SectionList sections cannot have a container, so no
 // shared shadow): a thin separator-colored outline and rounded corners on the first and last row.

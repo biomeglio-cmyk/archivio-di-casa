@@ -19,7 +19,7 @@ import { RoundIconButton } from '@/components/round-icon-button';
 import { REORDER_FOOTER, ReorderHeader, ReorderRow, SortableList } from '@/components/sortable-list';
 import { Text } from '@/components/text';
 import { spacedNumber, WALLET_CARD_HEIGHT, WALLET_CARD_PEEK, WalletCardFace } from '@/components/wallet-card';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listDocumentFiles, saveDocumentOrder } from '@/db/documents';
 import type { Category, DocumentListItem } from '@/db/types';
@@ -289,7 +289,8 @@ function CardCode({ card, tint, onTint, onClose }: { card: DocumentListItem; tin
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -407,4 +408,4 @@ const styles = StyleSheet.create({
     color: Colors.current.textSecondary,
     textAlign: 'center',
   },
-});
+}));

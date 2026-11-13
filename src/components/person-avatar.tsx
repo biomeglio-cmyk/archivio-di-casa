@@ -5,7 +5,7 @@ import { StyleSheet } from 'react-native';
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { avatarGradient } from '@/constants/person-roles';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { personPhotoUri } from '@/storage/person-photos';
 
@@ -39,7 +39,8 @@ export function PersonAvatar({ name, photoPath, photoUri, size, shadow = false }
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   photo: {
     backgroundColor: Colors.current.lilac,
   },
@@ -51,4 +52,4 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontFamily: FONTS.semiBold,
   },
-});
+}));

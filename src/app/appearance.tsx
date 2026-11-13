@@ -8,7 +8,7 @@ import { Alert, Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import { SecondaryButton } from '@/components/secondary-button';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
-import { CardSurface, Spacing } from '@/constants/theme';
+import { CardSurface, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { PALETTES, type Palette } from '@/constants/palettes';
 import { BUILTIN_ORDER } from '@/db/builtin-categories';
@@ -124,7 +124,8 @@ function PaletteCard({ palette, selected, onPress }: { palette: Palette; selecte
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   content: {
     paddingVertical: 16,
     paddingHorizontal: Spacing.side,
@@ -175,4 +176,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+}));

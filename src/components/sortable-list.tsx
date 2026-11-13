@@ -9,7 +9,7 @@ import Sortable from 'react-native-sortables';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, BRAND_SHADOW, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { CardSurface, Colors } from '@/constants/theme';
+import { CardSurface, Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 const DRAG_DELAY_MS = 120; // in "Riordina" a short touch is enough to pick a row up
@@ -134,7 +134,8 @@ export function ReorderHeader({ title, hint, onDone }: HeaderProps) {
 export const REORDER_FOOTER =
   'Allo stesso modo riordini le tessere, le persone in Famiglia e i Preferiti: tieni premuto una riga e trascinala con la maniglia a destra.';
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   row: {
     ...CardSurface,
     height: 76,
@@ -207,4 +208,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: Colors.current.textOnLilac,
   },
-});
+}));

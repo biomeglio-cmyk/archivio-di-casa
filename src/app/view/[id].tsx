@@ -23,6 +23,7 @@ import { getDocumentDetail, listDocumentFiles } from '@/db/documents';
 import type { DocumentFile } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { getDocumentsDirectory, resolveDocumentFile } from '@/storage/document-files';
+import { themedStyles } from '@/constants/theme';
 
 const BACKGROUND = '#1A1C30';
 const SIDE_MARGIN = 30; // equal margins left and right of a page at 100% (design: 330 of 390)
@@ -225,7 +226,8 @@ function RoundButton({ symbol, label, onPress, transparent = false, disabled = f
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: BACKGROUND,
@@ -319,4 +321,4 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: FONTS.medium,
   },
-});
+}));

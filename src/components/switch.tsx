@@ -4,7 +4,7 @@ import { Pressable, StyleSheet } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 
 type Props = {
   value: boolean;
@@ -52,7 +52,8 @@ export function Switch({ value, onValueChange, disabled = false, accessibilityLa
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   track: {
     width: WIDTH,
     height: HEIGHT,
@@ -72,4 +73,4 @@ const styles = StyleSheet.create({
   disabled: {
     opacity: 0.5,
   },
-});
+}));

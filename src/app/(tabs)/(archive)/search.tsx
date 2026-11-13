@@ -8,7 +8,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Chip, ChipGroup } from '@/components/chip';
 import { Text, TextInput } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { CardSurface, Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
+import { CardSurface, Colors, Spacing, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategoriesWithCounts } from '@/db/categories';
 import { listAllDocuments } from '@/db/documents';
@@ -20,8 +20,12 @@ import { categoryShadowRgb } from '@/utils/colors';
 
 const DEBOUNCE_MS = 150;
 const LENS = '#6D5CE6';
-const MARK_BACKGROUND = softTint('#E8E5FD', '#262849');
-const MARK_TEXT = onSoftTint('#3A2BC8', '#B3A8FF');
+let MARK_BACKGROUND = '';
+let MARK_TEXT = '';
+onTheme(() => {
+  MARK_BACKGROUND = softTint('#E8E5FD', '#262849');
+  MARK_TEXT = onSoftTint('#3A2BC8', '#B3A8FF');
+});
 
 // "Ricerca" (docs/design/Ricerca.dc.html), opened by the field in Home: the field (lilac, ringed)
 // with "Annulla", the filters Tutto / Documenti / Tessere / Scadenze, "N RISULTATI" and the results
@@ -146,7 +150,8 @@ function Marked({ text, match, style }: { text: string; match: MatchRange | null
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -263,4 +268,4 @@ const styles = StyleSheet.create({
     color: Colors.current.textSecondary,
     textAlign: 'center',
   },
-});
+}));

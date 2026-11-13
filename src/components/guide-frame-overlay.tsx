@@ -1,6 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
 import type { FrameRect } from '@/capture/guide-frame';
+import { themedStyles } from '@/constants/theme';
 
 const MASK = 'rgba(0, 0, 0, 0.55)';
 
@@ -29,7 +30,8 @@ export function GuideFrameOverlay({ frame }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   mask: {
     position: 'absolute',
     backgroundColor: MASK,
@@ -41,4 +43,4 @@ const styles = StyleSheet.create({
     borderRadius: 14,
     borderCurve: 'continuous',
   },
-});
+}));

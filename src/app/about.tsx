@@ -6,7 +6,7 @@ import { ScrollView, StyleSheet, View } from 'react-native';
 import { LogoMark } from '@/components/logo-mark';
 import { Group, Row } from '@/components/grouped-list';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 // "Info e privacy" (from the Menu): app version and what happens to the user's documents
@@ -40,7 +40,8 @@ export default function AboutScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   content: {
     paddingVertical: 16,
     paddingHorizontal: Spacing.side,
@@ -57,4 +58,4 @@ const styles = StyleSheet.create({
     lineHeight: 34,
     fontFamily: FONTS.bold,
   },
-});
+}));

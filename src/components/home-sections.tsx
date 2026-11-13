@@ -9,7 +9,7 @@ import { Text } from '@/components/text';
 import { TileTitle } from '@/components/tile-title';
 import { WhiteCard } from '@/components/white-card';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
-import { Colors, Radius, tintedShadow } from '@/constants/theme';
+import { Colors, Radius, tintedShadow, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
@@ -135,7 +135,8 @@ export function NextDeadlineCard({ document }: { document: DocumentListItem }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   favorite: {
     flex: 1,
     height: FAVORITE_HEIGHT,
@@ -198,4 +199,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: Colors.current.indigo,
   },
-});
+}));

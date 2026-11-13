@@ -9,6 +9,7 @@ import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
 import { authenticate } from '@/security/app-lock';
 import { readPassword } from '@/security/password-vault';
+import { themedStyles } from '@/constants/theme';
 
 const CLIPBOARD_SECONDS = 60;
 
@@ -86,7 +87,8 @@ export function PasswordCard({ documentId, username }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   card: {
     borderRadius: 12,
     borderCurve: 'continuous',
@@ -121,4 +123,4 @@ const styles = StyleSheet.create({
     color: BRAND_COLOR,
     fontSize: 17,
   },
-});
+}));

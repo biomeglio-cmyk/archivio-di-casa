@@ -38,7 +38,7 @@ import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing, softTint } from '@/constants/theme';
+import { Colors, Spacing, softTint, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatBytes } from '@/send/send-preferences';
 
@@ -52,7 +52,10 @@ type Step =
   | { kind: 'restore'; uri: string; name: string } // asking the password of the chosen file
   | { kind: 'working'; label: string; fraction: number | null }; // null = no percentage yet
 
-const APRICOT_TINT = softTint('#FFF0E7', '#3A2418');
+let APRICOT_TINT = '';
+onTheme(() => {
+  APRICOT_TINT = softTint('#FFF0E7', '#3A2418');
+});
 const APRICOT = '#F5824A';
 const BACKUP_FOLDER = 'Backup'; // in the app's own folder on the phone
 
@@ -466,7 +469,8 @@ function SoftButton({ symbol, label, onPress, plain = false }: { symbol: SFSymbo
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -664,4 +668,4 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     backgroundColor: BRAND_COLOR,
   },
-});
+}));

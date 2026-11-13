@@ -13,7 +13,7 @@ import { RoundIconButton } from '@/components/round-icon-button';
 import { Segmented } from '@/components/segmented';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listDocumentsWithExpiry, saveDocumentDeadline, setPaymentStatus } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
@@ -247,7 +247,8 @@ function monthOf(iso: string) {
   return { year: date.getFullYear(), month: date.getMonth() };
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -348,4 +349,4 @@ const styles = StyleSheet.create({
     color: Colors.current.textSecondary,
     textAlign: 'center',
   },
-});
+}));

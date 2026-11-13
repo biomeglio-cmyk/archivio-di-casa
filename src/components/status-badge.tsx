@@ -1,7 +1,7 @@
 import { StyleSheet } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { PaymentStatus } from '@/db/types';
 
@@ -22,7 +22,8 @@ export function StatusBadge({ status }: { status: PaymentStatus }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   badge: {
     overflow: 'hidden',
     paddingHorizontal: 9,
@@ -31,4 +32,4 @@ const styles = StyleSheet.create({
     fontSize: 12,
     fontFamily: FONTS.semiBold,
   },
-});
+}));

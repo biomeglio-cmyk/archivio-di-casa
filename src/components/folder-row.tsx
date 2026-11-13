@@ -13,7 +13,7 @@ import { StatusBadge } from '@/components/status-badge';
 import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { usePressed } from '@/hooks/use-pressed';
@@ -109,7 +109,8 @@ export function FolderRow({ document, onPress, actions, onLongPress, selection }
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -155,4 +156,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     color: Colors.current.text,
   },
-});
+}));

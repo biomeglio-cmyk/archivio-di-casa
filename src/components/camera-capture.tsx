@@ -12,6 +12,7 @@ import { PrimaryButton } from '@/components/primary-button';
 import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/typography';
 import { useLargestPictureSize } from '@/capture/picture-size';
+import { themedStyles } from '@/constants/theme';
 
 type Props = {
   onDone: (uris: string[]) => void; // the photos in the order they were taken
@@ -163,7 +164,8 @@ export function CameraCapture({ onDone, onCancel }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: '#000000',
@@ -274,4 +276,4 @@ const styles = StyleSheet.create({
   permissionButton: {
     alignSelf: 'stretch',
   },
-});
+}));

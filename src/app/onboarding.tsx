@@ -9,7 +9,7 @@ import { LogoMark } from '@/components/logo-mark';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { markOnboardingSeen } from '@/onboarding/onboarding-flag';
 
@@ -317,7 +317,8 @@ function CardsArt() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -705,4 +706,4 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     boxShadow: '0 10px 20px rgba(100, 90, 235, 0.35)',
   },
-});
+}));

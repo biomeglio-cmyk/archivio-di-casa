@@ -7,6 +7,7 @@ import { Text } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { FONTS } from '@/constants/typography';
 import { LOCK_AFTER_MS, authenticate, isAppLockEnabled, unlockLabel, useAppLockEnabled } from '@/security/app-lock';
+import { themedStyles } from '@/constants/theme';
 
 // "Blocca con Face ID". Mounted once in the root layout, above everything.
 // - locked: at a cold start, and back from the background after more than 1 minute.
@@ -97,7 +98,8 @@ export function AppLock() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: BRAND_COLOR,
@@ -137,4 +139,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
-});
+}));

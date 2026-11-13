@@ -6,7 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Text } from '@/components/text';
 import type { QuickAction } from '@/actions/quick-actions';
 import { DANGER_COLOR } from '@/constants/brand';
-import { Radius, Shadows } from '@/constants/theme';
+import { Radius, Shadows, themedStyles } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 export type TileRect = { x: number; y: number; width: number; height: number }; // in the window
@@ -108,7 +108,8 @@ export function QuickActionMenu({ target, onClose }: { target: QuickMenuTarget |
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   fill: {
     flex: 1,
   },
@@ -136,4 +137,4 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 17,
   },
-});
+}));

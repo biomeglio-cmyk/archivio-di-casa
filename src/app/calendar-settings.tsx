@@ -14,7 +14,7 @@ import { PrimaryButton } from '@/components/primary-button';
 import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
-import { Spacing } from '@/constants/theme';
+import { Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 type PermissionState = 'unknown' | 'granted' | 'ask' | 'denied';
@@ -126,7 +126,8 @@ export default function CalendarSettingsSheet() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   container: {
     paddingHorizontal: Spacing.side,
     paddingTop: 28,
@@ -155,4 +156,4 @@ const styles = StyleSheet.create({
   status: {
     textAlign: 'center',
   },
-});
+}));

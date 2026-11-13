@@ -2,7 +2,7 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors, Radius } from '@/constants/theme';
+import { Colors, Radius, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 type Props = {
@@ -63,7 +63,8 @@ export function Segmented({ values, selectedIndex, onChange, enabled = true, tin
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   pill: {
     flexDirection: 'row',
     padding: INSET,
@@ -98,4 +99,4 @@ const styles = StyleSheet.create({
     color: Colors.current.textSecondary,
     fontFamily: FONTS.medium,
   },
-});
+}));

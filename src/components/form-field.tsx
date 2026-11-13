@@ -5,6 +5,7 @@ import { TextInput } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { BRAND_COLOR } from '@/constants/brand';
 import { useTheme } from '@/hooks/use-theme';
+import { themedStyles } from '@/constants/theme';
 
 type FormFieldProps = {
   label: string;
@@ -48,7 +49,8 @@ export function TextField(props: TextInputProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   field: {
     gap: 6,
   },
@@ -65,4 +67,4 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderCurve: 'continuous',
   },
-});
+}));

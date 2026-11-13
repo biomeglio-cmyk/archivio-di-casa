@@ -1,7 +1,7 @@
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet } from 'react-native';
 
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { usePressed } from '@/hooks/use-pressed';
 
 type Props = {
@@ -33,7 +33,8 @@ export function RoundIconButton({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   button: {
     width: 44,
     height: 44,
@@ -44,4 +45,4 @@ const styles = StyleSheet.create({
   pressed: {
     opacity: 0.6,
   },
-});
+}));

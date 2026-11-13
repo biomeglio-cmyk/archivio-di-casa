@@ -14,6 +14,7 @@ import {
 import { moveToTrash, TRASH_DAYS } from '@/db/trash';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { deletePassword } from '@/security/password-vault';
+import { themedStyles } from '@/constants/theme';
 
 type Choice = 'move' | 'trash';
 
@@ -88,7 +89,8 @@ export default function DeleteCategoryScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   fill: {
     flex: 1,
   },
@@ -97,4 +99,4 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     gap: 8,
   },
-});
+}));

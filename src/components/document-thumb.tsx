@@ -7,6 +7,7 @@ import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { DEFAULT_CARD_COLOR } from '@/constants/card-colors';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
+import { themedStyles } from '@/constants/theme';
 
 const WIDTH = 86;
 const HEIGHT = 54; // a card's proportions
@@ -44,7 +45,8 @@ export function DocumentThumb({ document }: { document: DocumentListItem }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   thumb: {
     width: WIDTH,
     height: HEIGHT,
@@ -56,4 +58,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+}));

@@ -12,7 +12,7 @@ import { PrimaryButton } from '@/components/primary-button';
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Text, TextInput } from '@/components/text';
 import { PERSON_ROLES } from '@/constants/person-roles';
-import { CardSurface, Colors, Spacing } from '@/constants/theme';
+import { CardSurface, Colors, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getPerson, insertPerson, updatePerson } from '@/db/people';
 import type { Person, PersonRole } from '@/db/types';
@@ -173,7 +173,8 @@ function PersonForm({ person }: { person: Person | null }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -262,4 +263,4 @@ const styles = StyleSheet.create({
   save: {
     marginTop: 26,
   },
-});
+}));

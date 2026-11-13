@@ -11,7 +11,7 @@ import { Segmented } from '@/components/segmented';
 import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
+import { Colors, Spacing, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { copyToClipboard, emailFiles, printFiles, saveToFiles, shareFiles } from '@/send/deliver';
@@ -31,7 +31,10 @@ import {
 } from '@/send/send-preferences';
 
 // Warnings: soft orange box, dark orange text
-const WARNING_COLORS = { text: onSoftTint('#B35400', '#FFB48A'), background: softTint('#FFF1E0', '#3A2418') };
+let WARNING_COLORS = { text: '', background: '' };
+onTheme(() => {
+  WARNING_COLORS = { text: onSoftTint('#B35400', '#FFB48A'), background: softTint('#FFF1E0', '#3A2418') };
+});
 
 // Sheet "Invia" (docs/design/Invia.dc.html): /send?ids=12 for one document, /send?ids=3,7,9&label=…
 // for several. The document with "PDF unico · 2 pagine · 1,2 MB", PDF / Foto, then Email, WhatsApp,
@@ -347,7 +350,8 @@ function Warning({ text }: { text: string }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   container: {
     paddingHorizontal: Spacing.side,
     paddingTop: 30,
@@ -519,4 +523,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     color: Colors.current.text,
   },
-});
+}));

@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { themedStyles } from '@/constants/theme';
 
 type Props = {
   start: ReactNode; // the label
@@ -45,7 +46,8 @@ export function FitLine({ start, end, gap = 12, style }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   box: {
     flex: 1,
   },
@@ -77,4 +79,4 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     maxWidth: '100%',
   },
-});
+}));

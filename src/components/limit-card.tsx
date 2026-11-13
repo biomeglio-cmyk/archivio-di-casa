@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { FreeUsage } from '@/settings/free-limit';
 
@@ -34,7 +34,8 @@ export function LimitCard({ usage }: { usage: FreeUsage }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   card: {
     paddingVertical: 14,
     paddingHorizontal: 16,
@@ -78,4 +79,4 @@ const styles = StyleSheet.create({
     textTransform: 'uppercase',
     color: Colors.current.accent,
   },
-});
+}));

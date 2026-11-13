@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn, ZoomIn } from 'react-native-reanimated';
 
 import { Text } from '@/components/text';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 type Props = {
@@ -105,7 +105,8 @@ export function ConfirmChoice({ label, detail, checked, onPress }: ChoiceProps) 
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   dim: {
     flex: 1,
     justifyContent: 'center',
@@ -215,4 +216,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: Colors.current.textSecondary,
   },
-});
+}));

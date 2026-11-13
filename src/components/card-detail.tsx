@@ -14,7 +14,7 @@ import { PersonAvatar } from '@/components/person-avatar';
 import { PinHeart } from '@/components/pin-heart';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
-import { Spacing } from '@/constants/theme';
+import { Spacing, themedStyles } from '@/constants/theme';
 import type { DocumentDetail, DocumentFile } from '@/db/types';
 import { useMaxBrightness } from '@/hooks/use-max-brightness';
 import { resolveDocumentFile } from '@/storage/document-files';
@@ -127,7 +127,8 @@ export function CardDetail({ card, files, pin }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   content: {
     paddingVertical: 16,
     paddingHorizontal: Spacing.side,
@@ -192,4 +193,4 @@ const styles = StyleSheet.create({
   actions: {
     gap: 8,
   },
-});
+}));

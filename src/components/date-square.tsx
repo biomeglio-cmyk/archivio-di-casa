@@ -3,7 +3,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatDate, MONTHS_SHORT, parseISODate } from '@/utils/dates';
 
@@ -43,7 +43,8 @@ export function DateSquare({ iso, highlighted = false }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   square: {
     width: 46,
     height: 50,
@@ -68,4 +69,4 @@ const styles = StyleSheet.create({
     lineHeight: 15,
     fontFamily: FONTS.medium,
   },
-});
+}));

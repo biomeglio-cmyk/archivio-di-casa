@@ -3,10 +3,13 @@ import { StyleSheet, View } from 'react-native';
 import { PrimaryButton } from '@/components/primary-button';
 import { SecondaryButton } from '@/components/secondary-button';
 import { PIN_COLOR } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles, onTheme } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
-const PIN_TINT = `${PIN_COLOR}24`; // the heart color at 14%: "Nei preferiti" stands out from lilac
+let PIN_TINT = ''; // the heart color at 14%: "Nei preferiti" stands out from lilac
+onTheme(() => {
+  PIN_TINT = `${PIN_COLOR}24`;
+});
 
 type Props = {
   onAdd: (() => void) | null; // null = the button is not shown
@@ -72,7 +75,8 @@ export function DetailActionBar({ onAdd, onEdit, onDelete, pin, onRenew }: Props
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   container: {
     gap: 10,
   },
@@ -84,4 +88,4 @@ const styles = StyleSheet.create({
     flex: 1, // two equal halves of the row
     paddingHorizontal: 12,
   },
-});
+}));

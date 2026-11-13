@@ -14,6 +14,7 @@ import { GuideFrameOverlay } from '@/components/guide-frame-overlay';
 import { FONTS } from '@/constants/typography';
 import { CARD_BARCODE_TYPES } from '@/constants/card-colors';
 import { useLargestPictureSize } from '@/capture/picture-size';
+import { themedStyles } from '@/constants/theme';
 
 export type CardStep = 'front' | 'barcode';
 
@@ -250,7 +251,8 @@ export function CardCapture({ steps, onDone, onCancel }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   focusRing: {
     position: 'absolute',
     width: 72,
@@ -402,4 +404,4 @@ const styles = StyleSheet.create({
   permissionButton: {
     alignSelf: 'stretch',
   },
-});
+}));

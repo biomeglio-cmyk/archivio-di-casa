@@ -3,6 +3,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { StyleSheet } from 'react-native';
 
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
+import { themedStyles } from '@/constants/theme';
 
 const GLYPH_ASPECT = 712 / 657; // logo-glyph.png is 712 × 657 px
 const GLYPH_SHARE = 0.64; // the hand with the document fills about 64% of the icon width
@@ -28,10 +29,11 @@ export function LogoMark({ size, radius = size * 0.25 }: { size: number; radius?
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   mark: {
     alignItems: 'center',
     justifyContent: 'center',
     borderCurve: 'continuous',
   },
-});
+}));

@@ -17,7 +17,7 @@ import { SectionHeader } from '@/components/section-header';
 import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { Text } from '@/components/text';
 import { TileScrollView } from '@/components/tile-grid';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listCategoriesWithCounts, saveCategoryOrder } from '@/db/categories';
 import { listDocumentsWithExpiry, listPinnedDocuments } from '@/db/documents';
@@ -164,7 +164,8 @@ export default function ArchiveScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
   },
@@ -203,4 +204,4 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     gap: Spacing.tileGap,
   },
-});
+}));

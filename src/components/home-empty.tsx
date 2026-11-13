@@ -7,7 +7,7 @@ import { pickPdf } from '@/capture/pick-files';
 import { PrimaryButton } from '@/components/primary-button';
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { CategoryWithCount } from '@/db/types';
 import { encodePendingFiles } from '@/storage/pending-files';
@@ -101,7 +101,8 @@ function Sheet({ left, right, top, rotate, accent }: { left?: number; right?: nu
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   card: {
     marginTop: 20,
     paddingVertical: 24,
@@ -221,4 +222,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     color: Colors.current.textSecondary,
   },
-});
+}));

@@ -21,7 +21,7 @@ import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { REORDER_FOOTER, ReorderHeader, ReorderRow, SortableList } from '@/components/sortable-list';
 import { Text } from '@/components/text';
 import { TileGrid } from '@/components/tile-grid';
-import { CardSurface, Colors, Spacing } from '@/constants/theme';
+import { CardSurface, Colors, Spacing, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPinnedDocuments, savePinnedOrder, setPinned } from '@/db/documents';
 import type { DocumentListItem } from '@/db/types';
@@ -32,7 +32,10 @@ import { getFavoritesView, saveFavoritesView, type FolderView } from '@/settings
 import { describeDistance } from '@/utils/dates';
 import { daysUntil } from '@/utils/deadlines';
 
-const HEART = Colors.current.heart;
+let HEART = '';
+onTheme(() => {
+  HEART = Colors.current.heart;
+});
 
 const documentHref = (id: number) =>
   ({ pathname: '/(tabs)/(favorites)/document/[id]', params: { id: String(id) } }) as const;
@@ -270,7 +273,8 @@ function favoriteSubtitle(document: DocumentListItem): string {
   return [document.category.name, detail].filter(Boolean).join(' · ');
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -360,4 +364,4 @@ const styles = StyleSheet.create({
     color: Colors.current.textSecondary,
     textAlign: 'center',
   },
-});
+}));

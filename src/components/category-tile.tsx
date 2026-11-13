@@ -5,7 +5,7 @@ import { StyleSheet, View } from 'react-native';
 import { Text } from '@/components/text';
 import { TileTitle } from '@/components/tile-title';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Radius, tintedShadow } from '@/constants/theme';
+import { Radius, tintedShadow, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import type { Category } from '@/db/types';
 import { categoryShadowRgb } from '@/utils/colors';
@@ -55,7 +55,8 @@ export function CategoryTile({ category, documentCount }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   tile: {
     flex: 1, // fills the grid cell
     padding: 16,
@@ -79,4 +80,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     fontVariant: ['tabular-nums'],
   },
-});
+}));

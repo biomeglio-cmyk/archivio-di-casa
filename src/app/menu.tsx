@@ -20,7 +20,7 @@ import { FreeUsageCard } from '@/components/free-usage-card';
 import { LogoMark } from '@/components/logo-mark';
 import { Text } from '@/components/text';
 import type { MenuSection } from '@/constants/navigation';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { getMenuCounts } from '@/db/menu-counts';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -274,7 +274,8 @@ function Divider() {
   return <View style={styles.divider} />;
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
   },
@@ -397,4 +398,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: Colors.current.textSecondary,
   },
-});
+}));

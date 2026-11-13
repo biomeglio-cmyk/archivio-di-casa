@@ -17,7 +17,7 @@ import { resolveDocumentFile } from '@/storage/document-files';
 import { pagesToFiles, type PendingFile } from '@/storage/pending-files';
 import { chooseAction } from '@/utils/action-sheet';
 import { pageLabel, usesFrontBack } from '@/utils/page-labels';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 
 // A file in the form: either already saved (existing) or just captured (pending).
 // The photos are kept in page order: their position in the list IS the page number.
@@ -301,7 +301,8 @@ function Arrow({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   container: {
     gap: 12,
   },
@@ -382,4 +383,4 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontFamily: FONTS.semiBold,
   },
-});
+}));

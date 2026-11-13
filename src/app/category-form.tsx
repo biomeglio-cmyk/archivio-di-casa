@@ -15,7 +15,7 @@ import { RoundIconButton } from '@/components/round-icon-button';
 import { Text, TextInput } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
 import { CATEGORY_SYMBOLS } from '@/constants/category-options';
-import { CardSurface, Colors, Spacing, tintedShadow } from '@/constants/theme';
+import { CardSurface, Colors, Spacing, tintedShadow, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import {
   countDocumentsInCategory,
@@ -317,7 +317,8 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -456,4 +457,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     color: Colors.current.accent,
   },
-});
+}));

@@ -8,6 +8,7 @@ import { previewGradient, previewSymbol } from '@/constants/password-options';
 import type { PasswordInfo } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { hexToRgb } from '@/utils/colors';
+import { themedStyles } from '@/constants/theme';
 
 type Props = {
   info: Pick<PasswordInfo, 'type' | 'preview'>;
@@ -35,11 +36,12 @@ export function PasswordPreviewTile({ info, size, imageUri, shadow = true }: Pro
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   square: {
     alignItems: 'center',
     justifyContent: 'center',
     borderCurve: 'continuous',
     overflow: 'hidden',
   },
-});
+}));

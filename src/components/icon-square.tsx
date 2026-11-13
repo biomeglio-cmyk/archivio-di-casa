@@ -3,7 +3,7 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { StyleSheet } from 'react-native';
 
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { iconShadow, Radius } from '@/constants/theme';
+import { iconShadow, Radius, themedStyles } from '@/constants/theme';
 import type { CategoryColors } from '@/db/types';
 import { categoryShadowRgb } from '@/utils/colors';
 
@@ -34,10 +34,11 @@ export function IconSquare({ symbol, colors, size = 44, shadow = false, radius: 
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   square: {
     alignItems: 'center',
     justifyContent: 'center',
     borderCurve: 'continuous',
   },
-});
+}));

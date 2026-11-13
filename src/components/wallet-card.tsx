@@ -9,6 +9,7 @@ import { FONTS } from '@/constants/typography';
 import type { DocumentListItem } from '@/db/types';
 import { resolveDocumentFile } from '@/storage/document-files';
 import { isLightColor, mixWithWhite } from '@/utils/colors';
+import { themedStyles } from '@/constants/theme';
 
 export const WALLET_CARD_HEIGHT = 214; // open card in Tessere
 export const WALLET_CARD_PEEK = 86; // closed card: only its top shows
@@ -87,7 +88,8 @@ export function WalletCardFace({ card, height = WALLET_CARD_HEIGHT, scale = 1, u
 
 const circle = (diameter: number) => ({ width: diameter, height: diameter, borderRadius: diameter / 2 });
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   face: {
     width: '100%',
     overflow: 'hidden',
@@ -132,4 +134,4 @@ const styles = StyleSheet.create({
     color: 'rgba(255, 255, 255, 0.9)',
     fontFamily: FONTS.medium,
   },
-});
+}));

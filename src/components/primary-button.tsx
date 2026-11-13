@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-nat
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, BRAND_SHADOW, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Radius } from '@/constants/theme';
+import { Radius, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
 
@@ -62,7 +62,8 @@ export function PrimaryButton({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   button: {
     minHeight: HEIGHT,
     borderRadius: Radius.pill,
@@ -92,4 +93,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
-});
+}));

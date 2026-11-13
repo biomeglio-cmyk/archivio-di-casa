@@ -18,7 +18,7 @@ import { Switch } from '@/components/switch';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR } from '@/constants/brand';
-import { Colors, Spacing } from '@/constants/theme';
+import { Colors, Spacing, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { rescheduleReminders, updateAppBadge } from '@/notifications/reminders';
 import { disableAppLock, useAppLockEnabled } from '@/security/app-lock';
@@ -39,14 +39,17 @@ const DAYS_OPTIONS = [1, 2, 3, 7, 15, 30, 60];
 // The icon squares of the sections: light and "Tema notte" values of the design guide
 const tint = (background: string, icon: string, darkBackground: string, darkIcon: string) =>
   Colors.current.isDark ? { background: darkBackground, icon: darkIcon } : { background, icon };
-const TINTS = {
-  security: { background: Colors.current.lilac, icon: Colors.current.indigo },
-  grey: tint('#F0F1F5', '#4B5068', '#24263F', '#B4B7CC'),
-  reminders: tint('#FFF0E7', '#C2530F', '#3A2418', '#FFB48A'),
-  backup: tint('#EAF2FE', '#2F62C8', '#16263F', '#8DB6FF'),
-  info: tint('#E6F7F0', '#1F7A5A', '#15332A', '#7FE0BC'),
-} as const;
-type Tint = (typeof TINTS)[keyof typeof TINTS];
+type Tint = { background: string; icon: string };
+let TINTS: Record<'security' | 'grey' | 'reminders' | 'backup' | 'info', Tint> = {} as never;
+onTheme(() => {
+  TINTS = {
+    security: { background: Colors.current.lilac, icon: Colors.current.indigo },
+    grey: tint('#F0F1F5', '#4B5068', '#24263F', '#B4B7CC'),
+    reminders: tint('#FFF0E7', '#C2530F', '#3A2418', '#FFB48A'),
+    backup: tint('#EAF2FE', '#2F62C8', '#16263F', '#8DB6FF'),
+    info: tint('#E6F7F0', '#1F7A5A', '#15332A', '#7FE0BC'),
+  };
+});
 
 const daysLabel = daysBefore; // "1 giorno prima", "7 giorni prima"…
 
@@ -442,7 +445,8 @@ function SettingsRow({ symbol, tint, label, subtitle, value, trailing, expanded,
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -562,4 +566,4 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: Colors.current.textSecondary,
   },
-});
+}));

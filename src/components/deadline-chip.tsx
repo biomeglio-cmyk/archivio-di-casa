@@ -2,14 +2,20 @@ import { SymbolView } from 'expo-symbols';
 import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors, softTint, onSoftTint } from '@/constants/theme';
+import { Colors, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
 import { isLightColor } from '@/utils/colors';
 import { daysUntil } from '@/utils/deadlines';
 
-const RED = Colors.current.error;
-const RED_SOFT = Colors.current.errorBackground;
-const AMBER = onSoftTint('#8A5A00', '#F5CB6B');
-const AMBER_SOFT = softTint('#FFF1D6', '#352A12');
+let RED = '';
+let RED_SOFT = '';
+let AMBER = '';
+let AMBER_SOFT = '';
+onTheme(() => {
+  RED = Colors.current.error;
+  RED_SOFT = Colors.current.errorBackground;
+  AMBER = onSoftTint('#8A5A00', '#F5CB6B');
+  AMBER_SOFT = softTint('#FFF1D6', '#352A12');
+});
 // Behind the tile's own text color: translucent white under dark text (pastel tiles),
 // translucent black under light text (palette "Notte", dark cover colors)
 const NEUTRAL_ON_LIGHT = 'rgba(255, 255, 255, 0.55)';
@@ -63,7 +69,8 @@ export function DeadlineChip({ expiresAt, neutralColor }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   chip: {
     alignSelf: 'flex-start',
     flexDirection: 'row',
@@ -79,4 +86,4 @@ const styles = StyleSheet.create({
     fontWeight: 700,
     fontVariant: ['tabular-nums'],
   },
-});
+}));

@@ -6,6 +6,7 @@ import { SvgXml } from 'react-native-svg';
 
 import { Text } from '@/components/text';
 import type { GeneratedBarcode } from '@/utils/barcode';
+import { themedStyles } from '@/constants/theme';
 
 // White behind the barcode: scanners need dark bars on white
 const BARCODE_BACKGROUND = '#FFFFFF';
@@ -62,7 +63,8 @@ export function BarcodeFullScreen({ barcode, uri, value, visible, onClose }: Ful
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   codeBox: {
     alignItems: 'center',
     justifyContent: 'center',
@@ -96,4 +98,4 @@ const styles = StyleSheet.create({
     top: 56,
     right: 20,
   },
-});
+}));

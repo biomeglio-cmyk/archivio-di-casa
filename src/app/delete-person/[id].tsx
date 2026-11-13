@@ -7,6 +7,7 @@ import { ConfirmChoice, ConfirmDialog } from '@/components/confirm-dialog';
 import { countDocumentsOfPerson, deletePerson, getPerson } from '@/db/people';
 import { TRASH_DAYS } from '@/db/trash';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { themedStyles } from '@/constants/theme';
 
 type Choice = 'family' | 'trash';
 
@@ -67,7 +68,8 @@ export default function DeletePersonScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   fill: {
     flex: 1,
   },
@@ -76,4 +78,4 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     gap: 8,
   },
-});
+}));

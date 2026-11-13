@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Radius } from '@/constants/theme';
+import { Colors, Radius, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 type Props = {
@@ -51,7 +51,8 @@ export function ChipGroup({ children }: { children: ReactNode }) {
   return <View style={styles.group}>{children}</View>;
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   group: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -76,4 +77,4 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontFamily: FONTS.semiBold,
   },
-});
+}));

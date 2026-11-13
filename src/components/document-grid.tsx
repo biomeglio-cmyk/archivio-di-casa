@@ -11,6 +11,7 @@ import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import type { DocumentListItem } from '@/db/types';
 import { useDocumentSelection } from '@/hooks/use-document-selection';
+import { themedStyles } from '@/constants/theme';
 
 type Props = {
   documents: DocumentListItem[] | undefined;
@@ -70,8 +71,9 @@ export function DocumentGrid({ documents, hrefFor, selection, onAdd, onReorder, 
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   flex: {
     flex: 1,
   },
-});
+}));

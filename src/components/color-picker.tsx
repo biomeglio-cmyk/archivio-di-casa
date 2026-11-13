@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { ColorWheel } from '@/components/color-wheel';
 import { Text, TextInput } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { hexToWheel } from '@/utils/colors';
 import { wheelHex } from '@/utils/password-tools';
@@ -137,7 +137,8 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   row: {
     flexDirection: 'row',
     flexWrap: 'wrap',
@@ -203,4 +204,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     color: Colors.current.text,
   },
-});
+}));

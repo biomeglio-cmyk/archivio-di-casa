@@ -9,6 +9,7 @@ import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand'
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { getFreeUsage, UNLOCK_PRICE } from '@/settings/free-limit';
+import { themedStyles } from '@/constants/theme';
 
 type Props = {
   variant: 'menu' | 'settings'; // menu: "Gratis: …" with a chevron; settings: bigger, white "Sblocca" pill
@@ -55,7 +56,8 @@ export function FreeUsageCard({ variant, onOpen = () => router.push('/unlock') }
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   cardMenu: {
     borderRadius: 20,
     boxShadow: '0 10px 20px rgba(100, 90, 235, 0.25)',
@@ -127,4 +129,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontFamily: FONTS.semiBold,
   },
-});
+}));

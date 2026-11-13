@@ -2,7 +2,7 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { Pressable, StyleSheet, type StyleProp, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
-import { Colors, Radius } from '@/constants/theme';
+import { Colors, Radius, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
 
@@ -62,7 +62,8 @@ export function SecondaryButton({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   button: {
     minHeight: HEIGHT,
     flexDirection: 'row',
@@ -86,4 +87,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     textAlign: 'center',
   },
-});
+}));

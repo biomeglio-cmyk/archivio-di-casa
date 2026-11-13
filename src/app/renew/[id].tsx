@@ -8,7 +8,7 @@ import { FilesEditor, filesToSave, type EditableFile } from '@/components/files-
 import { Group, Row } from '@/components/grouped-list';
 import { Switch } from '@/components/switch';
 import { ThemedText } from '@/components/themed-text';
-import { Spacing } from '@/constants/theme';
+import { Spacing, themedStyles } from '@/constants/theme';
 import { getDocumentDetail, renewDocument } from '@/db/documents';
 import type { DocumentDetail } from '@/db/types';
 import { useDbQuery } from '@/hooks/use-db-query';
@@ -112,7 +112,8 @@ function RenewContent({ document, expiresAt }: { document: DocumentDetail; expir
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   content: {
     paddingVertical: 16,
     paddingHorizontal: Spacing.side,
@@ -131,4 +132,4 @@ const styles = StyleSheet.create({
   calendar: {
     paddingBottom: 12,
   },
-});
+}));

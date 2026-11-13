@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { StyleSheet, View, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 
 import { Text } from '@/components/text';
+import { themedStyles } from '@/constants/theme';
 
 type Props = {
   children: string;
@@ -56,7 +57,8 @@ export function TileTitle({ children, style, numberOfLines = 2, maxFontSizeMulti
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   measure: {
     position: 'absolute',
     top: 0,
@@ -64,4 +66,4 @@ const styles = StyleSheet.create({
     width: 2000, // wide enough to keep every word on its own line
     opacity: 0,
   },
-});
+}));

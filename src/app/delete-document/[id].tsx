@@ -7,6 +7,7 @@ import { ConfirmDialog } from '@/components/confirm-dialog';
 import { getDocumentDetail } from '@/db/documents';
 import { moveToTrash, TRASH_DAYS } from '@/db/trash';
 import { useDbQuery } from '@/hooks/use-db-query';
+import { themedStyles } from '@/constants/theme';
 
 // "Cancella documento" (docs/design/CancellaDocumento.dc.html), a transparent route over the screen
 // that opened it. The document goes to our Cestino and can be recovered for 30 days (the design's
@@ -43,8 +44,9 @@ export default function DeleteDocumentScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   fill: {
     flex: 1,
   },
-});
+}));

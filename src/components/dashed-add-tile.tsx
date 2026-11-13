@@ -2,7 +2,7 @@ import { SymbolView } from 'expo-symbols';
 import { Pressable, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
-import { Radius } from '@/constants/theme';
+import { Radius, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { usePressed } from '@/hooks/use-pressed';
 import { useTheme } from '@/hooks/use-theme';
@@ -41,7 +41,8 @@ export function DashedAddTile({ label, size, onPress, radius = Radius.tile, colo
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   tile: {
     borderCurve: 'continuous',
     borderWidth: 2,
@@ -56,4 +57,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.medium,
     textAlign: 'center',
   },
-});
+}));

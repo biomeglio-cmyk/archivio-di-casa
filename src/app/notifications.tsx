@@ -7,7 +7,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from '@/components/text';
 import { GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { isUnread, markAllRead, markRead, useNotificationFeed, type FeedItem } from '@/notifications/feed';
 import { categoryShadowRgb } from '@/utils/colors';
@@ -120,7 +120,8 @@ function Group({ title, items, read, onOpen, withTime = false }: GroupProps) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   dim: {
     flex: 1,
     backgroundColor: 'rgba(28, 30, 70, 0.28)',
@@ -256,4 +257,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     color: Colors.current.indigo,
   },
-});
+}));

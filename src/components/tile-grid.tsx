@@ -5,6 +5,7 @@ import Animated, { type AnimatedRef } from 'react-native-reanimated';
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
 import { DashedAddTile } from '@/components/dashed-add-tile';
 import { TILE_COLUMNS, TILE_GAP, TILE_PADDING, useTileSize, type TileSize } from '@/hooks/use-tile-size';
+import { themedStyles } from '@/constants/theme';
 
 type Props<T> = {
   items: T[] | undefined; // undefined = loading: nothing is drawn, not even the dashed tile
@@ -71,7 +72,8 @@ export function TileScrollView({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   page: {
     padding: TILE_PADDING,
     paddingBottom: 48,
@@ -85,4 +87,4 @@ const styles = StyleSheet.create({
     gap: TILE_GAP, // horizontal space between the columns
     alignItems: 'stretch', // both tiles of a row get the height of the taller one
   },
-});
+}));

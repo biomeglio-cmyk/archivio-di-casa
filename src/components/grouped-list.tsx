@@ -8,7 +8,7 @@ import { FitLine } from '@/components/fit-line';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
-import { Spacing } from '@/constants/theme';
+import { Spacing, themedStyles } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 const PADDING = 16; // inside the card, left and right
@@ -110,7 +110,8 @@ export function Row({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   group: {
     gap: Spacing.titleToContent,
   },
@@ -165,7 +166,7 @@ const styles = StyleSheet.create({
     gap: 6,
     minHeight: 32,
   },
-});
+}));
 
 type ChoiceProps<T> = {
   title: string; // of the iOS menu ("Promemoria")

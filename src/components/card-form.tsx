@@ -17,7 +17,7 @@ import { Text, TextInput } from '@/components/text';
 import { spacedNumber, WalletCardFace } from '@/components/wallet-card';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
+import { Colors, Spacing, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { listPeople } from '@/db/people';
 import type { CoverMode } from '@/db/types';
@@ -26,8 +26,12 @@ import { barcodeTypeName, codeKindOf, generateBarcode, typeForKind, type CodeKin
 
 const NONE = 0; // no person (ids start at 1)
 const DARK = '#12142A';
-const MINT_TINT = softTint('#E6F7F0', '#15332A');
-const MINT_TEXT = onSoftTint('#1F7A5A', '#7FE0BC');
+let MINT_TINT = '';
+let MINT_TEXT = '';
+onTheme(() => {
+  MINT_TINT = softTint('#E6F7F0', '#15332A');
+  MINT_TEXT = onSoftTint('#1F7A5A', '#7FE0BC');
+});
 
 export type CardFormValues = {
   title: string;
@@ -379,7 +383,8 @@ function FieldRow({ label, last = false, children }: { label: string; last?: boo
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -660,4 +665,4 @@ const styles = StyleSheet.create({
     color: Colors.current.textSecondary,
     textAlign: 'center',
   },
-});
+}));

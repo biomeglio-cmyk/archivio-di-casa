@@ -6,7 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { backupReminderDays, daysSinceLastBackup } from '@/backup/backup-layout';
 import { Text } from '@/components/text';
-import { Colors, Radius } from '@/constants/theme';
+import { Colors, Radius, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -88,7 +88,8 @@ export function BackupReminder() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   box: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -131,4 +132,4 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-});
+}));

@@ -4,7 +4,7 @@ import { Keyboard, Pressable, StyleSheet, View, type TextInputInstance } from 'r
 
 import { Text, TextInput } from '@/components/text';
 import { BRAND_COLOR } from '@/constants/brand';
-import { Radius } from '@/constants/theme';
+import { Radius, themedStyles } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
 type Props = {
@@ -85,7 +85,8 @@ export function SearchBar({ value, onChangeText, placeholder, onOpen }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -116,4 +117,4 @@ const styles = StyleSheet.create({
     color: BRAND_COLOR,
     fontSize: 16,
   },
-});
+}));

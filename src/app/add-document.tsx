@@ -15,6 +15,7 @@ import { Text } from '@/components/text';
 import { FONTS } from '@/constants/typography';
 import { encodePendingFiles, pagesToFiles } from '@/storage/pending-files';
 import { useLargestPictureSize } from '@/capture/picture-size';
+import { themedStyles } from '@/constants/theme';
 
 const DARK = '#12142A';
 const PAGE_RATIO = 210 / 297; // the frame has the shape of an A4 page
@@ -240,7 +241,8 @@ function DarkButton({ symbol, label, onPress }: { symbol: SFSymbol; label: strin
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: DARK,
@@ -433,4 +435,4 @@ const styles = StyleSheet.create({
     color: '#D2D2D7',
     fontSize: 12,
   },
-});
+}));

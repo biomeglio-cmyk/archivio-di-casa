@@ -10,7 +10,7 @@ import { Text } from '@/components/text';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
 import { BRAND_COLOR, DANGER_COLOR } from '@/constants/brand';
-import { Spacing } from '@/constants/theme';
+import { Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { deleteDocumentForever, listTrashedDocuments } from '@/db/documents';
 import { daysLeftInTrash, emptyTrash, restoreFromTrash, TRASH_DAYS } from '@/db/trash';
@@ -159,7 +159,8 @@ function Thumbnail({ document }: { document: DocumentListItem }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   content: {
     paddingVertical: 16,
     paddingHorizontal: Spacing.side,
@@ -214,4 +215,4 @@ const styles = StyleSheet.create({
   actionText: {
     fontSize: 17,
   },
-});
+}));

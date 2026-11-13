@@ -4,6 +4,7 @@ import { PixelRatio, StyleSheet, View, type HostInstance } from 'react-native';
 import { captureRef } from 'react-native-view-shot';
 
 import { CARD_ASPECT_RATIO } from '@/capture/guide-frame';
+import { themedStyles } from '@/constants/theme';
 
 export type ComposeOptions = {
   width?: number; // output width in pixels (default: the view's own pixel width)
@@ -84,7 +85,8 @@ export function composerMaxWidth(): number {
   return Math.round(CANVAS_WIDTH * PixelRatio.get());
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   canvas: {
     position: 'absolute',
     left: -10000, // off screen, but still laid out and drawable
@@ -97,4 +99,4 @@ const styles = StyleSheet.create({
   face: {
     width: '100%',
   },
-});
+}));

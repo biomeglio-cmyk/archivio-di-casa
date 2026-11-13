@@ -29,7 +29,7 @@ import {
   previewSymbol,
   typeMeta,
 } from '@/constants/password-options';
-import { CardSurface, Colors, Spacing } from '@/constants/theme';
+import { CardSurface, Colors, Spacing, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import {
   insertDocument,
@@ -577,7 +577,8 @@ function ImageButton({ label, symbol, on, onPress }: { label: string; symbol: SF
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -959,4 +960,4 @@ const styles = StyleSheet.create({
     color: Colors.current.textSecondary,
     textAlign: 'center',
   },
-});
+}));

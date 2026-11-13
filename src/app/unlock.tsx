@@ -8,13 +8,17 @@ import { PrimaryButton } from '@/components/primary-button';
 import { ProgressBar } from '@/components/progress-bar';
 import { Text } from '@/components/text';
 import { WhiteCard } from '@/components/white-card';
-import { Colors, Spacing, softTint, onSoftTint } from '@/constants/theme';
+import { Colors, Spacing, softTint, onSoftTint, themedStyles, onTheme } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { getFreeUsage, UNLOCK_PRICE } from '@/settings/free-limit';
 
-const MINT_TINT = softTint('#E6F7F0', '#15332A');
-const MINT_INK = onSoftTint('#1F7A5A', '#7FE0BC');
+let MINT_TINT = '';
+let MINT_INK = '';
+onTheme(() => {
+  MINT_TINT = softTint('#E6F7F0', '#15332A');
+  MINT_INK = onSoftTint('#1F7A5A', '#7FE0BC');
+});
 const BENEFITS = [
   { title: 'Documenti senza limiti', text: 'Bollette, tessere, garanzie e tutto il resto' },
   { title: 'Promemoria delle scadenze', text: 'Ti avvisiamo prima che sia tardi' },
@@ -140,7 +144,8 @@ function Link({ label, onPress }: { label: string; onPress: () => void }) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   screen: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -326,4 +331,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: Colors.current.accent,
   },
-});
+}));

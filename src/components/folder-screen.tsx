@@ -23,7 +23,7 @@ import { SortableTileGrid } from '@/components/sortable-tile-grid';
 import { Text } from '@/components/text';
 import { TileGrid, TileScrollView } from '@/components/tile-grid';
 import { WhiteCard } from '@/components/white-card';
-import { Colors, Spacing, tintedShadow } from '@/constants/theme';
+import { Colors, Spacing, tintedShadow, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { isOtherCategory } from '@/db/categories';
 import { saveDocumentOrder } from '@/db/documents';
@@ -402,7 +402,8 @@ export function FolderScreen({ category, documents }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   flex: {
     flex: 1,
     backgroundColor: Colors.current.background,
@@ -506,4 +507,4 @@ const styles = StyleSheet.create({
     left: Spacing.side,
     right: Spacing.side,
   },
-});
+}));

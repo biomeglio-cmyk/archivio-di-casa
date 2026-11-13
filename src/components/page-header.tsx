@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { RoundIconButton } from '@/components/round-icon-button';
 import { Text } from '@/components/text';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 type Props = {
@@ -43,7 +43,8 @@ export function goHome() {
   router.navigate('/');
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   bar: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -68,4 +69,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: Colors.current.textSecondary,
   },
-});
+}));

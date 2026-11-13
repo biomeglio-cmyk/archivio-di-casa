@@ -8,7 +8,7 @@ import { Choice, Group, Row } from '@/components/grouped-list';
 import { Segmented } from '@/components/segmented';
 import { ThemedText } from '@/components/themed-text';
 import { WhiteCard } from '@/components/white-card';
-import { Spacing } from '@/constants/theme';
+import { Spacing, themedStyles } from '@/constants/theme';
 import { getCategory } from '@/db/categories';
 import { useDbQuery } from '@/hooks/use-db-query';
 import { shareFiles } from '@/send/deliver';
@@ -121,7 +121,8 @@ export default function TaxPackageScreen() {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   content: {
     paddingVertical: 16,
     paddingHorizontal: Spacing.side,
@@ -145,4 +146,4 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderCurve: 'continuous',
   },
-});
+}));

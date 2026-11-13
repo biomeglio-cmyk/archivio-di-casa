@@ -4,7 +4,7 @@ import { StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 type Props = {
@@ -28,7 +28,8 @@ export function ReadNotice({ title, text }: Props) {
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   box: {
     marginTop: 18,
     paddingVertical: 14,
@@ -62,4 +63,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.regular,
     color: Colors.current.textOnLilac,
   },
-});
+}));

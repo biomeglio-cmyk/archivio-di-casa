@@ -5,7 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { Text } from '@/components/text';
 import { BRAND_GRADIENT, GRADIENT_END, GRADIENT_START } from '@/constants/brand';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 import { formatMonthTitle, MONTHS, toISODate } from '@/utils/dates';
 
@@ -106,7 +106,8 @@ function MonthButton({
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -174,4 +175,4 @@ const styles = StyleSheet.create({
     color: Colors.current.indigo,
     fontFamily: FONTS.bold,
   },
-});
+}));

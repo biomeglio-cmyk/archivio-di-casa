@@ -4,7 +4,7 @@ import { Modal, Pressable, StyleSheet, View } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { Text } from '@/components/text';
-import { Colors } from '@/constants/theme';
+import { Colors, themedStyles } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
 
 export type SheetAction = {
@@ -87,7 +87,8 @@ export function ActionSheet({ visible, title, subtitle, actions, onClose }: Prop
   );
 }
 
-const styles = StyleSheet.create({
+const styles = themedStyles(() =>
+  StyleSheet.create({
   fill: {
     flex: 1,
     justifyContent: 'flex-end',
@@ -156,4 +157,4 @@ const styles = StyleSheet.create({
     fontFamily: FONTS.semiBold,
     color: Colors.current.indigo,
   },
-});
+}));

@@ -1,7 +1,7 @@
 import type { SFSymbol } from 'expo-symbols';
 
 import type { PasswordInfo, PasswordPreview, PasswordType } from '@/db/types';
-import { softTint, onSoftTint } from '@/constants/theme';
+import { softTint, onSoftTint, onTheme } from '@/constants/theme';
 
 // Everything that changes with "Che cosa salvi" (docs/design/NuovaPassword.dc.html, its logic class)
 export type PasswordTypeMeta = {
@@ -115,7 +115,12 @@ export function previewSymbol(preview: PasswordPreview, type: PasswordType): SFS
 }
 
 // The section colors (aqua) of the Password screens
-export const PASSWORD_TINT = softTint('#E3F6F9', '#12313A');
-export const PASSWORD_INK = onSoftTint('#1A6F7E', '#7FD6E4');
-export const PASSWORD_NOTE = onSoftTint('#1A5E6B', '#7FD6E4');
+export let PASSWORD_TINT = '';
+export let PASSWORD_INK = '';
+export let PASSWORD_NOTE = '';
+onTheme(() => {
+  PASSWORD_TINT = softTint('#E3F6F9', '#12313A');
+  PASSWORD_INK = onSoftTint('#1A6F7E', '#7FD6E4');
+  PASSWORD_NOTE = onSoftTint('#1A5E6B', '#7FD6E4');
+});
 export const PASSWORD_GRADIENT = ['#5CC8D8', '#2FA3B8'] as const;

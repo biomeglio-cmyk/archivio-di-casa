@@ -92,6 +92,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
   const [icon, setIcon] = useState<string | null>(info?.preview.icon ?? null);
   const [image, setImage] = useState<ImageChange>({ kind: 'keep' });
   const [saving, setSaving] = useState(false);
+  const [wheelDragging, setWheelDragging] = useState(false); // a finger on the color wheel: no scroll
 
   const meta = typeMeta(type);
   const isPin = type === 'pin';
@@ -258,6 +259,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
   return (
     <ScrollView
       style={styles.screen}
+      scrollEnabled={!wheelDragging}
       keyboardShouldPersistTaps="handled"
       automaticallyAdjustKeyboardInsets
       contentContainerStyle={[styles.page, { paddingTop: insets.top + 8, paddingBottom: insets.bottom + 36 }]}>
@@ -348,6 +350,7 @@ export function PasswordForm({ existing, categoryId, personId: initialPerson = n
             onChange={pickColor}
             columns={8}
             label="Colore dell'anteprima"
+            onDraggingChange={setWheelDragging}
           />
         </View>
 

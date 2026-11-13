@@ -19,13 +19,14 @@ type Props = {
   // Not given for cards, whose color is a preset or their own hex.
   categoryColors?: CategoryColors;
   hasPhoto: boolean; // without a photo, "Foto" falls back to the color
+  onDraggingChange?: (dragging: boolean) => void; // a finger on the color wheel: the form must not scroll
 };
 
 // "Copertina: Foto | Colore" in Nuovo documento, Modifica and the card form: how the document
 // looks in the grids. Foto = its front photo, full-bleed, with the title on a dark bar.
 // Colore = a background color with the title large; the category color, a preset, or "Il tuo colore"
 // (wheel and hex code).
-export function CoverField({ mode, onModeChange, color, onColorChange, categoryColors, hasPhoto }: Props) {
+export function CoverField({ mode, onModeChange, color, onColorChange, categoryColors, hasPhoto, onDraggingChange }: Props) {
 
   return (
     <FormField label="Copertina">
@@ -63,6 +64,7 @@ export function CoverField({ mode, onModeChange, color, onColorChange, categoryC
             value={color ?? 'category'}
             // "Il tuo colore" gives a '#RRGGBB': saved as the cover (or card) color like the others
             onChange={(value) => onColorChange(value === 'category' ? null : value)}
+            onDraggingChange={onDraggingChange}
           />
         </WhiteCard>
       )}

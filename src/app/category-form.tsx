@@ -1,5 +1,6 @@
 import { LinearGradient } from 'expo-linear-gradient';
 import { router, useLocalSearchParams } from 'expo-router';
+import { Stack } from 'expo-router/stack';
 import { useSQLiteContext } from 'expo-sqlite';
 import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useState } from 'react';
@@ -83,6 +84,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
   const [personId, setPersonId] = useState<number | null>(category?.personId ?? null);
   const [peopleOpen, setPeopleOpen] = useState(false);
   const [saving, setSaving] = useState(false);
+  const [wheelDragging, setWheelDragging] = useState(false); // a finger on the color wheel: no scroll
 
   const builtinKey = category?.builtinKey ?? null;
   const paletteColors = builtinKey ? builtinColorsFor(builtinKey) : null;
@@ -128,8 +130,11 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
 
   return (
     <>
+      {/* While the finger is on the color wheel the sheet can't be swiped down */}
+      <Stack.Screen options={{ gestureEnabled: !wheelDragging }} />
       <ScrollView
         style={styles.screen}
+        scrollEnabled={!wheelDragging}
         keyboardShouldPersistTaps="handled"
         automaticallyAdjustKeyboardInsets
         contentContainerStyle={[styles.page, { paddingBottom: insets.bottom + 36 }]}>
@@ -235,6 +240,7 @@ function CategoryForm({ category, count }: { category: Category | null; count: n
             }}
             size={38}
             columns={7}
+            onDraggingChange={setWheelDragging}
           />
         </View>
         {paletteColors && (

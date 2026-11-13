@@ -72,6 +72,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
   const [changed, setChanged] = useState({ front: false, barcode: false });
   const [retake, setRetake] = useState<CardStep | null>(null); // full-screen camera for one photo
   const [saving, setSaving] = useState(false);
+  const [wheelDragging, setWheelDragging] = useState(false); // a finger on the color wheel: no scroll
 
   const code = number.trim();
   // The camera's format while the number and the kind are the ones it read; else drawn from the kind
@@ -164,6 +165,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
   return (
     <>
       <ScrollView
+        scrollEnabled={!wheelDragging}
         keyboardShouldPersistTaps="handled"
         automaticallyAdjustKeyboardInsets
         contentInsetAdjustmentBehavior="never"
@@ -204,6 +206,7 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
               color={cardColor}
               onColorChange={(color) => color && setCardColor(color)}
               hasPhoto={Boolean(frontUri)}
+              onDraggingChange={setWheelDragging}
             />
           </View>
 

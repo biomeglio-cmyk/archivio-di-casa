@@ -26,6 +26,7 @@ type Props = {
   size?: number; // swatch diameter: 32 (default) or 38
   columns?: number; // swatches per row (the custom one included)
   label?: string; // VoiceOver name of the group
+  onDraggingChange?: (dragging: boolean) => void; // a finger on the wheel: the page must not scroll
 };
 
 const isHex = (value: string | null): value is string => value !== null && /^#[0-9A-F]{6}$/i.test(value);
@@ -35,7 +36,7 @@ const RAINBOW = ['#FF5A5A', '#FFC24A', '#5CD68A', '#4AB8FF', '#7A5CFF', '#FF5AC8
 // the preset swatches, then "Il tuo colore" (docs/design/NuovaPassword.dc.html). Tapping it opens
 // the panel below: the color wheel (touch or drag) and the hex code, which can also be typed.
 // The chosen swatch has a white ring and an outer ring in its color.
-export function ColorPicker({ presets, value, onChange, size = 32, columns, label = 'Colore' }: Props) {
+export function ColorPicker({ presets, value, onChange, size = 32, columns, label = 'Colore', onDraggingChange }: Props) {
   const presetChosen = presets.some((p) => p.key === value);
   const custom = !presetChosen && isHex(value) ? value.toUpperCase() : null;
   const [open, setOpen] = useState(custom !== null);
@@ -113,7 +114,7 @@ export function ColorPicker({ presets, value, onChange, size = 32, columns, labe
       {open && (
         <View style={styles.panel}>
           <View style={styles.center}>
-            <ColorWheel hue={wheel.hue} radius={wheel.radius} onChange={pickWheel} />
+            <ColorWheel hue={wheel.hue} radius={wheel.radius} onChange={pickWheel} onDraggingChange={onDraggingChange} />
           </View>
           <View style={styles.hexRow}>
             <View style={[styles.hexSwatch, { backgroundColor: shown }]} />

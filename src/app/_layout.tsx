@@ -12,13 +12,14 @@ import { Stack } from 'expo-router/stack';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { SQLiteProvider } from 'expo-sqlite';
-import { Fragment } from 'react';
+import { Fragment, Profiler } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { useAppGeneration } from '@/backup/app-reload';
 import { AccessibilityProvider, useReduceMotion } from '@/a11y/accessibility';
 import { ThemeProvider as AppThemeProvider } from '@/theme/theme-provider';
 import { AppLock } from '@/components/app-lock';
+import { onAppCommit } from '@/dev/render-warning';
 import { SplashOverlay } from '@/components/splash-overlay';
 import { FONTS } from '@/constants/typography';
 import { Radius, type Palette } from '@/constants/theme';
@@ -67,11 +68,14 @@ export default function RootLayout() {
 
   // The theme of the whole app (Impostazioni › Aspetto › Tema): switching re-renders in place
   return (
-    <AccessibilityProvider>
-      <AppThemeProvider>
-        <RootContent />
-      </AppThemeProvider>
-    </AccessibilityProvider>
+    // Development: a warning when the whole app commits more than 50 times a second (a render loop)
+    <Profiler id="Sottomano" onRender={onAppCommit}>
+      <AccessibilityProvider>
+        <AppThemeProvider>
+          <RootContent />
+        </AppThemeProvider>
+      </AccessibilityProvider>
+    </Profiler>
   );
 }
 

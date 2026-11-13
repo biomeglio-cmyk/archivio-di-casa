@@ -1,5 +1,6 @@
 import { useState, type ReactNode } from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
+import { useRenderWarning } from '@/dev/render-warning';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
 
@@ -19,6 +20,7 @@ type Props = {
 // screen size and Dynamic Type.
 export function FitLine({ start, end, gap = 12, style, startMeasure, endAlign = 'start' }: Props) {
   const styles = useThemedStyles(makeStyles);
+  useRenderWarning('FitLine');
   const [available, setAvailable] = useState(0);
   const [startWidth, setStartWidth] = useState(0);
   const [endWidth, setEndWidth] = useState(0);

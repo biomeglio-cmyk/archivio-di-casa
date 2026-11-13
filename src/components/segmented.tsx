@@ -2,6 +2,7 @@ import { SymbolView, type SFSymbol } from 'expo-symbols';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import { useRenderWarning } from '@/dev/render-warning';
 import { Text } from '@/components/text';
 import { type Palette, Radius } from '@/constants/theme';
 import { FONTS } from '@/constants/typography';
@@ -45,6 +46,7 @@ export function Segmented({
   const styles = useThemedStyles(makeStyles);
   const [width, setWidth] = useState(0); // the whole control
   const [labelWidths, setLabelWidths] = useState<number[]>([]);
+  useRenderWarning('Segmented', values.join(' / '));
 
   const segmentRoom = width > 0 ? (width - INSET * 2) / values.length - PADDING * 2 : 0;
   const measured = width > 0 && labelWidths.length === values.length && labelWidths.every((w) => w > 0);
@@ -55,6 +57,7 @@ export function Segmented({
 
   const measure = (index: number, w: number) =>
     setLabelWidths((prev) => {
+      if (prev[index] === Math.ceil(w)) return prev; // nothing changed: no new render
       const next = [...prev];
       next[index] = Math.ceil(w);
       return next;

@@ -16,9 +16,13 @@ export type PdfPage = { faces: PdfFace[] };
 
 // Builds an A4 PDF offline: an HTML page per sheet with the images inline as base64,
 // printed to a file by iOS. Every face is centered at its printed size.
+// A turn of the event loop: the screen can update between two heavy steps
+const breathe = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+
 export async function buildPdf(pages: PdfPage[]): Promise<{ uri: string; pages: number }> {
   const htmlPages: string[] = [];
   for (const page of pages) {
+    await breathe(); // the interface keeps responding while big PDFs are prepared
     const images: string[] = [];
     for (const face of page.faces) {
       const base64 = await new File(face.uri).base64();

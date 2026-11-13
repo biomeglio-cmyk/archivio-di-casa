@@ -48,8 +48,17 @@ export function AppNotifications() {
     const appState = AppState.addEventListener('change', (state) => {
       if (state === 'active') updateAppBadge(db);
     });
-    const dbChanges = addDatabaseChangeListener(() => updateAppBadge(db));
+    // Many changes in a row (a transaction) → one update, after a short pause
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const dbChanges = addDatabaseChangeListener(() => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        timer = null;
+        updateAppBadge(db);
+      }, 250);
+    });
     return () => {
+      if (timer) clearTimeout(timer);
       appState.remove();
       dbChanges.remove();
     };

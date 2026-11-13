@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { StyleSheet, useWindowDimensions, View, type AccessibilityRole, type StyleProp, type TextStyle, type ViewStyle } from 'react-native';
 
+import { useRenderWarning } from '@/dev/render-warning';
 import { Text } from '@/components/text';
 import { type Palette } from '@/constants/theme';
 import { useThemedStyles } from '@/hooks/use-theme';
@@ -52,12 +53,18 @@ export function TileTitle({
   const styles = useThemedStyles(makeStyles);
   const { fontScale } = useWindowDimensions();
   const { inGrid } = useTileColumns();
+  useRenderWarning('TileTitle', children);
 
   // Larger text: twice the lines, so a name is not cut after a word or two
   const lines = numberOfLines > 0 && fontScale > 1.3 ? numberOfLines * 2 : numberOfLines;
   // width: the box of the text; wordWidth: its widest word at full size; needed: the scale it needs
   const [box, setBox] = useState<Box>({ width: 0, wordWidth: 0, needed: 1 });
-  const update = (patch: Partial<Box>) => setBox((prev) => decide({ ...prev, ...patch }));
+  const update = (patch: Partial<Box>) =>
+    setBox((prev) => {
+      const next = decide({ ...prev, ...patch });
+      const same = next.width === prev.width && next.wordWidth === prev.wordWidth && next.needed === prev.needed;
+      return same ? prev : next;
+    });
 
   const flat = StyleSheet.flatten(style) ?? {};
   const fontSize = flat.fontSize ?? 17;

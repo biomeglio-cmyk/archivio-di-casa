@@ -10,6 +10,7 @@ import {
   type TextProps,
 } from 'react-native';
 
+import { useRenderWarning } from '@/dev/render-warning';
 import { useAccessibilitySettings } from '@/a11y/accessibility';
 import { withOnest } from '@/constants/typography';
 import { LARGE_TEXT_SCALE } from '@/hooks/use-large-text';
@@ -63,6 +64,7 @@ export function Text({ style, children, maxFontSizeMultiplier = MAX_FONT_SCALE, 
   const longest = plain ? Math.max(0, ...plain.split(/\s+/).map((w) => w.length)) : 0;
   // (a long word for the page, or any text with large text: in a narrow column even "promemoria"
   // can be too wide)
+  useRenderWarning('Text', plain);
   const atRisk =
     plain !== null &&
     rest.numberOfLines !== 1 &&

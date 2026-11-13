@@ -15,6 +15,8 @@ type QueryState<T> = { data: T | undefined; error: Error | undefined };
  * `deps` works like the dependency array of useEffect: pass the values the query uses
  * (e.g. the id from the route), so the query re-runs when they change.
  */
+const COALESCE_MS = 40;
+
 export function useDbQuery<T>(query: (db: SQLiteDatabase) => Promise<T>, deps: DependencyList): QueryState<T> {
   const db = useSQLiteContext();
   // A new palette in "Aspetto" changes the colors of the categories: reload like after a change
@@ -30,20 +32,45 @@ export function useDbQuery<T>(query: (db: SQLiteDatabase) => Promise<T>, deps: D
   // the returned function runs when the screen goes away (or before re-running).
   useEffect(() => {
     let active = true; // ignores results that arrive after the screen went away
+    let running = false; // a load in flight
+    let again = false; // a change arrived meanwhile: one more load when it ends
+    let timer: ReturnType<typeof setTimeout> | null = null;
 
     const load = () => {
-      query(db).then(
-        (data) => active && setState({ data, error: undefined }),
-        (error: Error) => active && setState((prev) => ({ data: prev.data, error })),
-      );
+      running = true;
+      query(db)
+        .then(
+          (data) => active && setState({ data, error: undefined }),
+          (error: Error) => active && setState((prev) => ({ data: prev.data, error })),
+        )
+        .finally(() => {
+          running = false;
+          if (again && active) {
+            again = false;
+            load();
+          }
+        });
+    };
+
+    // A transaction that writes 100 rows sends 100 change events: they become ONE reload (after a
+    // short pause), and never two loads at once — otherwise every screen re-queried 100 times and
+    // the JS thread froze the interface
+    const schedule = () => {
+      if (timer) clearTimeout(timer);
+      timer = setTimeout(() => {
+        timer = null;
+        if (running) again = true;
+        else load();
+      }, COALESCE_MS);
     };
 
     load();
     // Any INSERT/UPDATE/DELETE anywhere in the app → reload, so lists stay up to date
-    const subscription = addDatabaseChangeListener(load);
+    const subscription = addDatabaseChangeListener(schedule);
 
     return () => {
       active = false;
+      if (timer) clearTimeout(timer);
       subscription.remove();
     };
     // `query` is a new function on every render: the caller's `deps` decide when to re-run

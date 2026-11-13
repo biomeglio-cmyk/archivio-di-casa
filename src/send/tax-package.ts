@@ -23,6 +23,9 @@ import { formatEuro } from '@/utils/money';
 // they are. Memory: one photo or one PDF at a time is read, embedded, then let go.
 
 // The built-in key of "Spese 730" (its original icon): it survives a rename
+// A turn of the event loop: the screen can update between two heavy steps
+const breathe = () => new Promise<void>((resolve) => setTimeout(resolve, 0));
+
 export const TAX_CATEGORY_KEY = 'cross.case';
 
 const PT_PER_MM = 72 / MM_PER_INCH;
@@ -178,6 +181,7 @@ async function buildPdf(items: TaxItem[], title: string, step: LadderStep | null
   const indexPages = countIndexPages(items.length);
 
   for (const item of items) {
+    await breathe(); // pdf-lib works on the JS thread: let the interface update between documents
     const first = indexPages + pdf.getPageCount() + 1;
     const format = printFormatFor(item.document.category);
 

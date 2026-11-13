@@ -198,6 +198,8 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
             <LinearGradient colors={['#33365A', '#1C1E38']} style={[StyleSheet.absoluteFill, styles.frameGlow]} />
             <View style={styles.tilted}>{coverImage(232, 146)}</View>
             <View style={styles.frame} pointerEvents="none" />
+            {/* On the box: take the front again (iOS scanner; cancelling keeps this one) */}
+            {frontUri && <RetakePill label="Rifai la foto" onPress={retakeFront} />}
           </View>
           <View style={styles.recognized}>
             <SymbolView name={frontUri ? 'checkmark.circle.fill' : 'camera'} tintColor="#FFFFFF" size={16} />
@@ -240,6 +242,13 @@ export function CardForm({ heading, initial, onSubmit, onCancel }: Props) {
                 <Text style={styles.link}>{barcodeUri ? 'Rifai la foto' : 'Fotografa il codice'}</Text>
               </Pressable>
             </View>
+            {/* The photo of the code, on dark like the card above, with "Rifai la foto" on it */}
+            {barcodeUri && (
+              <View style={styles.barcodeBox}>
+                <Image source={{ uri: barcodeUri }} style={StyleSheet.absoluteFill} contentFit="contain" accessibilityIgnoresInvertColors />
+                <RetakePill label="Rifai la foto" onPress={() => setRetake('barcode')} />
+              </View>
+            )}
             <View style={styles.kind}>
               <Segmented
                 values={['Codice a barre', 'QR code']}
@@ -334,6 +343,21 @@ function LocalPhoto({ uri }: { uri: string }) {
   return <Image source={{ uri }} style={StyleSheet.absoluteFill} contentFit="cover" accessibilityIgnoresInvertColors />;
 }
 
+// "Rifai la foto": a pill at the bottom of a dark preview box, on translucent dark (both themes)
+function RetakePill({ label, onPress }: { label: string; onPress: () => void }) {
+  return (
+    <Pressable
+      onPress={onPress}
+      accessibilityRole="button"
+      accessibilityLabel={label}
+      hitSlop={6}
+      style={({ pressed }) => [styles.retake, pressed && styles.pressed]}>
+      <SymbolView name="arrow.triangle.2.circlepath.camera" tintColor="#FFFFFF" size={15} />
+      <Text style={styles.retakeText}>{label}</Text>
+    </Pressable>
+  );
+}
+
 function DarkButton({ symbol, label, onPress }: { symbol: 'xmark' | 'camera.rotate'; label: string; onPress: () => void }) {
   return (
     <Pressable
@@ -395,6 +419,32 @@ const styles = StyleSheet.create({
     height: 176,
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  retake: {
+    position: 'absolute',
+    bottom: 10,
+    alignSelf: 'center',
+    height: 34,
+    paddingHorizontal: 14,
+    borderRadius: 17,
+    backgroundColor: 'rgba(0, 0, 0, 0.55)',
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 7,
+  },
+  retakeText: {
+    color: '#FFFFFF',
+    fontSize: 14,
+    fontFamily: FONTS.semiBold,
+  },
+  barcodeBox: {
+    marginTop: 12,
+    height: 140,
+    borderRadius: 16,
+    borderCurve: 'continuous',
+    overflow: 'hidden',
+    backgroundColor: DARK,
+    alignItems: 'center',
   },
   frameGlow: {
     borderRadius: 20,
